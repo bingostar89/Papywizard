@@ -18,11 +18,15 @@ from common import config
 from common.loggingServices import Logger
 from common.preferences import Preferences
 from common.serializer import Serializer
+from common.exception import HardwareError
 from model.shooting import Shooting
 from view.mainWindow import MainWindow
 from controller.mainController import MainController
 from controller.spy import Spy
-from hardware.head import Head, HeadSimulation
+try:
+    from hardware.head import Head, HeadSimulation
+except ImportError:
+    Logger().exception("panohead initial imports")
 try:
     from view3D.view3D import View3D
 except ImportError:
@@ -44,9 +48,9 @@ def main():
     # Create model (both real and simulated)
     try:
         head = Head()
-    except:
+    except NameError:
         Logger().exception("Creating real hardware")
-        Logger().warning("Some libs are missing in order to use real hardware. Only simulated hardware is available")
+        Logger().warning("Some libs are missing in order to use real hardware")
         head = None
     headSimulation = HeadSimulation()
     model = Shooting(head, headSimulation)

@@ -61,8 +61,8 @@ class Head(object):
     def gotoPosition(self, yaw, pitch, wait=True):
         """ Goto given position.
         """
-        self.yawAxis.drive(yaw, wait=wait)
-        self.pitchAxis.drive(pitch, wait=wait)
+        self.yawAxis.drive(yaw, wait=False)
+        self.pitchAxis.drive(pitch, wait=False)
         if wait:
             self.yawAxis.waitEndOfDrive()
             self.pitchAxis.waitEndOfDrive()

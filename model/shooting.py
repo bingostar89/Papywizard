@@ -191,7 +191,7 @@ class Shooting(object):
         """ Store current position as end position.
         """
         self.yawEnd, self.pitchEnd = self.hardware.readPosition()
-        Logger().debug("Shooting.storeStartPosition(): yaw=%.1f, pitch=%.1f)" % (self.yawEnd, self.pitchEnd))
+        Logger().debug("Shooting.storeEndPosition(): yaw=%.1f, pitch=%.1f" % (self.yawEnd, self.pitchEnd))
         #self.__computeParams('startEnd')
     
     def start(self):

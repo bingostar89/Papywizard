@@ -58,7 +58,7 @@ class Axis(object):
                 break
         if nbTry == 2:
             raise HardwareError("Axis %d can't send command" % self._num)
-        Logger().debug("Axis._sendCmd(): axis %d cmd=%s, ans=%s" % (self._num, cmd, answer))
+        #Logger().debug("Axis._sendCmd(): axis %d cmd=%s, ans=%s" % (self._num, cmd, answer))
         return answer
 
     def reset(self):

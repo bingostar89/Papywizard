@@ -319,14 +319,14 @@ class View3D(vp.display):
         self.coords3D = Coords3D(self)
         self.world3D = World3D(self)
         
-    #def viewFromCamera(self, yaw, pitch):
-        #""" View from camera position.
-        #"""
-        #yaw *= math.pi / 180.
-        #pitch *= math.pi / 180.
-        #l = config.VIEW3D_HEAD_FOV_LENGTH * 3
-        #self.center = (l * math.sin(yaw), l * math.cos(yaw), l * math.sin(pitch))
-        #self.forward = vp.vector(math.sin(yaw), math.cos(yaw), math.sin(pitch))
+    def viewFromCamera(self, yaw, pitch):
+        """ View from camera position.
+        """
+        yaw *= math.pi / 180.
+        pitch *= math.pi / 180.
+        l = config.VIEW3D_HEAD_FOV_LENGTH
+        self.center = (l * math.sin(yaw), l * math.cos(yaw), l * math.sin(pitch))
+        self.forward = vp.vector(l * math.sin(yaw), l * math.cos(yaw), l * math.sin(pitch))
     
     def pov(self, filename='panohead.pov', xy_ratio=4./3.):
         """ Export the view as povray file.

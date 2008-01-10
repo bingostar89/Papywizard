@@ -5,11 +5,17 @@ ChangeLog
 x bug fix
 
 
-2007-??-?? Version SVN - Frederic.mantegazza <fma@gbiloba.org>
+2008-??-?? Version SVN - Frederic.mantegazza <fma@gbiloba.org>
     - use vpython 4 (bug fix the crash when hide/quit under linux)
     x add mapping to 3D view (needs vpython 4)
     + add key binding to move the head
     + add usefull informations on 3D view (yaw/pitch, fov...)
+    + generate xml file with shooting params
+
+2008-??-?? Version 0.9 beta 2 - Frederic.mantegazza <fma@gbiloba.org>
+    x added test for pyserial import module
+    + auto-detect correct paths for temp and home dirs under windows
+    x axis are now driven concurrently
 
 2007-12-28 Version 0.9 beta 1 - Frederic.mantegazza <fma@gbiloba.org>
     + auto-connect to real hardware if possible

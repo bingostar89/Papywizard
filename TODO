@@ -25,6 +25,7 @@ x done
         + add visual status for hardware connection (grey/green led)
         + add visual feedback for hardware com. (blinking green led)
         x add coords in realtime (just implement slot connected to spy)
+        + deactivate menu if real hardware is unusable (lib dependency problem)
         
     * ManualMoveDialog
         x add stop button (for 'home'). Feature removed.
@@ -70,4 +71,5 @@ x done
     + backlash correction
     + doc!!!!
     - rotation directions must be revisited
-    + use python config module for global configuration
+    + use python config parser module for global configuration
+    + generate xml file
