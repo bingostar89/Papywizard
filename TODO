@@ -1,0 +1,73 @@
+TODO
+
++ todo
+- bugs
+x done
+? question
+
+* Design
+    + use Condition object to synchronize things
+    x add a hardwareDriverFactory, and put controller type in config
+    + implement a Scan class for shooting
+    + export data (xml) for APP (from Scan)
+    + unit tests
+    + create a special level for debug exceptions
+    
+* View
+    ? Group manual move and shoot dialogs ?
+    
+    * MainWindow
+        * menus
+            x read current position
+            + define zero (offset)
+            x 'about' entry
+        x lock window close while a sub-dialog is open
+        + add visual status for hardware connection (grey/green led)
+        + add visual feedback for hardware com. (blinking green led)
+        x add coords in realtime (just implement slot connected to spy)
+        
+    * ManualMoveDialog
+        x add stop button (for 'home'). Feature removed.
+        x refresh postion in real time
+        x add 'Set' buttons for start/end pos
+        + add 'Goto Start', 'Goto End' and 'Goto Previous' buttons
+        x add entries for yaw/pitch position to reach
+        x When click on home button, pos and 3D view are not update (spy problem). Feature removed
+        
+    * ShootDialog
+        + add progressbar
+        x refresh postion in real time
+        + compute estimated time
+        + add 'Simul.' checkbox
+        x stop shooting if window is closed (can't close while shooting)
+        x Stop does not work while moving
+        
+    * ConfigDialog
+        + recompute all params when closing
+        - bug in 'Tv' and 'Sensor coef' params display (1,6.0) (only under linux)
+
+* View3D
+    + add view from the camera (with correct fov)
+    + refresh fov and other params
+    x last pos seems to be missed
+    x bad position while switching from real hardware to simul
+    + add yaw/pitch display
+    + show/hide 3D view (done but bug under linux)
+    + show/hide all params representation (lens fov, total fov, pos...)
+
+* Model
+    + implement delay param
+    x allow connect/disconnect from hardware (switch from simulation to real hardware)
+    + add try/except arround all hardware calls
+    + Save preferences as soon as a param changes
+    + Move preferences loading out of model (to main script)
+
+* Hardware
+    + check bus usage by manual remote in Axis._sendCmd() before sending a command
+
+* Misc
+    + add soft limits to avoid camera/lens collisions
+    + backlash correction
+    + doc!!!!
+    - rotation directions must be revisited
+    + use python config module for global configuration

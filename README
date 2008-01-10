@@ -1,0 +1,26 @@
+README
+
+INTRO
+
+panohead (find another name!) is a python software to drive the Merlin/Orion
+astronomic head, in order to turn it into a panoramic head. See:
+
+    http://fr.wiki.autopano.net/T%C3%AAte_astronomique_Multi-fonctions_Merlin
+
+MVC (Model-View-Controller) pattern is used to make things more modular.
+Current version of Panohead uses Tkinter as GUI, but other toolkits can be
+used without too much modifications.
+
+Tkinter has been chosen because it exists on all plateforms, including PocketPC,
+through PythonCE port, which will be used as remote-controller.
+
+USAGE
+
+There is no available documentation yet. But the GUI is simple, and should be
+easy to use for pano photographers.
+
+NOTES
+
+panohead is released under CeCILL license.
+
+Enjoy!
