@@ -28,7 +28,8 @@ class SerialPassiveDriver(SerialDriver):
     This driver only uses passive components.
     """
     def _setCS(self, level):
-        self._serial.setRTS(level)
+        #self._serial.setDTR(level)
+        pass
     
     def sendCmd(self, cmd):
         """
@@ -44,14 +45,16 @@ class SerialPassiveDriver(SerialDriver):
             self._serial.write(":%s\r" % cmd)
             c = ''
             while c != '=':
+                #while not self._serial.inWaiting():
+                    #time.sleep(0.01)
                 c = self._serial.read()
-                #Logger().debug("SerialPassiveDriver.sendCmd(): c=%s" % c)
+                #Logger().debug("SerialPassiveDriver.sendCmd(): c=%s" % repr(c))
                 if not c:
                     raise IOError("Timeout while reading on serial bus")
             data = ""
             while True:
                 c = self._serial.read()
-                #Logger().debug("SerialPassiveDriver.sendCmd(): c=%s" % c)
+                #Logger().debug("SerialPassiveDriver.sendCmd(): c=%s, data=%s" % (repr(c), repr(data)))
                 if not c:
                     raise IOError("Timeout while reading on serial bus")
                 elif c == '\r':
