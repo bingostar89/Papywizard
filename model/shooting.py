@@ -21,6 +21,7 @@ import time
 from common.loggingServices import Logger
 from common.preferences import Preferences
 from common.exception import HardwareError
+from common.data import Data
 from camera import Camera
 from mosaic import Mosaic
 
@@ -56,17 +57,11 @@ class Shooting(object):
         self.pitchStart = 0.
         self.yawEnd = 0.
         self.pitchEnd = 0.
-        #self.yawFov = 0.
-        #self.pitchFov = 0.
-        #self.yawNbPicts = 0
-        #self.pitchNbPicts = 0
         self.position = self.hardware.readPosition()
 
         self.__prefs = Preferences().load()
         self.delay = self.__prefs['shooting']['delay']
         self.overlap = self.__prefs['shooting']['overlap']
-        #self.realYawOverlap = self.overlap
-        #self.realPitchOverlap = self.overlap
         self.manualShoot = self.__prefs['shooting']['manualShoot']
         self.cameraOrientation = self.__prefs['shooting']['cameraOrientation']
         
@@ -226,7 +221,17 @@ class Shooting(object):
         self.mosaic.setMatrix(self.yawNbPicts, self.pitchNbPicts)
         
         try:
-            
+            data = Data()
+            data.addHeaderNode('focal', "%.1f" % self.camera.lens.focal)
+            data.addHeaderNode('fisheye', "%s" % self.camera.lens.fisheye)
+            data.addHeaderNode('sensorCoef', "%.1f" % self.camera.sensorCoef)
+            data.addHeaderNode('sensorRatio', "%s" % self.camera.sensorRatio)
+            data.addHeaderNode('cameraOrientation', "%s" % self.cameraOrientation)
+            data.addHeaderNode('nbPicts', "%d" % self.camera.nbPicts)
+            data.addHeaderNode('realYawOverlap', "%.2f" % self.realYawOverlap)
+            data.addHeaderNode('realPitchOverlap', "%.2f" % self.realPitchOverlap)
+            data.addHeaderNode('template', type="mosaic", yaw="%d" % self.yawNbPicts, pitch="%d" % self.pitchNbPicts)
+                
             # Loop over all positions
             for yawCoef, pitchCoef in self.mosaic:
                 yaw = self.yawStart + yawCoef * yawInc
@@ -248,22 +253,25 @@ class Shooting(object):
                 # todo: implement manual shooting (must be in controller. Use yield here?)
                 Logger().info("Shooting")
                 for pict in xrange(self.camera.nbPicts):
-                    Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts + 1))
+                    Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts))
                     self.__sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
                     self.hardware.shoot(self.camera.timeValue)
-    
+                    data.addImageNode(pict + 1, yaw, pitch)
+                        
                     checkSuspendStop()
             
             # Zenith/Nadir
-            # todo: implement stab., manual shooting and multiple shots
+            # todo: implement manual shooting (must be in controller. Use yield here?)
             if self.mosaic.zenith:
+                yaw = 0.
+                pitch = -90.
                 Logger().info("Moving")
                 Logger().debug("Shooting.start(): Goto zenith")
                 self.__yawCoef = "zenith"
                 self.__pitchCoef = "zenith"
                 self.__sequence = "Moving"
                 #self.__progress = "..."
-                self.hardware.gotoPosition(0., -90.)
+                self.hardware.gotoPosition(yaw, pitch)
 
                 Logger().info("Stabilization")
                 self.__sequence = "Stabilizing"
@@ -273,13 +281,16 @@ class Shooting(object):
                     
                 Logger().info("Shooting")
                 for pict in xrange(self.camera.nbPicts):
-                    Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts + 1))
+                    Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts))
                     self.__sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
                     self.hardware.shoot(self.camera.timeValue)
+                    data.addImageNode(pict + 1, yaw, pitch)
     
                     checkSuspendStop()
                 
             if self.mosaic.nadir:
+                yaw = 0.
+                pitch = 90.
                 Logger().info("Moving")
                 Logger().debug("Shooting.start(): Goto nadir")
                 self.__yawCoef = "nadir"
@@ -296,9 +307,10 @@ class Shooting(object):
     
                 Logger().info("Shooting")
                 for pict in xrange(self.camera.nbPicts):
-                    Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts + 1))
+                    Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts))
                     self.__sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
                     self.hardware.shoot(self.camera.timeValue)
+                    data.addImageNode(pict + 1, yaw, pitch)
     
                     checkSuspendStop()
         
