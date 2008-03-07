@@ -45,7 +45,6 @@ class Axis(object):
         @rtype: str
         
         @todo: check if bus is busy before sending command (really usefull?) -> in acquireBus ?
-               Added try/except arround driver.sendCmd() call, and resend if failed.
         """
         cmd = "%s%d%s" % (cmd, self._num, param)
         for nbTry in xrange(3):
