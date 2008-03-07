@@ -2,13 +2,14 @@ README
 
 INTRO
 
-panohead (find another name!) is a python software to drive the Merlin/Orion
+papywizard (PAnormaic PYthon WIZARD) is a python software to drive the Merlin/Orion
 astronomic head, in order to turn it into a panoramic head. See:
 
     http://fr.wiki.autopano.net/T%C3%AAte_astronomique_Multi-fonctions_Merlin
+    http://www.autopano.net/wiki/action/view/Orion_TeleTrack_altazimuth_tracking_mount
 
 MVC (Model-View-Controller) pattern is used to make things more modular.
-Current version of Panohead uses Tkinter as GUI, but other toolkits can be
+Current version of papywizard uses Tkinter as GUI, but other toolkits can be
 used without too much modifications.
 
 Tkinter has been chosen because it exists on all plateforms, including PocketPC,
@@ -19,40 +20,8 @@ USAGE
 There is no available documentation yet. But the GUI is simple, and should be
 easy to use for pano photographers.
 
-NOTES
-
-panohead generates a xml file with shooting params. Here is an example:
-
-<?xml version="1.0" encoding="UTF-8"?>
-<panohead>
-    <header>
-        <focal>17.0</focal>
-        <fisheye>True</fisheye>
-        <sensorCoef>1.6</sensorCoef>
-        <sensorRatio>3:2</sensorRatio>
-        <cameraOrientation>portrait</cameraOrientation>
-        <nbPicts>2</nbPicts>                             <!-- bracketing -->
-        <overlap>0.32</overlap>                          <!-- real overlap -->
-        <template type="mosaic" rows="3" columns="4" />
-    </header>
-    <shoot>
-        ...
-        <image id="7" pict="1">
-            <time>Mon Dec 31 00:52:18 CET 2007</time>
-            <yaw>-32.5</yaw>
-            <pitch>12.3</pitch>
-        </image>
-        <image id="8" pict="2">
-            <time>Mon Dec 31 00:52:22 CET 2007</time>
-            <yaw>-32.5</yaw>
-            <pitch>12.3</pitch>
-        </image>
-        ...
-    </shoot>
-<panohead>
-
 LICENSES
 
-panohead is released under CeCILL license.
+papywizard is released under CeCILL license.
 
 Enjoy!
