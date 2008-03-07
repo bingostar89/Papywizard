@@ -22,7 +22,7 @@ VERSION = "0.9 beta 2"
 # General config
 if sys.platform.startswith("linux") or sys.platform.startswith("Mac"):
     HOME_DIR = os.path.expandvars("$HOME")
-    CONFIG_DIR = os.path.join(HOME_DIR, ".panohead")
+    CONFIG_DIR = os.path.join(HOME_DIR, ".papywizard")
     try:
         os.mkdir(CONFIG_DIR)
     except OSError, (errno, errmsg):
@@ -34,7 +34,7 @@ if sys.platform.startswith("linux") or sys.platform.startswith("Mac"):
 elif sys.platform.startswith("win"):
     import win32api
     HOME_DIR = win32api.ExpandEnvironmentStrings("%HOMEPATH%")
-    CONFIG_DIR = os.path.join(HOME_DIR, ".panohead")
+    CONFIG_DIR = os.path.join(HOME_DIR, ".papywizard")
     try:
         os.mkdir(CONFIG_DIR)
     except OSError, (errno, errmsg):
@@ -47,14 +47,15 @@ elif sys.platform.startswith("win"):
 # Hardware config
 AXIS_NUM_YAW = 1
 AXIS_NUM_PITCH = 2
-AXIS_ACCURACY = 0.1    # (°)
-SHOOT_PULSE = 0.2      # (s)
+AXIS_ACCURACY = 0.1          # (°)
+SHOOT_PULSE = 0.2            # (s)
 
-AXIS_SPEED = 10.       # used in simulation (°/s)
+AXIS_SPEED = 10.             # used in simulation (°/s)
 
-SERIAL_PORT = 0        # O is first COM port, 1 is second...
+#SERIAL_PORT = 0             # O is first COM port, 1 is second...
+SERIAL_PORT = "/dev/rfcomm0" # it is also possible to given its name, for non-standard ones
 SERIAL_BAUDRATE = 9600
-SERIAL_TIMEOUT = .2    # (s)
+SERIAL_TIMEOUT = .2          # (s)
 
 ENCODER_360 = 0x0E6600
 ENCODER_ZERO = 0x800000
@@ -62,7 +63,8 @@ ENCODER_ZERO = 0x800000
 DRIVER = "serialPassive"
 
 # Model configuration
-CONFIG_FILE = os.path.join(CONFIG_DIR, "panoheadrc")
+CONFIG_FILE = os.path.join(CONFIG_DIR, "papywizardrc")
+DATA_FILE = os.path.join(HOME_DIR, "papywizard-%s.xml")
 SENSOR_RATIOS = {'3:2':3./2., '4:3':4./3.}
 DEFAULT_SENSOR_RATIO = "3:2"
 MOSAIC_TEMPLATE = ["Auto",
@@ -94,7 +96,7 @@ DEFAULT_PREFS = {'shooting': {'overlap': 0.25,
 LOGGER_LEVEL = 'trace'
 #LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"
 LOGGER_FORMAT = "%(asctime)s::%(levelname)s::%(message)s"
-LOGGER_FILENAME = os.path.join(TEMP_DIR, "panohead.log")
+LOGGER_FILENAME = os.path.join(TEMP_DIR, "papywizard.log")
 LOGGER_MAXBYTES = 1024 * 1024 # 1MB per file
 LOGGER_BACKUPCOUNT = 10 # 10 files max
 LOGGER_CONSOLE = True
