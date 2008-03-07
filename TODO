@@ -7,14 +7,14 @@ x done
 
 * Design
     + use Condition object to synchronize things
-    x add a hardwareDriverFactory, and put controller type in config
+    x add a hardwareDriverFactory, and put driver type in config
     + implement a Scan class for shooting
-    + export data (xml) for APP (from Scan)
     + unit tests
-    + create a special level for debug exceptions
+    + add sub-loggers (model, view, hardware...)
+    + use python config parser module for global configuration
     
 * View
-    ? Group manual move and shoot dialogs ?
+    ? Group manual move and shoot dialogs?
     
     * MainWindow
         * menus
@@ -65,11 +65,12 @@ x done
 
 * Hardware
     + check bus usage by manual remote in Axis._sendCmd() before sending a command
+    - rotation directions must be revisited
+    + Implement new drive method for small moves
 
 * Misc
     + add soft limits to avoid camera/lens collisions
     + backlash correction
     + doc!!!!
-    - rotation directions must be revisited
-    + use python config parser module for global configuration
-    + generate xml file
+    x export data (xml) for APP (from Scan)
+
