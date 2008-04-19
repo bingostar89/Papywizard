@@ -59,3 +59,5 @@ class Serializer(object):
             self.__resultQueue.put((result, exception))
         except Queue.Empty:
             pass
+        
+        return True
