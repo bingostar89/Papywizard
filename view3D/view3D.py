@@ -328,7 +328,7 @@ class View3D(vp.display):
         self.center = (l * math.sin(yaw), l * math.cos(yaw), l * math.sin(pitch))
         self.forward = vp.vector(l * math.sin(yaw), l * math.cos(yaw), l * math.sin(pitch))
     
-    def pov(self, filename='panohead.pov', xy_ratio=4./3.):
+    def pov(self, filename='papywizard.pov', xy_ratio=4./3.):
         """ Export the view as povray file.
         """
         povexport.export(display=self, filename=filename, xy_ratio=xy_ratio)
