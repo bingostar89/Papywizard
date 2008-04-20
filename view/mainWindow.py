@@ -35,7 +35,7 @@ class MainWindow(tk.Tk):
         """ Init the object.
         """
         tk.Tk.__init__(self)
-        self.title("Panohead")
+        self.title("Papywizard")
         self._createMenus()
         self._createWidgets()
 
@@ -114,10 +114,10 @@ class MainWindow(tk.Tk):
         #self.setNbPictsButton.grid(row=5, column=3)
         
         tk.Label(self, text="Real overlap (%):").grid(row=6, column=0)
-        self.realYawOverlapLabel = tk.Label(self)
-        self.realYawOverlapLabel.grid(row=6, column=1, sticky=tk.E)
-        self.realPitchOverlapLabel = tk.Label(self)
-        self.realPitchOverlapLabel.grid(row=6, column=2, sticky=tk.E)
+        self.yawRealOverlapLabel = tk.Label(self)
+        self.yawRealOverlapLabel.grid(row=6, column=1, sticky=tk.E)
+        self.pitchRealOverlapLabel = tk.Label(self)
+        self.pitchRealOverlapLabel.grid(row=6, column=2, sticky=tk.E)
         
         frame = tk.Frame(self)
         self.zenithVar = tk.IntVar(self)
@@ -162,7 +162,7 @@ class MainWindow(tk.Tk):
         self.pitchFovLabel.config(text="%.1f" % values['shooting']['pitchFov'])
         self.yawNbPictsLabel.config(text="%d" % values['shooting']['yawNbPicts'])
         self.pitchNbPictsLabel.config(text="%d" % values['shooting']['pitchNbPicts'])
-        self.realYawOverlapLabel.config(text=str(values['shooting']['realYawOverlap']))
-        self.realPitchOverlapLabel.config(text=str(values['shooting']['realPitchOverlap']))
+        self.yawRealOverlapLabel.config(text=str(values['shooting']['yawRealOverlap']))
+        self.pitchRealOverlapLabel.config(text=str(values['shooting']['pitchRealOverlap']))
         self.zenithVar.set(values['mosaic']['zenith'])
         self.nadirVar.set(values['mosaic']['nadir'])
