@@ -22,8 +22,8 @@ correct place (sky pictures without any details are often unlinked).
         <sensorRatio>3:2</sensorRatio>
         <cameraOrientation>portrait</cameraOrientation>
         <nbPicts>2</nbPicts>                             <!-- bracketing -->
-        <relYawOverlap>0.54</realYawOverlap>             <!-- real overlaps -->
-        <realPitchOverlap>0.32</realPitchOverlap>
+        <relYawOverlap>0.54</yawRealOverlap>             <!-- real overlaps -->
+        <pitchRealOverlap>0.32</pitchRealOverlap>
         <template type="mosaic" rows="3" columns="4" />
     </header>
     <shoot>
