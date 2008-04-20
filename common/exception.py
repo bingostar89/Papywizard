@@ -17,11 +17,12 @@ Implements class:
 __revision__ = "$Id$"
 
 
-class PanoheadError(Exception):
+class PapywizardError(Exception):
     """ Base class for custom exceptions.
     """
 
 
-class HardwareError(PanoheadError):
+class HardwareError(PapywizardError):
     """ A hardware error occured.
     """
+
