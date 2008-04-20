@@ -10,6 +10,7 @@ x bug fix
     x add mapping to 3D view (needs vpython 4)
     + add key binding to move the head
     + add usefull informations on 3D view (yaw/pitch, fov...)
+    + add gtk toolkit support (first step to mameo support)
 
 2008-??-?? Version 0.9-beta2
     x added test for pyserial import module
