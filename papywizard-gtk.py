@@ -48,7 +48,7 @@ def main():
         head = None
     except HardwareError:
         Logger().exception("Creating real hardware")
-        Logger().warning("Problem occured in order to use real hardware")
+        Logger().warning("Problem occured; unable to use real hardware")
         head = None
     headSimulation = HeadSimulation()
     model = Shooting(head, headSimulation)
@@ -72,20 +72,22 @@ def main():
 
     # Create serializer, for async events
     serializer = Serializer()
-    gobject.timeout_add(100, serializer.processWork)
+    gobject.timeout_add(10, serializer.processWork)
 
     # Create main view
-    root = MainWindow()
+    view = MainWindow()
     
     # Create main controller
-    controller = MainController(serializer, model, root, view3D)
-    
+    controller = MainController(serializer, model, view, view3D)
+
     # Enter in Gtk mainloop
+    gtk.gdk.threads_init()
     gtk.main()
 
     # App closed
     Spy().stop()
     Spy().join()
+    # todo: stop hardware simulation
     headSimulation.stopGoto()
     #view3D.terminate() # vpython has not yet a way to terminate the mainloop
     
