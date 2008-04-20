@@ -196,7 +196,7 @@ class MainController(AbstractController):
         """ Connect check button toggled.
         """
         Logger().trace("MainController.__helpAboutMenu()")
-        tkMB.showinfo("About panohead",
+        tkMB.showinfo("About Papywizard",
                       "Copyright Frédéric Mantegazza\nVersion %s\nReleased under CeCILL license\nThanks to Kolor team" % config.VERSION)
 
     def __setStartButtonClicked(self):
@@ -240,7 +240,7 @@ class MainController(AbstractController):
         Logger().trace("MainController.__configButtonClicked()")
         self.__view.protocol("WM_DELETE_WINDOW", self.__doNotCloseWindow)
         view = ConfigDialog(self.__view)
-        controller = ConfigController(self, self.__model, view)
+        controller = ConfigController(self, self.__model, view) # Open as modal
         self.refreshView()
         self.__view.protocol("WM_DELETE_WINDOW", self.__quit)
 
@@ -287,8 +287,8 @@ class MainController(AbstractController):
                                'pitchFov':  self.__model.pitchFov,
                                'yawNbPicts':  self.__model.yawNbPicts,
                                'pitchNbPicts':  self.__model.pitchNbPicts,
-                               'realYawOverlap': int(round(100 * self.__model.realYawOverlap)),
-                               'realPitchOverlap': int(round(100 * self.__model.realPitchOverlap))
+                               'yawRealOverlap': int(round(100 * self.__model.yawRealOverlap)),
+                               'pitchRealOverlap': int(round(100 * self.__model.pitchRealOverlap))
                                },
                   'mosaic': {'zenith': self.__model.mosaic.zenith,
                              'nadir':self.__model.mosaic.nadir}
