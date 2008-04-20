@@ -26,11 +26,11 @@ from common.loggingServices import Logger
 from common.exception import HardwareError
 #from view_gtk.configDialog import ConfigDialog
 from view_gtk.manualMoveDialog import ManualMoveDialog
-#from view_gtk.shootDialog import ShootDialog
+from view_gtk.shootDialog import ShootDialog
 from controller.abstractController import AbstractController
-#from configController import ConfigController
+#from controller_gtk.configController import ConfigController
 from controller_gtk.manualMoveController import ManualMoveController
-#from shootController import ShootController
+from controller_gtk.shootController import ShootController
 from controller.spy import Spy
 
 
@@ -143,14 +143,16 @@ class MainController(AbstractController):
         """ Connect to real hardware.
         """
         Logger().info("Connecting to real hardware...")
-        #try:
-            #self.__model.switchToRealHardware()
-            #Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
+        try:
+            self.__model.switchToRealHardware()
+            Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
             #self.__view.hardMenu.entryconfig(MainWindow.HARD_RESET_MENU_ENTRY, state=tk.NORMAL)
             #self.__view.hardConnectVar.set(1)
+            Logger().info("Now connected to real hardware")
             #tkMB.showinfo("Hardware connect", "Now connected to real hardware")
-        #except HardwareError: # Raised by model
+        except HardwareError: # Raised by model
             #tkMB.showerror("Hardware connect", "Can't connect to hardware. Stay in simulation mode")
+            Logger().error("Can't connect to hardware. Stay in simulation mode")
             #self.__view.hardConnectVar.set(0)
     
     def __hardConnectMenu(self):
@@ -242,8 +244,10 @@ class MainController(AbstractController):
 
     def __onShootButtonClicked(self, widget):
         Logger().trace("MainController.__onShootButtonClicked()")
-        #view = ShootDialog(self.__view)
-        #controller = ShootController(self, self.__serializer, self.__model, view)
+        view = ShootDialog(self.__view)
+        controller = ShootController(self, self.__serializer, self.__model, view)
+        retCode = view.shootDialog.run()
+        view.shootDialog.destroy()
         
     def __quit(self):
         """ Quit main controller.
