@@ -119,7 +119,7 @@ class Logger(object):
                 self.__fileHandler.setFormatter(defaultFormatter)
 
             # Loggers
-            self.__logger = logging.getLogger('panohead')
+            self.__logger = logging.getLogger('papywizard')
             self.__logger.setLevel(logging.TRACE)
             if config.LOGGER_CONSOLE:
                 self.__logger.addHandler(self.__streamHandler)
