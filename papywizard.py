@@ -26,11 +26,11 @@ from controller.spy import Spy
 try:
     from hardware.head import Head, HeadSimulation
 except ImportError:
-    Logger().exception("panohead initial imports")
+    Logger().exception("Papywizard initial imports")
 try:
     from view3D.view3D import View3D
 except ImportError:
-    Logger().exception("panohead initial imports")
+    Logger().exception("Papywizard initial imports")
 
 
 def main():
@@ -62,7 +62,7 @@ def main():
     # Create 3D view
     if config.VIEW3D_ENABLE:
         try:
-            view3D = View3D("Panohead", scale=(1, 1, 1))
+            view3D = View3D("Papywizard", scale=(1, 1, 1))
             Spy().newPosSignal.connect(view3D.draw)
             #Spy().newPosSignal.connect(view3D.viewFromCamera)
         except NameError:
@@ -93,7 +93,7 @@ def main():
     
 
 if __name__ == "__main__":
-    Logger().info("Starting panohead app...")
+    Logger().info("Starting Papywizard app...")
     main()
-    Logger().info("Panohead app stopped")
+    Logger().info("Papywizard app stopped")
     sys.exit()
