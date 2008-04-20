@@ -1,6 +1,8 @@
-#! python
+#!/usr/bin/env python
+# -*- coding: iso-8859-1 -*-
+
 #Python Serial Port Extension for Win32, Linux, BSD, Jython
-#see __init__.py
+#module for serial IO for POSIX compatible systems, like Linux
 #
 #(C) 2001-2003 Chris Liechti <cliechti@gmx.net>
 # this is distributed under a free software license, see license.txt
