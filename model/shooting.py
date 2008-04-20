@@ -117,7 +117,7 @@ class Shooting(object):
             overlap = 1.
         return overlap
 
-    realYawOverlap = property(__getRealYawOverlap, "Real yaw overlap")
+    yawRealOverlap = property(__getRealYawOverlap, "Real yaw overlap")
    
     def __getRealPitchOverlap(self):
         """ Recompute real pitch overlap.
@@ -129,7 +129,7 @@ class Shooting(object):
             overlap = 1.
         return overlap
 
-    realPitchOverlap = property(__getRealPitchOverlap, "Real pitch overlap")
+    pitchRealOverlap = property(__getRealPitchOverlap, "Real pitch overlap")
    
     #def __computeParams(self, setParam):
         #""" Compute missing params from given params.
@@ -144,8 +144,8 @@ class Shooting(object):
             #self.pitchFov = self.__getPitchFov()
             #self.yawNbPicts = self.__getYawNbPicts()
             #self.pitchNbPicts = self.__getPitchNbPicts()
-            #self.realYawOverlap = self.__getRealYawOverlap()
-            #self.realPitchOverlap = self.__getRealPitchOverlap()
+            #self.yawRealOverlap = self.__getRealYawOverlap()
+            #self.pitchRealOverlap = self.__getRealPitchOverlap()
         #elif setParam == 'fov':
             #Logger().warning("Shooting.__computeParam(): 'fov' setting not yet implemented")
         #elif setParam == 'nbPicts':
@@ -228,8 +228,8 @@ class Shooting(object):
             data.addHeaderNode('sensorRatio', "%s" % self.camera.sensorRatio)
             data.addHeaderNode('cameraOrientation', "%s" % self.cameraOrientation)
             data.addHeaderNode('nbPicts', "%d" % self.camera.nbPicts)
-            data.addHeaderNode('realYawOverlap', "%.2f" % self.realYawOverlap)
-            data.addHeaderNode('realPitchOverlap', "%.2f" % self.realPitchOverlap)
+            data.addHeaderNode('yawRealOverlap', "%.2f" % self.yawRealOverlap)
+            data.addHeaderNode('pitchRealOverlap', "%.2f" % self.pitchRealOverlap)
             data.addHeaderNode('template', type="mosaic", yaw="%d" % self.yawNbPicts, pitch="%d" % self.pitchNbPicts)
                 
             # Loop over all positions
@@ -313,6 +313,8 @@ class Shooting(object):
                     data.addImageNode(pict + 1, yaw, pitch)
     
                     checkSuspendStop()
+
+            Logger().debug("Shooting.start(): finished")
         
         except StopIteration:
             Logger().debug("Shooting.start(): Stop detected")
