@@ -62,39 +62,43 @@ class Spy(threading.Thread):
             self.__suspend = False
             self.__refresh = refresh
             self.newPosSignal = Signal()
+            try:
+                self.__yaw, self.__pitch = self.__model.hardware.readPosition()
+                Logger().debug("Spy.__init__(): yaw=%.1f, pitch=%.1f" % (self.__yaw, self.__pitch))
+            except HardwareError:
+                Logger().exception("Spy.run()")
             Spy.__init = False
         
     def run(self):
         """ Main entry of the thread.
         """
         self.__run = True
-        try:
-            self.__yaw, self.__pitch = self.__model.hardware.readPosition()
-        except HardwareError:
-            Logger().exception("Spy.run()")
-        try:
-            self.newPosSignal.emit(self.__yaw, self.__pitch)
-        except:
-            Logger().exception("Spy.run()")
         while self.__run:
             if self.__suspend:
                 while self.__suspend:
-                    time.sleep(0.01)
-            try:
-                yaw, pitch = self.__model.hardware.readPosition()
-            except HardwareError:
-                Logger().exception("Spy.run()")
-            if yaw != self.__yaw or pitch != self.__pitch:
-                Logger().debug("Spy.run(): new yaw=%.1f, new pitch=%.1f" % (yaw, pitch))
-                try:
-                    self.newPosSignal.emit(yaw, pitch)
-                except:
-                    Logger().exception("Spy.run()")
-                self.__yaw = yaw
-                self.__pitch = pitch
+                    time.sleep(self.__refresh)
+            self.execute()
             
             time.sleep(self.__refresh)
             
+    def execute(self):
+        """ Execute one refresh.
+        """
+        try:
+            yaw, pitch = self.__model.hardware.readPosition()
+        except HardwareError:
+            Logger().exception("Spy.run()")
+        if yaw != self.__yaw or pitch != self.__pitch:
+            Logger().debug("Spy.run(): new yaw=%.1f, new pitch=%.1f" % (yaw, pitch))
+            try:
+                self.newPosSignal.emit(yaw, pitch)
+            except:
+                Logger().exception("Spy.run()")
+            self.__yaw = yaw
+            self.__pitch = pitch
+            
+        return True
+
     def stop(self):
         """ Stop the thread.
         """
