@@ -16,8 +16,6 @@ Implements class:
 
 __revision__ = "$Id$"
 
-import threading
-
 import gtk
 
 from common.loggingServices import Logger
@@ -68,8 +66,6 @@ class ManualMoveController(AbstractController):
         
         # Connect Spy
         Spy().newPosSignal.connect(self.__refreshPos)
-
-        #self.__view.wait_window(self.__view)
 
     def __onSetStartButtonClicked(self, widget):
         Logger().trace("ConfigController.__setStartButtonClicked()")
