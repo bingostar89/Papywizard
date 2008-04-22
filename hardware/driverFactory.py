@@ -9,7 +9,7 @@ Implements class:
 - DriverFactory
 
 @author: Frederic Mantegazza
-@copyright: 2007
+@copyright: 2007-2008
 @license: CeCILL
 @todo:
 """
@@ -17,9 +17,6 @@ Implements class:
 __revision__ = "$Id$"
 
 from common.exception import HardwareError
-from serialPassiveDriver import SerialPassiveDriver
-from serialStampDriver import SerialStampDriver
-from usbDriver import USBDriver
 
 
 class DriverFactory(object):
@@ -31,14 +28,20 @@ class DriverFactory(object):
         @param type_: type of hardware object
         @type type_: str
         
-        @raise ValueError: unknown type
+        @raise HardwareError: unknown type
         """
         if type_ == "serialPassive":
+            from serialPassiveDriver import SerialPassiveDriver
             return SerialPassiveDriver()
         elif type_ == "serialStamp":
+            from serialStampDriver import SerialStampDriver
             return SerialStampDriver()
         elif type_ == "usb":
+            from usbDriver import USBDriver
             return USBDriver()
+        elif type_ == "bluetooth":
+            from bluetoothDriver import BluetoothDriver
+            return BluetoothDriver()
 
         else:
             raise HardwareError("Unknow '%s' driver type" % type_)
