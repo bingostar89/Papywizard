@@ -16,9 +16,8 @@ Implements class:
 
 __revision__ = "$Id$"
 
-#import serial
+import serial
 
-from common import serial
 from common import config
 from common.loggingServices import Logger
 from busDriver import BusDriver
