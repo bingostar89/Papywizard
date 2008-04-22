@@ -42,7 +42,7 @@ def main():
     # Create model (both real and simulated)
     try:
         head = Head()
-    except NameError:
+    except (NameError, ImportError):
         Logger().exception("Creating real hardware")
         Logger().warning("Some libs are missing in order to use real hardware")
         head = None
