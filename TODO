@@ -12,6 +12,8 @@ x done
     + unit tests
     + add sub-loggers (model, view, hardware...)
     + use python config parser module for global configuration
+    + use gtkmvc framework
+    ? remove Tkinter support
     
 * View
     ? Group manual move and shoot dialogs?
@@ -33,7 +35,7 @@ x done
         x add 'Set' buttons for start/end pos
         + add 'Goto Start', 'Goto End' and 'Goto Previous' buttons
         x add entries for yaw/pitch position to reach
-        x When click on home button, pos and 3D view are not update (spy problem). Feature removed
+        x when click on home button, pos and 3D view are not update (spy problem). Feature removed.
         
     * ShootDialog
         + add progressbar
@@ -41,7 +43,7 @@ x done
         + compute estimated time
         + add 'Simul.' checkbox
         x stop shooting if window is closed (can't close while shooting)
-        x Stop does not work while moving
+        x stop does not work while moving
         
     * ConfigDialog
         + recompute all params when closing
@@ -60,13 +62,13 @@ x done
     + implement delay param
     x allow connect/disconnect from hardware (switch from simulation to real hardware)
     + add try/except arround all hardware calls
-    + Save preferences as soon as a param changes
-    + Move preferences loading out of model (to main script)
+    + save preferences as soon as a param changes
+    + move preferences loading out of model (to main script)
 
 * Hardware
-    + check bus usage by manual remote in Axis._sendCmd() before sending a command
     - rotation directions must be revisited
-    + Implement new drive method for small moves
+    + implement new drive method for small moves (faster)
+    + better import of serial module
 
 * Misc
     + add soft limits to avoid camera/lens collisions
