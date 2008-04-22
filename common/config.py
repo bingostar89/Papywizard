@@ -53,7 +53,7 @@ SHOOT_PULSE = 0.2            # (s)
 AXIS_SPEED = 10.             # used in simulation (°/s)
 
 #SERIAL_PORT = 0             # O is first COM port, 1 is second...
-SERIAL_PORT = "/dev/rfcomm0" # it is also possible to given its name, for non-standard ones
+SERIAL_PORT = "/dev/rfcomm0" # it is also possible to give its name, for non-standard ones
 SERIAL_BAUDRATE = 9600
 SERIAL_TIMEOUT = .2          # (s)
 
@@ -103,7 +103,7 @@ LOGGER_CONSOLE = True
 LOGGER_FILE = True
 
 # 3D view configuration
-VIEW3D_ENABLE = True
+VIEW3D_ENABLE = False
 VIEW3D_HEAD_HFOV = 30
 VIEW3D_HEAD_VFOV = 20
 VIEW3D_HEAD_FOV_LENGTH = 1
