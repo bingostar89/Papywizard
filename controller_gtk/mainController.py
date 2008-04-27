@@ -24,10 +24,13 @@ import gtk
 from common import config
 from common.loggingServices import Logger
 from common.exception import HardwareError
+from view_gtk.bluetoothConnectDialog import BluetoothConnectDialog
 #from view_gtk.configDialog import ConfigDialog
 from view_gtk.manualMoveDialog import ManualMoveDialog
 from view_gtk.shootDialog import ShootDialog
+from view_gtk.helpAboutDialog import HelpAboutDialog
 from controller.abstractController import AbstractController
+from controller_gtk.bluetoothConnectController import BluetoothConnectController
 #from controller_gtk.configController import ConfigController
 from controller_gtk.manualMoveController import ManualMoveController
 from controller_gtk.shootController import ShootController
@@ -59,6 +62,12 @@ class MainController(AbstractController):
 
         # Connect signal/slots
         dic = {"on_mainWindow_destroy": gtk.main_quit,
+               "on_configMenuitem_activate": self.__onConfigButtonClicked,
+               "on_quitMenuitem_activate": gtk.main_quit,
+               "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuToggled,
+               "on_hardwareResetMenuitem_activate": self.__onHardwareResetMenuActivated,
+               "on_view3DShowMenuitem_toggled": self.__onView3DShowMenuToggled,
+               "on_helpAboutMenuitem_activate": self.__onHelpAboutMenuActivated,
                "on_setStartButton_clicked": self.__onSetStartButtonClicked,
                "on_setEndButton_clicked": self.__onSetEndButtonClicked,
                "on_zenithCheckbutton_toggled": self.__onZenithCheckbuttonToggled,
@@ -90,7 +99,7 @@ class MainController(AbstractController):
         Spy().newPosSignal.connect(self.__refreshPos)
         
         # Try to autoconnect to real hardware
-        self.__connectToHardware()
+        #self.__connectToHardware()
         
         # Check if 3D view is available
         #if view3D is None:
@@ -143,71 +152,94 @@ class MainController(AbstractController):
         """ Connect to real hardware.
         """
         Logger().info("Connecting to real hardware...")
+        self.__view.statusbar.pop(self.__view.hardwareContextId)
+        self.__view.statusbar.push(self.__view.hardwareContextId, "Connecting to real hardware...")
         try:
+
+            ## Bluetooth driver
+            #if config.DRIVER == "bluetooth":
+                #view = BluetoothConnectDialog()
+                #controller = BluetoothConnectController(self, self.__model, view)
+                #retCode = view.bluetoothConnectDialog.run()
+                #view.bluetoothConnectDialog.destroy()
+                #if not retCode:
+                    #Logger().warning("Connection to hardware canceled")
+                    #self.__view.hardwareConnectMenuitem.set_active(False)
+                    #return
+
             self.__model.switchToRealHardware()
             Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
-            #self.__view.hardMenu.entryconfig(MainWindow.HARD_RESET_MENU_ENTRY, state=tk.NORMAL)
-            #self.__view.hardConnectVar.set(1)
+            #self.__view.hardwareResetMenuitem.set_sensitive(True)
             Logger().info("Now connected to real hardware")
-            #tkMB.showinfo("Hardware connect", "Now connected to real hardware")
+            self.__view.connectImage.set_from_stock(gtk.STOCK_YES, 4)
+            #self.__view.statusbar.push(self.__view.hardwareContextId, "Now connected to real hardware")
+
         except HardwareError: # Raised by model
-            #tkMB.showerror("Hardware connect", "Can't connect to hardware. Stay in simulation mode")
-            Logger().error("Can't connect to hardware. Stay in simulation mode")
-            #self.__view.hardConnectVar.set(0)
-    
-    def __hardConnectMenu(self):
+            Logger().error("Can't connect to hardware; go back to simulation mode")
+            #self.__view.statusbar.pop(self.__view.hardwareContextId)
+            #self.__view.statusbar.push(self.__view.hardwareContextId, "Can't connect to hardware")
+            self.__view.hardwareConnectMenuitem.set_active(False)
+
+        self.__view.statusbar.pop(self.__view.hardwareContextId)
+
+    def __goToSimulationMode(self):
+        """ Connect to simulated hardware.
+        """
+        Logger().info("Go to simulation mode")
+        self.__model.switchToSimulatedHardware()
+        Spy().setRefreshRate(config.SPY_FAST_REFRESH)
+        #self.__view.hardwareResetMenuitem.set_sensitive(False)
+        self.__view.connectImage.set_from_stock(gtk.STOCK_NO, 4)
+
+    def __onHardwareConnectMenuToggled(self, widget):
         """ Connect check button toggled.
         """
-        Logger().trace("MainController.__hardConnectMenu()")
-        if self.__view.hardConnectVar.get():
+        switch = self.__view.hardwareConnectMenuitem.get_active()
+        Logger().trace("MainController.__onHardwareConnectMenuActivated(%s)" % switch)
+        if switch:
             self.__connectToHardware()
         else:
-            Logger().info("Go to simulation mode")
-            self.__model.switchToSimulatedHardware()
-            Spy().setRefreshRate(config.SPY_FAST_REFRESH)
-            self.__view.hardMenu.entryconfig(MainWindow.HARD_RESET_MENU_ENTRY, state=tk.DISABLED)
-            tkMB.showinfo("Hardware connect", "Now in simulation mode")
+            self.__goToSimulationMode()
 
-    def __hardResetMenu(self):
+    def __onHardwareResetMenuActivated(self, widget):
         """ Hard reset menu selected.
         """
-        Logger().trace("MainController.__hardResetMenu()")
-        if self.__view.hardConnectVar.get():
-            Logger().info("Reseting hardware")
-            self.__model.hardware.reset()
+        Logger().trace("MainController.__onHardwareResetMenuActivated()")
+        Logger().info("Reseting hardware")
+        self.__model.hardware.reset()
 
-    def __view3DShowMenu(self):
+    def __onView3DShowMenuToggled(self, widget):
         """ Connect check button toggled.
         """
-        Logger().trace("MainController.__view3DShowMenu()")
-        if self.__view.view3DShowVar.get():
-            if self.__view3D is not None:
-                Logger().debug("MainController.__view3DShowMenu(): show 3D view")
-                self.__view3D.visible = True
-            else:
-                tkMB.showerror("3D View", "Some libs are missing in order to use 3D view")
-                self.__view.view3DShowVar.set(0)
-        else:
-            if self.__view3D is not None:
-                Logger().debug("MainController.__view3DShowMenu(): hide 3D view")
-                self.__view3D.visible=False
+        switch = self.__view.view3DShowMenuitem.get_active()
+        Logger().trace("MainController.__onView3DShowMenuActivated(%s)" % switch)
+        #if switch:
+            #if self.__view3D is not None:
+                #Logger().debug("MainController.__view3DShowMenu(): show 3D view")
+                #self.__view3D.visible = True
+            #else:
+                #tkMB.showerror("3D View", "Some libs are missing in order to use 3D view")
+                #self.__view.view3DShowVar.set(0)
+        #else:
+            #if self.__view3D is not None:
+                #Logger().debug("MainController.__view3DShowMenu(): hide 3D view")
+                #self.__view3D.visible=False
         
-    def __helpAboutMenu(self):
+    def __onHelpAboutMenuActivated(self, widget):
         """ Connect check button toggled.
         """
-        Logger().trace("MainController.__helpAboutMenu()")
-        tkMB.showinfo("About Papywizard",
-                      "Copyright Frédéric Mantegazza\nVersion %s\nReleased under CeCILL license\nThanks to Kolor team" % config.VERSION)
+        Logger().trace("MainController.__onHelpAboutMenuActivated()")
+        view = HelpAboutDialog(self.__view)
+        retCode = view.helpAboutDialog.run()
+        view.helpAboutDialog.destroy()
 
     def __onSetStartButtonClicked(self, widget):
         Logger().trace("MainController.__onSetStartButtonClicked()")
-        #if tkMB.askokcancel("Set start position", "Move the head to the start position and click 'OK'"):
         self.__model.storeStartPosition()
         self.refreshView()
 
     def __onSetEndButtonClicked(self, widget):
         Logger().trace("MainController.__onSetEndButtonClicked()")
-        #if tkMB.askokcancel("Set end position", "Move the head to the end position and click 'OK'"):
         self.__model.storeEndPosition()
         self.refreshView()
 
@@ -231,20 +263,20 @@ class MainController(AbstractController):
 
     def __onManualMoveButtonClicked(self, widget):
         Logger().trace("MainController.__onManualMoveButtonClicked()")
-        view = ManualMoveDialog(self.__view)
+        view = ManualMoveDialog()
         controller = ManualMoveController(self, self.__serializer, self.__model, view)
         retCode = view.manualMoveDialog.run()
         view.manualMoveDialog.destroy()
 
     def __onConfigButtonClicked(self, widget):
-        Logger().trace("MainController.__configButtonClicked()")
+        Logger().trace("MainController.__onConfigButtonClicked()")
         #view = ConfigDialog(self.__view)
         #controller = ConfigController(self, self.__model, view) # Open as modal
         #self.refreshView()
 
     def __onShootButtonClicked(self, widget):
         Logger().trace("MainController.__onShootButtonClicked()")
-        view = ShootDialog(self.__view)
+        view = ShootDialog()
         controller = ShootController(self, self.__serializer, self.__model, view)
         retCode = view.shootDialog.run()
         view.shootDialog.destroy()
