@@ -19,6 +19,7 @@ __revision__ = "$Id$"
 import time
 
 from common.loggingServices import Logger
+from common.exception import HardwareError
 from serialDriver import SerialDriver
 
 
@@ -28,14 +29,18 @@ class SerialPassiveDriver(SerialDriver):
     This driver only uses passive components.
     """
     def _setCS(self, level):
+        """ Set CS signal to specified level.
+        
+        @param level: level to set to CS signal
+        @type level: int
+        """
         #self._serial.setDTR(level)
         pass
-    
+
     def sendCmd(self, cmd):
-        """
-        
-        @todo: first check if bus is free (CTS). Or in acquireBus()?
-        """
+        if not self._init:
+            raise HardwareError("SerialPassiveDriver not initialized")
+
         self.acquireBus()
         try:
             # Empty buffer
