@@ -29,7 +29,7 @@ path = os.path.dirname(__file__)
 class ManualMoveDialog(object):
     """ Manual move dialog.
     """
-    def __init__(self, master):
+    def __init__(self):
         """ Init the object.
         """
         # Set the Glade file

@@ -28,7 +28,7 @@ path = os.path.dirname(__file__)
 class ShootDialog(object):
     """ Shoot dialog.
     """
-    def __init__(self, master):
+    def __init__(self):
         """ Init the object.
         """
         # Set the Glade file
