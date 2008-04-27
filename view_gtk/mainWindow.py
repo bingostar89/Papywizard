@@ -39,20 +39,20 @@ class MainWindow(object):
         # Retreive usefull widgets
         self._retreiveWidgets()
         
-        # Nokia plateform
+        # Nokia plateform stuff
         try:
             import hildon
+            
             self.app = hildon.Program()
             window = hildon.Window()
             window.set_title(self.mainWindow.get_title())
-            window.connect("destroy", gtk.main_quit) # Move to controller
-            window.connect("key-press-event", self.__onKeyPressed)
-            window.connect("window-state-event", self.__onWindowStateChanged)
+            #window.connect("destroy", gtk.main_quit) # Move to controller
+            #window.connect("key-press-event", self.__onKeyPressed)
+            #window.connect("window-state-event", self.__onWindowStateChanged)
             self.window_in_fullscreen = False
             self.app.add_window(window)
             self.mainVbox.reparent(window)
             
-            # Menu bar
             menu = gtk.Menu()
             for child in self.menubar.get_children():
                 child.reparent(menu)
@@ -67,20 +67,20 @@ class MainWindow(object):
         except ImportError:
             pass
         
-    def __onWindowStateChanged(self, widget, event, *args):
-        if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
-            self.window_in_fullscreen = True
-        else:
-            self.window_in_fullscreen = False
+    #def __onWindowStateChanged(self, widget, event, *args):
+        #if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
+            #self.window_in_fullscreen = True
+        #else:
+            #self.window_in_fullscreen = False
 
-    def __onKeyPressed(self, widget, event, *args):
-        if event.keyval == gtk.keysyms.F6:
+    #def __onKeyPressed(self, widget, event, *args):
+        #if event.keyval == gtk.keysyms.F6:
             
-            # The "Full screen" hardware key has been pressed
-            if self.window_in_fullscreen:
-                self.mainWindow.unfullscreen()
-            else:
-                self.mainWindow.fullscreen()
+            ## The "Full screen" hardware key has been pressed
+            #if self.window_in_fullscreen:
+                #self.mainWindow.unfullscreen()
+            #else:
+                #self.mainWindow.fullscreen()
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.

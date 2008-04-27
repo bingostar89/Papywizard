@@ -78,12 +78,17 @@ class MainController(AbstractController):
                "on_shootButton_clicked": self.__onShootButtonClicked
            }
         self.__view.wTree.signal_autoconnect(dic)
-
-        #self.__view.fileMenu.entryconfig(MainWindow.FILE_QUIT_MENU_ENTRY, command=self.__quit)
-        #self.__view.hardMenu.entryconfig(MainWindow.HARD_CONNECT_MENU_ENTRY, command=self.__hardConnectMenu)
-        #self.__view.hardMenu.entryconfig(MainWindow.HARD_RESET_MENU_ENTRY, command=self.__hardResetMenu)
-        #self.__view.view3DMenu.entryconfig(MainWindow.VIEW3D_SHOW_MENU_ENTRY, command=self.__view3DShowMenu)
-        #self.__view.helpMenu.entryconfig(MainWindow.HELP_ABOUT_MENU_ENTRY, command=self.__helpAboutMenu)
+        
+        # Nokia plateform stuff
+        try:
+            import hildon
+            
+            self.__view.mainWindow.connect("destroy", gtk.main_quit)
+            self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
+            self.__view.mainWindow.connect("window-state-event", self.__onWindowStateChanged)
+            
+        except ImportError:
+            pass
         
         #self.__keyPressedDict = {'Left': False,
                                  #'Right': False,
@@ -105,7 +110,24 @@ class MainController(AbstractController):
         #if view3D is None:
             #self.__view.view3DShowVar.set(0)
             #self.__view.view3DMenu.entryconfig(self.__view.VIEW3D_SHOW_MENU_ENTRY, state=tk.DISABLED)
+        
+    # Nokia plateform callbacks
+    def __onWindowStateChanged(self, widget, event, *args):
+        if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
+            self.__view.mindow_in_fullscreen = True
+        else:
+            self.__view.mindow_in_fullscreen = False
 
+    def __onKeyPressed(self, widget, event, *args):
+        if event.keyval == gtk.keysyms.F6:
+            
+            # The "Full screen" hardware key has been pressed
+            if self.__view.mindow_in_fullscreen:
+                self.__view.mainWindow.unfullscreen()
+            else:
+                self.__view.mainWindow.fullscreen()
+
+    # Normal callbacks
     #def __keyPressed(self, event):
         #""" Key pressed callback.
         #"""
