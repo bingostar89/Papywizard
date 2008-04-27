@@ -38,8 +38,6 @@ class Shooting(object):
         @param simulatedHardware: simulated hardware head
         @type simulatedHardware: {HeadSimulation}
         """
-        self.__realHardware = realHardware
-        self.__simulatedHardware = simulatedHardware
         self.__running = False
         self.__suspend = False
         self.__stop = False
@@ -49,7 +47,9 @@ class Shooting(object):
         self.__sequence = "Idle"
         self.__setParams = None
         
-        self.hardware = self.__simulatedHardware
+        self.realHardware = realHardware
+        self.simulatedHardware = simulatedHardware
+        self.hardware = self.simulatedHardware
         self.camera = Camera()
         self.mosaic = Mosaic()
         
@@ -156,11 +156,13 @@ class Shooting(object):
     def switchToRealHardware(self):
         """ Use real hardware.
         """
-        if self.__realHardware is not None:
+        if self.realHardware is not None:
             try:
-                self.__realHardware.init()
-                self.position = self.__realHardware.readPosition()
-                self.hardware = self.__realHardware
+                self.simulatedHardware.shutdown()
+                self.realHardware.init()
+                Logger().debug("Shooting.switchToRealHardware(): realHardware initialized")
+                self.position = self.realHardware.readPosition()
+                self.hardware = self.realHardware
             except HardwareError:
                 Logger().exception("Shooting.switchToRealHardware()")
                 Logger().warning("Can't switch to real hardware")
@@ -171,7 +173,8 @@ class Shooting(object):
     def switchToSimulatedHardware(self):
         """ Use simulated hardware.
         """
-        self.hardware = self.__simulatedHardware
+        self.realHardware.shutdown()
+        self.hardware = self.simulatedHardware
         self.position = self.hardware.readPosition()
         self.hardware.init()
 
@@ -264,7 +267,7 @@ class Shooting(object):
             # todo: implement manual shooting (must be in controller. Use yield here?)
             if self.mosaic.zenith:
                 yaw = 0.
-                pitch = -90.
+                pitch = 90.
                 Logger().info("Moving")
                 Logger().debug("Shooting.start(): Goto zenith")
                 self.__yawCoef = "zenith"
@@ -290,14 +293,14 @@ class Shooting(object):
                 
             if self.mosaic.nadir:
                 yaw = 0.
-                pitch = 90.
+                pitch = -90.
                 Logger().info("Moving")
                 Logger().debug("Shooting.start(): Goto nadir")
                 self.__yawCoef = "nadir"
                 self.__pitchCoef = "nadir"
                 self.__sequence = "Moving"
                 #self.__progress = "..."
-                self.hardware.gotoPosition(0., 90.)
+                self.hardware.gotoPosition(yaw, pitch)
 
                 Logger().info("Stabilization")
                 self.__sequence = "Stabilizing"
