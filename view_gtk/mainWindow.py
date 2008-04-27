@@ -51,13 +51,14 @@ class MainWindow(object):
             
             # Menu bar
             menu = gtk.Menu()
-            for child in self.mainMenu.get_children():
+            for child in self.menubar.get_children():
                 child.reparent(menu)
             window.set_menu(menu)
             
-            self.mainMenu.destroy() 
+            self.menubar.destroy() 
             self.mainWindow.destroy()
             window.show_all()
+            self.menuBar = menu
             self.mainWindow = window
             
         except ImportError:
@@ -68,7 +69,7 @@ class MainWindow(object):
         """
         self.mainWindow = self.wTree.get_widget("mainWindow")
         self.mainVbox = self.wTree.get_widget("mainVbox")
-        self.mainMenu = self.wTree.get_widget("mainMenu")
+        self.menubar = self.wTree.get_widget("menubar")
         self.hardwareConnectMenuitem = self.wTree.get_widget("hardwareConnectMenuitem")
         self.hardwareResetMenuitem = self.wTree.get_widget("hardwareResetMenuitem")
         self.view3DShowMenuitem = self.wTree.get_widget("view3DShowMenuitem")
