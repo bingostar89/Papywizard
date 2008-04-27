@@ -46,6 +46,9 @@ class MainWindow(object):
             window = hildon.Window()
             window.set_title(self.mainWindow.get_title())
             window.connect("destroy", gtk.main_quit) # Move to controller
+            window.connect("key-press-event", self.__on_key_press)
+            window.connect("window-state-event", self.__on_window_state_change)
+            self.window_in_fullscreen = False
             self.app.add_window(window)
             self.mainVbox.reparent(window)
             
@@ -63,7 +66,22 @@ class MainWindow(object):
             
         except ImportError:
             pass
- 
+        
+    def __on_window_state_change(self, widget, event, *args):
+        if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
+            self.window_in_fullscreen = True
+        else:
+            self.window_in_fullscreen = False
+
+    def on_key_press(self, widget, event, *args):
+        if event.keyval == gtk.keysyms.F6:
+            
+            # The "Full screen" hardware key has been pressed
+            if self.window_in_fullscreen:
+                self.window.unfullscreen()
+            else:
+                self.window.fullscreen()
+
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
