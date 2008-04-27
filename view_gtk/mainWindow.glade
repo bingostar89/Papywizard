@@ -9,10 +9,112 @@
     <child>
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
+        <property name="border_width">2</property>
         <property name="spacing">5</property>
         <child>
           <widget class="GtkMenuBar" id="menubar1">
             <property name="visible">True</property>
+            <child>
+              <widget class="GtkMenuItem" id="fileMenuitem">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="yes">File</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu1">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkMenuItem" id="configMenuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Configuration...</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_configMenuitem_activate"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="quitMenuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="yes">Quit</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_quitMenuitem_activate"/>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkMenuItem" id="hardwareMenuitem">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="yes">Hardware</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu2">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkCheckMenuItem" id="hardwareConnectMenuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="yes">Connect...</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_hardwareConnectMenuitem_toggled"/>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkSeparatorMenuItem" id="separatormenuitem1">
+                        <property name="visible">True</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkMenuItem" id="hardwareResetMenuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="yes">Reset</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_hardwareResetMenuitem_activate"/>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkMenuItem" id="view3DMenuitem">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="yes">View 3D</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu3">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkCheckMenuItem" id="view3DShowMenuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="yes">Show</property>
+                        <property name="use_underline">True</property>
+                        <signal name="toggled" handler="on_view3DShowMenuitem_toggled"/>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkMenuItem" id="helpMenuitem">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="yes">Help</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu4">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkMenuItem" id="helpAboutMenuitem">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="yes">About</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="on_helpAboutMenuitem_activate"/>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
           </widget>
           <packing>
             <property name="expand">False</property>
@@ -48,209 +150,97 @@
                   <placeholder/>
                 </child>
                 <child>
-                  <widget class="GtkButton" id="setEndButton">
+                  <widget class="GtkLabel" id="label3">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes" context="yes">Set</property>
-                    <property name="response_id">0</property>
-                    <signal name="clicked" handler="on_setEndButton_clicked"/>
+                    <property name="xalign">0.80000001192092896</property>
+                    <property name="label" translatable="yes" context="yes">Position (°)</property>
+                    <property name="justify">GTK_JUSTIFY_FILL</property>
+                    <property name="width_chars">15</property>
+                    <property name="max_width_chars">15</property>
                   </widget>
                   <packing>
-                    <property name="left_attach">3</property>
-                    <property name="right_attach">4</property>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkButton" id="setStartButton">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes" context="yes">Set</property>
-                    <property name="response_id">0</property>
-                    <signal name="clicked" handler="on_setStartButton_clicked"/>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">3</property>
-                    <property name="right_attach">4</property>
-                    <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkEntry" id="pitchRealOverlapEntry">
-                    <property name="visible">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">7</property>
-                    <property name="width_chars">7</property>
-                    <property name="xalign">1</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
-                    <property name="top_attach">6</property>
-                    <property name="bottom_attach">7</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkEntry" id="pitchNbPictsEntry">
-                    <property name="visible">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">7</property>
-                    <property name="width_chars">7</property>
-                    <property name="xalign">1</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
-                    <property name="top_attach">5</property>
-                    <property name="bottom_attach">6</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkEntry" id="pitchFovEntry">
-                    <property name="visible">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">7</property>
-                    <property name="width_chars">7</property>
-                    <property name="xalign">1</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
-                    <property name="top_attach">4</property>
-                    <property name="bottom_attach">5</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkEntry" id="pitchEndEntry">
-                    <property name="visible">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">7</property>
-                    <property name="width_chars">7</property>
-                    <property name="xalign">1</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkEntry" id="pitchStartEntry">
-                    <property name="visible">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">7</property>
-                    <property name="width_chars">7</property>
-                    <property name="xalign">1</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
-                    <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkEntry" id="pitchPosEntry">
-                    <property name="visible">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">7</property>
-                    <property name="width_chars">7</property>
-                    <property name="xalign">1</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label2">
+                  <widget class="GtkLabel" id="label4">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes" context="yes">Pitch</property>
-                    <property name="width_chars">5</property>
-                    <property name="single_line_mode">True</property>
-                    <property name="max_width_chars">5</property>
+                    <property name="xalign">0.80000001192092896</property>
+                    <property name="label" translatable="yes" context="yes">Start (°)</property>
+                    <property name="justify">GTK_JUSTIFY_FILL</property>
+                    <property name="width_chars">15</property>
+                    <property name="max_width_chars">15</property>
                   </widget>
                   <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="yawRealOverlapEntry">
+                  <widget class="GtkLabel" id="label5">
                     <property name="visible">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">7</property>
-                    <property name="width_chars">7</property>
-                    <property name="xalign">1</property>
+                    <property name="xalign">0.80000001192092896</property>
+                    <property name="label" translatable="yes" context="yes">End (°)</property>
+                    <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                    <property name="width_chars">15</property>
+                    <property name="max_width_chars">15</property>
                   </widget>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="top_attach">6</property>
-                    <property name="bottom_attach">7</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkEntry" id="yawNbPictsEntry">
-                    <property name="visible">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">7</property>
-                    <property name="width_chars">7</property>
-                    <property name="xalign">1</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="top_attach">5</property>
-                    <property name="bottom_attach">6</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkEntry" id="yawFovEntry">
-                    <property name="visible">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">7</property>
-                    <property name="width_chars">7</property>
-                    <property name="xalign">1</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="top_attach">4</property>
-                    <property name="bottom_attach">5</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkEntry" id="yawEndEntry">
-                    <property name="visible">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">7</property>
-                    <property name="width_chars">7</property>
-                    <property name="xalign">1</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
                     <property name="top_attach">3</property>
                     <property name="bottom_attach">4</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="yawStartEntry">
+                  <widget class="GtkLabel" id="label6">
                     <property name="visible">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">7</property>
-                    <property name="width_chars">7</property>
-                    <property name="xalign">1</property>
+                    <property name="xalign">0.80000001192092896</property>
+                    <property name="label" translatable="yes" context="yes">total Fov (°)</property>
+                    <property name="width_chars">15</property>
+                    <property name="max_width_chars">15</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label7">
+                    <property name="visible">True</property>
+                    <property name="xalign">0.80000001192092896</property>
+                    <property name="label" translatable="yes" context="yes">Nb picts</property>
+                    <property name="width_chars">15</property>
+                    <property name="max_width_chars">15</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">5</property>
+                    <property name="bottom_attach">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label8">
+                    <property name="visible">True</property>
+                    <property name="xalign">0.80000001192092896</property>
+                    <property name="label" translatable="yes" context="yes">real overlap</property>
+                    <property name="width_chars">15</property>
+                    <property name="max_width_chars">15</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">6</property>
+                    <property name="bottom_attach">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label1">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="yes">Yaw</property>
+                    <property name="width_chars">5</property>
+                    <property name="single_line_mode">True</property>
+                    <property name="max_width_chars">5</property>
                   </widget>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
-                    <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
                   </packing>
                 </child>
                 <child>
@@ -270,97 +260,209 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label1">
+                  <widget class="GtkEntry" id="yawStartEntry">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes" context="yes">Yaw</property>
-                    <property name="width_chars">5</property>
-                    <property name="single_line_mode">True</property>
-                    <property name="max_width_chars">5</property>
+                    <property name="editable">False</property>
+                    <property name="max_length">7</property>
+                    <property name="width_chars">7</property>
+                    <property name="xalign">1</property>
                   </widget>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label8">
-                    <property name="visible">True</property>
-                    <property name="xalign">0.80000001192092896</property>
-                    <property name="label" translatable="yes" context="yes">real overlap</property>
-                    <property name="width_chars">15</property>
-                    <property name="max_width_chars">15</property>
-                  </widget>
-                  <packing>
-                    <property name="top_attach">6</property>
-                    <property name="bottom_attach">7</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label7">
-                    <property name="visible">True</property>
-                    <property name="xalign">0.80000001192092896</property>
-                    <property name="label" translatable="yes" context="yes">Nb picts</property>
-                    <property name="width_chars">15</property>
-                    <property name="max_width_chars">15</property>
-                  </widget>
-                  <packing>
-                    <property name="top_attach">5</property>
-                    <property name="bottom_attach">6</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label6">
-                    <property name="visible">True</property>
-                    <property name="xalign">0.80000001192092896</property>
-                    <property name="label" translatable="yes" context="yes">total Fov (°)</property>
-                    <property name="width_chars">15</property>
-                    <property name="max_width_chars">15</property>
-                  </widget>
-                  <packing>
-                    <property name="top_attach">4</property>
-                    <property name="bottom_attach">5</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label5">
-                    <property name="visible">True</property>
-                    <property name="xalign">0.80000001192092896</property>
-                    <property name="label" translatable="yes" context="yes">End (°)</property>
-                    <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                    <property name="width_chars">15</property>
-                    <property name="max_width_chars">15</property>
-                  </widget>
-                  <packing>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label4">
-                    <property name="visible">True</property>
-                    <property name="xalign">0.80000001192092896</property>
-                    <property name="label" translatable="yes" context="yes">Start (°)</property>
-                    <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                    <property name="width_chars">15</property>
-                    <property name="max_width_chars">15</property>
-                  </widget>
-                  <packing>
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label3">
+                  <widget class="GtkEntry" id="yawEndEntry">
                     <property name="visible">True</property>
-                    <property name="xalign">0.80000001192092896</property>
-                    <property name="label" translatable="yes" context="yes">Position (°)</property>
-                    <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                    <property name="width_chars">15</property>
-                    <property name="max_width_chars">15</property>
+                    <property name="editable">False</property>
+                    <property name="max_length">7</property>
+                    <property name="width_chars">7</property>
+                    <property name="xalign">1</property>
                   </widget>
                   <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="yawFovEntry">
+                    <property name="visible">True</property>
+                    <property name="editable">False</property>
+                    <property name="max_length">7</property>
+                    <property name="width_chars">7</property>
+                    <property name="xalign">1</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="yawNbPictsEntry">
+                    <property name="visible">True</property>
+                    <property name="editable">False</property>
+                    <property name="max_length">7</property>
+                    <property name="width_chars">7</property>
+                    <property name="xalign">1</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">5</property>
+                    <property name="bottom_attach">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="yawRealOverlapEntry">
+                    <property name="visible">True</property>
+                    <property name="editable">False</property>
+                    <property name="max_length">7</property>
+                    <property name="width_chars">7</property>
+                    <property name="xalign">1</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">6</property>
+                    <property name="bottom_attach">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label2">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="yes">Pitch</property>
+                    <property name="width_chars">5</property>
+                    <property name="single_line_mode">True</property>
+                    <property name="max_width_chars">5</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="pitchPosEntry">
+                    <property name="visible">True</property>
+                    <property name="editable">False</property>
+                    <property name="max_length">7</property>
+                    <property name="width_chars">7</property>
+                    <property name="xalign">1</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="pitchStartEntry">
+                    <property name="visible">True</property>
+                    <property name="editable">False</property>
+                    <property name="max_length">7</property>
+                    <property name="width_chars">7</property>
+                    <property name="xalign">1</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="pitchEndEntry">
+                    <property name="visible">True</property>
+                    <property name="editable">False</property>
+                    <property name="max_length">7</property>
+                    <property name="width_chars">7</property>
+                    <property name="xalign">1</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="pitchFovEntry">
+                    <property name="visible">True</property>
+                    <property name="editable">False</property>
+                    <property name="max_length">7</property>
+                    <property name="width_chars">7</property>
+                    <property name="xalign">1</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="pitchNbPictsEntry">
+                    <property name="visible">True</property>
+                    <property name="editable">False</property>
+                    <property name="max_length">7</property>
+                    <property name="width_chars">7</property>
+                    <property name="xalign">1</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="top_attach">5</property>
+                    <property name="bottom_attach">6</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="pitchRealOverlapEntry">
+                    <property name="visible">True</property>
+                    <property name="editable">False</property>
+                    <property name="max_length">7</property>
+                    <property name="width_chars">7</property>
+                    <property name="xalign">1</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="top_attach">6</property>
+                    <property name="bottom_attach">7</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="setStartButton">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="yes">Set</property>
+                    <property name="response_id">0</property>
+                    <signal name="clicked" handler="on_setStartButton_clicked"/>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">3</property>
+                    <property name="right_attach">4</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="setEndButton">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="yes">Set</property>
+                    <property name="response_id">0</property>
+                    <signal name="clicked" handler="on_setEndButton_clicked"/>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">3</property>
+                    <property name="right_attach">4</property>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
                   </packing>
                 </child>
               </widget>
@@ -407,66 +509,57 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkVBox" id="vbox3">
+              <widget class="GtkHBox" id="hbox2">
                 <property name="visible">True</property>
-                <property name="spacing">5</property>
                 <child>
-                  <widget class="GtkHBox" id="hbox2">
+                  <widget class="GtkButton" id="configButton">
                     <property name="visible">True</property>
-                    <child>
-                      <widget class="GtkButton" id="fullSphericalButton">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes" context="yes">360x180</property>
-                        <property name="response_id">0</property>
-                        <signal name="clicked" handler="on_fullSphericalButton_clicked"/>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkButton" id="manualMoveButton">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes" context="yes">Manual move</property>
-                        <property name="response_id">0</property>
-                        <signal name="clicked" handler="on_manualMoveButton_clicked"/>
-                      </widget>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </widget>
-                </child>
-                <child>
-                  <widget class="GtkHBox" id="hbox3">
-                    <property name="visible">True</property>
-                    <child>
-                      <widget class="GtkButton" id="configButton">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes" context="yes">Configuration</property>
-                        <property name="response_id">0</property>
-                        <signal name="clicked" handler="on_configButton_clicked"/>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkButton" id="shootButton">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes" context="yes">Shoot</property>
-                        <property name="response_id">0</property>
-                        <signal name="clicked" handler="on_shootButton_clicked"/>
-                      </widget>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
+                    <property name="label" translatable="yes" context="yes">Configuration...</property>
+                    <property name="response_id">0</property>
+                    <signal name="clicked" handler="on_configButton_clicked"/>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="fullSphericalButton">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="yes">360x180</property>
+                    <property name="response_id">0</property>
+                    <signal name="clicked" handler="on_fullSphericalButton_clicked"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
                     <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="manualMoveButton">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="yes">Manual move...</property>
+                    <property name="response_id">0</property>
+                    <signal name="clicked" handler="on_manualMoveButton_clicked"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="shootButton">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes" context="yes">Shoot...</property>
+                    <property name="response_id">0</property>
+                    <signal name="clicked" handler="on_shootButton_clicked"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
               </widget>
               <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -475,6 +568,37 @@
             <property name="expand">False</property>
             <property name="fill">False</property>
             <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkHBox" id="hbox4">
+            <property name="visible">True</property>
+            <child>
+              <widget class="GtkStatusbar" id="statusbar">
+                <property name="visible">True</property>
+                <property name="spacing">2</property>
+                <property name="has_resize_grip">False</property>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkImage" id="connectImage">
+                <property name="visible">True</property>
+                <property name="tooltip" translatable="yes" context="yes">Connection status</property>
+                <property name="xalign">0.94999998807907104</property>
+                <property name="xpad">2</property>
+                <property name="stock">gtk-no</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </widget>
