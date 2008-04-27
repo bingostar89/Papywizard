@@ -19,7 +19,6 @@ __revision__ = "$Id$"
 import threading
 
 from common.loggingServices import Logger
-from common.exception import HardwareError
 
 
 class BusDriver(object):
@@ -28,29 +27,16 @@ class BusDriver(object):
     def __init__(self):
         """ Init the object.
         """
+        self._init = False
         self._lock = threading.RLock()
-        try:
-            self._init()
-            self._initHardware()
-        except:
-            Logger().exception("BusDriver.__init__()")
-            raise HardwareError("Can't init BusDriver object")
 
-    def _init(self):
-        """ Init hardware dependencies.
+    def init(self):
+        """ Init the driver.
         """
         raise NotImplementedError
 
-    def _initHardware(self):
-        """ Init the hardware.
-        """
-        #self._setCS(1)
-
-    def _setCS(self, level):
-        """ Set CS signal to specified level.
-        
-        @param level: level to set to CS signal
-        @type level: int
+    def shutdown(self):
+        """ Shut down the driver.
         """
         raise NotImplementedError
     
