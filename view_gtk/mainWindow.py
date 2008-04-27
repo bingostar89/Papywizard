@@ -77,7 +77,7 @@ class MainWindow(object):
         if event.keyval == gtk.keysyms.F6:
             
             # The "Full screen" hardware key has been pressed
-            if self.mainWindow_in_fullscreen:
+            if self.window_in_fullscreen:
                 self.mainWindow.unfullscreen()
             else:
                 self.mainWindow.fullscreen()
