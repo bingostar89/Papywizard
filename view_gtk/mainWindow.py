@@ -77,10 +77,10 @@ class MainWindow(object):
         if event.keyval == gtk.keysyms.F6:
             
             # The "Full screen" hardware key has been pressed
-            if self.window_in_fullscreen:
-                self.window.unfullscreen()
+            if self.mainWindow_in_fullscreen:
+                self.mainWindow.unfullscreen()
             else:
-                self.window.fullscreen()
+                self.mainWindow.fullscreen()
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
