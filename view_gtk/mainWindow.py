@@ -43,6 +43,9 @@ class MainWindow(object):
         """ Get widgets from widget tree.
         """
         self.mainWindow = self.wTree.get_widget("mainWindow")
+        self.hardwareConnectMenuitem = self.wTree.get_widget("hardwareConnectMenuitem")
+        self.hardwareResetMenuitem = self.wTree.get_widget("hardwareResetMenuitem")
+        self.view3DShowMenuitem = self.wTree.get_widget("view3DShowMenuitem")
         self.yawPosEntry = self.wTree.get_widget("yawPosEntry")
         self.pitchPosEntry = self.wTree.get_widget("pitchPosEntry")
         self.yawStartEntry = self.wTree.get_widget("yawStartEntry")
@@ -57,6 +60,10 @@ class MainWindow(object):
         self.pitchRealOverlapEntry = self.wTree.get_widget("pitchRealOverlapEntry")
         self.zenithCheckbutton = self.wTree.get_widget("zenithCheckbutton")
         self.nadirCheckbutton = self.wTree.get_widget("nadirCheckbutton")
+        self.statusbar = self.wTree.get_widget("statusbar")
+        self.generalContextId = self.statusbar.get_context_id("general")
+        self.hardwareContextId = self.statusbar.get_context_id("hardware")
+        self.connectImage = self.wTree.get_widget("connectImage")
 
     def fillWidgets(self, values):
         """ Fill widgets with model values.
