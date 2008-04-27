@@ -44,7 +44,7 @@ elif sys.platform.startswith("win"):
             raise
     TEMP_DIR = CONFIG_DIR
 
-# Hardware config
+# Hardware configuration
 AXIS_NUM_YAW = 1
 AXIS_NUM_PITCH = 2
 AXIS_ACCURACY = 0.1          # (°)
@@ -52,15 +52,15 @@ SHOOT_PULSE = 0.2            # (s)
 
 AXIS_SPEED = 10.             # used in simulation (°/s)
 
-#SERIAL_PORT = 0             # O is first COM port, 1 is second...
-SERIAL_PORT = "/dev/rfcomm0" # it is also possible to give its name, for non-standard ones
+DRIVER = "bluetooth"         # Driver to use
+BLUETOOTH_DEVICE_ADDRESS = "00:50:C2:58:55:B9"
+BLUETOOTH_DRIVER_CONNECT_DELAY = 8
+SERIAL_PORT = 0              # O is first COM port, 1 is second...
 SERIAL_BAUDRATE = 9600
 SERIAL_TIMEOUT = .2          # (s)
 
 ENCODER_360 = 0x0E6600
 ENCODER_ZERO = 0x800000
-
-DRIVER = "serialPassive"
 
 # Model configuration
 CONFIG_FILE = os.path.join(CONFIG_DIR, "papywizardrc")
