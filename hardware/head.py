@@ -31,22 +31,41 @@ class Head(object):
     def __init__(self):
         """ Init the object.
         """
-        driver = DriverFactory().create(config.DRIVER)
-        self.yawAxis = Axis(config.AXIS_NUM_YAW, driver)
-        self.pitchAxis = Axis(config.AXIS_NUM_PITCH, driver)
+        self.driver = DriverFactory().create(config.DRIVER)
+        self.yawAxis = Axis(config.AXIS_NUM_YAW, self.driver)
+        self.pitchAxis = Axis(config.AXIS_NUM_PITCH, self.driver)
     
-    def reset(self):
-        """ Reset the head.
+    def init(self):
+        """ Init the head.
         
         This must be done when turning on the head.
         Note that the manual remote already does that if it is pluged-in when
         the head is switched on.
         Also note that it does not set axis to zero.
         """
+        Logger().debug("Head.init(): initializing driver...")
+        self.driver.init()
+        Logger().debug("Head.init(): driver initialized; waiting for connection...")
+        time.sleep(config.BLUETOOTH_DRIVER_CONNECT_DELAY)
+        Logger().debug("Head.init(): initializing axis...")
+        self.yawAxis.init()
+        self.pitchAxis.init()
+        Logger().debug("Head.init(): axis initialized")
+
+    def reset(self):
+        """ Reseting hardware.
+        """
+        #Logger().debug("Head.init(): shutdown driver...")
+        #self.driver.shutdown()
+        #Logger().debug("Head.init(): driver shut down")
+        #self.init()
         self.yawAxis.reset()
         self.pitchAxis.reset()
 
-    init = reset
+    def shutdown(self):
+        """ Shut down the hardware.
+        """
+        self.driver.shutdown()
 
     def readPosition(self):
         """ Read current head position.
@@ -142,7 +161,22 @@ class HeadSimulation(Head):
         self.pitchAxis = AxisSimulation(config.AXIS_NUM_PITCH)
         self.yawAxis.start()
         self.pitchAxis.start()
+    
+    def init(self):
+        """ Init the head.
+        """
+        self.yawAxis.init()
+        self.pitchAxis.init()
 
+    def reset(self):
+        """ reset the head.
+        """
+        self.yawAxis.reset()
+        self.pitchAxis.reset()
+
+    def shutdown(self):
+        pass
+    
     #def stopGoto(self):
         #""" Stop axis threads.
         #"""
