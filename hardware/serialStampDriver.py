@@ -28,6 +28,9 @@ class SerialStampDriver(SerialDriver):
     This driver uses a Basic Stamp to drive the head.
     """
     def sendCmd(self, cmd):
+        if not self._init:
+            raise HardwareError("SerialStampDriver not initialized")
+
         self.acquireBus()
         try:
             self.write(":%s\r" % cmd)
