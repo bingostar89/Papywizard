@@ -46,18 +46,19 @@ class MainWindow(object):
             window = hildon.Window()
             window.set_title(self.mainWindow.get_title())
             self.app.add_window(window)
-            self.mainVboxn.reparent(window)
+            self.mainVbox.reparent(window)
             self.mainWindow.destroy()
             window.show_all()
             self.mainWindow = window
             
-        except importError:
+        except ImportError:
             pass
  
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
         self.mainWindow = self.wTree.get_widget("mainWindow")
+        self.mainVbox = self.wTree.get_widget("mainVbox")
         self.hardwareConnectMenuitem = self.wTree.get_widget("hardwareConnectMenuitem")
         self.hardwareResetMenuitem = self.wTree.get_widget("hardwareResetMenuitem")
         self.view3DShowMenuitem = self.wTree.get_widget("view3DShowMenuitem")
