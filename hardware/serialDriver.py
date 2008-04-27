@@ -19,6 +19,7 @@ __revision__ = "$Id$"
 import serial
 
 from common import config
+from common.exception import HardwareError
 from common.loggingServices import Logger
 from busDriver import BusDriver
 
@@ -26,7 +27,18 @@ from busDriver import BusDriver
 class SerialDriver(BusDriver):
     """ Base class for serial bus drivers.
     """
-    def _init(self):
-        self._serial = serial.Serial(port=config.SERIAL_PORT)
-        self._serial.timeout = config.SERIAL_TIMEOUT
-        self._serial.baudrate = config.SERIAL_BAUDRATE
+    def init(self):
+        try:
+            self._serial = serial.Serial(port=config.SERIAL_PORT)
+            self._serial.timeout = config.SERIAL_TIMEOUT
+            self._serial.baudrate = config.SERIAL_BAUDRATE
+            self._serial.read(self._serial.inWaiting()) # Empty buffer
+            self._init = True
+            
+        except:
+            Logger().exception("SerialDriver.init()")
+            raise HardwareError("Can't init SerialDriver object")
+
+    def shutdown(self):
+        self._serial.close()
+        self._init = False
