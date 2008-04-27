@@ -38,6 +38,21 @@ class MainWindow(object):
         
         # Retreive usefull widgets
         self._retreiveWidgets()
+        
+        # Nokia plateform
+        try:
+            import hildon
+            self.app = hildon.Program()
+            window = hildon.Window()
+            window.set_title(self.mainWindow.get_title())
+            self.app.add_window(window)
+            self.mainVboxn.reparent(window)
+            self.mainWindow.destroy()
+            window.show_all()
+            self.mainWindow = window
+            
+        except importError:
+            pass
  
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
