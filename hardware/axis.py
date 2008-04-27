@@ -60,8 +60,8 @@ class Axis(object):
         #Logger().debug("Axis._sendCmd(): axis %d cmd=%s, ans=%s" % (self._num, cmd, answer))
         return answer
 
-    def reset(self):
-        """ Init the hardware.
+    def init(self):
+        """ Init the axis hardware.
         """
         self._driver.acquireBus()
         try:
@@ -72,7 +72,10 @@ class Axis(object):
         finally:
             self._driver.releaseBus()
     
-    init = reset
+    def reset(self):
+        """ Reset the axis hardware.
+        """
+        pass
     
     def read(self):
         """ Return the current position of axis.
@@ -311,15 +314,14 @@ class AxisSimulation(threading.Thread):
         """
         self.__run = False
 
-    def reset(self):
-        """ Init the hardware.
-        
-        Nothing special to do.
-        """
+    def init(self):
         self.__jog = False
         self.__drive = False
-    
-    init = reset
+
+    def reset(self):
+        self.__jog = False
+        self.__drive = False
+        self.__pos = 0.
     
     def read(self):
         """ Return the current position of axis.
