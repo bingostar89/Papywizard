@@ -398,6 +398,7 @@ class Shooting(object):
         Save values to preferences.
         """
         Logger().trace("Shooting.shutdown()")
+        self.hardware.shutdown()
         self.camera.shutdown()
         self.mosaic.shutdown()
         
