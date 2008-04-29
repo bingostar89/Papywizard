@@ -5,6 +5,8 @@
   <widget class="GtkWindow" id="mainWindow">
     <property name="visible">True</property>
     <property name="title" translatable="yes" context="yes">Papywizard</property>
+    <property name="default_width">800</property>
+    <property name="default_height">480</property>
     <signal name="destroy" handler="on_mainWindow_destroy"/>
     <child>
       <widget class="GtkVBox" id="mainVbox">
