@@ -25,13 +25,13 @@ from common import config
 from common.loggingServices import Logger
 from common.exception import HardwareError
 from view_gtk.bluetoothConnectDialog import BluetoothConnectDialog
-#from view_gtk.configDialog import ConfigDialog
+from view_gtk.configDialog import ConfigDialog
 from view_gtk.manualMoveDialog import ManualMoveDialog
 from view_gtk.shootDialog import ShootDialog
 from view_gtk.helpAboutDialog import HelpAboutDialog
 from controller.abstractController import AbstractController
 from controller_gtk.bluetoothConnectController import BluetoothConnectController
-#from controller_gtk.configController import ConfigController
+from controller_gtk.configController import ConfigController
 from controller_gtk.manualMoveController import ManualMoveController
 from controller_gtk.shootController import ShootController
 from controller.spy import Spy
@@ -292,9 +292,11 @@ class MainController(AbstractController):
 
     def __onConfigButtonClicked(self, widget):
         Logger().trace("MainController.__onConfigButtonClicked()")
-        #view = ConfigDialog(self.__view)
-        #controller = ConfigController(self, self.__model, view) # Open as modal
-        #self.refreshView()
+        view = ConfigDialog()
+        controller = ConfigController(self, self.__model, view)
+        retCode = view.configDialog.run()
+        view.configDialog.destroy()
+        self.refreshView()
 
     def __onShootButtonClicked(self, widget):
         Logger().trace("MainController.__onShootButtonClicked()")
@@ -303,12 +305,11 @@ class MainController(AbstractController):
         retCode = view.shootDialog.run()
         view.shootDialog.destroy()
         
-    def __quit(self):
-        """ Quit main controller.
-        """
-        Logger().trace("MainController.__quit()")
-        self.__model.shutdown()
-        self.__view.destroy()
+    #def __quit(self):
+        #""" Quit main controller.
+        #"""
+        #Logger().trace("MainController.__quit()")
+        #self.__view.destroy()
 
     def __doNotCloseWindow(self):
         """ Window can't be closed while shooting.
