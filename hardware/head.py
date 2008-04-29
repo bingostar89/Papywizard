@@ -175,7 +175,10 @@ class HeadSimulation(Head):
         self.pitchAxis.reset()
 
     def shutdown(self):
-        pass
+        self.yawAxis.stop()
+        self.yawAxis.join()
+        self.pitchAxis.stop()
+        self.pitchAxis.join()
     
     #def stopGoto(self):
         #""" Stop axis threads.
