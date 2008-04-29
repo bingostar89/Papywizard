@@ -66,7 +66,11 @@ ENCODER_ZERO = 0x800000
 CONFIG_FILE = os.path.join(CONFIG_DIR, "papywizardrc")
 DATA_FILE = os.path.join(HOME_DIR, "papywizard-%s.xml")
 SENSOR_RATIOS = {'3:2':3./2., '4:3':4./3.}
+SENSOR_RATIOS_INDEX = {'3:2':0, '4:3':1,
+                       0:'3:2', 1:'4:3'} # for pygtk
 DEFAULT_SENSOR_RATIO = "3:2"
+CAMERA_ORIENTATION_INDEX = {'portrait':0, 'landscape':1,
+                            0:'portrait', 1:'landscape'} # for pygtks
 MOSAIC_TEMPLATE = ["Auto",
                    "RDL", "RDR", "RUL", "RDR",
                    "LDR", "LDL", "LUR", "LUL",
@@ -76,7 +80,7 @@ MOSAIC_TEMPLATE = ["Auto",
 DEFAULT_PREFS = {'shooting': {'overlap': 0.25,
                               'cameraOrientation': 'portrait',
                               'manualShoot': False,
-                              'delay': 0.0
+                              'delay': 0.5
                              },
                  'mosaic': {'template': "Auto",
                             'zenith': False,
