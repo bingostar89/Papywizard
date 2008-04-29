@@ -34,19 +34,21 @@ class BluetoothDriver(BusDriver):
     @todo: dynamically get bluetooth device address.
     """
     def init(self):
-        try:
-            self.setDeviceAddress(config.BLUETOOTH_DEVICE_ADDRESS)
-            self._sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-            self._sock.connect((self.__deviceAddress, 1))
-            self._init = True
-            
-        except:
-            Logger().exception("BluetoothDriver.init()")
-            raise HardwareError("Can't init BluetoothDriver object")
+        if not self._init:
+            try:
+                self.setDeviceAddress(config.BLUETOOTH_DEVICE_ADDRESS)
+                self._sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+                self._sock.connect((self.__deviceAddress, 1))
+                self._init = True
+                
+            except:
+                Logger().exception("BluetoothDriver.init()")
+                raise HardwareError("Can't init BluetoothDriver object")
 
     def shutdown(self):
-        self._sock.close()
-        self._init = False
+        if self._init:
+            self._sock.close()
+            self._init = False
         
     def setDeviceAddress(self, address):
         """ Set the address of the device to connect to.
