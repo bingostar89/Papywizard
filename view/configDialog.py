@@ -79,7 +79,7 @@ class ConfigDialog(tk.Toplevel):
 
         tk.Label(self, text="Camera orient.").grid(row=7, column=0, sticky=tk.E)
         self.cameraOrientationVar = tk.StringVar(self)
-        cameraOrientationOptionMenu = tk.OptionMenu(self, self.cameraOrientationVar, 'landscape', 'portrait')
+        cameraOrientationOptionMenu = tk.OptionMenu(self, self.cameraOrientationVar, 'portrait', 'landscape')
         cameraOrientationOptionMenu['width'] = 9
         cameraOrientationOptionMenu.grid(row=7, column=1, columnspan=2, sticky=tk.W)
 
