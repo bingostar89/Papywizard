@@ -92,7 +92,7 @@ class MainController(AbstractController):
         Spy().newPosSignal.connect(self.__refreshPos)
         
         # Try to autoconnect to real hardware
-        self.__connectToHardware()
+        #self.__connectToHardware()
         
         # Check if 3D view is available
         if view3D is None:
@@ -255,7 +255,6 @@ class MainController(AbstractController):
         """ Quit main controller.
         """
         Logger().trace("MainController.__quit()")
-        self.__model.shutdown()
         self.__view.destroy()
 
     def __doNotCloseWindow(self):
