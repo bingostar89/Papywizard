@@ -89,6 +89,7 @@ def main():
     Spy().stop()
     Spy().join()
     headSimulation.stopGoto()
+    model.shutdown()
     #view3D.terminate() # vpython has not yet a way to terminate the mainloop
     
 

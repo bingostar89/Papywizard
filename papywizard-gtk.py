@@ -87,8 +87,8 @@ def main():
     # App closed
     Spy().stop()
     Spy().join()
-    # todo: stop hardware simulation
     headSimulation.stopGoto()
+    model.shutdown()
     #view3D.terminate() # vpython has not yet a way to terminate the mainloop
     
 
