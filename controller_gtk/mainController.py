@@ -86,6 +86,8 @@ class MainController(AbstractController):
         try:
             import hildon
             self.__view.mainWindow.connect("destroy", gtk.main_quit) # really needed?
+            self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
+            self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
         except ImportError:
             pass
         
