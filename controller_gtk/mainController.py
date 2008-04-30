@@ -96,7 +96,8 @@ class MainController(AbstractController):
                       'Down': gtk.keysyms.Down,
                       'Home': gtk.keysyms.Home,
                       'End': gtk.keysyms.End,
-                      'Return': gtk.keysyms.Return
+                      'Return': gtk.keysyms.Return,
+                      'Escape': gtk.keysyms.Escape
                       }
         
         # Nokia plateform stuff
@@ -105,7 +106,7 @@ class MainController(AbstractController):
             self.__view.mainWindow.connect("destroy", gtk.main_quit) # really needed?
             self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
             self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
-            self.__key['Home'] = gtk.keysyms.F6
+            self.__key['Home'] = gtk.keysyms.F8
             self.__key['End'] = gtk.keysyms.F7
         except ImportError:
             pass
@@ -189,13 +190,13 @@ class MainController(AbstractController):
                 
         # 'Return' key
         elif event.keyval == self.__key['Return']:
-            if not self.__keyPressedDict['Return'] and \
-               not self.__keyPressedDict['Home'] and not self.__keyPressedDict['End'] and \
-               not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
-               not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                Logger().debug("MainWindow.__onKeyPressed(): 'Return' key pressed; open shoot dialog")
-                self.__keyPressedDict['Return'] = True
-                self.__openShootdialog()
+            #if not self.__keyPressedDict['Return'] and \
+               #not self.__keyPressedDict['Home'] and not self.__keyPressedDict['End'] and \
+               #not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
+               #not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
+            Logger().debug("MainWindow.__onKeyPressed(): 'Return' key pressed; open shoot dialog")
+            #self.__keyPressedDict['Return'] = True
+            self.__openShootdialog()
             return True
             
         else:
@@ -256,12 +257,12 @@ class MainController(AbstractController):
                 self.__keyPressedDict['End'] = False
             return True
                 
-        # 'Return' key
-        if event.keyval == self.__key['Return']:
-            if self.__keyPressedDict['Return']:
-                Logger().debug("MainController.__onKeyReleased(): 'Return' key released")
-                self.__keyPressedDict['Return'] = False
-            return True
+        ## 'Return' key
+        #if event.keyval == self.__key['Return']:
+            #if self.__keyPressedDict['Return']:
+                #Logger().debug("MainController.__onKeyReleased(): 'Return' key released")
+                #self.__keyPressedDict['Return'] = False
+            #return True
             
         else:
             Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
