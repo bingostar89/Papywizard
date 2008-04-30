@@ -114,7 +114,7 @@ class MainController(AbstractController):
         
         # "full screen" hardware key (only for Nokia)
         if event.keyval == gtk.keysyms.F6:
-            if self.__view.mainWindow_in_fullscreen:
+            if self.__view.window_in_fullscreen:
                 self.__view.mainWindow.unfullscreen()
             else:
                 self.__view.mainWindow.fullscreen()
@@ -144,12 +144,11 @@ class MainController(AbstractController):
             self.__keyPressedDict['Down'] = True
             
         else:
-            Logger().warning("MainController.__onKeyPressed(): unbind '%s' key" % event.keysyms)
+            Logger().warning("MainController.__onKeyPressed(): unbind '%s' key" % event.keyval)
             
         return True
 
     def __onKeyReleased(self, widget, event, *args):
-        Logger().debug("MainWindow.__onKeyReleased(): event.type=%s" % event.type)
         
         ## "full screen" hardware key
         #if event.keyval == gtk.keysyms.F6:
@@ -181,13 +180,16 @@ class MainController(AbstractController):
             Logger().debug("MainController.__onKeyReleased(): 'Down' key released; stop 'pitch' axis")
             self.__model.hardware.stopAxis('pitch')
             self.__keyPressedDict['Down'] = False
+            
+        else:
+            Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
         
     def __onWindowStateChanged(self, widget, event, *args):
         Logger().debug("MainWindow.__onWindowStateChanged()")
         if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
-            self.__view.mainWindow_in_fullscreen = True
+            self.__view.window_in_fullscreen = True
         else:
-            self.__view.mainWindow_in_fullscreen = False
+            self.__view.window_in_fullscreen = False
 
     def __connectToHardware(self):
         """ Connect to real hardware.
