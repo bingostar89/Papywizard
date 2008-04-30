@@ -75,27 +75,24 @@ class MainController(AbstractController):
                "on_fullSphericalButton_clicked": self.__onFullSphericalButtonClicked,
                "on_manualMoveButton_clicked": self.__onManualMoveButtonClicked,
                "on_configButton_clicked": self.__onConfigButtonClicked,
-               "on_shootButton_clicked": self.__onShootButtonClicked
+               "on_shootButton_clicked": self.__onShootButtonClicked,
+               "on_mainWindow_key_press_event": self.__onKeyPressed,
+               "on_mainWindow_key_release_event": self.__onKeyReleased,
+               "on_mainWindow_window_state_event": self.__onWindowStateChanged
            }
         self.__view.wTree.signal_autoconnect(dic)
         
         # Nokia plateform stuff
         try:
             import hildon
-            
-            self.__view.mainWindow.connect("destroy", gtk.main_quit)
-            self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
-            self.__view.mainWindow.connect("window-state-event", self.__onWindowStateChanged)
-            
+            self.__view.mainWindow.connect("destroy", gtk.main_quit) # really needed?
         except ImportError:
             pass
         
-        #self.__keyPressedDict = {'Left': False,
-                                 #'Right': False,
-                                 #'Up': False,
-                                 #'Down': False}
-        #self.__view.bind_all("<KeyPress>", self.__keyPressed)
-        #self.__view.bind_all("<KeyRelease>", self.__keyReleased)
+        self.__keyPressedDict = {'Left': False,
+                                 'Right': False,
+                                 'Up': False,
+                                 'Down': False}
         
         # Fill widgets
         self.refreshView()
@@ -110,66 +107,86 @@ class MainController(AbstractController):
         #if view3D is None:
             #self.__view.view3DShowVar.set(0)
             #self.__view.view3DMenu.entryconfig(self.__view.VIEW3D_SHOW_MENU_ENTRY, state=tk.DISABLED)
-        
-    # Nokia plateform callbacks
-    def __onWindowStateChanged(self, widget, event, *args):
-        if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
-            self.__view.mindow_in_fullscreen = True
-        else:
-            self.__view.mindow_in_fullscreen = False
 
     def __onKeyPressed(self, widget, event, *args):
+        
+        # "full screen" hardware key (only for Nokia)
         if event.keyval == gtk.keysyms.F6:
-            
-            # The "Full screen" hardware key has been pressed
-            if self.__view.mindow_in_fullscreen:
+            if self.__view.mainWindow_in_fullscreen:
                 self.__view.mainWindow.unfullscreen()
             else:
                 self.__view.mainWindow.fullscreen()
+                
+        # 'Right' key
+        elif event.keyval == gtk.keysyms.Right and not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
+            Logger().debug("MainWindow.__onKeyPressed(): 'Right' key pressed; start 'yaw' axis dir '+'")
+            self.__model.hardware.startAxis('yaw', '+')
+            self.__keyPressedDict['Right'] = True
+                
+        # 'Left' key
+        elif event.keyval == gtk.keysyms.Left and not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
+            Logger().debug("MainWindow.__onKeyPressed(): 'Left' key pressed; start 'yaw' axis dir '-'")
+            self.__model.hardware.startAxis('yaw', '-')
+            self.__keyPressedDict['Left'] = True
+                
+        # 'Up' key
+        elif event.keyval == gtk.keysyms.Up and not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
+            Logger().debug("MainWindow.__onKeyPressed(): 'Up' key pressed; start 'pitch' axis dir '+'")
+            self.__model.hardware.startAxis('pitch', '+')
+            self.__keyPressedDict['Up'] = True
+                
+        # 'Down' key
+        elif event.keyval == gtk.keysyms.Down and not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
+            Logger().debug("MainWindow.__onKeyPressed(): 'Down' key pressed; start 'pitch' axis dir '-'")
+            self.__model.hardware.startAxis('pitch', '-')
+            self.__keyPressedDict['Down'] = True
+            
+        else:
+            Logger().warning("MainController.__onKeyPressed(): unbind '%s' key" % event.keysyms)
+            
+        return True
 
-    # Normal callbacks
-    #def __keyPressed(self, event):
-        #""" Key pressed callback.
-        #"""
-        #Logger().trace("MainController.__keyPressed()")
-        #Logger().debug("MainController.__keyPressed(): key=%s" % event.keysym)
-        #if self.__keyPressedDict.has_key(event.keysym):
-            #if not self.__keyPressedDict[event.keysym]:
-                #self.__keyPressedDict[event.keysym] = True
-                #if event.keysym == "Left" and not self.__keyPressedDict["Right"]:
-                    #Logger().debug("MainController.__keyPressed(): start 'yaw' axis dir '-'")
-                    #self.__model.hardware.startAxis('yaw', '-')
-                #elif event.keysym == "Right" and not self.__keyPressedDict["Left"]:
-                    #Logger().debug("MainController.__keyPressed(): start 'yaw' axis dir '-'")
-                    #self.__model.hardware.startAxis('yaw', '+')
-                #elif event.keysym == "Up" and not self.__keyPressedDict["Down"]:
-                    #Logger().debug("MainController.__keyPressed(): start 'pitch' axis dir '-'")
-                    #self.__model.hardware.startAxis('pitch', '+')
-                #elif event.keysym == "Down" and not self.__keyPressedDict["Up"]:
-                    #Logger().debug("MainController.__keyPressed(): start 'pitch' axis dir '+'")
-                    #self.__model.hardware.startAxis('pitch', '-')
-        #else:
-            #Logger().warning("MainController.__keyPressed(): unbind '%s' key" % event.keysym)
-
-    #def __keyReleased(self, event):
-        #""" Key released callback.
-        #"""
-        #Logger().trace("MainController.__keyReleased()")
-        #Logger().debug("MainController.__keyReleased(): key=%s" % event.keysym)
-        #if self.__keyPressedDict.has_key(event.keysym):
-            #if self.__keyPressedDict[event.keysym]:
-                #self.__keyPressedDict[event.keysym] = False
-                #if event.keysym == "Left" or event.keysym == "Right":
-                    #Logger().debug("MainController.__keyReleased(): stop 'yaw' axis")
-                    #self.__model.hardware.stopAxis('yaw')
-                #elif event.keysym == "Up" or event.keysym == "Down":
-                    #Logger().debug("MainController.__keyReleased(): stop 'pitch' axis")
-                    #self.__model.hardware.stopAxis('pitch')
+    def __onKeyReleased(self, widget, event, *args):
+        Logger().debug("MainWindow.__onKeyReleased(): event.type=%s" % event.type)
+        
+        ## "full screen" hardware key
+        #if event.keyval == gtk.keysyms.F6:
+            #if self.__view.mindow_in_fullscreen:
+                #self.__view.mainWindow.unfullscreen()
             #else:
-                #Logger().error("MainController.__keyReleased(): key '%s' released but never pressed!" % event.keysym)
-        #else:
-            #Logger().warning("MainController.__keyReleased(): unbind '%s' key" % event.keysym)
-    
+                #self.__view.mainWindow.fullscreen()
+                
+        # 'Right' key
+        if event.keyval == gtk.keysyms.Right and self.__keyPressedDict['Right']:
+            Logger().debug("MainController.__onKeyReleased(): 'Right' key released; stop 'yaw' axis")
+            self.__model.hardware.stopAxis('yaw')
+            self.__keyPressedDict['Right'] = False
+                
+        # 'Left' key
+        if event.keyval == gtk.keysyms.Left and self.__keyPressedDict['Left']:
+            Logger().debug("MainController.__onKeyReleased(): 'Left' key released; stop 'yaw' axis")
+            self.__model.hardware.stopAxis('yaw')
+            self.__keyPressedDict['Left'] = False
+                
+        # 'Up' key
+        if event.keyval == gtk.keysyms.Up and self.__keyPressedDict['Up']:
+            Logger().debug("MainController.__onKeyReleased(): 'Up' key released; stop 'pitch' axis")
+            self.__model.hardware.stopAxis('pitch')
+            self.__keyPressedDict['Up'] = False
+                
+        # 'Down' key
+        if event.keyval == gtk.keysyms.Down and self.__keyPressedDict['Down']:
+            Logger().debug("MainController.__onKeyReleased(): 'Down' key released; stop 'pitch' axis")
+            self.__model.hardware.stopAxis('pitch')
+            self.__keyPressedDict['Down'] = False
+        
+    def __onWindowStateChanged(self, widget, event, *args):
+        Logger().debug("MainWindow.__onWindowStateChanged()")
+        if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
+            self.__view.mainWindow_in_fullscreen = True
+        else:
+            self.__view.mainWindow_in_fullscreen = False
+
     def __connectToHardware(self):
         """ Connect to real hardware.
         """
@@ -304,17 +321,6 @@ class MainController(AbstractController):
         controller = ShootController(self, self.__serializer, self.__model, view)
         retCode = view.shootDialog.run()
         view.shootDialog.destroy()
-        
-    #def __quit(self):
-        #""" Quit main controller.
-        #"""
-        #Logger().trace("MainController.__quit()")
-        #self.__view.destroy()
-
-    def __doNotCloseWindow(self):
-        """ Window can't be closed while shooting.
-        """
-        Logger().trace("MainController.__doNotCloseWindow()")
 
     def __refreshPos(self, yaw, pitch):
         """ Refresh position according to new pos.
@@ -361,4 +367,3 @@ if __name__ == "__main__":
     view = MainWindow()
     test = MainController(None, model, view)
     gtk.main()
-    
