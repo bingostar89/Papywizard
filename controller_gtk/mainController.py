@@ -82,22 +82,33 @@ class MainController(AbstractController):
            }
         self.__view.wTree.signal_autoconnect(dic)
         
-        # Nokia plateform stuff
-        try:
-            import hildon
-            self.__view.mainWindow.connect("destroy", gtk.main_quit) # really needed?
-            self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
-            self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
-        except ImportError:
-            pass
-        
         self.__keyPressedDict = {'Left': False,
                                  'Right': False,
                                  'Up': False,
                                  'Down': False,
                                  'Home': False,
                                  'End': False,
-                                 'Return': False}
+                                 'Return': False
+                             }
+        self.__key = {'Right': gtk.keysyms.Right,
+                      'Left': gtk.keysyms.Left,
+                      'Up': gtk.keysyms.Up,
+                      'Down': gtk.keysyms.Down,
+                      'Home': gtk.keysyms.Home,
+                      'End': gtk.keysyms.End,
+                      'Return': gtk.keysyms.Return
+                      }
+        
+        # Nokia plateform stuff
+        try:
+            import hildon
+            self.__view.mainWindow.connect("destroy", gtk.main_quit) # really needed?
+            self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
+            self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
+            self.__key['Home'] = gtk.keysyms.F6
+            self.__key['End'] = gtk.keysyms.F7
+        except ImportError:
+            pass
         
         # Fill widgets
         self.refreshView()
@@ -123,7 +134,7 @@ class MainController(AbstractController):
                 self.__view.mainWindow.fullscreen()
                 
         # 'Right' key
-        elif event.keyval == gtk.keysyms.Right:
+        elif event.keyval == self.__key['Right']:
             if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
                 Logger().debug("MainWindow.__onKeyPressed(): 'Right' key pressed; start 'yaw' axis dir '+'")
                 self.__keyPressedDict['Right'] = True
@@ -131,7 +142,7 @@ class MainController(AbstractController):
             return True
                 
         # 'Left' key
-        elif event.keyval == gtk.keysyms.Left:
+        elif event.keyval == self.__key['Left']:
             if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
                 Logger().debug("MainWindow.__onKeyPressed(): 'Left' key pressed; start 'yaw' axis dir '-'")
                 self.__keyPressedDict['Left'] = True
@@ -139,7 +150,7 @@ class MainController(AbstractController):
             return True
                 
         # 'Up' key
-        elif event.keyval == gtk.keysyms.Up:
+        elif event.keyval == self.__key['Up']:
             if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
                 Logger().debug("MainWindow.__onKeyPressed(): 'Up' key pressed; start 'pitch' axis dir '+'")
                 self.__keyPressedDict['Up'] = True
@@ -147,7 +158,7 @@ class MainController(AbstractController):
             return True
                 
         # 'Down' key
-        elif event.keyval == gtk.keysyms.Down:
+        elif event.keyval == self.__key['Down']:
             if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
                 Logger().debug("MainWindow.__onKeyPressed(): 'Down' key pressed; start 'pitch' axis dir '-'")
                 self.__keyPressedDict['Down'] = True
@@ -155,7 +166,7 @@ class MainController(AbstractController):
             return True
                 
         # 'Home' key
-        elif event.keyval == gtk.keysyms.Home:
+        elif event.keyval == self.__key['Home'] or event.keyval == gtk.keysyms.F6:
             if not self.__keyPressedDict['Home'] and not self.__keyPressedDict['End'] and \
                not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
@@ -166,7 +177,7 @@ class MainController(AbstractController):
             return True
                 
         # 'End' key
-        elif event.keyval == gtk.keysyms.End:
+        elif event.keyval == self.__key['End'] or event.keyval == gtk.keysyms.F7:
             if not self.__keyPressedDict['End'] and not self.__keyPressedDict['Home'] and \
                not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
@@ -177,7 +188,7 @@ class MainController(AbstractController):
             return True
                 
         # 'Return' key
-        elif event.keyval == gtk.keysyms.Return:
+        elif event.keyval == self.__key['Return']:
             if not self.__keyPressedDict['Return'] and \
                not self.__keyPressedDict['Home'] and not self.__keyPressedDict['End'] and \
                not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
@@ -200,7 +211,7 @@ class MainController(AbstractController):
                 #self.__view.mainWindow.fullscreen()
                 
         # 'Right' key
-        if event.keyval == gtk.keysyms.Right:
+        if event.keyval == self.__key['Right']:
             if self.__keyPressedDict['Right']:
                 Logger().debug("MainController.__onKeyReleased(): 'Right' key released; stop 'yaw' axis")
                 self.__model.hardware.stopAxis('yaw')
@@ -208,7 +219,7 @@ class MainController(AbstractController):
             return True
                 
         # 'Left' key
-        if event.keyval == gtk.keysyms.Left:
+        if event.keyval == self.__key['Left']:
             if self.__keyPressedDict['Left']:
                 Logger().debug("MainController.__onKeyReleased(): 'Left' key released; stop 'yaw' axis")
                 self.__model.hardware.stopAxis('yaw')
@@ -216,7 +227,7 @@ class MainController(AbstractController):
             return True
                 
         # 'Up' key
-        if event.keyval == gtk.keysyms.Up:
+        if event.keyval == self.__key['Up']:
             if self.__keyPressedDict['Up']:
                 Logger().debug("MainController.__onKeyReleased(): 'Up' key released; stop 'pitch' axis")
                 self.__model.hardware.stopAxis('pitch')
@@ -224,7 +235,7 @@ class MainController(AbstractController):
             return True
                 
         # 'Down' key
-        if event.keyval == gtk.keysyms.Down:
+        if event.keyval == self.__key['Down']:
             if self.__keyPressedDict['Down']:
                 Logger().debug("MainController.__onKeyReleased(): 'Down' key released; stop 'pitch' axis")
                 self.__model.hardware.stopAxis('pitch')
@@ -232,21 +243,21 @@ class MainController(AbstractController):
             return True
                 
         # 'Home' key
-        if event.keyval == gtk.keysyms.Home:
+        if event.keyval == self.__key['Home']:
             if self.__keyPressedDict['Home']:
                 Logger().debug("MainController.__onKeyReleased(): 'Home' key released")
                 self.__keyPressedDict['Home'] = False
             return True
                 
         # 'End' key
-        if event.keyval == gtk.keysyms.End:
+        if event.keyval == self.__key['End']:
             if self.__keyPressedDict['End']:
                 Logger().debug("MainController.__onKeyReleased(): 'End' key released")
                 self.__keyPressedDict['End'] = False
             return True
                 
         # 'Return' key
-        if event.keyval == gtk.keysyms.Return:
+        if event.keyval == self.__key['Return']:
             if self.__keyPressedDict['Return']:
                 Logger().debug("MainController.__onKeyReleased(): 'Return' key released")
                 self.__keyPressedDict['Return'] = False
