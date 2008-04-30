@@ -94,7 +94,10 @@ class MainController(AbstractController):
         self.__keyPressedDict = {'Left': False,
                                  'Right': False,
                                  'Up': False,
-                                 'Down': False}
+                                 'Down': False,
+                                 'Home': False,
+                                 'End': False,
+                                 'Return': False}
         
         # Fill widgets
         self.refreshView()
@@ -120,33 +123,72 @@ class MainController(AbstractController):
                 self.__view.mainWindow.fullscreen()
                 
         # 'Right' key
-        elif event.keyval == gtk.keysyms.Right and not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
-            Logger().debug("MainWindow.__onKeyPressed(): 'Right' key pressed; start 'yaw' axis dir '+'")
-            self.__model.hardware.startAxis('yaw', '+')
-            self.__keyPressedDict['Right'] = True
+        elif event.keyval == gtk.keysyms.Right:
+            if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
+                Logger().debug("MainWindow.__onKeyPressed(): 'Right' key pressed; start 'yaw' axis dir '+'")
+                self.__keyPressedDict['Right'] = True
+                self.__model.hardware.startAxis('yaw', '+')
+            return True
                 
         # 'Left' key
-        elif event.keyval == gtk.keysyms.Left and not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
-            Logger().debug("MainWindow.__onKeyPressed(): 'Left' key pressed; start 'yaw' axis dir '-'")
-            self.__model.hardware.startAxis('yaw', '-')
-            self.__keyPressedDict['Left'] = True
+        elif event.keyval == gtk.keysyms.Left:
+            if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
+                Logger().debug("MainWindow.__onKeyPressed(): 'Left' key pressed; start 'yaw' axis dir '-'")
+                self.__keyPressedDict['Left'] = True
+                self.__model.hardware.startAxis('yaw', '-')
+            return True
                 
         # 'Up' key
-        elif event.keyval == gtk.keysyms.Up and not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-            Logger().debug("MainWindow.__onKeyPressed(): 'Up' key pressed; start 'pitch' axis dir '+'")
-            self.__model.hardware.startAxis('pitch', '+')
-            self.__keyPressedDict['Up'] = True
+        elif event.keyval == gtk.keysyms.Up:
+            if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
+                Logger().debug("MainWindow.__onKeyPressed(): 'Up' key pressed; start 'pitch' axis dir '+'")
+                self.__keyPressedDict['Up'] = True
+                self.__model.hardware.startAxis('pitch', '+')
+            return True
                 
         # 'Down' key
-        elif event.keyval == gtk.keysyms.Down and not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
-            Logger().debug("MainWindow.__onKeyPressed(): 'Down' key pressed; start 'pitch' axis dir '-'")
-            self.__model.hardware.startAxis('pitch', '-')
-            self.__keyPressedDict['Down'] = True
+        elif event.keyval == gtk.keysyms.Down:
+            if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
+                Logger().debug("MainWindow.__onKeyPressed(): 'Down' key pressed; start 'pitch' axis dir '-'")
+                self.__keyPressedDict['Down'] = True
+                self.__model.hardware.startAxis('pitch', '-')
+            return True
+                
+        # 'Home' key
+        elif event.keyval == gtk.keysyms.Home:
+            if not self.__keyPressedDict['Home'] and not self.__keyPressedDict['End'] and \
+               not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
+               not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
+                Logger().debug("MainWindow.__onKeyPressed(): 'Home' key pressed; store start position")
+                self.__keyPressedDict['Home'] = True
+                self.__model.storeStartPosition()
+                self.refreshView()
+            return True
+                
+        # 'End' key
+        elif event.keyval == gtk.keysyms.End:
+            if not self.__keyPressedDict['End'] and not self.__keyPressedDict['Home'] and \
+               not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
+               not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
+                Logger().debug("MainWindow.__onKeyPressed(): 'End' key pressed; store end position")
+                self.__keyPressedDict['End'] = True
+                self.__model.storeEndPosition()
+                self.refreshView()
+            return True
+                
+        # 'Return' key
+        elif event.keyval == gtk.keysyms.Return:
+            if not self.__keyPressedDict['Return'] and \
+               not self.__keyPressedDict['Home'] and not self.__keyPressedDict['End'] and \
+               not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
+               not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
+                Logger().debug("MainWindow.__onKeyPressed(): 'Return' key pressed; open shoot dialog")
+                self.__keyPressedDict['Return'] = True
+                self.__openShootdialog()
+            return True
             
         else:
             Logger().warning("MainController.__onKeyPressed(): unbind '%s' key" % event.keyval)
-            
-        return True
 
     def __onKeyReleased(self, widget, event, *args):
         
@@ -158,28 +200,57 @@ class MainController(AbstractController):
                 #self.__view.mainWindow.fullscreen()
                 
         # 'Right' key
-        if event.keyval == gtk.keysyms.Right and self.__keyPressedDict['Right']:
-            Logger().debug("MainController.__onKeyReleased(): 'Right' key released; stop 'yaw' axis")
-            self.__model.hardware.stopAxis('yaw')
-            self.__keyPressedDict['Right'] = False
+        if event.keyval == gtk.keysyms.Right:
+            if self.__keyPressedDict['Right']:
+                Logger().debug("MainController.__onKeyReleased(): 'Right' key released; stop 'yaw' axis")
+                self.__model.hardware.stopAxis('yaw')
+                self.__keyPressedDict['Right'] = False
+            return True
                 
         # 'Left' key
-        if event.keyval == gtk.keysyms.Left and self.__keyPressedDict['Left']:
-            Logger().debug("MainController.__onKeyReleased(): 'Left' key released; stop 'yaw' axis")
-            self.__model.hardware.stopAxis('yaw')
-            self.__keyPressedDict['Left'] = False
+        if event.keyval == gtk.keysyms.Left:
+            if self.__keyPressedDict['Left']:
+                Logger().debug("MainController.__onKeyReleased(): 'Left' key released; stop 'yaw' axis")
+                self.__model.hardware.stopAxis('yaw')
+                self.__keyPressedDict['Left'] = False
+            return True
                 
         # 'Up' key
-        if event.keyval == gtk.keysyms.Up and self.__keyPressedDict['Up']:
-            Logger().debug("MainController.__onKeyReleased(): 'Up' key released; stop 'pitch' axis")
-            self.__model.hardware.stopAxis('pitch')
-            self.__keyPressedDict['Up'] = False
+        if event.keyval == gtk.keysyms.Up:
+            if self.__keyPressedDict['Up']:
+                Logger().debug("MainController.__onKeyReleased(): 'Up' key released; stop 'pitch' axis")
+                self.__model.hardware.stopAxis('pitch')
+                self.__keyPressedDict['Up'] = False
+            return True
                 
         # 'Down' key
-        if event.keyval == gtk.keysyms.Down and self.__keyPressedDict['Down']:
-            Logger().debug("MainController.__onKeyReleased(): 'Down' key released; stop 'pitch' axis")
-            self.__model.hardware.stopAxis('pitch')
-            self.__keyPressedDict['Down'] = False
+        if event.keyval == gtk.keysyms.Down:
+            if self.__keyPressedDict['Down']:
+                Logger().debug("MainController.__onKeyReleased(): 'Down' key released; stop 'pitch' axis")
+                self.__model.hardware.stopAxis('pitch')
+                self.__keyPressedDict['Down'] = False
+            return True
+                
+        # 'Home' key
+        if event.keyval == gtk.keysyms.Home:
+            if self.__keyPressedDict['Home']:
+                Logger().debug("MainController.__onKeyReleased(): 'Home' key released")
+                self.__keyPressedDict['Home'] = False
+            return True
+                
+        # 'End' key
+        if event.keyval == gtk.keysyms.End:
+            if self.__keyPressedDict['End']:
+                Logger().debug("MainController.__onKeyReleased(): 'End' key released")
+                self.__keyPressedDict['End'] = False
+            return True
+                
+        # 'Return' key
+        if event.keyval == gtk.keysyms.Return:
+            if self.__keyPressedDict['Return']:
+                Logger().debug("MainController.__onKeyReleased(): 'Return' key released")
+                self.__keyPressedDict['Return'] = False
+            return True
             
         else:
             Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
@@ -319,12 +390,15 @@ class MainController(AbstractController):
         view.configDialog.destroy()
         self.refreshView()
 
-    def __onShootButtonClicked(self, widget):
-        Logger().trace("MainController.__onShootButtonClicked()")
+    def __openShootdialog(self):
         view = ShootDialog()
         controller = ShootController(self, self.__serializer, self.__model, view)
         retCode = view.shootDialog.run()
         view.shootDialog.destroy()
+
+    def __onShootButtonClicked(self, widget):
+        Logger().trace("MainController.__onShootButtonClicked()")
+        self.__openShootdialog()
 
     def __refreshPos(self, yaw, pitch):
         """ Refresh position according to new pos.
