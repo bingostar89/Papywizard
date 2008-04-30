@@ -9,11 +9,13 @@ astronomic head, in order to turn it into a panoramic head. See:
     http://www.autopano.net/wiki/action/view/Orion_TeleTrack_altazimuth_tracking_mount
 
 MVC (Model-View-Controller) pattern is used to make things more modular.
-Current version of papywizard uses Tkinter as GUI, but other toolkits can be
+Current version of papywizard uses Tkinter ang pygtk as GUI, but other toolkits can be
 used without too much modifications.
 
-Tkinter has been chosen because it exists on all plateforms, including PocketPC,
-through PythonCE port, which will be used as remote-controller.
+Tkinter has first been chosen because it exists on all plateforms, including PocketPC,
+through PythonCE port, which can be used as remote-controller. But it does not work well
+on PPC (at least, in seems to need a lot of modifications). But Gtk version works
+out-of-the-box on both normal linux PC and Nokia Tablet Internet!
 
 USAGE
 

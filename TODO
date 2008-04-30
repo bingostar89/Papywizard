@@ -24,7 +24,7 @@ x done
             + define zero (offset)
             x 'about' entry
         x lock window close while a sub-dialog is open
-        + add visual status for hardware connection (grey/green led)
+        x add visual status for hardware connection (grey/green led). Gtk version only
         + add visual feedback for hardware com. (blinking green led)
         x add coords in realtime (just implement slot connected to spy)
         + deactivate menu if real hardware is unusable (lib dependency problem)
@@ -59,7 +59,7 @@ x done
     + show/hide all params representation (lens fov, total fov, pos...)
 
 * Model
-    + implement delay param
+    x implement delay param
     x allow connect/disconnect from hardware (switch from simulation to real hardware)
     + add try/except arround all hardware calls
     + save preferences as soon as a param changes
@@ -68,11 +68,11 @@ x done
 * Hardware
     - rotation directions must be revisited
     + implement new drive method for small moves (faster)
-    + better import of serial module
+    x better import of serial module
 
 * Misc
     + add soft limits to avoid camera/lens collisions
     + backlash correction
     + doc!!!!
     x export data (xml) for APP (from Scan)
-    + Add license header
+    + Add license header in files

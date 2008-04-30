@@ -7,9 +7,9 @@ x bug fix
 
 2008-??-?? Version SVN
     - use vpython 4 (bug fix the crash when hide/quit under linux)
-    x add mapping to 3D view (needs vpython 4)
+(    x add mapping to 3D view (needs vpython 4))
     + add key binding to move the head
-    + add usefull informations on 3D view (yaw/pitch, fov...)
+(    + add usefull informations on 3D view (yaw/pitch, fov...) )
     + add gtk toolkit support (first step to mameo support)
     x added test for pyserial import module
     + auto-detect correct paths for temp and home dirs under windows
