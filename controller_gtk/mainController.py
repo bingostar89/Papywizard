@@ -108,6 +108,7 @@ class MainController(AbstractController):
             self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
             self.__key['Home'] = gtk.keysyms.F8
             self.__key['End'] = gtk.keysyms.F7
+            self.__view.window_in_fullscreen = False
         except ImportError:
             pass
         
@@ -200,12 +201,9 @@ class MainController(AbstractController):
 
     def __onKeyReleased(self, widget, event, *args):
         
-        ## "full screen" hardware key
-        #if event.keyval == gtk.keysyms.F6:
-            #if self.__view.mindow_in_fullscreen:
-                #self.__view.mainWindow.unfullscreen()
-            #else:
-                #self.__view.mainWindow.fullscreen()
+        # 'FullScreen' key
+        if event.keyval == self.__key['FullScreen']:
+            return True
                 
         # 'Right' key
         if event.keyval == self.__key['Right']:

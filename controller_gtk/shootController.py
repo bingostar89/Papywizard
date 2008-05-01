@@ -158,7 +158,7 @@ class ShootController(AbstractController):
         elif event.keyval == self.__key['Escape']:
             Logger().debug("MainWindow.__onKeyPressed(): 'Escape' key pressed; open shoot dialog")
             if not self.__model.isShooting():
-                self.__view.manualMoveDialog.response(0)
+                self.__view.shootDialog.response(0)
             else:
                 self.__stopShooting()
             return True
@@ -311,7 +311,7 @@ class ShootController(AbstractController):
         """ Done button has been clicked.
         """
         Logger().trace("ShootController.__onDoneButtonClicked()")
-        self.__view.manualMoveDialog.response(0)
+        self.__view.shootDialog.response(0)
 
     def __refreshPos(self, yaw, pitch):
         """ Refresh position according to new pos.
