@@ -76,11 +76,14 @@ class MainController(AbstractController):
                "on_manualMoveButton_clicked": self.__onManualMoveButtonClicked,
                "on_configButton_clicked": self.__onConfigButtonClicked,
                "on_shootButton_clicked": self.__onShootButtonClicked,
-               "on_mainWindow_key_press_event": self.__onKeyPressed,
-               "on_mainWindow_key_release_event": self.__onKeyReleased,
-               "on_mainWindow_window_state_event": self.__onWindowStateChanged
+               #"on_mainWindow_key_press_event": self.__onKeyPressed,
+               #"on_mainWindow_key_release_event": self.__onKeyReleased,
+               #"on_mainWindow_window_state_event": self.__onWindowStateChanged
            }
         self.__view.wTree.signal_autoconnect(dic)
+            self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
+            self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
+            self.__view.mainWindow.connect("window-state-event", self.__onWindowStateChanged)
         
         self.__keyPressedDict = {'Left': False,
                                  'Right': False,
@@ -104,8 +107,9 @@ class MainController(AbstractController):
         try:
             import hildon
             self.__view.mainWindow.connect("destroy", gtk.main_quit) # really needed?
-            self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
-            self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
+            #self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
+            #self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
+            #self.__view.mainWindow.connect("window-state-event", self.__onWindowStateChanged)
             self.__key['Home'] = gtk.keysyms.F8
             self.__key['End'] = gtk.keysyms.F7
             self.__view.window_in_fullscreen = False
