@@ -81,9 +81,9 @@ class MainController(AbstractController):
                #"on_mainWindow_window_state_event": self.__onWindowStateChanged
            }
         self.__view.wTree.signal_autoconnect(dic)
-            self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
-            self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
-            self.__view.mainWindow.connect("window-state-event", self.__onWindowStateChanged)
+        self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
+        self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
+        self.__view.mainWindow.connect("window-state-event", self.__onWindowStateChanged)
         
         self.__keyPressedDict = {'Left': False,
                                  'Right': False,
