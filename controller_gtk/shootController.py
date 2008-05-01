@@ -54,10 +54,39 @@ class ShootController(AbstractController):
         # Connect signal/slots
         dic = {"on_startButton_clicked": self.__onStartButtonClicked,
                "on_stopButton_clicked": self.__onStopButtonClicked,
-               "on_doneButton_clicked": self.__onDoneButtonClicked
+               "on_doneButton_clicked": self.__onDoneButtonClicked,
+               "on_shootDialog_key_press_event": self.__onKeyPressed,
+               "on_shootDialog_key_release_event": self.__onKeyReleased,
            }
         self.__view.wTree.signal_autoconnect(dic)
         self.__suspendResumeHandler = self.__view.suspendResumeButton.connect('clicked', self.__onSuspendButtonClicked)
+        
+        self.__keyPressedDict = {'Left': False,
+                                 'Right': False,
+                                 'Up': False,
+                                 'Down': False,
+                                 'Home': False,
+                                 'End': False
+                             }
+        self.__key = {'Right': gtk.keysyms.Right,
+                      'Left': gtk.keysyms.Left,
+                      'Up': gtk.keysyms.Up,
+                      'Down': gtk.keysyms.Down,
+                      'Home': gtk.keysyms.Home,
+                      'End': gtk.keysyms.End,
+                      'Return': gtk.keysyms.Return,
+                      'Escape': gtk.keysyms.Escape
+                      }
+        
+        # Nokia plateform stuff
+        try:
+            import hildon
+            self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
+            self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
+            self.__key['Home'] = gtk.keysyms.F8
+            self.__key['End'] = gtk.keysyms.F7
+        except ImportError:
+            pass
         
         # Fill widgets
         self.refreshView()
@@ -65,12 +94,131 @@ class ShootController(AbstractController):
         # Connect Spy
         Spy().newPosSignal.connect(self.__refreshPos)
 
-    def __onStartButtonClicked(self, widget):
-        """ Start button has been clicked.
-        
-        The model's start() method is called in a thread
-        """
-        Logger().trace("ShootController.__startButtonClicked()")
+    def __onKeyPressed(self, widget, event, *args):
+                
+        # 'Right' key
+        #elif event.keyval == self.__key['Right']:
+            #if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
+                #Logger().debug("MainWindow.__onKeyPressed(): 'Right' key pressed")
+                #self.__keyPressedDict['Right'] = True
+            #return True
+                
+        # 'Left' key
+        #elif event.keyval == self.__key['Left']:
+            #if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
+                #Logger().debug("MainWindow.__onKeyPressed(): 'Left' key pressed")
+                #self.__keyPressedDict['Left'] = True
+            #return True
+                
+        # 'Up' key
+        #elif event.keyval == self.__key['Up']:
+            #if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
+                #Logger().debug("MainWindow.__onKeyPressed(): 'Up' key pressed")
+                #self.__keyPressedDict['Up'] = True
+            #return True
+                
+        # 'Down' key
+        #elif event.keyval == self.__key['Down']:
+            #if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
+                #Logger().debug("MainWindow.__onKeyPressed(): 'Down' key pressed")
+                #self.__keyPressedDict['Down'] = True
+            #return True
+                
+        # 'Home' key
+        #elif event.keyval == self.__key['Home'] or event.keyval == gtk.keysyms.F6:
+            #if not self.__keyPressedDict['Home'] and not self.__keyPressedDict['End'] and \
+               #not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
+               #not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
+                #Logger().debug("MainWindow.__onKeyPressed(): 'Home' key pressed")
+                #self.__keyPressedDict['Home'] = True
+            #return True
+                
+        # 'End' key
+        #elif event.keyval == self.__key['End'] or event.keyval == gtk.keysyms.F7:
+            #if not self.__keyPressedDict['End'] and not self.__keyPressedDict['Home'] and \
+               #not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
+               #not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
+                #Logger().debug("MainWindow.__onKeyPressed(): 'End' key pressed")
+                #self.__keyPressedDict['End'] = True
+            #return True
+                
+        # 'Return' key
+        if event.keyval == self.__key['Return']:
+            Logger().debug("MainWindow.__onKeyPressed(): 'Return' key pressed; open shoot dialog")
+            if not self.__model.isShooting():
+                self.__startShooting()
+            else:
+                if not self.__model.isSuspended():
+                    self.__suspendShooting()
+                else:
+                    self.__resumeShooting()
+            return True
+                
+        # 'Escape' key
+        elif event.keyval == self.__key['Escape']:
+            Logger().debug("MainWindow.__onKeyPressed(): 'Escape' key pressed; open shoot dialog")
+            if not self.__model.isShooting():
+                self.__view.manualMoveDialog.response(0)
+            else:
+                self.__stopShooting()
+            return True
+            
+        else:
+            Logger().warning("MainController.__onKeyPressed(): unbind '%s' key" % event.keyval)
+
+    def __onKeyReleased(self, widget, event, *args):
+        return False
+
+        # 'Right' key
+        if event.keyval == self.__key['Right']:
+            if self.__keyPressedDict['Right']:
+                Logger().debug("MainController.__onKeyReleased(): 'Right' key released; stop 'yaw' axis")
+                self.__model.hardware.stopAxis('yaw')
+                self.__keyPressedDict['Right'] = False
+            return True
+                
+        # 'Left' key
+        if event.keyval == self.__key['Left']:
+            if self.__keyPressedDict['Left']:
+                Logger().debug("MainController.__onKeyReleased(): 'Left' key released; stop 'yaw' axis")
+                self.__model.hardware.stopAxis('yaw')
+                self.__keyPressedDict['Left'] = False
+            return True
+                
+        # 'Up' key
+        if event.keyval == self.__key['Up']:
+            if self.__keyPressedDict['Up']:
+                Logger().debug("MainController.__onKeyReleased(): 'Up' key released; stop 'pitch' axis")
+                self.__model.hardware.stopAxis('pitch')
+                self.__keyPressedDict['Up'] = False
+            return True
+                
+        # 'Down' key
+        if event.keyval == self.__key['Down']:
+            if self.__keyPressedDict['Down']:
+                Logger().debug("MainController.__onKeyReleased(): 'Down' key released; stop 'pitch' axis")
+                self.__model.hardware.stopAxis('pitch')
+                self.__keyPressedDict['Down'] = False
+            return True
+                
+        # 'Home' key
+        if event.keyval == self.__key['Home']:
+            if self.__keyPressedDict['Home']:
+                Logger().debug("MainController.__onKeyReleased(): 'Home' key released")
+                self.__keyPressedDict['Home'] = False
+            return True
+                
+        # 'End' key
+        if event.keyval == self.__key['End']:
+            if self.__keyPressedDict['End']:
+                Logger().debug("MainController.__onKeyReleased(): 'End' key released")
+                self.__keyPressedDict['End'] = False
+            return True
+            
+        else:
+            Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
+
+    def __startShooting(self):
         def checkEnd():
             """ Check end of shooting.
             
@@ -112,35 +260,52 @@ class ShootController(AbstractController):
         # Check end of shooting
         gobject.timeout_add(200, checkEnd)
         #checkEnd()
+
+    def __onStartButtonClicked(self, widget):
+        """ Start button has been clicked.
         
-    def __onSuspendButtonClicked(self, widget):
-        """ Suspend button has been clicked.
+        The model's start() method is called in a thread
         """
-        Logger().trace("ShootController.__suspendButtonClicked()")
+        Logger().trace("ShootController.__startButtonClicked()")
+        self.__startShooting()
+    
+    def __suspendShooting(self):
         self.__model.suspend()
         self.__view.suspendResumeButton.set_label("Resume")
         self.__view.suspendResumeButton.disconnect(self.__suspendResumeHandler)
         self.__suspendResumeHandler = self.__view.suspendResumeButton.connect('clicked', self.__onResumeButtonClicked)
-        
-    def __onResumeButtonClicked(self, widget):
-        """ Resume button has been clicked.
+    
+    def __onSuspendButtonClicked(self, widget):
+        """ Suspend button has been clicked.
         """
-        Logger().trace("ShootController.__resumeButtonClicked()")
+        Logger().trace("ShootController.__suspendButtonClicked()")
+        self.__suspendShooting()
+    
+    def __resumeShooting(self):
         self.__model.resume()
         self.__view.suspendResumeButton.set_label("Suspend")
         self.__view.suspendResumeButton.disconnect(self.__suspendResumeHandler)
         self.__suspendResumeHandler = self.__view.suspendResumeButton.connect('clicked', self.__onSuspendButtonClicked)
         
-    def __onStopButtonClicked(self, widget):
-        """ Stop button has been clicked.
+    def __onResumeButtonClicked(self, widget):
+        """ Resume button has been clicked.
         """
-        Logger().trace("ShootController.__stopButtonClicked()")
+        Logger().trace("ShootController.__resumeButtonClicked()")
+        self.__resumeShooting()
+    
+    def __stopShooting(self):
         self.__model.stop()
         
         # Wait for shooting really stops
         # todo: use condition
         while self.__model.isShooting():
             time.sleep(0.1)
+        
+    def __onStopButtonClicked(self, widget):
+        """ Stop button has been clicked.
+        """
+        Logger().trace("ShootController.__stopButtonClicked()")
+        self.__stopShooting()
         
     def __onDoneButtonClicked(self, widget):
         """ Done button has been clicked.
