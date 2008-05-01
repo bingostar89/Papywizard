@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.3 on Wed Apr 30 23:01:47 2008 -->
+<!--Generated with glade3 3.4.3 on Thu May  1 15:01:50 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="shootDialog">
     <property name="visible">True</property>
@@ -280,6 +280,7 @@
                 <property name="receives_default">True</property>
                 <property name="label" translatable="yes">Done</property>
                 <property name="response_id">0</property>
+                <signal name="clicked" handler="on_doneButton_clicked"/>
               </widget>
             </child>
           </widget>
