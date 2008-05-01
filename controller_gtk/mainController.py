@@ -143,7 +143,7 @@ class MainController(AbstractController):
         # 'Right' key
         elif event.keyval == self.__key['Right']:
             if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
-                Logger().debug("MainWindow.__onKeyPressed(): 'Right' key pressed; start 'yaw' axis dir '+'")
+                Logger().debug("MainController.__onKeyPressed(): 'Right' key pressed; start 'yaw' axis dir '+'")
                 self.__keyPressedDict['Right'] = True
                 self.__model.hardware.startAxis('yaw', '+')
             return True
@@ -151,7 +151,7 @@ class MainController(AbstractController):
         # 'Left' key
         elif event.keyval == self.__key['Left']:
             if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
-                Logger().debug("MainWindow.__onKeyPressed(): 'Left' key pressed; start 'yaw' axis dir '-'")
+                Logger().debug("MainController.__onKeyPressed(): 'Left' key pressed; start 'yaw' axis dir '-'")
                 self.__keyPressedDict['Left'] = True
                 self.__model.hardware.startAxis('yaw', '-')
             return True
@@ -159,7 +159,7 @@ class MainController(AbstractController):
         # 'Up' key
         elif event.keyval == self.__key['Up']:
             if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                Logger().debug("MainWindow.__onKeyPressed(): 'Up' key pressed; start 'pitch' axis dir '+'")
+                Logger().debug("MainController.__onKeyPressed(): 'Up' key pressed; start 'pitch' axis dir '+'")
                 self.__keyPressedDict['Up'] = True
                 self.__model.hardware.startAxis('pitch', '+')
             return True
@@ -167,7 +167,7 @@ class MainController(AbstractController):
         # 'Down' key
         elif event.keyval == self.__key['Down']:
             if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
-                Logger().debug("MainWindow.__onKeyPressed(): 'Down' key pressed; start 'pitch' axis dir '-'")
+                Logger().debug("MainController.__onKeyPressed(): 'Down' key pressed; start 'pitch' axis dir '-'")
                 self.__keyPressedDict['Down'] = True
                 self.__model.hardware.startAxis('pitch', '-')
             return True
@@ -177,7 +177,7 @@ class MainController(AbstractController):
             if not self.__keyPressedDict['Home'] and not self.__keyPressedDict['End'] and \
                not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                Logger().debug("MainWindow.__onKeyPressed(): 'Home' key pressed; store start position")
+                Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; store start position")
                 self.__keyPressedDict['Home'] = True
                 self.__model.storeStartPosition()
                 self.refreshView()
@@ -188,7 +188,7 @@ class MainController(AbstractController):
             if not self.__keyPressedDict['End'] and not self.__keyPressedDict['Home'] and \
                not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                Logger().debug("MainWindow.__onKeyPressed(): 'End' key pressed; store end position")
+                Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; store end position")
                 self.__keyPressedDict['End'] = True
                 self.__model.storeEndPosition()
                 self.refreshView()
@@ -196,7 +196,7 @@ class MainController(AbstractController):
                 
         # 'Return' key
         elif event.keyval == self.__key['Return']:
-            Logger().debug("MainWindow.__onKeyPressed(): 'Return' key pressed; open shoot dialog")
+            Logger().debug("MainController.__onKeyPressed(): 'Return' key pressed; open shoot dialog")
             self.__openShootdialog()
             return True
             
@@ -259,7 +259,7 @@ class MainController(AbstractController):
             Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
         
     def __onWindowStateChanged(self, widget, event, *args):
-        Logger().debug("MainWindow.__onWindowStateChanged()")
+        Logger().debug("MainController.__onWindowStateChanged()")
         if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
             self.__view.window_in_fullscreen = True
         else:
