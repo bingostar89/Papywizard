@@ -99,28 +99,28 @@ class ShootController(AbstractController):
         # 'Right' key
         #elif event.keyval == self.__key['Right']:
             #if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
-                #Logger().debug("MainWindow.__onKeyPressed(): 'Right' key pressed")
+                #Logger().debug("shootController.__onKeyPressed(): 'Right' key pressed")
                 #self.__keyPressedDict['Right'] = True
             #return True
                 
         # 'Left' key
         #elif event.keyval == self.__key['Left']:
             #if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
-                #Logger().debug("MainWindow.__onKeyPressed(): 'Left' key pressed")
+                #Logger().debug("shootController.__onKeyPressed(): 'Left' key pressed")
                 #self.__keyPressedDict['Left'] = True
             #return True
                 
         # 'Up' key
         #elif event.keyval == self.__key['Up']:
             #if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                #Logger().debug("MainWindow.__onKeyPressed(): 'Up' key pressed")
+                #Logger().debug("shootController.__onKeyPressed(): 'Up' key pressed")
                 #self.__keyPressedDict['Up'] = True
             #return True
                 
         # 'Down' key
         #elif event.keyval == self.__key['Down']:
             #if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
-                #Logger().debug("MainWindow.__onKeyPressed(): 'Down' key pressed")
+                #Logger().debug("shootController.__onKeyPressed(): 'Down' key pressed")
                 #self.__keyPressedDict['Down'] = True
             #return True
                 
@@ -129,7 +129,7 @@ class ShootController(AbstractController):
             #if not self.__keyPressedDict['Home'] and not self.__keyPressedDict['End'] and \
                #not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
                #not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                #Logger().debug("MainWindow.__onKeyPressed(): 'Home' key pressed")
+                #Logger().debug("shootController.__onKeyPressed(): 'Home' key pressed")
                 #self.__keyPressedDict['Home'] = True
             #return True
                 
@@ -138,28 +138,33 @@ class ShootController(AbstractController):
             #if not self.__keyPressedDict['End'] and not self.__keyPressedDict['Home'] and \
                #not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
                #not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                #Logger().debug("MainWindow.__onKeyPressed(): 'End' key pressed")
+                #Logger().debug("shootController.__onKeyPressed(): 'End' key pressed")
                 #self.__keyPressedDict['End'] = True
             #return True
                 
         # 'Return' key
         if event.keyval == self.__key['Return']:
-            Logger().debug("MainWindow.__onKeyPressed(): 'Return' key pressed; open shoot dialog")
+            Logger().debug("shootController.__onKeyPressed(): 'Return' key pressed")
             if not self.__model.isShooting():
+                Logger().info("shootController.__onKeyPressed(): start shooting")
                 self.__startShooting()
             else:
                 if not self.__model.isSuspended():
+                    Logger().info("shootController.__onKeyPressed(): suspend shooting")
                     self.__suspendShooting()
                 else:
+                    Logger().info("shootController.__onKeyPressed(): rerume shooting")
                     self.__resumeShooting()
             return True
                 
         # 'Escape' key
         elif event.keyval == self.__key['Escape']:
-            Logger().debug("MainWindow.__onKeyPressed(): 'Escape' key pressed; open shoot dialog")
+            Logger().debug("shootController.__onKeyPressed(): 'Escape' key pressed")
             if not self.__model.isShooting():
+                Logger().info("shootController.__onKeyPressed(): close shooting dialog")
                 self.__view.shootDialog.response(0)
             else:
+                Logger().info("shootController.__onKeyPressed(): stop shooting")
                 self.__stopShooting()
             return True
             
