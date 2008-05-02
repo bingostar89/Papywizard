@@ -62,35 +62,32 @@ class MainController(AbstractController):
 
         # Connect signal/slots
         dic = {"on_mainWindow_destroy": gtk.main_quit,
-               "on_configMenuitem_activate": self.__onConfigButtonClicked,
+               "on_configMenuitem_activate": self.__onConfigMenuActivated,
                "on_quitMenuitem_activate": gtk.main_quit,
                "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuToggled,
+               "on_hardwareSetOriginMenuitem_activate": self.__onHardwareSetOriginMenuActivated,
                "on_hardwareResetMenuitem_activate": self.__onHardwareResetMenuActivated,
-               "on_view3DShowMenuitem_toggled": self.__onView3DShowMenuToggled,
                "on_helpAboutMenuitem_activate": self.__onHelpAboutMenuActivated,
                "on_setStartButton_clicked": self.__onSetStartButtonClicked,
                "on_setEndButton_clicked": self.__onSetEndButtonClicked,
-               "on_zenithCheckbutton_toggled": self.__onZenithCheckbuttonToggled,
-               "on_nadirCheckbutton_toggled": self.__onNadirCheckbuttonToggled,
-               "on_fullSphericalButton_clicked": self.__onFullSphericalButtonClicked,
+               #"on_zenithCheckbutton_toggled": self.__onZenithCheckbuttonToggled,
+               #"on_nadirCheckbutton_toggled": self.__onNadirCheckbuttonToggled,
                "on_manualMoveButton_clicked": self.__onManualMoveButtonClicked,
-               "on_configButton_clicked": self.__onConfigButtonClicked,
                "on_shootButton_clicked": self.__onShootButtonClicked,
-               #"on_mainWindow_key_press_event": self.__onKeyPressed,
-               #"on_mainWindow_key_release_event": self.__onKeyReleased,
-               #"on_mainWindow_window_state_event": self.__onWindowStateChanged
            }
         self.__view.wTree.signal_autoconnect(dic)
         self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
         self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
         self.__view.mainWindow.connect("window-state-event", self.__onWindowStateChanged)
         
-        self.__keyPressedDict = {'Left': False,
+        self.__keyPressedDict = {'FullScreen': False,
+                                 'Left': False,
                                  'Right': False,
                                  'Up': False,
                                  'Down': False,
                                  'Home': False,
-                                 'End': False
+                                 'End': False,
+                                 'Escape': False
                              }
         self.__key = {'Right': gtk.keysyms.Right,
                       'Left': gtk.keysyms.Left,
@@ -107,9 +104,6 @@ class MainController(AbstractController):
         try:
             import hildon
             self.__view.mainWindow.connect("destroy", gtk.main_quit) # really needed?
-            #self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
-            #self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
-            #self.__view.mainWindow.connect("window-state-event", self.__onWindowStateChanged)
             self.__key['Home'] = gtk.keysyms.F8
             self.__key['End'] = gtk.keysyms.F7
             self.__view.window_in_fullscreen = False
@@ -130,14 +124,18 @@ class MainController(AbstractController):
             #self.__view.view3DShowVar.set(0)
             #self.__view.view3DMenu.entryconfig(self.__view.VIEW3D_SHOW_MENU_ENTRY, state=tk.DISABLED)
 
+    # Callbacks
     def __onKeyPressed(self, widget, event, *args):
         
         # 'FullScreen' key
         if event.keyval == self.__key['FullScreen']:
-            if self.__view.window_in_fullscreen:
-                self.__view.mainWindow.unfullscreen()
-            else:
-                self.__view.mainWindow.fullscreen()
+            if not self.__keyPressedDict['FullScreen']:
+                Logger().debug("MainController.__onKeyPressed(): 'FullScreen' key pressed")
+                if self.__view.window_in_fullscreen:
+                    self.__view.mainWindow.unfullscreen()
+                else:
+                    self.__view.mainWindow.fullscreen()
+                self.__keyPressedDict['FullScreen'] = True
             return True
                 
         # 'Right' key
@@ -173,8 +171,8 @@ class MainController(AbstractController):
             return True
                 
         # 'Home' key
-        elif event.keyval == self.__key['Home'] or event.keyval == gtk.keysyms.F6:
-            if not self.__keyPressedDict['Home'] and not self.__keyPressedDict['End'] and \
+        elif event.keyval == self.__key['Home']:
+            if not self.__keyPressedDict['Home'] and \
                not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
                 Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; store start position")
@@ -184,7 +182,7 @@ class MainController(AbstractController):
             return True
                 
         # 'End' key
-        elif event.keyval == self.__key['End'] or event.keyval == gtk.keysyms.F7:
+        elif event.keyval == self.__key['End']:
             if not self.__keyPressedDict['End'] and not self.__keyPressedDict['Home'] and \
                not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
@@ -199,6 +197,13 @@ class MainController(AbstractController):
             Logger().debug("MainController.__onKeyPressed(): 'Return' key pressed; open shoot dialog")
             self.__openShootdialog()
             return True
+                
+        # 'Escape' key
+        elif event.keyval == self.__key['Escape']:
+            if not self.__keyPressedDict['Escape']:
+                Logger().debug("MainController.__onKeyPressed(): 'Escape' key pressed")
+                self.__keyPressedDict['Escape'] = True
+            return True
             
         else:
             Logger().warning("MainController.__onKeyPressed(): unbind '%s' key" % event.keyval)
@@ -207,6 +212,9 @@ class MainController(AbstractController):
         
         # 'FullScreen' key
         if event.keyval == self.__key['FullScreen']:
+            if self.__keyPressedDict['FullScreen']:
+                Logger().debug("MainController.__onKeyReleased(): 'FullScreen' key released")
+                self.__keyPressedDict['FullScreen'] = False
             return True
                 
         # 'Right' key
@@ -254,7 +262,14 @@ class MainController(AbstractController):
                 Logger().debug("MainController.__onKeyReleased(): 'End' key released")
                 self.__keyPressedDict['End'] = False
             return True
-            
+                
+        # 'Escape' key
+        elif event.keyval == self.__key['Escape']:
+            if self.__keyPressedDict['Escape']:
+                Logger().debug("MainController.__onKeyPressed(): 'Escape' key released")
+                self.__keyPressedDict['Escape'] = False
+            return True
+
         else:
             Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
         
@@ -265,6 +280,79 @@ class MainController(AbstractController):
         else:
             self.__view.window_in_fullscreen = False
 
+    def __onHardwareResetMenuActivated(self, widget):
+        """ Hard reset menu selected.
+        """
+        Logger().trace("MainController.__onHardwareResetMenuActivated()")
+        Logger().info("Reseting hardware")
+        self.__model.hardware.reset()
+
+    def __onHardwareSetOriginMenuActivated(self, widget):
+        """ Zero axis menu selected.
+        """
+        Logger().trace("MainController.__onHardwareSetOriginMenuActivated()")
+        Logger().info("Set hardware origin")
+        self.__model.hardware.setOrigin()
+        
+    def __onHelpAboutMenuActivated(self, widget):
+        """ Connect check button toggled.
+        """
+        Logger().trace("MainController.__onHelpAboutMenuActivated()")
+        view = HelpAboutDialog(self.__view)
+        retCode = view.helpAboutDialog.run()
+        view.helpAboutDialog.destroy()
+
+    def __onSetStartButtonClicked(self, widget):
+        Logger().trace("MainController.__onSetStartButtonClicked()")
+        self.__model.storeStartPosition()
+        self.refreshView()
+
+    def __onSetEndButtonClicked(self, widget):
+        Logger().trace("MainController.__onSetEndButtonClicked()")
+        self.__model.storeEndPosition()
+        self.refreshView()
+
+    #def __onSetFovButtonClicked(self, widget):
+        #Logger().trace("MainController.__onSetFovButtonClicked()")
+        #tkMB.showwarning("Set total field of view", "Not yet implemented")
+
+    #def __onSetNbPictsButtonClicked(self, widget):
+        #tkMB.showwarning("Set total nb picts", "Not yet implemented")
+
+    #def __onZenithCheckbuttonToggled(self, widget):
+        #Logger().trace("MainController.__onZenithCheckbuttonToggled()")
+        #self.__model.mosaic.zenith = bool(self.__view.zenithCheckbutton.get_active())
+
+    #def __onNadirCheckbuttonToggled(self, widget):
+        #Logger().trace("MainController.__onNadirCheckbuttonToggled()")
+        #self.__model.mosaic.nadir = bool(self.__view.nadirCheckbutton.get_active())
+
+    def __onManualMoveButtonClicked(self, widget):
+        Logger().trace("MainController.__onManualMoveButtonClicked()")
+        view = ManualMoveDialog()
+        controller = ManualMoveController(self, self.__serializer, self.__model, view)
+        retCode = view.manualMoveDialog.run()
+        view.manualMoveDialog.destroy()
+
+    def __onConfigMenuActivated(self, widget):
+        Logger().trace("MainController.__onConfigMenuActivated()")
+        view = ConfigDialog()
+        controller = ConfigController(self, self.__model, view)
+        retCode = view.configDialog.run()
+        view.configDialog.destroy()
+        self.refreshView()
+
+    def __openShootdialog(self):
+        view = ShootDialog()
+        controller = ShootController(self, self.__serializer, self.__model, view)
+        retCode = view.shootDialog.run()
+        view.shootDialog.destroy()
+
+    def __onShootButtonClicked(self, widget):
+        Logger().trace("MainController.__onShootButtonClicked()")
+        self.__openShootdialog()
+
+    # Real work
     def __connectToHardware(self):
         """ Connect to real hardware.
         """
@@ -318,91 +406,6 @@ class MainController(AbstractController):
         else:
             self.__goToSimulationMode()
 
-    def __onHardwareResetMenuActivated(self, widget):
-        """ Hard reset menu selected.
-        """
-        Logger().trace("MainController.__onHardwareResetMenuActivated()")
-        Logger().info("Reseting hardware")
-        self.__model.hardware.reset()
-
-    def __onView3DShowMenuToggled(self, widget):
-        """ Connect check button toggled.
-        """
-        switch = self.__view.view3DShowMenuitem.get_active()
-        Logger().trace("MainController.__onView3DShowMenuActivated(%s)" % switch)
-        #if switch:
-            #if self.__view3D is not None:
-                #Logger().debug("MainController.__view3DShowMenu(): show 3D view")
-                #self.__view3D.visible = True
-            #else:
-                #tkMB.showerror("3D View", "Some libs are missing in order to use 3D view")
-                #self.__view.view3DShowVar.set(0)
-        #else:
-            #if self.__view3D is not None:
-                #Logger().debug("MainController.__view3DShowMenu(): hide 3D view")
-                #self.__view3D.visible=False
-        
-    def __onHelpAboutMenuActivated(self, widget):
-        """ Connect check button toggled.
-        """
-        Logger().trace("MainController.__onHelpAboutMenuActivated()")
-        view = HelpAboutDialog(self.__view)
-        retCode = view.helpAboutDialog.run()
-        view.helpAboutDialog.destroy()
-
-    def __onSetStartButtonClicked(self, widget):
-        Logger().trace("MainController.__onSetStartButtonClicked()")
-        self.__model.storeStartPosition()
-        self.refreshView()
-
-    def __onSetEndButtonClicked(self, widget):
-        Logger().trace("MainController.__onSetEndButtonClicked()")
-        self.__model.storeEndPosition()
-        self.refreshView()
-
-    #def __onSetFovButtonClicked(self, widget):
-        #Logger().trace("MainController.__onSetFovButtonClicked()")
-        #tkMB.showwarning("Set total field of view", "Not yet implemented")
-
-    #def __onSetNbPictsButtonClicked(self, widget):
-        #tkMB.showwarning("Set total nb picts", "Not yet implemented")
-
-    def __onZenithCheckbuttonToggled(self, widget):
-        Logger().trace("MainController.__onZenithCheckbuttonToggled()")
-        self.__model.mosaic.zenith = bool(self.__view.zenithCheckbutton.get_active())
-
-    def __onNadirCheckbuttonToggled(self, widget):
-        Logger().trace("MainController.__onNadirCheckbuttonToggled()")
-        self.__model.mosaic.nadir = bool(self.__view.nadirCheckbutton.get_active())
-
-    def __onFullSphericalButtonClicked(self, widget):
-        Logger().trace("MainController.__fullPanoButtonClicked()")
-
-    def __onManualMoveButtonClicked(self, widget):
-        Logger().trace("MainController.__onManualMoveButtonClicked()")
-        view = ManualMoveDialog()
-        controller = ManualMoveController(self, self.__serializer, self.__model, view)
-        retCode = view.manualMoveDialog.run()
-        view.manualMoveDialog.destroy()
-
-    def __onConfigButtonClicked(self, widget):
-        Logger().trace("MainController.__onConfigButtonClicked()")
-        view = ConfigDialog()
-        controller = ConfigController(self, self.__model, view)
-        retCode = view.configDialog.run()
-        view.configDialog.destroy()
-        self.refreshView()
-
-    def __openShootdialog(self):
-        view = ShootDialog()
-        controller = ShootController(self, self.__serializer, self.__model, view)
-        retCode = view.shootDialog.run()
-        view.shootDialog.destroy()
-
-    def __onShootButtonClicked(self, widget):
-        Logger().trace("MainController.__onShootButtonClicked()")
-        self.__openShootdialog()
-
     def __refreshPos(self, yaw, pitch):
         """ Refresh position according to new pos.
         
@@ -429,9 +432,7 @@ class MainController(AbstractController):
                                'pitchNbPicts':  self.__model.pitchNbPicts,
                                'yawRealOverlap': int(round(100 * self.__model.yawRealOverlap)),
                                'pitchRealOverlap': int(round(100 * self.__model.pitchRealOverlap))
-                               },
-                  'mosaic': {'zenith': self.__model.mosaic.zenith,
-                             'nadir':self.__model.mosaic.nadir}
+                               }
                  }
         self.__view.fillWidgets(values)
 
