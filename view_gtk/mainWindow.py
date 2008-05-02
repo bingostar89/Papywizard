@@ -33,7 +33,7 @@ class MainWindow(object):
         """ Init the object.
         """
         # Set the Glade file
-        gladeFile = os.path.join(path, "mainWindow.glade")
+        gladeFile = os.path.join(path, "mainWindow2.glade")
         self.wTree = gtk.glade.XML(gladeFile) 
         
         # Retreive usefull widgets
@@ -85,8 +85,6 @@ class MainWindow(object):
         self.pitchNbPictsEntry = self.wTree.get_widget("pitchNbPictsEntry")
         self.yawRealOverlapEntry = self.wTree.get_widget("yawRealOverlapEntry")
         self.pitchRealOverlapEntry = self.wTree.get_widget("pitchRealOverlapEntry")
-        self.zenithCheckbutton = self.wTree.get_widget("zenithCheckbutton")
-        self.nadirCheckbutton = self.wTree.get_widget("nadirCheckbutton")
         self.statusbar = self.wTree.get_widget("statusbar")
         self.generalContextId = self.statusbar.get_context_id("general")
         self.hardwareContextId = self.statusbar.get_context_id("hardware")
@@ -110,5 +108,3 @@ class MainWindow(object):
         self.pitchNbPictsEntry.set_text("%d" % values['shooting']['pitchNbPicts'])
         self.yawRealOverlapEntry.set_text(str(values['shooting']['yawRealOverlap']))
         self.pitchRealOverlapEntry.set_text(str(values['shooting']['pitchRealOverlap']))
-        self.zenithCheckbutton.set_active(values['mosaic']['zenith'])
-        self.nadirCheckbutton.set_active(values['mosaic']['nadir'])
