@@ -70,7 +70,7 @@ SENSOR_RATIOS_INDEX = {'3:2':0, '4:3':1,
                        0:'3:2', 1:'4:3'} # for pygtk
 DEFAULT_SENSOR_RATIO = "3:2"
 CAMERA_ORIENTATION_INDEX = {'portrait':0, 'landscape':1,
-                            0:'portrait', 1:'landscape'} # for pygtks
+                            0:'portrait', 1:'landscape'} # for pygtk
 MOSAIC_TEMPLATE = ["Auto",
                    "RDL", "RDR", "RUL", "RDR",
                    "LDR", "LDL", "LUR", "LUL",
@@ -83,8 +83,6 @@ DEFAULT_PREFS = {'shooting': {'overlap': 0.25,
                               'delay': 0.5
                              },
                  'mosaic': {'template': "Auto",
-                            'zenith': False,
-                            'nadir': False
                            },
                  'camera': {'sensorCoef': 1.6,
                             'sensorRatio': DEFAULT_SENSOR_RATIO,
@@ -95,6 +93,7 @@ DEFAULT_PREFS = {'shooting': {'overlap': 0.25,
                           'fisheye': False
                          }
                 }
+WRITE_DATA_FILE = False
 
 # Logger configuration
 LOGGER_LEVEL = 'trace'
