@@ -67,6 +67,12 @@ class Head(object):
         """
         self.driver.shutdown()
 
+    def setOrigin(self):
+        """ Set current axis positions as origin.
+        """
+        self.yawAxis.setOrigin()
+        self.pitchAxis.setOrigin()
+
     def readPosition(self):
         """ Read current head position.
         
