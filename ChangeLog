@@ -7,14 +7,14 @@ x bug fix
 
 2008-??-?? Version SVN
     - use vpython 4 (bug fix the crash when hide/quit under linux)
-(    x add mapping to 3D view (needs vpython 4))
-    + add key binding to move the head
-(    + add usefull informations on 3D view (yaw/pitch, fov...) )
     + add gtk toolkit support (first step to mameo support)
     x added test for pyserial import module
     + auto-detect correct paths for temp and home dirs under windows
     x axis are now driven concurrently
-    + generate xml file with shooting params
+    + generate xml file with shooting params (optional)
+    + new menu entry to set axis origin (needed for future full spherical implementation)
+    + added progressbar
+    + key binding for usage without mouse/pen
 
 2007-12-28 Version 0.9-beta1
     + auto-connect to real hardware if possible
