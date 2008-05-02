@@ -55,10 +55,12 @@ class ShootController(AbstractController):
         dic = {"on_startButton_clicked": self.__onStartButtonClicked,
                "on_stopButton_clicked": self.__onStopButtonClicked,
                "on_doneButton_clicked": self.__onDoneButtonClicked,
-               "on_shootDialog_key_press_event": self.__onKeyPressed,
-               "on_shootDialog_key_release_event": self.__onKeyReleased,
+               #"on_shootDialog_key_press_event": self.__onKeyPressed,
+               #"on_shootDialog_key_release_event": self.__onKeyReleased,
            }
         self.__view.wTree.signal_autoconnect(dic)
+        self.__view.shootDialog.connect("key-press-event", self.__onKeyPressed)
+        self.__view.shootDialog.connect("key-release-event", self.__onKeyReleased)
         self.__suspendResumeHandler = self.__view.suspendResumeButton.connect('clicked', self.__onSuspendButtonClicked)
         
         self.__keyPressedDict = {'Left': False,
@@ -81,8 +83,8 @@ class ShootController(AbstractController):
         # Nokia plateform stuff
         try:
             import hildon
-            self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
-            self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
+            #self.__view.shootDialog.connect("key-press-event", self.__onKeyPressed)
+            #self.__view.shootDialog.connect("key-release-event", self.__onKeyReleased)
             self.__key['Home'] = gtk.keysyms.F8
             self.__key['End'] = gtk.keysyms.F7
         except ImportError:
@@ -162,7 +164,7 @@ class ShootController(AbstractController):
             Logger().debug("shootController.__onKeyPressed(): 'Escape' key pressed")
             if not self.__model.isShooting():
                 Logger().info("shootController.__onKeyPressed(): close shooting dialog")
-                self.__view.shootDialog.response(0)
+                self.__view.doneButton.clicked()
             else:
                 Logger().info("shootController.__onKeyPressed(): stop shooting")
                 self.__stopShooting()
@@ -316,7 +318,7 @@ class ShootController(AbstractController):
         """ Done button has been clicked.
         """
         Logger().trace("ShootController.__onDoneButtonClicked()")
-        self.__view.shootDialog.response(0)
+        #self.__view.shootDialog.response(0)
 
     def __refreshPos(self, yaw, pitch):
         """ Refresh position according to new pos.
