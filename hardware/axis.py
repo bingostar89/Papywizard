@@ -34,6 +34,7 @@ class Axis(object):
         """
         self._num = num
         self._driver = driver
+        self.__offset = 0
 
     def _sendCmd(self, cmd, param=""):
         """ Send a command to the axis.
@@ -75,7 +76,15 @@ class Axis(object):
     def reset(self):
         """ Reset the axis hardware.
         """
-        pass
+        pass # find commands to send...
+
+    def setOrigin(self):
+        """ Set current axis positions as origin.
+        
+        Use offset.
+        """
+        Logger().warning("Axis.setOrigin(): not yet implemented")
+        self.__offset += self.read()
     
     def read(self):
         """ Return the current position of axis.
@@ -89,6 +98,7 @@ class Axis(object):
         finally:
             self._driver.releaseBus()
         pos = cod2deg(decodeAxisValue(value))
+        pos -= self.__offset
         
         return pos
 
@@ -321,6 +331,11 @@ class AxisSimulation(threading.Thread):
     def reset(self):
         self.__jog = False
         self.__drive = False
+        #self.__pos = 0. # real hardware does not reset current pos...
+
+    def setOrigin(self):
+        """ Set current axis position as origin.
+        """
         self.__pos = 0.
     
     def read(self):
