@@ -68,4 +68,3 @@ class ConfigDialog(object):
         self.focalSpinbutton.set_value(values['lens']['focal'])
         self.fisheyeCheckbutton.set_active(values['lens']['fisheye'])
         self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[values['shooting']['cameraOrientation']])
-        self.manualShootCheckbutton.set_active(values['shooting']['manualShoot'])
