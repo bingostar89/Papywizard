@@ -43,9 +43,10 @@ class Shooting(object):
         self.__stop = False
         self.__yawCoef = "--"
         self.__pitchCoef = "--"
-        self.__progress = "..."
+        self.__progress = 0.
         self.__sequence = "Idle"
         self.__setParams = None
+        self.__manualShoot = False
         
         self.realHardware = realHardware
         self.simulatedHardware = simulatedHardware
@@ -62,7 +63,6 @@ class Shooting(object):
         self.__prefs = Preferences().load()
         self.delay = self.__prefs['shooting']['delay']
         self.overlap = self.__prefs['shooting']['overlap']
-        self.manualShoot = self.__prefs['shooting']['manualShoot']
         self.cameraOrientation = self.__prefs['shooting']['cameraOrientation']
         
         #self.__computeParams('startEnd')
@@ -192,6 +192,16 @@ class Shooting(object):
         Logger().debug("Shooting.storeEndPosition(): yaw=%.1f, pitch=%.1f" % (self.yawEnd, self.pitchEnd))
         #self.__computeParams('startEnd')
     
+    def setManualShoot(self, flag):
+        """ Turn on/off manual shoot.
+        
+        In manual shoot mode, the head switch to suspend at each end of position.
+        
+        @param flag: flag for manual shoot
+        @type flag: bool
+        """
+        self.__manualShoot = flag
+    
     def start(self):
         """ Start pano shooting.
         """
@@ -236,7 +246,9 @@ class Shooting(object):
             data.addHeaderNode('template', type="mosaic", yaw="%d" % self.yawNbPicts, pitch="%d" % self.pitchNbPicts)
                 
             # Loop over all positions
-            for yawCoef, pitchCoef in self.mosaic:
+            totalNbPicts = self.yawNbPicts * self.pitchNbPicts
+            self.__progress = 0.
+            for i, (yawCoef, pitchCoef) in enumerate(self.mosaic):
                 yaw = self.yawStart + yawCoef * yawInc
                 pitch = self.pitchStart + pitchCoef * pitchInc
                 Logger().debug("Shooting.start(): Goto yaw=%.1f pitch=%.1f" % (yaw, pitch))
@@ -244,16 +256,18 @@ class Shooting(object):
                 self.__pitchCoef = pitchCoef
                 Logger().info("Moving")
                 self.__sequence = "Moving"
-                #self.__progress = "..."
                 self.hardware.gotoPosition(yaw, pitch)
     
                 Logger().info("Stabilization")
                 self.__sequence = "Stabilizing"
                 time.sleep(self.delay)
     
+                if self.__manualShoot:
+                    self.__suspend = True
+                    Logger().info("Manual shoot")
+    
                 checkSuspendStop()
     
-                # todo: implement manual shooting (must be in controller. Use yield here?)
                 Logger().info("Shooting")
                 for pict in xrange(self.camera.nbPicts):
                     Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts))
@@ -262,60 +276,8 @@ class Shooting(object):
                     data.addImageNode(pict + 1, yaw, pitch)
                         
                     checkSuspendStop()
-            
-            # Zenith/Nadir
-            # todo: implement manual shooting (must be in controller. Use yield here?)
-            if self.mosaic.zenith:
-                yaw = 0.
-                pitch = 90.
-                Logger().info("Moving")
-                Logger().debug("Shooting.start(): Goto zenith")
-                self.__yawCoef = "zenith"
-                self.__pitchCoef = "zenith"
-                self.__sequence = "Moving"
-                #self.__progress = "..."
-                self.hardware.gotoPosition(yaw, pitch)
 
-                Logger().info("Stabilization")
-                self.__sequence = "Stabilizing"
-                time.sleep(self.delay)
-                
-                checkSuspendStop()
-                    
-                Logger().info("Shooting")
-                for pict in xrange(self.camera.nbPicts):
-                    Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts))
-                    self.__sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
-                    self.hardware.shoot(self.camera.timeValue)
-                    data.addImageNode(pict + 1, yaw, pitch)
-    
-                    checkSuspendStop()
-                
-            if self.mosaic.nadir:
-                yaw = 0.
-                pitch = -90.
-                Logger().info("Moving")
-                Logger().debug("Shooting.start(): Goto nadir")
-                self.__yawCoef = "nadir"
-                self.__pitchCoef = "nadir"
-                self.__sequence = "Moving"
-                #self.__progress = "..."
-                self.hardware.gotoPosition(yaw, pitch)
-
-                Logger().info("Stabilization")
-                self.__sequence = "Stabilizing"
-                time.sleep(self.delay)
-    
-                checkSuspendStop()
-    
-                Logger().info("Shooting")
-                for pict in xrange(self.camera.nbPicts):
-                    Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts))
-                    self.__sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
-                    self.hardware.shoot(self.camera.timeValue)
-                    data.addImageNode(pict + 1, yaw, pitch)
-    
-                    checkSuspendStop()
+                self.__progress = float((i + 1)) / float(totalNbPicts)
 
             Logger().debug("Shooting.start(): finished")
         
@@ -324,7 +286,6 @@ class Shooting(object):
         
         self.__yawCoef = "--"
         self.__pitchCoef = "--"
-        self.__progress = "..."
         self.__sequence = "Idle"
         self.__stop = False
         self.__running = False
@@ -404,7 +365,6 @@ class Shooting(object):
         
         self.__prefs['shooting']['delay'] = self.delay
         self.__prefs['shooting']['overlap'] = self.overlap
-        self.__prefs['shooting']['manualShoot'] = self.manualShoot
         self.__prefs['shooting']['cameraOrientation'] = self.cameraOrientation
         
         Preferences().save()
