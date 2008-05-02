@@ -117,10 +117,11 @@ class Data(object):
     def __serialize(self):
         """ Serialize xml tree to file.
         """
-        Logger().trace("Data.serialize()")
-        xmlFile = file(config.DATA_FILE % self.__date, 'w')
-        self.__doc.writexml(xmlFile, addindent='    ', newl='\n')
-        xmlFile.close()
+        if config.WRITE_DATA_FILE:
+            Logger().trace("Data.serialize()")
+            xmlFile = file(config.DATA_FILE % self.__date, 'w')
+            self.__doc.writexml(xmlFile, addindent='    ', newl='\n')
+            xmlFile.close()
 
     def addHeaderNode(self, tag, value=None, **attr):
         """ Add a header node.
