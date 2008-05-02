@@ -33,7 +33,7 @@ class MainWindow(object):
         """ Init the object.
         """
         # Set the Glade file
-        gladeFile = os.path.join(path, "mainWindow2.glade")
+        gladeFile = os.path.join(path, "mainWindow.glade")
         self.wTree = gtk.glade.XML(gladeFile) 
         
         # Retreive usefull widgets
