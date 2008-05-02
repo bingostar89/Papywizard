@@ -52,7 +52,8 @@ class ShootController(AbstractController):
         self.__view = view
 
         # Connect signal/slots
-        dic = {"on_startButton_clicked": self.__onStartButtonClicked,
+        dic = {"on_manualShootCheckbutton_toggled": self.__onManualShootCheckbuttonToggled,
+            "on_startButton_clicked": self.__onStartButtonClicked,
                "on_suspendResumeButton_clicked": self.__onSuspendResumeButtonClicked,
                "on_stopButton_clicked": self.__onStopButtonClicked,
                "on_doneButton_clicked": self.__onDoneButtonClicked,
@@ -172,7 +173,6 @@ class ShootController(AbstractController):
             if not self.__model.isShooting():
                 Logger().info("shootController.__onKeyPressed(): close shooting dialog")
                 self.__view.shootDialog.response(0)
-                #self.__view.doneButton.clicked() # Find a better way (response does not work!!!)
                 
             # Pressing 'Escape' while shooting stops shooting
             else:
@@ -243,6 +243,13 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__startButtonClicked()")
         self.__startShooting()
     
+    def __onManualShootCheckbuttonToggled(self, widget):
+        """ Manual shoot checkbutton togled.
+        """
+        Logger().trace("ShootController.____onManualShootCheckbuttonToggled()")
+        switch = self.__view.manualShootCheckbutton.get_active()
+        self.__model.setManualShoot(switch)
+
     def __onSuspendResumeButtonClicked(self, widget):
         """ SuspendResume button has been clicked.
         """
@@ -275,10 +282,18 @@ class ShootController(AbstractController):
             This way, GUI events can be handled while model is shooting.
             """
             Logger().trace("checkEnd()")
+            
+            # Check if model suspended (manual shoot mode)
+            if self.__model.isSuspended():
+                self.__view.suspendResumeLabel.set_text("Resume")
+            else:
+                self.__view.suspendResumeLabel.set_text("Suspend")
+            
+            # Check end of shooting
             if not self.__model.isShooting():
                 Logger().debug("checkEnd(): model not shooting anymore")
                 self.__view.startButton.set_sensitive(True)
-                self.__view.suspendResumeButton.set_label("Suspend")
+                self.__view.suspendResumeLabel.set_text("Suspend")
                 self.__view.suspendResumeButton.set_sensitive(False)
                 self.__view.stopButton.set_sensitive(False)
                 self.__view.doneButton.set_sensitive(True)
@@ -309,11 +324,11 @@ class ShootController(AbstractController):
 
     def __suspendShooting(self):
         self.__model.suspend()
-        self.__view.suspendResumeButton.set_label("Resume")
+        #self.__view.suspendResumeLabel.set_text("Resume")
     
     def __resumeShooting(self):
         self.__model.resume()
-        self.__view.suspendResumeButton.set_label("Suspend")
+        #self.__view.suspendResumeLabel.set_text("Suspend")
     
     def __stopShooting(self):
         self.__model.stop()

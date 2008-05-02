@@ -67,7 +67,6 @@ class ConfigController(AbstractController):
         self.__model.camera.lens.focal = self.__view.focalSpinbutton.get_value()
         self.__model.camera.lens.fisheye = self.__view.fisheyeCheckbutton.get_active()
         self.__model.cameraOrientation = config.CAMERA_ORIENTATION_INDEX[self.__view.cameraOrientationCombobox.get_active()]
-        self.__model.manualShoot = self.__view.manualShootCheckbutton.get_active()
 
     def __onCancelButtonClicked(self, widget):
         """ Cancel button has been clicked.
