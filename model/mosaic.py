@@ -53,8 +53,6 @@ class Mosaic(object):
         
         self.__prefs = Preferences().load()
         self.template = self.__prefs['mosaic']['template']
-        self.zenith = self.__prefs['mosaic']['zenith']
-        self.nadir = self.__prefs['mosaic']['nadir']
 
     def __iter__(self):
         """ Define Mosaic as an iterator.
@@ -140,5 +138,3 @@ class Mosaic(object):
         """
         Logger().trace("Mosaic.shutdown()")
         self.__prefs['mosaic']['template'] = self.template
-        self.__prefs['mosaic']['zenith'] = self.zenith
-        self.__prefs['mosaic']['nadir'] = self.nadir
