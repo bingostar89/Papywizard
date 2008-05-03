@@ -40,7 +40,7 @@ from controller.spy import Spy
 class MainController(AbstractController):
     """ Main controller object.
     """
-    def __init__(self, serializer, model, view, view3D=None):
+    def __init__(self, serializer, model, view):
         """ Init the object.
 
         @param serializer: object used to serialize Tkinter events
@@ -55,7 +55,6 @@ class MainController(AbstractController):
         self.__serializer = serializer
         self.__model = model
         self.__view = view
-        self.__view3D = view3D
         
         self.__yawPos = 0
         self.__pitchPos = 0
@@ -118,11 +117,6 @@ class MainController(AbstractController):
         
         # Try to autoconnect to real hardware
         #self.__connectToHardware()
-        
-        # Check if 3D view is available
-        #if view3D is None:
-            #self.__view.view3DShowVar.set(0)
-            #self.__view.view3DMenu.entryconfig(self.__view.VIEW3D_SHOW_MENU_ENTRY, state=tk.DISABLED)
 
     # Callbacks
     def __onKeyPressed(self, widget, event, *args):
