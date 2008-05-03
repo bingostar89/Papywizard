@@ -87,7 +87,6 @@ class ConfigController(AbstractController):
         
     def refreshView(self):
         values = {'shooting': {'overlap': int(100 * self.__model.overlap),
-                               'manualShoot': self.__model.manualShoot,
                                'cameraOrientation': self.__model.cameraOrientation,
                                'delay': self.__model.delay
                                },
