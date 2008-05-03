@@ -30,10 +30,8 @@ try:
     from hardware.head import Head, HeadSimulation
 except ImportError:
     Logger().exception("Papywizard initial imports")
-try:
+if config.VIEW3D_ENABLE:
     from view3D.view3D import View3D
-except ImportError:
-    Logger().exception("Papywizard initial imports")
 
 
 def main():
@@ -59,16 +57,9 @@ def main():
 
     # Create 3D view
     if config.VIEW3D_ENABLE:
-        try:
-            view3D = View3D("Papywizard", scale=(1, 1, 1))
-            Spy().newPosSignal.connect(view3D.draw)
-            #Spy().newPosSignal.connect(view3D.viewFromCamera)
-        except NameError:
-            Logger().exception("main()")
-            Logger().warning("Some libs are missing in order to use 3D view")
-            view3D = None
-    else:
-        view3D = None
+        view3D = View3D("Papywizard", scale=(1, 1, 1))
+        Spy().newPosSignal.connect(view3D.draw)
+        #Spy().newPosSignal.connect(view3D.viewFromCamera)
 
     # Create serializer, for async events
     serializer = Serializer()
@@ -78,7 +69,7 @@ def main():
     view = MainWindow()
     
     # Create main controller
-    controller = MainController(serializer, model, view, view3D)
+    controller = MainController(serializer, model, view)
 
     # Enter in Gtk mainloop
     gtk.gdk.threads_init()
@@ -89,7 +80,11 @@ def main():
     Spy().join()
     headSimulation.stopGoto()
     model.shutdown()
-    #view3D.terminate() # vpython has not yet a way to terminate the mainloop
+    
+    try:
+        view3D.terminate() # vpython has not yet a way to terminate the mainloop
+    except NameError:
+        pass
     
 
 if __name__ == "__main__":
