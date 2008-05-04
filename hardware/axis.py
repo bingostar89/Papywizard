@@ -120,6 +120,8 @@ class Axis(object):
         if inc:
             currentPos = self.read()
             pos = currentPos + inc
+        else:
+            pos += self.__offset
             
         # Drive to requested position
         strValue = encodeAxisValue(deg2cod(pos))
