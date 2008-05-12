@@ -60,8 +60,7 @@ class MainController(AbstractController):
         self.__pitchPos = 0
 
         # Connect signal/slots
-        dic = {"on_mainWindow_destroy": gtk.main_quit,
-               "on_configMenuitem_activate": self.__onConfigMenuActivated,
+        dic = {"on_configMenuitem_activate": self.__onConfigMenuActivated,
                "on_quitMenuitem_activate": gtk.main_quit,
                "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuToggled,
                "on_hardwareSetOriginMenuitem_activate": self.__onHardwareSetOriginMenuActivated,
@@ -69,12 +68,11 @@ class MainController(AbstractController):
                "on_helpAboutMenuitem_activate": self.__onHelpAboutMenuActivated,
                "on_setStartButton_clicked": self.__onSetStartButtonClicked,
                "on_setEndButton_clicked": self.__onSetEndButtonClicked,
-               #"on_zenithCheckbutton_toggled": self.__onZenithCheckbuttonToggled,
-               #"on_nadirCheckbutton_toggled": self.__onNadirCheckbuttonToggled,
                "on_manualMoveButton_clicked": self.__onManualMoveButtonClicked,
                "on_shootButton_clicked": self.__onShootButtonClicked,
            }
         self.__view.wTree.signal_autoconnect(dic)
+        self.__view.mainWindow.connect("destroy", gtk.main_quit)
         self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
         self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
         self.__view.mainWindow.connect("window-state-event", self.__onWindowStateChanged)
@@ -102,7 +100,6 @@ class MainController(AbstractController):
         # Nokia plateform stuff
         try:
             import hildon
-            self.__view.mainWindow.connect("destroy", gtk.main_quit) # really needed?
             self.__key['Home'] = gtk.keysyms.F8
             self.__key['End'] = gtk.keysyms.F7
             self.__view.window_in_fullscreen = False
