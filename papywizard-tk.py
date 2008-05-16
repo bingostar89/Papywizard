@@ -44,6 +44,7 @@ def main():
         root.after(10, serializerProcessWork, root)
         
     Logger().setConsoleLevel(config.LOGGER_LEVEL)
+    Logger().info("Starting Papywizard app...")
 
     # Create model (both real and simulated)
     try:
@@ -92,9 +93,9 @@ def main():
     model.shutdown()
     #view3D.terminate() # vpython has not yet a way to terminate the mainloop
     
+    Logger().info("Papywizard app stopped")
+
 
 if __name__ == "__main__":
-    Logger().info("Starting Papywizard app...")
     main()
-    Logger().info("Papywizard app stopped")
-    sys.exit()
+

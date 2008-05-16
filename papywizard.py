@@ -36,6 +36,7 @@ if config.VIEW3D_ENABLE:
 
 def main():
     Logger().setConsoleLevel(config.LOGGER_LEVEL)
+    Logger().info("Starting Papywizard app...")
 
     # Create model (both real and simulated)
     try:
@@ -86,9 +87,8 @@ def main():
     except NameError:
         pass
     
+    Logger().info("Papywizard app stopped")
+
 
 if __name__ == "__main__":
-    Logger().info("Starting Papywizard app...")
     main()
-    Logger().info("Papywizard app stopped")
-    sys.exit()
