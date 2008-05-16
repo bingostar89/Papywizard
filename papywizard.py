@@ -1,1 +1,0 @@
-papywizard-gtk.py
