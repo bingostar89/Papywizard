@@ -35,61 +35,54 @@ if config.VIEW3D_ENABLE:
     from papywizard.view3D.view3D import View3D
 
 
-def main():
-    Logger().setConsoleLevel(config.LOGGER_LEVEL)
-    Logger().info("Starting Papywizard app...")
+Logger().setConsoleLevel(config.LOGGER_LEVEL)
+Logger().info("Starting Papywizard app...")
 
-    # Create model (both real and simulated)
-    try:
-        head = Head()
-    except (NameError, ImportError):
-        Logger().exception("Creating real hardware")
-        Logger().warning("Some libs are missing in order to use real hardware")
-        head = None
-    except HardwareError:
-        Logger().exception("Creating real hardware")
-        Logger().warning("Problem occured; unable to use real hardware")
-        head = None
-    headSimulation = HeadSimulation()
-    model = Shooting(head, headSimulation)
-    
-    # Launch spy thread
-    Spy(model, config.SPY_FAST_REFRESH)
-    Spy().start()
+# Create model (both real and simulated)
+try:
+    head = Head()
+except (NameError, ImportError):
+    Logger().exception("Creating real hardware")
+    Logger().warning("Some libs are missing in order to use real hardware")
+    head = None
+except HardwareError:
+    Logger().exception("Creating real hardware")
+    Logger().warning("Problem occured; unable to use real hardware")
+    head = None
+headSimulation = HeadSimulation()
+model = Shooting(head, headSimulation)
 
-    # Create 3D view
-    if config.VIEW3D_ENABLE:
-        view3D = View3D("Papywizard", scale=(1, 1, 1))
-        Spy().newPosSignal.connect(view3D.draw)
-        #Spy().newPosSignal.connect(view3D.viewFromCamera)
+# Launch spy thread
+Spy(model, config.SPY_FAST_REFRESH)
+Spy().start()
 
-    # Create serializer, for async events
-    serializer = Serializer()
-    gobject.timeout_add(10, serializer.processWork)
+# Create 3D view
+if config.VIEW3D_ENABLE:
+    view3D = View3D("Papywizard", scale=(1, 1, 1))
+    Spy().newPosSignal.connect(view3D.draw)
+    #Spy().newPosSignal.connect(view3D.viewFromCamera)
 
-    # Create main view
-    view = MainWindow()
-    
-    # Create main controller
-    controller = MainController(serializer, model, view)
+# Create serializer, for async events
+serializer = Serializer()
+gobject.timeout_add(10, serializer.processWork)
 
-    # Enter in Gtk mainloop
-    gtk.gdk.threads_init()
-    gtk.main()
+# Create main view
+view = MainWindow()
 
-    # App closed
-    Spy().stop()
-    Spy().join()
-    headSimulation.stopGoto()
-    model.shutdown()
-    
-    try:
-        view3D.terminate() # vpython has not yet a way to terminate the mainloop
-    except NameError:
-        pass
-    
-    Logger().info("Papywizard app stopped")
+# Create main controller
+controller = MainController(serializer, model, view)
 
+# Enter in Gtk mainloop
+gtk.gdk.threads_init()
+gtk.main()
 
-if __name__ == "__main__":
-    main()
+# App closed
+Spy().stop()
+Spy().join()
+headSimulation.stopGoto()
+model.shutdown()
+
+if config.VIEW3D_ENABLE:
+    view3D.terminate() # vpython has not yet a way to terminate the mainloop
+
+Logger().info("Papywizard app stopped")
