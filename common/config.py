@@ -17,7 +17,7 @@ import os.path
 import logging
 
 
-VERSION = "0.9 beta 2"
+VERSION = "0.9beta2"
 
 # General config
 if sys.platform.startswith("linux") or sys.platform.startswith("Mac"):
