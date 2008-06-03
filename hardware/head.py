@@ -19,10 +19,10 @@ __revision__ = "$Id$"
 
 import time
 
-from common import config
-from common.loggingServices import Logger
-from axis import Axis, AxisSimulation
-from driverFactory import DriverFactory
+from papywizard.common import config
+from papywizard.common.loggingServices import Logger
+from papywizard.hardware.axis import Axis, AxisSimulation
+from papywizard.hardware.driverFactory import DriverFactory
 
 
 class Head(object):
@@ -34,10 +34,10 @@ class Head(object):
         self.driver = DriverFactory().create(config.DRIVER)
         self.yawAxis = Axis(config.AXIS_NUM_YAW, self.driver)
         self.pitchAxis = Axis(config.AXIS_NUM_PITCH, self.driver)
-    
+
     def init(self):
         """ Init the head.
-        
+
         This must be done when turning on the head.
         Note that the manual remote already does that if it is pluged-in when
         the head is switched on.
@@ -75,7 +75,7 @@ class Head(object):
 
     def readPosition(self):
         """ Read current head position.
-        
+
         @return: position of yaw and pitch axis
         @rtype: tuple
         """
@@ -100,10 +100,10 @@ class Head(object):
 
     def startAxis(self, axis, dir):
         """ Start an axis in the selected direction.
-        
+
         @param axis: axis to jog ('yaw', 'pitch')
         @type axis: str
-        
+
         @param dir: direction ('+', '-')
         @type dir: char
         """
@@ -116,7 +116,7 @@ class Head(object):
 
     def stopAxis(self, axis):
         """ Stop the selected axis.
-        
+
         @param axis: axis to stop ('yaw', 'pitch')
         @type axis: str
         """
@@ -126,7 +126,7 @@ class Head(object):
             self.pitchAxis.stopJog()
         else:
             raise ValueError("axis must be in 'yaw', 'pitch'")
-       
+
     def waitStopAxis(self, axis):
         """ Wait until axis does not move anymore.
         """
@@ -139,7 +139,7 @@ class Head(object):
 
     def shoot(self, delay=1):
         """ Take a picture.
-        
+
         @param delay: delay to wait at each shot (s)
         @type delay: float
         """
@@ -167,7 +167,7 @@ class HeadSimulation(Head):
         self.pitchAxis = AxisSimulation(config.AXIS_NUM_PITCH)
         self.yawAxis.start()
         self.pitchAxis.start()
-    
+
     def init(self):
         """ Init the head.
         """
@@ -185,7 +185,7 @@ class HeadSimulation(Head):
         self.yawAxis.join()
         self.pitchAxis.stop()
         self.pitchAxis.join()
-    
+
     #def stopGoto(self):
         #""" Stop axis threads.
         #"""

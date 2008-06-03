@@ -18,19 +18,19 @@ __revision__ = "$Id$"
 
 import time
 
-from common.loggingServices import Logger
-from common.exception import HardwareError
-from serialDriver import SerialDriver
+from papywizard.common.loggingServices import Logger
+from papywizard.common.exception import HardwareError
+from papywizard.hardware.serialDriver import SerialDriver
 
 
 class SerialPassiveDriver(SerialDriver):
     """ Passive driver.
-    
+
     This driver only uses passive components.
     """
     def _setCS(self, level):
         """ Set CS signal to specified level.
-        
+
         @param level: level to set to CS signal
         @type level: int
         """
@@ -45,7 +45,7 @@ class SerialPassiveDriver(SerialDriver):
         try:
             # Empty buffer
             self._serial.read(self._serial.inWaiting())
-            
+
             self._setCS(0)
             self._serial.write(":%s\r" % cmd)
             c = ''
@@ -69,5 +69,5 @@ class SerialPassiveDriver(SerialDriver):
         finally:
             self._setCS(1)
             self.releaseBus()
-            
+
         return data

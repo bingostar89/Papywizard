@@ -19,10 +19,10 @@ __revision__ = "$Id$"
 import gtk
 import gobject
 
-from common import config
-from common.loggingServices import Logger
-from common.exception import HardwareError
-from controller.abstractController import AbstractController
+from papywizard.common import config
+from papywizard.common.loggingServices import Logger
+from papywizard.common.exception import HardwareError
+from papywizard.controller.abstractController import AbstractController
 
 
 class BluetoothConnectController(AbstractController):
@@ -50,7 +50,7 @@ class BluetoothConnectController(AbstractController):
                "on_cancelButton_clicked": self.__onCancelButtonClicked
            }
         self.__view.wTree.signal_autoconnect(dic)
-        
+
         # Fill widgets
         self.refreshView()
 

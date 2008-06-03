@@ -18,21 +18,21 @@ import sys
 import gtk
 import gobject
 
-from common import config
-from common.loggingServices import Logger
-from common.preferences import Preferences
-from common.serializer import Serializer
-from common.exception import HardwareError
-from model.shooting import Shooting
-from view_gtk.mainWindow import MainWindow
-from controller_gtk.mainController import MainController
-from controller.spy import Spy
+from papywizard.common import config
+from papywizard.common.loggingServices import Logger
+from papywizard.common.preferences import Preferences
+from papywizard.common.serializer import Serializer
+from papywizard.common.exception import HardwareError
+from papywizard.model.shooting import Shooting
+from papywizard.view.mainWindow import MainWindow
+from papywizard.controller.mainController import MainController
+from papywizard.controller.spy import Spy
 try:
-    from hardware.head import Head, HeadSimulation
+    from papywizard.hardware.head import Head, HeadSimulation
 except ImportError:
     Logger().exception("Papywizard initial imports")
 if config.VIEW3D_ENABLE:
-    from view3D.view3D import View3D
+    from papywizard.view3D.view3D import View3D
 
 
 def main():

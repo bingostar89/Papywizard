@@ -18,13 +18,13 @@ __revision__ = "$Id$"
 
 import time
 
-from common.loggingServices import Logger
-from serialDriver import SerialDriver
+from papywizard.common.loggingServices import Logger
+from papywizard.hardware.serialDriver import SerialDriver
 
 
 class SerialStampDriver(SerialDriver):
     """ Stamp driver.
-    
+
     This driver uses a Basic Stamp to drive the head.
     """
     def sendCmd(self, cmd):
@@ -47,11 +47,11 @@ class SerialStampDriver(SerialDriver):
                 elif c == '\r':
                     break
                 data += c
-                
+
             # Wait a few ms to let the BS2 accept new commands
             time.sleep(0.05)
-            
+
         finally:
             self.releaseBus()
-            
+
         return data

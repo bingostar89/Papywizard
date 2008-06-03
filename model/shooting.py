@@ -18,12 +18,12 @@ __revision__ = "$Id$"
 
 import time
 
-from common.loggingServices import Logger
-from common.preferences import Preferences
-from common.exception import HardwareError
-from common.data import Data
-from camera import Camera
-from mosaic import Mosaic
+from papywizard.common.loggingServices import Logger
+from papywizard.common.preferences import Preferences
+from papywizard.common.exception import HardwareError
+from papywizard.common.data import Data
+from papywizard.model.camera import Camera
+from papywizard.model.mosaic import Mosaic
 
 
 class Shooting(object):
@@ -47,13 +47,13 @@ class Shooting(object):
         self.__sequence = "Idle"
         self.__setParams = None
         self.__manualShoot = False
-        
+
         self.realHardware = realHardware
         self.simulatedHardware = simulatedHardware
         self.hardware = self.simulatedHardware
         self.camera = Camera()
         self.mosaic = Mosaic()
-        
+
         self.yawStart = 0.
         self.pitchStart = 0.
         self.yawEnd = 0.
@@ -64,17 +64,17 @@ class Shooting(object):
         self.delay = self.__prefs['shooting']['delay']
         self.overlap = self.__prefs['shooting']['overlap']
         self.cameraOrientation = self.__prefs['shooting']['cameraOrientation']
-        
+
         #self.__computeParams('startEnd')
-   
+
     def __getYawFov(self):
         """
         """
         cameraFov = self.camera.getYawFov(self.cameraOrientation)
         return abs(self.yawEnd - self.yawStart) + cameraFov
-    
+
     yawFov = property(__getYawFov, "Total yaw FoV")
-    
+
     def __getPitchFov(self):
         """
         """
@@ -82,7 +82,7 @@ class Shooting(object):
         return abs(self.pitchEnd - self.pitchStart) + cameraFov
 
     pitchFov = property(__getPitchFov, "Total pitch FoV")
-    
+
     def __getYawNbPicts(self):
         """
         """
@@ -106,7 +106,7 @@ class Shooting(object):
         return nbPicts
 
     pitchNbPicts = property(__getPitchNbPicts, "Pitch nb picts")
-    
+
     def __getRealYawOverlap(self):
         """ Recompute real yaw overlap.
         """
@@ -118,7 +118,7 @@ class Shooting(object):
         return overlap
 
     yawRealOverlap = property(__getRealYawOverlap, "Real yaw overlap")
-   
+
     def __getRealPitchOverlap(self):
         """ Recompute real pitch overlap.
         """
@@ -130,13 +130,13 @@ class Shooting(object):
         return overlap
 
     pitchRealOverlap = property(__getRealPitchOverlap, "Real pitch overlap")
-   
+
     #def __computeParams(self, setParam):
         #""" Compute missing params from given params.
-        
+
         #@param setParam: given params type ('startEnd', 'fov', 'nbPict')
         #@type setParam: str
-        
+
         #@todo: add fov and nbPicts
         #"""
         #if setParam == 'startEnd':
@@ -169,7 +169,7 @@ class Shooting(object):
                 raise
         else:
             raise HardwareError("No real hardware available")
-            
+
     def switchToSimulatedHardware(self):
         """ Use simulated hardware.
         """
@@ -184,24 +184,24 @@ class Shooting(object):
         self.yawStart, self.pitchStart = self.hardware.readPosition()
         Logger().debug("Shooting.storeStartPosition(): yaw=%.1f, pitch=%.1f" % (self.yawStart, self.pitchStart))
         #self.__computeParams('startEnd')
-    
+
     def storeEndPosition(self):
         """ Store current position as end position.
         """
         self.yawEnd, self.pitchEnd = self.hardware.readPosition()
         Logger().debug("Shooting.storeEndPosition(): yaw=%.1f, pitch=%.1f" % (self.yawEnd, self.pitchEnd))
         #self.__computeParams('startEnd')
-    
+
     def setManualShoot(self, flag):
         """ Turn on/off manual shoot.
-        
+
         In manual shoot mode, the head switch to suspend at each end of position.
-        
+
         @param flag: flag for manual shoot
         @type flag: bool
         """
         self.__manualShoot = flag
-    
+
     def start(self):
         """ Start pano shooting.
         """
@@ -217,10 +217,10 @@ class Shooting(object):
             if self.__stop:
                 Logger().info("Stop")
                 raise StopIteration
-            
+
         Logger().trace("Shooting.start()")
         self.__running = True
-        
+
         cameraFov = self.camera.getYawFov(self.cameraOrientation)
         try:
             yawInc = (self.yawFov - cameraFov) / (self.yawNbPicts - 1)
@@ -232,7 +232,7 @@ class Shooting(object):
         except ZeroDivisionError:
             pitchInc = self.pitchFov - cameraFov
         self.mosaic.setMatrix(self.yawNbPicts, self.pitchNbPicts)
-        
+
         try:
             data = Data()
             data.addHeaderNode('focal', "%.1f" % self.camera.lens.focal)
@@ -244,7 +244,7 @@ class Shooting(object):
             data.addHeaderNode('yawRealOverlap', "%.2f" % self.yawRealOverlap)
             data.addHeaderNode('pitchRealOverlap', "%.2f" % self.pitchRealOverlap)
             data.addHeaderNode('template', type="mosaic", yaw="%d" % self.yawNbPicts, pitch="%d" % self.pitchNbPicts)
-                
+
             # Loop over all positions
             totalNbPicts = self.yawNbPicts * self.pitchNbPicts
             self.__progress = 0.
@@ -257,49 +257,49 @@ class Shooting(object):
                 Logger().info("Moving")
                 self.__sequence = "Moving"
                 self.hardware.gotoPosition(yaw, pitch)
-    
+
                 Logger().info("Stabilization")
                 self.__sequence = "Stabilizing"
                 time.sleep(self.delay)
-    
+
                 if self.__manualShoot:
                     self.__suspend = True
                     Logger().info("Manual shoot")
-    
+
                 checkSuspendStop()
-    
+
                 Logger().info("Shooting")
                 for pict in xrange(self.camera.nbPicts):
                     Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts))
                     self.__sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
                     self.hardware.shoot(self.camera.timeValue)
                     data.addImageNode(pict + 1, yaw, pitch)
-                        
+
                     checkSuspendStop()
 
                 self.__progress = float((i + 1)) / float(totalNbPicts)
 
             Logger().debug("Shooting.start(): finished")
-        
+
         except StopIteration:
             Logger().debug("Shooting.start(): Stop detected")
-        
+
         self.__yawCoef = "--"
         self.__pitchCoef = "--"
         self.__sequence = "Idle"
         self.__stop = False
         self.__running = False
-    
+
     def getState(self):
         """ Return shooting state.
-        
+
         @return: key 'yawPos': yaw position
                      'pitchPos': pitch position
                      'yawCoef': yaw mosaic coef
                      'pitchCoef': pitch mosaic coef
                      'progress': shooting progress (num of pict)
                      'sequence': shooting sequence
-                 
+
         @rtype: dict
         """
         try:
@@ -314,36 +314,36 @@ class Shooting(object):
         return {'yawPos': yawPos, 'pitchPos': pitchPos,
                 'yawCoef': yawCoef, 'pitchCoef': pitchCoef,
                 'progress': self.__progress, 'sequence': self.__sequence}
-    
+
     def isShooting(self):
         """ Test if shooting is running.
-        
+
         @return: True if shooting is running, False otherwise
         @rtype: bool
         """
         return self.__running
-    
+
     def suspend(self):
         """ Suspend execution of pano shooting.
         """
         Logger().trace("Shooting.suspend()")
         self.__suspend = True
-    
+
     def isSuspended(self):
         """ Test if shotting is suspended.
-        
+
         @return: True if shooting is suspended, False otherwise
         @rtype: bool
         """
         return self.__suspend
-    
+
     def resume(self):
         """ Resume  execution of shooting.
         """
         Logger().trace("Shooting.resume()")
         self.__suspend = False
-    
-    def stop(self): 
+
+    def stop(self):
         """ Cancel execution of shooting.
         """
         Logger().trace("Shooting.stop()")
@@ -355,16 +355,16 @@ class Shooting(object):
 
     def shutdown(self):
         """ Cleanly terminate the model.
-        
+
         Save values to preferences.
         """
         Logger().trace("Shooting.shutdown()")
         self.hardware.shutdown()
         self.camera.shutdown()
         self.mosaic.shutdown()
-        
+
         self.__prefs['shooting']['delay'] = self.delay
         self.__prefs['shooting']['overlap'] = self.overlap
         self.__prefs['shooting']['cameraOrientation'] = self.cameraOrientation
-        
+
         Preferences().save()

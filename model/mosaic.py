@@ -16,17 +16,17 @@ Implements class:
 
 __revision__ = "$Id$"
 
-from common.loggingServices import Logger
-from common.preferences import Preferences
+from papywizard.common.loggingServices import Logger
+from papywizard.common.preferences import Preferences
 
 
 class Mosaic(object):
     """ Mosaic model.
-    
+
     This is an iterator which iters of positions to shoot. A
     template defines the way positions are generated.
     Use it just as any iterator:
-    
+
     >>> mosaic = Mosaic()
     >>> mosaic.template = "Y+P+Y-"
     >>> mosaic.setMatrix(yaw=3, pitch=3)
@@ -44,13 +44,13 @@ class Mosaic(object):
     """
     def __init__(self):
         """ Init the Mosaic object.
-        
+
         Load values from preferences.
         """
         #self.__yawNbPicts = None
         #self.__pitchNbPicts = None
         self.__init = False
-        
+
         self.__prefs = Preferences().load()
         self.template = self.__prefs['mosaic']['template']
 
@@ -59,7 +59,7 @@ class Mosaic(object):
         """
         if self.__yawNbPicts is None or self.__pitchNbPicts is None:
             raise ValueError("You must call setMatrix() first")
-        
+
         # Init self.__yaw and self.__pitch according of the template (todo)
         self.__inc = [{'yaw': 1, 'pitch': 0},
                       {'yaw': 0, 'pitch': 1},
@@ -71,15 +71,15 @@ class Mosaic(object):
         self.__yawInc = 1
         self.__pitch = 0
         self.__pitchInc = 1
-        
+
         return self
 
     def setMatrix(self, yawNbPicts, pitchNbPicts):
         """ Define the number of pictures for both yaw/pitch directions.
-        
+
         @param yawNbPicts: number of pictures for yaw direction
         @type yawNbPicts: int
-        
+
         @param pitchNbPicts: number of pictures for pitch direction
         @type pitchNbPicts: int
         """
@@ -97,12 +97,12 @@ class Mosaic(object):
             #pitch = 0
             #idx = 0
             #self.__init = True
-            
+
         #yield yaw, pitch
         #yaw += inc[idx]['yaw']
         #pitch += inc[idx]['pitch']
         #if yaw >= yawNbPicts:
-        
+
 
     def next(self):
         """ Return next (yaw, pitch) position.
@@ -133,7 +133,7 @@ class Mosaic(object):
 
     def shutdown(self):
         """ Cleanly terminate the lens
-        
+
         Save values to preferences.
         """
         Logger().trace("Mosaic.shutdown()")

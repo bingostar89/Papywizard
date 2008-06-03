@@ -20,10 +20,10 @@ __revision__ = "$Id$"
 import time
 import threading
 
-from common import config
-from common.loggingServices import Logger
-from common.exception import HardwareError
-from common.helpers import decodeAxisValue, encodeAxisValue, deg2cod, cod2deg
+from papywizard.common import config
+from papywizard.common.loggingServices import Logger
+from papywizard.common.exception import HardwareError
+from papywizard.common.helpers import decodeAxisValue, encodeAxisValue, deg2cod, cod2deg
 
 
 class Axis(object):
@@ -38,13 +38,13 @@ class Axis(object):
 
     def _sendCmd(self, cmd, param=""):
         """ Send a command to the axis.
-        
+
         @param cmd: command to send
         @type cmd: str
-        
+
         @return: answer
         @rtype: str
-        
+
         @todo: check if bus is busy before sending command (really usefull?) -> in acquireBus ?
         """
         cmd = "%s%d%s" % (cmd, self._num, param)
@@ -72,7 +72,7 @@ class Axis(object):
             self._sendCmd("D")
         finally:
             self._driver.releaseBus()
-    
+
     def reset(self):
         """ Reset the axis hardware.
         """
@@ -80,15 +80,15 @@ class Axis(object):
 
     def setOrigin(self):
         """ Set current axis positions as origin.
-        
+
         Use offset.
         """
         Logger().warning("Axis.setOrigin(): not yet implemented")
         self.__offset += self.read()
-    
+
     def read(self):
         """ Return the current position of axis.
-        
+
         @return: position, in °
         @rtype: float
         """
@@ -99,30 +99,30 @@ class Axis(object):
             self._driver.releaseBus()
         pos = cod2deg(decodeAxisValue(value))
         pos -= self.__offset
-        
+
         return pos
 
     def drive(self, pos, inc=False, wait=True):
         """ Drive the axis.
-        
+
         @param pos: position to reach, in °
         @type pos: float
-        
+
         @param inc: if True, pos is an increment
         @type inc: bool
-        
+
         @param wait: if True, wait for end of movement,
                      returns immediatly otherwise.
         @type wait: boot
         """
-        
+
         # Compute absolute position from increment if needed
         if inc:
             currentPos = self.read()
             pos = currentPos + inc
         else:
             pos += self.__offset
-            
+
         # Drive to requested position
         strValue = encodeAxisValue(deg2cod(pos))
         self._driver.acquireBus()
@@ -133,18 +133,18 @@ class Axis(object):
             self._sendCmd("J")
         finally:
             self._driver.releaseBus()
-        
+
         # Wait end of movement
         if wait:
             self.waitEndOfDrive()
-    
+
     def stopDrive(self):
         """ stop drive axis.
         """
         self._sendCmd("L")
         self.waitStop()
         #self.stopJog()
-        
+
     def waitEndOfDrive(self):
         """ Wait for end of drive.
         """
@@ -154,22 +154,22 @@ class Axis(object):
                 break
             time.sleep(0.1)
         self.waitStop()
-        
+
     #def drive2(self, pos, inc=False):
         #""" Drive the axis.
-        
+
         #This method implements an external closed loop regulation.
         #It is faster for angles < 6-7°, because in this case, the
         #head does not accelerate to full speed, but rather stays at
         #minimum speed!!!
-        
+
         #@param pos: position to reach, in °
         #@type pos: float
-        
+
         #@param inc: if True, pos is an increment
         #@type inc: bool
         #"""
-        
+
         ## Compute absolute position from increment if needed
         #if inc:
             #currentPos = self.read()
@@ -179,34 +179,34 @@ class Axis(object):
         #try:
             #self._sendCmd("L")
             #initialPos = self.read()
-            
+
             ## Compute direction
             #if pos > initialPos:
                 #self._sendCmd("G", "30")
             #else:
                 #self._sendCmd("G", "31")
-                
+
             ## Load speed
             #self._sendCmd("I", "500000")
-            
+
             ## Start move
             #self._sendCmd("J")
         #finally:
             #self._driver.releaseBus()
-        
+
         ## Closed-loop drive
         #while abs(pos - self.read()) > .5: # optimal delta depends on speed/inertia
             ##time.sleep(0.05)
             #pass
         #self.stopJog()
-        
+
         ## Final drive (auto) if needed
         #if abs(pos - self.read()) > config.AXIS_ACCURACY:
             #self.drive(pos)
-    
+
     def startJog(self, dir):
         """ Start axis in specified direction.
-        
+
         @param dir: direction ('+', '-')
         @type dir: char
         """
@@ -219,18 +219,18 @@ class Axis(object):
                 self._sendCmd("G", "31")
             else:
                 raise ValueError("Axis %d dir. must be in ('+', '-')" % self._num)
-            
+
             self._sendCmd("I", "220000")
             self._sendCmd("J")
         finally:
             self._driver.releaseBus()
-    
+
     def stopJog(self):
         """ Stop the axis.
         """
         self._sendCmd("L")
         self.waitStop()
-       
+
     def waitStop(self):
         """ Wait until axis does not move anymore (inertia).
         """
@@ -246,13 +246,13 @@ class Axis(object):
         """ Return the status of the axis.
         """
         return self._sendCmd("f")
-    
+
     def setOutput(self, level):
         """ Set souput to level.
-        
+
         The output of the V axis is wired to the shoot opto.
         Using thie method on the other axis does nothing.
-        
+
         @param level: level to set to shoot output
         @type level: int
         """
@@ -274,7 +274,7 @@ class AxisSimulation(threading.Thread):
         """
         super(AxisSimulation, self).__init__()
         self.setDaemon(1)
-        
+
         self._num = num
         self.__pos = 0.
         self.__jog = False
@@ -289,7 +289,7 @@ class AxisSimulation(threading.Thread):
         """
         self.__run = True
         while self.__run:
-            
+
             # Jog command
             if self.__jog:
                 if self.__time == None:
@@ -304,7 +304,7 @@ class AxisSimulation(threading.Thread):
                     Logger().debug("AxisSimulation.run(): axis %d inc=%.1f, new __pos=%.1f" % (self._num, inc, self.__pos))
             else:
                 self.__time = None
-                    
+
             # Drive command. Check when stop
             if self.__drive:
                 #Logger().trace("AxisSimulation.run(): axis %d driving" % self._num)
@@ -318,9 +318,9 @@ class AxisSimulation(threading.Thread):
                         self.__jog = False
                         self.__drive = False
                         self.__pos = self.__setpoint
-                
+
             time.sleep(config.SPY_FAST_REFRESH)
-            
+
     def stop(self):
         """ Stop the thread.
         """
@@ -339,10 +339,10 @@ class AxisSimulation(threading.Thread):
         """ Set current axis position as origin.
         """
         self.__pos = 0.
-    
+
     def read(self):
         """ Return the current position of axis.
-        
+
         @return: position, in °
         @rtype: float
         """
@@ -350,25 +350,25 @@ class AxisSimulation(threading.Thread):
 
     def drive(self, pos, inc=False, wait=True):
         """ Drive the axis.
-        
+
         @param pos: position to reach, in °
         @type pos: float
-        
+
         @param inc: if True, pos is an increment
         @type inc: bool
-        
+
         @param wait: if True, wait for end of movement,
                      returns immediatly otherwise.
         @type wait: boot
         """
         Logger().debug("AxisSimulation.drive(): axis %d drive to %.1f" % (self._num, pos))
-        
+
         # Compute absolute position from increment if needed
         if inc:
             self.__setpoint = self.__pos + inc
         else:
             self.__setpoint = pos
-        
+
         # Drive to requested position
         if self.__setpoint > self.__pos:
             self.__dir = '+'
@@ -378,11 +378,11 @@ class AxisSimulation(threading.Thread):
             return
         self.__drive = True
         self.__jog = True
-        
+
         # Wait end of movement
         if wait:
             self.waitEndOfDrive()
-    
+
     def stopDrive(self):
         """ Stop the axis while in drive mode.
         """
@@ -392,18 +392,18 @@ class AxisSimulation(threading.Thread):
     def waitEndOfDrive(self):
         while self.__drive:
             time.sleep(0.1)
-    
+
     def startJog(self, dir):
         self.__dir = dir
         self.__jog = True
-    
+
     def stopJog(self):
         self.__jog = False
         self.waitStop()
-       
+
     def waitStop(self):
         """ Wait until axis does not move anymore.
-        
+
         Nothing special to do.
         """
         pass
@@ -412,13 +412,13 @@ class AxisSimulation(threading.Thread):
         """ Return the status of the axis.
         """
         return "000"
-    
+
     def setOutput(self, level):
         """ Set souput to level.
-        
+
         The output of the V axis is wired to the shoot opto.
         Using thie method on the other axis does nothing.
-        
+
         @param level: level to set to shoot output
         @type level: int
         """

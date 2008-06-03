@@ -23,7 +23,7 @@ import logging.handlers
 import StringIO
 import traceback
 
-from common import config
+from papywizard.common import config
 
 
 consoleLogColors = {'trace':"\033[0;36;40;22m",     # cyan/noir, normal
@@ -44,9 +44,9 @@ class DefaultFormatter(logging.Formatter):
 
 class ColorFormatter(DefaultFormatter):
     """ Color formatting.
-    
+
     This formatter add colors to the log, according to their level.
-    
+
     @todo: do not use colors for windows...
     """
     def _colorFormat(self, record):
@@ -68,7 +68,7 @@ class ColorFormatter(DefaultFormatter):
             color = consoleLogColors['default']
         formattedMsg = DefaultFormatter.format(self, record)
         return color + formattedMsg + consoleLogColors['default']
-        
+
     def format(self, record):
         """ Record formating.
         """
@@ -89,7 +89,7 @@ class Logger(object):
         self = object.__new__(cls, *args, **kwds)
         self.__dict__ = cls.__state
         return self
-        
+
     def __init__(self):
         """ Init object.
         """
@@ -100,17 +100,17 @@ class Logger(object):
             logging.raiseExceptions = 0
             logging.addLevelName(logging.TRACE, "TRACE")
             logging.addLevelName(logging.EXCEPTION, "EXCEPTION")
-            
+
             # Formatters
             colorFormatter = ColorFormatter(config.LOGGER_FORMAT)
             defaultFormatter = DefaultFormatter(config.LOGGER_FORMAT)
-            
+
             # Handlers
             if config.LOGGER_CONSOLE:
                 self.__streamHandler = logging.StreamHandler()
                 self.__streamHandler.setLevel(logging.TRACE)
                 self.__streamHandler.setFormatter(colorFormatter)
-            
+
             if config.LOGGER_FILE:
                 self.__fileHandler = logging.handlers.RotatingFileHandler(config.LOGGER_FILENAME,
                                                                           maxBytes=config.LOGGER_MAXBYTES,
@@ -125,15 +125,15 @@ class Logger(object):
                 self.__logger.addHandler(self.__streamHandler)
             if config.LOGGER_FILE:
                 self.__logger.addHandler(self.__fileHandler)
-            
+
             Logger.__init = False
 
     def __setLevel(self, handler, level):
         """ Change logging level.
-        
+
         @param handler: handler to change level ('console', 'file')
         @type handler: str
-        
+
         @param level: new level, in ('trace', 'debug', 'info', 'warning', 'error', 'exception', 'critical')
         @type level: str
         """
@@ -150,7 +150,7 @@ class Logger(object):
 
     def setConsoleLevel(self, level):
         """ Change logging level for console output.
-        
+
         @param level: new level
         @type level: str
         """
@@ -158,12 +158,12 @@ class Logger(object):
 
     def setFileLevel(self, level):
         """ Change logging level for file output.
-        
+
         @param level: new level
         @type level: str
         """
         self.__setLevel(self.__fileHandler, level)
-        
+
     def trace(self, message):
         """ Logs a message with level TRACE.
 
@@ -171,7 +171,7 @@ class Logger(object):
         @type message: string
         """
         self.__logger.log(logging.TRACE, str(message))
-            
+
     def debug(self, message):
         """ Logs a message with level DEBUG.
 

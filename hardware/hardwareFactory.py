@@ -16,8 +16,8 @@ Implements class:
 
 __revision__ = "$Id$"
 
-from common.exception import HardwareError
-from head import Head, HeadSimulation
+from papywizard.common.exception import HardwareError
+from papywizard.hardware.head import Head, HeadSimulation
 
 
 class HardwareFactory(object):
@@ -25,10 +25,10 @@ class HardwareFactory(object):
     """
     def create(self, type_):
         """ create a hardware object.
-        
+
         @param type_: type of hardware object
         @type type_: str
-        
+
         @raise HardwareError: unknown type
         """
         if type_ == "head":

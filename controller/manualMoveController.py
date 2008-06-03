@@ -18,9 +18,9 @@ __revision__ = "$Id$"
 
 import gtk
 
-from common.loggingServices import Logger
-from controller.abstractController import AbstractController
-from controller.spy import Spy
+from papywizard.common.loggingServices import Logger
+from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.spy import Spy
 
 
 class ManualMoveController(AbstractController):
@@ -63,7 +63,7 @@ class ManualMoveController(AbstractController):
 
         # Fill widgets
         self.refreshView()
-        
+
         # Connect Spy
         Spy().newPosSignal.connect(self.__refreshPos)
 
@@ -81,7 +81,7 @@ class ManualMoveController(AbstractController):
 
     def __onYawMovePlusButtonPressed(self, widget):
         """ Vert. move plus button pressed.
-        
+
         Start vertical axis in plus direction.
         """
         Logger().trace("ManualMoveController.__yawMovePlusButtonPressed()")
@@ -111,13 +111,13 @@ class ManualMoveController(AbstractController):
 
     #def __onHomeButtonClicked(self):
         #""" Home button clicked.
-        
+
         #Goto home position (0., 0.)
         #"""
         #Logger().trace("ManualMoveController.__homeButtonClicked()")
         #def checkEnd(self):
             #""" Check end of homing.
-            
+
             #This method executes once, then registers itself in the TKinter
             #event handler to be execute again after a delay, and exits.
             #This way, GUI events can be handled while model is shooting.
@@ -127,23 +127,23 @@ class ManualMoveController(AbstractController):
             #if abs(round(yaw, 2)) < 0.1 and abs(round(pitch, 2)) < 0.1:
                 #Logger().debug("ManualMoveController.__homeButtonClicked.checkEnd(): home position reached")
                 #self.__view.homeButton.config(text="Home", command=self.__homeButtonClicked)
-                                                            
+
                 #self.__view.protocol("WM_DELETE_WINDOW", self.__view.destroy)
                 #self.refreshView()
                 #return
-            
+
             ##self.refreshView()
             #self.__view.after(200, checkEnd, self)
-        
+
         #self.__model.hardware.gotoPosition(0, 0, wait=False)
 
         #self.__view.homeButton.config(text="Stop", command=self.__stopHome)
-                                      
+
         #self.__view.protocol("WM_DELETE_WINDOW", self.__doNotCloseWindow)
-            
+
         ## Check end of shooting
         #checkEnd(self)
-        
+
     #def __onStopHome(self):
         #""" Stop the goto home function.
         #"""
@@ -158,7 +158,7 @@ class ManualMoveController(AbstractController):
         #""" Window can't be closed while homing.
         #"""
         #Logger().trace("ManualMoveController.__doNotCloseWindow()")
-    
+
     def __onPitchMoveMinusButtonPressed(self, widget):
         """ Horiz. move minus button pressed.
         """
@@ -186,7 +186,7 @@ class ManualMoveController(AbstractController):
         self.__model.hardware.stopAxis('yaw')
         self.__model.hardware.waitStopAxis('yaw')
         self.refreshView()
-        
+
     def __onDoneButtonClicked(self, widget):
         """ Done button has been clicked.
         """
@@ -195,10 +195,10 @@ class ManualMoveController(AbstractController):
 
     def __refreshPos(self, yaw, pitch):
         """ Refresh position according to new pos.
-        
+
         @param yaw: yaw axis value
         @type yaw: float
-        
+
         @param pitch: pitch axis value
         @type pitch: float
         """
@@ -224,4 +224,4 @@ class ManualMoveController(AbstractController):
     #view = ManualMoveDialog()
     #test = ManualMoveController(None, model, view)
     #gtk.main()
-    
+

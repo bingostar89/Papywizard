@@ -16,8 +16,8 @@ Implements class:
 
 __revision__ = "$Id$"
 
-from common.loggingServices import Logger
-from busDriver import BusDriver
+from papywizard.common.loggingServices import Logger
+from papywizard.hardware.busDriver import BusDriver
 
 
 class USBDriver(BusDriver):

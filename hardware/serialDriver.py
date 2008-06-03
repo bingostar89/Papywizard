@@ -18,10 +18,10 @@ __revision__ = "$Id$"
 
 import serial
 
-from common import config
-from common.exception import HardwareError
-from common.loggingServices import Logger
-from busDriver import BusDriver
+from papywizard.common import config
+from papywizard.common.exception import HardwareError
+from papywizard.common.loggingServices import Logger
+from papywizard.hardware.busDriver import BusDriver
 
 
 class SerialDriver(BusDriver):
@@ -35,7 +35,7 @@ class SerialDriver(BusDriver):
                 self._serial.baudrate = config.SERIAL_BAUDRATE
                 self._serial.read(self._serial.inWaiting()) # Empty buffer
                 self._init = True
-                
+
             except:
                 Logger().exception("SerialDriver.init()")
                 raise HardwareError("Can't init SerialDriver object")

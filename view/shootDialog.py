@@ -33,14 +33,14 @@ class ShootDialog(object):
         """
         # Set the Glade file
         gladeFile = os.path.join(path, "shootDialog.glade")
-        self.wTree = gtk.glade.XML(gladeFile) 
-        
+        self.wTree = gtk.glade.XML(gladeFile)
+
         # Retreive usefull widgets
         self._retreiveWidgets()
-        
+
         self.suspendResumeButton.set_state(gtk.STATE_INSENSITIVE)
         self.stopButton.set_state(gtk.STATE_INSENSITIVE)
- 
+
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """

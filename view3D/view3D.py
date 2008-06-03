@@ -32,8 +32,8 @@ import visual as vp
 import visual.text as vpt
 import povexport
 
-from common import config
-from common.loggingServices import Logger
+from papywizard.common import config
+from papywizard.common.loggingServices import Logger
 
 
 class Object3D(vp.frame):
@@ -88,7 +88,7 @@ class Fov3D(Object3D):
         """ Init Fov3D object.
         """
         super(Fov3D, self).__init__(display=display, frame=frame)
-        
+
         hFov = config.VIEW3D_HEAD_HFOV * math.pi / 180.
         vFov = config.VIEW3D_HEAD_VFOV * math.pi / 180.
         l = config.VIEW3D_HEAD_FOV_LENGTH
@@ -111,7 +111,7 @@ class Fov3D(Object3D):
 
         self.fov5 = vp.curve(display=display, frame=self,
                              pos=[vertex1, vertex2, vertex3, vertex4, vertex1])
-    
+
     def draw(self, hFov, vFov):
         """
         """
@@ -122,7 +122,7 @@ class Fov3D(Object3D):
         vertex2 = (-l * math.sin(hFov / 2.), l * math.cos(hFov / 2.), -l * math.sin(vFov / 2.))
         vertex3 = (-l * math.sin(hFov / 2.), l * math.cos(hFov / 2.), l * math.sin(vFov / 2.))
         vertex4 = (l * math.sin(hFov / 2.), l * math.cos(hFov / 2.), l * math.sin(vFov / 2.))
-        
+
         self.fov1.pos = [(0, 0, 0,), vertex1]
         self.fov2.pos = [(0, 0, 0,), vertex2]
         self.fov3.pos = [(0, 0, 0,), vertex3]
@@ -137,11 +137,11 @@ class Apn3D(Object3D):
         """ Init Apn3D object.
         """
         super(Apn3D, self).__init__(display=display, frame=frame)
-        
+
         self.lens = vp.cylinder(display=display, frame=self,
                                 pos=(0, -0.060, 0), axis=(0, 0.080, 0), radius=0.030,
                                 color=vp.color.blue)
-        
+
         self.body = vp.box(display=display, frame=self,
                            pos=(0, -0.060-0.040/2., 0), length=0.110, height=0.040, width=0.070,
                            color=vp.color.blue)
@@ -154,18 +154,18 @@ class Arm3D(Object3D):
         """ Init Arm3D object.
         """
         super(Arm3D, self).__init__(display=display, frame=frame)
-        
+
         # Cylindrical base
         self.base = vp.cylinder(display=display, frame=self,
                                 pos=(-0.070, 0, 0), axis=(0.040, 0, 0), radius=0.040,
                                 color=vp.color.orange)
-        
+
         # Vertical arm
         vPos = 0.
         self.vArm = vp.box(display=display, frame=self,
                            pos=(-0.070+0.025+0.015/2., 0, -vPos), length=0.015, height=0.040, width=0.110,
                            color=vp.color.orange)
-        
+
         # Horizontal arm
         self.hArm = vp.box(display=display, frame=self,
                            pos=(-0.070+0.040+0.120/2., 0, -vPos-0.110/2.+0.015/2.), length=0.120, height=0.040, width=0.015,
@@ -187,15 +187,15 @@ class Body3D(Object3D):
         self.vBody = vp.box(display=display, frame=self,
                             pos=(-0.110+0.030/2., 0, -0.210/2.), length=0.030, height=0.090, width=0.210,
                             color=vp.color.red)
-        
+
         self.hBody = vp.box(display=display, frame=self,
                             pos=(-0.110+0.160/2., 0, -0.210+0.060/2.), length=0.160, height=0.120, width=0.060,
                             color=vp.color.red)
-        
+
         self.yawBase = vp.cylinder(display=display, frame=self,
                                    pos=(0, 0, -0.210), axis=(0, 0, -0.025), radius=0.035,
                                    color=vp.color.red)
-    
+
 
 class Tripod3D(Object3D):
     """ Tripod representation class.
@@ -264,24 +264,24 @@ class World3D(Object3D):
         self.ground = vp.cylinder(display=display, frame=self,
                              pos=(0, 0, 0), axis=(0, 0, -0.1), radius=100,
                              color=(0, 0.1, 0))
-        
+
         self.sky = vp.sphere(display=display, frame=self,
                              pos=(0, 0, 0), radius=100,
                              color=(0.5, 0.5, 1)) #, texture=texture)
-        
+
         self.pos = (0, 0, -0.210-0.025-0.005-0.400-0.900)
 
 
 class Head3D(Object3D):
     """ 3F Head representation.
-    
+
     Class generating the state of the 3D scene of the head and changing it's state.
     """
     def __init__(self, display, frame=None):
         """ Init of Head3D object.
         """
         super(Head3D, self).__init__(display=display, frame=frame)
-        
+
         self.body = Body3D(display=display, frame=self)
 
         self.arm = Arm3D(display=display, frame=self.body)
@@ -301,7 +301,7 @@ class View3D(vp.display):
         """
         vp.display.__init__(self, title=title, width=width, height=height, center=(0, 0, 0), fov=fov, scale=scale,
                             background=vp.color.black, up=(0, 0, 1), forward=forward)
-        
+
         self.lights = [1 * vp.vector(0, 2, 1).norm(),
                        0.1 * vp.vector(0, -1, 3).norm(),
                        #0.1 * vp.vector(0, 1, 3).norm(),
@@ -309,7 +309,7 @@ class View3D(vp.display):
                        0.1 * vp.vector(-1, 0, 3).norm()
                        ]
         self.ambient = 0.5
-        
+
         #self.stereo = 'redblue'
 
         self.__prevYaw = 0
@@ -318,7 +318,7 @@ class View3D(vp.display):
         self.head3D = Head3D(self)
         self.coords3D = Coords3D(self)
         self.world3D = World3D(self)
-        
+
     def viewFromCamera(self, yaw, pitch):
         """ View from camera position.
         """
@@ -327,7 +327,7 @@ class View3D(vp.display):
         l = config.VIEW3D_HEAD_FOV_LENGTH
         self.center = (l * math.sin(yaw), l * math.cos(yaw), l * math.sin(pitch))
         self.forward = vp.vector(l * math.sin(yaw), l * math.cos(yaw), l * math.sin(pitch))
-    
+
     def pov(self, filename='papywizard.pov', xy_ratio=4./3.):
         """ Export the view as povray file.
         """
@@ -336,16 +336,16 @@ class View3D(vp.display):
 
     def draw(self, yaw, pitch, hFov=30, vFov=20):
         """ Redraw the view according to new position.
-        
+
         @param yaw: yaw angle (°)
         @type yaw: float
-        
+
         @param pitch: pitch angle (°)
         @type pitch: float
-        
+
         @param hFov: lens horiz. fov angle (°)
         @type hFov: float
-        
+
         @param vFov: lens vert. fov angle (°)
         @type vFov: float
         """
@@ -355,5 +355,5 @@ class View3D(vp.display):
         self.head3D.arm.rotate(angle=-(pitch-self.__prevPitch), axis=(1, 0, 0))
         self.__prevYaw = yaw
         self.__prevPitch = pitch
-        
+
         self.head3D.fov.draw(hFov, vFov)

@@ -18,8 +18,8 @@ __revision__ = "$Id$"
 
 import shelve
 
-from common import config
-from common.loggingServices import Logger
+from papywizard.common import config
+from papywizard.common.loggingServices import Logger
 
 
 class Preferences(object):
@@ -36,7 +36,7 @@ class Preferences(object):
         self = object.__new__(cls, *args, **kwds)
         self.__dict__ = cls.__state
         return self
-        
+
     def __init__(self):
         """ Init object.
         """
@@ -49,10 +49,10 @@ class Preferences(object):
                 self.__prefs.sync()
 
             Preferences.__init = False
-    
+
     def load(self):
         """ Get prefs.
-        
+
         @return: preferences
         @rtype: dict
         """

@@ -16,7 +16,7 @@ Implements class:
 
 __revision__ = "$Id$"
 
-from common.exception import HardwareError
+from papywizard.common.exception import HardwareError
 
 
 class DriverFactory(object):
@@ -24,10 +24,10 @@ class DriverFactory(object):
     """
     def create(self, type_):
         """ create a hardware driver object.
-        
+
         @param type_: type of hardware object
         @type type_: str
-        
+
         @raise HardwareError: unknown type
         """
         if type_ == "serialPassive":

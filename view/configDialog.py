@@ -24,8 +24,8 @@ import gtk.glade
 
 path = os.path.dirname(__file__)
 
-from common import config
-from common.loggingServices import Logger
+from papywizard.common import config
+from papywizard.common.loggingServices import Logger
 
 
 class ConfigDialog(object):
@@ -36,11 +36,11 @@ class ConfigDialog(object):
         """
         # Set the Glade file
         gladeFile = os.path.join(path, "configDialog.glade")
-        self.wTree = gtk.glade.XML(gladeFile) 
-        
+        self.wTree = gtk.glade.XML(gladeFile)
+
         # Retreive usefull widgets
         self._retreiveWidgets()
- 
+
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """

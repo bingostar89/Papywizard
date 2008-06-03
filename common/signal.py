@@ -23,21 +23,21 @@ import os.path
 import weakref
 import inspect
 
-from common.loggingServices import Logger
+from papywizard.common.loggingServices import Logger
 
 
 class Signal(object):
     """ class Signal.
 
-    A simple implementation of the Signal/Slot pattern. To use, simply 
-    create a Signal instance. The instance may be a member of a class, 
-    a global, or a local; it makes no difference what scope it resides 
-    within. Connect slots to the signal using the "connect()" method. 
-    The slot may be a member of a class or a simple function. If the 
+    A simple implementation of the Signal/Slot pattern. To use, simply
+    create a Signal instance. The instance may be a member of a class,
+    a global, or a local; it makes no difference what scope it resides
+    within. Connect slots to the signal using the "connect()" method.
+    The slot may be a member of a class or a simple function. If the
     slot is a member of a class, Signal will automatically detect when
-    the method's class instance has been deleted and remove it from 
+    the method's class instance has been deleted and remove it from
     its list of connected slots.
-    
+
     This class was generously donated by a poster on ASPN
     see aspn.activestate.com
     """
@@ -60,7 +60,7 @@ class Signal(object):
                 slot(*args, **kwargs)
             else:
                 del self.__slots[i]
-                
+
     def emit(self, *args, **kwargs):
         """
         """
@@ -78,7 +78,7 @@ class Signal(object):
         else:
             o = _WeakMethod_FuncHost(slot)
             self.__slots.append(_WeakMethod(o.func))
-            
+
             # we stick a copy in here just to keep the instance alive
             self.__funchost.append(o)
 
@@ -108,14 +108,14 @@ class Signal(object):
         self.__slots = []
         self.__funchost = []
         self.__methodhost = []
-        
+
 
 class _WeakMethod_FuncHost:
     """
     """
     def __init__(self, func):
         self.hostedFunction = func
-        
+
     def func(self, *args, **kwargs):
         self.hostedFunction(*args, **kwargs)
 
@@ -126,7 +126,7 @@ class _WeakMethod:
     def __init__(self, f):
         self.f = f.im_func
         self.c = weakref.ref(f.im_self)
-        
+
     def __call__(self, *args, **kwargs):
         if self.c() == None:
             return

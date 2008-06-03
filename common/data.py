@@ -53,8 +53,8 @@ __revision__ = "$Id$"
 import time
 import xml.dom.minidom
 
-from common import config
-from common.loggingServices import Logger
+from papywizard.common import config
+from papywizard.common.loggingServices import Logger
 
 
 class Data(object):
@@ -62,22 +62,22 @@ class Data(object):
     """
     def __init__(self):
         """ Init object.
-        
+
         #@param headerInfo: informations stored in the <header> section
         #@type headerInfo: dict
         """
         Logger().debug("Data.__init__(): create xml tree")
         self.__date = time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime())
-        
+
         # Create xml tree
         self.__impl = xml.dom.minidom.getDOMImplementation()
         self.__doc = self.__impl.createDocument(None, "papywizard", None)
         self.__rootNode = self.__doc.documentElement
-        
+
         # Create 'header' node
         self.__headerNode = self.__doc.createElement('header')
         self.__rootNode.appendChild(self.__headerNode)
-        
+
         # Create 'shoot' node
         self.__shootNode = self.__doc.createElement('shoot')
         self.__rootNode.appendChild(self.__shootNode)
@@ -86,10 +86,10 @@ class Data(object):
 
     def __createNode(self, parent, tag):
         """ Create a node.
-        
+
         @param parent: parent node
         @type parent: {DOM Element}
-        
+
         @param tag: name of the tag
         @type tag: str
         """
@@ -99,13 +99,13 @@ class Data(object):
 
     def __createTextNode(self, parent, tag, text):
         """ Create a text node.
-        
+
         @param parent: parent node
         @type parent: {DOM Element}
-        
+
         @param tag: name of the text tag
         @type tag: str
-        
+
         @param text: text to use
         @type text: str
         """
@@ -125,13 +125,13 @@ class Data(object):
 
     def addHeaderNode(self, tag, value=None, **attr):
         """ Add a header node.
-        
+
         @param tag: tag of the node
         @type tag: str
-        
+
         @param value: value of the node
         @type value: str
-        
+
         @param attr: optionnal attributes
         @type attr: dict
         """
@@ -142,19 +142,19 @@ class Data(object):
             headerNode = self.__createNode(self.__headerNode, tag)
         for key, val in attr.iteritems():
             headerNode.setAttribute(key, val)
-        
+
         # Serialize xml file
         self.__serialize()
 
     def addImageNode(self, pict, yaw, pitch):
         """ Add a new image node to shoot node.
-        
+
         @param pict: num of the pict (bracketing)
         @type pict: int
-        
+
         @param yaw: yaw position
         @type yaw: float
-        
+
         @param pitch: pitch position
         @type pitch: float
         """
@@ -167,6 +167,6 @@ class Data(object):
         self.__createTextNode(imageNode, 'time', time.ctime())
         self.__createTextNode(imageNode, 'yaw', "%.1f" % yaw)
         self.__createTextNode(imageNode, 'pitch', "%.1f" % pitch)
-        
+
         # Serialize xml file
         self.__serialize()

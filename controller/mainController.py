@@ -21,20 +21,20 @@ import threading
 
 import gtk
 
-from common import config
-from common.loggingServices import Logger
-from common.exception import HardwareError
-from view_gtk.bluetoothConnectDialog import BluetoothConnectDialog
-from view_gtk.configDialog import ConfigDialog
-from view_gtk.manualMoveDialog import ManualMoveDialog
-from view_gtk.shootDialog import ShootDialog
-from view_gtk.helpAboutDialog import HelpAboutDialog
-from controller.abstractController import AbstractController
-from controller_gtk.bluetoothConnectController import BluetoothConnectController
-from controller_gtk.configController import ConfigController
-from controller_gtk.manualMoveController import ManualMoveController
-from controller_gtk.shootController import ShootController
-from controller.spy import Spy
+from papywizard.common import config
+from papywizard.common.loggingServices import Logger
+from papywizard.common.exception import HardwareError
+from papywizard.view.bluetoothConnectDialog import BluetoothConnectDialog
+from papywizard.view.configDialog import ConfigDialog
+from papywizard.view.manualMoveDialog import ManualMoveDialog
+from papywizard.view.shootDialog import ShootDialog
+from papywizard.view.helpAboutDialog import HelpAboutDialog
+from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.bluetoothConnectController import BluetoothConnectController
+from papywizard.controller.configController import ConfigController
+from papywizard.controller.manualMoveController import ManualMoveController
+from papywizard.controller.shootController import ShootController
+from papywizard.controller.spy import Spy
 
 
 class MainController(AbstractController):
@@ -55,7 +55,7 @@ class MainController(AbstractController):
         self.__serializer = serializer
         self.__model = model
         self.__view = view
-        
+
         self.__yawPos = 0
         self.__pitchPos = 0
 
@@ -76,7 +76,7 @@ class MainController(AbstractController):
         self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
         self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
         self.__view.mainWindow.connect("window-state-event", self.__onWindowStateChanged)
-        
+
         self.__keyPressedDict = {'FullScreen': False,
                                  'Left': False,
                                  'Right': False,
@@ -96,7 +96,7 @@ class MainController(AbstractController):
                       'Return': gtk.keysyms.Return,
                       'Escape': gtk.keysyms.Escape
                       }
-        
+
         # Nokia plateform stuff
         try:
             import hildon
@@ -105,19 +105,19 @@ class MainController(AbstractController):
             self.__view.window_in_fullscreen = False
         except ImportError:
             pass
-        
+
         # Fill widgets
         self.refreshView()
-        
+
         # Connect Spy
         Spy().newPosSignal.connect(self.__refreshPos)
-        
+
         # Try to autoconnect to real hardware
         #self.__connectToHardware()
 
     # Callbacks
     def __onKeyPressed(self, widget, event, *args):
-        
+
         # 'FullScreen' key
         if event.keyval == self.__key['FullScreen']:
             if not self.__keyPressedDict['FullScreen']:
@@ -128,7 +128,7 @@ class MainController(AbstractController):
                     self.__view.mainWindow.fullscreen()
                 self.__keyPressedDict['FullScreen'] = True
             return True
-                
+
         # 'Right' key
         elif event.keyval == self.__key['Right']:
             if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
@@ -136,7 +136,7 @@ class MainController(AbstractController):
                 self.__keyPressedDict['Right'] = True
                 self.__model.hardware.startAxis('yaw', '+')
             return True
-                
+
         # 'Left' key
         elif event.keyval == self.__key['Left']:
             if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
@@ -144,7 +144,7 @@ class MainController(AbstractController):
                 self.__keyPressedDict['Left'] = True
                 self.__model.hardware.startAxis('yaw', '-')
             return True
-                
+
         # 'Up' key
         elif event.keyval == self.__key['Up']:
             if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
@@ -152,7 +152,7 @@ class MainController(AbstractController):
                 self.__keyPressedDict['Up'] = True
                 self.__model.hardware.startAxis('pitch', '+')
             return True
-                
+
         # 'Down' key
         elif event.keyval == self.__key['Down']:
             if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
@@ -160,7 +160,7 @@ class MainController(AbstractController):
                 self.__keyPressedDict['Down'] = True
                 self.__model.hardware.startAxis('pitch', '-')
             return True
-                
+
         # 'Home' key
         elif event.keyval == self.__key['Home']:
             if not self.__keyPressedDict['Home'] and \
@@ -171,7 +171,7 @@ class MainController(AbstractController):
                 self.__model.storeStartPosition()
                 self.refreshView()
             return True
-                
+
         # 'End' key
         elif event.keyval == self.__key['End']:
             if not self.__keyPressedDict['End'] and not self.__keyPressedDict['Home'] and \
@@ -182,32 +182,32 @@ class MainController(AbstractController):
                 self.__model.storeEndPosition()
                 self.refreshView()
             return True
-                
+
         # 'Return' key
         elif event.keyval == self.__key['Return']:
             Logger().debug("MainController.__onKeyPressed(): 'Return' key pressed; open shoot dialog")
             self.__openShootdialog()
             return True
-                
+
         # 'Escape' key
         elif event.keyval == self.__key['Escape']:
             if not self.__keyPressedDict['Escape']:
                 Logger().debug("MainController.__onKeyPressed(): 'Escape' key pressed")
                 self.__keyPressedDict['Escape'] = True
             return True
-            
+
         else:
             Logger().warning("MainController.__onKeyPressed(): unbind '%s' key" % event.keyval)
 
     def __onKeyReleased(self, widget, event, *args):
-        
+
         # 'FullScreen' key
         if event.keyval == self.__key['FullScreen']:
             if self.__keyPressedDict['FullScreen']:
                 Logger().debug("MainController.__onKeyReleased(): 'FullScreen' key released")
                 self.__keyPressedDict['FullScreen'] = False
             return True
-                
+
         # 'Right' key
         if event.keyval == self.__key['Right']:
             if self.__keyPressedDict['Right']:
@@ -215,7 +215,7 @@ class MainController(AbstractController):
                 self.__model.hardware.stopAxis('yaw')
                 self.__keyPressedDict['Right'] = False
             return True
-                
+
         # 'Left' key
         if event.keyval == self.__key['Left']:
             if self.__keyPressedDict['Left']:
@@ -223,7 +223,7 @@ class MainController(AbstractController):
                 self.__model.hardware.stopAxis('yaw')
                 self.__keyPressedDict['Left'] = False
             return True
-                
+
         # 'Up' key
         if event.keyval == self.__key['Up']:
             if self.__keyPressedDict['Up']:
@@ -231,7 +231,7 @@ class MainController(AbstractController):
                 self.__model.hardware.stopAxis('pitch')
                 self.__keyPressedDict['Up'] = False
             return True
-                
+
         # 'Down' key
         if event.keyval == self.__key['Down']:
             if self.__keyPressedDict['Down']:
@@ -239,21 +239,21 @@ class MainController(AbstractController):
                 self.__model.hardware.stopAxis('pitch')
                 self.__keyPressedDict['Down'] = False
             return True
-                
+
         # 'Home' key
         if event.keyval == self.__key['Home']:
             if self.__keyPressedDict['Home']:
                 Logger().debug("MainController.__onKeyReleased(): 'Home' key released")
                 self.__keyPressedDict['Home'] = False
             return True
-                
+
         # 'End' key
         if event.keyval == self.__key['End']:
             if self.__keyPressedDict['End']:
                 Logger().debug("MainController.__onKeyReleased(): 'End' key released")
                 self.__keyPressedDict['End'] = False
             return True
-                
+
         # 'Escape' key
         elif event.keyval == self.__key['Escape']:
             if self.__keyPressedDict['Escape']:
@@ -263,7 +263,7 @@ class MainController(AbstractController):
 
         else:
             Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
-        
+
     def __onWindowStateChanged(self, widget, event, *args):
         Logger().debug("MainController.__onWindowStateChanged()")
         if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
@@ -284,7 +284,7 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onHardwareSetOriginMenuActivated()")
         Logger().info("Set hardware origin")
         self.__model.hardware.setOrigin()
-        
+
     def __onHelpAboutMenuActivated(self, widget):
         """ Connect check button toggled.
         """
@@ -399,10 +399,10 @@ class MainController(AbstractController):
 
     def __refreshPos(self, yaw, pitch):
         """ Refresh position according to new pos.
-        
+
         @param yaw: yaw axis value
         @type yaw: float
-        
+
         @param pitch: pitch axix value
         @type pitch: float
         """

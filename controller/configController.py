@@ -18,9 +18,9 @@ __revision__ = "$Id$"
 
 import copy
 
-from common import config
-from common.loggingServices import Logger
-from controller.abstractController import AbstractController
+from papywizard.common import config
+from papywizard.common.loggingServices import Logger
+from papywizard.controller.abstractController import AbstractController
 
 
 class ConfigController(AbstractController):
@@ -48,13 +48,13 @@ class ConfigController(AbstractController):
                "on_defaultButton_clicked": self.__onDefaultButtonClicked
            }
         self.__view.wTree.signal_autoconnect(dic)
-        
+
         # Fill widgets
         self.refreshView()
 
     def __onOkButtonClicked(self, widget):
         """ Ok button has been clicked.
-        
+
         Save back values to model.
         """
         Logger().trace("ConfigController.__onOkButtonClicked()")
@@ -70,21 +70,21 @@ class ConfigController(AbstractController):
 
     def __onCancelButtonClicked(self, widget):
         """ Cancel button has been clicked.
-        
+
         Close the pref. dialog.
         """
         Logger().trace("ConfigController.__onCancelButtonClicked()")
 
     def __onDefaultButtonClicked(self, widget):
         """ Default button has been clicked.
-        
+
         Load default config values.
         """
         Logger().trace("ConfigController.__onDefaultButtonClicked()")
         defaultValues = copy.deepcopy(config.DEFAULT_PREFS)
         defaultValues['shooting']['overlap'] *= 100
         self.__view.fillWidgets(defaultValues)
-        
+
     def refreshView(self):
         values = {'shooting': {'overlap': int(100 * self.__model.overlap),
                                'cameraOrientation': self.__model.cameraOrientation,

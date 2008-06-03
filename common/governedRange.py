@@ -18,25 +18,25 @@ __revision__ = "$Id$"
 
 import time
 
-from common.loggingServices import Logger
+from papywizard.common.loggingServices import Logger
 
 
 class GovernedRange(object):
     """ GovernedRange object.
-    
-    Returns a range of floats, where each consecutive number is 
-    incremented at a speed * time between iterations, rather than 
+
+    Returns a range of floats, where each consecutive number is
+    incremented at a speed * time between iterations, rather than
     a set value.
     """
     def __init__(self, start, end=None, speed=1):
         """ Init the object.
-        
+
         @param low: start of range
         @type low: float
-        
+
         @param high: end of range
         @type high: float
-        
+
         @param speed: amount to increment, per second.
         @type speed: float
         """
@@ -45,13 +45,13 @@ class GovernedRange(object):
         self.__end = end
         self.__value = self.__start
         self.__time = time.time()
-    
+
     def __iter__(self):
         """ Define GovernedRange as an iterator.
         """
         while True:
             yield self.next()
-            
+
     def next(self):
         """ Return the next value.
         """
@@ -63,6 +63,6 @@ class GovernedRange(object):
             if value >= self.__end:
                 raise StopIteration
         self.__value = value
-        
+
         return value
 

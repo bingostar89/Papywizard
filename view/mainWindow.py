@@ -34,33 +34,33 @@ class MainWindow(object):
         """
         # Set the Glade file
         gladeFile = os.path.join(path, "mainWindow.glade")
-        self.wTree = gtk.glade.XML(gladeFile) 
-        
+        self.wTree = gtk.glade.XML(gladeFile)
+
         # Retreive usefull widgets
         self._retreiveWidgets()
-        
+
         # Nokia plateform stuff
         try:
             import hildon
-            
+
             self.app = hildon.Program()
             window = hildon.Window()
             window.set_title(self.mainWindow.get_title())
             self.window_in_fullscreen = False
             self.app.add_window(window)
             self.mainVbox.reparent(window)
-            
+
             menu = gtk.Menu()
             for child in self.menubar.get_children():
                 child.reparent(menu)
             window.set_menu(menu)
-            
-            self.menubar.destroy() 
+
+            self.menubar.destroy()
             self.mainWindow.destroy()
             window.show_all()
             self.menuBar = menu
             self.mainWindow = window
-            
+
         except ImportError:
             pass
 
@@ -92,7 +92,7 @@ class MainWindow(object):
 
     def fillWidgets(self, values):
         """ Fill widgets with model values.
-        
+
         @params values: model values
         @type values: dict
         """
