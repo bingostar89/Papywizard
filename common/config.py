@@ -52,7 +52,7 @@ SHOOT_PULSE = 0.2            # (s)
 
 AXIS_SPEED = 10.             # used in simulation (°/s)
 
-DRIVER = "bluetooth"         # Driver to use
+DRIVER = "bluetooth"         # Driver to use, in ('serialPasive', 'serialStamp', 'bluetooth')
 BLUETOOTH_DEVICE_ADDRESS = "00:50:C2:58:55:B9"
 BLUETOOTH_DRIVER_CONNECT_DELAY = 8
 SERIAL_PORT = 0              # O is first COM port, 1 is second...
