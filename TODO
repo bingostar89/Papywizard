@@ -13,7 +13,7 @@ x done
     + add sub-loggers (model, view, hardware...)
     + use python config parser module for global configuration
     ? use gtkmvc framework
-    ? remove Tkinter support
+    x remove Tkinter support
     + implement a statusbarManager to display messages (during a given time)
     + use message window for harware connexion...
     
@@ -27,7 +27,7 @@ x done
             x 'about' entry
         x lock window close while a sub-dialog is open
         x add visual status for hardware connection (grey/green led). Gtk version only
-        + add visual feedback for hardware com. (blinking green led)
+        x add visual feedback for hardware com. (blinking green led)
         x add coords in realtime (just implement slot connected to spy)
         + deactivate menu if real hardware is unusable (lib dependency problem)
         + use status line and message box
@@ -50,7 +50,6 @@ x done
         
     * ConfigDialog
         x recompute all params when closing
-        - bug in 'Tv' and 'Sensor coef' params display (1,6.0) (only under Tkinter/linux)
 
 * View3D
     + add view from the camera (with correct fov)
