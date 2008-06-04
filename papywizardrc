@@ -1,0 +1,149 @@
+[General]
+
+# Config file version
+VERSION = 1
+
+# Temporary directory
+TEMP_DIR = /tmp
+
+# Name of the data file
+DATA_FILE = papywizard-%%s.xml
+
+# Flag to write data file or not
+WRITE_DATA_FILE = False
+
+
+[Logger]
+
+# Logger level, in ('trace', 'debug', 'info', 'warning', 'error', 'exception', 'critical')
+LOGGER_LEVEL = 'trace'
+
+# Logger format
+#LOGGER_FORMAT = %%(asctime)s::%%(threadName)s::%%(levelname)s::%%(message)s
+LOGGER_FORMAT = %%(asctime)s::%%(levelname)s::%%(message)s
+
+# Logger filename
+LOGGER_FILENAME = papywizard.log
+
+# Loger file size (in Kb)
+LOGGER_MAXBYTES = 1048576
+
+# Number of logger file backup
+LOGGER_BACKUP_COUNT = 2
+
+# Flag to log on the console or not
+LOGGER_CONSOLE = True
+
+# Flag to log on file or not
+LOGGER_FILE = True
+
+# Spy refresh timeing (s)
+SPY_SLOW_REFRESH = 0.5
+SPY_FAST_REFRESH = 0.05
+
+
+[Hardware]
+
+# Axis numbers
+AXIS_NUM_YAW = 1
+AXIS_NUM_PITCH = 2
+
+# Axis accuracy (°)
+AXIS_ACCURACY = 0.1
+
+# Shoot pulse width (s)
+SHOOT_PULSE = 0.2
+
+# Axis speed used for simulation (°/s)
+AXIS_SPEED = 10.
+
+# Driver to use, in ('serialPasive', 'serialStamp', 'bluetooth')
+DRIVER = bluetooth
+
+# Bluetooth-to-serial converter address
+BLUETOOTH_DEVICE_ADDRESS = 00:50:C2:58:55:B9
+
+# Delay of bluetooth connection (s)
+BLUETOOTH_DRIVER_CONNECT_DELAY = 8
+
+# Serial port (0 is first COM port, 1 is second)
+SERIAL_PORT = 0
+
+# Serial baudrate
+SERIAL_BAUDRATE = 9600
+
+# Serial read/write timeout (s)
+SERIAL_TIMEOUT = .2
+
+# Encoder value for 360°
+ENCODER_360 = 0x0E6600
+
+# Encoder value at init
+ENCODER_ZERO = 0x800000
+
+
+[DefaultPreferences]
+
+# Default values for user configuration
+# See section [Preferences] for param details
+CAMERA_SENSOR_COEF = 1.6
+CAMERA_SENSOR_RATIO = 3:2
+CAMERA_TIME_VALUE = 0.5
+CAMERA_NB_PICTS = 1
+LENS_FOCAL = 17.
+LENS_FISHEYE = False
+MOSAIC_TEMPLATE = Auto
+SHOOTING_OVERLAP = 0.25
+SHOOTING_CAMERA_ORIENTATION = portrait
+SHOOTING_MANUAL_SHOOT = False
+SHOOTING_STABILIZATION_DELAY = 0.5
+
+[Preferences]
+
+# Sensor factor to 35mm equivalent
+CAMERA_SENSOR_COEF = 1.6
+
+# Ratio of the sensor
+CAMERA_SENSOR_RATIO = 3:2
+
+# Duration of each shot (s)
+CAMERA_TIME_VALUE = 0.5
+
+# Number of pictures at each position (bracketing)
+CAMERA_NB_PICTS = 1
+
+# Focal (mm)
+LENS_FOCAL = 17.
+
+# Flag for fisheye
+LENS_FISHEYE = False
+
+# Template to use for shooting
+MOSAIC_TEMPLATE = Auto
+
+# Minimum overlap between shots (ratio)
+SHOOTING_OVERLAP = 0.25
+
+# Camera orientation
+SHOOTING_CAMERA_ORIENTATION = portrait
+
+# Flag for manual shooting at each position
+SHOOTING_MANUAL_SHOOT = False
+
+# Stabilization delay
+SHOOTING_STABILIZATION_DELAY = 0.5
+
+
+[View3D]
+
+# Flag to enable 3D view or not
+VIEW3D_ENABLE = False
+
+# 3D view horizontal field of view (°)
+VIEW3D_HEAD_HFOV = 30.
+
+# 3D view vertical field of view (°)
+VIEW3D_HEAD_VFOV = 20.
+
+# Internal fov param
+VIEW3D_HEAD_FOV_LENGTH = 1
