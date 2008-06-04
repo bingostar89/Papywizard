@@ -57,7 +57,7 @@ SHOOT_PULSE = 0.2
 # Axis speed used for simulation (°/s)
 AXIS_SPEED = 10.
 
-# Driver to use, in ('serialPasive', 'serialStamp', 'bluetooth')
+# Driver to use, in ('serialPassive', 'serialStamp', 'bluetooth')
 DRIVER = bluetooth
 
 # Bluetooth-to-serial converter address
@@ -80,23 +80,6 @@ ENCODER_360 = 0x0E6600
 
 # Encoder value at init
 ENCODER_ZERO = 0x800000
-
-
-[DefaultPreferences]
-
-# Default values for user configuration
-# See section [Preferences] for param details
-CAMERA_SENSOR_COEF = 1.6
-CAMERA_SENSOR_RATIO = 3:2
-CAMERA_TIME_VALUE = 0.5
-CAMERA_NB_PICTS = 1
-LENS_FOCAL = 17.
-LENS_FISHEYE = False
-MOSAIC_TEMPLATE = Auto
-SHOOTING_OVERLAP = 0.25
-SHOOTING_CAMERA_ORIENTATION = portrait
-SHOOTING_MANUAL_SHOOT = False
-SHOOTING_STABILIZATION_DELAY = 0.5
 
 [Preferences]
 
@@ -131,6 +114,23 @@ SHOOTING_CAMERA_ORIENTATION = portrait
 SHOOTING_MANUAL_SHOOT = False
 
 # Stabilization delay
+SHOOTING_STABILIZATION_DELAY = 0.5
+
+
+[DefaultPreferences]
+
+# Default values for user configuration
+# See section [Preferences] for param details
+CAMERA_SENSOR_COEF = 1.6
+CAMERA_SENSOR_RATIO = 3:2
+CAMERA_TIME_VALUE = 0.5
+CAMERA_NB_PICTS = 1
+LENS_FOCAL = 17.
+LENS_FISHEYE = False
+MOSAIC_TEMPLATE = Auto
+SHOOTING_OVERLAP = 0.25
+SHOOTING_CAMERA_ORIENTATION = portrait
+SHOOTING_MANUAL_SHOOT = False
 SHOOTING_STABILIZATION_DELAY = 0.5
 
 
