@@ -53,7 +53,7 @@ headSimulation = HeadSimulation()
 model = Shooting(head, headSimulation)
 
 # Launch spy thread
-Spy(model, ConfigManager().getFloat('Logger', 'SPY_FAST_REFRESH'))
+Spy(model, ConfigManager().getFloat('Misc', 'SPY_FAST_REFRESH'))
 Spy().start()
 
 # Create 3D view
