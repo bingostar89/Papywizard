@@ -22,7 +22,6 @@ import threading
 import gtk
 import gobject
 
-from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.spy import Spy
