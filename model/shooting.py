@@ -19,7 +19,7 @@ __revision__ = "$Id$"
 import time
 
 from papywizard.common.loggingServices import Logger
-from papywizard.common.preferences import Preferences
+from papywizard.common.configManager import ConfigManager
 from papywizard.common.exception import HardwareError
 from papywizard.common.data import Data
 from papywizard.model.camera import Camera
@@ -60,10 +60,9 @@ class Shooting(object):
         self.pitchEnd = 0.
         self.position = self.hardware.readPosition()
 
-        self.__prefs = Preferences().load()
-        self.delay = self.__prefs['shooting']['delay']
-        self.overlap = self.__prefs['shooting']['overlap']
-        self.cameraOrientation = self.__prefs['shooting']['cameraOrientation']
+        self.stabilizationDelay = ConfigManager().getFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY')
+        self.overlap = ConfigManager().getFloat('Preferences', 'SHOOTING_OVERLAP')
+        self.cameraOrientation = ConfigManager().get('Preferences', 'SHOOTING_CAMERA_ORIENTATION')
 
         #self.__computeParams('startEnd')
 
@@ -260,7 +259,7 @@ class Shooting(object):
 
                 Logger().info("Stabilization")
                 self.__sequence = "Stabilizing"
-                time.sleep(self.delay)
+                time.sleep(self.stabilizationDelay)
 
                 if self.__manualShoot:
                     self.__suspend = True
@@ -363,8 +362,8 @@ class Shooting(object):
         self.camera.shutdown()
         self.mosaic.shutdown()
 
-        self.__prefs['shooting']['delay'] = self.delay
-        self.__prefs['shooting']['overlap'] = self.overlap
-        self.__prefs['shooting']['cameraOrientation'] = self.cameraOrientation
+        ConfigManager().setFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY', self.stabilizationDelay, 1)
+        ConfigManager().setFloat('Preferences', 'SHOOTING_OVERLAP', self.overlap, 2)
+        ConfigManager().set('Preferences', 'SHOOTING_CAMERA_ORIENTATION', self.cameraOrientation)
 
-        Preferences().save()
+        ConfigManager().save()

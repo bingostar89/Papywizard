@@ -53,7 +53,7 @@ __revision__ = "$Id$"
 import time
 import xml.dom.minidom
 
-from papywizard.common import config
+from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 
 
@@ -117,9 +117,9 @@ class Data(object):
     def __serialize(self):
         """ Serialize xml tree to file.
         """
-        if config.WRITE_DATA_FILE:
+        if ConfigManager().getBoolean('General', 'WRITE_DATA_FILE'):
             Logger().trace("Data.serialize()")
-            xmlFile = file(config.DATA_FILE % self.__date, 'w')
+            xmlFile = file(ConfigManager().get('General', 'DATA_FILE') % self.__date, 'w')
             self.__doc.writexml(xmlFile, addindent='    ', newl='\n')
             xmlFile.close()
 

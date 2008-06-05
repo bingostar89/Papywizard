@@ -20,7 +20,7 @@ __revision__ = "$Id$"
 import time
 import threading
 
-from papywizard.common import config
+from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
 from papywizard.common.helpers import decodeAxisValue, encodeAxisValue, deg2cod, cod2deg
@@ -201,7 +201,7 @@ class Axis(object):
         #self.stopJog()
 
         ## Final drive (auto) if needed
-        #if abs(pos - self.read()) > config.AXIS_ACCURACY:
+        #if abs(pos - self.read()) > ConfigManager().getFloat('Hardware', 'AXIS_ACCURACY'):
             #self.drive(pos)
 
     def startJog(self, dir):
@@ -295,7 +295,7 @@ class AxisSimulation(threading.Thread):
                 if self.__time == None:
                     self.__time = time.time()
                 else:
-                    inc = (time.time() - self.__time) * config.AXIS_SPEED
+                    inc = (time.time() - self.__time) * ConfigManager().getFloat('Hardware', 'AXIS_SPEED')
                     self.__time = time.time()
                     if self.__dir == '+':
                         self.__pos += inc
@@ -319,7 +319,7 @@ class AxisSimulation(threading.Thread):
                         self.__drive = False
                         self.__pos = self.__setpoint
 
-            time.sleep(config.SPY_FAST_REFRESH)
+            time.sleep(ConfigManager().getFloat('Logger', 'SPY_FAST_REFRESH'))
 
     def stop(self):
         """ Stop the thread.

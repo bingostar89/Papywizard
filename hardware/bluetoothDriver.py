@@ -20,7 +20,7 @@ import time
 
 import bluetooth
 
-from papywizard.common import config
+from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
 from papywizard.hardware.busDriver import BusDriver
@@ -36,7 +36,7 @@ class BluetoothDriver(BusDriver):
     def init(self):
         if not self._init:
             try:
-                self.setDeviceAddress(config.BLUETOOTH_DEVICE_ADDRESS)
+                self.setDeviceAddress(ConfigManager().get('Hardware', 'BLUETOOTH_DEVICE_ADDRESS'))
                 self._sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
                 self._sock.connect((self.__deviceAddress, 1))
                 self._init = True

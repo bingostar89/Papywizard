@@ -19,7 +19,7 @@ __revision__ = "$Id$"
 
 import time
 
-from papywizard.common import config
+from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.hardware.axis import Axis, AxisSimulation
 from papywizard.hardware.driverFactory import DriverFactory
@@ -31,9 +31,10 @@ class Head(object):
     def __init__(self):
         """ Init the object.
         """
-        self.driver = DriverFactory().create(config.DRIVER)
-        self.yawAxis = Axis(config.AXIS_NUM_YAW, self.driver)
-        self.pitchAxis = Axis(config.AXIS_NUM_PITCH, self.driver)
+        self.driver = DriverFactory().create(ConfigManager().get('Hardware', 'DRIVER'))
+        num = ConfigManager().getInt('Hardware', 'AXIS_NUM_YAW')
+        self.yawAxis = Axis(ConfigManager().getInt('Hardware', 'AXIS_NUM_YAW'), self.driver)
+        self.pitchAxis = Axis(ConfigManager().getInt('Hardware', 'AXIS_NUM_PITCH'), self.driver)
 
     def init(self):
         """ Init the head.
@@ -46,7 +47,7 @@ class Head(object):
         Logger().debug("Head.init(): initializing driver...")
         self.driver.init()
         Logger().debug("Head.init(): driver initialized; waiting for connection...")
-        time.sleep(config.BLUETOOTH_DRIVER_CONNECT_DELAY)
+        time.sleep(ConfigManager().getFloat('Hardware', 'BLUETOOTH_DRIVER_CONNECT_DELAY'))
         Logger().debug("Head.init(): initializing axis...")
         self.yawAxis.init()
         self.pitchAxis.init()
@@ -145,7 +146,7 @@ class Head(object):
         """
         Logger().trace("Head.shoot()")
         self.yawAxis.setOutput(1)
-        time.sleep(config.SHOOT_PULSE)
+        time.sleep(ConfigManager().getFloat('Hardware', 'SHOOT_PULSE'))
         self.yawAxis.setOutput(0)
         time.sleep(delay)
 
@@ -163,8 +164,8 @@ class HeadSimulation(Head):
     def __init__(self, *args, **kwargs):
         """ Init the object.
         """
-        self.yawAxis = AxisSimulation(config.AXIS_NUM_YAW)
-        self.pitchAxis = AxisSimulation(config.AXIS_NUM_PITCH)
+        self.yawAxis = AxisSimulation(ConfigManager().getInt('Hardware', 'AXIS_NUM_YAW'))
+        self.pitchAxis = AxisSimulation(ConfigManager().getInt('Hardware', 'AXIS_NUM_PITCH'))
         self.yawAxis.start()
         self.pitchAxis.start()
 

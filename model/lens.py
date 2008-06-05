@@ -19,7 +19,7 @@ __revision__ = "$Id$"
 import math
 
 from papywizard.common.loggingServices import Logger
-from papywizard.common.preferences import Preferences
+from papywizard.common.configManager import ConfigManager
 
 
 class Lens(object):
@@ -32,11 +32,8 @@ class Lens(object):
 
         Load values from preferences.
         """
-        self.__prefs = Preferences().load()
-        self.focal = self.__prefs['lens']['focal']
-        self.fisheye = self.__prefs['lens']['fisheye']
-
-        # Load Mosaic db record
+        self.focal = ConfigManager().getFloat('Preferences', 'LENS_FOCAL')
+        self.fisheye = ConfigManager().getBoolean('Preferences', 'LENS_FISHEYE')
 
     def computeFov(self, size):
         """ Compute FoV.
@@ -58,5 +55,5 @@ class Lens(object):
         Save values to preferences.
         """
         Logger().trace("Lens.shutdown()")
-        self.__prefs['lens']['focal'] = self.focal
-        self.__prefs['lens']['fisheye'] = self.fisheye
+        ConfigManager().setFloat('Preferences', 'LENS_FOCAL', self.focal, 1)
+        ConfigManager().setBoolean('Preferences', 'LENS_FISHEYE', self.fisheye)

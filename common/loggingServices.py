@@ -18,12 +18,13 @@ Implements class:
 
 __revision__ = "$Id$"
 
+import os.path
 import logging
 import logging.handlers
 import StringIO
 import traceback
 
-from papywizard.common import config
+from papywizard.common.configManager import ConfigManager
 
 
 consoleLogColors = {'trace':"\033[0;36;40;22m",     # cyan/noir, normal
@@ -102,28 +103,29 @@ class Logger(object):
             logging.addLevelName(logging.EXCEPTION, "EXCEPTION")
 
             # Formatters
-            colorFormatter = ColorFormatter(config.LOGGER_FORMAT)
-            defaultFormatter = DefaultFormatter(config.LOGGER_FORMAT)
+            colorFormatter = ColorFormatter(ConfigManager().get('Logger', 'LOGGER_FORMAT'))
+            defaultFormatter = DefaultFormatter(ConfigManager().get('Logger', 'LOGGER_FORMAT'))
 
             # Handlers
-            if config.LOGGER_CONSOLE:
+            if ConfigManager().getBoolean('Logger', 'LOGGER_CONSOLE_ENABLE'):
                 self.__streamHandler = logging.StreamHandler()
                 self.__streamHandler.setLevel(logging.TRACE)
                 self.__streamHandler.setFormatter(colorFormatter)
 
-            if config.LOGGER_FILE:
-                self.__fileHandler = logging.handlers.RotatingFileHandler(config.LOGGER_FILENAME,
-                                                                          maxBytes=config.LOGGER_MAXBYTES,
-                                                                          backupCount=config.LOGGER_BACKUPCOUNT)
+            if ConfigManager().getBoolean('Logger', 'LOGGER_FILE_ENABLE'):
+                loggerFile = os.path.join(ConfigManager().get('General', 'TEMP_DIR'), ConfigManager().get('Logger', 'LOGGER_FILENAME'))
+                self.__fileHandler = logging.handlers.RotatingFileHandler(loggerFile,
+                                                                          maxBytes=ConfigManager().getInt('Logger', 'LOGGER_MAX_BYTES'),
+                                                                          backupCount=ConfigManager().getInt('Logger', 'LOGGER_BACKUP_COUNT'))
                 self.__fileHandler.setLevel(logging.TRACE)
                 self.__fileHandler.setFormatter(defaultFormatter)
 
             # Loggers
             self.__logger = logging.getLogger('papywizard')
             self.__logger.setLevel(logging.TRACE)
-            if config.LOGGER_CONSOLE:
+            if ConfigManager().getBoolean('Logger', 'LOGGER_CONSOLE_ENABLE'):
                 self.__logger.addHandler(self.__streamHandler)
-            if config.LOGGER_FILE:
+            if ConfigManager().get('Logger', 'LOGGER_FILE_ENABLE'):
                 self.__logger.addHandler(self.__fileHandler)
 
             Logger.__init = False

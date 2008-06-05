@@ -17,7 +17,7 @@ Implements class:
 __revision__ = "$Id$"
 
 from papywizard.common.loggingServices import Logger
-from papywizard.common.preferences import Preferences
+from papywizard.common.configManager import ConfigManager
 
 
 class Mosaic(object):
@@ -51,8 +51,7 @@ class Mosaic(object):
         #self.__pitchNbPicts = None
         self.__init = False
 
-        self.__prefs = Preferences().load()
-        self.template = self.__prefs['mosaic']['template']
+        self.template = ConfigManager().get('Preferences', 'MOSAIC_TEMPLATE')
 
     def __iter__(self):
         """ Define Mosaic as an iterator.
@@ -137,4 +136,4 @@ class Mosaic(object):
         Save values to preferences.
         """
         Logger().trace("Mosaic.shutdown()")
-        self.__prefs['mosaic']['template'] = self.template
+        ConfigManager().set('Preferences', 'MOSAIC_TEMPLATE', self.template)

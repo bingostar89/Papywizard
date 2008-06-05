@@ -19,6 +19,7 @@ __revision__ = "$Id$"
 import copy
 
 from papywizard.common import config
+from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractController
 
@@ -60,7 +61,7 @@ class ConfigController(AbstractController):
         Logger().trace("ConfigController.__onOkButtonClicked()")
         self.__model.camera.timeValue = self.__view.timeValueSpinbutton.get_value()
         self.__model.camera.nbPicts = self.__view.nbPictsSpinbutton.get_value()
-        self.__model.delay = self.__view.delaySpinbutton.get_value()
+        self.__model.stabilizationDelay = self.__view.stabilizationDelaySpinbutton.get_value()
         self.__model.camera.sensorCoef = self.__view.sensorCoefSpinbutton.get_value()
         self.__model.camera.sensorRatio = config.SENSOR_RATIOS_INDEX[self.__view.sensorRatioCombobox.get_active()]
         self.__model.overlap = self.__view.overlapSpinbutton.get_value() / 100.
@@ -81,24 +82,29 @@ class ConfigController(AbstractController):
         Load default config values.
         """
         Logger().trace("ConfigController.__onDefaultButtonClicked()")
-        defaultValues = copy.deepcopy(config.DEFAULT_PREFS)
-        defaultValues['shooting']['overlap'] *= 100
+        defaultValues = {'shootingOverlap': int(100 * ConfigManager().getFloat('DefaultPreferences', 'SHOOTING_OVERLAP')),
+                         'shootingCameraOrientation': ConfigManager().get('DefaultPreferences', 'SHOOTING_CAMERA_ORIENTATION'),
+                         'shootingStabilizationDelay': ConfigManager().getFloat('DefaultPreferences', 'SHOOTING_STABILIZATION_DELAY'),
+                         'mosaicTemplate': ConfigManager().get('DefaultPreferences', 'MOSAIC_TEMPLATE'),
+                         'cameraSensorCoef': ConfigManager().getFloat('DefaultPreferences', 'CAMERA_SENSOR_COEF'),
+                         'cameraSensorRatio': ConfigManager().get('DefaultPreferences', 'CAMERA_SENSOR_RATIO'),
+                         'cameraTimeValue': ConfigManager().getFloat('DefaultPreferences', 'CAMERA_TIME_VALUE'),
+                         'cameraNbPicts' : ConfigManager().getInt('DefaultPreferences', 'CAMERA_NB_PICTS'),
+                         'lensFocal': ConfigManager().getFloat('DefaultPreferences', 'LENS_FOCAL'),
+                         'lensFisheye': ConfigManager().getBoolean('DefaultPreferences', 'LENS_FISHEYE')
+                     }
         self.__view.fillWidgets(defaultValues)
 
     def refreshView(self):
-        values = {'shooting': {'overlap': int(100 * self.__model.overlap),
-                               'cameraOrientation': self.__model.cameraOrientation,
-                               'delay': self.__model.delay
-                               },
-                  'mosaic': {'template': self.__model.mosaic.template
-                           },
-                  'camera': {'sensorCoef': self.__model.camera.sensorCoef,
-                             'sensorRatio': self.__model.camera.sensorRatio,
-                             'timeValue': self.__model.camera.timeValue,
-                             'nbPicts' : self.__model.camera.nbPicts,
-                         },
-                  'lens': {'focal': self.__model.camera.lens.focal,
-                           'fisheye': self.__model.camera.lens.fisheye
-                       }
+        values = {'shootingOverlap': int(100 * self.__model.overlap),
+                  'shootingCameraOrientation': self.__model.cameraOrientation,
+                  'shootingStabilizationDelay': self.__model.stabilizationDelay,
+                  'mosaicTemplate': self.__model.mosaic.template,
+                  'cameraSensorCoef': self.__model.camera.sensorCoef,
+                  'cameraSensorRatio': self.__model.camera.sensorRatio,
+                  'cameraTimeValue': self.__model.camera.timeValue,
+                  'cameraNbPicts' : self.__model.camera.nbPicts,
+                  'lensFocal': self.__model.camera.lens.focal,
+                  'lensFisheye': self.__model.camera.lens.fisheye
                 }
         self.__view.fillWidgets(values)

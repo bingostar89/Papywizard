@@ -16,8 +16,9 @@ Implements class:
 
 __revision__ = "$Id$"
 
+from papywizard.common import config
 from papywizard.common.loggingServices import Logger
-from papywizard.common.preferences import Preferences
+from papywizard.common.configManager import ConfigManager
 from papywizard.model.lens import Lens
 
 
@@ -32,11 +33,10 @@ class Camera(object):
         self.lens = Lens()
 
         # Load Camera attributes from preferences
-        self.__prefs = Preferences().load()
-        self.sensorRatio = self.__prefs['camera']['sensorRatio']
-        self.sensorCoef = self.__prefs['camera']['sensorCoef']
-        self.timeValue = self.__prefs['camera']['timeValue']
-        self.nbPicts = self.__prefs['camera']['nbPicts']
+        self.sensorRatio = ConfigManager().get('Preferences', 'CAMERA_SENSOR_RATIO')
+        self.sensorCoef = ConfigManager().getFloat('Preferences', 'CAMERA_SENSOR_COEF')
+        self.timeValue = ConfigManager().getFloat('Preferences', 'CAMERA_TIME_VALUE')
+        self.nbPicts = ConfigManager().getInt('Preferences', 'CAMERA_NB_PICTS')
 
     def getYawFov(self, cameraOrientation):
         """ Compute the yaw FoV.
@@ -76,7 +76,7 @@ class Camera(object):
         Logger().trace("Camera.shutdown()")
         self.lens.shutdown()
 
-        self.__prefs['camera']['sensorRatio'] = self.sensorRatio
-        self.__prefs['camera']['sensorCoef'] = self.sensorCoef
-        self.__prefs['camera']['timeValue'] = self.timeValue
-        self.__prefs['camera']['nbPicts'] = self.nbPicts
+        ConfigManager().set('Preferences', 'CAMERA_SENSOR_RATIO', self.sensorRatio)
+        ConfigManager().setFloat('Preferences', 'CAMERA_SENSOR_COEF', self.sensorCoef, 1)
+        ConfigManager().setFloat('Preferences', 'CAMERA_TIME_VALUE', self.timeValue, 1)
+        ConfigManager().setInt('Preferences', 'CAMERA_NB_PICTS', self.nbPicts)

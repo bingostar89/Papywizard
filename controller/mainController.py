@@ -411,20 +411,19 @@ class MainController(AbstractController):
         self.__serializer.apply(self.refreshView)
 
     def refreshView(self):
-        values = {'shooting': {'yawPos': self.__yawPos,
-                               'pitchPos': self.__pitchPos,
-                               'yawStart': self.__model.yawStart,
-                               'pitchStart': self.__model.pitchStart,
-                               'yawEnd': self.__model.yawEnd,
-                               'pitchEnd': self.__model.pitchEnd,
-                               'yawFov': self.__model.yawFov,
-                               'pitchFov':  self.__model.pitchFov,
-                               'yawNbPicts':  self.__model.yawNbPicts,
-                               'pitchNbPicts':  self.__model.pitchNbPicts,
-                               'yawRealOverlap': int(round(100 * self.__model.yawRealOverlap)),
-                               'pitchRealOverlap': int(round(100 * self.__model.pitchRealOverlap))
-                               }
-                 }
+        values = {'yawPos': self.__yawPos,
+                  'pitchPos': self.__pitchPos,
+                  'yawStart': self.__model.yawStart,
+                  'pitchStart': self.__model.pitchStart,
+                  'yawEnd': self.__model.yawEnd,
+                  'pitchEnd': self.__model.pitchEnd,
+                  'yawFov': self.__model.yawFov,
+                  'pitchFov':  self.__model.pitchFov,
+                  'yawNbPicts':  self.__model.yawNbPicts,
+                  'pitchNbPicts':  self.__model.pitchNbPicts,
+                  'yawRealOverlap': int(round(100 * self.__model.yawRealOverlap)),
+                  'pitchRealOverlap': int(round(100 * self.__model.pitchRealOverlap))
+              }
         self.__view.fillWidgets(values)
 
 
