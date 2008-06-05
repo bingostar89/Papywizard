@@ -109,16 +109,6 @@ class ConfigManager(object):
         """
         self.__config.write(file(config.USER_CONFIG_FILE, 'w'))
 
-    def getDefaultPreferences(self):
-        """ Get the default preferences.
-        
-        Preferences are configs related to the model.
-        
-        @return: default preferences
-        @rtype: dict
-        """
-        return dict(self.__config.items('DefaultPreferences'))
-
     def get(self, section, option):
         """ Get a value.
         
