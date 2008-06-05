@@ -80,4 +80,5 @@ x done
     + doc!!!!
     x export data (xml) for APP (from Scan)
     + add license header in files
-
+    + add a log viewer
+    

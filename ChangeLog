@@ -6,16 +6,17 @@ x bug fix
 
 
 2008-??-?? Version SVN
-    - use vpython 4 (bug fix the crash when hide/quit under linux)
-    + switched from Tkinter to Gtk+ (mameo support)
+    - use vpython 4 (bug fix crash when hide/quit under linux)
+    - switched from Tkinter to Gtk+ (mameo support)
+    - removed windows support
     x added test for pyserial import module
-    + auto-detect correct paths for temp and home dirs under windows
     x axis are now driven concurrently
     + generate xml file with shooting params (optional)
     + new menu entry to set axis origin (needed for future full spherical implementation)
     + added progressbar
     + key binding for usage without mouse/pen
-	+ added hardware driver to config file
+    + added hardware driver to config file
+    - config now based on ConfigParser
 
 2007-12-28 Version 0.9-beta1
     + auto-connect to real hardware if possible
