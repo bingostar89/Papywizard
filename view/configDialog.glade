@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.3 on Fri May  2 20:54:21 2008 -->
+<!--Generated with glade3 3.4.5 on Thu Jun  5 00:00:50 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="configDialog">
     <property name="border_width">5</property>
@@ -14,7 +14,7 @@
         <child>
           <widget class="GtkTable" id="table1">
             <property name="visible">True</property>
-            <property name="n_rows">8</property>
+            <property name="n_rows">7</property>
             <property name="n_columns">3</property>
             <property name="column_spacing">5</property>
             <property name="row_spacing">5</property>
@@ -34,10 +34,7 @@
               <placeholder/>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <widget class="GtkSpinButton" id="delaySpinbutton">
+              <widget class="GtkSpinButton" id="stabilizationDelaySpinbutton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">5</property>
@@ -74,7 +71,7 @@
               <widget class="GtkLabel" id="label49">
                 <property name="visible">True</property>
                 <property name="xalign">0.89999997615814209</property>
-                <property name="label" translatable="yes" context="yes">Delay (s)</property>
+                <property name="label" translatable="yes" context="yes">Stab. delay (s)</property>
               </widget>
               <packing>
                 <property name="top_attach">2</property>
@@ -251,32 +248,6 @@ landscape</property>
                 <property name="right_attach">2</property>
                 <property name="top_attach">6</property>
                 <property name="bottom_attach">7</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkCheckButton" id="manualShootCheckbutton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="label" translatable="yes" context="yes">manual</property>
-                <property name="response_id">0</property>
-                <property name="draw_indicator">True</property>
-              </widget>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="right_attach">2</property>
-                <property name="top_attach">7</property>
-                <property name="bottom_attach">8</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkLabel" id="label1">
-                <property name="visible">True</property>
-                <property name="xalign">0.89999997615814209</property>
-                <property name="label" translatable="yes" context="yes">Shooting</property>
-              </widget>
-              <packing>
-                <property name="top_attach">7</property>
-                <property name="bottom_attach">8</property>
               </packing>
             </child>
           </widget>
