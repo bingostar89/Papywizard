@@ -82,4 +82,4 @@ x done
     x export data (xml) for APP (from Scan)
     + add license header in files
     + add a log viewer
-    
+    + make additional sections in config, in order to create sets of preferences
