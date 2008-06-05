@@ -319,7 +319,7 @@ class AxisSimulation(threading.Thread):
                         self.__drive = False
                         self.__pos = self.__setpoint
 
-            time.sleep(ConfigManager().getFloat('Logger', 'SPY_FAST_REFRESH'))
+            time.sleep(ConfigManager().getFloat('Misc', 'SPY_FAST_REFRESH'))
 
     def stop(self):
         """ Stop the thread.
