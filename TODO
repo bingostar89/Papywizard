@@ -16,6 +16,7 @@ x done
     x remove Tkinter support
     + implement a statusbarManager to display messages (during a given time)
     + use message window for harware connexion...
+    + generalize hardware (for driving heads other than Merlin/Orion)
     
 * View
     ? Group manual move and shoot dialogs?
@@ -65,7 +66,7 @@ x done
     x allow connect/disconnect from hardware (switch from simulation to real hardware)
     + add try/except arround all hardware calls
     + save preferences as soon as a param changes
-    + move preferences loading out of model (to main script)
+    x move preferences loading out of model (to main script)
     + add choice to either use hardware panohead to shoot, or tetled usb toolkit
     + correct bug if start pos > end pos
 

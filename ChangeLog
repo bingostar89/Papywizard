@@ -6,6 +6,8 @@ x bug fix
 
 
 2008-??-?? Version SVN
+
+2008-??-?? Version 0.9beta2
     - use vpython 4 (bug fix crash when hide/quit under linux)
     - switched from Tkinter to Gtk+ (mameo support)
     - removed windows support
