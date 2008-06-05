@@ -21,7 +21,7 @@ import threading
 
 import gtk
 
-from papywizard.common import config
+from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
 from papywizard.view.bluetoothConnectDialog import BluetoothConnectDialog
@@ -364,7 +364,7 @@ class MainController(AbstractController):
                     #return
 
             self.__model.switchToRealHardware()
-            Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
+            Spy().setRefreshRate(ConfigManager().getFloat('Misc', 'SPY_SLOW_REFRESH'))
             #self.__view.hardwareResetMenuitem.set_sensitive(True)
             Logger().info("Now connected to real hardware")
             self.__view.connectImage.set_from_stock(gtk.STOCK_YES, 4)
@@ -383,7 +383,7 @@ class MainController(AbstractController):
         """
         Logger().info("Go to simulation mode")
         self.__model.switchToSimulatedHardware()
-        Spy().setRefreshRate(config.SPY_FAST_REFRESH)
+        Spy().setRefreshRate(ConfigManager().getFloat('Misc', 'SPY_FAST_REFRESH'))
         #self.__view.hardwareResetMenuitem.set_sensitive(False)
         self.__view.connectImage.set_from_stock(gtk.STOCK_NO, 4)
 
@@ -434,7 +434,7 @@ if __name__ == "__main__":
     from view_gtk.mainWindow import MainWindow
     headSimulation = HeadSimulation()
     model = Shooting(None, headSimulation)
-    Spy(model, config.SPY_FAST_REFRESH)
+    Spy(model, ConfigManager().getFloat('Misc', 'SPY_FAST_REFRESH'))
     Spy().start()
     view = MainWindow()
     test = MainController(None, model, view)
