@@ -88,6 +88,7 @@ class ConfigManager(object):
 
                     # Update the options
                     for option, value in globalConfig.items(globalSection):
+                        value = value.replace('%', '%%')
                         userConfig.set(globalSection, option, value)
                         print "Updated [%s] %s option with %s" % (globalSection, option, value)
                         
