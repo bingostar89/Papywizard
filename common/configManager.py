@@ -23,7 +23,7 @@ import ConfigParser
 from papywizard.common import config
 #from papywizard.common.loggingServices import Logger
 
-CONFIG_VERSION = 1
+CONFIG_VERSION = 2
 
 class ConfigManager(object):
     """ ConfigManager.
@@ -69,7 +69,8 @@ class ConfigManager(object):
                 globalSections = globalConfig.sections()
                 for userSection in userConfig.sections():
                     if userSection not in globalSections:
-                        userConfig.remove_section()
+                        userConfig.remove_section(userSection)
+                        print "Removed [%s] section" % userSection
 
                 # Update all sections
                 for globalSection in globalSections:
@@ -77,16 +78,22 @@ class ConfigManager(object):
                     # If the section does not yet exist, we create it
                     if not userConfig.has_section(globalSection):
                         userConfig.add_section(globalSection)
+                        print "Added [%s] section" % globalSection
 
                     # Remove obsolete options
                     for option in userConfig.options(globalSection):
                         if not globalConfig.has_option(globalSection, option):
                             userConfig.remove_option(globalSection, option)
+                            print "Removed [%s] %s option" % (globalSection, option)
 
                     # Update the options
                     for option, value in globalConfig.items(globalSection):
                         userConfig.set(globalSection, option, value)
-
+                        print "Updated [%s] %s option with %s" % (globalSection, option, value)
+                        
+                userConfig.write(file(config.USER_CONFIG_FILE, 'w'))
+                print "user config. updated"
+                
             self.__config = userConfig
 
             ConfigManager.__init = False
