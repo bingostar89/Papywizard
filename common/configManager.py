@@ -88,7 +88,7 @@ class ConfigManager(object):
 
                     # Update the options
                     for option, value in globalConfig.items(globalSection):
-                        if option == 'LOGGER_FORMAT':
+                        if option.upper() == 'LOGGER_FORMAT':
                             value = value.replace('%', '%%')
                         userConfig.set(globalSection, option, value)
                         print "Updated [%s] %s option with %s" % (globalSection, option, value)
