@@ -91,6 +91,9 @@ class ConfigManager(object):
                         userConfig.set(globalSection, option, value)
                         print "Updated [%s] %s option with %s" % (globalSection, option, value)
                         
+                    # Force correct config. version
+                    userConfig.set('General', 'CONFIG_VERSION', "%d" % CONFIG_VERSION)
+                        
                 userConfig.write(file(config.USER_CONFIG_FILE, 'w'))
                 print "user config. updated"
                 
