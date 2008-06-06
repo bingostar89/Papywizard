@@ -114,6 +114,8 @@ class MainController(AbstractController):
 
         # Try to autoconnect to real hardware
         #self.__connectToHardware()
+        if self.__model.realHardware is None:
+            self.__view.hardwareConnectMenuitem.set_sensitive(False)
 
     # Callbacks
     def __onKeyPressed(self, widget, event, *args):
