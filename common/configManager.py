@@ -21,9 +21,8 @@ import sets
 import ConfigParser
 
 from papywizard.common import config
-#from papywizard.common.loggingServices import Logger
 
-CONFIG_VERSION = 2
+CONFIG_VERSION = 1
 
 class ConfigManager(object):
     """ ConfigManager.
@@ -44,25 +43,22 @@ class ConfigManager(object):
         @todo: update user config. from global config. instead of overwriting
         """
         if ConfigManager.__init:
-            #Logger().debug("ConfigManager.__init__()")
-            print "ConfigManager.__init__()"
+            
+            # Load global config.
             globalConfig = ConfigParser.SafeConfigParser()
             if globalConfig.read(config.GLOBAL_CONFIG_FILE) == []:
                 if globalConfig.read(config.CONFIG_FILE) == []:
                     raise IOError("Can't read configuration file")
-            userConfig = ConfigParser.SafeConfigParser()
             
             # Check if user config. exists
+            userConfig = ConfigParser.SafeConfigParser()
             if userConfig.read(config.USER_CONFIG_FILE) == []:
-                #Logger().warning("User config. does not exist; copying from global config.")
                 print "User config. does not exist; copying from global config."
                 globalConfig.write(file(config.USER_CONFIG_FILE, 'w'))
                 userConfig.read(config.USER_CONFIG_FILE)
 
             # Check if user config. needs to be updated
-            userConfigVersion = userConfig.getint('General', 'CONFIG_VERSION')
-            if userConfigVersion != CONFIG_VERSION:
-                #Logger().warning("User config. has wrong version.; updating from global config.")
+            elif CONFIG_VERSION != userConfig.getint('General', 'CONFIG_VERSION'):
                 print "User config. has wrong version.; updating from global config."
                 
                 # Remove obsolete sections
@@ -75,7 +71,7 @@ class ConfigManager(object):
                 # Update all sections
                 for globalSection in globalSections:
 
-                    # If the section does not yet exist, we create it
+                    # Create new sections
                     if not userConfig.has_section(globalSection):
                         userConfig.add_section(globalSection)
                         print "Added [%s] section" % globalSection
@@ -88,16 +84,18 @@ class ConfigManager(object):
 
                     # Update the options
                     for option, value in globalConfig.items(globalSection):
-                        if option.upper() == 'LOGGER_FORMAT':
-                            value = value.replace('%', '%%')
-                        userConfig.set(globalSection, option, value)
-                        print "Updated [%s] %s option with %s" % (globalSection, option, value)
+                        if not userConfig.has_option(globalSection, option) or value != userConfig.get(globalSection, option):
+                            if option.upper() in ('LOGGER_FORMAT', 'DATA_FILE'):
+                                value = value.replace('%', '%%')
+                            userConfig.set(globalSection, option, value)
+                            print "Updated [%s] %s option with %s" % (globalSection, option, value)
                         
-                    # Force correct config. version
+                    # Set config. version
                     userConfig.set('General', 'CONFIG_VERSION', "%d" % CONFIG_VERSION)
-                        
+                
+                # Write user config.
                 userConfig.write(file(config.USER_CONFIG_FILE, 'w'))
-                print "user config. updated"
+                print "User config. written to file"
                 
             self.__config = userConfig
 
