@@ -6,6 +6,7 @@ x bug fix
 
 xxxx-xx-xx Version SVN
     x bug correction when start pos > end pos
+    x Connect menu is greyed out if hardware not available
 
 2008-06-06 Version 0.9beta2
     - switched from Tkinter to Gtk+
