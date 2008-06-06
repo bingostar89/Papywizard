@@ -4,24 +4,21 @@ ChangeLog
 - change
 x bug fix
 
-
-2008-??-?? Version SVN
-
-2008-08-01 Version 0.9
-    
+xxxx-xx-xx Version SVN
 
 2008-06-06 Version 0.9beta2
-    - use vpython 4 (bug fix crash when hide/quit under linux)
-    - switched from Tkinter to Gtk+ (mameo support)
-    - removed windows support
-    x added test for pyserial import module
+    - switched from Tkinter to Gtk+
+    + Maemo support
+    - removed windows support (may be set back in future)
+    x added test for several optional import modules
     x axis are now driven concurrently
     + generate xml file with shooting params (optional)
     + new menu entry to set axis origin (needed for future full spherical implementation)
-    + added progressbar
+    + added progressbar during shooting
     + key binding for usage without mouse/pen
-    + added hardware driver to config file
+    + added hardware driver to config.
     - config now based on ConfigParser
+    - use vpython 4 (bug fix crash when hide/quit under linux)
 
 2007-12-28 Version 0.9-beta1
     + auto-connect to real hardware if possible
