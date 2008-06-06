@@ -39,7 +39,7 @@ setup(name="papywizard",
                   ('share/pixmaps', ['papywizard.png']),],
 
       # pymaemo stuff
-      section="user/photo",
+      section="user/graphics",
       depends="python2.5, python2.5-hildon, python2.5-gtk2",
       icon="papywizard.png",
       cmdclass={'bdist_debian': bdist_debian},
