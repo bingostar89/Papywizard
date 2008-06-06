@@ -20,6 +20,7 @@ import time
 import threading
 
 import gtk
+import gobject
 
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
@@ -116,7 +117,26 @@ class MainController(AbstractController):
         #self.__connectToHardware()
         if self.__model.realHardware is None:
             self.__view.hardwareConnectMenuitem.set_sensitive(False)
+            
+        #self.__setStatusbarMessage("Test", 5)
 
+    # Helpers
+    def __setStatusbarMessage(self, message=None, delay=0):
+        """ Display a message on the statusbar.
+        
+        @param message: message to display. If None, clear statusbar
+        @type message: str
+        
+        @param delay: display message duration, in s (0 means forever)
+        @type delay: int
+        """
+        self.__view.statusbar.pop(self.__view.hardwareContextId)
+        if message is not None:
+            self.__view.statusbar.push(self.__view.hardwareContextId, message)
+            if delay:
+                gobject.timeout_add(delay * 1000, self.__setStatusbarMessage)
+        gtk.main_do_event()
+        
     # Callbacks
     def __onKeyPressed(self, widget, event, *args):
 
@@ -350,8 +370,7 @@ class MainController(AbstractController):
         """ Connect to real hardware.
         """
         Logger().info("Connecting to real hardware...")
-        self.__view.statusbar.pop(self.__view.hardwareContextId)
-        self.__view.statusbar.push(self.__view.hardwareContextId, "Connecting to real hardware...")
+        self.__setStatusbarMessage("Connecting to real hardware...")
         try:
 
             ## Bluetooth driver
@@ -370,15 +389,12 @@ class MainController(AbstractController):
             #self.__view.hardwareResetMenuitem.set_sensitive(True)
             Logger().info("Now connected to real hardware")
             self.__view.connectImage.set_from_stock(gtk.STOCK_YES, 4)
-            #self.__view.statusbar.push(self.__view.hardwareContextId, "Now connected to real hardware")
+            self.__setStatusbarMessage("Now connected to real hardware", 10)
 
-        except HardwareError: # Raised by model
+        except HardwareError, message: # Raised by model
             Logger().error("Can't connect to hardware; go back to simulation mode")
-            #self.__view.statusbar.pop(self.__view.hardwareContextId)
-            #self.__view.statusbar.push(self.__view.hardwareContextId, "Can't connect to hardware")
+            self.__setStatusbarMessage("Connection to hardware failed (%s)" % message, 10)
             self.__view.hardwareConnectMenuitem.set_active(False)
-
-        self.__view.statusbar.pop(self.__view.hardwareContextId)
 
     def __goToSimulationMode(self):
         """ Connect to simulated hardware.
