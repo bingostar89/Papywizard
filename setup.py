@@ -17,7 +17,7 @@ from distutils.core import setup
 
 from common import config
 
-PACKAGE_VERSION = 2
+PACKAGE_VERSION = 3
 
 setup(name="papywizard",
       version="%s-%d" % (config.VERSION, PACKAGE_VERSION),
@@ -37,7 +37,7 @@ setup(name="papywizard",
       package_data={'papywizard': ["view/*.glade"]},
       data_files=[("share/applications/hildon", ["papywizard.desktop"]),
                   ('share/pixmaps', ["papywizard.png"]),
-                  ('etc', ["papywizard.conf"])],
+                  ('/etc', ["papywizard.conf"])],
 
       # pymaemo stuff
       section="user/graphics",
