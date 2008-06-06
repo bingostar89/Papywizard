@@ -137,3 +137,15 @@ class Mosaic(object):
         """
         Logger().trace("Mosaic.shutdown()")
         ConfigManager().set('Preferences', 'MOSAIC_TEMPLATE', self.template)
+
+
+def main():
+    mosaic = Mosaic()
+    mosaic.setMatrix(3, 3)
+    for i, (yaw, pitch) in enumerate(mosaic):
+        print "pt=%d, yawCoef=%d, pitchCoef=%d" % (i, yaw, pitch)
+        
+
+if __name__ == "__main__":
+    main()
+    
