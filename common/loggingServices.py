@@ -96,8 +96,8 @@ class Logger(object):
         """
         if Logger.__init:
             logging.TRACE = logging.DEBUG - 5
-            logging.EXCEPTION = logging.DEBUG + 5
-            #logging.EXCEPTION = logging.ERROR + 5
+            #logging.EXCEPTION = logging.DEBUG + 5
+            logging.EXCEPTION = logging.ERROR + 5
             logging.raiseExceptions = 0
             logging.addLevelName(logging.TRACE, "TRACE")
             logging.addLevelName(logging.EXCEPTION, "EXCEPTION")
@@ -113,7 +113,8 @@ class Logger(object):
                 self.__streamHandler.setFormatter(colorFormatter)
 
             if ConfigManager().getBoolean('Logger', 'LOGGER_FILE_ENABLE'):
-                loggerFile = os.path.join(ConfigManager().get('General', 'TEMP_DIR'), ConfigManager().get('Logger', 'LOGGER_FILENAME'))
+                loggerFile = os.path.join(ConfigManager().get('General', 'TEMP_DIR'),
+                                          ConfigManager().get('Logger', 'LOGGER_FILENAME'))
                 self.__fileHandler = logging.handlers.RotatingFileHandler(loggerFile,
                                                                           maxBytes=ConfigManager().getInt('Logger', 'LOGGER_MAX_BYTES'),
                                                                           backupCount=ConfigManager().getInt('Logger', 'LOGGER_BACKUP_COUNT'))
@@ -214,11 +215,14 @@ class Logger(object):
         """
         self.__logger.critical(str(message))
 
-    def exception(self, message=""):
+    def exception(self, message="", debug=False):
         """ Logs a message within an exception.
 
         @param message: message to log
         @type message: string
+        
+        @param debug: flag to log exception on DEBUG level instead of EXCEPTION one
+        @type debug: bool
         """
         #self.__logger.exception(message)
 
@@ -226,7 +230,10 @@ class Logger(object):
         traceback.print_exc(file=tracebackString)
         message += "\n"+tracebackString.getvalue().strip()
         tracebackString.close()
-        self.log(logging.EXCEPTION, str(message))
+        if debug:
+            self.debug(message)
+        else:
+            self.log(logging.EXCEPTION, str(message))
 
     def log(self, level, message, *args, **kwargs):
         """ Logs a message with given level.
