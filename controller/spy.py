@@ -16,11 +16,9 @@ Implements class:
 
 __revision__ = "$Id$"
 
-import math
 import time
 import threading
 
-#from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.signal import Signal
 from papywizard.common.exception import HardwareError
