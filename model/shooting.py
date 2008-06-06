@@ -201,6 +201,13 @@ class Shooting(object):
         """
         self.__manualShoot = flag
 
+    def generate(self):
+        """ Generate all shooting positions.
+        
+        @return: shooting positions
+        @rtype: list of dict
+        """
+
     def start(self):
         """ Start pano shooting.
         """
@@ -225,11 +232,13 @@ class Shooting(object):
             yawInc = (self.yawFov - cameraFov) / (self.yawNbPicts - 1)
         except ZeroDivisionError:
             yawInc = self.yawFov - cameraFov
+        yawInc *= cmp(self.yawEnd, self.yawStart)
         cameraFov = self.camera.getPitchFov(self.cameraOrientation)
         try:
             pitchInc = (self.pitchFov - cameraFov) / (self.pitchNbPicts - 1)
         except ZeroDivisionError:
             pitchInc = self.pitchFov - cameraFov
+        pitchInc *= cmp(self.pitchEnd, self.pitchStart)
         self.mosaic.setMatrix(self.yawNbPicts, self.pitchNbPicts)
 
         try:
