@@ -1,16 +1,3 @@
 README
 
-papywizard (PAnoramic PYthon WIZARD) is a python software to drive the Merlin/Orion
-astronomic head, in order to turn it into a panoramic head. See:
-
-    http://fr.wiki.autopano.net/T%C3%AAte_astronomique_Multi-fonctions_Merlin
-    http://www.autopano.net/wiki/action/view/Orion_TeleTrack_altazimuth_tracking_mount
-
-There is no available documentation yet. But the GUI is simple, and should be
-easy to use for pano photographers.
-
-LICENSES
-
-papywizard is released under CeCILL license.
-
-Enjoy!
+See http://trac.gbiloba.org/papywizard/report/3

@@ -1,24 +1,3 @@
 INSTALL
 
-To use this software, python >= 2.4 is needed (it should run with earlier
-versions, but it hasn't been tested). See:
-
-    http://www.python.org
-
-To control the hardware, the following modules need to be installed:
-
-    - pyserial: http://pyserial.sourceforge.net
-
-Windows users needs additional modules:
-
-    - pywin32: https://sourceforge.net/projects/pywin32
-
-To have a 3D simulation view, vpython is required:
-
-    - http://www.vpython.org
-    
-Note that vpython 3.x does not support image mapping; only vpython 4 (beta).
-The program should run with both versions (with the previous limitation).
-
-There is not installer in this panohead version (alpha). Just launch panohead.py
-script in you python interpreter. Refer to you plateform python implementation.
+See http://trac.gbiloba.org/papywizard/report/3
