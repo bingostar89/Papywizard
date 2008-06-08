@@ -6,7 +6,8 @@ x bug fix
 
 xxxx-xx-xx Version SVN
     x bug correction when start pos > end pos
-    x Connect menu is greyed out if hardware not available
+    x Connect menu is greyed out if hardware is not available
+    + Added 'Set 360' and 'Set 180' buttons
 
 2008-06-06 Version 0.9beta2
     - switched from Tkinter to Gtk+
