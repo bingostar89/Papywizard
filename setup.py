@@ -17,7 +17,7 @@ from distutils.core import setup
 
 from common import config
 
-PACKAGE_VERSION = 3
+PACKAGE_VERSION = 4
 
 setup(name="papywizard",
       version="%s-%d" % (config.VERSION, PACKAGE_VERSION),
