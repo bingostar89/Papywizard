@@ -69,6 +69,8 @@ class MainController(AbstractController):
                "on_helpAboutMenuitem_activate": self.__onHelpAboutMenuActivated,
                "on_setStartButton_clicked": self.__onSetStartButtonClicked,
                "on_setEndButton_clicked": self.__onSetEndButtonClicked,
+               "on_set360Button_clicked": self.__onSet360ButtonClicked,
+               "on_set180Button_clicked": self.__onSet180ButtonClicked,
                "on_manualMoveButton_clicked": self.__onManualMoveButtonClicked,
                "on_shootButton_clicked": self.__onShootButtonClicked,
            }
@@ -339,6 +341,16 @@ class MainController(AbstractController):
     #def __onNadirCheckbuttonToggled(self, widget):
         #Logger().trace("MainController.__onNadirCheckbuttonToggled()")
         #self.__model.mosaic.nadir = bool(self.__view.nadirCheckbutton.get_active())
+
+    def __onSet360ButtonClicked(self, widget):
+        Logger().trace("MainController.__onSet360ButtonClicked()")
+        self.__model.setYaw360()
+        self.refreshView()
+
+    def __onSet180ButtonClicked(self, widget):
+        Logger().trace("MainController.__onSet180ButtonClicked()")
+        self.__model.setPitch180()
+        self.refreshView()
 
     def __onManualMoveButtonClicked(self, widget):
         Logger().trace("MainController.__onManualMoveButtonClicked()")

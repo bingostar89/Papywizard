@@ -191,6 +191,31 @@ class Shooting(object):
         Logger().debug("Shooting.storeEndPosition(): yaw=%.1f, pitch=%.1f" % (self.yawEnd, self.pitchEnd))
         #self.__computeParams('startEnd')
 
+    def setYaw360(self):
+        """ Compute start/end yaw position for 360°.
+        
+        Récupérer position courante et calculer début et fin pour avoir
+        +-180°, overlap inclus
+        """
+        yaw, pitch = self.hardware.readPosition()
+        cameraFov = self.camera.getPitchFov(self.cameraOrientation)
+        self.yawStart = yaw - 180. + cameraFov * (1 - self.overlap) / 2.
+        self.yawEnd = yaw + 180. - cameraFov * (1 - self.overlap) / 2.
+        Logger().debug("Shooting.setYaw360(): startYaw=%.1f, endYaw=%.1f" % (self.yawStart, self.yawEnd))
+
+    def setPitch180(self):
+        """ Compute start/end pitch position for 180°.
+        
+        Récupérer position courante et calculer début et fin pour avoir
+        +-90°, overlap inclus
+        Tenir compte des butées softs !
+        """
+        yaw, pitch = self.hardware.readPosition()
+        cameraFov = self.camera.getPitchFov(self.cameraOrientation)
+        self.pitchStart = pitch - 90. + cameraFov * (1 - self.overlap) / 2.
+        self.pitchEnd = yaw + 90. - cameraFov * (1 - self.overlap) / 2.
+        Logger().debug("Shooting.setPitch180(): startPitch=%.1f, endPitch=%.1f" % (self.pitchStart, self.pitchEnd))
+
     def setManualShoot(self, flag):
         """ Turn on/off manual shoot.
 
