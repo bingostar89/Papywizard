@@ -19,7 +19,7 @@ Implements functions:
 
 __revision__ = "$Id$"
 
-from papywizard.common import config
+from papywizard.common.configManager import ConfigManager
 
 
 def decodeAxisValue(strValue):
@@ -68,7 +68,9 @@ def cod2deg(codPos):
     @return: position, in °
     @rtype: float
     """
-    return (codPos - config.ENCODER_ZERO) * 360. / config.ENCODER_360
+    encoder_zero = eval(ConfigManager().get('Hardware', 'ENCODER_ZERO'))
+    encoder_360 = eval(ConfigManager().get('Hardware', 'ENCODER_360'))
+    return (codPos - encoder_zero) * 360. / encoder_360
 
 
 def deg2cod(pos):
@@ -80,5 +82,7 @@ def deg2cod(pos):
     @return: encoder position
     @rtype: int
     """
-    return int(pos * config.ENCODER_360 / 360. + config.ENCODER_ZERO)
+    encoder_zero = eval(ConfigManager().get('Hardware', 'ENCODER_ZERO'))
+    encoder_360 = eval(ConfigManager().get('Hardware', 'ENCODER_360'))
+    return int(pos * encoder_360 / 360. + encoder_zero)
 
