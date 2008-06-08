@@ -135,7 +135,7 @@ class MainController(AbstractController):
             self.__view.statusbar.push(self.__view.hardwareContextId, message)
             if delay:
                 gobject.timeout_add(delay * 1000, self.__setStatusbarMessage)
-        gtk.main_do_event()
+        #gtk.main_do_event()
         
     # Callbacks
     def __onKeyPressed(self, widget, event, *args):
@@ -370,7 +370,7 @@ class MainController(AbstractController):
         """ Connect to real hardware.
         """
         Logger().info("Connecting to real hardware...")
-        self.__setStatusbarMessage("Connecting to real hardware...")
+        #self.__setStatusbarMessage("Connecting to real hardware...")
         try:
 
             ## Bluetooth driver
@@ -404,6 +404,7 @@ class MainController(AbstractController):
         Spy().setRefreshRate(ConfigManager().getFloat('Misc', 'SPY_FAST_REFRESH'))
         #self.__view.hardwareResetMenuitem.set_sensitive(False)
         self.__view.connectImage.set_from_stock(gtk.STOCK_NO, 4)
+        self.__setStatusbarMessage("Back in simulation mode", 10)
 
     def __onHardwareConnectMenuToggled(self, widget):
         """ Connect check button toggled.
