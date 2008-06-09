@@ -17,12 +17,13 @@ from distutils.core import setup
 
 from common import config
 
+
 setup(name="papywizard",
       version="%s-%d" % (config.VERSION, config.PACKAGE_VERSION),
       author="Frederic Mantegazza",
-      author_email="Frederic Mantegazza <frederic.mantegazza@gbiloba.org>",
+      author_email="frederic.mantegazza@gbiloba.org",
       maintainer="Frederic Mantegazza",
-      maintainer_email="Frederic Mantegazza <frederic.mantegazza@gbiloba.org>",
+      maintainer_email="frederic.mantegazza@gbiloba.org",
       url="http://trac.gbiloba.org/papywizard",
       description="Merlin/Orion panohead control software",
       #long_description="",
