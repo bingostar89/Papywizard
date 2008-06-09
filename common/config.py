@@ -5,7 +5,7 @@
 Configurations.
 
 @author: Frédéric Mantegazza
-@copyright: Frédéric Mantegaza (C) 2007-2008
+@copyright: Frédéric Mantegazza (C) 2007-2008
 @license: CeCILL
 @todo:
 """
