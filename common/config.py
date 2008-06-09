@@ -16,7 +16,7 @@ import os.path
 
 
 VERSION = "0.9beta2"
-PACKAGE_VERSION = 2
+PACKAGE_VERSION = 1
 
 GLOBAL_CONFIG_DIR = "/etc"
 HOME_DIR = os.path.expandvars("$HOME")
