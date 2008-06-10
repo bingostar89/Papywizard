@@ -84,9 +84,8 @@ class ConfigManager(object):
 
                     # Update the options
                     for option, value in globalConfig.items(globalSection):
-                        if not userConfig.has_option(globalSection, option) or value != userConfig.get(globalSection, option):
-                            if option.upper() in ('LOGGER_FORMAT', 'DATA_FILE'):
-                                value = value.replace('%', '%%')
+                        if not userConfig.has_option(globalSection, option) or \
+                           value != userConfig.get(globalSection, option) and not globalSection.endswith("Preferences"):
                             userConfig.set(globalSection, option, value)
                             print "Updated [%s] %s option with %s" % (globalSection, option, value)
                         
