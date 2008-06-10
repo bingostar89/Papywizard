@@ -82,10 +82,10 @@ MOSAIC_TEMPLATE = ["Auto",
                    ]
 
 # Logger
-LOGGER_FORMAT = "%%(asctime)s::%%(threadName)s::%%(levelname)s::%%(message)s"
+LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"
 
 # Data
-DATA_FILE = "papywizard-%%s.xml"
+DATA_FILE = "papywizard-%s.xml"
 
 # Hardware
 AXIS_NUM_YAW = 1
