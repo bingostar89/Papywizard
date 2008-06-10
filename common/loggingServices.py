@@ -144,7 +144,7 @@ class Logger(object):
 
             # Handlers
             self.__streamHandler = logging.StreamHandler()
-            self.__streamHandler.setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
+            self.setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
             self.__streamHandler.setFormatter(colorFormatter)
 
             # Loggers
@@ -235,7 +235,7 @@ class Logger(object):
         message += "\n"+tracebackString.getvalue().strip()
         tracebackString.close()
         if debug:
-            self.debug(message)
+            self.debug(str(message))
         else:
             self.log(logging.EXCEPTION, str(message))
 
