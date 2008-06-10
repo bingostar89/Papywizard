@@ -315,7 +315,7 @@ class ShootController(AbstractController):
             event handler to be execute again after a delay, and exits.
             This way, GUI events can be handled while model is shooting.
             """
-            Logger().trace("checkEnd()")
+            Logger().trace("ShootController.__startShooting().checkEnd()")
 
             # Check if model suspended (manual shoot mode)
             if self.__model.isSuspended():
@@ -333,7 +333,7 @@ class ShootController(AbstractController):
                 self.__view.doneButton.set_sensitive(True)
                 self.refreshView()
                 thread.join()
-                Logger().debug("checkEnd(): model thread over")
+                Logger().debug("ShootController.__startShooting().checkEnd(): model thread over")
                 return False # Stop execution by Gtk
 
             self.refreshView() # Can conflict with Spy?
@@ -354,7 +354,7 @@ class ShootController(AbstractController):
 
         # Check end of shooting
         gobject.timeout_add(200, checkEnd)
-        #checkEnd()
+        checkEnd()
 
     def __suspendShooting(self):
         self.__model.suspend()
