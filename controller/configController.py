@@ -60,7 +60,7 @@ class ConfigController(AbstractController):
         """
         Logger().trace("ConfigController.__onOkButtonClicked()")
         self.__model.camera.timeValue = self.__view.timeValueSpinbutton.get_value()
-        self.__model.camera.nbPicts = self.__view.nbPictsSpinbutton.get_value()
+        self.__model.camera.nbPicts = int(self.__view.nbPictsSpinbutton.get_value())
         self.__model.stabilizationDelay = self.__view.stabilizationDelaySpinbutton.get_value()
         self.__model.camera.sensorCoef = self.__view.sensorCoefSpinbutton.get_value()
         self.__model.camera.sensorRatio = config.SENSOR_RATIOS_INDEX[self.__view.sensorRatioCombobox.get_active()]
