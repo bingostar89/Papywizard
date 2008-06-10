@@ -90,6 +90,7 @@ class Spy(threading.Thread):
                 raise ValueError("Spy first call must have correct params")
             super(Spy, self).__init__()
             self.setDaemon(1)
+            self.setName("Spy")
             self.__model = model
             self.__run = False
             self.__suspend = False
@@ -99,7 +100,7 @@ class Spy(threading.Thread):
                 self.__yaw, self.__pitch = self.__model.hardware.readPosition()
                 Logger().debug("Spy.__init__(): yaw=%.1f, pitch=%.1f" % (self.__yaw, self.__pitch))
             except HardwareError:
-                Logger().exception("Spy.run()")
+                Logger().exception("Spy.run(): Can't read position")
             Spy.__init = False
         
     def run(self):
@@ -126,7 +127,7 @@ class Spy(threading.Thread):
             try:
                 self.newPosSignal.emit(yaw, pitch)
             except:
-                Logger().exception("Spy.run()")
+                Logger().exception("Spy.run(): Can't emit signal")
             self.__yaw = yaw
             self.__pitch = pitch
             
