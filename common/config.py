@@ -46,3 +46,31 @@ MOSAIC_TEMPLATE = ["Auto",
                    "DRU", "DRD", "DLU", "DLD",
                    "URD", "URU", "ULD", "ULU"
                    ]
+
+# Logger
+LOGGER_FORMAT = "%%(asctime)s::%%(threadName)s::%%(levelname)s::%%(message)s"
+
+# Data
+DATA_FILE = "papywizard-%%s.xml"
+
+# Hardware
+AXIS_NUM_YAW = 1
+AXIS_NUM_PITCH = 2
+AXIS_ACCURACY = 0.1
+SHOOT_PULSE = 0.2
+BLUETOOTH_DRIVER_CONNECT_DELAY = 8.
+ENCODER_360 = 0x0E6600
+ENCODER_ZERO = 0x800000
+AXIS_SPEED = 10.
+SERIAL_BAUDRATE = 9600
+SERIAL_TIMEOUT = 0.2
+
+# Misc
+SPY_SLOW_REFRESH = 0.5
+SPY_FAST_REFRESH = 0.05
+
+# View3D
+VIEW3D_ENABLE = False
+VIEW3D_HEAD_HFOV = 30.
+VIEW3D_HEAD_VFOV = 20.
+VIEW3D_HEAD_FOV_LENGTH = 1.

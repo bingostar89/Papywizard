@@ -35,7 +35,7 @@ class ConfigDialog(object):
         """ Init the object.
         """
         # Set the Glade file
-        gladeFile = os.path.join(path, "configDialog.glade")
+        gladeFile = os.path.join(path, "configDialog-new.glade")
         self.wTree = gtk.glade.XML(gladeFile)
 
         # Retreive usefull widgets

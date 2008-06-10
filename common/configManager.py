@@ -22,7 +22,6 @@ import ConfigParser
 
 from papywizard.common import config
 
-CONFIG_VERSION = 1
 
 class ConfigManager(object):
     """ ConfigManager.
@@ -49,6 +48,7 @@ class ConfigManager(object):
             if globalConfig.read(config.GLOBAL_CONFIG_FILE) == []:
                 if globalConfig.read(config.CONFIG_FILE) == []:
                     raise IOError("Can't read configuration file")
+            globalConfigVersion = globalConfig.getint('General', 'CONFIG_VERSION')
             
             # Check if user config. exists
             userConfig = ConfigParser.SafeConfigParser()
@@ -58,7 +58,7 @@ class ConfigManager(object):
                 userConfig.read(config.USER_CONFIG_FILE)
 
             # Check if user config. needs to be updated
-            elif CONFIG_VERSION != userConfig.getint('General', 'CONFIG_VERSION'):
+            elif globalConfigVersion > userConfig.getint('General', 'CONFIG_VERSION'):
                 print "User config. has wrong version.; updating from global config."
                 
                 # Remove obsolete sections
@@ -91,7 +91,7 @@ class ConfigManager(object):
                             print "Updated [%s] %s option with %s" % (globalSection, option, value)
                         
                     # Set config. version
-                    userConfig.set('General', 'CONFIG_VERSION', "%d" % CONFIG_VERSION)
+                    userConfig.set('General', 'CONFIG_VERSION', "%d" % globalConfigVersion)
                 
                 # Write user config.
                 userConfig.write(file(config.USER_CONFIG_FILE, 'w'))

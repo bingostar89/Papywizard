@@ -18,6 +18,7 @@ __revision__ = "$Id$"
 
 import serial
 
+from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
@@ -35,8 +36,8 @@ class SerialDriver(BusDriver):
                 except ValueError:
                     port = ConfigManager().get('Hardware', 'SERIAL_PORT')
                 self._serial = serial.Serial(port=port)
-                self._serial.timeout = ConfigManager().getFloat('Hardware', 'SERIAL_TIMEOUT')
-                self._serial.baudrate = ConfigManager().getInt('Hardware', 'SERIAL_BAUDRATE')
+                self._serial.timeout = config.SERIAL_TIMEOUT
+                self._serial.baudrate = config.SERIAL_BAUDRATE
                 self._serial.read(self._serial.inWaiting()) # Empty buffer
                 self._init = True
 

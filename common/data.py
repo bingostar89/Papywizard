@@ -51,8 +51,10 @@ correct place (sky pictures without any details are often unlinked).
 __revision__ = "$Id$"
 
 import time
+import os.path
 import xml.dom.minidom
 
+from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 
@@ -117,9 +119,10 @@ class Data(object):
     def __serialize(self):
         """ Serialize xml tree to file.
         """
-        if ConfigManager().getBoolean('General', 'WRITE_DATA_FILE'):
+        if ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE'):
             Logger().trace("Data.serialize()")
-            xmlFile = file(ConfigManager().get('General', 'DATA_FILE') % self.__date, 'w')
+            filename = os.path.join(config.HOME_DIR, config.DATA_FILE)
+            xmlFile = file(filename % self.__date, 'w')
             self.__doc.writexml(xmlFile, addindent='    ', newl='\n')
             xmlFile.close()
 

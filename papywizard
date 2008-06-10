@@ -20,7 +20,6 @@ import gobject
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
-from papywizard.common.configManager import ConfigManager
 from papywizard.common.serializer import Serializer
 from papywizard.common.exception import HardwareError
 from papywizard.model.shooting import Shooting
@@ -31,11 +30,10 @@ try:
     from papywizard.hardware.head import Head, HeadSimulation
 except ImportError:
     Logger().exception("Papywizard initial imports")
-if ConfigManager().getBoolean('View3D', 'VIEW3D_ENABLE'):
+if config.VIEW3D_ENABLE:
     from papywizard.view3D.view3D import View3D
 
 
-Logger().setConsoleLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
 Logger().info("Starting Papywizard app...")
 
 # Create model (both real and simulated)
@@ -53,11 +51,11 @@ headSimulation = HeadSimulation()
 model = Shooting(head, headSimulation)
 
 # Launch spy thread
-Spy(model, ConfigManager().getFloat('Misc', 'SPY_FAST_REFRESH'))
+Spy(model, config.SPY_FAST_REFRESH)
 Spy().start()
 
 # Create 3D view
-if ConfigManager().getBoolean('View3D', 'VIEW3D_ENABLE'):
+if config.VIEW3D_ENABLE:
     view3D = View3D("Papywizard", scale=(1, 1, 1))
     Spy().newPosSignal.connect(view3D.draw)
     #Spy().newPosSignal.connect(view3D.viewFromCamera)
@@ -82,7 +80,7 @@ Spy().join()
 headSimulation.stopGoto()
 model.shutdown()
 
-if ConfigManager().getBoolean('View3D', 'VIEW3D_ENABLE'):
+if config.VIEW3D_ENABLE:
     view3D.terminate() # vpython has not yet a way to terminate the mainloop
 
 Logger().info("Papywizard app stopped")
