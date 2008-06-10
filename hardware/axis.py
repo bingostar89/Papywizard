@@ -309,6 +309,7 @@ class AxisSimulation(threading.Thread):
         """
         super(AxisSimulation, self).__init__()
         self.setDaemon(1)
+        self.setName("Axis #%d" % num)
 
         self._num = num
         self.__pos = 0.
@@ -336,7 +337,7 @@ class AxisSimulation(threading.Thread):
                         self.__pos += inc
                     elif self.__dir == '-':
                         self.__pos -= inc
-                    Logger().debug("AxisSimulation.run(): axis %d inc=%.1f, new __pos=%.1f" % (self._num, inc, self.__pos))
+                    #Logger().debug("AxisSimulation.run(): axis %d inc=%.1f, new __pos=%.1f" % (self._num, inc, self.__pos))
             else:
                 self.__time = None
 
