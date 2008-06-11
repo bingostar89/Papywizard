@@ -67,9 +67,9 @@ class Head(object):
     def __init__(self):
         """ Init the object.
         """
-        self.driver = DriverFactory().create(ConfigManager().get('Hardware', 'DRIVER'))
-        self.yawAxis = Axis(config.AXIS_NUM_YAW, self.driver)
-        self.pitchAxis = Axis(config.AXIS_NUM_PITCH, self.driver)
+        self.yawAxis = None
+        self.pitchAxis = None
+        self.driver = None
 
     def init(self):
         """ Init the head.
@@ -79,11 +79,14 @@ class Head(object):
         the head is switched on.
         Also note that it does not set axis to zero.
         """
+        self.driver = DriverFactory().create(ConfigManager().get('Hardware', 'DRIVER'))
         Logger().debug("Head.init(): initializing driver...")
         self.driver.init()
         Logger().debug("Head.init(): driver initialized; waiting for connection...")
         time.sleep(config.BLUETOOTH_DRIVER_CONNECT_DELAY)
         Logger().debug("Head.init(): initializing axis...")
+        self.yawAxis = Axis(config.AXIS_NUM_YAW, self.driver)
+        self.pitchAxis = Axis(config.AXIS_NUM_PITCH, self.driver)
         self.yawAxis.init()
         self.pitchAxis.init()
         Logger().debug("Head.init(): axis initialized")
