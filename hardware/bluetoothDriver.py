@@ -62,11 +62,9 @@ from papywizard.hardware.busDriver import BusDriver
 
 
 class BluetoothDriver(BusDriver):
-    """ Passive driver.
+    """ Driver for bluetooth connection.
 
     This driver only uses bluetooth socket.
-
-    @todo: dynamically get bluetooth device address.
     """
     def init(self):
         if not self._init:
@@ -116,8 +114,6 @@ class BluetoothDriver(BusDriver):
             self._sock.send(":%s\r" % cmd)
             c = ''
             while c != '=':
-                #while not self._sock.inWaiting():
-                    #time.sleep(0.01)
                 c = self._sock.recv(1)
                 #Logger().debug("BluetoothDriver.sendCmd(): c=%s" % repr(c))
                 if not c:
