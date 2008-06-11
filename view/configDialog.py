@@ -79,6 +79,7 @@ class ConfigDialog(object):
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
+        # Shooting preferences
         self.configDialog = self.wTree.get_widget("configDialog")
         self.timeValueSpinbutton = self.wTree.get_widget("timeValueSpinbutton")
         self.nbPictsSpinbutton = self.wTree.get_widget("nbPictsSpinbutton")
@@ -90,9 +91,29 @@ class ConfigDialog(object):
         self.fisheyeCheckbutton = self.wTree.get_widget("fisheyeCheckbutton")
         self.cameraOrientationCombobox = self.wTree.get_widget("cameraOrientationCombobox")
 
+        # Default shooting preferences
+        self.defaultConfigDialog = self.wTree.get_widget("defautConfigDialog")
+        self.defaultTimeValueSpinbutton = self.wTree.get_widget("defaultTimeValueSpinbutton")
+        self.defaultNbPictsSpinbutton = self.wTree.get_widget("defaultNbPictsSpinbutton")
+        self.defaultStabilizationDelaySpinbutton = self.wTree.get_widget("defaultStabilizationDelaySpinbutton")
+        self.defaultSensorCoefSpinbutton = self.wTree.get_widget("defaultSensorCoefSpinbutton")
+        self.defaultSensorRatioCombobox = self.wTree.get_widget("defaultSensorRatioCombobox")
+        self.defaultOverlapSpinbutton = self.wTree.get_widget("defaultOverlapSpinbutton")
+        self.defaultFocalSpinbutton = self.wTree.get_widget("defaultFocalSpinbutton")
+        self.defaultFisheyeCheckbutton = self.wTree.get_widget("defaultFisheyeCheckbutton")
+        self.defaultCameraOrientationCombobox = self.wTree.get_widget("defaultCameraOrientationCombobox")
+
+        # Other preferences
+        self.driverCombobox = self.wTree.get_widget("driverCombobox")
+        self.bluetoothDeviceAddressEntry = self.wTree.get_widget("bluetoothDeviceAddressEntry")
+        self.serialPortEntry = self.wTree.get_widget("serialPortEntry")
+        self.loggerLevelCombobox = self.wTree.get_widget("loggerCLevelCombobox")
+        self.dataFileEnableCheckbutton = self.wTree.get_widget("dataFileEnableCheckbutton")
+
     def fillWidgets(self, values):
         """ Fill widgets with values.
         """
+        # Shooting preferences
         self.timeValueSpinbutton.set_value(values['cameraTimeValue'])
         self.nbPictsSpinbutton.set_value(values['cameraNbPicts'])
         self.stabilizationDelaySpinbutton.set_value(values['shootingStabilizationDelay'])
@@ -102,3 +123,26 @@ class ConfigDialog(object):
         self.focalSpinbutton.set_value(values['lensFocal'])
         self.fisheyeCheckbutton.set_active(values['lensFisheye'])
         self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[values['shootingCameraOrientation']])
+
+        try:
+            
+            # Default shooting preferences
+            self.defaultTimeValueSpinbutton.set_value(values['defaultCameraTimeValue'])
+            self.defaultNbPictsSpinbutton.set_value(values['defaultCameraNbPicts'])
+            self.defaultStabilizationDelaySpinbutton.set_value(values['defaultShootingStabilizationDelay'])
+            self.defaultSensorCoefSpinbutton.set_value(values['defaultCameraSensorCoef'])
+            self.defaultSensorRatioCombobox.set_active(config.SENSOR_RATIOS_INDEX[values['defaultCameraSensorRatio']])
+            self.defaultOverlapSpinbutton.set_value(values['defaultShootingOverlap'])
+            self.defaultFocalSpinbutton.set_value(values['defaultLensFocal'])
+            self.defaultFisheyeCheckbutton.set_active(values['defaultLensFisheye'])
+            self.defaultCameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[values['defaultShootingCameraOrientation']])
+    
+            # Other preferences
+            self.driverCombobox.set_active(config.DRIVER_INDEX[values['hardwareDriver']])
+            self.bluetoothDeviceAddressEntry.set_text(values['hardwareBluetoothDeviceAddress'])
+            self.serialPortEntry.set_text(values['hardwareSerialPort'])
+            self.loggerLevelCombobox.set_active(config.LOGGER_INDEX[values['loggerLevel']])
+            self.dataFileEnableCheckbutton.set_active(values['dataFileEnable'])
+        except KeyError:
+            Logger().exception("ConfigDialog.fillWidget()", debug=True)
+            

@@ -83,6 +83,9 @@ MOSAIC_TEMPLATE = ["Auto",
 
 # Logger
 LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"
+LOGGER_INDEX = {'trace': 0, 'debug': 1, 'info': 2, 'warning' :3, 'error': 4, 'exception': 5, 'critical': 6,
+                0: 'trace', 1: 'debug', 2: 'info', 3: 'warning', 4: 'error', 5: 'exception', 6: 'critical'}
+
 
 # Data
 DATA_FILE = "papywizard-%s.xml"
@@ -98,6 +101,8 @@ ENCODER_ZERO = 0x800000
 AXIS_SPEED = 10.
 SERIAL_BAUDRATE = 9600
 SERIAL_TIMEOUT = 0.2
+DRIVER_INDEX = {'bluetooth': 0, 'serialPassive': 1, 'serialStamp': 2,
+                0: 'bluetooth', 1: 'serialPassive', 2: 'serialStamp'}
 
 # Misc
 SPY_SLOW_REFRESH = 0.5
