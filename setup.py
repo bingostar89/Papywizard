@@ -72,10 +72,9 @@ setup(name="papywizard",
       packages=["papywizard", "papywizard.common", "papywizard.model",
                 "papywizard.controller", "papywizard.hardware",
                 "papywizard.view", "papywizard.view3D"],
-      package_data={'papywizard': ["view/*.glade"]},
+      package_data={'papywizard': ["view/*.glade", "common/papywizard.conf"]},
       data_files=[("share/applications/hildon", ["papywizard.desktop"]),
-                  ('share/pixmaps', ["papywizard.png"]),
-                  ('/etc', ["papywizard.conf"])],
+                  ('share/pixmaps', ["papywizard.png"])],
 
       # pymaemo stuff
       section="user/graphics",
