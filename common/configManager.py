@@ -57,6 +57,8 @@ import ConfigParser
 
 from papywizard.common import config
 
+path = os.path.dirname(__file__)
+
 
 class ConfigManager(object):
     """ ConfigManager.
@@ -73,59 +75,57 @@ class ConfigManager(object):
 
     def __init__(self):
         """ Init the object.
-        
-        @todo: update user config. from global config. instead of overwriting
         """
         if ConfigManager.__init:
             
-            # Load global config.
-            globalConfig = ConfigParser.SafeConfigParser()
-            if globalConfig.read(config.GLOBAL_CONFIG_FILE) == []:
-                if globalConfig.read(config.CONFIG_FILE) == []:
-                    raise IOError("Can't read configuration file")
-            globalConfigVersion = globalConfig.getint('General', 'CONFIG_VERSION')
+            # Load dist config.
+            distConfig = ConfigParser.SafeConfigParser()
+            distConfigFile = os.path.join(path, config.CONFIG_FILE)
+            if distConfig.read(distConfigFile) == []:
+                raise IOError("Can't read configuration file")
+            distConfigVersion = distConfig.getint('General', 'CONFIG_VERSION')
             
             # Check if user config. exists
             userConfig = ConfigParser.SafeConfigParser()
             if userConfig.read(config.USER_CONFIG_FILE) == []:
-                print "User config. does not exist; copying from global config."
-                globalConfig.write(file(config.USER_CONFIG_FILE, 'w'))
+                print "User config. does not exist; copying from dist config."
+                distConfig.write(file(config.USER_CONFIG_FILE, 'w'))
                 userConfig.read(config.USER_CONFIG_FILE)
 
             # Check if user config. needs to be updated
-            elif globalConfigVersion > userConfig.getint('General', 'CONFIG_VERSION'):
-                print "User config. has wrong version.; updating from global config."
+            elif distConfigVersion > userConfig.getint('General', 'CONFIG_VERSION'):
+                print "User config. has wrong version.; updating from dist config."
                 
                 # Remove obsolete sections
-                globalSections = globalConfig.sections()
+                distSections = distConfig.sections()
                 for userSection in userConfig.sections():
-                    if userSection not in globalSections:
+                    if userSection not in distSections:
                         userConfig.remove_section(userSection)
                         print "Removed [%s] section" % userSection
 
                 # Update all sections
-                for globalSection in globalSections:
+                for distSection in distSections:
 
                     # Create new sections
-                    if not userConfig.has_section(globalSection):
-                        userConfig.add_section(globalSection)
-                        print "Added [%s] section" % globalSection
+                    if not userConfig.has_section(distSection):
+                        userConfig.add_section(distSection)
+                        print "Added [%s] section" % distSection
 
                     # Remove obsolete options
-                    for option in userConfig.options(globalSection):
-                        if not globalConfig.has_option(globalSection, option):
-                            userConfig.remove_option(globalSection, option)
-                            print "Removed [%s] %s option" % (globalSection, option)
+                    for option in userConfig.options(distSection):
+                        if not distConfig.has_option(distSection, option):
+                            userConfig.remove_option(distSection, option)
+                            print "Removed [%s] %s option" % (distSection, option)
 
                     # Update the options
-                    for option, value in globalConfig.items(globalSection):
-                        if not userConfig.has_option(globalSection, option) or \
-                           value != userConfig.get(globalSection, option) and not globalSection.endswith("Preferences"):
-                            userConfig.set(globalSection, option, value)
-                            print "Updated [%s] %s option with %s" % (globalSection, option, value)
+                    for option, value in distConfig.items(distSection):
+                        if not userConfig.has_option(distSection, option) or \
+                           value != userConfig.get(distSection, option) and not distSection.endswith("Preferences"):
+                            userConfig.set(distSection, option, value)
+                            print "Updated [%s] %s option with %s" % (distSection, option, value)
                         
                     # Set config. version
-                    userConfig.set('General', 'CONFIG_VERSION', "%d" % globalConfigVersion)
+                    userConfig.set('General', 'CONFIG_VERSION', "%d" % distConfigVersion)
                 
                 # Write user config.
                 userConfig.write(file(config.USER_CONFIG_FILE, 'w'))
