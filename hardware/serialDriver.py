@@ -61,7 +61,7 @@ from papywizard.hardware.busDriver import BusDriver
 
 
 class SerialDriver(BusDriver):
-    """ Base class for serial bus drivers.
+    """ Driver for serial connection.
     """
     def init(self):
         if not self._init:
@@ -84,3 +84,44 @@ class SerialDriver(BusDriver):
         if self._init:
             self._serial.close()
             self._init = False
+
+    def _setCS(self, level):
+        """ Set CS signal to specified level.
+
+        @param level: level to set to CS signal
+        @type level: int
+        """
+        #self._serial.setDTR(level)
+
+    def sendCmd(self, cmd):
+        if not self._init:
+            raise HardwareError("SerialPassiveDriver not initialized")
+
+        self.acquireBus()
+        try:
+            # Empty buffer
+            self._serial.read(self._serial.inWaiting())
+
+            self._setCS(0)
+            self._serial.write(":%s\r" % cmd)
+            c = ''
+            while c != '=':
+                c = self._serial.read()
+                #Logger().debug("SerialPassiveDriver.sendCmd(): c=%s" % repr(c))
+                if not c:
+                    raise IOError("Timeout while reading on serial bus")
+            data = ""
+            while True:
+                c = self._serial.read()
+                #Logger().debug("SerialPassiveDriver.sendCmd(): c=%s, data=%s" % (repr(c), repr(data)))
+                if not c:
+                    raise IOError("Timeout while reading on serial bus")
+                elif c == '\r':
+                    break
+                data += c
+
+        finally:
+            self._setCS(1)
+            self.releaseBus()
+
+        return data
