@@ -101,8 +101,8 @@ ENCODER_ZERO = 0x800000
 AXIS_SPEED = 10.
 SERIAL_BAUDRATE = 9600
 SERIAL_TIMEOUT = 0.2
-DRIVER_INDEX = {'bluetooth': 0, 'serialPassive': 1, 'serialStamp': 2,
-                0: 'bluetooth', 1: 'serialPassive', 2: 'serialStamp'}
+DRIVER_INDEX = {'bluetooth': 0, 'serial': 1, 'usb': 2,
+                0: 'bluetooth', 1: 'serial', 2: 'usb'}
 
 # Misc
 SPY_SLOW_REFRESH = 0.5
