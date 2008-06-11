@@ -52,7 +52,6 @@ import os.path
 VERSION = "0.9beta2"
 PACKAGE_VERSION = 1
 
-GLOBAL_CONFIG_DIR = "/etc"
 HOME_DIR = os.path.expandvars("$HOME")
 USER_CONFIG_DIR = os.path.join(HOME_DIR, ".config") # OpenDesktop standard
 try:
@@ -63,7 +62,6 @@ except OSError, (errno, errmsg):
     else:
         raise
 CONFIG_FILE = "papywizard.conf"
-GLOBAL_CONFIG_FILE = os.path.join(GLOBAL_CONFIG_DIR, CONFIG_FILE)
 USER_CONFIG_FILE = os.path.join(USER_CONFIG_DIR, CONFIG_FILE)
 
 SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3.}
