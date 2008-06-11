@@ -65,18 +65,15 @@ class DriverFactory(object):
 
         @raise HardwareError: unknown type
         """
-        if type_ == "serialPassive":
-            from serialPassiveDriver import SerialPassiveDriver
-            return SerialPassiveDriver()
-        elif type_ == "serialStamp":
-            from serialStampDriver import SerialStampDriver
-            return SerialStampDriver()
+        if type_ == "bluetooth":
+            from bluetoothDriver import BluetoothDriver
+            return BluetoothDriver()
+        elif type_ == "serial":
+            from serialDriver import SerialDriver
+            return SerialDriver()
         elif type_ == "usb":
             from usbDriver import USBDriver
             return USBDriver()
-        elif type_ == "bluetooth":
-            from bluetoothDriver import BluetoothDriver
-            return BluetoothDriver()
 
         else:
             raise HardwareError("Unknow '%s' driver type" % type_)
