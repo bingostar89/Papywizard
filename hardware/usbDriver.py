@@ -56,6 +56,6 @@ from papywizard.hardware.busDriver import BusDriver
 
 
 class USBDriver(BusDriver):
+    """ Driver for USB connection.
     """
-    """
-    #raise NotImplementedError
+    raise NotImplementedError
