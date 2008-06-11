@@ -57,6 +57,7 @@ import threading
 import gtk
 import gobject
 
+from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
@@ -400,6 +401,7 @@ class MainController(AbstractController):
         controller = ConfigController(self, self.__model, view)
         retCode = view.configDialog.run()
         view.configDialog.destroy()
+        Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
         self.refreshView()
 
     def __openShootdialog(self):
