@@ -531,7 +531,7 @@ landscape</property>
                 <child>
                   <widget class="GtkLabel" id="label15">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Default values are only effective when dialog has be validated</property>
+                    <property name="label" translatable="yes">Default values are effective when dialog is validated</property>
                   </widget>
                   <packing>
                     <property name="position">1</property>
