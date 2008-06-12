@@ -439,7 +439,11 @@ class MainController(AbstractController):
                     #Logger().warning("Connection to hardware canceled")
                     #self.__view.hardwareConnectMenuitem.set_active(False)
                     #return
-
+                    
+            #message = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type= gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_NONE, message_format="Test")
+            #gobject.timeout_add(3000, message.destroy)
+            #message.run()
+            
             self.__model.switchToRealHardware()
             Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
             #self.__view.hardwareResetMenuitem.set_sensitive(True)
