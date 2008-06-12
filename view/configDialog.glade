@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Jun 10 18:07:01 2008 -->
+<!--Generated with glade3 3.4.5 on Thu Jun 12 12:35:20 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="configDialog">
     <property name="border_width">5</property>
@@ -529,7 +529,13 @@ landscape</property>
                   </widget>
                 </child>
                 <child>
-                  <placeholder/>
+                  <widget class="GtkLabel" id="label15">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Default values are only effective when dialog has be validated</property>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
                 </child>
               </widget>
               <packing>
@@ -652,7 +658,8 @@ critical</property>
                     <property name="visible">True</property>
                     <property name="active">0</property>
                     <property name="items" translatable="yes" context="yes">bluetooth
-serial</property>
+serialPassive
+serialStamp</property>
                   </widget>
                   <packing>
                     <property name="left_attach">1</property>
@@ -692,6 +699,16 @@ serial</property>
             <property name="visible">True</property>
             <property name="layout_style">GTK_BUTTONBOX_END</property>
             <child>
+              <widget class="GtkButton" id="validateButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="label" translatable="yes">Validate</property>
+                <property name="response_id">0</property>
+                <signal name="clicked" handler="on_validateButton_clicked"/>
+              </widget>
+            </child>
+            <child>
               <widget class="GtkButton" id="okButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -700,6 +717,9 @@ serial</property>
                 <property name="response_id">0</property>
                 <signal name="clicked" handler="on_okButton_clicked"/>
               </widget>
+              <packing>
+                <property name="position">1</property>
+              </packing>
             </child>
             <child>
               <widget class="GtkButton" id="cancelButton">
@@ -711,7 +731,7 @@ serial</property>
                 <signal name="clicked" handler="on_cancelButton_clicked"/>
               </widget>
               <packing>
-                <property name="position">1</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </widget>
