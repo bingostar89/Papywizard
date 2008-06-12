@@ -81,12 +81,22 @@ class ConfigController(AbstractController):
         # Connect signal/slots
         dic = {"on_okButton_clicked": self.__onOkButtonClicked,
                "on_cancelButton_clicked": self.__onCancelButtonClicked,
+               "on_validateButton_clicked": self.__onValidateButtonClicked,
                "on_defaultButton_clicked": self.__onDefaultButtonClicked
            }
         self.__view.wTree.signal_autoconnect(dic)
 
+        self.__view.validateButton.set_sensitive(False)
+
         # Fill widgets
         self.refreshView()
+
+    def __onValidateButtonClicked(self, widget):
+        """ Validate button has been clicked.
+        
+        Save back values to model but don't close dialog.
+        """
+        Logger().trace("ConfigController.__onValidateButtonClicked()")
 
     def __onOkButtonClicked(self, widget):
         """ Ok button has been clicked.
