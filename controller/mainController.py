@@ -337,6 +337,7 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onHardwareResetMenuActivated()")
         Logger().info("Reseting hardware")
         self.__model.hardware.reset()
+        self.__setStatusbarMessage("Hardware has been reseted", 10)
 
     def __onHardwareSetOriginMenuActivated(self, widget):
         """ Zero axis menu selected.
@@ -344,6 +345,7 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onHardwareSetOriginMenuActivated()")
         Logger().info("Set hardware origin")
         self.__model.hardware.setOrigin()
+        self.__setStatusbarMessage("Origin set to current position", 10)
 
     def __onHelpAboutMenuActivated(self, widget):
         """ Connect check button toggled.
@@ -357,11 +359,13 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onSetStartButtonClicked()")
         self.__model.storeStartPosition()
         self.refreshView()
+        self.__setStatusbarMessage("Start position set to current position", 10)
 
     def __onSetEndButtonClicked(self, widget):
         Logger().trace("MainController.__onSetEndButtonClicked()")
         self.__model.storeEndPosition()
         self.refreshView()
+        self.__setStatusbarMessage("End position set to current position", 10)
 
     #def __onSetFovButtonClicked(self, widget):
         #Logger().trace("MainController.__onSetFovButtonClicked()")
@@ -382,11 +386,13 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onSet360ButtonClicked()")
         self.__model.setYaw360()
         self.refreshView()
+        self.__setStatusbarMessage(u"Start/End yaw positions set to 360°", 10)
 
     def __onSet180ButtonClicked(self, widget):
         Logger().trace("MainController.__onSet180ButtonClicked()")
         self.__model.setPitch180()
         self.refreshView()
+        self.__setStatusbarMessage(u"Start/End pitch positions set to 180°", 10)
 
     def __onManualMoveButtonClicked(self, widget):
         Logger().trace("MainController.__onManualMoveButtonClicked()")
@@ -402,6 +408,7 @@ class MainController(AbstractController):
         retCode = view.configDialog.run()
         view.configDialog.destroy()
         Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
+        # Save preferences here
         self.refreshView()
 
     def __openShootdialog(self):
