@@ -6,12 +6,13 @@ x bug fix
 
 xxxx-xx-xx Version SVN
     x bug correction when start pos > end pos
-    x Connect menu is greyed out if hardware is not available
-    + Added 'Set 360' and 'Set 180' buttons
+    x connect menu is greyed out if hardware is not available
+    + added 'Set 360' and 'Set 180' buttons
+    + edit all preferences
 
 2008-06-06 Version 0.9beta2
     - switched from Tkinter to Gtk+
-    + Maemo support
+    + Nokia/maemo support
     - removed windows support (may be set back in future)
     x added test for several optional import modules
     x axis are now driven concurrently

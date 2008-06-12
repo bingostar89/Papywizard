@@ -79,6 +79,8 @@ class ConfigDialog(object):
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
+        self.validateButton = self.wTree.get_widget("validateButton")
+        
         # Shooting preferences
         self.configDialog = self.wTree.get_widget("configDialog")
         self.timeValueSpinbutton = self.wTree.get_widget("timeValueSpinbutton")
