@@ -57,6 +57,7 @@ import os.path
 #import pygtk
 #pygtk.require("2.0")
 import gtk.glade
+import pango
 
 path = os.path.dirname(__file__)
 
@@ -73,6 +74,20 @@ class MainWindow(object):
 
         # Retreive usefull widgets
         self._retreiveWidgets()
+        
+        # Font test
+        self.yawPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawStartEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchStartEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawEndEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchEndEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawFovEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchFovEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawNbPictsEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchNbPictsEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawRealOverlapEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchRealOverlapEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
 
         # Nokia plateform stuff
         try:
