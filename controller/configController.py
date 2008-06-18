@@ -87,13 +87,6 @@ class ConfigController(AbstractController):
         # Fill widgets
         self.refreshView()
 
-    def __onValidateButtonClicked(self, widget):
-        """ Validate button has been clicked.
-        
-        Save back values to model but don't close dialog.
-        """
-        Logger().trace("ConfigController.__onValidateButtonClicked()")
-
     def __onOkButtonClicked(self, widget):
         """ Ok button has been clicked.
 
