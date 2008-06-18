@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
 <!--*- mode: xml -*-->
 <glade-interface>
@@ -419,7 +419,7 @@
                   <widget class="GtkLabel" id="label8">
                     <property name="visible">True</property>
                     <property name="xalign">0.89999997615814209</property>
-                    <property name="label" translatable="yes" context="yes">Real overlap</property>
+                    <property name="label" translatable="yes" context="yes">Real overlap (%)</property>
                     <property name="width_chars">15</property>
                     <property name="max_width_chars">15</property>
                   </widget>
