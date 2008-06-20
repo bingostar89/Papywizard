@@ -173,12 +173,11 @@ class Axis(object):
         if wait:
             self.waitEndOfDrive()
 
-    def stopDrive(self):
+    def stop(self):
         """ stop drive axis.
         """
         self._sendCmd("L")
         self.waitStop()
-        #self.stopJog()
 
     def waitEndOfDrive(self):
         """ Wait for end of drive.
@@ -190,19 +189,23 @@ class Axis(object):
             time.sleep(0.1)
         self.waitStop()
 
-    #def drive2(self, pos, inc=False):
+    #def drive2(self, pos, inc=False, wait=True):
         #""" Drive the axis.
 
         #This method implements an external closed loop regulation.
         #It is faster for angles < 6-7°, because in this case, the
         #head does not accelerate to full speed, but rather stays at
-        #minimum speed!!!
+        #very low speed.
 
         #@param pos: position to reach, in °
         #@type pos: float
 
         #@param inc: if True, pos is an increment
         #@type inc: bool
+
+        #@param wait: if True, wait for end of movement,
+                     #returns immediatly otherwise.
+        #@type wait: boot
         #"""
 
         ## Compute absolute position from increment if needed
@@ -259,12 +262,6 @@ class Axis(object):
             self._sendCmd("J")
         finally:
             self._driver.releaseBus()
-
-    def stopJog(self):
-        """ Stop the axis.
-        """
-        self._sendCmd("L")
-        self.waitStop()
 
     def waitStop(self):
         """ Wait until axis does not move anymore (inertia).
@@ -356,8 +353,10 @@ class AxisSimulation(threading.Thread):
                         self.__pos = self.__setpoint
 
             time.sleep(config.SPY_FAST_REFRESH)
+            
+        Logger().debug("AxisSimulation.run(): axis simulation thread terminated")
 
-    def stop(self):
+    def stopThread(self):
         """ Stop the thread.
         """
         self.__run = False
@@ -369,7 +368,6 @@ class AxisSimulation(threading.Thread):
     def reset(self):
         self.__jog = False
         self.__drive = False
-        #self.__pos = 0. # real hardware does not reset current pos...
 
     def setOrigin(self):
         """ Set current axis position as origin.
@@ -419,7 +417,7 @@ class AxisSimulation(threading.Thread):
         if wait:
             self.waitEndOfDrive()
 
-    def stopDrive(self):
+    def stop(self):
         """ Stop the axis while in drive mode.
         """
         self.__jog = False
@@ -433,15 +431,7 @@ class AxisSimulation(threading.Thread):
         self.__dir = dir
         self.__jog = True
 
-    def stopJog(self):
-        self.__jog = False
-        self.waitStop()
-
     def waitStop(self):
-        """ Wait until axis does not move anymore.
-
-        Nothing special to do.
-        """
         pass
 
     def getStatus(self):
@@ -459,4 +449,4 @@ class AxisSimulation(threading.Thread):
         @type level: int
         """
         Logger().debug("AxisSimulation.setOutput(): axis %d level=%d" % (self._num, level))
-        pass
+        
