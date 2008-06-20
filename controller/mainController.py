@@ -52,7 +52,7 @@ Implements
 __revision__ = "$Id$"
 
 import time
-import threading
+import thread
 
 import gtk
 import gobject
@@ -148,15 +148,12 @@ class MainController(AbstractController):
         # Fill widgets
         self.refreshView()
 
-        # Connect Spy
+        # Connect stuffs
         Spy().newPosSignal.connect(self.__refreshPos)
+        self.__model.switchToRealHardwareSignal.connect(self.__switchToRealHardwareCallback)
 
         # Try to autoconnect to real hardware
-        #self.__connectToHardware()
-        if self.__model.realHardware is None:
-            self.__view.hardwareConnectMenuitem.set_sensitive(False)
-            
-        #self.__setStatusbarMessage("Test", 5)
+        self.__view.hardwareConnectMenuitem.set_active(True)
 
     # Helpers
     def __setStatusbarMessage(self, message=None, delay=0):
@@ -173,7 +170,6 @@ class MainController(AbstractController):
             self.__view.statusbar.push(self.__view.hardwareContextId, message)
             if delay:
                 gobject.timeout_add(delay * 1000, self.__setStatusbarMessage)
-        #gtk.main_do_event()
         
     # Callbacks
     def __onKeyPressed(self, widget, event, *args):
@@ -331,25 +327,27 @@ class MainController(AbstractController):
         else:
             self.__view.window_in_fullscreen = False
 
+    def __onHardwareConnectMenuToggled(self, widget):
+        switch = self.__view.hardwareConnectMenuitem.get_active()
+        Logger().trace("MainController.__onHardwareConnectMenuActivated(%s)" % switch)
+        if switch:
+            self.__connectToHardware()
+        else:
+            self.__goToSimulationMode()
+
     def __onHardwareResetMenuActivated(self, widget):
-        """ Hard reset menu selected.
-        """
         Logger().trace("MainController.__onHardwareResetMenuActivated()")
         Logger().info("Reseting hardware")
         self.__model.hardware.reset()
         self.__setStatusbarMessage("Hardware has been reseted", 10)
 
     def __onHardwareSetOriginMenuActivated(self, widget):
-        """ Zero axis menu selected.
-        """
         Logger().trace("MainController.__onHardwareSetOriginMenuActivated()")
         Logger().info("Set hardware origin")
         self.__model.hardware.setOrigin()
         self.__setStatusbarMessage("Origin set to current position", 10)
 
     def __onHelpAboutMenuActivated(self, widget):
-        """ Connect check button toggled.
-        """
         Logger().trace("MainController.__onHelpAboutMenuActivated()")
         view = HelpAboutDialog(self.__view)
         retCode = view.helpAboutDialog.run()
@@ -366,21 +364,6 @@ class MainController(AbstractController):
         self.__model.storeEndPosition()
         self.refreshView()
         self.__setStatusbarMessage("End position set to current position", 10)
-
-    #def __onSetFovButtonClicked(self, widget):
-        #Logger().trace("MainController.__onSetFovButtonClicked()")
-        #tkMB.showwarning("Set total field of view", "Not yet implemented")
-
-    #def __onSetNbPictsButtonClicked(self, widget):
-        #tkMB.showwarning("Set total nb picts", "Not yet implemented")
-
-    #def __onZenithCheckbuttonToggled(self, widget):
-        #Logger().trace("MainController.__onZenithCheckbuttonToggled()")
-        #self.__model.mosaic.zenith = bool(self.__view.zenithCheckbutton.get_active())
-
-    #def __onNadirCheckbuttonToggled(self, widget):
-        #Logger().trace("MainController.__onNadirCheckbuttonToggled()")
-        #self.__model.mosaic.nadir = bool(self.__view.nadirCheckbutton.get_active())
 
     def __onSet360ButtonClicked(self, widget):
         Logger().trace("MainController.__onSet360ButtonClicked()")
@@ -408,7 +391,7 @@ class MainController(AbstractController):
         retCode = view.configDialog.run()
         view.configDialog.destroy()
         Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
-        # Save preferences here
+        ConfigManager().save()
         self.refreshView()
 
     def __openShootdialog(self):
@@ -421,40 +404,41 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onShootButtonClicked()")
         self.__openShootdialog()
 
+    def __switchToRealHardwareCallback(self, flag):
+        Logger().debug("MainController.__hardwareInit(): flag=%s" % flag)
+        self.__connection = flag
+    
     # Real work
     def __connectToHardware(self):
         """ Connect to real hardware.
         """
         Logger().info("Connecting to real hardware...")
-        #self.__setStatusbarMessage("Connecting to real hardware...")
-        try:
-
-            ## Bluetooth driver
-            #if config.DRIVER == "bluetooth":
-                #view = BluetoothConnectDialog()
-                #controller = BluetoothConnectController(self, self.__model, view)
-                #retCode = view.bluetoothConnectDialog.run()
-                #view.bluetoothConnectDialog.destroy()
-                #if not retCode:
-                    #Logger().warning("Connection to hardware canceled")
-                    #self.__view.hardwareConnectMenuitem.set_active(False)
-                    #return
-                    
-            #message = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type= gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_NONE, message_format="Test")
-            #gobject.timeout_add(3000, message.destroy)
-            #message.run()
-            
-            self.__model.switchToRealHardware()
+        self.__setStatusbarMessage("Connecting to real hardware...")
+        self.__view.hardwareConnectMenuitem.set_sensitive(False)
+        
+        # Launch connexion thread
+        self.__connection = None
+        thread.start_new_thread(self.__model.switchToRealHardware, ())
+        while self.__connection is None:
+            while gtk.events_pending():
+                gtk.main_iteration()
+            time.sleep(0.01)
+        
+        # Check connection status
+        if self.__connection:
             Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
-            #self.__view.hardwareResetMenuitem.set_sensitive(True)
-            Logger().info("Now connected to real hardware")
             self.__view.connectImage.set_from_stock(gtk.STOCK_YES, 4)
-            self.__setStatusbarMessage("Now connected to real hardware", 10)
-
-        except HardwareError, message: # Raised by model
-            Logger().error("Can't connect to hardware; go back to simulation mode")
-            self.__setStatusbarMessage("Connection to hardware failed (%s)" % message, 10)
+            Logger().info("Now connected to real hardware")
+            self.__setStatusbarMessage("Now connected to real hardware", 5)
+        else:
+            Logger().error("Connection to hardware failed")
+            self.__message = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type= gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
+                                               message_format="Connection to hardware failed")
+            self.__message.run()
+            self.__message.destroy()
             self.__view.hardwareConnectMenuitem.set_active(False)
+            
+        self.__view.hardwareConnectMenuitem.set_sensitive(True)
 
     def __goToSimulationMode(self):
         """ Connect to simulated hardware.
@@ -462,19 +446,8 @@ class MainController(AbstractController):
         Logger().info("Go to simulation mode")
         self.__model.switchToSimulatedHardware()
         Spy().setRefreshRate(config.SPY_FAST_REFRESH)
-        #self.__view.hardwareResetMenuitem.set_sensitive(False)
         self.__view.connectImage.set_from_stock(gtk.STOCK_NO, 4)
-        self.__setStatusbarMessage("Back in simulation mode", 10)
-
-    def __onHardwareConnectMenuToggled(self, widget):
-        """ Connect check button toggled.
-        """
-        switch = self.__view.hardwareConnectMenuitem.get_active()
-        Logger().trace("MainController.__onHardwareConnectMenuActivated(%s)" % switch)
-        if switch:
-            self.__connectToHardware()
-        else:
-            self.__goToSimulationMode()
+        self.__setStatusbarMessage("Now in simulation mode", 5)
 
     def __refreshPos(self, yaw, pitch):
         """ Refresh position according to new pos.
@@ -504,17 +477,3 @@ class MainController(AbstractController):
                   'pitchRealOverlap': int(round(100 * self.__model.pitchRealOverlap))
               }
         self.__view.fillWidgets(values)
-
-
-if __name__ == "__main__":
-    import gtk
-    from model.shooting import Shooting
-    from hardware.head import HeadSimulation
-    from view_gtk.mainWindow import MainWindow
-    headSimulation = HeadSimulation()
-    model = Shooting(None, headSimulation)
-    Spy(model, config.SPY_FAST_REFRESH)
-    Spy().start()
-    view = MainWindow()
-    test = MainController(None, model, view)
-    gtk.main()
