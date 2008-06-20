@@ -51,8 +51,6 @@ Implements
 
 __revision__ = "$Id$"
 
-import time
-
 import bluetooth
 
 from papywizard.common.configManager import ConfigManager
@@ -69,11 +67,12 @@ class BluetoothDriver(BusDriver):
     def init(self):
         if not self._init:
             try:
+                #import time
+                #time.sleep(3)
                 self.setDeviceAddress(ConfigManager().get('Hardware', 'BLUETOOTH_DEVICE_ADDRESS'))
                 self._sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
                 self._sock.connect((self.__deviceAddress, 1))
                 self._init = True
-
             except:
                 Logger().exception("BluetoothDriver.init()")
                 raise HardwareError("Can't init BluetoothDriver object")
