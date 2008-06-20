@@ -60,27 +60,15 @@ from papywizard.model.shooting import Shooting
 from papywizard.view.mainWindow import MainWindow
 from papywizard.controller.mainController import MainController
 from papywizard.controller.spy import Spy
-try:
-    from papywizard.hardware.head import Head, HeadSimulation
-except ImportError:
-    Logger().exception("Papywizard initial imports")
+from papywizard.hardware.head import Head, HeadSimulation
 if config.VIEW3D_ENABLE:
     from papywizard.view3D.view3D import View3D
 
 
 Logger().info("Starting Papywizard app...")
 
-# Create model (both real and simulated)
-try:
-    head = Head()
-except (NameError, ImportError):
-    Logger().exception("Creating real hardware")
-    Logger().warning("Some libs are missing in order to use real hardware")
-    head = None
-except HardwareError:
-    Logger().exception("Creating real hardware")
-    Logger().warning("Problem occured; unable to use real hardware")
-    head = None
+# Create hardware and model
+head = Head()
 headSimulation = HeadSimulation()
 model = Shooting(head, headSimulation)
 
@@ -111,7 +99,6 @@ gtk.main()
 # App closed
 Spy().stop()
 Spy().join()
-headSimulation.stopGoto()
 model.shutdown()
 
 if config.VIEW3D_ENABLE:
