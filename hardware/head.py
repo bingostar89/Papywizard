@@ -55,6 +55,7 @@ __revision__ = "$Id$"
 import time
 
 from papywizard.common import config
+from common.exception import HardwareError
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.hardware.axis import Axis, AxisSimulation
@@ -95,18 +96,21 @@ class Head(object):
 
     def reset(self):
         """ Reseting hardware.
+        
+        Reset driver connexion?
         """
-        #Logger().debug("Head.init(): shutdown driver...")
-        #self.driver.shutdown()
-        #Logger().debug("Head.init(): driver shut down")
-        #self.init()
         self.yawAxis.reset()
         self.pitchAxis.reset()
 
     def shutdown(self):
         """ Shut down the hardware.
         """
-        self.driver.shutdown()
+        if self.driver is not None:
+            self.driver.shutdown()
+        if self.yawAxis is not None:
+            self.yawAxis.stop()
+        if self.pitchAxis is not None:
+            self.pitchAxis.stop()
 
     def setOrigin(self):
         """ Set current axis positions as origin.
@@ -133,12 +137,6 @@ class Head(object):
             self.yawAxis.waitEndOfDrive()
             self.pitchAxis.waitEndOfDrive()
 
-    def stopGoto(self):
-        """ Stop a previous drivePosition.
-        """
-        self.yawAxis.stopDrive()
-        self.pitchAxis.stopDrive()
-
     def startAxis(self, axis, dir):
         """ Start an axis in the selected direction.
 
@@ -155,28 +153,31 @@ class Head(object):
         else:
             raise ValueError("axis must be in 'yaw', 'pitch'")
 
-    def stopAxis(self, axis):
+    def stopAxis(self, axis='all'):
         """ Stop the selected axis.
 
-        @param axis: axis to stop ('yaw', 'pitch')
+        @param axis: axis to stop ('yaw', 'pitch', 'all')
         @type axis: str
         """
-        if axis == 'yaw':
-            self.yawAxis.stopJog()
-        elif axis == 'pitch':
-            self.pitchAxis.stopJog()
-        else:
-            raise ValueError("axis must be in 'yaw', 'pitch'")
+        if axis not in ('yaw', 'pitch', 'all'):
+            raise ValueError("axis must be in ('yaw', 'pitch', 'all')")
+        if axis in ('yaw', 'all') :
+            self.yawAxis.stop()
+        if axis in ('pitch', 'all'):
+            self.pitchAxis.stop()
 
-    def waitStopAxis(self, axis):
+    def waitStopAxis(self, axis='all'):
         """ Wait until axis does not move anymore.
+
+        @param axis: axis to stop ('yaw', 'pitch', 'all')
+        @type axis: str
         """
-        if axis == 'yaw':
+        if axis not in ('yaw', 'pitch', 'all'):
+            raise ValueError("axis must be in ('yaw', 'pitch', 'all')")
+        if axis in ('yaw', 'all') :
             self.yawAxis.waitStop()
-        elif axis == 'pitch':
+        if axis in ('pitch', 'all'):
             self.pitchAxis.waitStop()
-        else:
-            raise ValueError("axis must be in 'yaw', 'pitch'")
 
     def shoot(self, delay=1):
         """ Take a picture.
@@ -194,8 +195,8 @@ class Head(object):
         """ Stop all.
         """
         self.yawAxis.setOutput(0)
-        self.yawAxis.stopDrive()
-        self.pitchAxis.stopDrive()
+        self.yawAxis.stop()
+        self.pitchAxis.stop()
 
 
 class HeadSimulation(Head):
@@ -215,22 +216,8 @@ class HeadSimulation(Head):
         self.yawAxis.init()
         self.pitchAxis.init()
 
-    def reset(self):
-        """ reset the head.
-        """
-        self.yawAxis.reset()
-        self.pitchAxis.reset()
-
     def shutdown(self):
-        self.yawAxis.stop()
+        self.yawAxis.stopThread()
         self.yawAxis.join()
-        self.pitchAxis.stop()
+        self.pitchAxis.stopThread()
         self.pitchAxis.join()
-
-    #def stopGoto(self):
-        #""" Stop axis threads.
-        #"""
-        #self.yawAxis.stop()
-        #self.pitchAxis.stop()
-        #self.yawAxis.join()
-        #self.pitchAxis.join()
