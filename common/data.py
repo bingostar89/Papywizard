@@ -60,8 +60,8 @@ correct place (sky pictures without any details are often unlinked).
         <sensorCoef>1.6</sensorCoef>
         <sensorRatio>3:2</sensorRatio>
         <cameraOrientation>portrait</cameraOrientation>
-        <nbPicts>2</nbPicts>                             <!-- bracketing -->
-        <relYawOverlap>0.54</yawRealOverlap>             <!-- real overlaps -->
+        <nbPicts>2</nbPicts>                              <!-- bracketing -->
+        <YawRealOverlap>0.54</yawRealOverlap>             <!-- real overlaps -->
         <pitchRealOverlap>0.32</pitchRealOverlap>
         <template type="mosaic" rows="3" columns="4" />
     </header>
@@ -74,7 +74,7 @@ correct place (sky pictures without any details are often unlinked).
         </image>
         <image id="8" pict="2">
             <time>Mon Dec 31 00:52:22 CET 2007</time>
-            <yaw>-32.5</yaw>
+            <yaw>-37.5</yaw>
             <pitch>12.3</pitch>
         </image>
         ...
