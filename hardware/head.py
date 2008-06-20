@@ -55,7 +55,7 @@ __revision__ = "$Id$"
 import time
 
 from papywizard.common import config
-from common.exception import HardwareError
+from papywizard.common.exception import HardwareError
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.hardware.axis import Axis, AxisSimulation
