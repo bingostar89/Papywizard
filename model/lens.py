@@ -64,12 +64,32 @@ class Lens(object):
     """
     def __init__(self):
         """ Init object.
-
-        Load values from preferences.
         """
-        self.focal = ConfigManager().getFloat('Preferences', 'LENS_FOCAL')
-        self.fisheye = ConfigManager().getBoolean('Preferences', 'LENS_FISHEYE')
 
+    def __getFocal(self):
+        """
+        """
+        return ConfigManager().getFloat('Preferences', 'LENS_FOCAL')
+    
+    def __setFocal(self, focal):
+        """
+        """
+        ConfigManager().setFloat('Preferences', 'LENS_FOCAL', focal, 1)
+        
+    focal = property(__getFocal, __setFocal)
+    
+    def __getFisheye(self):
+        """
+        """
+        return ConfigManager().getBoolean('Preferences', 'LENS_FISHEYE')
+    
+    def __setFisheye(self, fisheye):
+        """
+        """
+        ConfigManager().setBoolean('Preferences', 'LENS_FISHEYE', fisheye)
+
+    fisheye = property(__getFisheye, __setFisheye)
+    
     def computeFov(self, size):
         """ Compute FoV.
 
@@ -90,5 +110,3 @@ class Lens(object):
         Save values to preferences.
         """
         Logger().trace("Lens.shutdown()")
-        ConfigManager().setFloat('Preferences', 'LENS_FOCAL', self.focal, 1)
-        ConfigManager().setBoolean('Preferences', 'LENS_FISHEYE', self.fisheye)

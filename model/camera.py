@@ -67,11 +67,53 @@ class Camera(object):
         """
         self.lens = Lens()
 
-        # Load Camera attributes from preferences
-        self.sensorRatio = ConfigManager().get('Preferences', 'CAMERA_SENSOR_RATIO')
-        self.sensorCoef = ConfigManager().getFloat('Preferences', 'CAMERA_SENSOR_COEF')
-        self.timeValue = ConfigManager().getFloat('Preferences', 'CAMERA_TIME_VALUE')
-        self.nbPicts = ConfigManager().getInt('Preferences', 'CAMERA_NB_PICTS')
+    def __getSensorRatio(self):
+        """
+        """
+        return ConfigManager().get('Preferences', 'CAMERA_SENSOR_RATIO')
+    
+    def __setSensorRatio(self, sensorRatio):
+        """
+        """
+        ConfigManager().set('Preferences', 'CAMERA_SENSOR_RATIO', sensorRatio)
+        
+    sensorRatio = property(__getSensorRatio, __setSensorRatio)
+    
+    def __getSensorCoef(self):
+        """
+        """
+        return ConfigManager().getFloat('Preferences', 'CAMERA_SENSOR_COEF')
+    
+    def __setSensorCoef(self, sensorCoef):
+        """
+        """
+        ConfigManager().setFloat('Preferences', 'CAMERA_SENSOR_COEF', sensorCoef, 1)
+        
+    sensorCoef = property(__getSensorCoef, __setSensorCoef)
+    
+    def __getTimeValue(self):
+        """
+        """
+        return ConfigManager().getFloat('Preferences', 'CAMERA_TIME_VALUE')
+    
+    def __setTimeValue(self, timeValue):
+        """
+        """
+        ConfigManager().setFloat('Preferences', 'CAMERA_TIME_VALUE', timeValue, 1)
+        
+    timeValue = property(__getTimeValue, __setTimeValue)
+    
+    def __getNbPicts(self):
+        """
+        """
+        return ConfigManager().getInt('Preferences', 'CAMERA_NB_PICTS')
+    
+    def __setNbPicts(self, nbPicts):
+        """
+        """
+        ConfigManager().setInt('Preferences', 'CAMERA_NB_PICTS', nbPicts)
+
+    nbPicts = property(__getNbPicts, __setNbPicts)
 
     def getYawFov(self, cameraOrientation):
         """ Compute the yaw FoV.
@@ -110,8 +152,3 @@ class Camera(object):
         """
         Logger().trace("Camera.shutdown()")
         self.lens.shutdown()
-
-        ConfigManager().set('Preferences', 'CAMERA_SENSOR_RATIO', self.sensorRatio)
-        ConfigManager().setFloat('Preferences', 'CAMERA_SENSOR_COEF', self.sensorCoef, 1)
-        ConfigManager().setFloat('Preferences', 'CAMERA_TIME_VALUE', self.timeValue, 1)
-        ConfigManager().setInt('Preferences', 'CAMERA_NB_PICTS', self.nbPicts)

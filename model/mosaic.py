@@ -86,7 +86,7 @@ class Mosaic(object):
         #self.__pitchNbPicts = None
         self.__init = False
 
-        self.template = ConfigManager().get('Preferences', 'MOSAIC_TEMPLATE')
+        #self.template = ConfigManager().get('Preferences', 'MOSAIC_TEMPLATE')
 
     def __iter__(self):
         """ Define Mosaic as an iterator.
@@ -107,6 +107,18 @@ class Mosaic(object):
         self.__pitchInc = 1
 
         return self
+
+    def __getTemplate(self):
+        """
+        """
+        return ConfigManager().get('Preferences', 'MOSAIC_TEMPLATE')
+    
+    def __setTemplate(self, template):
+        """
+        """
+        ConfigManager().set('Preferences', 'MOSAIC_TEMPLATE', template)
+
+    template = property(__getTemplate, __setTemplate)
 
     def setMatrix(self, yawNbPicts, pitchNbPicts):
         """ Define the number of pictures for both yaw/pitch directions.
@@ -171,7 +183,7 @@ class Mosaic(object):
         Save values to preferences.
         """
         Logger().trace("Mosaic.shutdown()")
-        ConfigManager().set('Preferences', 'MOSAIC_TEMPLATE', self.template)
+        #ConfigManager().set('Preferences', 'MOSAIC_TEMPLATE', self.template)
 
 
 def main():

@@ -54,6 +54,7 @@ __revision__ = "$Id$"
 import time
 
 from papywizard.common.loggingServices import Logger
+from papywizard.common.signal import Signal
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.exception import HardwareError
 from papywizard.common.data import Data
@@ -86,6 +87,7 @@ class Shooting(object):
         self.realHardware = realHardware
         self.simulatedHardware = simulatedHardware
         self.hardware = self.simulatedHardware
+        self.switchToRealHardwareSignal = Signal()
         self.camera = Camera()
         self.mosaic = Mosaic()
 
@@ -95,11 +97,43 @@ class Shooting(object):
         self.pitchEnd = 0.
         self.position = self.hardware.readPosition()
 
-        self.stabilizationDelay = ConfigManager().getFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY')
-        self.overlap = ConfigManager().getFloat('Preferences', 'SHOOTING_OVERLAP')
-        self.cameraOrientation = ConfigManager().get('Preferences', 'SHOOTING_CAMERA_ORIENTATION')
-
         #self.__computeParams('startEnd')
+
+    def __getStabilizationDelay(self):
+        """
+        """
+        return ConfigManager().getFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY')
+    
+    def __setStabilizationDelay(self, stabilizationDelay):
+        """
+        """
+        ConfigManager().setFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY', stabilizationDelay, 1)
+    
+    stabilizationDelay = property(__getStabilizationDelay, __setStabilizationDelay)
+    
+    def __getOverlap(self):
+        """
+        """
+        return ConfigManager().getFloat('Preferences', 'SHOOTING_OVERLAP')
+    
+    def __setOverlap(self, overlap):
+        """
+        """
+        ConfigManager().setFloat('Preferences', 'SHOOTING_OVERLAP', overlap, 2)
+        
+    overlap = property(__getOverlap, __setOverlap)
+    
+    def __getCameraOrientation(self):
+        """
+        """
+        return ConfigManager().get('Preferences', 'SHOOTING_CAMERA_ORIENTATION')
+    
+    def __setCameraOrientation(self, cameraOrientation):
+        """
+        """
+        ConfigManager().set('Preferences', 'SHOOTING_CAMERA_ORIENTATION', cameraOrientation)
+
+    cameraOrientation = property(__getCameraOrientation, __setCameraOrientation)
 
     def __getYawFov(self):
         """
@@ -190,27 +224,24 @@ class Shooting(object):
     def switchToRealHardware(self):
         """ Use real hardware.
         """
-        if self.realHardware is not None:
-            try:
-                self.simulatedHardware.shutdown()
-                self.realHardware.init()
-                Logger().debug("Shooting.switchToRealHardware(): realHardware initialized")
-                self.position = self.realHardware.readPosition()
-                self.hardware = self.realHardware
-            except HardwareError:
-                Logger().exception("Shooting.switchToRealHardware()")
-                Logger().warning("Can't switch to real hardware")
-                raise
-        else:
-            raise HardwareError("No real hardware available")
+        try:
+            #self.simulatedHardware.shutdown()
+            self.realHardware.init()
+            Logger().debug("Shooting.switchToRealHardware(): realHardware initialized")
+            self.position = self.realHardware.readPosition()
+            self.hardware = self.realHardware
+            self.switchToRealHardwareSignal.emit(True)
+        except HardwareError:
+            Logger().exception("Shooting.switchToRealHardware()") # ???!!!???
+            self.switchToRealHardwareSignal.emit(False)
 
     def switchToSimulatedHardware(self):
         """ Use simulated hardware.
         """
         self.realHardware.shutdown()
         self.hardware = self.simulatedHardware
-        self.position = self.hardware.readPosition()
         self.hardware.init()
+        self.position = self.hardware.readPosition()
 
     def storeStartPosition(self):
         """ Store current position as start position.
@@ -309,6 +340,9 @@ class Shooting(object):
             data.addHeaderNode('sensorRatio', "%s" % self.camera.sensorRatio)
             data.addHeaderNode('cameraOrientation', "%s" % self.cameraOrientation)
             data.addHeaderNode('nbPicts', "%d" % self.camera.nbPicts)
+            data.addHeaderNode('timeValue', "%.1f" % self.camera.timeValue)
+            data.addHeaderNode('stabilizationDelay', "%.1f" % self.stabilizationDelay)
+            data.addHeaderNode('overlap', "%.2f" % self.overlap)
             data.addHeaderNode('yawRealOverlap', "%.2f" % self.yawRealOverlap)
             data.addHeaderNode('pitchRealOverlap', "%.2f" % self.pitchRealOverlap)
             data.addHeaderNode('template', type="mosaic", yaw="%d" % self.yawNbPicts, pitch="%d" % self.pitchNbPicts)
@@ -417,9 +451,7 @@ class Shooting(object):
         Logger().trace("Shooting.stop()")
         self.__stop = True
         self.__suspend = False
-        #self.hardware.stopAxis('yaw')
-        #self.hardware.stopAxis('pitch')
-        self.hardware.stopGoto()
+        self.hardware.stopAxis()
 
     def shutdown(self):
         """ Cleanly terminate the model.
@@ -427,12 +459,7 @@ class Shooting(object):
         Save values to preferences.
         """
         Logger().trace("Shooting.shutdown()")
-        self.hardware.shutdown()
+        self.realHardware.shutdown()
+        self.simulatedHardware.shutdown()
         self.camera.shutdown()
         self.mosaic.shutdown()
-
-        ConfigManager().setFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY', self.stabilizationDelay, 1)
-        ConfigManager().setFloat('Preferences', 'SHOOTING_OVERLAP', self.overlap, 2)
-        ConfigManager().set('Preferences', 'SHOOTING_CAMERA_ORIENTATION', self.cameraOrientation)
-
-        ConfigManager().save()
