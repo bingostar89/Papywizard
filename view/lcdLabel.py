@@ -31,9 +31,9 @@ CHARS_FILENAME = "lcdLabelChars.txt"
 
 
 class LCDLabel(gtk.DrawingArea):
-    """ GTK LCD Widget
+    """ GTK LCD Label
     """
-    def __init__(self, text=None):
+    def __init__(self, width_chars, text=None):
         """ Init LCD widget
         """
         gtk.DrawingArea.__init__(self)
@@ -42,7 +42,7 @@ class LCDLabel(gtk.DrawingArea):
         self._table = {}
         self._pixmap = None
 
-        self._width_chars = 10
+        self._width_chars = width_chars
         self._border = 5
         self._cborder = 3
         self._cwidth = 9
@@ -59,10 +59,10 @@ class LCDLabel(gtk.DrawingArea):
         if self._pixmap is None:
             x, y, width, height = widget.get_allocation()
             self._pixmap = gtk.gdk.Pixmap(widget.window, width, height)
-            self.set_brightness(100)
+            self._set_colors(["#000000", "#303030", "#00ff96"])
             self._pixmap.draw_rectangle(self._back, True, 0, 0, width, height)
-        #self._load_font_definition() # Already done in set_brightness()
-        #self.clear()
+            self._load_font_definition()
+            #self.clear()
         return True
         
     def _expose(self, widget, event):
@@ -71,11 +71,11 @@ class LCDLabel(gtk.DrawingArea):
             widget.window.draw_drawable(self._back, self._pixmap, 0, 0, 0, 0, self._width, self._height)
         return False
 
-    def set_width_chars(self, n_chars):
+    def set_width_chars(self, width_chars):
         """ Set the desired width in chars of the LCD widget
         """
         print "set_width_chars()"
-        self._width_chars = n_chars
+        self._width_chars = width_chars
         self._width = 2 * self._border + (self._cwidth + self._cborder) * self._width_chars + self._cborder
         self.refresh()
 
@@ -114,26 +114,6 @@ class LCDLabel(gtk.DrawingArea):
             x = col * (self._cwidth + self._cborder) + self._border + self._cborder
             y = 0 + self._border + self._cborder
             self._pixmap.draw_drawable(self._back, self._table[char_index], 0, 0, x, y, self._cwidth, self._cheight)
-
-    def set_brightness(self, brightness):
-        print "set_brightness()"
-        fg_colors = {
-            100: "#00ff96",
-            75: "#00d980",
-            50: "#00b269",
-            25: "#008c53",
-            0: "#303030"
-        }
-        if brightness not in fg_colors.keys():
-            return
-        if hasattr(self, "_brightness") and self._brightness == brightness:
-            return
-        self._brightness = brightness
-        self._set_colors(["#000000", "#303030", fg_colors[brightness]])
-        self._load_font_definition()
-        
-    def get_brightness(self):
-        return self._brightness
 
     def clear(self):
         print "clear()"
@@ -195,7 +175,7 @@ def main():
     window = gtk.Window()
     vbox = gtk.VBox()
     window.add(vbox)
-    lcdLabel = LCDLabel("TEST") # Text given here is not displayed
+    lcdLabel = LCDLabel(10, "TEST") # Text given here is not displayed
     vbox.add(lcdLabel)
     button = gtk.Button("Click")
     button.connect("clicked", on_button_clicked)
