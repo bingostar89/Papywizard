@@ -231,9 +231,9 @@ class Shooting(object):
             self.position = self.realHardware.readPosition()
             self.hardware = self.realHardware
             self.switchToRealHardwareSignal.emit(True)
-        except HardwareError:
-            Logger().exception("Shooting.switchToRealHardware()") # ???!!!???
-            self.switchToRealHardwareSignal.emit(False)
+        except HardwareError, message:
+            Logger().exception("Shooting.switchToRealHardware()") 
+            self.switchToRealHardwareSignal.emit(False, message)
 
     def switchToSimulatedHardware(self):
         """ Use simulated hardware.
