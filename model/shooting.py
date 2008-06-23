@@ -79,7 +79,7 @@ class Shooting(object):
         self.__stop = False
         self.__yawCoef = "--"
         self.__pitchCoef = "--"
-        self.__progress = 0.
+        self.__progress = self.__progress = {'fraction': 0., 'text': "-/-"}
         self.__sequence = "Idle"
         self.__setParams = None
         self.__manualShoot = False
@@ -89,7 +89,6 @@ class Shooting(object):
         self.hardware = self.simulatedHardware
         self.switchToRealHardwareSignal = Signal()
         self.camera = Camera()
-        self.mosaic = Mosaic()
 
         self.yawStart = 0.
         self.pitchStart = 0.
@@ -330,7 +329,7 @@ class Shooting(object):
         except ZeroDivisionError:
             pitchInc = self.pitchFov - cameraFov
         pitchInc *= cmp(self.pitchEnd, self.pitchStart)
-        self.mosaic.setMatrix(self.yawNbPicts, self.pitchNbPicts)
+        mosaic = Mosaic(self.yawNbPicts, self.pitchNbPicts)
 
         try:
             data = Data()
@@ -349,8 +348,8 @@ class Shooting(object):
 
             # Loop over all positions
             totalNbPicts = self.yawNbPicts * self.pitchNbPicts
-            self.__progress = 0.
-            for i, (yawCoef, pitchCoef) in enumerate(self.mosaic):
+            self.__progress = {'fraction': 0., 'text': "0/%d" % totalNbPicts}
+            for i, (yawCoef, pitchCoef) in enumerate(mosaic):
                 yaw = self.yawStart + yawCoef * yawInc
                 pitch = self.pitchStart + pitchCoef * pitchInc
                 Logger().debug("Shooting.start(): Goto yaw=%.1f pitch=%.1f" % (yaw, pitch))
@@ -379,7 +378,8 @@ class Shooting(object):
 
                     checkSuspendStop()
 
-                self.__progress = float((i + 1)) / float(totalNbPicts)
+                progressFraction = float((i + 1)) / float(totalNbPicts)
+                self.__progress = {'fraction': progressFraction, 'text': "%d/%d" % (i + 1, totalNbPicts)}
 
             Logger().debug("Shooting.start(): finished")
 
@@ -405,16 +405,16 @@ class Shooting(object):
         @rtype: dict
         """
         try:
-            yawCoef = self.__yawCoef + 1
+            yawIndex = "%s/%s" % (self.__yawCoef + 1, self.yawNbPicts)
         except TypeError:
-            yawCoef = self.__yawCoef
+            yawIndex = str(self.__yawCoef)
         try:
-            pitchCoef = self.__pitchCoef + 1
+            pitchIndex = "%s/%s" % (self.__pitchCoef + 1, self.pitchNbPicts)
         except TypeError:
-            pitchCoef = self.__pitchCoef
+            pitchIndex = str(self.__pitchCoef)
         yawPos, pitchPos = self.hardware.readPosition()
         return {'yawPos': yawPos, 'pitchPos': pitchPos,
-                'yawCoef': yawCoef, 'pitchCoef': pitchCoef,
+                'yawIndex': yawIndex, 'pitchIndex': pitchIndex,
                 'progress': self.__progress, 'sequence': self.__sequence}
 
     def isShooting(self):
@@ -462,4 +462,3 @@ class Shooting(object):
         self.realHardware.shutdown()
         self.simulatedHardware.shutdown()
         self.camera.shutdown()
-        self.mosaic.shutdown()
