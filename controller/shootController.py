@@ -58,6 +58,7 @@ import gtk
 import gobject
 
 from papywizard.common.loggingServices import Logger
+from papywizard.common.configManager import ConfigManager
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.spy import Spy
 
@@ -87,7 +88,8 @@ class ShootController(AbstractController):
 
         # Connect signal/slots
         dic = {"on_manualShootCheckbutton_toggled": self.__onManualShootCheckbuttonToggled,
-            "on_startButton_clicked": self.__onStartButtonClicked,
+               "on_dataFileEnableCheckbutton_toggled": self.__onDataFileEnableCheckbuttonToggled,
+               "on_startButton_clicked": self.__onStartButtonClicked,
                "on_suspendResumeButton_clicked": self.__onSuspendResumeButtonClicked,
                "on_stopButton_clicked": self.__onStopButtonClicked,
                "on_doneButton_clicked": self.__onDoneButtonClicked,
@@ -269,6 +271,21 @@ class ShootController(AbstractController):
         else:
             Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
 
+    def __onManualShootCheckbuttonToggled(self, widget):
+        """ Manual shoot checkbutton togled.
+        """
+        Logger().trace("ShootController.____onManualShootCheckbuttonToggled()")
+        switch = self.__view.manualShootCheckbutton.get_active()
+        self.__model.setManualShoot(switch)
+
+    def __onDataFileEnableCheckbuttonToggled(self, widget):
+        """ Data file enable checkbutton togled.
+        """
+        Logger().trace("ShootController.__onDataFileEnableCheckbuttonToggled()")
+        switch = self.__view.dataFileEnableCheckbutton.get_active()
+        ConfigManager().setBoolean('Data', 'DATA_FILE_ENABLE', self.__view.dataFileEnableCheckbutton.get_active())
+        ConfigManager().save()
+
     def __onStartButtonClicked(self, widget):
         """ Start button has been clicked.
 
@@ -276,13 +293,6 @@ class ShootController(AbstractController):
         """
         Logger().trace("ShootController.__startButtonClicked()")
         self.__startShooting()
-
-    def __onManualShootCheckbuttonToggled(self, widget):
-        """ Manual shoot checkbutton togled.
-        """
-        Logger().trace("ShootController.____onManualShootCheckbuttonToggled()")
-        switch = self.__view.manualShootCheckbutton.get_active()
-        self.__model.setManualShoot(switch)
 
     def __onSuspendResumeButtonClicked(self, widget):
         """ SuspendResume button has been clicked.
@@ -326,6 +336,7 @@ class ShootController(AbstractController):
             # Check end of shooting
             if not self.__model.isShooting():
                 Logger().debug("checkEnd(): model not shooting anymore")
+                self.__view.dataFileEnableCheckbutton.set_sensitive(True)
                 self.__view.startButton.set_sensitive(True)
                 self.__view.suspendResumeLabel.set_text("Suspend")
                 self.__view.suspendResumeButton.set_sensitive(False)
@@ -340,6 +351,7 @@ class ShootController(AbstractController):
 
             return True
 
+        self.__view.dataFileEnableCheckbutton.set_sensitive(False)
         self.__view.startButton.set_sensitive(False)
         self.__view.suspendResumeButton.set_sensitive(True)
         self.__view.stopButton.set_sensitive(True)
@@ -390,4 +402,5 @@ class ShootController(AbstractController):
 
     def refreshView(self):
         values = self.__model.getState()
+        values['dataFileEnable'] = ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE')
         self.__view.fillWidgets(values)
