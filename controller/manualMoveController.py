@@ -90,6 +90,7 @@ class ManualMoveController(AbstractController):
                "on_pitchMovePlusButton_released": self.__onPitchMovePlusButtonReleased,
                "on_yawMoveMinusButton_pressed": self.__onYawMoveMinusButtonPressed,
                "on_yawMoveMinusButton_released": self.__onYawMoveMinusButtonReleased,
+               "on_hardwareSetOriginButton_clicked": self.onHardwareSetOriginButtonClicked,
                "on_pitchMoveMinusButton_pressed": self.__onPitchMoveMinusButtonPressed,
                "on_pitchMoveMinusButton_released": self.__onPitchMoveMinusButtonReleased,
                "on_doneButton_clicked": self.__onDoneButtonClicked
@@ -143,6 +144,12 @@ class ManualMoveController(AbstractController):
         self.__model.hardware.stopAxis('pitch')
         self.__model.hardware.waitStopAxis('pitch')
         self.refreshView()
+
+    def onHardwareSetOriginButtonClicked(self, widget):
+        Logger().trace("ManualMoveController.onHardwareSetOriginButtonClicked()")
+        Logger().info("Set hardware origin")
+        self.__model.hardware.setOrigin()
+        self.__parent.setStatusbarMessage("Origin set to current position", 10)
 
     #def __onHomeButtonClicked(self):
         #""" Home button clicked.
