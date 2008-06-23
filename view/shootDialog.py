@@ -56,6 +56,7 @@ import os
 #import pygtk
 #pygtk.require("2.0")
 import gtk.glade
+import pango
 
 path = os.path.dirname(__file__)
 
@@ -72,6 +73,13 @@ class ShootDialog(object):
 
         # Retreive usefull widgets
         self._retreiveWidgets()
+        
+        # Font test
+        self.yawPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawCoefEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchCoefEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.sequenceEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
 
         self.suspendResumeButton.set_state(gtk.STATE_INSENSITIVE)
         self.stopButton.set_state(gtk.STATE_INSENSITIVE)
@@ -84,9 +92,10 @@ class ShootDialog(object):
         self.pitchPosEntry = self.wTree.get_widget("pitchPosEntry")
         self.yawCoefEntry = self.wTree.get_widget("yawCoefEntry")
         self.pitchCoefEntry = self.wTree.get_widget("pitchCoefEntry")
-        self.progressbar = self.wTree.get_widget("progressbar")
         self.sequenceEntry = self.wTree.get_widget("sequenceEntry")
+        self.progressbar = self.wTree.get_widget("progressbar")
         self.manualShootCheckbutton = self.wTree.get_widget("manualShootCheckbutton")
+        self.dataFileEnableCheckbutton = self.wTree.get_widget("dataFileEnableCheckbutton")
         self.startButton = self.wTree.get_widget("startButton")
         self.suspendResumeButton = self.wTree.get_widget("suspendResumeButton")
         self.suspendResumeLabel = self.wTree.get_widget("suspendResumeLabel")
@@ -100,5 +109,10 @@ class ShootDialog(object):
         self.pitchPosEntry.set_text("%.1f" % values['pitchPos'])
         self.yawCoefEntry.set_text(str(values['yawCoef']))
         self.pitchCoefEntry.set_text(str(values['pitchCoef']))
-        self.progressbar.set_fraction(values['progress'])
         self.sequenceEntry.set_text(values['sequence'])
+        self.progressbar.set_fraction(values['progress'])
+        try:
+            self.dataFileEnableCheckbutton.set_active(values['dataFileEnable'])
+        except KeyError:
+            pass
+            pass
