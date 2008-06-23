@@ -179,11 +179,6 @@ class Mosaic(object):
         Logger().debug("Mosaic.next(): __yaw=%d, __pitch=%d" % (self.__yaw, self.__pitch))
         return self.__yaw, self.__pitch
 
-    def shutdown(self):
-        """ Cleanly terminate the mosaic
-        """
-        Logger().trace("Mosaic.shutdown()")
-
 
 def main():
     mosaic = Mosaic()
