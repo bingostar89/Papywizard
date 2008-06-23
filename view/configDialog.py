@@ -79,17 +79,22 @@ class ConfigDialog(object):
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
-        # Shooting
         self.configDialog = self.wTree.get_widget("configDialog")
+
+        # Shooting
+        self.cameraOrientationCombobox = self.wTree.get_widget("cameraOrientationCombobox")
+        self.stabilizationDelaySpinbutton = self.wTree.get_widget("stabilizationDelaySpinbutton")
+        self.overlapSpinbutton = self.wTree.get_widget("overlapSpinbutton")
+
+        # Camera
         self.timeValueSpinbutton = self.wTree.get_widget("timeValueSpinbutton")
         self.nbPictsSpinbutton = self.wTree.get_widget("nbPictsSpinbutton")
-        self.stabilizationDelaySpinbutton = self.wTree.get_widget("stabilizationDelaySpinbutton")
         self.sensorCoefSpinbutton = self.wTree.get_widget("sensorCoefSpinbutton")
         self.sensorRatioCombobox = self.wTree.get_widget("sensorRatioCombobox")
-        self.overlapSpinbutton = self.wTree.get_widget("overlapSpinbutton")
+        
+        # Lens
         self.focalSpinbutton = self.wTree.get_widget("focalSpinbutton")
         self.fisheyeCheckbutton = self.wTree.get_widget("fisheyeCheckbutton")
-        self.cameraOrientationCombobox = self.wTree.get_widget("cameraOrientationCombobox")
 
         # Hardware
         self.driverCombobox = self.wTree.get_widget("driverCombobox")
@@ -98,21 +103,24 @@ class ConfigDialog(object):
         
         # Misc
         self.loggerLevelCombobox = self.wTree.get_widget("loggerCLevelCombobox")
-        self.dataFileEnableCheckbutton = self.wTree.get_widget("dataFileEnableCheckbutton")
 
     def fillWidgets(self, values):
         """ Fill widgets with values.
         """
         # Shooting
-        self.timeValueSpinbutton.set_value(values['cameraTimeValue'])
         self.nbPictsSpinbutton.set_value(values['cameraNbPicts'])
         self.stabilizationDelaySpinbutton.set_value(values['shootingStabilizationDelay'])
+        self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[values['shootingCameraOrientation']])
+        
+        # Camera
+        self.timeValueSpinbutton.set_value(values['cameraTimeValue'])
         self.sensorCoefSpinbutton.set_value(values['cameraSensorCoef'])
         self.sensorRatioCombobox.set_active(config.SENSOR_RATIOS_INDEX[values['cameraSensorRatio']])
         self.overlapSpinbutton.set_value(values['shootingOverlap'])
+        
+        # Lens
         self.focalSpinbutton.set_value(values['lensFocal'])
         self.fisheyeCheckbutton.set_active(values['lensFisheye'])
-        self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[values['shootingCameraOrientation']])
 
         try:
     
@@ -123,7 +131,7 @@ class ConfigDialog(object):
             
             # Misc
             self.loggerLevelCombobox.set_active(config.LOGGER_INDEX[values['loggerLevel']])
-            self.dataFileEnableCheckbutton.set_active(values['dataFileEnable'])
         except KeyError:
-            Logger().exception("ConfigDialog.fillWidget()", debug=True)
+            pass
+            #Logger().exception("ConfigDialog.fillWidget()", debug=True)
             

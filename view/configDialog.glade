@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Jun 12 12:35:20 2008 -->
+<!--Generated with glade3 3.4.5 on Sat Jun 21 09:19:19 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="configDialog">
     <property name="border_width">5</property>
@@ -16,261 +16,85 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <child>
-              <widget class="GtkVBox" id="vbox1">
+              <widget class="GtkTable" id="table1">
                 <property name="visible">True</property>
+                <property name="n_rows">3</property>
+                <property name="n_columns">2</property>
+                <property name="column_spacing">5</property>
+                <property name="row_spacing">5</property>
                 <child>
-                  <widget class="GtkTable" id="table1">
+                  <widget class="GtkComboBox" id="cameraOrientationCombobox">
                     <property name="visible">True</property>
-                    <property name="n_rows">7</property>
-                    <property name="n_columns">3</property>
-                    <property name="column_spacing">5</property>
-                    <property name="row_spacing">5</property>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <widget class="GtkSpinButton" id="stabilizationDelaySpinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
-                        <property name="width_chars">5</property>
-                        <property name="xalign">1</property>
-                        <property name="adjustment">0.5 0 10 0.5 10 10</property>
-                        <property name="digits">1</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkSpinButton" id="nbPictsSpinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
-                        <property name="width_chars">5</property>
-                        <property name="xalign">1</property>
-                        <property name="adjustment">1 1 5 1 10 10</property>
-                        <property name="snap_to_ticks">True</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label49">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Stab. delay (s)</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label48">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Nb picts</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkSpinButton" id="timeValueSpinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">6</property>
-                        <property name="width_chars">6</property>
-                        <property name="xalign">1</property>
-                        <property name="adjustment">0.5 0.10000000000000001 100 0.10000000000000001 10 10</property>
-                        <property name="digits">1</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label47">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Tv (s)</property>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label50">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Sensor ratio</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkSpinButton" id="sensorCoefSpinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
-                        <property name="width_chars">5</property>
-                        <property name="xalign">1</property>
-                        <property name="adjustment">1.6000000000000001 1 10 0.10000000000000001 1 1</property>
-                        <property name="digits">1</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkComboBox" id="sensorRatioCombobox">
-                        <property name="visible">True</property>
-                        <property name="active">0</property>
-                        <property name="items" translatable="yes" context="yes">3:2
-4:3</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">2</property>
-                        <property name="right_attach">3</property>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                        <property name="x_padding">5</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label51">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Overlap (%)</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">4</property>
-                        <property name="bottom_attach">5</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkSpinButton" id="overlapSpinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
-                        <property name="width_chars">5</property>
-                        <property name="xalign">1</property>
-                        <property name="adjustment">25 10 90 5 10 10</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">4</property>
-                        <property name="bottom_attach">5</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label52">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Focal (mm)</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">5</property>
-                        <property name="bottom_attach">6</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkSpinButton" id="focalSpinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">6</property>
-                        <property name="width_chars">6</property>
-                        <property name="xalign">1</property>
-                        <property name="adjustment">17 5 500 0.5 10 10</property>
-                        <property name="digits">1</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">5</property>
-                        <property name="bottom_attach">6</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkCheckButton" id="fisheyeCheckbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="label" translatable="yes" context="yes">fisheye</property>
-                        <property name="response_id">0</property>
-                        <property name="draw_indicator">True</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">2</property>
-                        <property name="right_attach">3</property>
-                        <property name="top_attach">5</property>
-                        <property name="bottom_attach">6</property>
-                        <property name="x_padding">5</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label53">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Orientation</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">6</property>
-                        <property name="bottom_attach">7</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkComboBox" id="cameraOrientationCombobox">
-                        <property name="visible">True</property>
-                        <property name="active">0</property>
-                        <property name="items" translatable="yes" context="yes">portrait
+                    <property name="active">0</property>
+                    <property name="items" translatable="yes" context="yes">portrait
 landscape</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">6</property>
-                        <property name="bottom_attach">7</property>
-                      </packing>
-                    </child>
-                  </widget>
-                </child>
-                <child>
-                  <widget class="GtkButton" id="defaultButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="label" translatable="yes">Default values</property>
-                    <property name="response_id">0</property>
-                    <signal name="clicked" handler="on_defaultButton_clicked"/>
                   </widget>
                   <packing>
-                    <property name="position">1</property>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
                   </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label53">
+                    <property name="visible">True</property>
+                    <property name="xalign">0.89999997615814209</property>
+                    <property name="label" translatable="yes" context="yes">Orientation</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkSpinButton" id="overlapSpinbutton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="max_length">5</property>
+                    <property name="width_chars">5</property>
+                    <property name="xalign">1</property>
+                    <property name="adjustment">25 10 90 5 10 10</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label51">
+                    <property name="visible">True</property>
+                    <property name="xalign">0.89999997615814209</property>
+                    <property name="label" translatable="yes" context="yes">Overlap (%)</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkSpinButton" id="stabilizationDelaySpinbutton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="max_length">5</property>
+                    <property name="width_chars">5</property>
+                    <property name="xalign">1</property>
+                    <property name="adjustment">0.5 0 10 0.5 10 10</property>
+                    <property name="digits">1</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label49">
+                    <property name="visible">True</property>
+                    <property name="xalign">0.89999997615814209</property>
+                    <property name="label" translatable="yes" context="yes">Stab. delay (s)</property>
+                  </widget>
                 </child>
               </widget>
             </child>
@@ -285,257 +109,108 @@ landscape</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkVBox" id="vbox2">
+              <widget class="GtkTable" id="table2">
                 <property name="visible">True</property>
+                <property name="n_rows">3</property>
+                <property name="n_columns">3</property>
                 <child>
-                  <widget class="GtkTable" id="table2">
-                    <property name="visible">True</property>
-                    <property name="n_rows">7</property>
-                    <property name="n_columns">3</property>
-                    <property name="column_spacing">5</property>
-                    <property name="row_spacing">5</property>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <widget class="GtkSpinButton" id="defaultStabilizationDelaySpinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
-                        <property name="width_chars">5</property>
-                        <property name="xalign">1</property>
-                        <property name="adjustment">0.5 0 10 0.5 10 10</property>
-                        <property name="digits">1</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkSpinButton" id="defaultNbPictsSpinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
-                        <property name="width_chars">5</property>
-                        <property name="xalign">1</property>
-                        <property name="adjustment">1 1 5 1 10 10</property>
-                        <property name="snap_to_ticks">True</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label4">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Stab. delay (s)</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label5">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Nb picts</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkSpinButton" id="defaultTimeValueSpinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">6</property>
-                        <property name="width_chars">6</property>
-                        <property name="xalign">1</property>
-                        <property name="adjustment">0.5 0.10000000000000001 100 0.10000000000000001 10 10</property>
-                        <property name="digits">1</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label7">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Tv (s)</property>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label8">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Sensor ratio</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkSpinButton" id="defaultSensorCoefSpinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
-                        <property name="width_chars">5</property>
-                        <property name="xalign">1</property>
-                        <property name="adjustment">1.6000000000000001 1 10 0.10000000000000001 1 1</property>
-                        <property name="digits">1</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkComboBox" id="defaultSensorRatioCombobox">
-                        <property name="visible">True</property>
-                        <property name="active">0</property>
-                        <property name="items" translatable="yes" context="yes">3:2
-4:3</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">2</property>
-                        <property name="right_attach">3</property>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                        <property name="x_padding">5</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label9">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Overlap (%)</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">4</property>
-                        <property name="bottom_attach">5</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkSpinButton" id="defaultOverlapSpinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
-                        <property name="width_chars">5</property>
-                        <property name="xalign">1</property>
-                        <property name="adjustment">25 10 90 5 10 10</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">4</property>
-                        <property name="bottom_attach">5</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label10">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Focal (mm)</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">5</property>
-                        <property name="bottom_attach">6</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkSpinButton" id="defaultFocalSpinbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="max_length">6</property>
-                        <property name="width_chars">6</property>
-                        <property name="xalign">1</property>
-                        <property name="adjustment">17 5 500 0.5 10 10</property>
-                        <property name="digits">1</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">5</property>
-                        <property name="bottom_attach">6</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkCheckButton" id="defaultFisheyeCheckbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="label" translatable="yes" context="yes">fisheye</property>
-                        <property name="response_id">0</property>
-                        <property name="draw_indicator">True</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">2</property>
-                        <property name="right_attach">3</property>
-                        <property name="top_attach">5</property>
-                        <property name="bottom_attach">6</property>
-                        <property name="x_padding">5</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label11">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Orientation</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">6</property>
-                        <property name="bottom_attach">7</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkComboBox" id="defaultCameraOrientationCombobox">
-                        <property name="visible">True</property>
-                        <property name="active">0</property>
-                        <property name="items" translatable="yes" context="yes">portrait
-landscape</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">6</property>
-                        <property name="bottom_attach">7</property>
-                      </packing>
-                    </child>
-                  </widget>
+                  <placeholder/>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label15">
+                  <placeholder/>
+                </child>
+                <child>
+                  <widget class="GtkComboBox" id="sensorRatioCombobox">
                     <property name="visible">True</property>
-                    <property name="label" translatable="yes">Default values are effective when dialog is validated</property>
+                    <property name="active">0</property>
+                    <property name="items" translatable="yes" context="yes">3:2
+4:3</property>
                   </widget>
                   <packing>
-                    <property name="position">1</property>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                    <property name="x_padding">5</property>
                   </packing>
+                </child>
+                <child>
+                  <widget class="GtkSpinButton" id="sensorCoefSpinbutton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="max_length">5</property>
+                    <property name="width_chars">5</property>
+                    <property name="xalign">1</property>
+                    <property name="adjustment">1.6000000000000001 1 10 0.10000000000000001 1 1</property>
+                    <property name="digits">1</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label50">
+                    <property name="visible">True</property>
+                    <property name="xalign">0.89999997615814209</property>
+                    <property name="label" translatable="yes" context="yes">Sensor ratio</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkSpinButton" id="nbPictsSpinbutton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="max_length">5</property>
+                    <property name="width_chars">5</property>
+                    <property name="xalign">1</property>
+                    <property name="adjustment">1 1 5 1 10 10</property>
+                    <property name="snap_to_ticks">True</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label48">
+                    <property name="visible">True</property>
+                    <property name="xalign">0.89999997615814209</property>
+                    <property name="label" translatable="yes" context="yes">Nb picts</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkSpinButton" id="timeValueSpinbutton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="max_length">6</property>
+                    <property name="width_chars">6</property>
+                    <property name="xalign">1</property>
+                    <property name="adjustment">0.5 0.10000000000000001 100 0.10000000000000001 10 10</property>
+                    <property name="digits">1</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label47">
+                    <property name="visible">True</property>
+                    <property name="xalign">0.89999997615814209</property>
+                    <property name="label" translatable="yes" context="yes">Tv (s)</property>
+                  </widget>
                 </child>
               </widget>
               <packing>
@@ -545,7 +220,7 @@ landscape</property>
             <child>
               <widget class="GtkLabel" id="label2">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes" context="yes">Shooting defaults</property>
+                <property name="label" translatable="yes" context="yes">Camera</property>
               </widget>
               <packing>
                 <property name="type">tab</property>
@@ -554,63 +229,72 @@ landscape</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkTable" id="table4">
+              <widget class="GtkTable" id="table3">
                 <property name="visible">True</property>
-                <property name="n_rows">5</property>
-                <property name="n_columns">2</property>
+                <property name="n_rows">1</property>
+                <property name="n_columns">3</property>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <widget class="GtkCheckButton" id="dataFileEnableCheckbutton">
+                  <widget class="GtkCheckButton" id="fisheyeCheckbutton">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="label" translatable="yes">Data file enable</property>
+                    <property name="label" translatable="yes" context="yes">fisheye</property>
                     <property name="response_id">0</property>
                     <property name="draw_indicator">True</property>
                   </widget>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="top_attach">4</property>
-                    <property name="bottom_attach">5</property>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="x_padding">5</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkComboBox" id="loggerCLevelCombobox">
+                  <widget class="GtkSpinButton" id="focalSpinbutton">
                     <property name="visible">True</property>
-                    <property name="active">2</property>
-                    <property name="items" translatable="yes" context="yes">trace
-debug
-info
-warning
-error
-exception
-critical</property>
+                    <property name="can_focus">True</property>
+                    <property name="max_length">6</property>
+                    <property name="width_chars">6</property>
+                    <property name="xalign">1</property>
+                    <property name="adjustment">17 5 500 0.5 10 10</property>
+                    <property name="digits">1</property>
                   </widget>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label6">
+                  <widget class="GtkLabel" id="label52">
                     <property name="visible">True</property>
                     <property name="xalign">0.89999997615814209</property>
-                    <property name="label" translatable="yes" context="yes">Logger level</property>
+                    <property name="label" translatable="yes" context="yes">Focal (mm)</property>
                   </widget>
-                  <packing>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
-                  </packing>
                 </child>
+              </widget>
+              <packing>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="label3">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="yes">Lens</property>
+              </widget>
+              <packing>
+                <property name="type">tab</property>
+                <property name="position">2</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkTable" id="table4">
+                <property name="visible">True</property>
+                <property name="n_rows">3</property>
+                <property name="n_columns">2</property>
                 <child>
                   <widget class="GtkEntry" id="serialPortEntry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="text" translatable="yes">0</property>
+                    <property name="text" translatable="yes" context="yes">0</property>
                   </widget>
                   <packing>
                     <property name="left_attach">1</property>
@@ -646,7 +330,7 @@ critical</property>
                   <widget class="GtkLabel" id="label13">
                     <property name="visible">True</property>
                     <property name="xalign">0.89999997615814209</property>
-                    <property name="label" translatable="yes" context="yes">Bluetooth device address</property>
+                    <property name="label" translatable="yes" context="yes">BT device address</property>
                   </widget>
                   <packing>
                     <property name="top_attach">1</property>
@@ -658,8 +342,8 @@ critical</property>
                     <property name="visible">True</property>
                     <property name="active">0</property>
                     <property name="items" translatable="yes" context="yes">bluetooth
-serialPassive
-serialStamp</property>
+serial
+usb</property>
                   </widget>
                   <packing>
                     <property name="left_attach">1</property>
@@ -675,17 +359,63 @@ serialStamp</property>
                 </child>
               </widget>
               <packing>
-                <property name="position">2</property>
+                <property name="position">3</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkLabel" id="label3">
+              <widget class="GtkLabel" id="label4">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes" context="yes">Preferences</property>
+                <property name="label" translatable="yes" context="yes">Hardware</property>
               </widget>
               <packing>
                 <property name="type">tab</property>
-                <property name="position">2</property>
+                <property name="position">3</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkTable" id="table5">
+                <property name="visible">True</property>
+                <property name="n_rows">1</property>
+                <property name="n_columns">2</property>
+                <child>
+                  <widget class="GtkComboBox" id="loggerCLevelCombobox">
+                    <property name="visible">True</property>
+                    <property name="active">2</property>
+                    <property name="items" translatable="yes" context="yes">trace
+debug
+info
+warning
+error
+exception
+critical</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="y_options">GTK_EXPAND</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label6">
+                    <property name="visible">True</property>
+                    <property name="xalign">0.89999997615814209</property>
+                    <property name="label" translatable="yes" context="yes">Logger level</property>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">4</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="label5">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes" context="yes">Misc</property>
+              </widget>
+              <packing>
+                <property name="type">tab</property>
+                <property name="position">4</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -699,16 +429,6 @@ serialStamp</property>
             <property name="visible">True</property>
             <property name="layout_style">GTK_BUTTONBOX_END</property>
             <child>
-              <widget class="GtkButton" id="validateButton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="label" translatable="yes">Validate</property>
-                <property name="response_id">0</property>
-                <signal name="clicked" handler="on_validateButton_clicked"/>
-              </widget>
-            </child>
-            <child>
               <widget class="GtkButton" id="okButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -717,9 +437,6 @@ serialStamp</property>
                 <property name="response_id">0</property>
                 <signal name="clicked" handler="on_okButton_clicked"/>
               </widget>
-              <packing>
-                <property name="position">1</property>
-              </packing>
             </child>
             <child>
               <widget class="GtkButton" id="cancelButton">
@@ -731,7 +448,7 @@ serialStamp</property>
                 <signal name="clicked" handler="on_cancelButton_clicked"/>
               </widget>
               <packing>
-                <property name="position">2</property>
+                <property name="position">1</property>
               </packing>
             </child>
           </widget>
