@@ -107,12 +107,13 @@ class ShootDialog(object):
         """
         self.yawPosEntry.set_text("%.1f" % values['yawPos'])
         self.pitchPosEntry.set_text("%.1f" % values['pitchPos'])
-        self.yawCoefEntry.set_text(str(values['yawCoef']))
-        self.pitchCoefEntry.set_text(str(values['pitchCoef']))
+        self.yawCoefEntry.set_text(values['yawIndex'])
+        self.pitchCoefEntry.set_text(values['pitchIndex'])
         self.sequenceEntry.set_text(values['sequence'])
-        self.progressbar.set_fraction(values['progress'])
+        self.progressbar.set_fraction(values['progress']['fraction'])
+        self.progressbar.set_text(values['progress']['text'])
         try:
             self.dataFileEnableCheckbutton.set_active(values['dataFileEnable'])
         except KeyError:
             pass
-            pass
+
