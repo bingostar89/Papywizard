@@ -59,6 +59,8 @@ import os.path
 import gtk.glade
 import pango
 
+from papywizard.view.lcdLabel import LCDLabel
+
 path = os.path.dirname(__file__)
 
 
@@ -69,15 +71,15 @@ class MainWindow(object):
         """ Init the object.
         """
         # Set the Glade file
-        gladeFile = os.path.join(path, "mainWindow.glade")
+        gladeFile = os.path.join(path, "mainWindow2.glade")
         self.wTree = gtk.glade.XML(gladeFile)
 
         # Retreive usefull widgets
         self._retreiveWidgets()
         
         # Font test
-        self.yawPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        #self.yawPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        #self.pitchPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
         self.yawStartEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
         self.pitchStartEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
         self.yawEndEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
@@ -123,8 +125,16 @@ class MainWindow(object):
         self.hardwareConnectMenuitem = self.wTree.get_widget("hardwareConnectMenuitem")
         self.hardwareResetMenuitem = self.wTree.get_widget("hardwareResetMenuitem")
         self.view3DShowMenuitem = self.wTree.get_widget("view3DShowMenuitem")
-        self.yawPosEntry = self.wTree.get_widget("yawPosEntry")
-        self.pitchPosEntry = self.wTree.get_widget("pitchPosEntry")
+        #self.yawPosEntry = self.wTree.get_widget("yawPosEntry")
+        #self.pitchPosEntry = self.wTree.get_widget("pitchPosEntry")
+        yawPosHbox = self.wTree.get_widget("yawPosHbox")
+        pitchPosHbox = self.wTree.get_widget("pitchPosHbox")
+        self.yawPosEntry = LCDLabel()
+        self.pitchPosEntry = LCDLabel()
+        yawPosHbox.add(self.yawPosEntry)
+        pitchPosHbox.add(self.pitchPosEntry)
+        self.yawPosEntry.show()
+        self.pitchPosEntry.show()
         self.yawStartEntry = self.wTree.get_widget("yawStartEntry")
         self.pitchStartEntry = self.wTree.get_widget("pitchStartEntry")
         self.yawEndEntry = self.wTree.get_widget("yawEndEntry")
@@ -136,8 +146,7 @@ class MainWindow(object):
         self.yawRealOverlapEntry = self.wTree.get_widget("yawRealOverlapEntry")
         self.pitchRealOverlapEntry = self.wTree.get_widget("pitchRealOverlapEntry")
         self.statusbar = self.wTree.get_widget("statusbar")
-        self.generalContextId = self.statusbar.get_context_id("general")
-        self.hardwareContextId = self.statusbar.get_context_id("hardware")
+        self.statusbarContextId = self.statusbar.get_context_id("default")
         self.connectImage = self.wTree.get_widget("connectImage")
 
     def fillWidgets(self, values):
