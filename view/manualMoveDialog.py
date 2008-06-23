@@ -57,6 +57,7 @@ import sys
 #import pygtk
 #pygtk.require("2.0")
 import gtk.glade
+import pango
 
 path = os.path.dirname(__file__)
 
@@ -73,6 +74,10 @@ class ManualMoveDialog(object):
 
         # Retreive usefull widgets
         self._retreiveWidgets()
+        
+        # Font test
+        self.yawPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
@@ -86,7 +91,7 @@ class ManualMoveDialog(object):
         self.pitchMovePlusButton = self.wTree.get_widget("pitchMovePlusButton")
         self.pitchMoveMinusButton = self.wTree.get_widget("pitchMoveMinusButton")
         self.yawMinusButton = self.wTree.get_widget("yawMinusButton")
-        self.doneButton = self.wTree.get_widget("doneButton")
+        #self.doneButton = self.wTree.get_widget("doneButton")
 
     def fillWidgets(self, values):
         """ Fill widgets with values.
