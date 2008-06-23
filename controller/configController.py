@@ -95,12 +95,16 @@ class ConfigController(AbstractController):
         Logger().trace("ConfigController.__onOkButtonClicked()")
         
         # Shooting
+        
+        # Camera
         self.__model.camera.timeValue = self.__view.timeValueSpinbutton.get_value()
         self.__model.camera.nbPicts = int(self.__view.nbPictsSpinbutton.get_value())
         self.__model.stabilizationDelay = self.__view.stabilizationDelaySpinbutton.get_value()
         self.__model.camera.sensorCoef = self.__view.sensorCoefSpinbutton.get_value()
         self.__model.camera.sensorRatio = config.SENSOR_RATIOS_INDEX[self.__view.sensorRatioCombobox.get_active()]
         self.__model.overlap = self.__view.overlapSpinbutton.get_value() / 100.
+        
+        # Lens
         self.__model.camera.lens.focal = self.__view.focalSpinbutton.get_value()
         self.__model.camera.lens.fisheye = self.__view.fisheyeCheckbutton.get_active()
         self.__model.cameraOrientation = config.CAMERA_ORIENTATION_INDEX[self.__view.cameraOrientationCombobox.get_active()]
@@ -114,7 +118,6 @@ class ConfigController(AbstractController):
         # Misc
         ConfigManager().set('Logger', 'LOGGER_LEVEL',
                             config.LOGGER_INDEX[self.__view.loggerLevelCombobox.get_active()])
-        ConfigManager().setBoolean('Data', 'DATA_FILE_ENABLE', self.__view.dataFileEnableCheckbutton.get_active())
 
     def __onCancelButtonClicked(self, widget):
         """ Cancel button has been clicked.
@@ -139,6 +142,5 @@ class ConfigController(AbstractController):
                   'hardwareBluetoothDeviceAddress': ConfigManager().get('Hardware', 'BLUETOOTH_DEVICE_ADDRESS'),
                   'hardwareSerialPort': ConfigManager().get('Hardware', 'SERIAL_PORT'),
                   'loggerLevel': ConfigManager().get('Logger', 'LOGGER_LEVEL'),
-                  'dataFileEnable': ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE')
                 }
         self.__view.fillWidgets(values)
