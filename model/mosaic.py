@@ -77,16 +77,18 @@ class Mosaic(object):
     1 2
     2 2
     """
-    def __init__(self):
+    def __init__(self, yawNbPicts, pitchNbPicts):
         """ Init the Mosaic object.
 
-        Load values from preferences.
-        """
-        #self.__yawNbPicts = None
-        #self.__pitchNbPicts = None
-        self.__init = False
+        @param yawNbPicts: number of pictures for yaw direction
+        @type yawNbPicts: int
 
-        #self.template = ConfigManager().get('Preferences', 'MOSAIC_TEMPLATE')
+        @param pitchNbPicts: number of pictures for pitch direction
+        @type pitchNbPicts: int
+        """
+        self.__yawNbPicts = None
+        self.__pitchNbPicts = None
+        self.__init = False
 
     def __iter__(self):
         """ Define Mosaic as an iterator.
@@ -109,12 +111,12 @@ class Mosaic(object):
         return self
 
     def __getTemplate(self):
-        """
+        """ Return current used template.
         """
         return ConfigManager().get('Preferences', 'MOSAIC_TEMPLATE')
     
     def __setTemplate(self, template):
-        """
+        """ Set template to use.
         """
         ConfigManager().set('Preferences', 'MOSAIC_TEMPLATE', template)
         ConfigManager().save()
@@ -150,9 +152,8 @@ class Mosaic(object):
         #pitch += inc[idx]['pitch']
         #if yaw >= yawNbPicts:
 
-
     def next(self):
-        """ Return next (yaw, pitch) position.
+        """ Return next (yaw, pitch) index position.
         """
         self.__yaw += self.__yawInc
         if self.__yaw >= self.__yawNbPicts:
@@ -179,12 +180,9 @@ class Mosaic(object):
         return self.__yaw, self.__pitch
 
     def shutdown(self):
-        """ Cleanly terminate the lens
-
-        Save values to preferences.
+        """ Cleanly terminate the mosaic
         """
         Logger().trace("Mosaic.shutdown()")
-        #ConfigManager().set('Preferences', 'MOSAIC_TEMPLATE', self.template)
 
 
 def main():
