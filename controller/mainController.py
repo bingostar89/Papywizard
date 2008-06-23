@@ -97,8 +97,7 @@ class MainController(AbstractController):
         self.__pitchPos = 0
 
         # Connect signal/slots
-        dic = {"on_configMenuitem_activate": self.__onConfigMenuActivated,
-               "on_quitMenuitem_activate": gtk.main_quit,
+        dic = {"on_quitMenuitem_activate": gtk.main_quit,
                "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuToggled,
                "on_hardwareSetOriginMenuitem_activate": self.__onHardwareSetOriginMenuActivated,
                "on_hardwareResetMenuitem_activate": self.__onHardwareResetMenuActivated,
@@ -107,6 +106,7 @@ class MainController(AbstractController):
                "on_setEndButton_clicked": self.__onSetEndButtonClicked,
                "on_set360Button_clicked": self.__onSet360ButtonClicked,
                "on_set180Button_clicked": self.__onSet180ButtonClicked,
+               "on_configButton_clicked": self.__onConfigMenuActivated,
                "on_manualMoveButton_clicked": self.__onManualMoveButtonClicked,
                "on_shootButton_clicked": self.__onShootButtonClicked,
            }
@@ -156,24 +156,11 @@ class MainController(AbstractController):
         self.__view.hardwareConnectMenuitem.set_active(True)
 
     # Helpers
-    def __setStatusbarMessage(self, message=None, delay=0):
-        """ Display a message on the statusbar.
-        
-        @param message: message to display. If None, clear statusbar
-        @type message: str
-        
-        @param delay: display message duration, in s (0 means forever)
-        @type delay: int
-        """
-        self.__view.statusbar.pop(self.__view.hardwareContextId)
-        if message is not None:
-            self.__view.statusbar.push(self.__view.hardwareContextId, message)
-            if delay:
-                gobject.timeout_add(delay * 1000, self.__setStatusbarMessage)
         
     # Callbacks
     def __onKeyPressed(self, widget, event, *args):
-
+        Logger().trace("MainController.__onKeyPressed()")
+        
         # 'FullScreen' key
         if event.keyval == self.__key['FullScreen']:
             if not self.__keyPressedDict['FullScreen']:
@@ -256,7 +243,8 @@ class MainController(AbstractController):
             Logger().warning("MainController.__onKeyPressed(): unbind '%s' key" % event.keyval)
 
     def __onKeyReleased(self, widget, event, *args):
-
+        Logger().trace("MainController.__onKeyReleased()")
+        
         # 'FullScreen' key
         if event.keyval == self.__key['FullScreen']:
             if self.__keyPressedDict['FullScreen']:
@@ -339,13 +327,13 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onHardwareResetMenuActivated()")
         Logger().info("Reseting hardware")
         self.__model.hardware.reset()
-        self.__setStatusbarMessage("Hardware has been reseted", 10)
+        self.setStatusbarMessage("Hardware has been reseted", 10)
 
     def __onHardwareSetOriginMenuActivated(self, widget):
         Logger().trace("MainController.__onHardwareSetOriginMenuActivated()")
         Logger().info("Set hardware origin")
         self.__model.hardware.setOrigin()
-        self.__setStatusbarMessage("Origin set to current position", 10)
+        self.setStatusbarMessage("Origin set to current position", 10)
 
     def __onHelpAboutMenuActivated(self, widget):
         Logger().trace("MainController.__onHelpAboutMenuActivated()")
@@ -357,25 +345,25 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onSetStartButtonClicked()")
         self.__model.storeStartPosition()
         self.refreshView()
-        self.__setStatusbarMessage("Start position set to current position", 10)
+        self.setStatusbarMessage("Start position set to current position", 10)
 
     def __onSetEndButtonClicked(self, widget):
         Logger().trace("MainController.__onSetEndButtonClicked()")
         self.__model.storeEndPosition()
         self.refreshView()
-        self.__setStatusbarMessage("End position set to current position", 10)
+        self.setStatusbarMessage("End position set to current position", 10)
 
     def __onSet360ButtonClicked(self, widget):
         Logger().trace("MainController.__onSet360ButtonClicked()")
         self.__model.setYaw360()
         self.refreshView()
-        self.__setStatusbarMessage(u"Start/End yaw positions set to 360°", 10)
+        self.setStatusbarMessage(u"Start/End yaw positions set to 360°", 10)
 
     def __onSet180ButtonClicked(self, widget):
         Logger().trace("MainController.__onSet180ButtonClicked()")
         self.__model.setPitch180()
         self.refreshView()
-        self.__setStatusbarMessage(u"Start/End pitch positions set to 180°", 10)
+        self.setStatusbarMessage(u"Start/End pitch positions set to 180°", 10)
 
     def __onManualMoveButtonClicked(self, widget):
         Logger().trace("MainController.__onManualMoveButtonClicked()")
@@ -404,16 +392,17 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onShootButtonClicked()")
         self.__openShootdialog()
 
-    def __switchToRealHardwareCallback(self, flag):
+    def __switchToRealHardwareCallback(self, flag, message=""):
         Logger().debug("MainController.__hardwareInit(): flag=%s" % flag)
         self.__connection = flag
+        self.__connectionErrorMessage = message
     
     # Real work
     def __connectToHardware(self):
         """ Connect to real hardware.
         """
         Logger().info("Connecting to real hardware...")
-        self.__setStatusbarMessage("Connecting to real hardware...")
+        self.setStatusbarMessage("Connecting to real hardware...")
         self.__view.hardwareConnectMenuitem.set_sensitive(False)
         
         # Launch connexion thread
@@ -429,11 +418,11 @@ class MainController(AbstractController):
             Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
             self.__view.connectImage.set_from_stock(gtk.STOCK_YES, 4)
             Logger().info("Now connected to real hardware")
-            self.__setStatusbarMessage("Now connected to real hardware", 5)
+            self.setStatusbarMessage("Now connected to real hardware", 5)
         else:
-            Logger().error("Connection to hardware failed")
+            Logger().error("Connection to hardware failed (%s)" % self.__connectionErrorMessage)
             self.__message = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type= gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                               message_format="Connection to hardware failed")
+                                               message_format="Connection to hardware failed\n\n(%s)" % self.__connectionErrorMessage)
             self.__message.run()
             self.__message.destroy()
             self.__view.hardwareConnectMenuitem.set_active(False)
@@ -447,7 +436,7 @@ class MainController(AbstractController):
         self.__model.switchToSimulatedHardware()
         Spy().setRefreshRate(config.SPY_FAST_REFRESH)
         self.__view.connectImage.set_from_stock(gtk.STOCK_NO, 4)
-        self.__setStatusbarMessage("Now in simulation mode", 5)
+        self.setStatusbarMessage("Now in simulation mode", 5)
 
     def __refreshPos(self, yaw, pitch):
         """ Refresh position according to new pos.
@@ -458,9 +447,25 @@ class MainController(AbstractController):
         @param pitch: pitch axix value
         @type pitch: float
         """
+        Logger().trace("MainController.__refreshPos()")
         self.__yawPos = yaw
         self.__pitchPos = pitch
         self.__serializer.apply(self.refreshView)
+        
+    def setStatusbarMessage(self, message=None, delay=0):
+        """ Display a message on the statusbar.
+        
+        @param message: message to display. If None, clear statusbar
+        @type message: str
+        
+        @param delay: display message duration, in s (0 means forever)
+        @type delay: int
+        """
+        self.__view.statusbar.pop(self.__view.statusbarContextId)
+        if message is not None:
+            self.__view.statusbar.push(self.__view.statusbarContextId, message)
+            if delay:
+                gobject.timeout_add(delay * 1000, self.setStatusbarMessage)
 
     def refreshView(self):
         values = {'yawPos': self.__yawPos,
