@@ -168,7 +168,7 @@ class Mosaic(object):
 def main():
     mosaic = Mosaic(3, 3)
     for i, (yaw, pitch) in enumerate(mosaic):
-        print "pict=%d, yawCoef=%d, pitchCoef=%d" % (i, yaw, pitch)
+        print "index=%d, yawCoef=%d, pitchCoef=%d" % (i, yaw, pitch)
         
 
 if __name__ == "__main__":
