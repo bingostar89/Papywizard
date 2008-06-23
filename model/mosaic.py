@@ -86,15 +86,12 @@ class Mosaic(object):
         @param pitchNbPicts: number of pictures for pitch direction
         @type pitchNbPicts: int
         """
-        self.__yawNbPicts = None
-        self.__pitchNbPicts = None
-        self.__init = False
+        self.__yawNbPicts = yawNbPicts
+        self.__pitchNbPicts = pitchNbPicts
 
     def __iter__(self):
         """ Define Mosaic as an iterator.
         """
-        if self.__yawNbPicts is None or self.__pitchNbPicts is None:
-            raise ValueError("You must call setMatrix() first")
 
         # Init self.__yaw and self.__pitch according of the template (todo)
         self.__inc = [{'yaw': 1, 'pitch': 0},
@@ -122,18 +119,6 @@ class Mosaic(object):
         ConfigManager().save()
 
     template = property(__getTemplate, __setTemplate)
-
-    def setMatrix(self, yawNbPicts, pitchNbPicts):
-        """ Define the number of pictures for both yaw/pitch directions.
-
-        @param yawNbPicts: number of pictures for yaw direction
-        @type yawNbPicts: int
-
-        @param pitchNbPicts: number of pictures for pitch direction
-        @type pitchNbPicts: int
-        """
-        self.__yawNbPicts = yawNbPicts
-        self.__pitchNbPicts = pitchNbPicts
 
     #def generate(self, yawNbPicts, pitchNbPicts):
         #if not self.__init:
