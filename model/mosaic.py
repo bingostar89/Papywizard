@@ -117,6 +117,7 @@ class Mosaic(object):
         """
         """
         ConfigManager().set('Preferences', 'MOSAIC_TEMPLATE', template)
+        ConfigManager().save()
 
     template = property(__getTemplate, __setTemplate)
 
