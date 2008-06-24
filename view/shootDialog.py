@@ -110,8 +110,7 @@ class ShootDialog(object):
         self.yawCoefEntry.set_text(values['yawIndex'])
         self.pitchCoefEntry.set_text(values['pitchIndex'])
         self.sequenceEntry.set_text(values['sequence'])
-        self.progressbar.set_fraction(values['progress']['fraction'])
-        self.progressbar.set_text(values['progress']['text'])
+        self.progressbar.set_fraction(values['progress'])
         try:
             self.dataFileEnableCheckbutton.set_active(values['dataFileEnable'])
         except KeyError:
