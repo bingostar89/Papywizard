@@ -158,7 +158,23 @@ class Axis(object):
         else:
             pos += self.__offset
 
-        # Drive to requested position
+        # Choose between default (hardware) method or external closed-loop method
+        if pos - currentPos > 6.:
+            self._drive1(pos)
+        else:
+            self._drive2(pos)
+
+        # Wait end of movement
+        # Does not work for external closed-loop drive. Need to execute drive in a thread.
+        if wait:
+            self.waitEndOfDrive()
+
+    def _drive1(self, pos):
+        """ Default (hardware) drive.
+
+        @param pos: position to reach, in °
+        @type pos: float
+        """
         strValue = encodeAxisValue(deg2cod(pos))
         self._driver.acquireBus()
         try:
@@ -169,9 +185,44 @@ class Axis(object):
         finally:
             self._driver.releaseBus()
 
-        # Wait end of movement
-        if wait:
-            self.waitEndOfDrive()
+    def _drive2(self, pos):
+        """ External closed-loop drive.
+
+        This method implements an external closed-loop regulation.
+        It is faster for angles < 6-7°, because in this case, the
+        head does not accelerate to full speed, but rather stays at
+        very low speed.
+
+        @param pos: position to reach, in °
+        @type pos: float
+        """
+        self._driver.acquireBus()
+        try:
+            self._sendCmd("L")
+            initialPos = self.read()
+
+            # Compute direction
+            if pos > initialPos:
+                self._sendCmd("G", "30")
+            else:
+                self._sendCmd("G", "31")
+
+            # Load speed
+            self._sendCmd("I", "500000")
+
+            # Start move
+            self._sendCmd("J")
+        finally:
+            self._driver.releaseBus()
+
+        # Closed-loop drive
+        while abs(pos - self.read()) > .5: # optimal delta depends on speed/inertia
+            time.sleep(0.01)
+        self.stopJog()
+
+        # Final drive (auto) if needed
+        if abs(pos - self.read()) > config.AXIS_ACCURACY:
+            self._drive1(pos)
 
     def stop(self):
         """ stop drive axis.
@@ -188,59 +239,6 @@ class Axis(object):
                 break
             time.sleep(0.1)
         self.waitStop()
-
-    #def drive2(self, pos, inc=False, wait=True):
-        #""" Drive the axis.
-
-        #This method implements an external closed loop regulation.
-        #It is faster for angles < 6-7°, because in this case, the
-        #head does not accelerate to full speed, but rather stays at
-        #very low speed.
-
-        #@param pos: position to reach, in °
-        #@type pos: float
-
-        #@param inc: if True, pos is an increment
-        #@type inc: bool
-
-        #@param wait: if True, wait for end of movement,
-                     #returns immediatly otherwise.
-        #@type wait: boot
-        #"""
-
-        ## Compute absolute position from increment if needed
-        #if inc:
-            #currentPos = self.read()
-            #pos = currentPos + inc
-
-        #self._driver.acquireBus()
-        #try:
-            #self._sendCmd("L")
-            #initialPos = self.read()
-
-            ## Compute direction
-            #if pos > initialPos:
-                #self._sendCmd("G", "30")
-            #else:
-                #self._sendCmd("G", "31")
-
-            ## Load speed
-            #self._sendCmd("I", "500000")
-
-            ## Start move
-            #self._sendCmd("J")
-        #finally:
-            #self._driver.releaseBus()
-
-        ## Closed-loop drive
-        #while abs(pos - self.read()) > .5: # optimal delta depends on speed/inertia
-            ##time.sleep(0.05)
-            #pass
-        #self.stopJog()
-
-        ## Final drive (auto) if needed
-        #if abs(pos - self.read()) > config.AXIS_ACCURACY:
-            #self.drive(pos)
 
     def startJog(self, dir):
         """ Start axis in specified direction.
