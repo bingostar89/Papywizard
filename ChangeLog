@@ -5,10 +5,20 @@ ChangeLog
 x bug fix
 
 xxxx-xx-xx Version SVN
+
+xxxx-xx-xx Version 0.9 (coming soon)
     x bug correction when start pos > end pos
     x connect menu is greyed out if hardware is not available
     + added 'Set 360' and 'Set 180' buttons
     + edit all preferences
+    - splitted preferences in tabs
+    - turned read-only Entry widgets to Label widgets
+    + added 'set origin' button
+    + statusbar messages
+    x better hardware connection error handling
+    - removed default preferences
+    + wiki documentation
+    x alternate drive method for small moves (faster than default one)
 
 2008-06-06 Version 0.9beta2
     - switched from Tkinter to Gtk+
@@ -39,4 +49,3 @@ xxxx-xx-xx Version SVN
     
 2007-05-21 Version 0.9-alpha1
     + initial version
-
