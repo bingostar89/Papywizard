@@ -130,7 +130,7 @@ class ConfigController(AbstractController):
         values = {'shootingOverlap': int(100 * self.__model.overlap),
                   'shootingCameraOrientation': self.__model.cameraOrientation,
                   'shootingStabilizationDelay': self.__model.stabilizationDelay,
-                  'mosaicTemplate': self.__model.mosaic.template,
+                  'mosaicTemplate': ConfigManager().get('Preferences', 'MOSAIC_TEMPLATE'),
                   'cameraSensorCoef': self.__model.camera.sensorCoef,
                   'cameraSensorRatio': self.__model.camera.sensorRatio,
                   'cameraTimeValue': self.__model.camera.timeValue,
