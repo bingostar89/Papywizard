@@ -4,7 +4,7 @@
 <glade-interface>
   <widget class="GtkDialog" id="manualMoveDialog">
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">Papywizard - Manual move</property>
+    <property name="title" translatable="yes">Manual move</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
