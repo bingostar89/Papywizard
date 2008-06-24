@@ -79,7 +79,7 @@ class Shooting(object):
         self.__stop = False
         self.__yawCoef = "--"
         self.__pitchCoef = "--"
-        self.__progress = self.__progress = {'fraction': 0., 'text': "-/-"}
+        self.__progress = 0.
         self.__sequence = "Idle"
         self.__setParams = None
         self.__manualShoot = False
@@ -348,7 +348,7 @@ class Shooting(object):
 
             # Loop over all positions
             totalNbPicts = self.yawNbPicts * self.pitchNbPicts
-            self.__progress = {'fraction': 0., 'text': "0/%d" % totalNbPicts}
+            self.__progress = 0.
             for i, (yawCoef, pitchCoef) in enumerate(mosaic):
                 yaw = self.yawStart + yawCoef * yawInc
                 pitch = self.pitchStart + pitchCoef * pitchInc
@@ -379,7 +379,7 @@ class Shooting(object):
                     checkSuspendStop()
 
                 progressFraction = float((i + 1)) / float(totalNbPicts)
-                self.__progress = {'fraction': progressFraction, 'text': "%d/%d" % (i + 1, totalNbPicts)}
+                self.__progress = progressFraction
 
             Logger().debug("Shooting.start(): finished")
 
