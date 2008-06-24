@@ -107,19 +107,6 @@ class Mosaic(object):
 
         return self
 
-    def __getTemplate(self):
-        """ Return current used template.
-        """
-        return ConfigManager().get('Preferences', 'MOSAIC_TEMPLATE')
-    
-    def __setTemplate(self, template):
-        """ Set template to use.
-        """
-        ConfigManager().set('Preferences', 'MOSAIC_TEMPLATE', template)
-        ConfigManager().save()
-
-    template = property(__getTemplate, __setTemplate)
-
     #def generate(self, yawNbPicts, pitchNbPicts):
         #if not self.__init:
             #inc = [{'yaw': 1, 'pitch': 0},
