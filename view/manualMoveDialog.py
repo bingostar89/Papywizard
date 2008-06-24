@@ -69,7 +69,7 @@ class ManualMoveDialog(object):
         """ Init the object.
         """
         # Set the Glade file
-        gladeFile = os.path.join(path, "manualMoveDialog2.glade")
+        gladeFile = os.path.join(path, "manualMoveDialog.glade")
         self.wTree = gtk.glade.XML(gladeFile)
 
         # Retreive usefull widgets
