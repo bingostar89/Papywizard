@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Jun 21 09:19:12 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Jun 24 12:08:30 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="shootDialog">
     <property name="visible">True</property>
@@ -25,7 +25,7 @@
             <child>
               <widget class="GtkTable" id="table1">
                 <property name="visible">True</property>
-                <property name="n_rows">6</property>
+                <property name="n_rows">4</property>
                 <property name="n_columns">3</property>
                 <property name="column_spacing">5</property>
                 <property name="row_spacing">5</property>
@@ -33,45 +33,25 @@
                   <placeholder/>
                 </child>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label4">
+                  <widget class="GtkLabel" id="sequenceLabel">
                     <property name="visible">True</property>
-                    <property name="xalign">0.89999997615814209</property>
-                    <property name="label" translatable="yes">Mosaïc</property>
-                    <property name="width_chars">15</property>
-                    <property name="max_width_chars">0</property>
+                    <property name="label" translatable="yes">--</property>
+                    <property name="width_chars">20</property>
+                    <property name="max_width_chars">20</property>
                   </widget>
                   <packing>
-                    <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">3</property>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label3">
+                  <widget class="GtkLabel" id="pitchIndexLabel">
                     <property name="visible">True</property>
-                    <property name="xalign">0.89999997615814209</property>
-                    <property name="label" translatable="yes">Position (°)</property>
-                    <property name="width_chars">15</property>
-                    <property name="max_width_chars">0</property>
-                  </widget>
-                  <packing>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkEntry" id="pitchCoefEntry">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">5</property>
-                    <property name="width_chars">0</property>
-                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">--</property>
+                    <property name="width_chars">7</property>
+                    <property name="max_width_chars">7</property>
                   </widget>
                   <packing>
                     <property name="left_attach">2</property>
@@ -81,13 +61,11 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="yawCoefEntry">
+                  <widget class="GtkLabel" id="yawIndexLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">5</property>
-                    <property name="width_chars">0</property>
-                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">--</property>
+                    <property name="width_chars">7</property>
+                    <property name="max_width_chars">7</property>
                   </widget>
                   <packing>
                     <property name="left_attach">1</property>
@@ -97,13 +75,11 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="pitchPosEntry">
+                  <widget class="GtkLabel" id="pitchPosLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">6</property>
-                    <property name="width_chars">0</property>
-                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">--</property>
+                    <property name="width_chars">7</property>
+                    <property name="max_width_chars">7</property>
                   </widget>
                   <packing>
                     <property name="left_attach">2</property>
@@ -113,43 +89,17 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="yawPosEntry">
+                  <widget class="GtkLabel" id="yawPosLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">6</property>
-                    <property name="width_chars">0</property>
-                    <property name="xalign">1</property>
+                    <property name="label" translatable="yes">--</property>
+                    <property name="width_chars">7</property>
+                    <property name="max_width_chars">7</property>
                   </widget>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label2">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Pitch</property>
-                    <property name="width_chars">5</property>
-                    <property name="max_width_chars">5</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label1">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Yaw</property>
-                    <property name="width_chars">5</property>
-                    <property name="max_width_chars">5</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
                   </packing>
                 </child>
                 <child>
@@ -166,52 +116,53 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="sequenceEntry">
+                  <widget class="GtkLabel" id="label1">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">20</property>
-                    <property name="width_chars">20</property>
-                    <property name="text" translatable="yes">--</property>
-                    <property name="xalign">0.5</property>
+                    <property name="label" translatable="yes">Yaw</property>
+                    <property name="width_chars">5</property>
+                    <property name="max_width_chars">5</property>
                   </widget>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="right_attach">3</property>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
+                    <property name="right_attach">2</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="manualShootCheckbutton">
+                  <widget class="GtkLabel" id="label2">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="label" translatable="yes">Manual shooting</property>
-                    <property name="response_id">0</property>
-                    <property name="draw_indicator">True</property>
-                    <signal name="toggled" handler="on_manualShootCheckbutton_toggled"/>
+                    <property name="label" translatable="yes">Pitch</property>
+                    <property name="width_chars">5</property>
+                    <property name="max_width_chars">5</property>
                   </widget>
                   <packing>
-                    <property name="left_attach">1</property>
+                    <property name="left_attach">2</property>
                     <property name="right_attach">3</property>
-                    <property name="top_attach">4</property>
-                    <property name="bottom_attach">5</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="dataFileEnableCheckbutton">
+                  <widget class="GtkLabel" id="label3">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="label" translatable="yes">Data file enable</property>
-                    <property name="response_id">0</property>
-                    <property name="draw_indicator">True</property>
-                    <signal name="toggled" handler="on_dataFileEnableCheckbutton_toggled"/>
+                    <property name="xalign">0.89999997615814209</property>
+                    <property name="label" translatable="yes">Position (°)</property>
+                    <property name="width_chars">15</property>
+                    <property name="max_width_chars">0</property>
                   </widget>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">3</property>
-                    <property name="top_attach">5</property>
-                    <property name="bottom_attach">6</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label4">
+                    <property name="visible">True</property>
+                    <property name="xalign">0.89999997615814209</property>
+                    <property name="label" translatable="yes">Index</property>
+                    <property name="width_chars">15</property>
+                    <property name="max_width_chars">0</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
                   </packing>
                 </child>
               </widget>
@@ -227,6 +178,37 @@
               </widget>
               <packing>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkHBox" id="hbox2">
+                <property name="visible">True</property>
+                <child>
+                  <widget class="GtkCheckButton" id="manualShootCheckbutton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="label" translatable="yes">Manual shooting</property>
+                    <property name="response_id">0</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="on_manualShootCheckbutton_toggled"/>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="GtkCheckButton" id="dataFileEnableCheckbutton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="label" translatable="yes">Data file enable</property>
+                    <property name="response_id">0</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="on_dataFileEnableCheckbutton_toggled"/>
+                  </widget>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">2</property>
               </packing>
             </child>
           </widget>

@@ -69,32 +69,31 @@ class ManualMoveDialog(object):
         """ Init the object.
         """
         # Set the Glade file
-        gladeFile = os.path.join(path, "manualMoveDialog.glade")
+        gladeFile = os.path.join(path, "manualMoveDialog2.glade")
         self.wTree = gtk.glade.XML(gladeFile)
 
         # Retreive usefull widgets
         self._retreiveWidgets()
         
         # Font test
-        self.yawPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
         self.manualMoveDialog = self.wTree.get_widget("manualMoveDialog")
-        self.yawPosEntry = self.wTree.get_widget("yawPosEntry")
-        self.pitchPosEntry = self.wTree.get_widget("pitchPosEntry")
+        self.yawPosLabel = self.wTree.get_widget("yawPosLabel")
+        self.pitchPosLabel = self.wTree.get_widget("pitchPosLabel")
         self.setStartButton = self.wTree.get_widget("setStartButton")
         self.setEndButton = self.wTree.get_widget("setEndButton")
         self.yawMovePlusButton = self.wTree.get_widget("yawMovePlusButton")
         self.pitchMovePlusButton = self.wTree.get_widget("pitchMovePlusButton")
         self.pitchMoveMinusButton = self.wTree.get_widget("pitchMoveMinusButton")
         self.yawMinusButton = self.wTree.get_widget("yawMinusButton")
-        #self.doneButton = self.wTree.get_widget("doneButton")
 
     def fillWidgets(self, values):
         """ Fill widgets with values.
         """
-        self.yawPosEntry.set_text("%.1f" % values['yawPos'])
-        self.pitchPosEntry.set_text("%.1f" % values['pitchPos'])
+        self.yawPosLabel.set_text("%.1f" % values['yawPos'])
+        self.pitchPosLabel.set_text("%.1f" % values['pitchPos'])

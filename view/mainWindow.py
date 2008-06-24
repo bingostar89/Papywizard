@@ -59,7 +59,7 @@ import os.path
 import gtk.glade
 import pango
 
-from papywizard.view.lcdLabel import LCDLabel
+#from papywizard.view.lcdLabel import LCDLabel
 
 path = os.path.dirname(__file__)
 
@@ -78,18 +78,18 @@ class MainWindow(object):
         self._retreiveWidgets()
         
         # Font test
-        self.yawPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.yawStartEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchStartEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.yawEndEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchEndEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.yawFovEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchFovEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.yawNbPictsEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchNbPictsEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.yawRealOverlapEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchRealOverlapEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawStartLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchStartLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawEndLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchEndLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawFovLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchFovLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawNbPictsLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchNbPictsLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawRealOverlapLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchRealOverlapLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
 
         # Nokia plateform stuff
         try:
@@ -125,29 +125,18 @@ class MainWindow(object):
         self.hardwareConnectMenuitem = self.wTree.get_widget("hardwareConnectMenuitem")
         self.hardwareResetMenuitem = self.wTree.get_widget("hardwareResetMenuitem")
         self.view3DShowMenuitem = self.wTree.get_widget("view3DShowMenuitem")
-        
-        self.yawPosEntry = self.wTree.get_widget("yawPosEntry")
-        self.pitchPosEntry = self.wTree.get_widget("pitchPosEntry")
-        
-        #yawPosHbox = self.wTree.get_widget("yawPosHbox")
-        #pitchPosHbox = self.wTree.get_widget("pitchPosHbox")
-        #self.yawPosEntry = LCDLabel(7)
-        #self.pitchPosEntry = LCDLabel(7)
-        #yawPosHbox.add(self.yawPosEntry)
-        #pitchPosHbox.add(self.pitchPosEntry)
-        #self.yawPosEntry.show()
-        #self.pitchPosEntry.show()
-        
-        self.yawStartEntry = self.wTree.get_widget("yawStartEntry")
-        self.pitchStartEntry = self.wTree.get_widget("pitchStartEntry")
-        self.yawEndEntry = self.wTree.get_widget("yawEndEntry")
-        self.pitchEndEntry = self.wTree.get_widget("pitchEndEntry")
-        self.yawFovEntry = self.wTree.get_widget("yawFovEntry")
-        self.pitchFovEntry = self.wTree.get_widget("pitchFovEntry")
-        self.yawNbPictsEntry = self.wTree.get_widget("yawNbPictsEntry")
-        self.pitchNbPictsEntry = self.wTree.get_widget("pitchNbPictsEntry")
-        self.yawRealOverlapEntry = self.wTree.get_widget("yawRealOverlapEntry")
-        self.pitchRealOverlapEntry = self.wTree.get_widget("pitchRealOverlapEntry")
+        self.yawPosLabel = self.wTree.get_widget("yawPosLabel")
+        self.pitchPosLabel = self.wTree.get_widget("pitchPosLabel")
+        self.yawStartLabel = self.wTree.get_widget("yawStartLabel")
+        self.pitchStartLabel = self.wTree.get_widget("pitchStartLabel")
+        self.yawEndLabel = self.wTree.get_widget("yawEndLabel")
+        self.pitchEndLabel = self.wTree.get_widget("pitchEndLabel")
+        self.yawFovLabel = self.wTree.get_widget("yawFovLabel")
+        self.pitchFovLabel = self.wTree.get_widget("pitchFovLabel")
+        self.yawNbPictsLabel = self.wTree.get_widget("yawNbPictsLabel")
+        self.pitchNbPictsLabel = self.wTree.get_widget("pitchNbPictsLabel")
+        self.yawRealOverlapLabel = self.wTree.get_widget("yawRealOverlapLabel")
+        self.pitchRealOverlapLabel = self.wTree.get_widget("pitchRealOverlapLabel")
         self.statusbar = self.wTree.get_widget("statusbar")
         self.statusbarContextId = self.statusbar.get_context_id("default")
         self.connectImage = self.wTree.get_widget("connectImage")
@@ -158,15 +147,15 @@ class MainWindow(object):
         @params values: model values
         @type values: dict
         """
-        self.yawPosEntry.set_text("%.1f" % values['yawPos'])
-        self.pitchPosEntry.set_text("%.1f" % values['pitchPos'])
-        self.yawStartEntry.set_text("%.1f" % values['yawStart'])
-        self.pitchStartEntry.set_text("%.1f" % values['pitchStart'])
-        self.yawEndEntry.set_text("%.1f" % values['yawEnd'])
-        self.pitchEndEntry.set_text("%.1f" % values['pitchEnd'])
-        self.yawFovEntry.set_text("%.1f" % values['yawFov'])
-        self.pitchFovEntry.set_text("%.1f" % values['pitchFov'])
-        self.yawNbPictsEntry.set_text("%d" % values['yawNbPicts'])
-        self.pitchNbPictsEntry.set_text("%d" % values['pitchNbPicts'])
-        self.yawRealOverlapEntry.set_text(str(values['yawRealOverlap']))
-        self.pitchRealOverlapEntry.set_text(str(values['pitchRealOverlap']))
+        self.yawPosLabel.set_text("%.1f" % values['yawPos'])
+        self.pitchPosLabel.set_text("%.1f" % values['pitchPos'])
+        self.yawStartLabel.set_text("%.1f" % values['yawStart'])
+        self.pitchStartLabel.set_text("%.1f" % values['pitchStart'])
+        self.yawEndLabel.set_text("%.1f" % values['yawEnd'])
+        self.pitchEndLabel.set_text("%.1f" % values['pitchEnd'])
+        self.yawFovLabel.set_text("%.1f" % values['yawFov'])
+        self.pitchFovLabel.set_text("%.1f" % values['pitchFov'])
+        self.yawNbPictsLabel.set_text("%d" % values['yawNbPicts'])
+        self.pitchNbPictsLabel.set_text("%d" % values['pitchNbPicts'])
+        self.yawRealOverlapLabel.set_text(str(values['yawRealOverlap']))
+        self.pitchRealOverlapLabel.set_text(str(values['pitchRealOverlap']))

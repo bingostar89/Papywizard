@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Jun 21 10:43:28 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Jun 24 11:21:22 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="manualMoveDialog">
     <property name="border_width">5</property>
@@ -27,36 +27,38 @@
                 <property name="column_spacing">5</property>
                 <property name="row_spacing">5</property>
                 <child>
-                  <widget class="GtkEntry" id="pitchPosEntry">
+                  <widget class="GtkLabel" id="pitchPosLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">7</property>
+                    <property name="label" translatable="yes">--</property>
                     <property name="width_chars">7</property>
-                    <property name="xalign">1</property>
+                    <property name="max_width_chars">7</property>
                   </widget>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
-                    <property name="x_options">GTK_EXPAND</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkEntry" id="yawPosEntry">
+                  <widget class="GtkLabel" id="yawPosLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="editable">False</property>
-                    <property name="max_length">7</property>
+                    <property name="label" translatable="yes">--</property>
                     <property name="width_chars">7</property>
-                    <property name="xalign">1</property>
+                    <property name="max_width_chars">7</property>
                   </widget>
                   <packing>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
-                    <property name="x_options">GTK_EXPAND</property>
                   </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label1">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Yaw</property>
+                    <property name="width_chars">5</property>
+                    <property name="max_width_chars">5</property>
+                  </widget>
                 </child>
                 <child>
                   <widget class="GtkLabel" id="label2">
@@ -70,14 +72,6 @@
                     <property name="right_attach">2</property>
                   </packing>
                 </child>
-                <child>
-                  <widget class="GtkLabel" id="label1">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Yaw</property>
-                    <property name="width_chars">5</property>
-                    <property name="max_width_chars">5</property>
-                  </widget>
-                </child>
               </widget>
             </child>
             <child>
@@ -89,81 +83,22 @@
                 <property name="row_spacing">5</property>
                 <property name="homogeneous">True</property>
                 <child>
-                  <widget class="GtkButton" id="hardwareSetOriginButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="label" translatable="yes">Set origin</property>
-                    <property name="response_id">0</property>
-                    <signal name="clicked" handler="on_hardwareSetOriginButton_clicked"/>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                  </packing>
-                </child>
-                <child>
                   <placeholder/>
                 </child>
                 <child>
                   <placeholder/>
                 </child>
                 <child>
-                  <widget class="GtkButton" id="setEndButton">
+                  <widget class="GtkButton" id="yawMoveMinusButton">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="label" translatable="yes">Set End</property>
+                    <property name="label" translatable="yes">Yaw -</property>
                     <property name="response_id">0</property>
-                    <signal name="clicked" handler="on_setEndButton_clicked"/>
+                    <signal name="pressed" handler="on_yawMoveMinusButton_pressed"/>
+                    <signal name="released" handler="on_yawMoveMinusButton_released"/>
                   </widget>
                   <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkButton" id="setStartButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="label" translatable="yes">Set Start</property>
-                    <property name="response_id">0</property>
-                    <signal name="clicked" handler="on_setStartButton_clicked"/>
-                  </widget>
-                </child>
-                <child>
-                  <widget class="GtkButton" id="pitchMoveMinusButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="label" translatable="yes">Pitch -</property>
-                    <property name="response_id">0</property>
-                    <signal name="pressed" handler="on_pitchMoveMinusButton_pressed"/>
-                    <signal name="released" handler="on_pitchMoveMinusButton_released"/>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkButton" id="yawMovePlusButton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="label" translatable="yes">Yaw +</property>
-                    <property name="response_id">0</property>
-                    <signal name="pressed" handler="on_yawMovePlusButton_pressed"/>
-                    <signal name="released" handler="on_yawMovePlusButton_released"/>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">2</property>
-                    <property name="right_attach">3</property>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
                   </packing>
@@ -184,16 +119,75 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkButton" id="yawMoveMinusButton">
+                  <widget class="GtkButton" id="yawMovePlusButton">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <property name="label" translatable="yes">Yaw -</property>
+                    <property name="label" translatable="yes">Yaw +</property>
                     <property name="response_id">0</property>
-                    <signal name="pressed" handler="on_yawMoveMinusButton_pressed"/>
-                    <signal name="released" handler="on_yawMoveMinusButton_released"/>
+                    <signal name="pressed" handler="on_yawMovePlusButton_pressed"/>
+                    <signal name="released" handler="on_yawMovePlusButton_released"/>
                   </widget>
                   <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="pitchMoveMinusButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="label" translatable="yes">Pitch -</property>
+                    <property name="response_id">0</property>
+                    <signal name="pressed" handler="on_pitchMoveMinusButton_pressed"/>
+                    <signal name="released" handler="on_pitchMoveMinusButton_released"/>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="setStartButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="label" translatable="yes">Set Start</property>
+                    <property name="response_id">0</property>
+                    <signal name="clicked" handler="on_setStartButton_clicked"/>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="setEndButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="label" translatable="yes">Set End</property>
+                    <property name="response_id">0</property>
+                    <signal name="clicked" handler="on_setEndButton_clicked"/>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">2</property>
+                    <property name="right_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkButton" id="hardwareSetOriginButton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="label" translatable="yes">Set origin</property>
+                    <property name="response_id">0</property>
+                    <signal name="clicked" handler="on_hardwareSetOriginButton_clicked"/>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
                     <property name="top_attach">1</property>
                     <property name="bottom_attach">2</property>
                   </packing>

@@ -75,11 +75,11 @@ class ShootDialog(object):
         self._retreiveWidgets()
         
         # Font test
-        self.yawPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchPosEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.yawCoefEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchCoefEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.sequenceEntry.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawIndexLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchIndexLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.sequenceLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
 
         self.suspendResumeButton.set_state(gtk.STATE_INSENSITIVE)
         self.stopButton.set_state(gtk.STATE_INSENSITIVE)
@@ -88,11 +88,11 @@ class ShootDialog(object):
         """ Get widgets from widget tree.
         """
         self.shootDialog = self.wTree.get_widget("shootDialog")
-        self.yawPosEntry = self.wTree.get_widget("yawPosEntry")
-        self.pitchPosEntry = self.wTree.get_widget("pitchPosEntry")
-        self.yawCoefEntry = self.wTree.get_widget("yawCoefEntry")
-        self.pitchCoefEntry = self.wTree.get_widget("pitchCoefEntry")
-        self.sequenceEntry = self.wTree.get_widget("sequenceEntry")
+        self.yawPosLabel = self.wTree.get_widget("yawPosLabel")
+        self.pitchPosLabel = self.wTree.get_widget("pitchPosLabel")
+        self.yawIndexLabel = self.wTree.get_widget("yawIndexLabel")
+        self.pitchIndexLabel = self.wTree.get_widget("pitchIndexLabel")
+        self.sequenceLabel = self.wTree.get_widget("sequenceLabel")
         self.progressbar = self.wTree.get_widget("progressbar")
         self.manualShootCheckbutton = self.wTree.get_widget("manualShootCheckbutton")
         self.dataFileEnableCheckbutton = self.wTree.get_widget("dataFileEnableCheckbutton")
@@ -105,11 +105,11 @@ class ShootDialog(object):
     def fillWidgets(self, values):
         """ Fill widgets with values.
         """
-        self.yawPosEntry.set_text("%.1f" % values['yawPos'])
-        self.pitchPosEntry.set_text("%.1f" % values['pitchPos'])
-        self.yawCoefEntry.set_text(values['yawIndex'])
-        self.pitchCoefEntry.set_text(values['pitchIndex'])
-        self.sequenceEntry.set_text(values['sequence'])
+        self.yawPosLabel.set_text("%.1f" % values['yawPos'])
+        self.pitchPosLabel.set_text("%.1f" % values['pitchPos'])
+        self.yawIndexLabel.set_text(values['yawIndex'])
+        self.pitchIndexLabel.set_text(values['pitchIndex'])
+        self.sequenceLabel.set_text(values['sequence'])
         self.progressbar.set_fraction(values['progress'])
         try:
             self.dataFileEnableCheckbutton.set_active(values['dataFileEnable'])
