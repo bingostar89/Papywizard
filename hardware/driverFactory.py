@@ -52,6 +52,7 @@ Implements
 __revision__ = "$Id$"
 
 from papywizard.common.exception import HardwareError
+from papywizard.common.loggingServices import Logger
 
 
 class DriverFactory(object):
@@ -78,5 +79,6 @@ class DriverFactory(object):
             else:
                 raise HardwareError("Unknown '%s' driver type" % type_)
         except:
+            Logger().exception("DriverFactory.create()")
             raise HardwareError("Can't create '%s' driver" % type_)
             
