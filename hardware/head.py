@@ -105,12 +105,12 @@ class Head(object):
     def shutdown(self):
         """ Shut down the hardware.
         """
-        if self.driver is not None:
-            self.driver.shutdown()
         if self.yawAxis is not None:
             self.yawAxis.stop()
         if self.pitchAxis is not None:
             self.pitchAxis.stop()
+        if self.driver is not None:
+            self.driver.shutdown()
 
     def setOrigin(self):
         """ Set current axis positions as origin.
