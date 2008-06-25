@@ -115,6 +115,9 @@ class MainWindow(object):
 
         except ImportError:
             pass
+        
+        # Tests purpose
+        #self.mainWindow.set_geometry_hints(min_width=800, min_height=480)
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
