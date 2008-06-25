@@ -61,13 +61,11 @@ from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
-from papywizard.view.bluetoothConnectDialog import BluetoothConnectDialog
 from papywizard.view.configDialog import ConfigDialog
 from papywizard.view.manualMoveDialog import ManualMoveDialog
 from papywizard.view.shootDialog import ShootDialog
 from papywizard.view.helpAboutDialog import HelpAboutDialog
 from papywizard.controller.abstractController import AbstractController
-from papywizard.controller.bluetoothConnectController import BluetoothConnectController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.manualMoveController import ManualMoveController
 from papywizard.controller.shootController import ShootController
@@ -423,7 +421,8 @@ class MainController(AbstractController):
         self.__connectStatus = None
         #self.__connectDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type= gtk.MESSAGE_INFO, buttons=gtk.BUTTONS_NONE,
                                                  #message_format="Connecting to hardware...")
-        self.__connectDialog = gtk.Dialog(title="...", parent=self.__view.mainWindow, flags=gtk.DIALOG_MODAL)
+        self.__connectDialog = gtk.Dialog(title="Connecting...", parent=self.__view.mainWindow, flags=gtk.DIALOG_MODAL)
+        self.__connectDialog.set_geometry_hints(min_width=150)
         progressbar = gtk.ProgressBar()
         self.__connectDialog.vbox.add(progressbar)
         progressbar.show()
@@ -452,7 +451,7 @@ class MainController(AbstractController):
         else:
             Logger().error("Connection to hardware failed (%s)" % self.__connectErrorMessage)
             self.__messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type= gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                               message_format="Connection to hardware failed")
+                                                     message_format="Connection to hardware failed")
             self.__messageDialog.format_secondary_text(self.__connectErrorMessage)
             self.__messageDialog.run()
             self.__messageDialog.destroy()
