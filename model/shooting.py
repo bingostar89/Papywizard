@@ -359,6 +359,8 @@ class Shooting(object):
                 self.__sequence = "Moving"
                 self.hardware.gotoPosition(yaw, pitch)
 
+                checkSuspendStop()
+
                 Logger().info("Stabilization")
                 self.__sequence = "Stabilizing"
                 time.sleep(self.stabilizationDelay)
