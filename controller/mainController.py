@@ -95,6 +95,8 @@ class MainController(AbstractController):
 
         self.__yawPos = 0
         self.__pitchPos = 0
+        
+        self.__eventId = None
 
         # Connect signal/slots
         dic = {"on_quitMenuitem_activate": gtk.main_quit,
@@ -462,10 +464,14 @@ class MainController(AbstractController):
         @type delay: int
         """
         self.__view.statusbar.pop(self.__view.statusbarContextId)
+        if self.__eventId is not None:
+            gobject.source_remove(self.__eventId)
         if message is not None:
             self.__view.statusbar.push(self.__view.statusbarContextId, message)
             if delay:
-                gobject.timeout_add(delay * 1000, self.setStatusbarMessage)
+                self.__eventId = gobject.timeout_add(delay * 1000, self.setStatusbarMessage)
+            else:
+                self.__eventId = None
 
     def refreshView(self):
         values = {'yawPos': self.__yawPos,
