@@ -96,7 +96,10 @@ class MainController(AbstractController):
         self.__yawPos = 0
         self.__pitchPos = 0
         
-        self.__eventId = None
+        self.__statusbarTimeoutEventId = None
+        self.__messageDialog = None
+        self.__connect = None
+        self.__connectErrorMessage = None
 
         # Connect signal/slots
         dic = {"on_quitMenuitem_activate": gtk.main_quit,
@@ -396,37 +399,63 @@ class MainController(AbstractController):
 
     def __switchToRealHardwareCallback(self, flag, message=""):
         Logger().debug("MainController.__hardwareInit(): flag=%s" % flag)
-        self.__connection = flag
-        self.__connectionErrorMessage = message
+        self.__connectStatus = flag
+        self.__connectErrorMessage = message
+        self.__connectDialog.response(0)
     
     # Real work
     def __connectToHardware(self):
         """ Connect to real hardware.
         """
+        def refreshProgressbar(rogressbar):
+            """ Refresh the progressbar in activity mode.
+            
+            Should be called by a timeout.
+            """
+            progressbar.pulse()
+            return True
+        
         Logger().info("Connecting to real hardware...")
         self.setStatusbarMessage("Connecting to real hardware...")
         self.__view.hardwareConnectMenuitem.set_sensitive(False)
         
+        # Open connection banner (todo: use real banner on Nokia). Make a special object
+        self.__connectStatus = None
+        #self.__connectDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type= gtk.MESSAGE_INFO, buttons=gtk.BUTTONS_NONE,
+                                                 #message_format="Connecting to hardware...")
+        self.__connectDialog = gtk.Dialog(title="...", parent=self.__view.mainWindow, flags=gtk.DIALOG_MODAL)
+        progressbar = gtk.ProgressBar()
+        self.__connectDialog.vbox.add(progressbar)
+        progressbar.show()
+        eventId = gobject.timeout_add (100, refreshProgressbar, progressbar)
+        self.__connectDialog.show()
+        
         # Launch connexion thread
-        self.__connection = None
         thread.start_new_thread(self.__model.switchToRealHardware, ())
-        while self.__connection is None:
+        
+        # Wait for end of connection
+        while self.__connectStatus is None:
             while gtk.events_pending():
                 gtk.main_iteration()
-            time.sleep(0.01)
+            time.sleep(0.05)
+            
+        # Remove progressbar timeout refresh, and close connection banner
+        gobject.source_remove(eventId)
+        self.__connectDialog.destroy()
         
         # Check connection status
-        if self.__connection:
+        if self.__connectStatus:
             Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
             self.__view.connectImage.set_from_stock(gtk.STOCK_YES, 4)
             Logger().info("Now connected to real hardware")
             self.setStatusbarMessage("Now connected to real hardware", 5)
         else:
-            Logger().error("Connection to hardware failed (%s)" % self.__connectionErrorMessage)
-            self.__message = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type= gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                               message_format="Connection to hardware failed\n\n(%s)" % self.__connectionErrorMessage)
-            self.__message.run()
-            self.__message.destroy()
+            Logger().error("Connection to hardware failed (%s)" % self.__connectErrorMessage)
+            self.__messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type= gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
+                                               message_format="Connection to hardware failed")
+            self.__messageDialog.format_secondary_text(self.__connectErrorMessage)
+            self.__messageDialog.run()
+            self.__messageDialog.destroy()
             self.__view.hardwareConnectMenuitem.set_active(False)
             
         self.__view.hardwareConnectMenuitem.set_sensitive(True)
@@ -464,14 +493,14 @@ class MainController(AbstractController):
         @type delay: int
         """
         self.__view.statusbar.pop(self.__view.statusbarContextId)
-        if self.__eventId is not None:
-            gobject.source_remove(self.__eventId)
+        if self.__statusbarTimeoutEventId is not None:
+            gobject.source_remove(self.__statusbarTimeoutEventId)
         if message is not None:
             self.__view.statusbar.push(self.__view.statusbarContextId, message)
             if delay:
-                self.__eventId = gobject.timeout_add(delay * 1000, self.setStatusbarMessage)
+                self.__statusbarTimeoutEventId = gobject.timeout_add(delay * 1000, self.setStatusbarMessage)
             else:
-                self.__eventId = None
+                self.__statusbarTimeoutEventId = None
 
     def refreshView(self):
         values = {'yawPos': self.__yawPos,
