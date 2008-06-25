@@ -52,34 +52,46 @@ usefull information for stitchers. AutoPano Pro takes advantage of
 such datas, for example to correctly set unlinked pictures at their
 correct place (sky pictures without any details are often unlinked).
 
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" ?>
 <papywizard>
     <header>
-        <focal>17.0</focal>
-        <fisheye>True</fisheye>
-        <sensorCoef>1.6</sensorCoef>
-        <sensorRatio>3:2</sensorRatio>
-        <cameraOrientation>portrait</cameraOrientation>
-        <nbPicts>2</nbPicts>                              <!-- bracketing -->
-        <YawRealOverlap>0.54</yawRealOverlap>             <!-- real overlaps -->
-        <pitchRealOverlap>0.32</pitchRealOverlap>
-        <template type="mosaic" rows="3" columns="4" />
+        <shooting>
+            <stabilizationDelay>0.5</stabilizationDelay>
+            <overlap minimum="0.25" pitch="1.00" yaw="0.58"/>
+            <cameraOrientation>portrait</cameraOrientation>
+        </shooting>
+        <camera>
+            <timeValue>0.5</timeValue>
+            <nbPicts>2</nbPicts>
+            <sensor coef="1.6" ratio="3:2"/>
+        </camera>
+        <lens>
+            <focal>17.0</focal>
+            <fisheye>False</fisheye>
+        </lens>
+        <template type="mosaic">
+            <nbPicts pitch="1" yaw="2"/>
+        </template>
     </header>
     <shoot>
-        ...
-        <image id="7" pict="1">
-            <time>Mon Dec 31 00:52:18 CET 2007</time>
-            <yaw>-32.5</yaw>
-            <pitch>12.3</pitch>
+        <image id="1" pict="1">
+            <time>Wed Jun 25 10:37:16 2008</time>
+            <coords pitch="0.0" yaw="0.0"/>
         </image>
-        <image id="8" pict="2">
-            <time>Mon Dec 31 00:52:22 CET 2007</time>
-            <yaw>-37.5</yaw>
-            <pitch>12.3</pitch>
+        <image id="2" pict="2">
+            <time>Wed Jun 25 10:37:17 2008</time>
+            <coords pitch="0.0" yaw="0.0"/>
         </image>
-        ...
+        <image id="3" pict="1">
+            <time>Wed Jun 25 10:37:20 2008</time>
+            <coords pitch="0.0" yaw="20.1"/>
+        </image>
+        <image id="4" pict="2">
+            <time>Wed Jun 25 10:37:21 2008</time>
+            <coords pitch="0.0" yaw="20.1"/>
+        </image>
     </shoot>
-<papywizard>
+</papywizard>
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
@@ -154,18 +166,11 @@ class Data(object):
         textNode.appendChild(text)
         return textNode
 
-    def __serialize(self):
-        """ Serialize xml tree to file.
-        """
-        if ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE'):
-            Logger().trace("Data.serialize()")
-            filename = os.path.join(config.HOME_DIR, config.DATA_FILE)
-            xmlFile = file(filename % self.__date, 'w')
-            self.__doc.writexml(xmlFile, addindent='    ', newl='\n')
-            xmlFile.close()
+    def __addNode(self, parent,  tag, value=None, **attr):
+        """ Add a sub node.
 
-    def addHeaderNode(self, tag, value=None, **attr):
-        """ Add a header node.
+        @param parent: parent node
+        @type parent: {DOM Element}
 
         @param tag: tag of the node
         @type tag: str
@@ -176,18 +181,62 @@ class Data(object):
         @param attr: optionnal attributes
         @type attr: dict
         """
-        Logger().debug("Data.addHeaderNode(): tag=%s, value=%s, attr=%s" % (tag, value, attr))
+        Logger().debug("Data.__addNode(): parent=%s, tag=%s, value=%s, attr=%s" % (parent, tag, value, attr))
         if value is not None:
-            headerNode = self.__createTextNode(self.__headerNode, tag, value)
+            node = self.__createTextNode(parent, tag, value)
         else:
-            headerNode = self.__createNode(self.__headerNode, tag)
+            node = self.__createNode(parent, tag)
         for key, val in attr.iteritems():
-            headerNode.setAttribute(key, val)
+            node.setAttribute(key, val)
+        return node
+
+    def __serialize(self):
+        """ Serialize xml tree to file.
+        """
+        if ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE'):
+            Logger().trace("Data.serialize()")
+            filename = os.path.join(config.HOME_DIR, config.DATA_FILE)
+            xmlFile = file(filename % self.__date, 'w')
+            self.__doc.writexml(xmlFile, addindent="    ", newl='\n', encoding="utf-8")
+            xmlFile.close()
+
+    def createHeader(self, values):
+        """ Create the header.
+        
+        @param values: values to put in the header
+        @type values: dict
+        """
+        Logger().debug("Data.createHeader(): values=%s" % values)
+        
+        # Shooting
+        node = self.__addNode(self.__headerNode, 'shooting')
+        self.__addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
+        self.__addNode(node, 'overlap', minimum=values['overlap'],
+                                        yaw=values['yawRealOverlap'],
+                                        pitch=values['pitchRealOverlap'])
+        self.__addNode(node, 'cameraOrientation', values['cameraOrientation'])
+        
+        # Camera
+        node = self.__addNode(self.__headerNode, 'camera')
+        self.__addNode(node, 'timeValue', values['timeValue'])
+        self.__addNode(node, 'nbPicts', values['nbPicts'])
+        self.__addNode(node, 'sensor', coef=values['sensorCoef'],
+                                       ratio=values['sensorRatio'])
+        
+        # Lens
+        node = self.__addNode(self.__headerNode, 'lens')
+        self.__addNode(node, 'focal', values['focal'])
+        self.__addNode(node, 'fisheye', values['fisheye'])
+        
+        # Template
+        node = self.__addNode(self.__headerNode, 'template', type=values['template'])
+        self.__addNode(node, 'nbPicts', yaw=values['yawNbPicts'],
+                                              pitch=values['pitchNbPicts'])
 
         # Serialize xml file
         self.__serialize()
 
-    def addImageNode(self, pict, yaw, pitch):
+    def addImage(self, pict, yaw, pitch):
         """ Add a new image node to shoot node.
 
         @param pict: num of the pict (bracketing)
@@ -200,14 +249,10 @@ class Data(object):
         @type pitch: float
         """
         Logger().debug("Data.addImageNode(): pict=%d, yaw=%.1f, pitch=%.1f" % (pict, yaw, pitch))
-        imageNode = self.__createNode(self.__shootNode, 'image')
-        imageNode.setAttribute('id', "%d" % self.__imageId)
+        node = self.__addNode(self.__shootNode, 'image', id="%d" % self.__imageId, pict="%d" % pict)
         self.__imageId += 1
-        imageNode.setAttribute('pict', "%d" % pict)
-        self.__shootNode.appendChild(imageNode)
-        self.__createTextNode(imageNode, 'time', time.ctime())
-        self.__createTextNode(imageNode, 'yaw', "%.1f" % yaw)
-        self.__createTextNode(imageNode, 'pitch', "%.1f" % pitch)
+        self.__addNode(node, 'time', time.ctime())
+        self.__addNode(node, 'coords', yaw="%.1f" % yaw, pitch="%.1f" % pitch)
 
         # Serialize xml file
         self.__serialize()
