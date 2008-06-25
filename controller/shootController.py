@@ -97,6 +97,7 @@ class ShootController(AbstractController):
         self.__view.wTree.signal_autoconnect(dic)
         self.__view.shootDialog.connect("key-press-event", self.__onKeyPressed)
         self.__view.shootDialog.connect("key-release-event", self.__onKeyReleased)
+        self.__view.shootDialog.connect("delete-event", self.__onDelete)
 
         self.__keyPressedDict = {'Left': False,
                                  'Right': False,
@@ -130,6 +131,11 @@ class ShootController(AbstractController):
         Spy().newPosSignal.connect(self.__refreshPos)
 
     # Callbacks
+    def __onDelete(self, widget, event):
+        Logger().trace("ShootDialog.__onDelete()")
+        self.__stopShooting()
+        return True
+
     def __onKeyPressed(self, widget, event, *args):
 
         # 'Right' key
@@ -223,53 +229,53 @@ class ShootController(AbstractController):
         return False
 
         # 'Right' key
-        if event.keyval == self.__key['Right']:
-            if self.__keyPressedDict['Right']:
-                Logger().debug("MainController.__onKeyReleased(): 'Right' key released; stop 'yaw' axis")
-                self.__model.hardware.stopAxis('yaw')
-                self.__keyPressedDict['Right'] = False
-            return True
+        #if event.keyval == self.__key['Right']:
+            #if self.__keyPressedDict['Right']:
+                #Logger().debug("MainController.__onKeyReleased(): 'Right' key released; stop 'yaw' axis")
+                #self.__model.hardware.stopAxis('yaw')
+                #self.__keyPressedDict['Right'] = False
+            #return True
 
         # 'Left' key
-        if event.keyval == self.__key['Left']:
-            if self.__keyPressedDict['Left']:
-                Logger().debug("MainController.__onKeyReleased(): 'Left' key released; stop 'yaw' axis")
-                self.__model.hardware.stopAxis('yaw')
-                self.__keyPressedDict['Left'] = False
-            return True
+        #if event.keyval == self.__key['Left']:
+            #if self.__keyPressedDict['Left']:
+                #Logger().debug("MainController.__onKeyReleased(): 'Left' key released; stop 'yaw' axis")
+                #self.__model.hardware.stopAxis('yaw')
+                #self.__keyPressedDict['Left'] = False
+            #return True
 
         # 'Up' key
-        if event.keyval == self.__key['Up']:
-            if self.__keyPressedDict['Up']:
-                Logger().debug("MainController.__onKeyReleased(): 'Up' key released; stop 'pitch' axis")
-                self.__model.hardware.stopAxis('pitch')
-                self.__keyPressedDict['Up'] = False
-            return True
+        #if event.keyval == self.__key['Up']:
+            #if self.__keyPressedDict['Up']:
+                #Logger().debug("MainController.__onKeyReleased(): 'Up' key released; stop 'pitch' axis")
+                #self.__model.hardware.stopAxis('pitch')
+                #self.__keyPressedDict['Up'] = False
+            #return True
 
         # 'Down' key
-        if event.keyval == self.__key['Down']:
-            if self.__keyPressedDict['Down']:
-                Logger().debug("MainController.__onKeyReleased(): 'Down' key released; stop 'pitch' axis")
-                self.__model.hardware.stopAxis('pitch')
-                self.__keyPressedDict['Down'] = False
-            return True
+        #if event.keyval == self.__key['Down']:
+            #if self.__keyPressedDict['Down']:
+                #Logger().debug("MainController.__onKeyReleased(): 'Down' key released; stop 'pitch' axis")
+                #self.__model.hardware.stopAxis('pitch')
+                #self.__keyPressedDict['Down'] = False
+            #return True
 
         # 'Home' key
-        if event.keyval == self.__key['Home']:
-            if self.__keyPressedDict['Home']:
-                Logger().debug("MainController.__onKeyReleased(): 'Home' key released")
-                self.__keyPressedDict['Home'] = False
-            return True
+        #if event.keyval == self.__key['Home']:
+            #if self.__keyPressedDict['Home']:
+                #Logger().debug("MainController.__onKeyReleased(): 'Home' key released")
+                #self.__keyPressedDict['Home'] = False
+            #return True
 
         # 'End' key
-        if event.keyval == self.__key['End']:
-            if self.__keyPressedDict['End']:
-                Logger().debug("MainController.__onKeyReleased(): 'End' key released")
-                self.__keyPressedDict['End'] = False
-            return True
+        #if event.keyval == self.__key['End']:
+            #if self.__keyPressedDict['End']:
+                #Logger().debug("MainController.__onKeyReleased(): 'End' key released")
+                #self.__keyPressedDict['End'] = False
+            #return True
 
-        else:
-            Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
+        #else:
+            #Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
 
     def __onManualShootCheckbuttonToggled(self, widget):
         """ Manual shoot checkbutton togled.
