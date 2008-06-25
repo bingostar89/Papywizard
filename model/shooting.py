@@ -333,18 +333,22 @@ class Shooting(object):
 
         try:
             data = Data()
-            data.addHeaderNode('focal', "%.1f" % self.camera.lens.focal)
-            data.addHeaderNode('fisheye', "%s" % self.camera.lens.fisheye)
-            data.addHeaderNode('sensorCoef', "%.1f" % self.camera.sensorCoef)
-            data.addHeaderNode('sensorRatio', "%s" % self.camera.sensorRatio)
-            data.addHeaderNode('cameraOrientation', "%s" % self.cameraOrientation)
-            data.addHeaderNode('nbPicts', "%d" % self.camera.nbPicts)
-            data.addHeaderNode('timeValue', "%.1f" % self.camera.timeValue)
-            data.addHeaderNode('stabilizationDelay', "%.1f" % self.stabilizationDelay)
-            data.addHeaderNode('overlap', "%.2f" % self.overlap)
-            data.addHeaderNode('yawRealOverlap', "%.2f" % self.yawRealOverlap)
-            data.addHeaderNode('pitchRealOverlap', "%.2f" % self.pitchRealOverlap)
-            data.addHeaderNode('template', type="mosaic", yaw="%d" % self.yawNbPicts, pitch="%d" % self.pitchNbPicts)
+            values = {'stabilizationDelay': "%.1f" % self.stabilizationDelay,
+                      'overlap': "%.2f" % self.overlap,
+                      'yawRealOverlap': "%.2f" % self.yawRealOverlap,
+                      'pitchRealOverlap': "%.2f" % self.pitchRealOverlap,
+                      'cameraOrientation': "%s" % self.cameraOrientation,
+                      'timeValue': "%.1f" % self.camera.timeValue,
+                      'nbPicts': "%d" % self.camera.nbPicts,
+                      'sensorCoef': "%.1f" % self.camera.sensorCoef,
+                      'sensorRatio': "%s" % self.camera.sensorRatio,
+                      'focal': "%.1f" % self.camera.lens.focal,
+                      'fisheye': "%s" % self.camera.lens.fisheye,
+                      'template': "mosaic",
+                      'yawNbPicts': "%d" % self.yawNbPicts,
+                      'pitchNbPicts': "%d" % self.pitchNbPicts
+                  }
+            data.createHeader(values)
 
             # Loop over all positions
             totalNbPicts = self.yawNbPicts * self.pitchNbPicts
@@ -376,7 +380,7 @@ class Shooting(object):
                     Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts))
                     self.__sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
                     self.hardware.shoot(self.camera.timeValue)
-                    data.addImageNode(pict + 1, yaw, pitch)
+                    data.addImage(pict + 1, yaw, pitch)
 
                     checkSuspendStop()
 
