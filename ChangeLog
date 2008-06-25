@@ -5,6 +5,7 @@ ChangeLog
 x bug fix
 
 xxxx-xx-xx Version SVN
+    x alternate drive method for small moves (faster than default one)
 
 xxxx-xx-xx Version 0.9 (coming soon)
     x bug correction when start pos > end pos
@@ -18,7 +19,8 @@ xxxx-xx-xx Version 0.9 (coming soon)
     x better hardware connection error handling
     - removed default preferences
     + wiki documentation
-    x alternate drive method for small moves (faster than default one)
+    - new datafile format
+    x can't close shoot dialog anymore while processing
 
 2008-06-06 Version 0.9beta2
     - switched from Tkinter to Gtk+
