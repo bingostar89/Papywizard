@@ -150,10 +150,10 @@ class Axis(object):
                      returns immediatly otherwise.
         @type wait: boot
         """
+        currentPos = self.read()
 
         # Compute absolute position from increment if needed
         if inc:
-            currentPos = self.read()
             pos = currentPos + inc
         else:
             pos += self.__offset
@@ -162,7 +162,7 @@ class Axis(object):
         if pos - currentPos > 6.:
             self._drive1(pos)
         else:
-            self._drive2(pos)
+            self._drive1(pos)
 
         # Wait end of movement
         # Does not work for external closed-loop drive. Need to execute drive in a thread.
@@ -175,6 +175,7 @@ class Axis(object):
         @param pos: position to reach, in °
         @type pos: float
         """
+        Logger().trace("Axis._drive1()")
         strValue = encodeAxisValue(deg2cod(pos))
         self._driver.acquireBus()
         try:
@@ -196,6 +197,7 @@ class Axis(object):
         @param pos: position to reach, in °
         @type pos: float
         """
+        Logger().trace("Axis._drive2()")
         self._driver.acquireBus()
         try:
             self._sendCmd("L")
@@ -216,12 +218,19 @@ class Axis(object):
             self._driver.releaseBus()
 
         # Closed-loop drive
+        stopRequest = False
         while abs(pos - self.read()) > .5: # optimal delta depends on speed/inertia
-            time.sleep(0.01)
-        self.stopJog()
+            
+            # Test if a stop request has been sent
+            status = self.getStatus()
+            if status[1] == '0':
+                stopRequest = True
+                break
+            time.sleep(0.1)
+        self.stop()
 
         # Final drive (auto) if needed
-        if abs(pos - self.read()) > config.AXIS_ACCURACY:
+        if abs(pos - self.read()) > config.AXIS_ACCURACY and not stopRequest:
             self._drive1(pos)
 
     def stop(self):
