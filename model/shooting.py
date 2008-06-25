@@ -232,7 +232,7 @@ class Shooting(object):
             self.switchToRealHardwareSignal.emit(True)
         except HardwareError, message:
             Logger().exception("Shooting.switchToRealHardware()") 
-            self.switchToRealHardwareSignal.emit(False, message)
+            self.switchToRealHardwareSignal.emit(False, str(message))
 
     def switchToSimulatedHardware(self):
         """ Use simulated hardware.
