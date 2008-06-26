@@ -132,7 +132,7 @@ class ShootController(AbstractController):
 
     # Callbacks
     def __onDelete(self, widget, event):
-        Logger().trace("ShootDialog.__onDelete()")
+        Logger().trace("ShootController.__onDelete()")
         self.__stopShooting()
         return True
 
