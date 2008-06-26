@@ -11,16 +11,17 @@ xxxx-xx-xx Version 0.9 (coming soon)
     x bug correction when start pos > end pos
     x connect menu is greyed out if hardware is not available
     + added 'Set 360' and 'Set 180' buttons
-    + edit all preferences
+    + all preferences are editable
     - splitted preferences in tabs
-    - turned read-only Entry widgets to Label widgets
+    - turned Entry widgets to Label widgets
     + added 'set origin' button
     + statusbar messages
+    + added hardware connection graphical feedback
     x better hardware connection error handling
     - removed default preferences
     + wiki documentation
     - new datafile format
-    x can't close shoot dialog anymore while processing
+    x closing shoot dialog stops shooting
 
 2008-06-06 Version 0.9beta2
     - switched from Tkinter to Gtk+
