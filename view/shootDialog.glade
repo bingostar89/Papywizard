@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Jun 26 11:11:38 2008 -->
+<!--Generated with glade3 3.4.5 on Thu Jun 26 12:24:45 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="shootDialog">
     <property name="visible">True</property>
@@ -185,6 +185,7 @@
                 <child>
                   <widget class="GtkCheckButton" id="manualShootCheckbutton">
                     <property name="visible">True</property>
+                    <property name="can_focus">True</property>
                     <property name="label" translatable="yes">Manual shooting</property>
                     <property name="response_id">0</property>
                     <property name="draw_indicator">True</property>
@@ -194,6 +195,7 @@
                 <child>
                   <widget class="GtkCheckButton" id="dataFileEnableCheckbutton">
                     <property name="visible">True</property>
+                    <property name="can_focus">True</property>
                     <property name="label" translatable="yes">Data file enable</property>
                     <property name="response_id">0</property>
                     <property name="draw_indicator">True</property>
