@@ -74,35 +74,38 @@ class ConnectController(AbstractController):
         @type mode: {Shooting}
 
         @param view: associated view
-        @type view: {ConnectDialog}
+        @type view: {ConnectBanner}
         """
         self.__parent = parent
         self.__model = model
         self.__view = view
 
         # Connect signal/slots
-        #dic = {
-            #}
-        #self.__view.wTree.signal_autoconnect(dic)
-        self.__view.shootDialog.connect("delete-event", self.__onDelete)
+        self.__view.connectBanner.connect("delete-event", self.__onDelete)
 
         # Nokia plateform stuff
         try:
             import hildon
-            self.__key['Home'] = gtk.keysyms.F8
-            self.__key['End'] = gtk.keysyms.F7
         except ImportError:
             pass
 
         # Fill widgets
         self.refreshView()
+        
+        self.__eventId = gobject.timeout_add (100, self.__refreshProgressbar)
 
     # Callbacks
     def __onDelete(self, widget, event):
         Logger().trace("ConnectController.__onDelete()")
         return True
 
+    def __refreshProgressbar(self):
+        self.__view.progressbar.pulse()
+        return True
+
     def refreshView(self):
-        values = {
-              }
-        self.__view.fillWidgets(values)
+        pass
+        
+    def closeBanner(self):
+        gobject.source_remove(self.__eventId)
+        self.__view.connectBanner.destroy()
