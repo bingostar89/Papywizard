@@ -173,24 +173,23 @@ class ShootController(AbstractController):
             Logger().warning("MainController.__onKeyPressed(): unbind '%s' key" % event.keyval)
 
     def __onKeyReleased(self, widget, event, *args):
-        return False
 
         # 'Return' key
-        #if event.keyval == self.__key['Return']:
-            #if self.__keyPressedDict['Return']:
-                #Logger().debug("MainController.__onKeyReleased(): 'Return' key released")
-                #self.__keyPressedDict['Return'] = False
-            #return True
+        if event.keyval == self.__key['Return']:
+            if self.__keyPressedDict['Return']:
+                Logger().debug("MainController.__onKeyReleased(): 'Return' key released")
+                self.__keyPressedDict['Return'] = False
+            return True
 
         # 'Escape' key
-        #if event.keyval == self.__key['Escape']:
-            #if self.__keyPressedDict['Escape']:
-                #Logger().debug("MainController.__onKeyReleased(): 'Escape' key released")
-                #self.__keyPressedDict['Escape'] = False
-            #return True
+        if event.keyval == self.__key['Escape']:
+            if self.__keyPressedDict['Escape']:
+                Logger().debug("MainController.__onKeyReleased(): 'Escape' key released")
+                self.__keyPressedDict['Escape'] = False
+            return True
 
-        #else:
-            #Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
+        else:
+            Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
 
     def __onManualShootCheckbuttonToggled(self, widget):
         """ Manual shoot checkbutton togled.
