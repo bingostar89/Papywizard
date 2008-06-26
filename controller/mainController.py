@@ -65,10 +65,12 @@ from papywizard.view.configDialog import ConfigDialog
 from papywizard.view.manualMoveDialog import ManualMoveDialog
 from papywizard.view.shootDialog import ShootDialog
 from papywizard.view.helpAboutDialog import HelpAboutDialog
+from papywizard.view.connectBanner import ConnectBanner
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.manualMoveController import ManualMoveController
 from papywizard.controller.shootController import ShootController
+from papywizard.controller.connectController import ConnectController
 from papywizard.controller.spy import Spy
 
 
@@ -120,23 +122,21 @@ class MainController(AbstractController):
         self.__view.mainWindow.connect("window-state-event", self.__onWindowStateChanged)
 
         self.__keyPressedDict = {'FullScreen': False,
-                                 'Left': False,
                                  'Right': False,
+                                 'Left': False,
                                  'Up': False,
                                  'Down': False,
                                  'Home': False,
-                                 'End': False,
-                                 'Escape': False
+                                 'End': False
                              }
-        self.__key = {'Right': gtk.keysyms.Right,
+        self.__key = {'FullScreen': gtk.keysyms.F6,
+                      'Right': gtk.keysyms.Right,
                       'Left': gtk.keysyms.Left,
                       'Up': gtk.keysyms.Up,
                       'Down': gtk.keysyms.Down,
-                      'FullScreen': gtk.keysyms.F6,
                       'Home': gtk.keysyms.Home,
                       'End': gtk.keysyms.End,
                       'Return': gtk.keysyms.Return,
-                      'Escape': gtk.keysyms.Escape
                       }
 
         # Nokia plateform stuff
@@ -235,13 +235,6 @@ class MainController(AbstractController):
             self.__openShootdialog()
             return True
 
-        # 'Escape' key
-        elif event.keyval == self.__key['Escape']:
-            if not self.__keyPressedDict['Escape']:
-                Logger().debug("MainController.__onKeyPressed(): 'Escape' key pressed")
-                self.__keyPressedDict['Escape'] = True
-            return True
-
         else:
             Logger().warning("MainController.__onKeyPressed(): unbind '%s' key" % event.keyval)
 
@@ -299,13 +292,6 @@ class MainController(AbstractController):
             if self.__keyPressedDict['End']:
                 Logger().debug("MainController.__onKeyReleased(): 'End' key released")
                 self.__keyPressedDict['End'] = False
-            return True
-
-        # 'Escape' key
-        elif event.keyval == self.__key['Escape']:
-            if self.__keyPressedDict['Escape']:
-                Logger().debug("MainController.__onKeyPressed(): 'Escape' key released")
-                self.__keyPressedDict['Escape'] = False
             return True
 
         else:
@@ -399,7 +385,7 @@ class MainController(AbstractController):
         Logger().debug("MainController.__hardwareInit(): flag=%s" % flag)
         self.__connectStatus = flag
         self.__connectErrorMessage = message
-        self.__connectDialog.response(0)
+        self.__connectController.closeBanner()
     
     # Real work
     def __connectToHardware(self):
@@ -419,15 +405,10 @@ class MainController(AbstractController):
         
         # Open connection banner (todo: use real banner on Nokia). Make a special object
         self.__connectStatus = None
-        #self.__connectDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type= gtk.MESSAGE_INFO, buttons=gtk.BUTTONS_NONE,
-                                                 #message_format="Connecting to hardware...")
-        self.__connectDialog = gtk.Dialog(title="Connecting...", parent=self.__view.mainWindow, flags=gtk.DIALOG_MODAL)
-        self.__connectDialog.set_geometry_hints(min_width=150)
-        progressbar = gtk.ProgressBar()
-        self.__connectDialog.vbox.add(progressbar)
-        progressbar.show()
-        eventId = gobject.timeout_add (100, refreshProgressbar, progressbar)
-        self.__connectDialog.show()
+        view = ConnectBanner()
+        self.__connectController = ConnectController(self.__view, self.__model, view)
+        self.__connectBanner = view.connectBanner
+        self.__connectBanner.show()
         
         # Launch connexion thread
         thread.start_new_thread(self.__model.switchToRealHardware, ())
@@ -437,10 +418,6 @@ class MainController(AbstractController):
             while gtk.events_pending():
                 gtk.main_iteration()
             time.sleep(0.05)
-            
-        # Remove progressbar timeout refresh, and close connection banner
-        gobject.source_remove(eventId)
-        self.__connectDialog.destroy()
         
         # Check connection status
         if self.__connectStatus:
