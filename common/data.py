@@ -231,7 +231,7 @@ class Data(object):
         # Template
         node = self.__addNode(self.__headerNode, 'template', type=values['template'])
         self.__addNode(node, 'nbPicts', yaw=values['yawNbPicts'],
-                                              pitch=values['pitchNbPicts'])
+                                        pitch=values['pitchNbPicts'])
 
         # Serialize xml file
         self.__serialize()
