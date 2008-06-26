@@ -49,7 +49,7 @@ __revision__ = "$Id$"
 import os.path
 
 
-VERSION = "0.9beta2"
+VERSION = "0.9"
 PACKAGE_VERSION = 1
 
 HOME_DIR = os.path.expandvars("$HOME")
