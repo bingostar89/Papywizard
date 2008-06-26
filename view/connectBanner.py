@@ -42,7 +42,7 @@ View
 Implements
 ==========
 
-- ConnectDialog
+- ConnectBanner
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
@@ -62,14 +62,14 @@ path = os.path.dirname(__file__)
 from papywizard.common.loggingServices import Logger
 
 
-class ConnectDialog(object):
+class ConnectBanner(object):
     """ Connection dialog.
     """
     def __init__(self):
         """ Init the object.
         """
         # Set the Glade file
-        gladeFile = os.path.join(path, "connectDialog.glade")
+        gladeFile = os.path.join(path, "connectBanner.glade")
         self.wTree = gtk.glade.XML(gladeFile)
 
         # Retreive usefull widgets
@@ -78,7 +78,7 @@ class ConnectDialog(object):
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
-        self.connectDialog = self.wTree.get_widget("connectDialog")
+        self.connectBanner = self.wTree.get_widget("connectBanner")
         self.progressbar = self.wTree.get_widget("progressbar")
 
     def fillWidgets(self, values):
