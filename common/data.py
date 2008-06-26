@@ -76,19 +76,19 @@ correct place (sky pictures without any details are often unlinked).
     <shoot>
         <image id="1" pict="1">
             <time>Wed Jun 25 10:37:16 2008</time>
-            <coords pitch="0.0" yaw="0.0"/>
+            <position pitch="0.0" yaw="0.0"/>
         </image>
         <image id="2" pict="2">
             <time>Wed Jun 25 10:37:17 2008</time>
-            <coords pitch="0.0" yaw="0.0"/>
+            <position pitch="0.0" yaw="0.0"/>
         </image>
         <image id="3" pict="1">
             <time>Wed Jun 25 10:37:20 2008</time>
-            <coords pitch="0.0" yaw="20.1"/>
+            <position pitch="0.0" yaw="20.1"/>
         </image>
         <image id="4" pict="2">
             <time>Wed Jun 25 10:37:21 2008</time>
-            <coords pitch="0.0" yaw="20.1"/>
+            <position pitch="0.0" yaw="20.1"/>
         </image>
     </shoot>
 </papywizard>
@@ -252,7 +252,7 @@ class Data(object):
         node = self.__addNode(self.__shootNode, 'image', id="%d" % self.__imageId, pict="%d" % pict)
         self.__imageId += 1
         self.__addNode(node, 'time', time.ctime())
-        self.__addNode(node, 'coords', yaw="%.1f" % yaw, pitch="%.1f" % pitch)
+        self.__addNode(node, 'position', yaw="%.1f" % yaw, pitch="%.1f" % pitch)
 
         # Serialize xml file
         self.__serialize()
