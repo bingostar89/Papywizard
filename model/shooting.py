@@ -88,6 +88,7 @@ class Shooting(object):
         self.simulatedHardware = simulatedHardware
         self.hardware = self.simulatedHardware
         self.switchToRealHardwareSignal = Signal()
+        self.newPictSignal = Signal()
         self.camera = Camera()
 
         self.yawStart = 0.
@@ -137,25 +138,25 @@ class Shooting(object):
     def __getYawFov(self):
         """
         """
-        cameraFov = self.camera.getYawFov(self.cameraOrientation)
-        return abs(self.yawEnd - self.yawStart) + cameraFov
+        yawCameraFov = self.camera.getYawFov(self.cameraOrientation)
+        return abs(self.yawEnd - self.yawStart) + yawCameraFov
 
     yawFov = property(__getYawFov, "Total yaw FoV")
 
     def __getPitchFov(self):
         """
         """
-        cameraFov = self.camera.getPitchFov(self.cameraOrientation)
-        return abs(self.pitchEnd - self.pitchStart) + cameraFov
+        pitchCameraFov = self.camera.getPitchFov(self.cameraOrientation)
+        return abs(self.pitchEnd - self.pitchStart) + pitchCameraFov
 
     pitchFov = property(__getPitchFov, "Total pitch FoV")
 
     def __getYawNbPicts(self):
         """
         """
-        cameraFov = self.camera.getYawFov(self.cameraOrientation)
-        if round(self.yawFov - cameraFov, 1) >= 0.1:
-            nbPicts = int(((self.yawFov - self.overlap * cameraFov) / (cameraFov * (1 - self.overlap))) + 1)
+        yawCameraFov = self.camera.getYawFov(self.cameraOrientation)
+        if round(self.yawFov - yawCameraFov, 1) >= 0.1:
+            nbPicts = int(((self.yawFov - self.overlap * yawCameraFov) / (yawCameraFov * (1 - self.overlap))) + 1)
         else:
             nbPicts = 1
         return nbPicts
@@ -165,9 +166,9 @@ class Shooting(object):
     def __getPitchNbPicts(self):
         """
         """
-        cameraFov = self.camera.getPitchFov(self.cameraOrientation)
-        if round(self.pitchFov - cameraFov, 1) >= 0.1:
-           nbPicts = int(((self.pitchFov - self.overlap * cameraFov) / (cameraFov * (1 - self.overlap))) + 1)
+        pitchCameraFov = self.camera.getPitchFov(self.cameraOrientation)
+        if round(self.pitchFov - pitchCameraFov, 1) >= 0.1:
+           nbPicts = int(((self.pitchFov - self.overlap * pitchCameraFov) / (pitchCameraFov * (1 - self.overlap))) + 1)
         else:
             nbPicts = 1
         return nbPicts
@@ -177,9 +178,9 @@ class Shooting(object):
     def __getRealYawOverlap(self):
         """ Recompute real yaw overlap.
         """
-        cameraFov = self.camera.getYawFov(self.cameraOrientation)
+        yawCameraFov = self.camera.getYawFov(self.cameraOrientation)
         if self.yawNbPicts > 1:
-            overlap = (self.yawNbPicts * cameraFov - self.yawFov) / (cameraFov * (self.yawNbPicts - 1))
+            overlap = (self.yawNbPicts * yawCameraFov - self.yawFov) / (yawCameraFov * (self.yawNbPicts - 1))
         else:
             overlap = 1.
         return overlap
@@ -189,9 +190,9 @@ class Shooting(object):
     def __getRealPitchOverlap(self):
         """ Recompute real pitch overlap.
         """
-        cameraFov = self.camera.getPitchFov(self.cameraOrientation)
+        pitchCameraFov = self.camera.getPitchFov(self.cameraOrientation)
         if self.pitchNbPicts > 1:
-            overlap = (self.pitchNbPicts * cameraFov - self.pitchFov) / (cameraFov * (self.pitchNbPicts - 1))
+            overlap = (self.pitchNbPicts * pitchCameraFov - self.pitchFov) / (pitchCameraFov * (self.pitchNbPicts - 1))
         else:
             overlap = 1.
         return overlap
@@ -263,9 +264,9 @@ class Shooting(object):
         +-180°, overlap inclus
         """
         yaw, pitch = self.hardware.readPosition()
-        cameraFov = self.camera.getPitchFov(self.cameraOrientation)
-        self.yawStart = yaw - 180. + cameraFov * (1 - self.overlap) / 2.
-        self.yawEnd = yaw + 180. - cameraFov * (1 - self.overlap) / 2.
+        yawCameraFov = self.camera.getPitchFov(self.cameraOrientation)
+        self.yawStart = yaw - 180.  + yawCameraFov * (1 - self.overlap) / 2.
+        self.yawEnd = yaw + 180. - yawCameraFov * (1 - self.overlap) / 2.
         Logger().debug("Shooting.setYaw360(): startYaw=%.1f, endYaw=%.1f" % (self.yawStart, self.yawEnd))
 
     def setPitch180(self):
@@ -276,9 +277,9 @@ class Shooting(object):
         Tenir compte des butées softs !
         """
         yaw, pitch = self.hardware.readPosition()
-        cameraFov = self.camera.getPitchFov(self.cameraOrientation)
-        self.pitchStart = pitch - 90. + cameraFov * (1 - self.overlap) / 2.
-        self.pitchEnd = yaw + 90. - cameraFov * (1 - self.overlap) / 2.
+        pitchCameraFov = self.camera.getPitchFov(self.cameraOrientation)
+        self.pitchStart = pitch - 90. + pitchCameraFov * (1 - self.overlap) / 2.
+        self.pitchEnd = pitch + 90. - pitchCameraFov * (1 - self.overlap) / 2.
         Logger().debug("Shooting.setPitch180(): startPitch=%.1f, endPitch=%.1f" % (self.pitchStart, self.pitchEnd))
 
     def setManualShoot(self, flag):
@@ -386,6 +387,7 @@ class Shooting(object):
 
                 progressFraction = float((i + 1)) / float(totalNbPicts)
                 self.__progress = progressFraction
+                self.newPictSignal.emit(yaw, pitch) # Include progress?
 
             Logger().debug("Shooting.start(): finished")
 
