@@ -372,8 +372,9 @@ class MainController(AbstractController):
         self.refreshView()
 
     def __openShootdialog(self):
+        self.__model.initProgress()
         view = ShootDialog()
-        controller = ShootController(self, self.__serializer, self.__model, view)
+        controller = ShootController(self, self.__model, view)
         retCode = view.shootDialog.run()
         view.shootDialog.destroy()
 
