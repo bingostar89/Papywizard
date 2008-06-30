@@ -66,14 +66,11 @@ from papywizard.controller.spy import Spy
 class ShootController(AbstractController):
     """ Shoot controller object.
     """
-    def __init__(self, parent, serializer, model, view):
+    def __init__(self, parent, model, view):
         """ Init the object.
 
         @param parent: parent controller
         @type parent: {Controller}
-
-        @param serializer: object used to serialize Tkinter events
-        @type serializer: {Serializer]
 
         @param model: model to use
         @type mode: {Shooting}
@@ -82,7 +79,6 @@ class ShootController(AbstractController):
         @type view: {ConfigDialog}
         """
         self.__parent = parent
-        self.__serializer = serializer
         self.__model = model
         self.__view = view
         
@@ -130,7 +126,6 @@ class ShootController(AbstractController):
         self.refreshView()
 
         # Connect signals
-        #Spy().newPosSignal.connect(self.__refreshPos)
         self.__model.newPictSignal.connect(self.__addPicture)
 
     # Callbacks
@@ -282,12 +277,13 @@ class ShootController(AbstractController):
                 self.refreshView()
                 thread.join()
                 Logger().debug("ShootController.__startShooting().checkEnd(): model thread over")
-                return False # Stop execution by Gtk
+                return False # Stop execution by Gtk timeout
 
             self.refreshView() # Can conflict with Spy?
 
             return True
 
+        self.__view.shootingArea.clear()
         self.__view.dataFileEnableCheckbutton.set_sensitive(False)
         self.__view.startButton.set_sensitive(False)
         self.__view.suspendResumeButton.set_sensitive(True)
@@ -297,13 +293,8 @@ class ShootController(AbstractController):
         thread = threading.Thread(target=self.__model.start)
         thread.start()
 
-        # Wait for shooting really starts
-        # Use condition
-        time.sleep(0.1)
-
         # Check end of shooting
         gobject.timeout_add(200, checkEnd)
-        checkEnd()
 
     def __suspendShooting(self):
         self.__model.suspend()
@@ -321,23 +312,9 @@ class ShootController(AbstractController):
         while self.__model.isShooting():
             time.sleep(0.1)
 
-    def __refreshPos(self, yaw, pitch):
-        """ Refresh position according to new pos.
-
-        @param yaw: yaw axis value
-        @type yaw: float
-
-        @param pitch: pitch axix value
-        @type pitch: float
-        """
-        Logger().trace("ShootController.__refreshPos()")
-
-        # Hugly design!
-        values = self.__model.getState()
-        values.update({'yawPos': yaw, 'pitchPos': pitch})
-        self.__serializer.apply(self.__view.fillWidgets, values)
-
     def refreshView(self):
-        values = self.__model.getState()
-        values['dataFileEnable'] = ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE')
+        values = {'progress': self.__model.progress,
+                  'sequence': self.__model.sequence,
+                  'dataFileEnable': ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE')
+                  }
         self.__view.fillWidgets(values)
