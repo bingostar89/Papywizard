@@ -51,38 +51,40 @@ Implements
 
 __revision__ = "$Id: shooting.py 327 2008-06-25 14:29:36Z fma $"
 
-import time
-
+#import pygtk
+#pygtk.require("2.0")
 import gtk
 
-
-class Picture(object):
-    """ GTK Picture widget.
-    """
-    def __init__(self, yaw, pitch, yawCameraFov, pitchCameraFov):
-        """ Init Picture widget.
         
-        @param yaw: yaw position (°)
-        @type yaw: float
-        
-        @param pitch: pitch position (°)
-        @type pitch: float
-        
-        @param yawCameraFov: yaw camera fov (°)
-        @type yawCameraFov: float
-        
-        @param pitchCameraFov: pitch camera fov (°)
-        @type pitchCameraFov: float
-        """
-        self.yaw = yaw
-        self.pitch = pitch
-        
-
 class ShootingArea(gtk.DrawingArea):
     """ GTK ShootingArea widget
     """
-    def __init__(self, yawStart, yawEnd, pitchStart, pitchEnd, yawFov, pitchFov, yawCameraFov, pitchCameraFov, yawOverlap, pitchOverlap, yawNbPicts, pitchNbPicts):
+    def __init__(self):
         """ Init ShootingArea widget.
+        """
+        gtk.DrawingArea.__init__(self)
+
+        self._picts = []
+        self._border = 0
+        x, y, self._width, self._height = self.get_allocation()
+
+        self._yawStart = None
+        self._yawEnd = None
+        self._pitchStart = None
+        self._pitchEnd = None
+        self._yawFov = None
+        self._pitchFov = None
+        self._yawCameraFov = None
+        self._pitchCameraFov = None
+        self._yawOverlap = None
+        self._pitchOverlap = None
+        self._yawSens = None
+        self._pitchSens = None
+        self._yawScale = None
+        self._pitchScale = None
+        
+    def init(self, yawStart, yawEnd, pitchStart, pitchEnd, yawFov, pitchFov, yawCameraFov, pitchCameraFov, yawOverlap, pitchOverlap):
+        """ Init internal values.
         
         @param yawStart: yaw start position (°)
         @type yawStart: float
@@ -113,17 +115,8 @@ class ShootingArea(gtk.DrawingArea):
         
         @param pitchOverlap: pitch overlap (ratio)
         @type pitchOverlap: float
-        
-        @param yawNbPicts: yaw number of picts
-        @type yawNbPicts: int
-        
-        @param pitchNbPicts: pitch number of picts
-        @type pitchNbPicts: int
-        
-        @todo: give rawStart/End instead of yaw...
         """
-        gtk.DrawingArea.__init__(self)
-        
+        Logger().trace("ShootingArea.init()")
         self._yawStart = yawStart
         self._yawEnd = yawEnd
         self._pitchStart = pitchStart
@@ -134,22 +127,10 @@ class ShootingArea(gtk.DrawingArea):
         self._pitchCameraFov = pitchCameraFov
         self._yawOverlap = yawOverlap
         self._pitchOverlap = pitchOverlap
-        self._yawNbPicts = yawNbPicts
-        self._pitchNbPicts = pitchNbPicts
-        
-        self._picts = []
-        self._yawInc = yawCameraFov * (1 - yawOverlap)
-        self._yawInc *= cmp(yawEnd, yawStart)
-        self._pitchInc = pitchCameraFov * (1 - pitchOverlap)
-        self._pitchInc *= cmp(pitchEnd, pitchStart)
-        print "yawInc=%.1f, pitchInc=%.1f" % (self._yawInc, self._pitchInc)
-        
-        self._border = 20
-        self._yawScale = 2.
-        self._pitchScale = 2.
-        self._width = int(self._yawFov * self._yawScale)
-        self._height = int(self._pitchFov * self._pitchScale)
-        self.set_size_request(self._width + 2 * self._border, self._height + 2 * self._border)
+        self._yawSens = cmp(yawEnd, yawStart)
+        self._pitchSens = cmp(pitchEnd, pitchStart)
+        self._yawScale = self._width / self._yawFov
+        self._pitchScale = self._height / self._pitchFov
 
         self.connect("realize", self._realize_cb)
         self.connect("configure-event", self._configure_cb)
@@ -162,7 +143,6 @@ class ShootingArea(gtk.DrawingArea):
         This callback is called only once, at widget creation,
         right after the _configure_cb callback.
         """
-        #print "_realize_cb()"
         self._set_colors({'back': "#d0d0d0", 'fg1': "#000000", 'fg2': "#80ff80"})
 
     def _configure_cb(self, widget, event):
@@ -172,7 +152,7 @@ class ShootingArea(gtk.DrawingArea):
         We create (or re-create) the pixmap with correct size.
         Note that the 
         """
-        #print "_configure_cb()"
+        self._set_colors({'back': "#d0d0d0", 'fg1': "#000000", 'fg2': "#80ff80"})
         x, y, self._width, self._height = widget.get_allocation()
         self._yawScale = (self._width - 2 * self._border) / self._yawFov
         self._pitchScale = (self._height - 2 * self._border) / self._pitchFov
@@ -183,19 +163,27 @@ class ShootingArea(gtk.DrawingArea):
         
         We copy the pixmap to the drawing area.
         """
-        #print "_expose_cb()"
         self.window.draw_rectangle(self._back, True, self._border, self._border, self._width - 2 * self._border, self._height - 2 * self._border)
-        for yawIndex, pitchIndex in self._picts:
-            yaw = self._yawCameraFov / 2. + yawIndex * self._yawInc * self._yawScale
-            pitch = self._pitchCameraFov / 2. + pitchIndex * self._pitchInc * (self._height - 2 * self._border) / self._pitchFov
-            self.window.draw_rectangle(self._fg1, True, int((yaw - self._yawCameraFov / 2) + self._border),
-                                                        int((pitch - self._pitchCameraFov / 2) + self._border),
-                                                        int(self._yawCameraFov * self._yawScale),
-                                                        int(self._pitchCameraFov * self._pitchScale))
-            self.window.draw_rectangle(self._fg2, True, int((yaw - self._yawCameraFov / 2) + self._border + 1),
-                                                        int((pitch - self._pitchCameraFov / 2) + self._border + 1),
-                                                        int(self._yawCameraFov * self._yawScale - 2),
-                                                        int(self._pitchCameraFov * self._pitchScale - 2))
+        for yaw, pitch in self._picts:
+            if self._yawSens > 0:
+                yaw -= self._yawStart
+            else:
+                yaw -= self._yawEnd
+            if self._pitchSens > 0:
+                pitch -= self._pitchStart
+            else:
+                pitch -= self._pitchEnd
+            x = int(yaw * self._yawScale) + self._border
+            y = int(pitch * self._pitchScale) + self._border
+            w = int(self._yawCameraFov * self._yawScale)
+            h = int(self._pitchCameraFov * self._pitchScale)
+            #print "yaw=%.1f, pitch=%.1f, x=%.1f, y=%.1f, w=%.1f, h=%.1f" % (yaw, pitch, x, y, w, h)
+            self.window.draw_rectangle(self._fg1, True, x, y, w, h)
+            x += 1
+            y += 1
+            w -= 2
+            h -= 2
+            self.window.draw_rectangle(self._fg2, True, x, y, w, h)
         return False
 
     def refresh(self):
@@ -230,89 +218,3 @@ class ShootingArea(gtk.DrawingArea):
             exec "self._%s = gtk.gdk.GC(self.window)" % widget
             exec "self._%s.set_rgb_fg_color(gtk.gdk.color_parse('%s'))" % (widget, color)
 
-
-def main():
-    import time
-    
-    def on_button_clicked(widget):
-        print "on_button_go()"
-        global stop
-        goButton.set_sensitive(False)
-        stop = False
-        shootingArea.clear()
-        
-        for pitchIndex in xrange(shootingArea._pitchNbPicts):
-            for yawIndex in xrange(shootingArea._yawNbPicts):
-                shootingArea.add_pict(yawIndex, pitchIndex)
-                
-                t = time.time()
-                while time.time() - t < 0.2:
-                    if gtk.events_pending():
-                        gtk.main_iteration()
-                    else:
-                        time.sleep(0.01)
-                if stop:
-                    break
-            if stop:
-                break
-        goButton.set_sensitive(True)
-
-    def on_button_stop(widget):
-        print "on_button_stop()"
-        global stop
-        stop = True
-        
-    stop = None
-    
-    yawCameraFov = 30.
-    pitchCameraFov = 20.
-    overlap = 0.25
-
-    # 360°x180°
-    #yawStart = -180. + yawCameraFov * (1 - overlap) / 2.
-    #yawEnd = 180. - yawCameraFov * (1 - overlap) / 2.
-    #pitchStart = -90. + pitchCameraFov * (1 - overlap) / 2.
-    #pitchEnd = 90. - pitchCameraFov * (1 - overlap) / 2.
-
-    # Any start/end
-    yawStart = -100.
-    yawEnd = 75.
-    pitchStart = -55.
-    pitchEnd = 10.
-    
-    yawFov = abs(yawEnd - yawStart) + yawCameraFov
-    pitchFov = abs(pitchEnd - pitchStart) + pitchCameraFov
-    yawNbPicts = int(((yawFov - overlap * yawCameraFov) / (yawCameraFov * (1 - overlap))) + 1)
-    pitchNbPicts = int(((pitchFov - overlap * pitchCameraFov) / (pitchCameraFov * (1 - overlap))) + 1)
-    if yawNbPicts > 1:
-        yawOverlap = (yawNbPicts * yawCameraFov - yawFov) / (yawCameraFov * (yawNbPicts - 1))
-    else:
-        yawOverlap = 1.
-    if pitchNbPicts > 1:
-        pitchOverlap = (pitchNbPicts * pitchCameraFov - pitchFov) / (pitchCameraFov * (pitchNbPicts - 1))
-    else:
-        pitchOverlap = 1.
-
-    print "yawStart=%.1f, yawEnd=%.1f, yawFov=%.1f, yawCameraFov=%.1f, yawNbPicts=%d, yawOverlap=%.2f" % (yawStart, yawEnd, yawFov, yawCameraFov, yawNbPicts, yawOverlap)
-    print "pitchStart=%.1f, pitchEnd=%.1f, pitchFov=%.1f, pitchCameraFov=%.1f, pitchNbPicts=%d, pitchOverlap=%.2f" % (pitchStart, pitchEnd, pitchFov, pitchCameraFov, pitchNbPicts, pitchOverlap)
-
-    window = gtk.Window()
-    vbox = gtk.VBox()
-    window.add(vbox)
-    shootingArea = ShootingArea(yawStart, yawEnd, pitchStart, pitchEnd, yawFov, pitchFov, yawCameraFov, pitchCameraFov, yawOverlap, pitchOverlap, yawNbPicts, pitchNbPicts)
-    vbox.add(shootingArea)
-    hbox = gtk.HBox()
-    vbox.add(hbox)
-    goButton = gtk.Button("Go")
-    goButton.connect("clicked", on_button_clicked)
-    hbox.add(goButton)
-    stopButton = gtk.Button("Stop")
-    stopButton.connect("clicked", on_button_stop)
-    hbox.add(stopButton)
-    window.connect("destroy", gtk.main_quit)
-    window.show_all()
-    gtk.main()
-
-
-if __name__ == "__main__":
-    main()
