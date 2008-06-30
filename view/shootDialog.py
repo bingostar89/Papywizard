@@ -58,6 +58,8 @@ import os
 import gtk.glade
 import pango
 
+from papywizard.view.shootingArea import ShootingArea
+
 path = os.path.dirname(__file__)
 
 
@@ -74,25 +76,18 @@ class ShootDialog(object):
         # Retreive usefull widgets
         self._retreiveWidgets()
         
-        # Font test
-        self.yawPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.yawIndexLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchIndexLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.sequenceLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-
-        self.suspendResumeButton.set_state(gtk.STATE_INSENSITIVE)
-        self.stopButton.set_state(gtk.STATE_INSENSITIVE)
+        self.suspendResumeButton.set_sensitive(False)
+        self.stopButton.set_sensitive(False)
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
         self.shootDialog = self.wTree.get_widget("shootDialog")
-        self.yawPosLabel = self.wTree.get_widget("yawPosLabel")
-        self.pitchPosLabel = self.wTree.get_widget("pitchPosLabel")
-        self.yawIndexLabel = self.wTree.get_widget("yawIndexLabel")
-        self.pitchIndexLabel = self.wTree.get_widget("pitchIndexLabel")
-        self.sequenceLabel = self.wTree.get_widget("sequenceLabel")
+        vbox = self.wTree.get_widget("vbox")
+        self.shootingArea = ShootingArea()
+        self.shootingArea.set_size_request(300, 100)
+        vbox.pack_start(self.shootingArea)
+        vbox.reorder_child(self.shootingArea, 0)
         self.progressbar = self.wTree.get_widget("progressbar")
         self.manualShootCheckbutton = self.wTree.get_widget("manualShootCheckbutton")
         self.dataFileEnableCheckbutton = self.wTree.get_widget("dataFileEnableCheckbutton")
@@ -105,14 +100,9 @@ class ShootDialog(object):
     def fillWidgets(self, values):
         """ Fill widgets with values.
         """
-        self.yawPosLabel.set_text("%.1f" % values['yawPos'])
-        self.pitchPosLabel.set_text("%.1f" % values['pitchPos'])
-        self.yawIndexLabel.set_text(values['yawIndex'])
-        self.pitchIndexLabel.set_text(values['pitchIndex'])
-        self.sequenceLabel.set_text(values['sequence'])
         self.progressbar.set_fraction(values['progress'])
+        self.progressbar.set_text(values['sequence'])
         try:
             self.dataFileEnableCheckbutton.set_active(values['dataFileEnable'])
         except KeyError:
             pass
-
