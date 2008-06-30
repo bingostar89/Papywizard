@@ -116,7 +116,6 @@ class ShootingArea(gtk.DrawingArea):
         @param pitchOverlap: pitch overlap (ratio)
         @type pitchOverlap: float
         """
-        Logger().trace("ShootingArea.init()")
         self._yawStart = yawStart
         self._yawEnd = yawEnd
         self._pitchStart = pitchStart
