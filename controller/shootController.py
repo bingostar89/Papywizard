@@ -85,6 +85,17 @@ class ShootController(AbstractController):
         self.__serializer = serializer
         self.__model = model
         self.__view = view
+        
+        # Init shooting area
+        self.__view.shootingArea.init(self.__model.yawStart, self.__model.yawEnd,
+                                      self.__model.pitchStart, self.__model.pitchEnd,
+                                      self.__model.yawFov, self.__model.pitchFov,
+                                      self.__model.camera.getYawFov(self.__model.cameraOrientation),
+                                      self.__model.camera.getPitchFov(self.__model.cameraOrientation),
+                                      self.__model.yawRealOverlap, self.__model.pitchRealOverlap)
+        
+        # Determine size
+        self.__view.shootingArea.set_size_request(300, 100)
 
         # Connect signal/slots
         dic = {"on_manualShootCheckbutton_toggled": self.__onManualShootCheckbuttonToggled,
@@ -115,10 +126,12 @@ class ShootController(AbstractController):
             pass
 
         # Fill widgets
+        self.__view.shootingArea.show()
         self.refreshView()
 
-        # Connect Spy
-        Spy().newPosSignal.connect(self.__refreshPos)
+        # Connect signals
+        #Spy().newPosSignal.connect(self.__refreshPos)
+        self.__model.newPictSignal.connect(self.__addPicture)
 
     # Callbacks
     def __onDelete(self, widget, event):
@@ -235,6 +248,10 @@ class ShootController(AbstractController):
         """
         Logger().trace("ShootController.__onDoneButtonClicked()")
         self.__view.shootDialog.response(0)
+
+    def __addPicture(self, yaw, pitch):
+        Logger().trace("ShootController.__addPicture()")
+        self.__view.shootingArea.add_pict(yaw, pitch)
 
     # Real work
     def __startShooting(self):
