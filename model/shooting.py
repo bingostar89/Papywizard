@@ -77,10 +77,6 @@ class Shooting(object):
         self.__running = False
         self.__suspend = False
         self.__stop = False
-        self.__yawCoef = "--"
-        self.__pitchCoef = "--"
-        self.__progress = 0.
-        self.__sequence = "Idle"
         self.__setParams = None
         self.__manualShoot = False
 
@@ -96,6 +92,8 @@ class Shooting(object):
         self.yawEnd = 0.
         self.pitchEnd = 0.
         self.position = self.hardware.readPosition()
+        self.progress = 0.
+        self.sequence = "Idle"
 
         #self.__computeParams('startEnd')
 
@@ -298,6 +296,13 @@ class Shooting(object):
         @return: shooting positions
         @rtype: list of dict
         """
+        pass
+
+    def initProgress(self):
+        """ Init progress value.
+        """
+        self.progress = 0.
+        self.sequence = "Idle" # find better
 
     def start(self):
         """ Start pano shooting.
@@ -307,7 +312,7 @@ class Shooting(object):
             """
             if self.__suspend:
                 Logger().info("Suspend")
-                self.__sequence = "Idle"
+                self.sequence = "Idle"
                 while self.__suspend:
                     time.sleep(0.1)
                 Logger().info("Resume")
@@ -316,6 +321,7 @@ class Shooting(object):
                 raise StopIteration
 
         Logger().trace("Shooting.start()")
+        self.__stop = False
         self.__running = True
 
         cameraFov = self.camera.getYawFov(self.cameraOrientation)
@@ -353,21 +359,19 @@ class Shooting(object):
 
             # Loop over all positions
             totalNbPicts = self.yawNbPicts * self.pitchNbPicts
-            self.__progress = 0.
-            for i, (yawCoef, pitchCoef) in enumerate(mosaic):
-                yaw = self.yawStart + yawCoef * yawInc
-                pitch = self.pitchStart + pitchCoef * pitchInc
+            self.progress = 0.
+            for i, (yawIndex, pitchIndex) in enumerate(mosaic):
+                yaw = self.yawStart + yawIndex * yawInc
+                pitch = self.pitchStart + pitchIndex * pitchInc
                 Logger().debug("Shooting.start(): Goto yaw=%.1f pitch=%.1f" % (yaw, pitch))
-                self.__yawCoef = yawCoef
-                self.__pitchCoef = pitchCoef
                 Logger().info("Moving")
-                self.__sequence = "Moving"
+                self.sequence = "Moving"
                 self.hardware.gotoPosition(yaw, pitch)
 
                 checkSuspendStop()
 
                 Logger().info("Stabilization")
-                self.__sequence = "Stabilizing"
+                self.sequence = "Stabilizing"
                 time.sleep(self.stabilizationDelay)
 
                 if self.__manualShoot:
@@ -379,51 +383,25 @@ class Shooting(object):
                 Logger().info("Shooting")
                 for pict in xrange(self.camera.nbPicts):
                     Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts))
-                    self.__sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
+                    self.sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
                     self.hardware.shoot(self.camera.timeValue)
                     data.addImage(pict + 1, yaw, pitch)
 
                     checkSuspendStop()
 
                 progressFraction = float((i + 1)) / float(totalNbPicts)
-                self.__progress = progressFraction
+                self.progress = progressFraction
                 self.newPictSignal.emit(yaw, pitch) # Include progress?
 
             Logger().debug("Shooting.start(): finished")
 
         except StopIteration:
             Logger().debug("Shooting.start(): Stop detected")
-
-        self.__yawCoef = "--"
-        self.__pitchCoef = "--"
-        self.__sequence = "Idle"
-        self.__stop = False
+            self.sequence = "Canceled"
+        else:
+            self.sequence = "Over"
+            
         self.__running = False
-
-    def getState(self):
-        """ Return shooting state.
-
-        @return: key 'yawPos': yaw position
-                     'pitchPos': pitch position
-                     'yawCoef': yaw mosaic coef
-                     'pitchCoef': pitch mosaic coef
-                     'progress': shooting progress (num of pict)
-                     'sequence': shooting sequence
-
-        @rtype: dict
-        """
-        try:
-            yawIndex = "%s/%s" % (self.__yawCoef + 1, self.yawNbPicts)
-        except TypeError:
-            yawIndex = str(self.__yawCoef)
-        try:
-            pitchIndex = "%s/%s" % (self.__pitchCoef + 1, self.pitchNbPicts)
-        except TypeError:
-            pitchIndex = str(self.__pitchCoef)
-        yawPos, pitchPos = self.hardware.readPosition()
-        return {'yawPos': yawPos, 'pitchPos': pitchPos,
-                'yawIndex': yawIndex, 'pitchIndex': pitchIndex,
-                'progress': self.__progress, 'sequence': self.__sequence}
 
     def isShooting(self):
         """ Test if shooting is running.
