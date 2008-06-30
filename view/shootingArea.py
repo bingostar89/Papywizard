@@ -205,9 +205,9 @@ class ShootingArea(gtk.DrawingArea):
         self.refresh()
 
     def clear(self):
-        #print "clear()"
         """ Clear the LCD display
         """
+        #print "clear()"
         self._picts = []
         self.window.draw_rectangle(self._back, True, self._border, self._border, self._width - 2 * self._border, self._height - 2 * self._border)
 
