@@ -155,7 +155,7 @@ class MainController(AbstractController):
         Spy().newPosSignal.connect(self.__refreshPos)
         self.__model.switchToRealHardwareSignal.connect(self.__switchToRealHardwareCallback)
 
-        # Try to autoconnect to real hardware
+        # Try to autoconnect to real hardware (todo: use a config flag)
         self.__view.hardwareConnectMenuitem.set_active(True)
 
     # Helpers
