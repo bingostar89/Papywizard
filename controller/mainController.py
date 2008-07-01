@@ -214,7 +214,7 @@ class MainController(AbstractController):
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
                 Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; store start position")
                 self.__keyPressedDict['Home'] = True
-                self.__model.storeStartPosition()
+                self.__model.mosaic.storeStartPosition(self.__yawPos, self.__pitchPos)
                 self.refreshView()
             return True
 
@@ -225,7 +225,7 @@ class MainController(AbstractController):
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
                 Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; store end position")
                 self.__keyPressedDict['End'] = True
-                self.__model.storeEndPosition()
+                self.__model.mosaic.storeEndPosition(self.__yawPos, self.__pitchPos)
                 self.refreshView()
             return True
 
@@ -332,25 +332,29 @@ class MainController(AbstractController):
 
     def __onSetStartButtonClicked(self, widget):
         Logger().trace("MainController.__onSetStartButtonClicked()")
-        self.__model.storeStartPosition()
+        #yaw, pitch = self.__mode.hardware.readPosition()
+        self.__model.mosaic.storeStartPosition(self.__yawPos, self.__pitchPos)
         self.refreshView()
         self.setStatusbarMessage("Start position set to current position", 10)
 
     def __onSetEndButtonClicked(self, widget):
         Logger().trace("MainController.__onSetEndButtonClicked()")
-        self.__model.storeEndPosition()
+        #yaw, pitch = self.__mode.hardware.readPosition()
+        self.__model.mosaic.storeEndPosition(self.__yawPos, self.__pitchPos)
         self.refreshView()
         self.setStatusbarMessage("End position set to current position", 10)
 
     def __onSet360ButtonClicked(self, widget):
         Logger().trace("MainController.__onSet360ButtonClicked()")
-        self.__model.setYaw360()
+        #yaw, pitch = self.__mode.hardware.readPosition()
+        self.__model.mosaic.setYaw360(self.__yawPos)
         self.refreshView()
         self.setStatusbarMessage(u"Start/End yaw positions set to 360°", 10)
 
     def __onSet180ButtonClicked(self, widget):
         Logger().trace("MainController.__onSet180ButtonClicked()")
-        self.__model.setPitch180()
+        #yaw, pitch = self.__mode.hardware.readPosition()
+        self.__model.mosaic.setPitch180(self.__pitchPos)
         self.refreshView()
         self.setStatusbarMessage(u"Start/End pitch positions set to 180°", 10)
 
@@ -482,15 +486,15 @@ class MainController(AbstractController):
     def refreshView(self):
         values = {'yawPos': self.__yawPos,
                   'pitchPos': self.__pitchPos,
-                  'yawStart': self.__model.yawStart,
-                  'pitchStart': self.__model.pitchStart,
-                  'yawEnd': self.__model.yawEnd,
-                  'pitchEnd': self.__model.pitchEnd,
-                  'yawFov': self.__model.yawFov,
-                  'pitchFov':  self.__model.pitchFov,
-                  'yawNbPicts':  self.__model.yawNbPicts,
-                  'pitchNbPicts':  self.__model.pitchNbPicts,
-                  'yawRealOverlap': int(round(100 * self.__model.yawRealOverlap)),
-                  'pitchRealOverlap': int(round(100 * self.__model.pitchRealOverlap))
+                  'yawStart': self.__model.mosaic.yawStart,
+                  'pitchStart': self.__model.mosaic.pitchStart,
+                  'yawEnd': self.__model.mosaic.yawEnd,
+                  'pitchEnd': self.__model.mosaic.pitchEnd,
+                  'yawFov': self.__model.mosaic.yawFov,
+                  'pitchFov':  self.__model.mosaic.pitchFov,
+                  'yawNbPicts':  self.__model.mosaic.yawNbPicts,
+                  'pitchNbPicts':  self.__model.mosaic.pitchNbPicts,
+                  'yawRealOverlap': int(round(100 * self.__model.mosaic.yawRealOverlap)),
+                  'pitchRealOverlap': int(round(100 * self.__model.mosaic.pitchRealOverlap))
               }
         self.__view.fillWidgets(values)

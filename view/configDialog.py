@@ -82,9 +82,10 @@ class ConfigDialog(object):
         self.configDialog = self.wTree.get_widget("configDialog")
 
         # Shooting
-        self.cameraOrientationCombobox = self.wTree.get_widget("cameraOrientationCombobox")
         self.stabilizationDelaySpinbutton = self.wTree.get_widget("stabilizationDelaySpinbutton")
+        self.cameraOrientationCombobox = self.wTree.get_widget("cameraOrientationCombobox")
         self.overlapSpinbutton = self.wTree.get_widget("overlapSpinbutton")
+        #self.mosaicTemplateCombobox = self.wTree.get_widget("mosaicTemplateCombobox")
 
         # Camera
         self.timeValueSpinbutton = self.wTree.get_widget("timeValueSpinbutton")
@@ -108,15 +109,16 @@ class ConfigDialog(object):
         """ Fill widgets with values.
         """
         # Shooting
-        self.nbPictsSpinbutton.set_value(values['cameraNbPicts'])
         self.stabilizationDelaySpinbutton.set_value(values['shootingStabilizationDelay'])
-        self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[values['shootingCameraOrientation']])
+        self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[values['shootingMosaicCameraOrientation']])
+        self.overlapSpinbutton.set_value(values['shootingMosaicOverlap'])
+        #self.mosaicTemplate.set_active(config.MOSAIC_TEMPLATE_INDEX[values['shootingMosaicTemplate']])
         
         # Camera
         self.timeValueSpinbutton.set_value(values['cameraTimeValue'])
+        self.nbPictsSpinbutton.set_value(values['cameraNbPicts'])
         self.sensorCoefSpinbutton.set_value(values['cameraSensorCoef'])
         self.sensorRatioCombobox.set_active(config.SENSOR_RATIOS_INDEX[values['cameraSensorRatio']])
-        self.overlapSpinbutton.set_value(values['shootingOverlap'])
         
         # Lens
         self.focalSpinbutton.set_value(values['lensFocal'])

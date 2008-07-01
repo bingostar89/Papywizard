@@ -95,19 +95,20 @@ class ConfigController(AbstractController):
         Logger().trace("ConfigController.__onOkButtonClicked()")
         
         # Shooting
+        self.__model.stabilizationDelay = self.__view.stabilizationDelaySpinbutton.get_value()
+        self.__model.mosaic.overlap = self.__view.overlapSpinbutton.get_value() / 100.
+        self.__model.mosaic.cameraOrientation = config.CAMERA_ORIENTATION_INDEX[self.__view.cameraOrientationCombobox.get_active()]
+        #self.__model.mosaic.template = config.MOSAIC_TEMPLATE_INDEX[self.__view.mosaicTemplateCombobox.get_active()]
         
         # Camera
         self.__model.camera.timeValue = self.__view.timeValueSpinbutton.get_value()
         self.__model.camera.nbPicts = int(self.__view.nbPictsSpinbutton.get_value())
-        self.__model.stabilizationDelay = self.__view.stabilizationDelaySpinbutton.get_value()
         self.__model.camera.sensorCoef = self.__view.sensorCoefSpinbutton.get_value()
         self.__model.camera.sensorRatio = config.SENSOR_RATIOS_INDEX[self.__view.sensorRatioCombobox.get_active()]
-        self.__model.overlap = self.__view.overlapSpinbutton.get_value() / 100.
         
         # Lens
         self.__model.camera.lens.focal = self.__view.focalSpinbutton.get_value()
         self.__model.camera.lens.fisheye = self.__view.fisheyeCheckbutton.get_active()
-        self.__model.cameraOrientation = config.CAMERA_ORIENTATION_INDEX[self.__view.cameraOrientationCombobox.get_active()]
 
         # Hardware
         ConfigManager().set('Hardware', 'DRIVER', 
@@ -127,17 +128,16 @@ class ConfigController(AbstractController):
         Logger().trace("ConfigController.__onCancelButtonClicked()")
 
     def refreshView(self):
-        values = {'shootingOverlap': int(100 * self.__model.overlap),
-                  'shootingCameraOrientation': self.__model.cameraOrientation,
+        values = {'shootingMosaicOverlap': int(100 * self.__model.mosaic.overlap),
+                  'shootingMosaicCameraOrientation': self.__model.mosaic.cameraOrientation,
                   'shootingStabilizationDelay': self.__model.stabilizationDelay,
-                  'mosaicTemplate': ConfigManager().get('Preferences', 'MOSAIC_TEMPLATE'),
+                  'shootingMosaicTemplate': self.__model.mosaic.template,
                   'cameraSensorCoef': self.__model.camera.sensorCoef,
                   'cameraSensorRatio': self.__model.camera.sensorRatio,
                   'cameraTimeValue': self.__model.camera.timeValue,
                   'cameraNbPicts' : self.__model.camera.nbPicts,
                   'lensFocal': self.__model.camera.lens.focal,
                   'lensFisheye': self.__model.camera.lens.fisheye,
-                  
                   'hardwareDriver': ConfigManager().get('Hardware', 'Driver'),
                   'hardwareBluetoothDeviceAddress': ConfigManager().get('Hardware', 'BLUETOOTH_DEVICE_ADDRESS'),
                   'hardwareSerialPort': ConfigManager().get('Hardware', 'SERIAL_PORT'),

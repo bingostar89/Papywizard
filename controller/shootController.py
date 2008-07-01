@@ -83,12 +83,12 @@ class ShootController(AbstractController):
         self.__view = view
         
         # Init shooting area
-        self.__view.shootingArea.init(self.__model.yawStart, self.__model.yawEnd,
-                                      self.__model.pitchStart, self.__model.pitchEnd,
-                                      self.__model.yawFov, self.__model.pitchFov,
-                                      self.__model.camera.getYawFov(self.__model.cameraOrientation),
-                                      self.__model.camera.getPitchFov(self.__model.cameraOrientation),
-                                      self.__model.yawRealOverlap, self.__model.pitchRealOverlap)
+        self.__view.shootingArea.init(self.__model.mosaic.yawStart, self.__model.mosaic.yawEnd,
+                                      self.__model.mosaic.pitchStart, self.__model.mosaic.pitchEnd,
+                                      self.__model.mosaic.yawFov, self.__model.mosaic.pitchFov,
+                                      self.__model.camera.getYawFov(self.__model.mosaic.cameraOrientation),
+                                      self.__model.camera.getPitchFov(self.__model.mosaic.cameraOrientation),
+                                      self.__model.mosaic.yawRealOverlap, self.__model.mosaic.pitchRealOverlap)
         
         # Determine size
         self.__view.shootingArea.set_size_request(300, 100)
