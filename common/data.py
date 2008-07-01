@@ -134,7 +134,7 @@ class Data(object):
         self.__shootNode = self.__doc.createElement('shoot')
         self.__rootNode.appendChild(self.__shootNode)
 
-        self.__imageId = 1
+        self.__pictId = 1
 
     def __createNode(self, parent, tag):
         """ Create a node.
@@ -236,11 +236,11 @@ class Data(object):
         # Serialize xml file
         self.__serialize()
 
-    def addImage(self, pict, yaw, pitch):
-        """ Add a new image node to shoot node.
+    def addPicture(self, num, yaw, pitch):
+        """ Add a new picture node to shoot node.
 
-        @param pict: num of the pict (bracketing)
-        @type pict: int
+        @param num: num of the pict (bracketing)
+        @type num: int
 
         @param yaw: yaw position
         @type yaw: float
@@ -248,9 +248,9 @@ class Data(object):
         @param pitch: pitch position
         @type pitch: float
         """
-        Logger().debug("Data.addImageNode(): pict=%d, yaw=%.1f, pitch=%.1f" % (pict, yaw, pitch))
-        node = self.__addNode(self.__shootNode, 'image', id="%d" % self.__imageId, pict="%d" % pict)
-        self.__imageId += 1
+        Logger().debug("Data.addPicture(): num=%d, yaw=%.1f, pitch=%.1f" % (num, yaw, pitch))
+        node = self.__addNode(self.__shootNode, 'pict', id="%d" % self.__pictId, num="%d" % num)
+        self.__pictId += 1
         self.__addNode(node, 'time', time.ctime())
         self.__addNode(node, 'position', yaw="%.1f" % yaw, pitch="%.1f" % pitch)
 
