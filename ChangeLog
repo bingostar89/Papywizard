@@ -5,9 +5,11 @@ ChangeLog
 x bug fix
 
 xxxx-xx-xx Version SVN
-    x alternate drive method for small moves (faster than default one)
+    + graphical progress
+    
+xxxx-xx-xx Version 1.0
 
-xxxx-xx-xx Version 0.9 (coming soon)
+2008-06-26 Version 0.9
     x bug correction when start pos > end pos
     x connect menu is greyed out if hardware is not available
     + added 'Set 360' and 'Set 180' buttons
