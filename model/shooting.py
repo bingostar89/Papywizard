@@ -74,7 +74,7 @@ class Shooting(object):
         @param simulatedHardware: simulated hardware head
         @type simulatedHardware: {HeadSimulation}
         """
-        self.__running = False
+        self.__shooting = False
         self.__suspend = False
         self.__stop = False
         self.__setParams = None
@@ -86,17 +86,14 @@ class Shooting(object):
         self.switchToRealHardwareSignal = Signal()
         self.newPictSignal = Signal()
         self.camera = Camera()
+        self.mosaic = Mosaic(self.camera)
+        #self.fullSpherical = FullSpherical()
 
-        self.yawStart = 0.
-        self.pitchStart = 0.
-        self.yawEnd = 0.
-        self.pitchEnd = 0.
         self.position = self.hardware.readPosition()
         self.progress = 0.
         self.sequence = "Idle"
 
-        #self.__computeParams('startEnd')
-
+    # Properties
     def __getStabilizationDelay(self):
         """
         """
@@ -108,116 +105,6 @@ class Shooting(object):
         ConfigManager().setFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY', stabilizationDelay, 1)
     
     stabilizationDelay = property(__getStabilizationDelay, __setStabilizationDelay)
-    
-    def __getOverlap(self):
-        """
-        """
-        return ConfigManager().getFloat('Preferences', 'SHOOTING_OVERLAP')
-    
-    def __setOverlap(self, overlap):
-        """
-        """
-        ConfigManager().setFloat('Preferences', 'SHOOTING_OVERLAP', overlap, 2)
-        
-    overlap = property(__getOverlap, __setOverlap)
-    
-    def __getCameraOrientation(self):
-        """
-        """
-        return ConfigManager().get('Preferences', 'SHOOTING_CAMERA_ORIENTATION')
-    
-    def __setCameraOrientation(self, cameraOrientation):
-        """
-        """
-        ConfigManager().set('Preferences', 'SHOOTING_CAMERA_ORIENTATION', cameraOrientation)
-
-    cameraOrientation = property(__getCameraOrientation, __setCameraOrientation)
-
-    def __getYawFov(self):
-        """
-        """
-        yawCameraFov = self.camera.getYawFov(self.cameraOrientation)
-        return abs(self.yawEnd - self.yawStart) + yawCameraFov
-
-    yawFov = property(__getYawFov, "Total yaw FoV")
-
-    def __getPitchFov(self):
-        """
-        """
-        pitchCameraFov = self.camera.getPitchFov(self.cameraOrientation)
-        return abs(self.pitchEnd - self.pitchStart) + pitchCameraFov
-
-    pitchFov = property(__getPitchFov, "Total pitch FoV")
-
-    def __getYawNbPicts(self):
-        """
-        """
-        yawCameraFov = self.camera.getYawFov(self.cameraOrientation)
-        if round(self.yawFov - yawCameraFov, 1) >= 0.1:
-            nbPicts = int(((self.yawFov - self.overlap * yawCameraFov) / (yawCameraFov * (1 - self.overlap))) + 1)
-        else:
-            nbPicts = 1
-        return nbPicts
-
-    yawNbPicts = property(__getYawNbPicts, "Yaw nb picts")
-
-    def __getPitchNbPicts(self):
-        """
-        """
-        pitchCameraFov = self.camera.getPitchFov(self.cameraOrientation)
-        if round(self.pitchFov - pitchCameraFov, 1) >= 0.1:
-           nbPicts = int(((self.pitchFov - self.overlap * pitchCameraFov) / (pitchCameraFov * (1 - self.overlap))) + 1)
-        else:
-            nbPicts = 1
-        return nbPicts
-
-    pitchNbPicts = property(__getPitchNbPicts, "Pitch nb picts")
-
-    def __getRealYawOverlap(self):
-        """ Recompute real yaw overlap.
-        """
-        yawCameraFov = self.camera.getYawFov(self.cameraOrientation)
-        if self.yawNbPicts > 1:
-            overlap = (self.yawNbPicts * yawCameraFov - self.yawFov) / (yawCameraFov * (self.yawNbPicts - 1))
-        else:
-            overlap = 1.
-        return overlap
-
-    yawRealOverlap = property(__getRealYawOverlap, "Real yaw overlap")
-
-    def __getRealPitchOverlap(self):
-        """ Recompute real pitch overlap.
-        """
-        pitchCameraFov = self.camera.getPitchFov(self.cameraOrientation)
-        if self.pitchNbPicts > 1:
-            overlap = (self.pitchNbPicts * pitchCameraFov - self.pitchFov) / (pitchCameraFov * (self.pitchNbPicts - 1))
-        else:
-            overlap = 1.
-        return overlap
-
-    pitchRealOverlap = property(__getRealPitchOverlap, "Real pitch overlap")
-
-    #def __computeParams(self, setParam):
-        #""" Compute missing params from given params.
-
-        #@param setParam: given params type ('startEnd', 'fov', 'nbPict')
-        #@type setParam: str
-
-        #@todo: add fov and nbPicts
-        #"""
-        #if setParam == 'startEnd':
-            #self.yawFov = self.__getYawFov()
-            #self.pitchFov = self.__getPitchFov()
-            #self.yawNbPicts = self.__getYawNbPicts()
-            #self.pitchNbPicts = self.__getPitchNbPicts()
-            #self.yawRealOverlap = self.__getRealYawOverlap()
-            #self.pitchRealOverlap = self.__getRealPitchOverlap()
-        #elif setParam == 'fov':
-            #Logger().warning("Shooting.__computeParam(): 'fov' setting not yet implemented")
-        #elif setParam == 'nbPicts':
-            #Logger().warning("Shooting.__computeParam(): 'nbPicts' setting not yet implemented")
-        #else:
-            #raise ValueError("param must be in ('startEnd', 'fov', 'nbPict')")
 
     def switchToRealHardware(self):
         """ Use real hardware.
@@ -241,45 +128,6 @@ class Shooting(object):
         self.hardware.init()
         self.position = self.hardware.readPosition()
 
-    def storeStartPosition(self):
-        """ Store current position as start position.
-        """
-        self.yawStart, self.pitchStart = self.hardware.readPosition()
-        Logger().debug("Shooting.storeStartPosition(): yaw=%.1f, pitch=%.1f" % (self.yawStart, self.pitchStart))
-        #self.__computeParams('startEnd')
-
-    def storeEndPosition(self):
-        """ Store current position as end position.
-        """
-        self.yawEnd, self.pitchEnd = self.hardware.readPosition()
-        Logger().debug("Shooting.storeEndPosition(): yaw=%.1f, pitch=%.1f" % (self.yawEnd, self.pitchEnd))
-        #self.__computeParams('startEnd')
-
-    def setYaw360(self):
-        """ Compute start/end yaw position for 360°.
-        
-        Récupérer position courante et calculer début et fin pour avoir
-        +-180°, overlap inclus
-        """
-        yaw, pitch = self.hardware.readPosition()
-        yawCameraFov = self.camera.getPitchFov(self.cameraOrientation)
-        self.yawStart = yaw - 180.  + yawCameraFov * (1 - self.overlap) / 2.
-        self.yawEnd = yaw + 180. - yawCameraFov * (1 - self.overlap) / 2.
-        Logger().debug("Shooting.setYaw360(): startYaw=%.1f, endYaw=%.1f" % (self.yawStart, self.yawEnd))
-
-    def setPitch180(self):
-        """ Compute start/end pitch position for 180°.
-        
-        Récupérer position courante et calculer début et fin pour avoir
-        +-90°, overlap inclus
-        Tenir compte des butées softs !
-        """
-        yaw, pitch = self.hardware.readPosition()
-        pitchCameraFov = self.camera.getPitchFov(self.cameraOrientation)
-        self.pitchStart = pitch - 90. + pitchCameraFov * (1 - self.overlap) / 2.
-        self.pitchEnd = pitch + 90. - pitchCameraFov * (1 - self.overlap) / 2.
-        Logger().debug("Shooting.setPitch180(): startPitch=%.1f, endPitch=%.1f" % (self.pitchStart, self.pitchEnd))
-
     def setManualShoot(self, flag):
         """ Turn on/off manual shoot.
 
@@ -289,14 +137,6 @@ class Shooting(object):
         @type flag: bool
         """
         self.__manualShoot = flag
-
-    def generate(self):
-        """ Generate all shooting positions.
-        
-        @return: shooting positions
-        @rtype: list of dict
-        """
-        pass
 
     def initProgress(self):
         """ Init progress value.
@@ -321,48 +161,31 @@ class Shooting(object):
                 raise StopIteration
 
         Logger().trace("Shooting.start()")
+
+        data = Data()
+        values = {'stabilizationDelay': "%.1f" % self.stabilizationDelay,
+                  'overlap': "%.2f" % self.mosaic.overlap,
+                  'yawRealOverlap': "%.2f" % self.mosaic.yawRealOverlap,
+                  'pitchRealOverlap': "%.2f" % self.mosaic.pitchRealOverlap,
+                  'cameraOrientation': "%s" % self.mosaic.cameraOrientation,
+                  'timeValue': "%.1f" % self.camera.timeValue,
+                  'nbPicts': "%d" % self.camera.nbPicts,
+                  'sensorCoef': "%.1f" % self.camera.sensorCoef,
+                  'sensorRatio': "%s" % self.camera.sensorRatio,
+                  'focal': "%.1f" % self.camera.lens.focal,
+                  'fisheye': "%s" % self.camera.lens.fisheye,
+                  'template': "mosaic",
+                  'yawNbPicts': "%d" % self.mosaic.yawNbPicts,
+                  'pitchNbPicts': "%d" % self.mosaic.pitchNbPicts
+              }
+        data.createHeader(values)
+        self.progress = 0.
         self.__stop = False
-        self.__running = True
+        self.__shooting = True
 
-        cameraFov = self.camera.getYawFov(self.cameraOrientation)
+        # Loop over all positions
         try:
-            yawInc = (self.yawFov - cameraFov) / (self.yawNbPicts - 1)
-        except ZeroDivisionError:
-            yawInc = self.yawFov - cameraFov
-        yawInc *= cmp(self.yawEnd, self.yawStart)
-        cameraFov = self.camera.getPitchFov(self.cameraOrientation)
-        try:
-            pitchInc = (self.pitchFov - cameraFov) / (self.pitchNbPicts - 1)
-        except ZeroDivisionError:
-            pitchInc = self.pitchFov - cameraFov
-        pitchInc *= cmp(self.pitchEnd, self.pitchStart)
-        mosaic = Mosaic(self.yawNbPicts, self.pitchNbPicts)
-
-        try:
-            data = Data()
-            values = {'stabilizationDelay': "%.1f" % self.stabilizationDelay,
-                      'overlap': "%.2f" % self.overlap,
-                      'yawRealOverlap': "%.2f" % self.yawRealOverlap,
-                      'pitchRealOverlap': "%.2f" % self.pitchRealOverlap,
-                      'cameraOrientation': "%s" % self.cameraOrientation,
-                      'timeValue': "%.1f" % self.camera.timeValue,
-                      'nbPicts': "%d" % self.camera.nbPicts,
-                      'sensorCoef': "%.1f" % self.camera.sensorCoef,
-                      'sensorRatio': "%s" % self.camera.sensorRatio,
-                      'focal': "%.1f" % self.camera.lens.focal,
-                      'fisheye': "%s" % self.camera.lens.fisheye,
-                      'template': "mosaic",
-                      'yawNbPicts': "%d" % self.yawNbPicts,
-                      'pitchNbPicts': "%d" % self.pitchNbPicts
-                  }
-            data.createHeader(values)
-
-            # Loop over all positions
-            totalNbPicts = self.yawNbPicts * self.pitchNbPicts
-            self.progress = 0.
-            for i, (yawIndex, pitchIndex) in enumerate(mosaic):
-                yaw = self.yawStart + yawIndex * yawInc
-                pitch = self.pitchStart + pitchIndex * pitchInc
+            for i, (yaw, pitch) in enumerate(self.mosaic):
                 Logger().debug("Shooting.start(): Goto yaw=%.1f pitch=%.1f" % (yaw, pitch))
                 Logger().info("Moving")
                 self.sequence = "Moving"
@@ -385,11 +208,11 @@ class Shooting(object):
                     Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts))
                     self.sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
                     self.hardware.shoot(self.camera.timeValue)
-                    data.addImage(pict + 1, yaw, pitch)
+                    data.addPicture(pict + 1, yaw, pitch)
 
                     checkSuspendStop()
 
-                progressFraction = float((i + 1)) / float(totalNbPicts)
+                progressFraction = float((i + 1)) / float(self.mosaic.totalNbPicts)
                 self.progress = progressFraction
                 self.newPictSignal.emit(yaw, pitch) # Include progress?
 
@@ -401,7 +224,7 @@ class Shooting(object):
         else:
             self.sequence = "Over"
             
-        self.__running = False
+        self.__shooting = False
 
     def isShooting(self):
         """ Test if shooting is running.
@@ -409,7 +232,7 @@ class Shooting(object):
         @return: True if shooting is running, False otherwise
         @rtype: bool
         """
-        return self.__running
+        return self.__shooting
 
     def suspend(self):
         """ Suspend execution of pano shooting.
