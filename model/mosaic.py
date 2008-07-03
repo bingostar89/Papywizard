@@ -65,6 +65,7 @@ class Mosaic(Scan):
         @param camera: camera object
         @type camera: {Camera}
         """
+        super(Mosaic, self).__init__()
         self.__camera = camera
         self.__yawIndex = None
         self.__pitchIndex = None
@@ -103,9 +104,9 @@ class Mosaic(Scan):
         
         # todo: take startFrom param into account
         
-        return self.__generate()
+        return self._generate()
 
-    def __generate(self):
+    def _generate(self):
         """ Return next (yaw, pitch) index position.
         """
         while True:
@@ -240,7 +241,8 @@ class Mosaic(Scan):
         """
         """
         yawCameraFov = self.__camera.getYawFov(self.cameraOrientation)
-        return abs(self.yawEnd - self.yawStart) + yawCameraFov
+        yawFov = abs(self.yawEnd - self.yawStart) + yawCameraFov
+        return yawFov
 
     yawFov = property(__getYawFov, "Total yaw FoV")
 
@@ -248,7 +250,8 @@ class Mosaic(Scan):
         """
         """
         pitchCameraFov = self.__camera.getPitchFov(self.cameraOrientation)
-        return abs(self.pitchEnd - self.pitchStart) + pitchCameraFov
+        pitchFov = abs(self.pitchEnd - self.pitchStart) + pitchCameraFov
+        return pitchFov
 
     pitchFov = property(__getPitchFov, "Total pitch FoV")
 
@@ -257,10 +260,10 @@ class Mosaic(Scan):
         """
         yawCameraFov = self.__camera.getYawFov(self.cameraOrientation)
         if round(self.yawFov - yawCameraFov, 1) >= 0.1:
-            nbPicts = int(((self.yawFov - self.overlap * yawCameraFov) / (yawCameraFov * (1 - self.overlap))) + 1)
+            yawNbPicts = int(round(((self.yawFov - self.overlap * yawCameraFov) / (yawCameraFov * (1 - self.overlap))) + 1))
         else:
-            nbPicts = 1
-        return nbPicts
+            yawNbPicts = 1
+        return yawNbPicts
 
     yawNbPicts = property(__getYawNbPicts, "Yaw nb picts")
 
@@ -269,29 +272,25 @@ class Mosaic(Scan):
         """
         pitchCameraFov = self.__camera.getPitchFov(self.cameraOrientation)
         if round(self.pitchFov - pitchCameraFov, 1) >= 0.1:
-           nbPicts = int(((self.pitchFov - self.overlap * pitchCameraFov) / (pitchCameraFov * (1 - self.overlap))) + 1)
+           nbPicts = int(round(((self.pitchFov - self.overlap * pitchCameraFov) / (pitchCameraFov * (1 - self.overlap))) + 1))
         else:
             nbPicts = 1
         return nbPicts
 
     pitchNbPicts = property(__getPitchNbPicts, "Pitch nb picts")
 
-    def __getTotalNbPicts(self):
-        """
-        """
+    def _getTotalNbPicts(self):
         return self.yawNbPicts * self.pitchNbPicts
-    
-    totalNbPicts = property(__getTotalNbPicts)
 
     def __getYawRealOverlap(self):
         """ Recompute real yaw overlap.
         """
         yawCameraFov = self.__camera.getYawFov(self.cameraOrientation)
         if self.yawNbPicts > 1:
-            overlap = (self.yawNbPicts * yawCameraFov - self.yawFov) / (yawCameraFov * (self.yawNbPicts - 1))
+            yawOverlap = (self.yawNbPicts * yawCameraFov - self.yawFov) / (yawCameraFov * (self.yawNbPicts - 1))
         else:
-            overlap = 1.
-        return overlap
+            yawOverlap = 1.
+        return yawOverlap
 
     yawRealOverlap = property(__getYawRealOverlap, "Yaw real overlap")
 
@@ -300,15 +299,12 @@ class Mosaic(Scan):
         """
         pitchCameraFov = self.__camera.getPitchFov(self.cameraOrientation)
         if self.pitchNbPicts > 1:
-            overlap = (self.pitchNbPicts * pitchCameraFov - self.pitchFov) / (pitchCameraFov * (self.pitchNbPicts - 1))
+            pitchOverlap = (self.pitchNbPicts * pitchCameraFov - self.pitchFov) / (pitchCameraFov * (self.pitchNbPicts - 1))
         else:
-            overlap = 1.
-        return overlap
+            pitchOverlap = 1.
+        return pitchOverlap
 
     pitchRealOverlap = property(__getPitchRealOverlap, "Pitch real overlap")
-
-    def __totalNbPicts(self):
-        return self.__yawNbPicts * self.__pitchNbPicts
 
     # Public methods
     def storeStartPosition(self, yaw, pitch):
@@ -326,15 +322,19 @@ class Mosaic(Scan):
     def setYaw360(self, yaw):
         """ Compute start/end yaw position for 360°.
         """
-        yawCameraFov = self.__camera.getPitchFov(self.cameraOrientation)
+        yawCameraFov = self.__camera.getYawFov(self.cameraOrientation)
         self.yawStart = yaw - 180. + yawCameraFov * (1 - self.overlap) / 2.
         self.yawEnd = yaw + 180. - yawCameraFov * (1 - self.overlap) / 2.
+        self.yawStart = yaw - 180. + yawCameraFov * (1 - self.yawRealOverlap) / 2.
+        self.yawEnd = yaw + 180. - yawCameraFov * (1 - self.yawRealOverlap) / 2.
         Logger().debug("Mosaic.setYaw360(): startYaw=%.1f, endYaw=%.1f" % (self.yawStart, self.yawEnd))
 
     def setPitch180(self, pitch):
         """ Compute start/end pitch position for 180°.
         """
         pitchCameraFov = self.__camera.getPitchFov(self.cameraOrientation)
-        self.pitchStart = pitch - 90. + pitchCameraFov * (1 - self.overlap) / 2.
-        self.pitchEnd = pitch + 90. - pitchCameraFov * (1 - self.overlap) / 2.
+        self.pitchStart = pitch + 90. - pitchCameraFov * (1 - self.overlap) / 2.
+        self.pitchEnd = pitch - 90. + pitchCameraFov * (1 - self.overlap) / 2.
+        self.pitchStart = pitch + 90. - pitchCameraFov * (1 - self.pitchRealOverlap) / 2.
+        self.pitchEnd = pitch - 90. + pitchCameraFov * (1 - self.pitchRealOverlap) / 2.
         Logger().debug("Mosaic.setPitch180(): startPitch=%.1f, endPitch=%.1f" % (self.pitchStart, self.pitchEnd))
