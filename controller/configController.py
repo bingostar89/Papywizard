@@ -98,7 +98,9 @@ class ConfigController(AbstractController):
         self.__model.stabilizationDelay = self.__view.stabilizationDelaySpinbutton.get_value()
         self.__model.mosaic.overlap = self.__view.overlapSpinbutton.get_value() / 100.
         self.__model.mosaic.cameraOrientation = config.CAMERA_ORIENTATION_INDEX[self.__view.cameraOrientationCombobox.get_active()]
-        #self.__model.mosaic.template = config.MOSAIC_TEMPLATE_INDEX[self.__view.mosaicTemplateCombobox.get_active()]
+        self.__model.mosaic.startFrom = config.MOSAIC_START_FROM_INDEX[self.__view.startFromCombobox.get_active()]
+        self.__model.mosaic.initialDirection = config.MOSAIC_INITIAL_DIR_INDEX[self.__view.initialDirectionCombobox.get_active()]
+        self.__model.mosaic.cr = self.__view.crCheckbutton.get_active()
         
         # Camera
         self.__model.camera.timeValue = self.__view.timeValueSpinbutton.get_value()
@@ -131,7 +133,9 @@ class ConfigController(AbstractController):
         values = {'shootingMosaicOverlap': int(100 * self.__model.mosaic.overlap),
                   'shootingMosaicCameraOrientation': self.__model.mosaic.cameraOrientation,
                   'shootingStabilizationDelay': self.__model.stabilizationDelay,
-                  'shootingMosaicTemplate': self.__model.mosaic.template,
+                  'shootingMosaicStartFrom': self.__model.mosaic.startFrom,
+                  'shootingMosaicInitialDirection': self.__model.mosaic.initialDirection,
+                  'shootingMosaicCr': self.__model.mosaic.cr,
                   'cameraSensorCoef': self.__model.camera.sensorCoef,
                   'cameraSensorRatio': self.__model.camera.sensorRatio,
                   'cameraTimeValue': self.__model.camera.timeValue,
