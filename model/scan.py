@@ -66,6 +66,7 @@ class Scan(object):
     def __init__(self):
         """ Init the Scan object.
         """
+        super(Scan, self).__init__()
 
     # Iterator definition
     def __iter__(self):
@@ -79,10 +80,15 @@ class Scan(object):
         raise NotImplementedError
 
     # Properties
-    def __getTotalNbPicts(self):
+    def _getTotalNbPicts(self):
         """ Compute the total number of pictures.
         """
         raise NotImplementedError
+    
+    def __getTotalNbPicts(self):
+        """ Workarround to have totalNbPicts property working in subclasses.
+        """
+        return self._getTotalNbPicts()
 
     totalNbPicts = property(__getTotalNbPicts)
     
