@@ -97,7 +97,6 @@ class MainController(AbstractController):
         self.__pitchPos = 0
         
         self.__statusbarTimeoutEventId = None
-        self.__messageDialog = None
         self.__connect = None
         self.__connectErrorMessage = None
 
@@ -432,11 +431,11 @@ class MainController(AbstractController):
             self.setStatusbarMessage("Now connected to real hardware", 5)
         else:
             Logger().error("Connection to hardware failed (%s)" % self.__connectErrorMessage)
-            self.__messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type= gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
+            messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
                                                      message_format="Connection to hardware failed")
-            self.__messageDialog.format_secondary_text(self.__connectErrorMessage)
-            self.__messageDialog.run()
-            self.__messageDialog.destroy()
+            messageDialog.format_secondary_text(self.__connectErrorMessage)
+            messageDialog.run()
+            messageDialog.destroy()
             self.__view.hardwareConnectMenuitem.set_active(False)
             
         self.__view.hardwareConnectMenuitem.set_sensitive(True)
