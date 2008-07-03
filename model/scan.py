@@ -73,7 +73,7 @@ class Scan(object):
         """
         raise NotImplementedError
     
-    def next(self):
+    def _generate(self):
         """ Return next (yaw, pitch) position.
         """
         raise NotImplementedError
