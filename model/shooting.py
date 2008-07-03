@@ -52,6 +52,7 @@ Implements
 __revision__ = "$Id$"
 
 import time
+import threading
 
 from papywizard.common.loggingServices import Logger
 from papywizard.common.signal import Signal
@@ -85,6 +86,8 @@ class Shooting(object):
         self.hardware = self.simulatedHardware
         self.switchToRealHardwareSignal = Signal()
         self.newPictSignal = Signal()
+        self.startEvent = threading.Event()
+        self.startEvent.clear()
         self.camera = Camera()
         self.mosaic = Mosaic(self.camera)
         #self.fullSpherical = FullSpherical()
@@ -179,9 +182,11 @@ class Shooting(object):
                   'pitchNbPicts': "%d" % self.mosaic.pitchNbPicts
               }
         data.createHeader(values)
+        self.error = False
         self.progress = 0.
         self.__stop = False
         self.__shooting = True
+        self.startEvent.set()
 
         # Loop over all positions
         try:
@@ -221,6 +226,9 @@ class Shooting(object):
         except StopIteration:
             Logger().debug("Shooting.start(): Stop detected")
             self.sequence = "Canceled"
+        except:
+            Logger().exception("Shooting.start()")
+            self.error = True
         else:
             self.sequence = "Over"
             
