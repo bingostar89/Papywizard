@@ -71,12 +71,11 @@ SENSOR_RATIOS_INDEX = {'3:2': 0, '4:3': 1,
 CAMERA_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1,
                             0: 'portrait', 1: 'landscape'}
 
-MOSAIC_TEMPLATE = ["Auto",
-                   "RDL", "RDR", "RUL", "RDR",
-                   "LDR", "LDL", "LUR", "LUL",
-                   "DRU", "DRD", "DLU", "DLD",
-                   "URD", "URU", "ULD", "ULU"
-                   ]
+MOSAIC_START_FROM_INDEX = {'start': 0, 'end': 1, 'nearest': 2,
+                           0: 'start', 1 : 'end', 2: 'nearest'}
+                            
+MOSAIC_INITIAL_DIR_INDEX = {'yaw': 0, 'pitch': 1,
+                            0: 'yaw', 1: 'pitch'}
 
 # Logger
 LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"
