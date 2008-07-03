@@ -74,22 +74,22 @@ correct place (sky pictures without any details are often unlinked).
         </template>
     </header>
     <shoot>
-        <image id="1" pict="1">
+        <pict id="1" num="1">
             <time>Wed Jun 25 10:37:16 2008</time>
             <position pitch="0.0" yaw="0.0"/>
-        </image>
-        <image id="2" pict="2">
+        </pict>
+        <pict id="2" num="2">
             <time>Wed Jun 25 10:37:17 2008</time>
             <position pitch="0.0" yaw="0.0"/>
-        </image>
-        <image id="3" pict="1">
+        </pict>
+        <pict id="3" num="1">
             <time>Wed Jun 25 10:37:20 2008</time>
             <position pitch="0.0" yaw="20.1"/>
-        </image>
-        <image id="4" pict="2">
+        </pict>
+        <pict id="4" num="2">
             <time>Wed Jun 25 10:37:21 2008</time>
             <position pitch="0.0" yaw="20.1"/>
-        </image>
+        </pict>
     </shoot>
 </papywizard>
 
@@ -181,7 +181,7 @@ class Data(object):
         @param attr: optionnal attributes
         @type attr: dict
         """
-        Logger().debug("Data.__addNode(): parent=%s, tag=%s, value=%s, attr=%s" % (parent, tag, value, attr))
+        Logger().debug("Data.__addNode(): parent=%s, tag=%s, value=%s, attr=%s" % (parent.tagName, tag, value, attr))
         if value is not None:
             node = self.__createTextNode(parent, tag, value)
         else:
