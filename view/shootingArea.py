@@ -65,9 +65,8 @@ class ShootingArea(gtk.DrawingArea):
         gtk.DrawingArea.__init__(self)
 
         self._picts = []
-        self._border = 0
-        self._width = 360
-        self._height = 180
+        self._width = 300
+        self._height = 150
         self.set_size_request(self._width, self._height)
 
         self._yawStart = None
@@ -80,14 +79,10 @@ class ShootingArea(gtk.DrawingArea):
         self._pitchCameraFov = None
         self._yawOverlap = None
         self._pitchOverlap = None
-        #self._yawSens = None
-        #self._pitchSens = None
-        #self._yawScale = None
-        #self._pitchScale = None
-        self._yawScale = 1.
-        self._pitchScale = 1.
-        self._yawBorder = None
-        self._pitchBorder = None
+        self._yawScale = None
+        self._pitchScale = None
+        self._yawOffset = None
+        self._pitchOffset = None
         
     def init(self, yawStart, yawEnd, pitchStart, pitchEnd, yawFov, pitchFov, yawCameraFov, pitchCameraFov, yawOverlap, pitchOverlap):
         """ Init internal values.
@@ -132,12 +127,13 @@ class ShootingArea(gtk.DrawingArea):
         self._pitchCameraFov = pitchCameraFov
         self._yawOverlap = yawOverlap
         self._pitchOverlap = pitchOverlap
-        #self._yawSens = cmp(yawEnd, yawStart)
-        #self._pitchSens = cmp(pitchEnd, pitchStart)
-        #self._yawScale = self._width / yawFov
-        #self._pitchScale = self._height / pitchFov
-        self._yawBorder = int((self._width - yawFov) / 2.)
-        self._pitchBorder = int((self._height - pitchFov) / 2.)
+        #print "yawFov=%.1f, pitchFov=%.1f, yawCameraFov=%.1f, pitchCameraFov=%.1f" % (yawFov, pitchFov, yawCameraFov, pitchCameraFov)
+        yawScale = self._width / self._yawFov
+        pitchScale = self._height / self._pitchFov
+        self._scale = min(yawScale, pitchScale)
+        self._yawOffset = (self._width - self._yawFov * self._scale) / 2.
+        self._pitchOffset = (self._height - self._pitchFov * self._scale) / 2.
+        #print "yawScale=%f, pitchScale=%f, scale=%f, yawOffset=%f, pitchOffset=%f" % (yawScale, pitchScale, self._scale, self._yawOffset, self._pitchOffset)
 
         self.connect("realize", self._realize_cb)
         self.connect("configure-event", self._configure_cb)
@@ -160,9 +156,10 @@ class ShootingArea(gtk.DrawingArea):
         Note that the 
         """
         self._set_colors({'back': "#d0d0d0", 'fg1': "#000000", 'fg2': "#80ff80"})
-        x, y, self._width, self._height = widget.get_allocation()
-        self._yawScale = (self._width - 2 * self._border) / self._yawFov
-        self._pitchScale = (self._height - 2 * self._border) / self._pitchFov
+        x, y, width, height = widget.get_allocation()
+        yawScale = self._width / self._yawFov
+        pitchScale = self._height / self._pitchFov
+        self._scale = min(yawScale, pitchScale)
         return True
         
     def _expose_cb(self, widget, event):
@@ -170,8 +167,16 @@ class ShootingArea(gtk.DrawingArea):
         
         We copy the pixmap to the drawing area.
         """
-        self.window.draw_rectangle(self._back, True, self._border, self._border, self._width - 2 * self._border, self._height - 2 * self._border)
-        for yaw, pitch in self._picts:
+        self.window.draw_rectangle(self._back, True,
+                                   int(round(self._yawOffset)),
+                                   int(round(self._pitchOffset)),
+                                   self._width - int(round(2 * self._yawOffset)),
+                                   self._height - int(round(2 * self._pitchOffset)))
+        #print "back: x=%d, y=%d, w=%d, h=%d" % (int(round(self._yawOffset)),
+                                                #int(round(self._pitchOffset)),
+                                                #self._width - int(round(2 * self._yawOffset)),
+                                                #self._height - int(round(2 * self._pitchOffset)))
+        for i, (yaw, pitch) in enumerate(self._picts):
             if cmp(self._yawEnd, self._yawStart) > 0:
                 yaw -= self._yawStart
             else:
@@ -180,11 +185,12 @@ class ShootingArea(gtk.DrawingArea):
                 pitch -= self._pitchStart
             else:
                 pitch -= self._pitchEnd
-            x = int(yaw * self._yawScale) + self._border
-            y = int(pitch * self._pitchScale) + self._border
-            w = int(self._yawCameraFov * self._yawScale)
-            h = int(self._pitchCameraFov * self._pitchScale)
-            #print "yaw=%.1f, pitch=%.1f, x=%.1f, y=%.1f, w=%.1f, h=%.1f" % (yaw, pitch, x, y, w, h)
+            x = int(round(yaw * self._scale)) + int(round(self._yawOffset))
+            y = int(round(pitch * self._scale)) + int(round(self._pitchOffset))
+            w = int(round(self._yawCameraFov * self._scale))
+            h = int(round(self._pitchCameraFov * self._scale))
+            y = self._height - y - h
+            #print "pict=%d, yaw=%.1f, pitch=%.1f, x=%.1f, y=%.1f, w=%.1f, h=%.1f" % (i + 1, yaw, pitch, x, y, w, h)
             self.window.draw_rectangle(self._fg1, True, x, y, w, h)
             x += 1
             y += 1
@@ -217,7 +223,11 @@ class ShootingArea(gtk.DrawingArea):
         """
         #print "clear()"
         self._picts = []
-        self.window.draw_rectangle(self._back, True, self._border, self._border, self._width - 2 * self._border, self._height - 2 * self._border)
+        self.window.draw_rectangle(self._back, True,
+                                   int(round(self._yawOffset)),
+                                   int(round(self._pitchOffset)),
+                                   self._width - int(round(2 * self._yawOffset)),
+                                   self._height - 2 * int(round(self._pitchOffset)))
 
     def _set_colors(self, colors):
         #print "set_colors()"
