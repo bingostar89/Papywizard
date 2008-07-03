@@ -89,9 +89,6 @@ class ShootController(AbstractController):
                                       self.__model.camera.getYawFov(self.__model.mosaic.cameraOrientation),
                                       self.__model.camera.getPitchFov(self.__model.mosaic.cameraOrientation),
                                       self.__model.mosaic.yawRealOverlap, self.__model.mosaic.pitchRealOverlap)
-        
-        # Determine size
-        self.__view.shootingArea.set_size_request(300, 100)
 
         # Connect signal/slots
         dic = {"on_manualShootCheckbutton_toggled": self.__onManualShootCheckbuttonToggled,
@@ -268,6 +265,15 @@ class ShootController(AbstractController):
             # Check end of shooting
             if not self.__model.isShooting():
                 Logger().debug("checkEnd(): model not shooting anymore")
+                
+                # Check status
+                #if self.__model.error:
+                    #messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
+                                                      #message_format="Internal error while shooting")
+                    #messageDialog.format_secondary_text("Please report bug (include logs)")
+                    #messageDialog.run()
+                    #messageDialog.destroy()
+                    
                 self.__view.dataFileEnableCheckbutton.set_sensitive(True)
                 self.__view.startButton.set_sensitive(True)
                 self.__view.suspendResumeLabel.set_text("Suspend")
@@ -277,6 +283,7 @@ class ShootController(AbstractController):
                 self.refreshView()
                 thread.join()
                 Logger().debug("ShootController.__startShooting().checkEnd(): model thread over")
+                
                 return False # Stop execution by Gtk timeout
 
             self.refreshView() # Can conflict with Spy?
@@ -292,6 +299,7 @@ class ShootController(AbstractController):
 
         thread = threading.Thread(target=self.__model.start)
         thread.start()
+        self.__model.startEvent.wait()
 
         # Check end of shooting
         gobject.timeout_add(200, checkEnd)
