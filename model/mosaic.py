@@ -66,21 +66,19 @@ class Mosaic(Scan):
         @type camera: {Camera}
         """
         self.__camera = camera
-        
-        self.yawStart = 0.
-        self.pitchStart = 0.
-        self.yawEnd = 0.
-        self.pitchEnd = 0.
         self.__yawIndex = None
         self.__pitchIndex = None
         self.__yawInc = None
         self.__pitchInc = None
         self.__yawIndex = None
         self.__pitchIndex = None
-
-        #self.__yawSens = None
-        #self.__pitchSens = None
+        self.__yawSens = None
+        self.__pitchSens = None
         
+        self.yawStart = 0.
+        self.pitchStart = 0.
+        self.yawEnd = 0.
+        self.pitchEnd = 0.
 
     def __iter__(self):
         """ Define Mosaic as an iterator.
@@ -98,52 +96,42 @@ class Mosaic(Scan):
         self.__yawInc *= cmp(self.yawEnd, self.yawStart)
         self.__pitchInc *= cmp(self.pitchEnd, self.pitchStart)
 
-        # Init mosaic shooting params (should be in preferences)
-        self.__firstMove = "yaw"
-        self.__yawCR = False
-        self.__pitchCR = False
-        
-        #if self.__yawInc > 0:
-            #self.__yawIndex = 0
-            #self.__yawSens = 1
-        #else:
-            #self.__yawIndex = self.yawNbPicts - 1
-            #self.__yawSens = -1
-        #if self.__pitchInc > 0:
-            #self.__pitchIndex = 0
-            #self.__pitchSens = 1
-        #else:
-            #self.__pitchIndex = self.pitchNbPicts - 1
-            #self.__pitchSens = -1
-            
         self.__yawIndex = 0
-        self.__yawSens = 1
         self.__pitchIndex = 0
+        self.__yawSens = 1
         self.__pitchSens = 1
-            
-        return self.next2()
+        
+        # todo: take startFrom param into account
+        
+        return self.__generate()
 
-    def next2(self):
+    def __generate(self):
         """ Return next (yaw, pitch) index position.
         """
         while True:
-            yaw = self.yawStart + self.__yawIndex * self.__yawInc
-            pitch = self.pitchStart + self.__pitchIndex * self.__pitchInc
+            if self.startFrom == "start":
+                yaw = self.yawStart + self.__yawIndex * self.__yawInc
+                pitch = self.pitchStart + self.__pitchIndex * self.__pitchInc
+            elif self.startFrom == "end":
+                yaw = self.yawEnd - self.__yawIndex * self.__yawInc
+                pitch = self.pitchEnd - self.__pitchIndex * self.__pitchInc
+            elif self.startFrom == "nearest":
+                raise NotImplementedError("'nearest' param value not yet allowed")
             Logger().debug("Mosaic.next(): __yawIndex=%d, __pitchIndex=%d" % (self.__yawIndex, self.__pitchIndex))
             Logger().debug("Mosaic.next(): yaw=%.1f, pitch=%.1f" % (yaw, pitch))
             yield yaw, pitch
             
             # Compute next position
-            if self.__firstMove == "yaw":
+            if self.initialDirection == "yaw":
                 self.__yawIndex += self.__yawSens
-            elif self.__firstMove == "pitch":
+            elif self.initialDirection == "pitch":
                 self.__pitchIndex += self.__pitchSens
 
             for i in xrange(2):
                 if self.__yawIndex == self.yawNbPicts: # __yawSens was 1
-                    if self.__firstMove == "pitch":
+                    if self.initialDirection == "pitch":
                         raise StopIteration
-                    if self.__yawCR:
+                    if self.cr:
                         self.__yawIndex = 0
                         self.__yawSens = 1
                     else:
@@ -152,9 +140,9 @@ class Mosaic(Scan):
                     self.__pitchIndex += self.__pitchSens
                     continue
                 elif self.__yawIndex == -1:            # __yawSens was -1
-                    if self.__firstMove == "pitch":
+                    if self.initialDirection == "pitch":
                         raise StopIteration
-                    if self.__yawCR:
+                    if self.cr:
                         self.__yawIndex = self.yawNbPicts - 1
                         self.__yawSens = -1
                     else:
@@ -164,9 +152,9 @@ class Mosaic(Scan):
                     continue
                 
                 if self.__pitchIndex == self.pitchNbPicts: # __pitchSens was 1
-                    if self.__firstMove == "yaw":
+                    if self.initialDirection == "yaw":
                         raise StopIteration
-                    if self.__pitchCR:
+                    if self.cr:
                         self.__pitchIndex = 0
                         self.__pitchSens = 1
                     else:
@@ -175,9 +163,9 @@ class Mosaic(Scan):
                     self.__yawIndex += self.__yawSens
                     continue
                 elif self.__pitchIndex == -1:              # __pitchSens was -1
-                    if self.__firstMove == "yaw":
+                    if self.initialDirection == "yaw":
                         raise StopIteration
-                    if self.__pitchCR:
+                    if self.cr:
                         self.__pitchIndex = self.pitchNbPicts - 1
                         self.__pitchSens = -1
                     else:
@@ -185,49 +173,44 @@ class Mosaic(Scan):
                         self.__pitchSens = 1
                     self.__yawIndex += self.__yawSens
                     continue
-                
                 break
 
-    #def next(self):
-        #""" Return next (yaw, pitch) index position.
-        #"""
-        #self.__yawIndex += self.__yawSens
-        #if self.__yawIndex >= self.yawNbPicts:
-            #self.__yawIndex = self.yawNbPicts - 1
-            #self.__yawSens = -1
-            #self.__pitchIndex += self.__pitchSens
-            #if self.__pitchIndex >= self.pitchNbPicts:
-                #raise StopIteration
-            #elif self.__pitchIndex < 0:
-                #raise StopIteration
-        #elif self.__yawIndex < 0:
-            #self.__yawIndex = 0
-            #self.__yawSens = +1
-            #self.__pitchIndex += self.__pitchSens
-            #if self.__pitchIndex >= self.pitchNbPicts:
-                #raise StopIteration
-            #elif self.__pitchIndex < 0:
-                #raise StopIteration
-            
-        #yaw = self.yawStart + self.__yawIndex * self.__yawInc
-        #pitch = self.pitchStart + self.__pitchIndex * self.__pitchInc
-        #Logger().debug("Mosaic.next(): __yawIndex=%d, __pitchIndex=%d" % (self.__yawIndex, self.__pitchIndex))
-        #Logger().debug("Mosaic.next(): yaw=%.1f, pitch=%.1f" % (yaw, pitch))
-        
-        #return yaw, pitch
-
     # Properties
-    def __getTemplate(self):
+    def __getStartFrom(self):
         """
         """
-        return ConfigManager().get('Preferences', 'SHOOTING_MOSAIC_TEMPLATE')
+        return ConfigManager().get('Preferences', 'SHOOTING_MOSAIC_START_FROM')
     
-    def __setTemplate(self, template):
+    def __setStartFrom(self, startFrom):
         """
         """
-        ConfigManager().set('Preferences', 'SHOOTING_MOSAIC_TEMPLATE', template)
+        ConfigManager().set('Preferences', 'SHOOTING_MOSAIC_START_FROM', startFrom)
 
-    template = property(__getTemplate, __setTemplate)
+    startFrom = property(__getStartFrom, __setStartFrom)
+    
+    def __getInitialDirection(self):
+        """
+        """
+        return ConfigManager().get('Preferences', 'SHOOTING_MOSAIC_INITAL_DIR')
+    
+    def __setInitialDirection(self, initialDirection):
+        """
+        """
+        ConfigManager().set('Preferences', 'SHOOTING_MOSAIC_INITAL_DIR', initialDirection)
+
+    initialDirection = property(__getInitialDirection, __setInitialDirection)
+    
+    def __getCR(self):
+        """
+        """
+        return ConfigManager().getBoolean('Preferences', 'SHOOTING_MOSAIC_CR')
+    
+    def __setCR(self, cr):
+        """
+        """
+        ConfigManager().setBoolean('Preferences', 'SHOOTING_MOSAIC_CR', cr)
+
+    cr = property(__getCR, __setCR)
     
     def __getCameraOrientation(self):
         """
