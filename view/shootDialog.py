@@ -85,7 +85,6 @@ class ShootDialog(object):
         self.shootDialog = self.wTree.get_widget("shootDialog")
         vbox = self.wTree.get_widget("vbox")
         self.shootingArea = ShootingArea()
-        self.shootingArea.set_size_request(300, 100)
         vbox.pack_start(self.shootingArea)
         vbox.reorder_child(self.shootingArea, 0)
         self.progressbar = self.wTree.get_widget("progressbar")
