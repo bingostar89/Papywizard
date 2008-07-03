@@ -66,7 +66,9 @@ class ShootingArea(gtk.DrawingArea):
 
         self._picts = []
         self._border = 0
-        x, y, self._width, self._height = self.get_allocation()
+        self._width = 360
+        self._height = 180
+        self.set_size_request(self._width, self._height)
 
         self._yawStart = None
         self._yawEnd = None
@@ -78,10 +80,14 @@ class ShootingArea(gtk.DrawingArea):
         self._pitchCameraFov = None
         self._yawOverlap = None
         self._pitchOverlap = None
-        self._yawSens = None
-        self._pitchSens = None
-        self._yawScale = None
-        self._pitchScale = None
+        #self._yawSens = None
+        #self._pitchSens = None
+        #self._yawScale = None
+        #self._pitchScale = None
+        self._yawScale = 1.
+        self._pitchScale = 1.
+        self._yawBorder = None
+        self._pitchBorder = None
         
     def init(self, yawStart, yawEnd, pitchStart, pitchEnd, yawFov, pitchFov, yawCameraFov, pitchCameraFov, yawOverlap, pitchOverlap):
         """ Init internal values.
@@ -126,10 +132,12 @@ class ShootingArea(gtk.DrawingArea):
         self._pitchCameraFov = pitchCameraFov
         self._yawOverlap = yawOverlap
         self._pitchOverlap = pitchOverlap
-        self._yawSens = cmp(yawEnd, yawStart)
-        self._pitchSens = cmp(pitchEnd, pitchStart)
-        self._yawScale = self._width / self._yawFov
-        self._pitchScale = self._height / self._pitchFov
+        #self._yawSens = cmp(yawEnd, yawStart)
+        #self._pitchSens = cmp(pitchEnd, pitchStart)
+        #self._yawScale = self._width / yawFov
+        #self._pitchScale = self._height / pitchFov
+        self._yawBorder = int((self._width - yawFov) / 2.)
+        self._pitchBorder = int((self._height - pitchFov) / 2.)
 
         self.connect("realize", self._realize_cb)
         self.connect("configure-event", self._configure_cb)
@@ -164,11 +172,11 @@ class ShootingArea(gtk.DrawingArea):
         """
         self.window.draw_rectangle(self._back, True, self._border, self._border, self._width - 2 * self._border, self._height - 2 * self._border)
         for yaw, pitch in self._picts:
-            if self._yawSens > 0:
+            if cmp(self._yawEnd, self._yawStart) > 0:
                 yaw -= self._yawStart
             else:
                 yaw -= self._yawEnd
-            if self._pitchSens > 0:
+            if cmp(self._pitchEnd, self._pitchStart) > 0:
                 pitch -= self._pitchStart
             else:
                 pitch -= self._pitchEnd
