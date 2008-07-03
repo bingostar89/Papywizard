@@ -85,7 +85,9 @@ class ConfigDialog(object):
         self.stabilizationDelaySpinbutton = self.wTree.get_widget("stabilizationDelaySpinbutton")
         self.cameraOrientationCombobox = self.wTree.get_widget("cameraOrientationCombobox")
         self.overlapSpinbutton = self.wTree.get_widget("overlapSpinbutton")
-        #self.mosaicTemplateCombobox = self.wTree.get_widget("mosaicTemplateCombobox")
+        self.startFromCombobox = self.wTree.get_widget("startFromCombobox")
+        self.initialDirectionCombobox = self.wTree.get_widget("initialDirectionCombobox")
+        self.crCheckbutton = self.wTree.get_widget("crCheckbutton")
 
         # Camera
         self.timeValueSpinbutton = self.wTree.get_widget("timeValueSpinbutton")
@@ -112,7 +114,9 @@ class ConfigDialog(object):
         self.stabilizationDelaySpinbutton.set_value(values['shootingStabilizationDelay'])
         self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[values['shootingMosaicCameraOrientation']])
         self.overlapSpinbutton.set_value(values['shootingMosaicOverlap'])
-        #self.mosaicTemplate.set_active(config.MOSAIC_TEMPLATE_INDEX[values['shootingMosaicTemplate']])
+        self.startFromCombobox.set_active(config.MOSAIC_START_FROM_INDEX[values['shootingMosaicStartFrom']])
+        self.initialDirectionCombobox.set_active(config.MOSAIC_INITIAL_DIR_INDEX[values['shootingMosaicInitialDirection']])
+        self.crCheckbutton.set_active(values['shootingMosaicCr'])
         
         # Camera
         self.timeValueSpinbutton.set_value(values['cameraTimeValue'])
