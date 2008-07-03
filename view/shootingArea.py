@@ -223,11 +223,7 @@ class ShootingArea(gtk.DrawingArea):
         """
         #print "clear()"
         self._picts = []
-        self.window.draw_rectangle(self._back, True,
-                                   int(round(self._yawOffset)),
-                                   int(round(self._pitchOffset)),
-                                   self._width - int(round(2 * self._yawOffset)),
-                                   self._height - 2 * int(round(self._pitchOffset)))
+        self.refresh()
 
     def _set_colors(self, colors):
         #print "set_colors()"
