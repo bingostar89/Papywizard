@@ -155,7 +155,7 @@ class Shooting(object):
         """
         cameraFov = self.camera.getYawFov(self.cameraOrientation)
         if round(self.yawFov - cameraFov, 1) >= 0.1:
-            nbPicts = int(((self.yawFov - self.overlap * cameraFov) / (cameraFov * (1 - self.overlap))) + 1)
+            nbPicts = int(round(((self.yawFov - self.overlap * cameraFov) / (cameraFov * (1 - self.overlap))) + 1))
         else:
             nbPicts = 1
         return nbPicts
@@ -167,7 +167,7 @@ class Shooting(object):
         """
         cameraFov = self.camera.getPitchFov(self.cameraOrientation)
         if round(self.pitchFov - cameraFov, 1) >= 0.1:
-           nbPicts = int(((self.pitchFov - self.overlap * cameraFov) / (cameraFov * (1 - self.overlap))) + 1)
+           nbPicts = int(round(((self.pitchFov - self.overlap * cameraFov) / (cameraFov * (1 - self.overlap))) + 1))
         else:
             nbPicts = 1
         return nbPicts
@@ -263,9 +263,11 @@ class Shooting(object):
         +-180°, overlap inclus
         """
         yaw, pitch = self.hardware.readPosition()
-        cameraFov = self.camera.getPitchFov(self.cameraOrientation)
+        cameraFov = self.camera.getYawFov(self.cameraOrientation)
         self.yawStart = yaw - 180. + cameraFov * (1 - self.overlap) / 2.
         self.yawEnd = yaw + 180. - cameraFov * (1 - self.overlap) / 2.
+        self.yawStart = yaw - 180. + cameraFov * (1 - self.yawRealOverlap) / 2.
+        self.yawEnd = yaw + 180. - cameraFov * (1 - self.yawRealOverlap) / 2.
         Logger().debug("Shooting.setYaw360(): startYaw=%.1f, endYaw=%.1f" % (self.yawStart, self.yawEnd))
 
     def setPitch180(self):
@@ -279,6 +281,8 @@ class Shooting(object):
         cameraFov = self.camera.getPitchFov(self.cameraOrientation)
         self.pitchStart = pitch - 90. + cameraFov * (1 - self.overlap) / 2.
         self.pitchEnd = yaw + 90. - cameraFov * (1 - self.overlap) / 2.
+        self.pitchStart = pitch - 90. + cameraFov * (1 - self.pitchRealOverlap) / 2.
+        self.pitchEnd = yaw + 90. - cameraFov * (1 - self.pitchRealOverlap) / 2.
         Logger().debug("Shooting.setPitch180(): startPitch=%.1f, endPitch=%.1f" % (self.pitchStart, self.pitchEnd))
 
     def setManualShoot(self, flag):
