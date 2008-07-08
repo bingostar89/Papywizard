@@ -190,7 +190,7 @@ class Shooting(object):
 
         # Loop over all positions
         try:
-            for i, (yaw, pitch) in enumerate(self.mosaic):
+            for i, (yaw, pitch) in enumerate(self.mosaic.iterPositions()):
                 Logger().debug("Shooting.start(): Goto yaw=%.1f pitch=%.1f" % (yaw, pitch))
                 Logger().info("Moving")
                 self.sequence = "Moving"
