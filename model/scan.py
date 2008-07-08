@@ -56,11 +56,9 @@ class Scan(object):
     """ Scan model.
 
     Scan is the base object for shooting object.
-    This is an iterator which iters over positions to shoot.
-    Use it just as any iterator:
 
     >>> scan = Scan()
-    >>> for yaw, pitch in scan:
+    >>> for yaw, pitch in scan.iterPositions():
     ...     print yaw, pitch
     """
     def __init__(self):
@@ -68,14 +66,8 @@ class Scan(object):
         """
         super(Scan, self).__init__()
 
-    # Iterator definition
-    def __iter__(self):
-        """ Init the iterator.
-        """
-        raise NotImplementedError
-    
-    def _generate(self):
-        """ Return next (yaw, pitch) position.
+    def iterPositions(self):
+        """ Iterate over all (yaw, pitch) positions.
         """
         raise NotImplementedError
 

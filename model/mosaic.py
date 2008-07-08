@@ -81,8 +81,8 @@ class Mosaic(Scan):
         self.yawEnd = 0.
         self.pitchEnd = 0.
 
-    def __iter__(self):
-        """ Define Mosaic as an iterator.
+    def iterPositions(self):
+        """ Iterate over all (yaw, pitch) positions.
         """
         yawCameraFov = self.__camera.getYawFov(self.cameraOrientation)
         pitchCameraFov = self.__camera.getPitchFov(self.cameraOrientation)
@@ -101,14 +101,7 @@ class Mosaic(Scan):
         self.__pitchIndex = 0
         self.__yawSens = 1
         self.__pitchSens = 1
-        
-        # todo: take startFrom param into account
-        
-        return self._generate()
 
-    def _generate(self):
-        """ Return next (yaw, pitch) index position.
-        """
         while True:
             if self.startFrom == "start":
                 yaw = self.yawStart + self.__yawIndex * self.__yawInc
@@ -116,8 +109,8 @@ class Mosaic(Scan):
             elif self.startFrom == "end":
                 yaw = self.yawEnd - self.__yawIndex * self.__yawInc
                 pitch = self.pitchEnd - self.__pitchIndex * self.__pitchInc
-            elif self.startFrom == "nearest":
-                raise NotImplementedError("'nearest' param value not yet allowed")
+            else:
+                raise ValueError("Unknown '%s' <Start from> param" % self.startFrom)
             Logger().debug("Mosaic.next(): __yawIndex=%d, __pitchIndex=%d" % (self.__yawIndex, self.__pitchIndex))
             Logger().debug("Mosaic.next(): yaw=%.1f, pitch=%.1f" % (yaw, pitch))
             yield yaw, pitch
