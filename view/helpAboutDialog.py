@@ -58,6 +58,8 @@ import sys
 #pygtk.require("2.0")
 import gtk.glade
 
+from papywizard.common import config
+
 path = os.path.dirname(__file__)
 
 
@@ -73,6 +75,9 @@ class HelpAboutDialog(object):
         
         # Retreive usefull widgets
         self._retreiveWidgets()
+
+        # Set version
+        self.helpAboutDialog.set_version(config.VERSION)
  
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
