@@ -48,7 +48,7 @@ Usage
 =====
 
 This serializer allows threads to serialize events to
-be processes by the main trhead.
+be processed by the main trhead.
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
@@ -73,11 +73,11 @@ class Serializer(object):
     def apply(self, work, *args, **kwargs):
         """ Add an event to the serializer queue.
         
-        @param work: work to push on the queue
-        @type work: python callable
-        
         Called by an external thread which want to display
         something on the GUI.
+        
+        @param work: work to push on the queue
+        @type work: python callable
         """
         self.__workRequestQueue.put((work, args, kwargs))
         result, exception = self.__resultQueue.get()
