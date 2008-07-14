@@ -90,6 +90,7 @@ class ConfigController(AbstractController):
         # Connect signal/slots
         dic = {"on_okButton_clicked": self.__onOkButtonClicked,
                "on_cancelButton_clicked": self.__onCancelButtonClicked,
+               "on_driverCombobox_changed": self.__onDriverComboboxChanged
            }
         self.wTree.signal_autoconnect(dic)
 
@@ -113,7 +114,9 @@ class ConfigController(AbstractController):
         self.sensorRatioCombobox = self.wTree.get_widget("sensorRatioCombobox")
         self.focalSpinbutton = self.wTree.get_widget("focalSpinbutton")
         self.driverCombobox = self.wTree.get_widget("driverCombobox")
+        self.bluetoothDeviceAddressLabel = self.wTree.get_widget("bluetoothDeviceAddressLabel")
         self.bluetoothDeviceAddressEntry = self.wTree.get_widget("bluetoothDeviceAddressEntry")
+        self.serialPortLabel = self.wTree.get_widget("serialPortLabel")
         self.serialPortEntry = self.wTree.get_widget("serialPortEntry")
         self.loggerLevelCombobox = self.wTree.get_widget("loggerCLevelCombobox")
         self.dataFileFormatEntry = self.wTree.get_widget("dataFileFormatEntry")
@@ -152,6 +155,24 @@ class ConfigController(AbstractController):
         Close the pref. dialog.
         """
         Logger().trace("ConfigController.__onCancelButtonClicked()")
+
+    def __onDriverComboboxChanged(self, widget):
+        """ Driver combobox has changed.
+        
+        Enable/disable BT address / serial port.
+        """
+        Logger().trace("ConfigController.__onDriverComboboxChanged()")
+        driver = config.DRIVER_INDEX[self.driverCombobox.get_active()]
+        self.bluetoothDeviceAddressLabel.set_sensitive(False)
+        self.bluetoothDeviceAddressEntry.set_sensitive(False)
+        self.serialPortLabel.set_sensitive(False)
+        self.serialPortEntry.set_sensitive(False)
+        if driver == 'bluetooth':
+            self.bluetoothDeviceAddressLabel.set_sensitive(True)
+            self.bluetoothDeviceAddressEntry.set_sensitive(True)
+        elif driver == 'serial':
+            self.serialPortLabel.set_sensitive(True)
+            self.serialPortEntry.set_sensitive(True)
 
     def run(self):
         """ Run the dialog.
