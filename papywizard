@@ -53,11 +53,11 @@ import gtk
 import gobject
 
 from papywizard.common import config
+from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.serializer import Serializer
 from papywizard.common.exception import HardwareError
 from papywizard.model.shooting import Shooting
-#from papywizard.view.mainWindow import MainWindow
 from papywizard.controller.mainController import MainController
 from papywizard.controller.spy import Spy
 from papywizard.hardware.head import Head, HeadSimulation
@@ -65,6 +65,7 @@ if config.VIEW3D_ENABLE:
     from papywizard.view3D.view3D import View3D
 
 
+Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
 Logger().info("Starting Papywizard app...")
 
 # Create hardware and model

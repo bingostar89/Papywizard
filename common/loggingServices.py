@@ -60,7 +60,6 @@ import StringIO
 import traceback
 
 from papywizard.common import config
-from papywizard.common.configManager import ConfigManager
 
 
 consoleLogColors = {'trace':"\033[0;36;40;22m",     # cyan/noir, normal
@@ -144,7 +143,6 @@ class Logger(object):
 
             # Handlers
             self.__streamHandler = logging.StreamHandler()
-            self.setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
             self.__streamHandler.setFormatter(colorFormatter)
 
             # Loggers
