@@ -65,8 +65,8 @@ CONFIG_FILE = "papywizard.conf"
 USER_CONFIG_FILE = os.path.join(USER_CONFIG_DIR, CONFIG_FILE)
 
 SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3.}
-SENSOR_RATIOS_INDEX = {'3:2': 0, '4:3': 1,
-                       0: '3:2', 1: '4:3'}
+SENSOR_RATIOS_INDEX = {'3:2': 0, '4:3': 1, '5:4': 5./4.,
+                       0: '3:2', 1: '4:3', 2: '5:4'}
 
 CAMERA_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1,
                             0: 'portrait', 1: 'landscape'}
