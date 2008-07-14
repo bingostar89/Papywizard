@@ -52,46 +52,6 @@ usefull information for stitchers. AutoPano Pro takes advantage of
 such datas, for example to correctly set unlinked pictures at their
 correct place (sky pictures without any details are often unlinked).
 
-<?xml version="1.0" ?>
-<papywizard>
-    <header>
-        <shooting>
-            <stabilizationDelay>0.5</stabilizationDelay>
-            <overlap minimum="0.25" pitch="1.00" yaw="0.58"/>
-            <cameraOrientation>portrait</cameraOrientation>
-        </shooting>
-        <camera>
-            <timeValue>0.5</timeValue>
-            <nbPicts>2</nbPicts>
-            <sensor coef="1.6" ratio="3:2"/>
-        </camera>
-        <lens>
-            <focal>17.0</focal>
-        </lens>
-        <mode name="mosaic">
-            <nbPicts pitch="1" yaw="2"/>
-        </mode>
-    </header>
-    <shoot>
-        <pict id="1" num="1">
-            <time>Wed Jun 25 10:37:16 2008</time>
-            <position pitch="0.0" yaw="0.0"/>
-        </pict>
-        <pict id="2" num="2">
-            <time>Wed Jun 25 10:37:17 2008</time>
-            <position pitch="0.0" yaw="0.0"/>
-        </pict>
-        <pict id="3" num="1">
-            <time>Wed Jun 25 10:37:20 2008</time>
-            <position pitch="0.0" yaw="20.1"/>
-        </pict>
-        <pict id="4" num="2">
-            <time>Wed Jun 25 10:37:21 2008</time>
-            <position pitch="0.0" yaw="20.1"/>
-        </pict>
-    </shoot>
-</papywizard>
-
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
 @license: CeCILL
@@ -118,24 +78,24 @@ class Data(object):
         #@type headerInfo: dict
         """
         Logger().debug("Data.__init__(): create xml tree")
-        self.__date = time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime())
+        self._date = time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime())
 
         # Create xml tree
         self.__impl = xml.dom.minidom.getDOMImplementation()
-        self.__doc = self.__impl.createDocument(None, "papywizard", None)
-        self.__rootNode = self.__doc.documentElement
+        self._doc = self.__impl.createDocument(None, "papywizard", None)
+        self._rootNode = self._doc.documentElement
 
         # Create 'header' node
-        self.__headerNode = self.__doc.createElement('header')
-        self.__rootNode.appendChild(self.__headerNode)
+        self._headerNode = self._doc.createElement('header')
+        self._rootNode.appendChild(self._headerNode)
 
         # Create 'shoot' node
-        self.__shootNode = self.__doc.createElement('shoot')
-        self.__rootNode.appendChild(self.__shootNode)
+        self._shootNode = self._doc.createElement('shoot')
+        self._rootNode.appendChild(self._shootNode)
 
-        self.__pictId = 1
+        self._pictId = 1
 
-    def __createNode(self, parent, tag):
+    def _createNode(self, parent, tag):
         """ Create a node.
 
         @param parent: parent node
@@ -144,11 +104,11 @@ class Data(object):
         @param tag: name of the tag
         @type tag: str
         """
-        node = self.__doc.createElement(tag)
+        node = self._doc.createElement(tag)
         parent.appendChild(node)
         return node
 
-    def __createTextNode(self, parent, tag, text):
+    def _createTextNode(self, parent, tag, text):
         """ Create a text node.
 
         @param parent: parent node
@@ -160,12 +120,12 @@ class Data(object):
         @param text: text to use
         @type text: str
         """
-        textNode = self.__createNode(parent, tag)
-        text = self.__doc.createTextNode(text)
+        textNode = self._createNode(parent, tag)
+        text = self._doc.createTextNode(text)
         textNode.appendChild(text)
         return textNode
 
-    def __addNode(self, parent,  tag, value=None, **attr):
+    def _addNode(self, parent, tag, value=None, **attr):
         """ Add a sub node.
 
         @param parent: parent node
@@ -180,23 +140,23 @@ class Data(object):
         @param attr: optionnal attributes
         @type attr: dict
         """
-        Logger().debug("Data.__addNode(): parent=%s, tag=%s, value=%s, attr=%s" % (parent.tagName, tag, value, attr))
+        Logger().debug("Data._addNode(): parent=%s, tag=%s, value=%s, attr=%s" % (parent.tagName, tag, value, attr))
         if value is not None:
-            node = self.__createTextNode(parent, tag, value)
+            node = self._createTextNode(parent, tag, value)
         else:
-            node = self.__createNode(parent, tag)
+            node = self._createNode(parent, tag)
         for key, val in attr.iteritems():
             node.setAttribute(key, val)
         return node
 
-    def __serialize(self):
+    def _serialize(self):
         """ Serialize xml tree to file.
         """
         if ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE'):
             Logger().trace("Data.serialize()")
             filename = os.path.join(config.HOME_DIR, config.DATA_FILE)
-            xmlFile = file(filename % self.__date, 'w')
-            self.__doc.writexml(xmlFile, addindent="    ", newl='\n', encoding="utf-8")
+            xmlFile = file(filename % self._date, 'w')
+            self._doc.writexml(xmlFile, addindent="    ", newl='\n', encoding="utf-8")
             xmlFile.close()
 
     def createHeader(self, values):
@@ -208,31 +168,31 @@ class Data(object):
         Logger().debug("Data.createHeader(): values=%s" % values)
         
         # Shooting
-        node = self.__addNode(self.__headerNode, 'shooting')
-        self.__addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
-        self.__addNode(node, 'overlap', minimum=values['overlap'],
-                                        yaw=values['yawRealOverlap'],
-                                        pitch=values['pitchRealOverlap'])
-        self.__addNode(node, 'cameraOrientation', values['cameraOrientation'])
+        node = self._addNode(self._headerNode, 'shooting')
+        self._addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
+        self._addNode(node, 'overlap', minimum=values['overlap'],
+                                       yaw=values['yawRealOverlap'],
+                                       pitch=values['pitchRealOverlap'])
+        self._addNode(node, 'cameraOrientation', values['cameraOrientation'])
         
         # Camera
-        node = self.__addNode(self.__headerNode, 'camera')
-        self.__addNode(node, 'timeValue', values['timeValue'])
-        self.__addNode(node, 'nbPicts', values['nbPicts'])
-        self.__addNode(node, 'sensor', coef=values['sensorCoef'],
-                                       ratio=values['sensorRatio'])
+        node = self._addNode(self._headerNode, 'camera')
+        self._addNode(node, 'timeValue', values['timeValue'])
+        self._addNode(node, 'nbPicts', values['nbPicts'])
+        self._addNode(node, 'sensor', coef=values['sensorCoef'],
+                                      ratio=values['sensorRatio'])
         
         # Lens
-        node = self.__addNode(self.__headerNode, 'lens')
-        self.__addNode(node, 'focal', values['focal'])
+        node = self._addNode(self._headerNode, 'lens')
+        self._addNode(node, 'focal', values['focal'])
         
         # Mode
-        node = self.__addNode(self.__headerNode, 'mode', name=values['mode'])
-        self.__addNode(node, 'nbPicts', yaw=values['yawNbPicts'],
-                                        pitch=values['pitchNbPicts'])
+        node = self._addNode(self._headerNode, 'mode', name=values['mode'])
+        self._addNode(node, 'nbPicts', yaw=values['yawNbPicts'],
+                                       pitch=values['pitchNbPicts'])
 
         # Serialize xml file
-        self.__serialize()
+        self._serialize()
 
     def addPicture(self, num, yaw, pitch):
         """ Add a new picture node to shoot node.
@@ -247,10 +207,10 @@ class Data(object):
         @type pitch: float
         """
         Logger().debug("Data.addPicture(): num=%d, yaw=%.1f, pitch=%.1f" % (num, yaw, pitch))
-        node = self.__addNode(self.__shootNode, 'pict', id="%d" % self.__pictId, num="%d" % num)
-        self.__pictId += 1
-        self.__addNode(node, 'time', time.ctime())
-        self.__addNode(node, 'position', yaw="%.1f" % yaw, pitch="%.1f" % pitch)
+        node = self._addNode(self._shootNode, 'pict', id="%d" % self._pictId, num="%d" % num)
+        self._pictId += 1
+        self._addNode(node, 'time', time.ctime())
+        self._addNode(node, 'position', yaw="%.1f" % yaw, pitch="%.1f" % pitch)
 
         # Serialize xml file
-        self.__serialize()
+        self._serialize()
