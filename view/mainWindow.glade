@@ -127,7 +127,7 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkRadioButton" id="ModePresetRadiobutton">
+                          <widget class="GtkRadioButton" id="modePresetRadiobutton">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="label" translatable="yes" context="yes">Preset</property>
@@ -478,7 +478,6 @@
                     <child>
                       <widget class="GtkFrame" id="presetFrame">
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
                         <property name="label_xalign">0</property>
                         <child>
                           <widget class="GtkAlignment" id="alignment4">
@@ -501,6 +500,8 @@
                                 <child>
                                   <widget class="GtkComboBox" id="presetTemplateCombobox">
                                     <property name="visible">True</property>
+                                    <property name="has_tooltip">True</property>
+                                    <property name="tooltip_text">Template for preset shooting</property>
                                     <property name="items" translatable="yes" context="yes"></property>
                                     <signal name="changed" handler="on_presetTemplateCombobox_changed"/>
                                   </widget>
