@@ -58,7 +58,8 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.signal import Signal
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.exception import HardwareError
-from papywizard.common.data import Data
+from papywizard.common.dataMosaic import DataMosaic
+from papywizard.common.dataPreset import DataPreset
 from papywizard.model.camera import Camera
 from papywizard.model.mosaic import Mosaic
 from papywizard.model.preset import Preset
@@ -102,8 +103,7 @@ class Shooting(object):
         return ConfigManager().get('Preferences', 'SHOOTING_MODE')
     
     def __setMode(self, mode):
-        #ConfigManager().set('Preferences', 'SHOOTING_MODE', mode)
-        pass
+        ConfigManager().set('Preferences', 'SHOOTING_MODE', mode)
         
     mode = property(__getMode, __setMode)
     
@@ -171,21 +171,31 @@ class Shooting(object):
 
         Logger().trace("Shooting.start()")
 
-        data = Data()
-        values = {'stabilizationDelay': "%.1f" % self.stabilizationDelay,
-                  'overlap': "%.2f" % self.mosaic.overlap,
-                  'yawRealOverlap': "%.2f" % self.mosaic.yawRealOverlap,
-                  'pitchRealOverlap': "%.2f" % self.mosaic.pitchRealOverlap,
-                  'cameraOrientation': "%s" % self.mosaic.cameraOrientation,
-                  'timeValue': "%.1f" % self.camera.timeValue,
-                  'nbPicts': "%d" % self.camera.nbPicts,
-                  'sensorCoef': "%.1f" % self.camera.sensorCoef,
-                  'sensorRatio': "%s" % self.camera.sensorRatio,
-                  'focal': "%.1f" % self.camera.lens.focal,
-                  'mode': "mosaic",
-                  'yawNbPicts': "%d" % self.mosaic.yawNbPicts,
-                  'pitchNbPicts': "%d" % self.mosaic.pitchNbPicts
-              }
+        if self.mode == 'mosaic':
+            data = DataMosaic()
+            values = {'stabilizationDelay': "%.1f" % self.stabilizationDelay,
+                      'yawNbPicts': "%d" % self.mosaic.yawNbPicts,
+                      'pitchNbPicts': "%d" % self.mosaic.pitchNbPicts,
+                      'overlap': "%.2f" % self.mosaic.overlap,
+                      'yawRealOverlap': "%.2f" % self.mosaic.yawRealOverlap,
+                      'pitchRealOverlap': "%.2f" % self.mosaic.pitchRealOverlap,
+                      'cameraOrientation': "%s" % self.mosaic.cameraOrientation,
+                      'timeValue': "%.1f" % self.camera.timeValue,
+                      'nbPicts': "%d" % self.camera.nbPicts,
+                      'sensorCoef': "%.1f" % self.camera.sensorCoef,
+                      'sensorRatio': "%s" % self.camera.sensorRatio,
+                      'focal': "%.1f" % self.camera.lens.focal
+                  }
+        else:
+            data = DataPreset()
+            values = {'stabilizationDelay': "%.1f" % self.stabilizationDelay,
+                      'template': "%s" % self.preset.template,
+                      'timeValue': "%.1f" % self.camera.timeValue,
+                      'nbPicts': "%d" % self.camera.nbPicts,
+                      'sensorCoef': "%.1f" % self.camera.sensorCoef,
+                      'sensorRatio': "%s" % self.camera.sensorRatio,
+                      'focal': "%.1f" % self.camera.lens.focal
+                  }
         data.createHeader(values)
         self.error = False
         self.progress = 0.
