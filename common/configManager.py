@@ -56,6 +56,7 @@ import sets
 import ConfigParser
 
 from papywizard.common import config
+from papywizard.common.loggingServices import Logger
 
 path = os.path.dirname(__file__)
 
@@ -88,20 +89,20 @@ class ConfigManager(object):
             # Check if user config. exists
             userConfig = ConfigParser.SafeConfigParser()
             if userConfig.read(config.USER_CONFIG_FILE) == []:
-                print "User config. does not exist; copying from dist config."
+                Logger().debug("ConfigManager.__init__(): User config. does not exist; copying from dist config.")
                 distConfig.write(file(config.USER_CONFIG_FILE, 'w'))
                 userConfig.read(config.USER_CONFIG_FILE)
 
             # Check if user config. needs to be updated
             elif distConfigVersion > userConfig.getint('General', 'CONFIG_VERSION'):
-                print "User config. has wrong version.; updating from dist config."
+                Logger().debug("ConfigManager.__init__(): User config. has wrong version.; updating from dist config.")
                 
                 # Remove obsolete sections
                 distSections = distConfig.sections()
                 for userSection in userConfig.sections():
                     if userSection not in distSections:
                         userConfig.remove_section(userSection)
-                        print "Removed [%s] section" % userSection
+                        Logger().debug("ConfigManager.__init__(): Removed [%s] section" % userSection)
 
                 # Update all sections
                 for distSection in distSections:
@@ -109,27 +110,27 @@ class ConfigManager(object):
                     # Create new sections
                     if not userConfig.has_section(distSection):
                         userConfig.add_section(distSection)
-                        print "Added [%s] section" % distSection
+                        Logger().debug("ConfigManager.__init__(): Added [%s] section" % distSection)
 
                     # Remove obsolete options
                     for option in userConfig.options(distSection):
                         if not distConfig.has_option(distSection, option):
                             userConfig.remove_option(distSection, option)
-                            print "Removed [%s] %s option" % (distSection, option)
+                            Logger().debug("ConfigManager.__init__(): Removed [%s] %s option" % (distSection, option))
 
                     # Update the options
                     for option, value in distConfig.items(distSection):
                         if not userConfig.has_option(distSection, option) or \
                            value != userConfig.get(distSection, option) and not distSection.endswith("Preferences"):
                             userConfig.set(distSection, option, value)
-                            print "Updated [%s] %s option with %s" % (distSection, option, value)
+                            Logger().debug("ConfigManager.__init__(): Updated [%s] %s option with %s" % (distSection, option, value))
                         
                     # Set config. version
                     userConfig.set('General', 'CONFIG_VERSION', "%d" % distConfigVersion)
                 
                 # Write user config.
                 userConfig.write(file(config.USER_CONFIG_FILE, 'w'))
-                print "User config. written to file"
+                Logger().debug("ConfigManager.__init__(): User config. written to file")
                 
             self.__config = userConfig
 
@@ -141,7 +142,9 @@ class ConfigManager(object):
         Config is saved in user directory. Preferences are first
         set back to config.
         """
+        Logger().trace("ConfigManager.save()")
         self.__config.write(file(config.USER_CONFIG_FILE, 'w'))
+        Logger().info("Configuration saved")
 
     def get(self, section, option):
         """ Get a value.
