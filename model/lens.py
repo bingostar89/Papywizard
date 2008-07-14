@@ -53,6 +53,7 @@ __revision__ = "$Id$"
 
 import math
 
+from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 
@@ -65,7 +66,6 @@ class Lens(object):
     def __init__(self):
         """ Init object.
         """
-
     def __getFocal(self):
         """
         """
@@ -78,18 +78,6 @@ class Lens(object):
         
     focal = property(__getFocal, __setFocal)
     
-    def __getFisheye(self):
-        """
-        """
-        return ConfigManager().getBoolean('Preferences', 'LENS_FISHEYE')
-    
-    def __setFisheye(self, fisheye):
-        """
-        """
-        ConfigManager().setBoolean('Preferences', 'LENS_FISHEYE', fisheye)
-
-    fisheye = property(__getFisheye, __setFisheye)
-    
     def computeFov(self, size):
         """ Compute FoV.
 
@@ -99,10 +87,7 @@ class Lens(object):
         @return: FoV of the lens
         @rtype: float
         """
-        if self.fisheye:
-            return 360. / math.pi * 2. * math.asin((size / 2.) / (2. * self.focal))
-        else:
-            return 360. / math.pi * math.atan(size / (2. * self.focal))
+        return 360. / math.pi * math.atan(size / (2. * self.focal))
 
     def shutdown(self):
         """ Cleanly terminate the lens

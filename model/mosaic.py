@@ -75,7 +75,7 @@ class Mosaic(Scan):
         self.__pitchIndex = None
         self.__yawSens = None
         self.__pitchSens = None
-        
+
         self.yawStart = 0.
         self.pitchStart = 0.
         self.yawEnd = 0.
@@ -111,10 +111,10 @@ class Mosaic(Scan):
                 pitch = self.pitchEnd - self.__pitchIndex * self.__pitchInc
             else:
                 raise ValueError("Unknown '%s' <Start from> param" % self.startFrom)
-            Logger().debug("Mosaic.next(): __yawIndex=%d, __pitchIndex=%d" % (self.__yawIndex, self.__pitchIndex))
-            Logger().debug("Mosaic.next(): yaw=%.1f, pitch=%.1f" % (yaw, pitch))
+            Logger().debug("Mosaic.iterPositions(): __yawIndex=%d, __pitchIndex=%d" % (self.__yawIndex, self.__pitchIndex))
+            Logger().debug("Mosaic.iterPositions(): yaw=%.1f, pitch=%.1f" % (yaw, pitch))
             yield yaw, pitch
-            
+
             # Compute next position
             if self.initialDirection == "yaw":
                 self.__yawIndex += self.__yawSens
@@ -144,7 +144,7 @@ class Mosaic(Scan):
                         self.__yawSens = 1
                     self.__pitchIndex += self.__pitchSens
                     continue
-                
+
                 if self.__pitchIndex == self.pitchNbPicts: # __pitchSens was 1
                     if self.initialDirection == "yaw":
                         raise StopIteration
@@ -173,62 +173,74 @@ class Mosaic(Scan):
     def __getStartFrom(self):
         """
         """
-        return ConfigManager().get('Preferences', 'SHOOTING_MOSAIC_START_FROM')
-    
+        return ConfigManager().get('Preferences', 'MOSAIC_START_FROM')
+
     def __setStartFrom(self, startFrom):
         """
         """
-        ConfigManager().set('Preferences', 'SHOOTING_MOSAIC_START_FROM', startFrom)
+        ConfigManager().set('Preferences', 'MOSAIC_START_FROM', startFrom)
 
     startFrom = property(__getStartFrom, __setStartFrom)
-    
+
     def __getInitialDirection(self):
         """
         """
-        return ConfigManager().get('Preferences', 'SHOOTING_MOSAIC_INITAL_DIR')
-    
+        return ConfigManager().get('Preferences', 'MOSAIC_INITAL_DIR')
+
     def __setInitialDirection(self, initialDirection):
         """
         """
-        ConfigManager().set('Preferences', 'SHOOTING_MOSAIC_INITAL_DIR', initialDirection)
+        ConfigManager().set('Preferences', 'MOSAIC_INITAL_DIR', initialDirection)
 
     initialDirection = property(__getInitialDirection, __setInitialDirection)
-    
+
     def __getCR(self):
         """
         """
-        return ConfigManager().getBoolean('Preferences', 'SHOOTING_MOSAIC_CR')
-    
+        return ConfigManager().getBoolean('Preferences', 'MOSAIC_CR')
+
     def __setCR(self, cr):
         """
         """
-        ConfigManager().setBoolean('Preferences', 'SHOOTING_MOSAIC_CR', cr)
+        ConfigManager().setBoolean('Preferences', 'MOSAIC_CR', cr)
 
     cr = property(__getCR, __setCR)
-    
+
     def __getCameraOrientation(self):
         """
         """
-        return ConfigManager().get('Preferences', 'SHOOTING_MOSAIC_CAMERA_ORIENTATION')
-    
+        return ConfigManager().get('Preferences', 'MOSAIC_CAMERA_ORIENTATION')
+
     def __setCameraOrientation(self, cameraOrientation):
         """
         """
-        ConfigManager().set('Preferences', 'SHOOTING_MOSAIC_CAMERA_ORIENTATION', cameraOrientation)
+        ConfigManager().set('Preferences', 'MOSAIC_CAMERA_ORIENTATION', cameraOrientation)
 
     cameraOrientation = property(__getCameraOrientation, __setCameraOrientation)
-    
+
     def __getOverlap(self):
         """
         """
-        return ConfigManager().getFloat('Preferences', 'SHOOTING_MOSAIC_OVERLAP')
-    
+        return ConfigManager().getFloat('Preferences', 'MOSAIC_OVERLAP')
+
     def __setOverlap(self, overlap):
         """
         """
-        ConfigManager().setFloat('Preferences', 'SHOOTING_MOSAIC_OVERLAP', overlap, 2)
-        
+        ConfigManager().setFloat('Preferences', 'MOSAIC_OVERLAP', overlap, 2)
+
     overlap = property(__getOverlap, __setOverlap)
+
+    def __getOverlapSquare(self):
+        """
+        """
+        return ConfigManager().getBoolean('Preferences', 'MOSAIC_OVERLAP_SQUARE')
+
+    def __setOverlapSquare(self, overlapSquare):
+        """
+        """
+        ConfigManager().setBoolean('Preferences', 'MOSAIC_OVERLAP_SQUARE', overlapSquare)
+
+    overlapSquare = property(__getOverlapSquare, __setOverlapSquare)
 
     def __getYawFov(self):
         """
@@ -253,7 +265,7 @@ class Mosaic(Scan):
         """
         yawCameraFov = self.__camera.getYawFov(self.cameraOrientation)
         if round(self.yawFov - yawCameraFov, 1) >= 0.1:
-            yawNbPicts = int(round(((self.yawFov - self.overlap * yawCameraFov) / (yawCameraFov * (1 - self.overlap))) + 1))
+            yawNbPicts = int(((self.yawFov - self.overlap * yawCameraFov) / (yawCameraFov * (1 - self.overlap))) + 1)
         else:
             yawNbPicts = 1
         return yawNbPicts
@@ -265,7 +277,7 @@ class Mosaic(Scan):
         """
         pitchCameraFov = self.__camera.getPitchFov(self.cameraOrientation)
         if round(self.pitchFov - pitchCameraFov, 1) >= 0.1:
-           nbPicts = int(round(((self.pitchFov - self.overlap * pitchCameraFov) / (pitchCameraFov * (1 - self.overlap))) + 1))
+           nbPicts = int(((self.pitchFov - self.overlap * pitchCameraFov) / (pitchCameraFov * (1 - self.overlap))) + 1)
         else:
             nbPicts = 1
         return nbPicts
@@ -298,36 +310,3 @@ class Mosaic(Scan):
         return pitchOverlap
 
     pitchRealOverlap = property(__getPitchRealOverlap, "Pitch real overlap")
-
-    # Public methods
-    def storeStartPosition(self, yaw, pitch):
-        """ Store current position as start position.
-        """
-        self.yawStart, self.pitchStart = yaw, pitch
-        Logger().debug("Shooting.storeStartPosition(): yaw=%.1f, pitch=%.1f" % (self.yawStart, self.pitchStart))
-
-    def storeEndPosition(self, yaw, pitch):
-        """ Store current position as end position.
-        """
-        self.yawEnd, self.pitchEnd = yaw, pitch
-        Logger().debug("Shooting.storeEndPosition(): yaw=%.1f, pitch=%.1f" % (self.yawEnd, self.pitchEnd))
-        
-    def setYaw360(self, yaw):
-        """ Compute start/end yaw position for 360°.
-        """
-        yawCameraFov = self.__camera.getYawFov(self.cameraOrientation)
-        self.yawStart = yaw - 180. + yawCameraFov * (1 - self.overlap) / 2.
-        self.yawEnd = yaw + 180. - yawCameraFov * (1 - self.overlap) / 2.
-        self.yawStart = yaw - 180. + yawCameraFov * (1 - self.yawRealOverlap) / 2.
-        self.yawEnd = yaw + 180. - yawCameraFov * (1 - self.yawRealOverlap) / 2.
-        Logger().debug("Mosaic.setYaw360(): startYaw=%.1f, endYaw=%.1f" % (self.yawStart, self.yawEnd))
-
-    def setPitch180(self, pitch):
-        """ Compute start/end pitch position for 180°.
-        """
-        pitchCameraFov = self.__camera.getPitchFov(self.cameraOrientation)
-        self.pitchStart = pitch + 90. - pitchCameraFov * (1 - self.overlap) / 2.
-        self.pitchEnd = pitch - 90. + pitchCameraFov * (1 - self.overlap) / 2.
-        self.pitchStart = pitch + 90. - pitchCameraFov * (1 - self.pitchRealOverlap) / 2.
-        self.pitchEnd = pitch - 90. + pitchCameraFov * (1 - self.pitchRealOverlap) / 2.
-        Logger().debug("Mosaic.setPitch180(): startPitch=%.1f, endPitch=%.1f" % (self.pitchStart, self.pitchEnd))

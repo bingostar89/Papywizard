@@ -57,7 +57,7 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.serializer import Serializer
 from papywizard.common.exception import HardwareError
 from papywizard.model.shooting import Shooting
-from papywizard.view.mainWindow import MainWindow
+#from papywizard.view.mainWindow import MainWindow
 from papywizard.controller.mainController import MainController
 from papywizard.controller.spy import Spy
 from papywizard.hardware.head import Head, HeadSimulation
@@ -86,11 +86,8 @@ if config.VIEW3D_ENABLE:
 serializer = Serializer()
 gobject.timeout_add(10, serializer.processWork)
 
-# Create main view
-view = MainWindow()
-
 # Create main controller
-controller = MainController(serializer, model, view)
+controller = MainController(serializer, model)
 
 # Enter in Gtk mainloop
 gtk.gdk.threads_init()

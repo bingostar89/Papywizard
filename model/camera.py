@@ -120,13 +120,11 @@ class Camera(object):
 
         @return: yaw FoV of the image
         @rtype: float
-
-        @todo: handle 4:3 format
         """
         if cameraOrientation == 'landscape':
             sensorSize = 36.
         elif cameraOrientation == 'portrait':
-            sensorSize = 24.
+            sensorSize = 36. / config.SENSOR_RATIOS[self.sensorRatio]
 
         return self.lens.computeFov(sensorSize / self.sensorCoef)
 
@@ -135,11 +133,9 @@ class Camera(object):
 
         @return: pitch FoV of the image
         @rtype: float
-
-        @todo: handle 4:3 format
         """
         if cameraOrientation == 'landscape':
-            sensorSize = 24.
+            sensorSize = 36. / config.SENSOR_RATIOS[self.sensorRatio]
         elif cameraOrientation == 'portrait':
             sensorSize = 36.
 

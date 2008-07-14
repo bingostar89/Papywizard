@@ -67,11 +67,10 @@ correct place (sky pictures without any details are often unlinked).
         </camera>
         <lens>
             <focal>17.0</focal>
-            <fisheye>False</fisheye>
         </lens>
-        <template type="mosaic">
+        <mode name="mosaic">
             <nbPicts pitch="1" yaw="2"/>
-        </template>
+        </mode>
     </header>
     <shoot>
         <pict id="1" num="1">
@@ -226,10 +225,9 @@ class Data(object):
         # Lens
         node = self.__addNode(self.__headerNode, 'lens')
         self.__addNode(node, 'focal', values['focal'])
-        self.__addNode(node, 'fisheye', values['fisheye'])
         
-        # Template
-        node = self.__addNode(self.__headerNode, 'template', type=values['template'])
+        # Mode
+        node = self.__addNode(self.__headerNode, 'mode', name=values['mode'])
         self.__addNode(node, 'nbPicts', yaw=values['yawNbPicts'],
                                         pitch=values['pitchNbPicts'])
 

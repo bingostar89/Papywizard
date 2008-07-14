@@ -53,18 +53,24 @@ __revision__ = "$Id: shootController.py 333 2008-06-25 21:08:42Z fma $"
 
 import time
 import threading
+import os.path
 
+import pygtk
+pygtk.require("2.0")
 import gtk
+import gtk.glade
 import gobject
 
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractController
 
+path = os.path.dirname(__file__)
+
 
 class ConnectController(AbstractController):
     """ Connect controller object.
     """
-    def __init__(self, parent, model, view):
+    def __init__(self, parent, model):
         """ Init the object.
 
         @param parent: parent controller
@@ -72,27 +78,37 @@ class ConnectController(AbstractController):
 
         @param model: model to use
         @type mode: {Shooting}
-
-        @param view: associated view
-        @type view: {ConnectBanner}
         """
         self.__parent = parent
         self.__model = model
-        self.__view = view
+        
+        # Set the Glade file
+        gladeFile = os.path.join(path, os.path.pardir, "view", "connectBanner.glade")
+        self.wTree = gtk.glade.XML(gladeFile)
+
+        # Retreive usefull widgets
+        self._retreiveWidgets()
 
         # Connect signal/slots
-        self.__view.connectBanner.connect("delete-event", self.__onDelete)
-
-        # Nokia plateform stuff
-        try:
-            import hildon
-        except ImportError:
-            pass
+        self.connectBanner.connect("delete-event", self.__onDelete)
 
         # Fill widgets
         self.refreshView()
         
         self.__eventId = gobject.timeout_add (100, self.__refreshProgressbar)
+
+    def _retreiveWidgets(self):
+        """ Get widgets from widget tree.
+        """
+        self.connectBanner = self.wTree.get_widget("connectBanner")
+        self.progressbar = self.wTree.get_widget("progressbar")
+
+        # Nokia plateform stuff
+        try:
+            import hildon
+            pass
+        except ImportError:
+            pass
 
     # Callbacks
     def __onDelete(self, widget, event):
@@ -100,7 +116,7 @@ class ConnectController(AbstractController):
         return True
 
     def __refreshProgressbar(self):
-        self.__view.progressbar.pulse()
+        self.progressbar.pulse()
         return True
 
     def refreshView(self):
@@ -108,4 +124,4 @@ class ConnectController(AbstractController):
         
     def closeBanner(self):
         gobject.source_remove(self.__eventId)
-        self.__view.connectBanner.destroy()
+        self.connectBanner.destroy()

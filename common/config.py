@@ -49,7 +49,7 @@ __revision__ = "$Id$"
 import os.path
 
 
-VERSION = "0.9"
+VERSION = "0.99"
 PACKAGE_VERSION = 1
 
 HOME_DIR = os.path.expandvars("$HOME")
@@ -71,11 +71,27 @@ SENSOR_RATIOS_INDEX = {'3:2': 0, '4:3': 1,
 CAMERA_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1,
                             0: 'portrait', 1: 'landscape'}
 
-MOSAIC_START_FROM_INDEX = {'start': 0, 'end': 1, 'nearest': 2,
-                           0: 'start', 1 : 'end', 2: 'nearest'}
-                            
+MOSAIC_START_FROM_INDEX = {'start': 0, 'end': 1,
+                           0: 'start', 1 : 'end'}
+
 MOSAIC_INITIAL_DIR_INDEX = {'yaw': 0, 'pitch': 1,
                             0: 'yaw', 1: 'pitch'}
+
+PRESET_INDEX = {'4@0, zenith, nadir': 0,
+                '3@-15, zenith': 1,
+                '6@-15, 6@30, nadir': 2,
+                0: '4@0, zenith, nadir',
+                1: '3@-15, zenith',
+                2: '6@-15, 6@30, nadir'}
+
+PRESET = {'4@0, zenith, nadir': [(0., 0.), (90., 0.), (180., 0.), (270., 0),
+                                 (270., 90.),
+                                 (270., -90.)],
+          '3@-15, zenith': [(0., -15.), (120., -15.), (240., -15.),
+                            (240., 90.)],
+          '6@-15, 6@30, nadir': [(0., -15.), (60., -15.), (120., -15.), (180., -15.), (240., -15.), (300., -15.),
+                                 (300., 30.), (240., 30.), (180., 30.), (120., 30.), (60., 30.), (0., 30.),
+                                 (0., -90.)]}
 
 # Logger
 LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"

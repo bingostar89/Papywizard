@@ -61,6 +61,7 @@ from papywizard.common.exception import HardwareError
 from papywizard.common.data import Data
 from papywizard.model.camera import Camera
 from papywizard.model.mosaic import Mosaic
+from papywizard.model.preset import Preset
 
 
 class Shooting(object):
@@ -90,21 +91,26 @@ class Shooting(object):
         self.startEvent.clear()
         self.camera = Camera()
         self.mosaic = Mosaic(self.camera)
-        #self.fullSpherical = FullSpherical()
+        self.preset = Preset()
 
         self.position = self.hardware.readPosition()
         self.progress = 0.
         self.sequence = "Idle"
 
     # Properties
+    def __getMode(self):
+        return ConfigManager().get('Preferences', 'SHOOTING_MODE')
+    
+    def __setMode(self, mode):
+        #ConfigManager().set('Preferences', 'SHOOTING_MODE', mode)
+        pass
+        
+    mode = property(__getMode, __setMode)
+    
     def __getStabilizationDelay(self):
-        """
-        """
         return ConfigManager().getFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY')
     
     def __setStabilizationDelay(self, stabilizationDelay):
-        """
-        """
         ConfigManager().setFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY', stabilizationDelay, 1)
     
     stabilizationDelay = property(__getStabilizationDelay, __setStabilizationDelay)
@@ -176,8 +182,7 @@ class Shooting(object):
                   'sensorCoef': "%.1f" % self.camera.sensorCoef,
                   'sensorRatio': "%s" % self.camera.sensorRatio,
                   'focal': "%.1f" % self.camera.lens.focal,
-                  'fisheye': "%s" % self.camera.lens.fisheye,
-                  'template': "mosaic",
+                  'mode': "mosaic",
                   'yawNbPicts': "%d" % self.mosaic.yawNbPicts,
                   'pitchNbPicts': "%d" % self.mosaic.pitchNbPicts
               }
@@ -189,8 +194,12 @@ class Shooting(object):
         self.startEvent.set()
 
         # Loop over all positions
+        if self.mode == 'mosaic':
+            scan = self.mosaic
+        else:
+            scan = self.preset
         try:
-            for i, (yaw, pitch) in enumerate(self.mosaic.iterPositions()):
+            for i, (yaw, pitch) in enumerate(scan.iterPositions()):
                 Logger().debug("Shooting.start(): Goto yaw=%.1f pitch=%.1f" % (yaw, pitch))
                 Logger().info("Moving")
                 self.sequence = "Moving"
@@ -217,7 +226,7 @@ class Shooting(object):
 
                     checkSuspendStop()
 
-                progressFraction = float((i + 1)) / float(self.mosaic.totalNbPicts)
+                progressFraction = float((i + 1)) / float(scan.totalNbPicts)
                 self.progress = progressFraction
                 self.newPictSignal.emit(yaw, pitch) # Include progress?
 
@@ -279,3 +288,4 @@ class Shooting(object):
         self.realHardware.shutdown()
         self.simulatedHardware.shutdown()
         self.camera.shutdown()
+        ConfigManager().save()

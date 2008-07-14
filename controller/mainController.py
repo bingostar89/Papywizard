@@ -53,19 +53,20 @@ __revision__ = "$Id$"
 
 import time
 import thread
+import sys
+import os.path
 
+import pygtk
+pygtk.require("2.0")
 import gtk
+import gtk.glade
+import pango
 import gobject
 
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
-from papywizard.view.configDialog import ConfigDialog
-from papywizard.view.manualMoveDialog import ManualMoveDialog
-from papywizard.view.shootDialog import ShootDialog
-from papywizard.view.helpAboutDialog import HelpAboutDialog
-from papywizard.view.connectBanner import ConnectBanner
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.manualMoveController import ManualMoveController
@@ -73,11 +74,13 @@ from papywizard.controller.shootController import ShootController
 from papywizard.controller.connectController import ConnectController
 from papywizard.controller.spy import Spy
 
+path = os.path.dirname(__file__)
+
 
 class MainController(AbstractController):
     """ Main controller object.
     """
-    def __init__(self, serializer, model, view):
+    def __init__(self, serializer, model):
         """ Init the object.
 
         @param serializer: object used to serialize Tkinter events
@@ -91,7 +94,6 @@ class MainController(AbstractController):
         """
         self.__serializer = serializer
         self.__model = model
-        self.__view = view
 
         self.__yawPos = 0
         self.__pitchPos = 0
@@ -99,26 +101,46 @@ class MainController(AbstractController):
         self.__statusbarTimeoutEventId = None
         self.__connect = None
         self.__connectErrorMessage = None
+        
+        # Set the Glade file
+        gladeFile = os.path.join(path, os.path.pardir, "view", "mainWindow.glade")
+        self.wTree = gtk.glade.XML(gladeFile)
+
+        # Retreive usefull widgets
+        self._retreiveWidgets()
 
         # Connect signal/slots
         dic = {"on_quitMenuitem_activate": gtk.main_quit,
                "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuToggled,
-               "on_hardwareSetOriginMenuitem_activate": self.__onHardwareSetOriginMenuActivated,
                "on_hardwareResetMenuitem_activate": self.__onHardwareResetMenuActivated,
                "on_helpAboutMenuitem_activate": self.__onHelpAboutMenuActivated,
-               "on_setStartButton_clicked": self.__onSetStartButtonClicked,
-               "on_setEndButton_clicked": self.__onSetEndButtonClicked,
-               "on_set360Button_clicked": self.__onSet360ButtonClicked,
-               "on_set180Button_clicked": self.__onSet180ButtonClicked,
-               "on_configButton_clicked": self.__onConfigMenuActivated,
-               "on_manualMoveButton_clicked": self.__onManualMoveButtonClicked,
+               "on_modeMosaicRadiobutton_toggled": self.__onModeMosaicRadiobuttonToggled,
+               "on_setYawStartButton_clicked": self.__onSetYawStartButtonClicked,
+               "on_setPitchStartButton_clicked": self.__onSetPitchStartButtonClicked,
+               "on_setYawEndButton_clicked": self.__onSetYawEndButtonClicked,
+               "on_setPitchEndButton_clicked": self.__onSetPitchEndButtonClicked,
+               "on_setStartTogglebutton_clicked": self.__onSetStartTogglebuttonClicked,
+               "on_setStartTogglebutton_released": self.__onSetStartTogglebuttonReleased,
+               "on_setEndTogglebutton_clicked": self.__onSetEndTogglebuttonClicked,
+               "on_setEndTogglebutton_released": self.__onSetEndTogglebuttonReleased,
+               "on_presetTemplateCombobox_changed": self.__onPresetTemplateComboboxChanged,
+               "on_hardwareSetOriginButton_clicked": self.__onHardwareSetOriginButtonClicked,
+               "on_yawMovePlusTogglebutton_pressed": self.__onYawMovePlusTogglebuttonPressed,
+               "on_yawMovePlusTogglebutton_released": self.__onYawMovePlusTogglebuttonReleased,
+               "on_pitchMovePlusTogglebutton_pressed": self.__onPitchMovePlusTogglebuttonPressed,
+               "on_pitchMovePlusTogglebutton_released": self.__onPitchMovePlusTogglebuttonReleased,
+               "on_yawMoveMinusTogglebutton_pressed": self.__onYawMoveMinusTogglebuttonPressed,
+               "on_yawMoveMinusTogglebutton_released": self.__onYawMoveMinusTogglebuttonReleased,
+               "on_pitchMoveMinusTogglebutton_pressed": self.__onPitchMoveMinusTogglebuttonPressed,
+               "on_pitchMoveMinusTogglebutton_released": self.__onPitchMoveMinusTogglebuttonReleased,
+               "on_configButton_clicked": self.__onConfigButtonClicked,
                "on_shootButton_clicked": self.__onShootButtonClicked,
            }
-        self.__view.wTree.signal_autoconnect(dic)
-        self.__view.mainWindow.connect("destroy", gtk.main_quit)
-        self.__view.mainWindow.connect("key-press-event", self.__onKeyPressed)
-        self.__view.mainWindow.connect("key-release-event", self.__onKeyReleased)
-        self.__view.mainWindow.connect("window-state-event", self.__onWindowStateChanged)
+        self.wTree.signal_autoconnect(dic)
+        self.mainWindow.connect("destroy", gtk.main_quit)
+        self.mainWindow.connect("key-press-event", self.__onKeyPressed)
+        self.mainWindow.connect("key-release-event", self.__onKeyReleased)
+        #self.mainWindow.connect("window-state-event", self.__onWindowStateChanged)
 
         self.__keyPressedDict = {'FullScreen': False,
                                  'Right': False,
@@ -143,42 +165,127 @@ class MainController(AbstractController):
             import hildon
             self.__key['Home'] = gtk.keysyms.F8
             self.__key['End'] = gtk.keysyms.F7
-            self.__view.window_in_fullscreen = False
+            self.window_in_fullscreen = False
         except ImportError:
             pass
 
         # Fill widgets
         self.refreshView()
 
-        # Connect stuffs
+        # Connect model signals
         Spy().newPosSignal.connect(self.__refreshPos)
         self.__model.switchToRealHardwareSignal.connect(self.__switchToRealHardwareCallback)
 
         # Try to autoconnect to real hardware (todo: use a config flag)
-        self.__view.hardwareConnectMenuitem.set_active(True)
+        self.hardwareConnectMenuitem.set_active(True)
 
-    # Helpers
+    def _retreiveWidgets(self):
+        """ Get widgets from widget tree.
+        """
+        self.mainWindow = self.wTree.get_widget("mainWindow")
+        self.mainVbox = self.wTree.get_widget("mainVbox")
+        self.menubar = self.wTree.get_widget("menubar")
+        self.hardwareConnectMenuitem = self.wTree.get_widget("hardwareConnectMenuitem")
+        self.hardwareResetMenuitem = self.wTree.get_widget("hardwareResetMenuitem")
+        self.modeMosaicRadiobutton = self.wTree.get_widget("modeMosaicRadiobutton")
+        self.mosaicFrame = self.wTree.get_widget("mosaicFrame")
+        self.setYawStartButtonLabel = self.wTree.get_widget("setYawStartButton").child
+        self.setPitchStartButtonLabel = self.wTree.get_widget("setPitchStartButton").child
+        self.setYawEndButtonLabel = self.wTree.get_widget("setYawEndButton").child
+        self.setPitchEndButtonLabel = self.wTree.get_widget("setPitchEndButton").child
+        self.setStartTogglebutton = self.wTree.get_widget("setStartTogglebutton")
+        self.setEndTogglebutton = self.wTree.get_widget("setEndTogglebutton")
+        self.yawFovLabel = self.wTree.get_widget("yawFovLabel")
+        self.pitchFovLabel = self.wTree.get_widget("pitchFovLabel")
+        self.yawNbPictsLabel = self.wTree.get_widget("yawNbPictsLabel")
+        self.pitchNbPictsLabel = self.wTree.get_widget("pitchNbPictsLabel")
+        self.yawRealOverlapLabel = self.wTree.get_widget("yawRealOverlapLabel")
+        self.pitchRealOverlapLabel = self.wTree.get_widget("pitchRealOverlapLabel")
+        self.presetFrame = self.wTree.get_widget("presetFrame")
+        self.presetTemplateCombobox = self.wTree.get_widget("presetTemplateCombobox")
+        listStore = gtk.ListStore(gobject.TYPE_STRING)
+        self.presetTemplateCombobox.set_model(listStore)
+        cell = gtk.CellRendererText()
+        self.presetTemplateCombobox.pack_start(cell, True)
+        self.presetTemplateCombobox.add_attribute(cell, 'text', 0)
+        i = 0
+        while True:
+            try:
+                text = config.PRESET_INDEX[i]
+                self.presetTemplateCombobox.append_text(text)
+                i += 1
+            except KeyError:
+                break
+        self.yawPosLabel = self.wTree.get_widget("yawPosLabel")
+        self.pitchPosLabel = self.wTree.get_widget("pitchPosLabel")
+        self.yawMovePlusTogglebutton = self.wTree.get_widget("yawMovePlusTogglebutton")
+        self.pitchMovePlusTogglebutton = self.wTree.get_widget("pitchMovePlusTogglebutton")
+        self.yawMoveMinusTogglebutton = self.wTree.get_widget("yawMoveMinusTogglebutton")
+        self.pitchMoveMinusTogglebutton = self.wTree.get_widget("pitchMoveMinusTogglebutton")
+        self.statusbar = self.wTree.get_widget("statusbar")
+        self.statusbarContextId = self.statusbar.get_context_id("default")
+        self.connectImage = self.wTree.get_widget("connectImage")
         
+        # Font
+        self.yawPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.setYawStartButtonLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.setPitchStartButtonLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.setYawEndButtonLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.setPitchEndButtonLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawFovLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchFovLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawNbPictsLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchNbPictsLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawRealOverlapLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchRealOverlapLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+
+        # Nokia plateform stuff
+        try:
+            import hildon
+
+            self.app = hildon.Program()
+            window = hildon.Window()
+            window.set_title(self.mainWindow.get_title())
+            self.window_in_fullscreen = False
+            self.app.add_window(window)
+            self.mainVbox.reparent(window)
+
+            menu = gtk.Menu()
+            for child in self.menubar.get_children():
+                child.reparent(menu)
+            window.set_menu(menu)
+
+            self.menubar.destroy()
+            self.mainWindow.destroy()
+            window.show_all()
+            self.menuBar = menu
+            self.mainWindow = window
+
+        except ImportError:
+            pass
+
     # Callbacks
     def __onKeyPressed(self, widget, event, *args):
         Logger().trace("MainController.__onKeyPressed()")
         
         # 'FullScreen' key
-        if event.keyval == self.__key['FullScreen']:
-            if not self.__keyPressedDict['FullScreen']:
-                Logger().debug("MainController.__onKeyPressed(): 'FullScreen' key pressed")
-                if self.__view.window_in_fullscreen:
-                    self.__view.mainWindow.unfullscreen()
-                else:
-                    self.__view.mainWindow.fullscreen()
-                self.__keyPressedDict['FullScreen'] = True
-            return True
+        #if event.keyval == self.__key['FullScreen']:
+            #if not self.__keyPressedDict['FullScreen']:
+                #Logger().debug("MainController.__onKeyPressed(): 'FullScreen' key pressed")
+                #if self.window_in_fullscreen:
+                    #self.mainWindow.unfullscreen()
+                #else:
+                    #self.mainWindow.fullscreen()
+                #self.__keyPressedDict['FullScreen'] = True
+            #return True
 
         # 'Right' key
-        elif event.keyval == self.__key['Right']:
+        if event.keyval == self.__key['Right']:
             if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
                 Logger().debug("MainController.__onKeyPressed(): 'Right' key pressed; start 'yaw' axis dir '+'")
                 self.__keyPressedDict['Right'] = True
+                self.yawMovePlusTogglebutton.set_active(True)
                 self.__model.hardware.startAxis('yaw', '+')
             return True
 
@@ -187,6 +294,7 @@ class MainController(AbstractController):
             if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
                 Logger().debug("MainController.__onKeyPressed(): 'Left' key pressed; start 'yaw' axis dir '-'")
                 self.__keyPressedDict['Left'] = True
+                self.yawMoveMinusTogglebutton.set_active(True)
                 self.__model.hardware.startAxis('yaw', '-')
             return True
 
@@ -195,6 +303,7 @@ class MainController(AbstractController):
             if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
                 Logger().debug("MainController.__onKeyPressed(): 'Up' key pressed; start 'pitch' axis dir '+'")
                 self.__keyPressedDict['Up'] = True
+                self.pitchMovePlusTogglebutton.set_active(True)
                 self.__model.hardware.startAxis('pitch', '+')
             return True
 
@@ -203,6 +312,7 @@ class MainController(AbstractController):
             if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
                 Logger().debug("MainController.__onKeyPressed(): 'Down' key pressed; start 'pitch' axis dir '-'")
                 self.__keyPressedDict['Down'] = True
+                self.pitchMoveMinusTogglebutton.set_active(True)
                 self.__model.hardware.startAxis('pitch', '-')
             return True
 
@@ -213,7 +323,8 @@ class MainController(AbstractController):
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
                 Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; store start position")
                 self.__keyPressedDict['Home'] = True
-                self.__model.mosaic.storeStartPosition(self.__yawPos, self.__pitchPos)
+                self.setStartTogglebutton.set_active(True)
+                self.__model.mosaic.yawStart, self.__model.mosaic.pitchStart = self.__yawPos, self.__pitchPos
                 self.refreshView()
             return True
 
@@ -224,7 +335,8 @@ class MainController(AbstractController):
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
                 Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; store end position")
                 self.__keyPressedDict['End'] = True
-                self.__model.mosaic.storeEndPosition(self.__yawPos, self.__pitchPos)
+                self.setEndTogglebutton.set_active(True)
+                self.__model.mosaic.yawEnd, self.__model.mosaic.pitchEnd = self.__yawPos, self.__pitchPos
                 self.refreshView()
             return True
 
@@ -239,20 +351,22 @@ class MainController(AbstractController):
 
     def __onKeyReleased(self, widget, event, *args):
         Logger().trace("MainController.__onKeyReleased()")
-        
+
         # 'FullScreen' key
-        if event.keyval == self.__key['FullScreen']:
-            if self.__keyPressedDict['FullScreen']:
-                Logger().debug("MainController.__onKeyReleased(): 'FullScreen' key released")
-                self.__keyPressedDict['FullScreen'] = False
-            return True
+        #if event.keyval == self.__key['FullScreen']:
+            #if self.__keyPressedDict['FullScreen']:
+                #Logger().debug("MainController.__onKeyReleased(): 'FullScreen' key released")
+                #self.__keyPressedDict['FullScreen'] = False
+            #return True
 
         # 'Right' key
         if event.keyval == self.__key['Right']:
             if self.__keyPressedDict['Right']:
                 Logger().debug("MainController.__onKeyReleased(): 'Right' key released; stop 'yaw' axis")
                 self.__model.hardware.stopAxis('yaw')
+                self.__model.hardware.waitStopAxis('yaw')
                 self.__keyPressedDict['Right'] = False
+                self.yawMovePlusTogglebutton.set_active(False)
             return True
 
         # 'Left' key
@@ -260,7 +374,9 @@ class MainController(AbstractController):
             if self.__keyPressedDict['Left']:
                 Logger().debug("MainController.__onKeyReleased(): 'Left' key released; stop 'yaw' axis")
                 self.__model.hardware.stopAxis('yaw')
+                self.__model.hardware.waitStopAxis('yaw')
                 self.__keyPressedDict['Left'] = False
+                self.yawMoveMinusTogglebutton.set_active(False)
             return True
 
         # 'Up' key
@@ -268,7 +384,9 @@ class MainController(AbstractController):
             if self.__keyPressedDict['Up']:
                 Logger().debug("MainController.__onKeyReleased(): 'Up' key released; stop 'pitch' axis")
                 self.__model.hardware.stopAxis('pitch')
+                self.__model.hardware.waitStopAxis('pitch')
                 self.__keyPressedDict['Up'] = False
+                self.pitchMovePlusTogglebutton.set_active(False)
             return True
 
         # 'Down' key
@@ -276,7 +394,9 @@ class MainController(AbstractController):
             if self.__keyPressedDict['Down']:
                 Logger().debug("MainController.__onKeyReleased(): 'Down' key released; stop 'pitch' axis")
                 self.__model.hardware.stopAxis('pitch')
+                self.__model.hardware.waitStopAxis('pitch')
                 self.__keyPressedDict['Down'] = False
+                self.pitchMoveMinusTogglebutton.set_active(False)
             return True
 
         # 'Home' key
@@ -284,6 +404,7 @@ class MainController(AbstractController):
             if self.__keyPressedDict['Home']:
                 Logger().debug("MainController.__onKeyReleased(): 'Home' key released")
                 self.__keyPressedDict['Home'] = False
+                self.setStartTogglebutton.set_active(False)
             return True
 
         # 'End' key
@@ -291,20 +412,21 @@ class MainController(AbstractController):
             if self.__keyPressedDict['End']:
                 Logger().debug("MainController.__onKeyReleased(): 'End' key released")
                 self.__keyPressedDict['End'] = False
+                self.setEndTogglebutton.set_active(False)
             return True
 
         else:
             Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
 
-    def __onWindowStateChanged(self, widget, event, *args):
-        Logger().debug("MainController.__onWindowStateChanged()")
-        if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
-            self.__view.window_in_fullscreen = True
-        else:
-            self.__view.window_in_fullscreen = False
+    #def __onWindowStateChanged(self, widget, event, *args):
+        #Logger().debug("MainController.__onWindowStateChanged()")
+        #if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
+            #self.window_in_fullscreen = True
+        #else:
+            #self.window_in_fullscreen = False
 
     def __onHardwareConnectMenuToggled(self, widget):
-        switch = self.__view.hardwareConnectMenuitem.get_active()
+        switch = self.hardwareConnectMenuitem.get_active()
         Logger().trace("MainController.__onHardwareConnectMenuActivated(%s)" % switch)
         if switch:
             self.__connectToHardware()
@@ -317,69 +439,145 @@ class MainController(AbstractController):
         self.__model.hardware.reset()
         self.setStatusbarMessage("Hardware has been reseted", 10)
 
-    def __onHardwareSetOriginMenuActivated(self, widget):
-        Logger().trace("MainController.__onHardwareSetOriginMenuActivated()")
-        Logger().info("Set hardware origin")
-        self.__model.hardware.setOrigin()
-        self.setStatusbarMessage("Origin set to current position", 10)
-
     def __onHelpAboutMenuActivated(self, widget):
         Logger().trace("MainController.__onHelpAboutMenuActivated()")
-        view = HelpAboutDialog(self.__view)
-        retCode = view.helpAboutDialog.run()
-        view.helpAboutDialog.destroy()
+        
+        # Set the Glade file
+        gladeFile = os.path.join(path, os.path.pardir, "view", "helpAboutDialog.glade")
+        self.wTree = gtk.glade.XML(gladeFile) 
 
-    def __onSetStartButtonClicked(self, widget):
-        Logger().trace("MainController.__onSetStartButtonClicked()")
-        #yaw, pitch = self.__mode.hardware.readPosition()
-        self.__model.mosaic.storeStartPosition(self.__yawPos, self.__pitchPos)
+        # Retreive usefull widgets
+        helpAboutDialog = self.wTree.get_widget("helpAboutDialog")
+
+        # Set version
+        helpAboutDialog.set_version(config.VERSION)
+        retCode =helpAboutDialog.run()
+        helpAboutDialog.destroy()
+
+    def __onModeMosaicRadiobuttonToggled(self, widget):
+        Logger().trace("MainController.__onModeMosaicRadiobuttonToggled()")
+        modeMosaic = self.modeMosaicRadiobutton.get_active()
+        self.mosaicFrame.set_sensitive(modeMosaic)
+        self.presetFrame.set_sensitive(not modeMosaic)
+        if modeMosaic:
+            self.__model.mode = 'mosaic'
+        else:
+            self.__model.mode = 'preset'
+
+    def __onSetYawStartButtonClicked(self, widget):
+        Logger().trace("MainController.__onSetYawStartButtonClicked()")
+        self.__model.mosaic.yawStart = self.__yawPos
         self.refreshView()
-        self.setStatusbarMessage("Start position set to current position", 10)
+        self.setStatusbarMessage("Yaw start set from current position", 10)
 
-    def __onSetEndButtonClicked(self, widget):
-        Logger().trace("MainController.__onSetEndButtonClicked()")
-        #yaw, pitch = self.__mode.hardware.readPosition()
-        self.__model.mosaic.storeEndPosition(self.__yawPos, self.__pitchPos)
+    def __onSetPitchStartButtonClicked(self, widget):
+        Logger().trace("MainController.__onSetPitchStartButtonClicked()")
+        self.__model.mosaic.pitchStart = self.__pitchPos
         self.refreshView()
-        self.setStatusbarMessage("End position set to current position", 10)
+        self.setStatusbarMessage("Pitch start set from current position", 10)
 
-    def __onSet360ButtonClicked(self, widget):
-        Logger().trace("MainController.__onSet360ButtonClicked()")
-        #yaw, pitch = self.__mode.hardware.readPosition()
-        self.__model.mosaic.setYaw360(self.__yawPos)
+    def __onSetYawEndButtonClicked(self, widget):
+        Logger().trace("MainController.__onSetYawEndButtonClicked()")
+        self.__model.mosaic.yawEnd = self.__yawPos
         self.refreshView()
-        self.setStatusbarMessage(u"Start/End yaw positions set to 360°", 10)
+        self.setStatusbarMessage("Yaw end set from current position", 10)
 
-    def __onSet180ButtonClicked(self, widget):
-        Logger().trace("MainController.__onSet180ButtonClicked()")
-        #yaw, pitch = self.__mode.hardware.readPosition()
-        self.__model.mosaic.setPitch180(self.__pitchPos)
+    def __onSetPitchEndButtonClicked(self, widget):
+        Logger().trace("MainController.__onSetEndPitchButtonClicked()")
+        self.__model.mosaic.pitchEnd = self.__pitchPos
         self.refreshView()
-        self.setStatusbarMessage(u"Start/End pitch positions set to 180°", 10)
+        self.setStatusbarMessage("Pitch end set from current position", 10)
 
-    def __onManualMoveButtonClicked(self, widget):
-        Logger().trace("MainController.__onManualMoveButtonClicked()")
-        view = ManualMoveDialog()
-        controller = ManualMoveController(self, self.__serializer, self.__model, view)
-        retCode = view.manualMoveDialog.run()
-        view.manualMoveDialog.destroy()
+    def __onSetStartTogglebuttonClicked(self, widget):
+        Logger().trace("MainController.__onSetStartTogglebuttonClicked()")
+        self.__model.mosaic.yawStart, self.__model.mosaic.pitchStart = self.__yawPos, self.__pitchPos
+        self.refreshView()
+        self.setStatusbarMessage("Yaw/pitch start set from current position", 10)
 
-    def __onConfigMenuActivated(self, widget):
-        Logger().trace("MainController.__onConfigMenuActivated()")
-        view = ConfigDialog()
-        controller = ConfigController(self, self.__model, view)
-        retCode = view.configDialog.run()
-        view.configDialog.destroy()
+    def __onSetStartTogglebuttonReleased(self, widget):
+        Logger().trace("MainController.__onSetStartTogglebuttonReleased()")
+        self.setStartTogglebutton.set_active(False)
+
+    def __onSetEndTogglebuttonClicked(self, widget):
+        Logger().trace("MainController.__onSetEndTogglebuttonClicked()")
+        self.__model.mosaic.yawEnd, self.__model.mosaic.pitchEnd = self.__yawPos, self.__pitchPos
+        self.refreshView()
+        self.setStatusbarMessage("Yaw/pitch end position set from current position", 10)
+
+    def __onSetEndTogglebuttonReleased(self, widget):
+        Logger().trace("MainController.__onSetEndTogglebuttonReleased()")
+        self.setEndTogglebutton.set_active(False)
+
+    def __onPresetTemplateComboboxChanged(self, widget):
+        Logger().trace("MainController.__onPresetTemplateComboboxChanged()")
+        self.__model.preset.template = config.PRESET_INDEX[self.presetTemplateCombobox.get_active()]
+
+    def __onHardwareSetOriginButtonClicked(self, widget):
+        Logger().trace("MainController.onHardwareSetOriginButtonClicked()")
+        Logger().info("Set hardware origin")
+        self.__model.hardware.setOrigin()
+        self.setStatusbarMessage("Origin set at current position", 10)
+
+    def __onYawMovePlusTogglebuttonPressed(self, widget):
+        Logger().trace("MainController.__yawMovePlusTogglebuttonPressed()")
+        self.__model.hardware.startAxis('yaw', '+')
+
+    def __onYawMovePlusTogglebuttonReleased(self, widget):
+        Logger().trace("MainController.__yawMovePlusTogglebuttonReleased()")
+        self.__model.hardware.stopAxis('yaw')
+        self.__model.hardware.waitStopAxis('yaw')
+        self.yawMovePlusTogglebutton.set_active(False)
+        self.refreshView()
+
+    def __onPitchMovePlusTogglebuttonPressed(self, widget):
+        Logger().trace("MainController.__pitchMovePlusTogglebuttonPressed()")
+        self.__model.hardware.startAxis('pitch', '+')
+
+    def __onPitchMovePlusTogglebuttonReleased(self, widget):
+        Logger().trace("MainController.__pitchMovePlusTogglebuttonReleased()")
+        self.__model.hardware.stopAxis('pitch')
+        self.__model.hardware.waitStopAxis('pitch')
+        self.pitchMovePlusTogglebutton.set_active(False)
+        self.refreshView()
+
+    def __onPitchMoveMinusTogglebuttonPressed(self, widget):
+        Logger().trace("MainController.__onPitchMoveMinusTogglebuttonPressed()")
+        self.__model.hardware.startAxis('pitch', '-')
+
+    def __onPitchMoveMinusTogglebuttonReleased(self, widget):
+        Logger().trace("MainController.__onPitchMoveMinusTogglebuttonReleased()")
+        self.__model.hardware.stopAxis('pitch')
+        self.__model.hardware.waitStopAxis('pitch')
+        self.pitchMoveMinusTogglebutton.set_active(False)
+        self.refreshView()
+
+    def __onYawMoveMinusTogglebuttonPressed(self, widget):
+        Logger().trace("MainController.__onYawMoveMinusTogglebuttonPressed()")
+        self.__model.hardware.startAxis('yaw', '-')
+
+    def __onYawMoveMinusTogglebuttonReleased(self, widget):
+        Logger().trace("MainController.__onYawMoveMinusTogglebuttonReleased()")
+        self.__model.hardware.stopAxis('yaw')
+        self.__model.hardware.waitStopAxis('yaw')
+        self.yawMoveMinusTogglebutton.set_active(False)
+        self.refreshView()
+
+    def __openConfigDialog(self):
+        controller = ConfigController(self, self.__model)
+        controller.run()
+        controller.destroyView()
         Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
-        ConfigManager().save()
         self.refreshView()
+
+    def __onConfigButtonClicked(self, widget):
+        Logger().trace("MainController.__onConfigButtonClicked()")
+        self.__openConfigDialog()
 
     def __openShootdialog(self):
         self.__model.initProgress()
-        view = ShootDialog()
-        controller = ShootController(self, self.__model, view)
-        retCode = view.shootDialog.run()
-        view.shootDialog.destroy()
+        controller = ShootController(self, self.__model)
+        controller.run()
+        controller.destroyView()
 
     def __onShootButtonClicked(self, widget):
         Logger().trace("MainController.__onShootButtonClicked()")
@@ -405,13 +603,12 @@ class MainController(AbstractController):
         
         Logger().info("Connecting to real hardware...")
         self.setStatusbarMessage("Connecting to real hardware...")
-        self.__view.hardwareConnectMenuitem.set_sensitive(False)
+        self.hardwareConnectMenuitem.set_sensitive(False)
         
         # Open connection banner (todo: use real banner on Nokia). Make a special object
         self.__connectStatus = None
-        view = ConnectBanner()
-        self.__connectController = ConnectController(self.__view, self.__model, view)
-        self.__connectBanner = view.connectBanner
+        self.__connectController = ConnectController(self, self.__model)
+        self.__connectBanner = self.__connectController.connectBanner
         self.__connectBanner.show()
         
         # Launch connexion thread
@@ -426,7 +623,7 @@ class MainController(AbstractController):
         # Check connection status
         if self.__connectStatus:
             Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
-            self.__view.connectImage.set_from_stock(gtk.STOCK_YES, 4)
+            self.connectImage.set_from_stock(gtk.STOCK_YES, 4)
             Logger().info("Now connected to real hardware")
             self.setStatusbarMessage("Now connected to real hardware", 5)
         else:
@@ -436,9 +633,9 @@ class MainController(AbstractController):
             messageDialog.format_secondary_text(self.__connectErrorMessage)
             messageDialog.run()
             messageDialog.destroy()
-            self.__view.hardwareConnectMenuitem.set_active(False)
+            self.hardwareConnectMenuitem.set_active(False)
             
-        self.__view.hardwareConnectMenuitem.set_sensitive(True)
+        self.hardwareConnectMenuitem.set_sensitive(True)
 
     def __goToSimulationMode(self):
         """ Connect to simulated hardware.
@@ -446,7 +643,7 @@ class MainController(AbstractController):
         Logger().info("Go to simulation mode")
         self.__model.switchToSimulatedHardware()
         Spy().setRefreshRate(config.SPY_FAST_REFRESH)
-        self.__view.connectImage.set_from_stock(gtk.STOCK_NO, 4)
+        self.connectImage.set_from_stock(gtk.STOCK_NO, 4)
         self.setStatusbarMessage("Now in simulation mode", 5)
 
     def __refreshPos(self, yaw, pitch):
@@ -472,28 +669,32 @@ class MainController(AbstractController):
         @param delay: display message duration, in s (0 means forever)
         @type delay: int
         """
-        self.__view.statusbar.pop(self.__view.statusbarContextId)
+        self.statusbar.pop(self.statusbarContextId)
         if self.__statusbarTimeoutEventId is not None:
             gobject.source_remove(self.__statusbarTimeoutEventId)
         if message is not None:
-            self.__view.statusbar.push(self.__view.statusbarContextId, message)
+            self.statusbar.push(self.statusbarContextId, message)
             if delay:
                 self.__statusbarTimeoutEventId = gobject.timeout_add(delay * 1000, self.setStatusbarMessage)
             else:
                 self.__statusbarTimeoutEventId = None
 
     def refreshView(self):
-        values = {'yawPos': self.__yawPos,
-                  'pitchPos': self.__pitchPos,
-                  'yawStart': self.__model.mosaic.yawStart,
-                  'pitchStart': self.__model.mosaic.pitchStart,
-                  'yawEnd': self.__model.mosaic.yawEnd,
-                  'pitchEnd': self.__model.mosaic.pitchEnd,
-                  'yawFov': self.__model.mosaic.yawFov,
-                  'pitchFov':  self.__model.mosaic.pitchFov,
-                  'yawNbPicts':  self.__model.mosaic.yawNbPicts,
-                  'pitchNbPicts':  self.__model.mosaic.pitchNbPicts,
-                  'yawRealOverlap': int(round(100 * self.__model.mosaic.yawRealOverlap)),
-                  'pitchRealOverlap': int(round(100 * self.__model.mosaic.pitchRealOverlap))
-              }
-        self.__view.fillWidgets(values)
+        if self.__model.mode == 'mosaic':
+            modeMosaic = True
+        else:
+            modeMosaic = False
+        self.modeMosaicRadiobutton.set_active(modeMosaic)
+        self.setYawStartButtonLabel.set_label("%.1f" % self.__model.mosaic.yawStart)
+        self.setPitchStartButtonLabel.set_label("%.1f" % self.__model.mosaic.pitchStart)
+        self.setYawEndButtonLabel.set_label("%.1f" % self.__model.mosaic.yawEnd)
+        self.setPitchEndButtonLabel.set_label("%.1f" % self.__model.mosaic.pitchEnd)
+        self.yawFovLabel.set_text("%.1f" % self.__model.mosaic.yawFov)
+        self.pitchFovLabel.set_text("%.1f" % self.__model.mosaic.pitchFov)
+        self.yawNbPictsLabel.set_text("%d" % self.__model.mosaic.yawNbPicts)
+        self.pitchNbPictsLabel.set_text("%d" % self.__model.mosaic.pitchNbPicts)
+        self.yawRealOverlapLabel.set_text("%d" % int(round(100 * self.__model.mosaic.yawRealOverlap)))
+        self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self.__model.mosaic.pitchRealOverlap)))
+        self.presetTemplateCombobox.set_active(config.PRESET_INDEX[self.__model.preset.template])
+        self.yawPosLabel.set_text("%.1f" % self.__yawPos)
+        self.pitchPosLabel.set_text("%.1f" % self.__pitchPos)
