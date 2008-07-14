@@ -118,6 +118,7 @@ class ConfigController(AbstractController):
         self.bluetoothDeviceAddressEntry = self.wTree.get_widget("bluetoothDeviceAddressEntry")
         self.serialPortLabel = self.wTree.get_widget("serialPortLabel")
         self.serialPortEntry = self.wTree.get_widget("serialPortEntry")
+        self.hardwareAutoConnectCheckbutton = self.wTree.get_widget("hardwareAutoConnectCheckbutton")
         self.loggerLevelCombobox = self.wTree.get_widget("loggerCLevelCombobox")
         self.dataFileFormatEntry = self.wTree.get_widget("dataFileFormatEntry")
 
@@ -145,6 +146,7 @@ class ConfigController(AbstractController):
                             config.DRIVER_INDEX[self.driverCombobox.get_active()])
         ConfigManager().set('Hardware', 'BLUETOOTH_DEVICE_ADDRESS', self.bluetoothDeviceAddressEntry.get_text())
         ConfigManager().set('Hardware', 'SERIAL_PORT', self.serialPortEntry.get_text())
+        ConfigManager().setBoolean('Hardware', 'AUTO_CONNECT', self.hardwareAutoConnectCheckbutton.get_active())
         ConfigManager().set('Logger', 'LOGGER_LEVEL',
                             config.LOGGER_INDEX[self.loggerLevelCombobox.get_active()])
         #ConfigManager().set('Data', 'DATA_FILE_FORMAT', self.dataFileFormatEntry.set_text()
@@ -200,5 +202,6 @@ class ConfigController(AbstractController):
         self.driverCombobox.set_active(config.DRIVER_INDEX[ConfigManager().get('Hardware', 'Driver')])
         self.bluetoothDeviceAddressEntry.set_text(ConfigManager().get('Hardware', 'BLUETOOTH_DEVICE_ADDRESS'))
         self.serialPortEntry.set_text(ConfigManager().get('Hardware', 'SERIAL_PORT'))
+        self.hardwareAutoConnectCheckbutton.set_active(ConfigManager().getBoolean('Hardware', 'AUTO_CONNECT'))
         self.loggerLevelCombobox.set_active(config.LOGGER_INDEX[ConfigManager().get('Logger', 'LOGGER_LEVEL')])
         #self.dataFileFormatEntry.set_text(ConfigManager().get('Data', 'DATA_FILE_FORMAT'))
