@@ -177,7 +177,8 @@ class MainController(AbstractController):
         self.__model.switchToRealHardwareSignal.connect(self.__switchToRealHardwareCallback)
 
         # Try to autoconnect to real hardware (todo: use a config flag)
-        self.hardwareConnectMenuitem.set_active(True)
+        if ConfigManager().getBoolean('Hardware', 'AUTO_CONNECT'):
+            self.hardwareConnectMenuitem.set_active(True)
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
@@ -188,6 +189,7 @@ class MainController(AbstractController):
         self.hardwareConnectMenuitem = self.wTree.get_widget("hardwareConnectMenuitem")
         self.hardwareResetMenuitem = self.wTree.get_widget("hardwareResetMenuitem")
         self.modeMosaicRadiobutton = self.wTree.get_widget("modeMosaicRadiobutton")
+        self.modePresetRadiobutton = self.wTree.get_widget("modePresetRadiobutton")
         self.mosaicFrame = self.wTree.get_widget("mosaicFrame")
         self.setYawStartButtonLabel = self.wTree.get_widget("setYawStartButton").child
         self.setPitchStartButtonLabel = self.wTree.get_widget("setPitchStartButton").child
@@ -207,7 +209,7 @@ class MainController(AbstractController):
         self.presetTemplateCombobox.set_model(listStore)
         cell = gtk.CellRendererText()
         self.presetTemplateCombobox.pack_start(cell, True)
-        self.presetTemplateCombobox.add_attribute(cell, 'text', 0)
+        #self.presetTemplateCombobox.add_attribute(cell, 'text', 0)
         i = 0
         while True:
             try:
@@ -451,7 +453,7 @@ class MainController(AbstractController):
 
         # Set version
         helpAboutDialog.set_version(config.VERSION)
-        retCode =helpAboutDialog.run()
+        helpAboutDialog.run()
         helpAboutDialog.destroy()
 
     def __onModeMosaicRadiobuttonToggled(self, widget):
@@ -463,6 +465,7 @@ class MainController(AbstractController):
             self.__model.mode = 'mosaic'
         else:
             self.__model.mode = 'preset'
+        Logger().debug("MainController.__onModeMosaicRadiobuttonToggled(): shooting mode set to '%s'" % self.__model.mode)
 
     def __onSetYawStartButtonClicked(self, widget):
         Logger().trace("MainController.__onSetYawStartButtonClicked()")
@@ -511,6 +514,7 @@ class MainController(AbstractController):
     def __onPresetTemplateComboboxChanged(self, widget):
         Logger().trace("MainController.__onPresetTemplateComboboxChanged()")
         self.__model.preset.template = config.PRESET_INDEX[self.presetTemplateCombobox.get_active()]
+        Logger().debug("MainController.__onPresetTemplateComboboxChanged(): new preset template='%s'" % self.__model.preset.template)
 
     def __onHardwareSetOriginButtonClicked(self, widget):
         Logger().trace("MainController.onHardwareSetOriginButtonClicked()")
@@ -681,10 +685,13 @@ class MainController(AbstractController):
 
     def refreshView(self):
         if self.__model.mode == 'mosaic':
-            modeMosaic = True
+            flag = True
         else:
-            modeMosaic = False
-        self.modeMosaicRadiobutton.set_active(modeMosaic)
+            flag = False
+        self.modeMosaicRadiobutton.set_active(flag)
+        self.modePresetRadiobutton.set_active(not flag)
+        self.mosaicFrame.set_sensitive(flag)
+        self.presetFrame.set_sensitive(not flag)
         self.setYawStartButtonLabel.set_label("%.1f" % self.__model.mosaic.yawStart)
         self.setPitchStartButtonLabel.set_label("%.1f" % self.__model.mosaic.pitchStart)
         self.setYawEndButtonLabel.set_label("%.1f" % self.__model.mosaic.yawEnd)
