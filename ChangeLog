@@ -5,14 +5,16 @@ ChangeLog
 x bug fix
 
 xxxx-xx-xx Version SVN
-    + graphical progress
     + added preset shooting mode for full spherical
+    + graphical progress (mosaic only)
     - removed 360/180 buttons in mosaic mode
     x bug correction in number of pictures
     + added nice icons for buttons
     + key shortcuts activate buttons
     + added version in Help > About dialog
     x removed view modules
+    + added hardware auto-connect config option
+    + custom xml data file for each shooting mode
     
 xxxx-xx-xx Version 1.0
 
