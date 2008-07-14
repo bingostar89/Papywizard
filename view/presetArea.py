@@ -87,7 +87,7 @@ class PresetArea(ShootingArea):
                 #pitch -= self._pitchStart
             #else:
                 #pitch -= self._pitchEnd
-            x = int(round(yaw * self._scale)) + int(round(self._yawOffset))
+            x = int(round(yaw * self._scale)) + int(round(self._yawOffset)) + int(round(self._yawCameraFov * self._scale / 2.))
             y = int(round(pitch * self._scale)) + int(round(self._pitchOffset))
             w = int(round(self._yawCameraFov * self._scale))
             h = int(round(self._pitchCameraFov * self._scale))
