@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Jul 14 18:56:55 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Jul 15 00:13:51 2008 -->
 <glade-interface>
-  <widget class="GtkDialog" id="configDialog">
+  <widget class="GtkDialog" id="dialog">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Configuration</property>
     <property name="resizable">False</property>

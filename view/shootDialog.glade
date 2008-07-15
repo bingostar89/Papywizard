@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Jul 12 15:37:32 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Jul 15 00:28:11 2008 -->
 <glade-interface>
-  <widget class="GtkDialog" id="shootDialog">
+  <widget class="GtkDialog" id="dialog">
     <property name="visible">True</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Shoot</property>

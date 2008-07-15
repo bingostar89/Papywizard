@@ -2,7 +2,7 @@
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
 <!--*- mode: xml -*-->
 <glade-interface>
-  <widget class="GtkWindow" id="mainWindow">
+  <widget class="GtkWindow" id="dialog">
     <property name="width_request">700</property>
     <property name="height_request">405</property>
     <property name="visible">True</property>
