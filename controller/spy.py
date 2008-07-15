@@ -121,16 +121,16 @@ class Spy(threading.Thread):
         """
         try:
             yaw, pitch = self.__model.hardware.readPosition()
+            if yaw != self.__yaw or pitch != self.__pitch:
+                #Logger().debug("Spy.execute(): new yaw=%.1f, new pitch=%.1f" % (yaw, pitch))
+                try:
+                    self.newPosSignal.emit(yaw, pitch)
+                except:
+                    Logger().exception("Spy.execute(): can't emit signal")
+                self.__yaw = yaw
+                self.__pitch = pitch
         except HardwareError:
             Logger().exception("Spy.execute(): can't read position")
-        if yaw != self.__yaw or pitch != self.__pitch:
-            #Logger().debug("Spy.execute(): new yaw=%.1f, new pitch=%.1f" % (yaw, pitch))
-            try:
-                self.newPosSignal.emit(yaw, pitch)
-            except:
-                Logger().exception("Spy.execute(): can't emit signal")
-            self.__yaw = yaw
-            self.__pitch = pitch
             
         return True
 
