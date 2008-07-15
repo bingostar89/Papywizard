@@ -688,6 +688,10 @@ class MainController(AbstractController):
         self.pitchNbPictsLabel.set_text("%d" % self._model.mosaic.pitchNbPicts)
         self.yawRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.yawRealOverlap)))
         self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
-        self.presetTemplateCombobox.set_active(config.PRESET_INDEX[self._model.preset.template])
+        try:
+            self.presetTemplateCombobox.set_active(config.PRESET_INDEX[self._model.preset.template])
+        except KeyError:
+            self.presetTemplateCombobox.set_active(0)
+
         self.yawPosLabel.set_text("%.1f" % self.__yawPos)
         self.pitchPosLabel.set_text("%.1f" % self.__pitchPos)
