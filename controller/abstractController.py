@@ -51,10 +51,66 @@ Implements
 
 __revision__ = "$Id$"
 
+import os.path
+
+import pygtk
+pygtk.require("2.0")
+import gtk.glade
+
+path = os.path.dirname(__file__)
+
 
 class AbstractController(object):
     """ Base class for controllers.
     """
+    def __init__(self, parent, model):
+        """ Init the controller.
+
+        @param parent: parent controller
+        @type parent: {Controller}
+
+        @param model: model to use
+        @type mode: {Shooting}
+        """
+        self._parent = parent
+        self._model = model
+
+        self._init()
+
+        # Set the Glade file
+        gladeFile = os.path.join(path, os.path.pardir, "view", self._gladeFile)
+        self.wTree = gtk.glade.XML(gladeFile)
+
+        self._retreiveWidgets()
+        self._connectSignals()
+        self.refreshView()
+
+    def _init(self):
+        """ Misc. init.
+        """
+        self._gladeFile = None
+        self._signalDict = None
+        
+    def _retreiveWidgets(self):
+        """ Get widgets from widget tree.
+        """
+        self.dialog = self.wTree.get_widget("dialog")
+
+    def _connectSignals(self):
+        """ Connect widgets signals.
+        """
+        self.wTree.signal_autoconnect(self._signalDict)
+
+    def run(self):
+        """ Run the dialog.
+        """
+        self.dialog.run()
+        
+    def destroyView(self):
+        """ Destroy the view.
+        """
+        self.dialog.destroy()
+    
     def refreshView(self):
         """ Refresh the view widgets according to model values.
         """

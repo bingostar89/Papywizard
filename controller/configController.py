@@ -51,56 +51,33 @@ Implements
 
 __revision__ = "$Id$"
 
-import os.path
-
-import pygtk
-pygtk.require("2.0")
-import gtk.glade
-
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractController
-
-path = os.path.dirname(__file__)
 
 
 class ConfigController(AbstractController):
     """ Configuration controller object.
     """
     def __init__(self, parent, model):
-        """ Init the object.
-
-        @param parent: parent controller
-        @type parent: {Controller}
-
-        @param model: model to use
-        @type mode: {Shooting}
-        """
-        self.__parent = parent
-        self.__model = model
-
-        # Set the Glade file
-        gladeFile = os.path.join(path, os.path.pardir, "view", "configDialog.glade")
-        self.wTree = gtk.glade.XML(gladeFile)
-
-        # Retreive usefull widgets
-        self._retreiveWidgets()
-
-        # Connect signal/slots
-        dic = {"on_okButton_clicked": self.__onOkButtonClicked,
-               "on_cancelButton_clicked": self.__onCancelButtonClicked,
-               "on_driverCombobox_changed": self.__onDriverComboboxChanged
-           }
-        self.wTree.signal_autoconnect(dic)
+        super(ConfigController, self).__init__(parent, model)
 
         # Fill widgets
         self.refreshView()
 
+    def _init(self):
+        self._gladeFile = "configDialog.glade"
+        self._signalDict = {"on_okButton_clicked": self.__onOkButtonClicked,
+                            "on_cancelButton_clicked": self.__onCancelButtonClicked,
+                            "on_driverCombobox_changed": self.__onDriverComboboxChanged
+                        }
+
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
-        self.configDialog = self.wTree.get_widget("configDialog")
+        super(ConfigController, self)._retreiveWidgets()
+        
         self.stabilizationDelaySpinbutton = self.wTree.get_widget("stabilizationDelaySpinbutton")
         self.cameraOrientationCombobox = self.wTree.get_widget("cameraOrientationCombobox")
         self.overlapSpinbutton = self.wTree.get_widget("overlapSpinbutton")
@@ -130,18 +107,18 @@ class ConfigController(AbstractController):
         """
         Logger().trace("ConfigController.__onOkButtonClicked()")
 
-        self.__model.stabilizationDelay = self.stabilizationDelaySpinbutton.get_value()
-        self.__model.mosaic.overlap = self.overlapSpinbutton.get_value() / 100.
-        self.__model.mosaic.overlapSquare = self.overlapSquareCheckbutton.get_active()
-        self.__model.mosaic.cameraOrientation = config.CAMERA_ORIENTATION_INDEX[self.cameraOrientationCombobox.get_active()]
-        self.__model.mosaic.startFrom = config.MOSAIC_START_FROM_INDEX[self.startFromCombobox.get_active()]
-        self.__model.mosaic.initialDirection = config.MOSAIC_INITIAL_DIR_INDEX[self.initialDirectionCombobox.get_active()]
-        self.__model.mosaic.cr = self.crCheckbutton.get_active()
-        self.__model.camera.timeValue = self.timeValueSpinbutton.get_value()
-        self.__model.camera.nbPicts = int(self.nbPictsSpinbutton.get_value())
-        self.__model.camera.sensorCoef = self.sensorCoefSpinbutton.get_value()
-        self.__model.camera.sensorRatio = config.SENSOR_RATIOS_INDEX[self.sensorRatioCombobox.get_active()]
-        self.__model.camera.lens.focal = self.focalSpinbutton.get_value()
+        self._model.stabilizationDelay = self.stabilizationDelaySpinbutton.get_value()
+        self._model.mosaic.overlap = self.overlapSpinbutton.get_value() / 100.
+        self._model.mosaic.overlapSquare = self.overlapSquareCheckbutton.get_active()
+        self._model.mosaic.cameraOrientation = config.CAMERA_ORIENTATION_INDEX[self.cameraOrientationCombobox.get_active()]
+        self._model.mosaic.startFrom = config.MOSAIC_START_FROM_INDEX[self.startFromCombobox.get_active()]
+        self._model.mosaic.initialDirection = config.MOSAIC_INITIAL_DIR_INDEX[self.initialDirectionCombobox.get_active()]
+        self._model.mosaic.cr = self.crCheckbutton.get_active()
+        self._model.camera.timeValue = self.timeValueSpinbutton.get_value()
+        self._model.camera.nbPicts = int(self.nbPictsSpinbutton.get_value())
+        self._model.camera.sensorCoef = self.sensorCoefSpinbutton.get_value()
+        self._model.camera.sensorRatio = config.SENSOR_RATIOS_INDEX[self.sensorRatioCombobox.get_active()]
+        self._model.camera.lens.focal = self.focalSpinbutton.get_value()
         ConfigManager().set('Hardware', 'DRIVER', 
                             config.DRIVER_INDEX[self.driverCombobox.get_active()])
         ConfigManager().set('Hardware', 'BLUETOOTH_DEVICE_ADDRESS', self.bluetoothDeviceAddressEntry.get_text())
@@ -176,29 +153,19 @@ class ConfigController(AbstractController):
             self.serialPortLabel.set_sensitive(True)
             self.serialPortEntry.set_sensitive(True)
 
-    def run(self):
-        """ Run the dialog.
-        """
-        self.configDialog.run()
-        
-    def destroyView(self):
-        """ Destroy the view.
-        """
-        self.configDialog.destroy()
-
     def refreshView(self):
-        self.stabilizationDelaySpinbutton.set_value(self.__model.stabilizationDelay)
-        self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[self.__model.mosaic.cameraOrientation])
-        self.overlapSpinbutton.set_value(int(100 * self.__model.mosaic.overlap))
-        self.overlapSquareCheckbutton.set_active(self.__model.mosaic.overlapSquare)
-        self.startFromCombobox.set_active(config.MOSAIC_START_FROM_INDEX[self.__model.mosaic.startFrom])
-        self.initialDirectionCombobox.set_active(config.MOSAIC_INITIAL_DIR_INDEX[self.__model.mosaic.initialDirection])
-        self.crCheckbutton.set_active(self.__model.mosaic.cr)
-        self.timeValueSpinbutton.set_value(self.__model.camera.timeValue)
-        self.nbPictsSpinbutton.set_value(self.__model.camera.nbPicts)
-        self.sensorCoefSpinbutton.set_value(self.__model.camera.sensorCoef)
-        self.sensorRatioCombobox.set_active(config.SENSOR_RATIOS_INDEX[self.__model.camera.sensorRatio])
-        self.focalSpinbutton.set_value(self.__model.camera.lens.focal)
+        self.stabilizationDelaySpinbutton.set_value(self._model.stabilizationDelay)
+        self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[self._model.mosaic.cameraOrientation])
+        self.overlapSpinbutton.set_value(int(100 * self._model.mosaic.overlap))
+        self.overlapSquareCheckbutton.set_active(self._model.mosaic.overlapSquare)
+        self.startFromCombobox.set_active(config.MOSAIC_START_FROM_INDEX[self._model.mosaic.startFrom])
+        self.initialDirectionCombobox.set_active(config.MOSAIC_INITIAL_DIR_INDEX[self._model.mosaic.initialDirection])
+        self.crCheckbutton.set_active(self._model.mosaic.cr)
+        self.timeValueSpinbutton.set_value(self._model.camera.timeValue)
+        self.nbPictsSpinbutton.set_value(self._model.camera.nbPicts)
+        self.sensorCoefSpinbutton.set_value(self._model.camera.sensorCoef)
+        self.sensorRatioCombobox.set_active(config.SENSOR_RATIOS_INDEX[self._model.camera.sensorRatio])
+        self.focalSpinbutton.set_value(self._model.camera.lens.focal)
         self.driverCombobox.set_active(config.DRIVER_INDEX[ConfigManager().get('Hardware', 'Driver')])
         self.bluetoothDeviceAddressEntry.set_text(ConfigManager().get('Hardware', 'BLUETOOTH_DEVICE_ADDRESS'))
         self.serialPortEntry.set_text(ConfigManager().get('Hardware', 'SERIAL_PORT'))

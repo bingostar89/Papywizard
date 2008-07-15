@@ -51,10 +51,12 @@ Implements
 
 __revision__ = "$Id$"
 
-import os
+import os.path
 import time
 import threading
 
+import pygtk
+pygtk.require("2.0")
 import gtk
 import gobject
 
@@ -65,55 +67,19 @@ from papywizard.controller.spy import Spy
 from papywizard.view.mosaicArea import MosaicArea
 from papywizard.view.presetArea import PresetArea
 
-path = os.path.dirname(__file__)
-
 
 class ShootController(AbstractController):
     """ Shoot controller object.
     """
-    def __init__(self, parent, model):
-        """ Init the object.
-
-        @param parent: parent controller
-        @type parent: {Controller}
-
-        @param model: model to use
-        @type mode: {Shooting}
-        """
-        self.__parent = parent
-        self.__model = model
-        
-        # Set the Glade file
-        gladeFile = os.path.join(path, os.path.pardir, "view", "shootDialog.glade")
-        self.wTree = gtk.glade.XML(gladeFile)
-
-        # Retreive usefull widgets
-        self._retreiveWidgets(self.__model.mode)
-        
-        # Init shooting area
-        if self.__model.mode == 'mosaic':
-            self.shootingArea.init(self.__model.mosaic.yawStart, self.__model.mosaic.yawEnd,
-                                   self.__model.mosaic.pitchStart, self.__model.mosaic.pitchEnd,
-                                   self.__model.mosaic.yawFov, self.__model.mosaic.pitchFov,
-                                   self.__model.camera.getYawFov(self.__model.mosaic.cameraOrientation),
-                                   self.__model.camera.getPitchFov(self.__model.mosaic.cameraOrientation),
-                                   self.__model.mosaic.yawRealOverlap, self.__model.mosaic.pitchRealOverlap)
-        else:
-            self.shootingArea.init(500., 250., # fov
-                                   120., 120.) # camera fov
-
-        # Connect signal/slots
-        dic = {"on_manualShootCheckbutton_toggled": self.__onManualShootCheckbuttonToggled,
-               "on_dataFileEnableCheckbutton_toggled": self.__onDataFileEnableCheckbuttonToggled,
-               "on_startButton_clicked": self.__onStartButtonClicked,
-               "on_suspendResumeButton_clicked": self.__onSuspendResumeButtonClicked,
-               "on_stopButton_clicked": self.__onStopButtonClicked,
-               "on_doneButton_clicked": self.__onDoneButtonClicked,
-           }
-        self.wTree.signal_autoconnect(dic)
-        self.shootDialog.connect("key-press-event", self.__onKeyPressed)
-        self.shootDialog.connect("key-release-event", self.__onKeyReleased)
-        self.shootDialog.connect("delete-event", self.__onDelete)
+    def _init(self):
+        self._gladeFile = "shootDialog.glade"
+        self._signalDict = {"on_manualShootCheckbutton_toggled": self.__onManualShootCheckbuttonToggled,
+                            "on_dataFileEnableCheckbutton_toggled": self.__onDataFileEnableCheckbuttonToggled,
+                            "on_startButton_clicked": self.__onStartButtonClicked,
+                            "on_suspendResumeButton_clicked": self.__onSuspendResumeButtonClicked,
+                            "on_stopButton_clicked": self.__onStopButtonClicked,
+                            "on_doneButton_clicked": self.__onDoneButtonClicked,
+                        }
 
         self.__keyPressedDict = {'Return': False,
                                  'Escape': False
@@ -122,36 +88,30 @@ class ShootController(AbstractController):
                       'Escape': gtk.keysyms.Escape
                       }
 
-        # Nokia plateform stuff
-        try:
-            import hildon
-            self.__key['Home'] = gtk.keysyms.F8
-            self.__key['End'] = gtk.keysyms.F7
-        except ImportError:
-            pass
-
-        # Fill widgets
-        self.refreshView()
-
-        # Connect model signals
-        self.__model.newPictSignal.connect(self.__addPicture)
-
-    def _retreiveWidgets(self, shootingMode):
-        """ Get widgets from widget tree.
+    def _retreiveWidgets(self):
+        super(ShootController, self)._retreiveWidgets()
         
-        @param shootingMode: mode used to shoot ('mosaic', 'preset')
-        @type shootingMode: str
-        """
-        self.shootDialog = self.wTree.get_widget("shootDialog")
         vbox = self.wTree.get_widget("vbox")
         drawingarea = self.wTree.get_widget("drawingarea")
         drawingarea.destroy()
-        if shootingMode == 'mosaic':
+        if self._model.mode == 'mosaic':
             self.shootingArea = MosaicArea()
         else:
             self.shootingArea = PresetArea()
         vbox.pack_start(self.shootingArea)
         vbox.reorder_child(self.shootingArea, 0)
+        if self._model.mode == 'mosaic':
+            
+            # todo: give args in shootingArea.__init__()
+            self.shootingArea.init(self._model.mosaic.yawStart, self._model.mosaic.yawEnd,
+                                   self._model.mosaic.pitchStart, self._model.mosaic.pitchEnd,
+                                   self._model.mosaic.yawFov, self._model.mosaic.pitchFov,
+                                   self._model.camera.getYawFov(self._model.mosaic.cameraOrientation),
+                                   self._model.camera.getPitchFov(self._model.mosaic.cameraOrientation),
+                                   self._model.mosaic.yawRealOverlap, self._model.mosaic.pitchRealOverlap)
+        else:
+            self.shootingArea.init(500., 250., # fov
+                                   120., 120.) # camera fov
         self.shootingArea.show()
         self.progressbar = self.wTree.get_widget("progressbar")
         self.manualShootCheckbutton = self.wTree.get_widget("manualShootCheckbutton")
@@ -164,6 +124,15 @@ class ShootController(AbstractController):
         
         self.suspendResumeButton.set_sensitive(False)
         self.stopButton.set_sensitive(False)
+
+    def _connectSignals(self):
+        super(ShootController, self)._connectSignals()
+        
+        self.dialog.connect("key-press-event", self.__onKeyPressed)
+        self.dialog.connect("key-release-event", self.__onKeyReleased)
+        self.dialog.connect("delete-event", self.__onDelete)
+        
+        self._model.newPictSignal.connect(self.__addPicture)
 
     # Callbacks
     def __onDelete(self, widget, event):
@@ -179,7 +148,7 @@ class ShootController(AbstractController):
                 self.__keyPressedDict['Return'] = True
     
                 # Pressing 'Return' while not shooting starts shooting
-                if not self.__model.isShooting():
+                if not self._model.isShooting():
                     Logger().debug("shootController.__onKeyPressed(): start shooting")
                     self.__startShooting()
     
@@ -187,7 +156,7 @@ class ShootController(AbstractController):
                 else:
     
                     # ...and not suspended suspends shooting
-                    if not self.__model.isSuspended():
+                    if not self._model.isSuspended():
                         Logger().debug("shootController.__onKeyPressed(): suspend shooting")
                         self.__suspendShooting()
     
@@ -204,9 +173,9 @@ class ShootController(AbstractController):
                self.__keyPressedDict['Escape'] = True
    
                # Pressing 'Escape' while not shooting exit shoot dialog
-               if not self.__model.isShooting():
+               if not self._model.isShooting():
                    Logger().debug("shootController.__onKeyPressed(): close shooting dialog")
-                   self.shootDialog.response(0)
+                   self.dialog.response(0)
    
                # Pressing 'Escape' while shooting stops shooting
                else:
@@ -241,7 +210,7 @@ class ShootController(AbstractController):
         """
         Logger().trace("ShootController.____onManualShootCheckbuttonToggled()")
         switch = self.manualShootCheckbutton.get_active()
-        self.__model.setManualShoot(switch)
+        self._model.setManualShoot(switch)
 
     def __onDataFileEnableCheckbuttonToggled(self, widget):
         """ Data file enable checkbutton togled.
@@ -262,8 +231,8 @@ class ShootController(AbstractController):
         """ SuspendResume button has been clicked.
         """
         Logger().trace("ShootController.__suspendResumeButtonClicked()")
-        if self.__model.isShooting(): # Should always be true here, but...
-            if not self.__model.isSuspended():
+        if self._model.isShooting(): # Should always be true here, but...
+            if not self._model.isSuspended():
                 self.__suspendShooting()
             else:
                 self.__resumeShooting()
@@ -278,7 +247,7 @@ class ShootController(AbstractController):
         """ Done button has been clicked.
         """
         Logger().trace("ShootController.__onDoneButtonClicked()")
-        self.shootDialog.response(0)
+        self.dialog.response(0)
 
     def __addPicture(self, yaw, pitch):
         Logger().trace("ShootController.__addPicture()")
@@ -296,17 +265,17 @@ class ShootController(AbstractController):
             Logger().trace("ShootController.__startShooting().checkEnd()")
 
             # Check if model suspended (manual shoot mode)
-            if self.__model.isSuspended():
+            if self._model.isSuspended():
                 self.suspendResumeLabel.set_text("Resume")
             else:
                 self.suspendResumeLabel.set_text("Suspend")
 
             # Check end of shooting
-            if not self.__model.isShooting():
+            if not self._model.isShooting():
                 Logger().debug("checkEnd(): model not shooting anymore")
                 
                 # Check status
-                #if self.__model.error:
+                #if self._model.error:
                     #messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
                                                       #message_format="Internal error while shooting")
                     #messageDialog.format_secondary_text("Please report bug (include logs)")
@@ -336,41 +305,41 @@ class ShootController(AbstractController):
         self.stopButton.set_sensitive(True)
         self.doneButton.set_sensitive(False)
 
-        thread = threading.Thread(target=self.__model.start)
+        thread = threading.Thread(target=self._model.start)
         thread.start()
-        #self.__model.startEvent.wait() # Does not work under Nokia
+        #self._model.startEvent.wait() # Does not work under Nokia
         time.sleep(0.2)
 
         # Check end of shooting
         gobject.timeout_add(200, checkEnd)
 
     def __suspendShooting(self):
-        self.__model.suspend()
+        self._model.suspend()
         #self.suspendResumeLabel.set_text("Resume")
 
     def __resumeShooting(self):
-        self.__model.resume()
+        self._model.resume()
         #self.suspendResumeLabel.set_text("Suspend")
 
     def __stopShooting(self):
-        self.__model.stop()
+        self._model.stop()
 
         # Wait for shooting really stops
         # todo: use condition
-        while self.__model.isShooting():
+        while self._model.isShooting():
             time.sleep(0.1)
 
     def run(self):
         """ Run the dialog.
         """
-        self.shootDialog.run()
+        self.dialog.run()
         
     def destroyView(self):
         """ Destroy the view.
         """
-        self.shootDialog.destroy()
+        self.dialog.destroy()
 
     def refreshView(self):
-        self.progressbar.set_fraction(self.__model.progress)
-        self.progressbar.set_text(self.__model.sequence)
+        self.progressbar.set_fraction(self._model.progress)
+        self.progressbar.set_text(self._model.sequence)
         self.dataFileEnableCheckbutton.set_active(ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE'))
