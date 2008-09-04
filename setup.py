@@ -72,7 +72,7 @@ setup(name="papywizard",
       packages=["papywizard", "papywizard.common", "papywizard.model",
                 "papywizard.controller", "papywizard.hardware",
                 "papywizard.view", "papywizard.view3D"],
-      package_data={'papywizard': ["view/*.glade", "view/lcdLabelChars.txt", "common/papywizard.conf"]},
+      package_data={'papywizard': ["view/*.glade", "view/lcdLabelChars.txt", "common/papywizard.conf", "common/presets.xml"]},
       data_files=[("share/applications/hildon", ["papywizard.desktop"]),
                   ('share/pixmaps', ["papywizard.png"])],
 
