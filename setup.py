@@ -53,6 +53,10 @@ __revision__ = "$Id$"
 
 from bdist_debian import bdist_debian
 from distutils.core import setup
+try:
+    import py2exe
+except ImportError:
+    pass
 
 from common import config
 
@@ -81,5 +85,16 @@ setup(name="papywizard",
       depends="python2.5, python2.5-hildon, python2.5-gtk2",
       icon="papywizard.png",
       cmdclass={'bdist_debian': bdist_debian},
+
+      # windows stuff
+      windows = [{'script': "papywizard",
+                  #'icon_resources': [(1, "papywizard.ico")],
+                 }
+                ],
+      #console=["papywizard"],
+      options={'py2exe': {'packages': "encodings",
+                          'includes': "cairo, pango, pangocairo, atk, gobject",
+                         }
+              },
   )
 
