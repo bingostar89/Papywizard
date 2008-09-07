@@ -574,7 +574,7 @@ class MainController(AbstractController):
         self.__openShootdialog()
 
     def __switchToRealHardwareCallback(self, flag, message=""):
-        Logger().debug("MainController.__hardwareInit(): flag=%s" % flag)
+        Logger().debug("MainController.__switchToRealHardwareCallback(): flag=%s" % flag)
         self.__connectStatus = flag
         self.__connectErrorMessage = message
         self.__connectController.closeBanner()
@@ -583,7 +583,7 @@ class MainController(AbstractController):
     def __connectToHardware(self):
         """ Connect to real hardware.
         """
-        def refreshProgressbar(rogressbar):
+        def refreshProgressbar(progressbar):
             """ Refresh the progressbar in activity mode.
             
             Should be called by a timeout.
@@ -619,7 +619,7 @@ class MainController(AbstractController):
         else:
             Logger().error("Connection to hardware failed (%s)" % self.__connectErrorMessage)
             messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                                     message_format="Connection to hardware failed")
+                                              message_format="Connection to hardware failed")
             messageDialog.format_secondary_text(self.__connectErrorMessage)
             messageDialog.run()
             messageDialog.destroy()
