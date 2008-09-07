@@ -53,6 +53,7 @@ Implements
 
 __revision__ = "$Id$"
 
+import sys
 import os.path
 import logging
 import logging.handlers
@@ -61,17 +62,26 @@ import traceback
 
 from papywizard.common import config
 
-
-consoleLogColors = {'trace':"\033[0;36;40;22m",     # cyan/noir, normal
-                    'debug':"\033[0;36;40;1m",      # cyan/noir, gras
-                    'info':"\033[0;37;40;1m",       # blanc/noir, gras
-                    'warning':"\033[0;33;40;1m",    # marron/noir, gras
-                    'error':"\033[0;31;40;1m",      # rouge/noir, gras
-                    'exception':"\033[0;35;40;1m",  # magenta/noir, gras
-                    'critical':"\033[0;37;41;1m",   # blanc/rouge, gras
-                    'default':"\033[0m",            # defaut
-                    }
-
+if sys.platform == 'linux2':
+    consoleLogColors = {'trace':"\033[0;36;40;22m",     # cyan/noir, normal
+                        'debug':"\033[0;36;40;1m",      # cyan/noir, gras
+                        'info':"\033[0;37;40;1m",       # blanc/noir, gras
+                        'warning':"\033[0;33;40;1m",    # marron/noir, gras
+                        'error':"\033[0;31;40;1m",      # rouge/noir, gras
+                        'exception':"\033[0;35;40;1m",  # magenta/noir, gras
+                        'critical':"\033[0;37;41;1m",   # blanc/rouge, gras
+                        'default':"\033[0m",            # defaut
+                        }
+else:
+    consoleLogColors = {'trace':"",
+                        'debug':"",
+                        'info':"",
+                        'warning':"",
+                        'error':"",
+                        'exception':"",
+                        'critical':"",
+                        'default':"",
+                        }
 
 class DefaultFormatter(logging.Formatter):
     """ Base class for formatters.
