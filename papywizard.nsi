@@ -4,11 +4,11 @@
 !define PRODUCT_NAME "papywizard"
 !define PRODUCT_VERSION "0.9-1"
 !define PRODUCT_WEB_SITE "http://trac.gbiloba.org/papywizard"
-!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\w9xpopen.exe"
+!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\papywizard.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 
-; MUI 1.67 compatible ------
+; MUI 1.67 compatible
 !include "MUI.nsh"
 
 ; MUI Settings
@@ -25,6 +25,8 @@
 !insertmacro MUI_PAGE_WELCOME
 ; License page
 !insertmacro MUI_PAGE_LICENSE "Licence_CeCILL_V2-en.txt"
+; Components page
+!insertmacro MUI_PAGE_COMPONENTS
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
 ; Instfiles page
@@ -56,50 +58,30 @@ FunctionEnd
 Section "SectionPrincipale" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
-  File "dist\zlib1.dll"
-  File "dist\xmltok.dll"
-  File "dist\xmlparse.dll"
   File "dist\w9xpopen.exe"
   CreateDirectory "$SMPROGRAMS\papywizard"
-  CreateShortCut "$SMPROGRAMS\papywizard\papywizard.lnk" "$INSTDIR\w9xpopen.exe"
-  CreateShortCut "$DESKTOP\papywizard.lnk" "$INSTDIR\w9xpopen.exe"
-  File "dist\unicodedata.pyd"
-  File "dist\python25.dll"
-  File "dist\pyexpat.pyd"
+  CreateShortCut "$SMPROGRAMS\papywizard\papywizard.lnk" "$INSTDIR\papywizard.exe"
+  CreateShortCut "$DESKTOP\papywizard.lnk" "$INSTDIR\papywizard.exe"
+  ; pas nessaire, inclus dans library.zip
+  ;File "dist\python25.dll"
   File "dist\papywizard.exe"
-  File "dist\pangocairo.pyd"
-  File "dist\pango.pyd"
   File "dist\msvcr71.dll"
-  File "dist\libxml2.dll"
   File "dist\library.zip"
-  File "dist\libpng12.dll"
-  File "dist\libpangowin32-1.0-0.dll"
-  File "dist\libpangoft2-1.0-0.dll"
-  File "dist\libpangocairo-1.0-0.dll"
-  File "dist\libpango-1.0-0.dll"
-  File "dist\libgtk-win32-2.0-0.dll"
-  File "dist\libgthread-2.0-0.dll"
-  File "dist\libgobject-2.0-0.dll"
-  File "dist\libgmodule-2.0-0.dll"
-  File "dist\libglib-2.0-0.dll"
-  File "dist\libglade-2.0-0.dll"
-  File "dist\libgdk-win32-2.0-0.dll"
-  File "dist\libgdk_pixbuf-2.0-0.dll"
-  File "dist\libfreetype-6.dll"
-  File "dist\libfontconfig-1.dll"
-  File "dist\libcairo-2.dll"
-  File "dist\libatk-1.0-0.dll"
-  File "dist\intl.dll"
-  File "dist\iconv.dll"
-  File "dist\gtk.glade.pyd"
-  File "dist\gtk._gtk.pyd"
-  File "dist\gobject._gobject.pyd"
-  File "dist\cairo._cairo.pyd"
-  File "dist\bz2.pyd"
-  File "dist\atk.pyd"
-  File "dist\_ssl.pyd"
-  File "dist\_socket.pyd"
-  File "dist\_hashlib.pyd"
+  ; tu devrais ajouter ici tous les autres fichiers nessaires
+  ; par exemple:
+  ;SetOutPath "$INSTDIR\common"
+  ;File common\__init__.py
+  ;File common\config.py
+  ; etc...
+  ; ou
+  ;File common\*.*
+SectionEnd
+
+Section "GTK+ runtime" SEC02
+  SetOutPath $TEMP
+  File "dist\gtk+-2.10.11-setup.exe"
+  ExecWait '"$TEMP\gtk+-2.10.11-setup.exe" /SP- /SILENT'
+  Delete "$TEMP\gtk+-2.10.11-setup.exe"
 SectionEnd
 
 Section -AdditionalIcons
@@ -110,70 +92,38 @@ SectionEnd
 
 Section -Post
   WriteUninstaller "$INSTDIR\uninst.exe"
-  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\w9xpopen.exe"
+  WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\papywizard.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayName" "$(^Name)"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "UninstallString" "$INSTDIR\uninst.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\w9xpopen.exe"
+  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayIcon" "$INSTDIR\papywizard.exe"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "DisplayVersion" "${PRODUCT_VERSION}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
 SectionEnd
 
+; Section descriptions
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "Papywizard"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "GTK+ 2.10.11 runtime"
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) a été désinstallé avec succès de votre ordinateur."
+  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) a Ã©tÃ© dÃ©sinstallÃ© avec succÃ¨s de votre ordinateur."
 FunctionEnd
 
 Function un.onInit
 !insertmacro MUI_UNGETLANGUAGE
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Êtes-vous certains de vouloir désinstaller totalement $(^Name) et tous ses composants ?" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "ÃŠtes-vous certains de vouloir dÃ©sinstaller totalement $(^Name) et tous ses composants ?" IDYES +2
   Abort
 FunctionEnd
 
 Section Uninstall
   Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
-  Delete "$INSTDIR\_hashlib.pyd"
-  Delete "$INSTDIR\_socket.pyd"
-  Delete "$INSTDIR\_ssl.pyd"
-  Delete "$INSTDIR\atk.pyd"
-  Delete "$INSTDIR\bz2.pyd"
-  Delete "$INSTDIR\cairo._cairo.pyd"
-  Delete "$INSTDIR\gobject._gobject.pyd"
-  Delete "$INSTDIR\gtk._gtk.pyd"
-  Delete "$INSTDIR\gtk.glade.pyd"
-  Delete "$INSTDIR\iconv.dll"
-  Delete "$INSTDIR\intl.dll"
-  Delete "$INSTDIR\libatk-1.0-0.dll"
-  Delete "$INSTDIR\libcairo-2.dll"
-  Delete "$INSTDIR\libfontconfig-1.dll"
-  Delete "$INSTDIR\libfreetype-6.dll"
-  Delete "$INSTDIR\libgdk_pixbuf-2.0-0.dll"
-  Delete "$INSTDIR\libgdk-win32-2.0-0.dll"
-  Delete "$INSTDIR\libglade-2.0-0.dll"
-  Delete "$INSTDIR\libglib-2.0-0.dll"
-  Delete "$INSTDIR\libgmodule-2.0-0.dll"
-  Delete "$INSTDIR\libgobject-2.0-0.dll"
-  Delete "$INSTDIR\libgthread-2.0-0.dll"
-  Delete "$INSTDIR\libgtk-win32-2.0-0.dll"
-  Delete "$INSTDIR\libpango-1.0-0.dll"
-  Delete "$INSTDIR\libpangocairo-1.0-0.dll"
-  Delete "$INSTDIR\libpangoft2-1.0-0.dll"
-  Delete "$INSTDIR\libpangowin32-1.0-0.dll"
-  Delete "$INSTDIR\libpng12.dll"
   Delete "$INSTDIR\library.zip"
-  Delete "$INSTDIR\libxml2.dll"
   Delete "$INSTDIR\msvcr71.dll"
-  Delete "$INSTDIR\pango.pyd"
-  Delete "$INSTDIR\pangocairo.pyd"
   Delete "$INSTDIR\papywizard.exe"
-  Delete "$INSTDIR\pyexpat.pyd"
-  Delete "$INSTDIR\python25.dll"
-  Delete "$INSTDIR\unicodedata.pyd"
   Delete "$INSTDIR\w9xpopen.exe"
-  Delete "$INSTDIR\xmlparse.dll"
-  Delete "$INSTDIR\xmltok.dll"
-  Delete "$INSTDIR\zlib1.dll"
 
   Delete "$SMPROGRAMS\papywizard\Uninstall.lnk"
   Delete "$SMPROGRAMS\papywizard\Website.lnk"
