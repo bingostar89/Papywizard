@@ -45,7 +45,7 @@ Implements
 - Target
 - setup
 
-@author: 
+@author: Mario Beauchamp
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
 @license: CeCILL
