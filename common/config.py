@@ -46,13 +46,17 @@ Configurations.
 
 __revision__ = "$Id$"
 
+import sys
 import os.path
 
 
 VERSION = "0.99"
 PACKAGE_VERSION = 1
 
-HOME_DIR = os.path.expandvars("$HOME")
+if sys.platform == 'linux2':
+    HOME_DIR = os.path.expandvars("$HOME")
+elif sys.platform == 'win32':
+    HOME_DIR = os.path.expandvars("$HOMEPATH")
 USER_CONFIG_DIR = os.path.join(HOME_DIR, ".config", "papywizard") # OpenDesktop standard
 USER_PRESET_DIR = os.path.join(USER_CONFIG_DIR, "presets")
 try:
