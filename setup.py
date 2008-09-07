@@ -51,12 +51,12 @@ Implements
 
 __revision__ = "$Id$"
 
-from bdist_debian import bdist_debian
 from distutils.core import setup
-try:
-    import py2exe
-except ImportError:
-    pass
+from bdist_debian import bdist_debian
+#try:
+    #import py2exe
+#except ImportError:
+    #pass
 
 from common import config
 
@@ -87,14 +87,10 @@ setup(name="papywizard",
       cmdclass={'bdist_debian': bdist_debian},
 
       # windows stuff
-      windows = [{'script': "papywizard",
-                  #'icon_resources': [(1, "papywizard.ico")],
-                 }
-                ],
       #console=["papywizard"],
-      options={'py2exe': {'packages': "encodings",
-                          'includes': "cairo, pango, pangocairo, atk, gobject",
-                         }
-              },
+      #windows = [{'script': "papywizard",
+                  #'icon_resources': [(1, "papywizard.ico")]}],
+      #options={'py2exe': {'packages': "encodings",
+                          #'includes': "cairo, pango, pangocairo, atk, gobject"}},
   )
 
