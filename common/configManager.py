@@ -83,7 +83,7 @@ class ConfigManager(object):
             distConfig = ConfigParser.SafeConfigParser()
             distConfigFile = os.path.join(path, config.CONFIG_FILE)
             if distConfig.read(distConfigFile) == []:
-                raise IOError("Can't read configuration file")
+                raise IOError("Can't read configuration file (%s)" % distConfigFile)
             distConfigVersion = distConfig.getint('General', 'CONFIG_VERSION')
             
             # Check if user config. exists
