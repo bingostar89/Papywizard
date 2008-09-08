@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "papywizard"
-!define PRODUCT_VERSION "0.9-1"
+!define PRODUCT_VERSION "0.99"
 !define PRODUCT_WEB_SITE "http://trac.gbiloba.org/papywizard"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\papywizard.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -62,26 +62,32 @@ Section "SectionPrincipale" SEC01
   CreateDirectory "$SMPROGRAMS\papywizard"
   CreateShortCut "$SMPROGRAMS\papywizard\papywizard.lnk" "$INSTDIR\papywizard.exe"
   CreateShortCut "$DESKTOP\papywizard.lnk" "$INSTDIR\papywizard.exe"
-  ; pas nessaire, inclus dans library.zip
-  ;File "dist\python25.dll"
+  ;File "dist\python25.dll"    ; pas nessaire, inclus dans library.zip
   File "dist\papywizard.exe"
   File "dist\msvcr71.dll"
   File "dist\library.zip"
-  ; tu devrais ajouter ici tous les autres fichiers nessaires
-  ; par exemple:
-  ;SetOutPath "$INSTDIR\common"
-  ;File common\__init__.py
-  ;File common\config.py
-  ; etc...
-  ; ou
-  ;File common\*.*
+  ;
+  ; Sources
+  File "__init__.py"
+  SetOutPath "$INSTDIR\papywizard"
+  File "papywizard\__init__.py"
+  SetOutPath "$INSTDIR\papywizard\common"
+  File "papywizard\common\*.*"
+  SetOutPath "$INSTDIR\papywizard\controller"
+  File "papywizard\controller\*.*"
+  SetOutPath "$INSTDIR\papywizard\hardware"
+  File "papywizard\hardware\*.*"
+  SetOutPath "$INSTDIR\papywizard\model"
+  File "papywizard\model\*.*"
+  SetOutPath "$INSTDIR\papywizard\view"
+  File "papywizard\view\*.*"
 SectionEnd
 
 Section "GTK+ runtime" SEC02
   SetOutPath $TEMP
-  File "dist\gtk+-2.10.11-setup.exe"
-  ExecWait '"$TEMP\gtk+-2.10.11-setup.exe" /SP- /SILENT'
-  Delete "$TEMP\gtk+-2.10.11-setup.exe"
+  File "dist\gtk+-2.10.13-setup.exe"
+  ExecWait '"$TEMP\gtk+-2.10.13-setup.exe" /SP- /SILENT'
+  Delete "$TEMP\gtk+-2.10.13-setup.exe"
 SectionEnd
 
 Section -AdditionalIcons
@@ -103,17 +109,17 @@ SectionEnd
 ; Section descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "Papywizard"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "GTK+ 2.10.11 runtime"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "GTK+ 2.10.13 runtime"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) a été désinstallé avec succès de votre ordinateur."
+  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) a ete desinstalle avec succes de votre ordinateur."
 FunctionEnd
 
 Function un.onInit
 !insertmacro MUI_UNGETLANGUAGE
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Êtes-vous certains de vouloir désinstaller totalement $(^Name) et tous ses composants ?" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Etes-vous certains de vouloir desinstaller totalement $(^Name) et tous ses composants ?" IDYES +2
   Abort
 FunctionEnd
 
@@ -124,15 +130,30 @@ Section Uninstall
   Delete "$INSTDIR\msvcr71.dll"
   Delete "$INSTDIR\papywizard.exe"
   Delete "$INSTDIR\w9xpopen.exe"
-
+  
   Delete "$SMPROGRAMS\papywizard\Uninstall.lnk"
   Delete "$SMPROGRAMS\papywizard\Website.lnk"
-  Delete "$DESKTOP\papywizard.lnk"
   Delete "$SMPROGRAMS\papywizard\papywizard.lnk"
+  RMDir  "$SMPROGRAMS\papywizard"
+  Delete "$DESKTOP\papywizard.lnk"
 
-  RMDir "$SMPROGRAMS\papywizard"
-  RMDir "$INSTDIR"
+  ; Sources
+  Delete "$INSTDIR\__init__.py"
+  Delete "$INSTDIR\papywizard\__init__.py"
+  Delete "$INSTDIR\papywizard\common\*.*"
+  Delete "$INSTDIR\papywizard\controller\*.*"
+  Delete "$INSTDIR\papywizard\hardware\*.*"
+  Delete "$INSTDIR\papywizard\model\*.*"
+  Delete "$INSTDIR\papywizard\view\*.*"
+  RMDir  "$INSTDIR\papywizard\common"
+  RMDir  "$INSTDIR\papywizard\controller"
+  RMDir  "$INSTDIR\papywizard\hardware"
+  RMDir  "$INSTDIR\papywizard\model"
+  RMDir  "$INSTDIR\papywizard\view"
+  RMDir  "$INSTDIR\papywizard"
 
+  RMDir  "$INSTDIR"
+  
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
   SetAutoClose true
