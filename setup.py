@@ -53,12 +53,8 @@ __revision__ = "$Id$"
 
 from distutils.core import setup
 from bdist_debian import bdist_debian
-#try:
-    #import py2exe
-#except ImportError:
-    #pass
 
-from common import config
+from papywizard.common import config
 
 
 setup(name="papywizard",
@@ -71,8 +67,8 @@ setup(name="papywizard",
       description="Merlin/Orion panohead control software",
       #long_description="",
       download_url="http://trac.gbiloba.org/papywizard/wiki/WikiStart#Download",
-      scripts=["papywizard"],
-      package_dir={'papywizard': "."},
+      scripts=["papywiz.py"],
+      package_dir={'papywizard': "papywizard"},
       packages=["papywizard", "papywizard.common", "papywizard.model",
                 "papywizard.controller", "papywizard.hardware",
                 "papywizard.view", "papywizard.view3D"],
@@ -85,12 +81,5 @@ setup(name="papywizard",
       depends="python2.5, python2.5-hildon, python2.5-gtk2",
       icon="papywizard.png",
       cmdclass={'bdist_debian': bdist_debian},
-
-      # windows stuff
-      #console=["papywizard"],
-      #windows = [{'script': "papywizard",
-                  #'icon_resources': [(1, "papywizard.ico")]}],
-      #options={'py2exe': {'packages': "encodings",
-                          #'includes': "cairo, pango, pangocairo, atk, gobject"}},
   )
 
