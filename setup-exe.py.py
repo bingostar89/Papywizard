@@ -79,16 +79,22 @@ dlls = ["iconv.dll", "intl.dll", "libatk-1.0-0.dll", "libgdk-win32-2.0-0.dll",
         "libpangowin32-1.0-0.dll"]
 
 target = Target(description="Merlin/Orion panohead control software",
-                script="papywizard",
+                script="papywizard.py",
                 #icon_resources=[(1, "papywizard.ico")],
                 dest_base="papywizard")
 
 setup(options={"py2exe": {'compressed': 1,
                           'optimize': 2,
-                          'includes': ['atk', 'cairo', 'pangocairo'],
+                          'includes': ['atk', 'cairo', 'pango', 'pangocairo', 'gobject'],
                           'excludes': [],
                           'dll_excludes': dlls,
                           'dist_dir': "./dist",
                           'bundle_files': 1}},
-                windows=[target],
+      windows=[target],
+      data_files=[("papywizard/common", ["papywizard/common/papywizard.conf"]),
+                  ("papywizard/view", ["papywizard/view/configDialog.glade",
+                                       "papywizard/view/connectBanner.glade",
+                                       "papywizard/view/helpAboutDialog.glade",
+                                       "papywizard/view/mainWindow.glade",
+                                       "papywizard/view/shootDialog.glade",])],
      )
