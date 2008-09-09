@@ -91,7 +91,7 @@ if config.VIEW3D_ENABLE:
 
 # Create serializer, for async events
 serializer = Serializer()
-gobject.timeout_add(10, serializer.processWork)
+gobject.timeout_add(50, serializer.processWork)
 
 # Create main controller
 controller = MainController(serializer, model)
@@ -104,6 +104,7 @@ Spy().stop()
 Spy().join()
 model.shutdown()
 
+# Threads
 gtk.gdk.threads_leave()
 
 if config.VIEW3D_ENABLE:
