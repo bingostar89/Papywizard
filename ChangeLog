@@ -12,13 +12,11 @@ xxxx-xx-xx Version SVN
     + added nice icons for buttons
     + key shortcuts activate buttons
     + added version in Help > About dialog
-    x removed view modules
+    - removed view python modules
     + added hardware auto-connect config option
-    + custom xml data file for each shooting mode
+    + custom xml data file for each shooting mode (partial)
     - config dir path is now ~/.config/papywizard/
     + added presets user dir support (partial)
-    
-xxxx-xx-xx Version 1.0
 
 2008-07-04 Version 0.9.1
     x fix a bug in nbPicts and 360/180 computations
