@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>trunk.papywizard.view3D.view3D.View3D</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;trunk ::
+        <a href="trunk.papywizard-module.html">Package&nbsp;papywizard</a> ::
+        <a href="trunk.papywizard.view3D-module.html">Package&nbsp;view3D</a> ::
+        <a href="trunk.papywizard.view3D.view3D-module.html">Module&nbsp;view3D</a> ::
+        Class&nbsp;View3D
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="trunk.papywizard.view3D.view3D.View3D-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class View3D</h1><p class="nomargin-top"><span class="codelink"><a href="trunk.papywizard.view3D.view3D-pysrc.html#View3D">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_trunk_pa_46" name="uml_class_diagram_for_trunk_pa_46">
+<area shape="rect" href="trunk.papywizard.view3D.view3D.View3D-class.html#__init__" title="Init View3D object." alt="" coords="17,36,583,55"/>
+<area shape="rect" href="trunk.papywizard.view3D.view3D.View3D-class.html#viewFromCamera" title="View from camera position." alt="" coords="17,55,583,73"/>
+<area shape="rect" href="trunk.papywizard.view3D.view3D.View3D-class.html#pov" title="Export the view as povray file." alt="" coords="17,73,583,92"/>
+<area shape="rect" href="trunk.papywizard.view3D.view3D.View3D-class.html#draw" title="Redraw the view according to new position." alt="" coords="17,92,583,111"/>
+<area shape="rect" href="trunk.papywizard.view3D.view3D.View3D-class.html" title="Main 3D view." alt="" coords="16,11,584,112"/>
+</map>
+  <img src="uml_class_diagram_for_trunk_pa_46.gif" alt='' usemap="#uml_class_diagram_for_trunk_pa_46" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>Main 3D view.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__init__"></a><span class="summary-sig-name">__init__</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">title</span>,
+        <span class="summary-sig-arg">width</span>=<span class="summary-sig-default">600</span>,
+        <span class="summary-sig-arg">height</span>=<span class="summary-sig-default">400</span>,
+        <span class="summary-sig-arg">forward</span>=<span class="summary-sig-default">(-1,1,-0.3)</span>,
+        <span class="summary-sig-arg">fov</span>=<span class="summary-sig-default">math.pi/3.</span>,
+        <span class="summary-sig-arg">scale</span>=<span class="summary-sig-default">(0.1,0.1,0.1)</span>)</span><br />
+      Init View3D object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.view3D.view3D-pysrc.html#View3D.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="viewFromCamera"></a><span class="summary-sig-name">viewFromCamera</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">yaw</span>,
+        <span class="summary-sig-arg">pitch</span>)</span><br />
+      View from camera position.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.view3D.view3D-pysrc.html#View3D.viewFromCamera">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pov"></a><span class="summary-sig-name">pov</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">filename</span>=<span class="summary-sig-default">'papywizard.pov'</span>,
+        <span class="summary-sig-arg">xy_ratio</span>=<span class="summary-sig-default">4./3.</span>)</span><br />
+      Export the view as povray file.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.view3D.view3D-pysrc.html#View3D.pov">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.view3D.view3D.View3D-class.html#draw" class="summary-sig-name">draw</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">yaw</span>,
+        <span class="summary-sig-arg">pitch</span>,
+        <span class="summary-sig-arg">hFov</span>=<span class="summary-sig-default">30</span>,
+        <span class="summary-sig-arg">vFov</span>=<span class="summary-sig-default">20</span>)</span><br />
+      Redraw the view according to new position.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.view3D.view3D-pysrc.html#View3D.draw">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="draw"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">draw</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">yaw</span>,
+        <span class="sig-arg">pitch</span>,
+        <span class="sig-arg">hFov</span>=<span class="sig-default">30</span>,
+        <span class="sig-arg">vFov</span>=<span class="sig-default">20</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.view3D.view3D-pysrc.html#View3D.draw">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Redraw the view according to new position.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>yaw</code></strong> (float) - yaw angle (&#176;)</li>
+        <li><strong class="pname"><code>pitch</code></strong> (float) - pitch angle (&#176;)</li>
+        <li><strong class="pname"><code>hFov</code></strong> (float) - lens horiz. fov angle (&#176;)</li>
+        <li><strong class="pname"><code>vFov</code></strong> (float) - lens vert. fov angle (&#176;)</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Sep 15 15:49:11 2008
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

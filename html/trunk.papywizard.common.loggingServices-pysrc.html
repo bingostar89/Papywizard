@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>trunk.papywizard.common.loggingServices</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;trunk ::
+        <a href="trunk.papywizard-module.html">Package&nbsp;papywizard</a> ::
+        <a href="trunk.papywizard.common-module.html">Package&nbsp;common</a> ::
+        Module&nbsp;loggingServices
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="trunk.papywizard.common.loggingServices-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="trunk.papywizard.common.loggingServices-module.html">Module trunk.papywizard.common.loggingServices</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: iso-8859-1 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">""" Panohead remote control.</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">License</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">=======</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-docstring"> - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring">  - (C) 2007-2008 Fr&#233;d&#233;ric Mantegazza</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">This software is governed by the B{CeCILL} license under French law and</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring">abiding by the rules of distribution of free software.  You can  use, </tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring">modify and/or redistribute the software under the terms of the CeCILL</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring">license as circulated by CEA, CNRS and INRIA at the following URL</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">U{http://www.cecill.info}.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">As a counterpart to the access to the source code and  rights to copy,</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">modify and redistribute granted by the license, users are provided only</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">with a limited warranty  and the software's author,  the holder of the</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">economic rights,  and the successive licensors  have only  limited</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">liability. </tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-docstring">In this respect, the user's attention is drawn to the risks associated</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring">with loading,  using,  modifying and/or developing or reproducing the</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">software by the user in light of its specific status of free software,</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring">that may mean  that it is complicated to manipulate,  and  that  also</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">therefore means  that it is reserved for developers  and  experienced</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring">professionals having in-depth computer knowledge. Users are therefore</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring">encouraged to load and test the software's suitability as regards their</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-docstring">requirements in conditions enabling the security of their systems and/or </tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-docstring">data to be ensured and,  more generally, to use and operate it in the </tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">same conditions as regards security. </tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring">The fact that you are presently reading this means that you have had</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">knowledge of the CeCILL license and that you accept its terms.</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">Module purpose</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">==============</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">Logging</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">Implements</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">==========</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">- DefaultFormatter</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring">- ColorFormatter</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">- Logger</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">@author: Fr&#233;d&#233;ric Mantegazza</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">@copyright: (C) 2007-2008 Fr&#233;d&#233;ric Mantegazza</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring">@license: CeCILL</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable trunk.papywizard.common.config.__revision__=trunk.papywizard.common.config-module.html#__revision__,Variable trunk.papywizard.common.configManager.__revision__=trunk.papywizard.common.configManager-module.html#__revision__,Variable trunk.papywizard.common.data.__revision__=trunk.papywizard.common.data-module.html#__revision__,Variable trunk.papywizard.common.dataMosaic.__revision__=trunk.papywizard.common.dataMosaic-module.html#__revision__,Variable trunk.papywizard.common.dataPreset.__revision__=trunk.papywizard.common.dataPreset-module.html#__revision__,Variable trunk.papywizard.common.exception.__revision__=trunk.papywizard.common.exception-module.html#__revision__,Variable trunk.papywizard.common.helpers.__revision__=trunk.papywizard.common.helpers-module.html#__revision__,Variable trunk.papywizard.common.loggingServices.__revision__=trunk.papywizard.common.loggingServices-module.html#__revision__,Variable trunk.papywizard.common.serializer.__revision__=trunk.papywizard.common.serializer-module.html#__revision__,Variable trunk.papywizard.common.signal.__revision__=trunk.papywizard.common.signal-module.html#__revision__,Variable trunk.papywizard.controller.abstractController.__revision__=trunk.papywizard.controller.abstractController-module.html#__revision__,Variable trunk.papywizard.controller.configController.__revision__=trunk.papywizard.controller.configController-module.html#__revision__,Variable trunk.papywizard.controller.connectController.__revision__=trunk.papywizard.controller.connectController-module.html#__revision__,Variable trunk.papywizard.controller.mainController.__revision__=trunk.papywizard.controller.mainController-module.html#__revision__,Variable trunk.papywizard.controller.manualMoveController.__revision__=trunk.papywizard.controller.manualMoveController-module.html#__revision__,Variable trunk.papywizard.controller.shootController.__revision__=trunk.papywizard.controller.shootController-module.html#__revision__,Variable trunk.papywizard.controller.spy.__revision__=trunk.papywizard.controller.spy-module.html#__revision__,Variable trunk.papywizard.hardware.axis.__revision__=trunk.papywizard.hardware.axis-module.html#__revision__,Variable trunk.papywizard.hardware.bluetoothDriver.__revision__=trunk.papywizard.hardware.bluetoothDriver-module.html#__revision__,Variable trunk.papywizard.hardware.busDriver.__revision__=trunk.papywizard.hardware.busDriver-module.html#__revision__,Variable trunk.papywizard.hardware.driverFactory.__revision__=trunk.papywizard.hardware.driverFactory-module.html#__revision__,Variable trunk.papywizard.hardware.hardwareFactory.__revision__=trunk.papywizard.hardware.hardwareFactory-module.html#__revision__,Variable trunk.papywizard.hardware.head.__revision__=trunk.papywizard.hardware.head-module.html#__revision__,Variable trunk.papywizard.hardware.serialDriver.__revision__=trunk.papywizard.hardware.serialDriver-module.html#__revision__,Variable trunk.papywizard.hardware.usbDriver.__revision__=trunk.papywizard.hardware.usbDriver-module.html#__revision__,Variable trunk.papywizard.model.camera.__revision__=trunk.papywizard.model.camera-module.html#__revision__,Variable trunk.papywizard.model.lens.__revision__=trunk.papywizard.model.lens-module.html#__revision__,Variable trunk.papywizard.model.mosaic.__revision__=trunk.papywizard.model.mosaic-module.html#__revision__,Variable trunk.papywizard.model.preset.__revision__=trunk.papywizard.model.preset-module.html#__revision__,Variable trunk.papywizard.model.scan.__revision__=trunk.papywizard.model.scan-module.html#__revision__,Variable trunk.papywizard.model.shooting.__revision__=trunk.papywizard.model.shooting-module.html#__revision__,Variable trunk.papywizard.view.mosaicArea.__revision__=trunk.papywizard.view.mosaicArea-module.html#__revision__,Variable trunk.papywizard.view.presetArea.__revision__=trunk.papywizard.view.presetArea-module.html#__revision__,Variable trunk.papywizard.view.shootingArea.__revision__=trunk.papywizard.view.shootingArea-module.html#__revision__,Variable trunk.papywizard.view3D.view3D.__revision__=trunk.papywizard.view3D.view3D-module.html#__revision__"><a title="trunk.papywizard.common.config.__revision__
+trunk.papywizard.common.configManager.__revision__
+trunk.papywizard.common.data.__revision__
+trunk.papywizard.common.dataMosaic.__revision__
+trunk.papywizard.common.dataPreset.__revision__
+trunk.papywizard.common.exception.__revision__
+trunk.papywizard.common.helpers.__revision__
+trunk.papywizard.common.loggingServices.__revision__
+trunk.papywizard.common.serializer.__revision__
+trunk.papywizard.common.signal.__revision__
+trunk.papywizard.controller.abstractController.__revision__
+trunk.papywizard.controller.configController.__revision__
+trunk.papywizard.controller.connectController.__revision__
+trunk.papywizard.controller.mainController.__revision__
+trunk.papywizard.controller.manualMoveController.__revision__
+trunk.papywizard.controller.shootController.__revision__
+trunk.papywizard.controller.spy.__revision__
+trunk.papywizard.hardware.axis.__revision__
+trunk.papywizard.hardware.bluetoothDriver.__revision__
+trunk.papywizard.hardware.busDriver.__revision__
+trunk.papywizard.hardware.driverFactory.__revision__
+trunk.papywizard.hardware.hardwareFactory.__revision__
+trunk.papywizard.hardware.head.__revision__
+trunk.papywizard.hardware.serialDriver.__revision__
+trunk.papywizard.hardware.usbDriver.__revision__
+trunk.papywizard.model.camera.__revision__
+trunk.papywizard.model.lens.__revision__
+trunk.papywizard.model.mosaic.__revision__
+trunk.papywizard.model.preset.__revision__
+trunk.papywizard.model.scan.__revision__
+trunk.papywizard.model.shooting.__revision__
+trunk.papywizard.view.mosaicArea.__revision__
+trunk.papywizard.view.presetArea.__revision__
+trunk.papywizard.view.shootingArea.__revision__
+trunk.papywizard.view3D.view3D.__revision__" class="py-name" href="#" onclick="return doclink('link-0', '__revision__', 'link-0');">__revision__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"$Id: loggingServices.py 476 2008-09-07 07:49:16Z fma $"</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Variable trunk.papywizard.common.configManager.path=trunk.papywizard.common.configManager-module.html#path,Variable trunk.papywizard.controller.abstractController.path=trunk.papywizard.controller.abstractController-module.html#path,Variable trunk.papywizard.controller.connectController.path=trunk.papywizard.controller.connectController-module.html#path,Variable trunk.papywizard.controller.mainController.path=trunk.papywizard.controller.mainController-module.html#path"><a title="trunk.papywizard.common.configManager.path
+trunk.papywizard.controller.abstractController.path
+trunk.papywizard.controller.connectController.path
+trunk.papywizard.controller.mainController.path" class="py-name" href="#" onclick="return doclink('link-1', 'path', 'link-1');">path</a></tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">handlers</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">StringIO</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">traceback</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Package trunk.papywizard=trunk.papywizard-module.html"><a title="trunk.papywizard" class="py-name" href="#" onclick="return doclink('link-2', 'papywizard', 'link-2');">papywizard</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Package trunk.papywizard.common=trunk.papywizard.common-module.html"><a title="trunk.papywizard.common" class="py-name" href="#" onclick="return doclink('link-3', 'common', 'link-3');">common</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Module trunk.papywizard.common.config=trunk.papywizard.common.config-module.html"><a title="trunk.papywizard.common.config" class="py-name" href="#" onclick="return doclink('link-4', 'config', 'link-4');">config</a></tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">platform</tt> <tt class="py-op">==</tt> <tt class="py-string">'linux2'</tt><tt class="py-op">:</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">    <tt id="link-5" class="py-name" targets="Variable trunk.papywizard.common.loggingServices.consoleLogColors=trunk.papywizard.common.loggingServices-module.html#consoleLogColors"><a title="trunk.papywizard.common.loggingServices.consoleLogColors" class="py-name" href="#" onclick="return doclink('link-5', 'consoleLogColors', 'link-5');">consoleLogColors</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">'trace'</tt><tt class="py-op">:</tt><tt class="py-string">"\033[0;36;40;22m"</tt><tt class="py-op">,</tt>     <tt class="py-comment"># cyan/noir, normal</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">                        <tt class="py-string">'debug'</tt><tt class="py-op">:</tt><tt class="py-string">"\033[0;36;40;1m"</tt><tt class="py-op">,</tt>      <tt class="py-comment"># cyan/noir, gras</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">                        <tt class="py-string">'info'</tt><tt class="py-op">:</tt><tt class="py-string">"\033[0;37;40;1m"</tt><tt class="py-op">,</tt>       <tt class="py-comment"># blanc/noir, gras</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">                        <tt class="py-string">'warning'</tt><tt class="py-op">:</tt><tt class="py-string">"\033[0;33;40;1m"</tt><tt class="py-op">,</tt>    <tt class="py-comment"># marron/noir, gras</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">                        <tt class="py-string">'error'</tt><tt class="py-op">:</tt><tt class="py-string">"\033[0;31;40;1m"</tt><tt class="py-op">,</tt>      <tt class="py-comment"># rouge/noir, gras</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                        <tt class="py-string">'exception'</tt><tt class="py-op">:</tt><tt class="py-string">"\033[0;35;40;1m"</tt><tt class="py-op">,</tt>  <tt class="py-comment"># magenta/noir, gras</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                        <tt class="py-string">'critical'</tt><tt class="py-op">:</tt><tt class="py-string">"\033[0;37;41;1m"</tt><tt class="py-op">,</tt>   <tt class="py-comment"># blanc/rouge, gras</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">                        <tt class="py-string">'default'</tt><tt class="py-op">:</tt><tt class="py-string">"\033[0m"</tt><tt class="py-op">,</tt>            <tt class="py-comment"># defaut</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">                        <tt class="py-op">}</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt id="link-6" class="py-name"><a title="trunk.papywizard.common.loggingServices.consoleLogColors" class="py-name" href="#" onclick="return doclink('link-6', 'consoleLogColors', 'link-5');">consoleLogColors</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">'trace'</tt><tt class="py-op">:</tt><tt class="py-string">""</tt><tt class="py-op">,</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">                        <tt class="py-string">'debug'</tt><tt class="py-op">:</tt><tt class="py-string">""</tt><tt class="py-op">,</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">                        <tt class="py-string">'info'</tt><tt class="py-op">:</tt><tt class="py-string">""</tt><tt class="py-op">,</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">                        <tt class="py-string">'warning'</tt><tt class="py-op">:</tt><tt class="py-string">""</tt><tt class="py-op">,</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">                        <tt class="py-string">'error'</tt><tt class="py-op">:</tt><tt class="py-string">""</tt><tt class="py-op">,</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">                        <tt class="py-string">'exception'</tt><tt class="py-op">:</tt><tt class="py-string">""</tt><tt class="py-op">,</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                        <tt class="py-string">'critical'</tt><tt class="py-op">:</tt><tt class="py-string">""</tt><tt class="py-op">,</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">                        <tt class="py-string">'default'</tt><tt class="py-op">:</tt><tt class="py-string">""</tt><tt class="py-op">,</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">                        <tt class="py-op">}</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"> </tt>
+<a name="DefaultFormatter"></a><div id="DefaultFormatter-def"><a name="L86"></a><tt class="py-lineno"> 86</tt> <a class="py-toggle" href="#" id="DefaultFormatter-toggle" onclick="return toggle('DefaultFormatter');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.DefaultFormatter-class.html">DefaultFormatter</a><tt class="py-op">(</tt><tt class="py-base-class">logging</tt><tt class="py-op">.</tt><tt class="py-base-class">Formatter</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DefaultFormatter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DefaultFormatter-expanded"><a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt class="py-docstring">""" Base class for formatters.</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+</div><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="ColorFormatter"></a><div id="ColorFormatter-def"><a name="L91"></a><tt class="py-lineno"> 91</tt> <a class="py-toggle" href="#" id="ColorFormatter-toggle" onclick="return toggle('ColorFormatter');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.ColorFormatter-class.html">ColorFormatter</a><tt class="py-op">(</tt><tt class="py-base-class">DefaultFormatter</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ColorFormatter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ColorFormatter-expanded"><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">    <tt class="py-docstring">""" Color formatting.</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-docstring">    This formatter add colors to the log, according to their level.</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-docstring">    @todo: do not use colors for windows...</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="ColorFormatter._colorFormat"></a><div id="ColorFormatter._colorFormat-def"><a name="L98"></a><tt class="py-lineno"> 98</tt> <a class="py-toggle" href="#" id="ColorFormatter._colorFormat-toggle" onclick="return toggle('ColorFormatter._colorFormat');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.ColorFormatter-class.html#_colorFormat">_colorFormat</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">record</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ColorFormatter._colorFormat-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ColorFormatter._colorFormat-expanded"><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">record</tt><tt class="py-op">.</tt><tt class="py-name">levelname</tt> <tt class="py-op">==</tt> <tt class="py-string">'TRACE'</tt><tt class="py-op">:</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">            <tt class="py-name">color</tt> <tt class="py-op">=</tt> <tt id="link-7" class="py-name"><a title="trunk.papywizard.common.loggingServices.consoleLogColors" class="py-name" href="#" onclick="return doclink('link-7', 'consoleLogColors', 'link-5');">consoleLogColors</a></tt><tt class="py-op">[</tt><tt class="py-string">'trace'</tt><tt class="py-op">]</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt>  <tt class="py-name">record</tt><tt class="py-op">.</tt><tt class="py-name">levelname</tt> <tt class="py-op">==</tt> <tt class="py-string">'DEBUG'</tt><tt class="py-op">:</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">            <tt class="py-name">color</tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name"><a title="trunk.papywizard.common.loggingServices.consoleLogColors" class="py-name" href="#" onclick="return doclink('link-8', 'consoleLogColors', 'link-5');">consoleLogColors</a></tt><tt class="py-op">[</tt><tt class="py-string">'debug'</tt><tt class="py-op">]</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt>  <tt class="py-name">record</tt><tt class="py-op">.</tt><tt class="py-name">levelname</tt> <tt class="py-op">==</tt> <tt class="py-string">'INFO'</tt><tt class="py-op">:</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">            <tt class="py-name">color</tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name"><a title="trunk.papywizard.common.loggingServices.consoleLogColors" class="py-name" href="#" onclick="return doclink('link-9', 'consoleLogColors', 'link-5');">consoleLogColors</a></tt><tt class="py-op">[</tt><tt class="py-string">'info'</tt><tt class="py-op">]</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt>  <tt class="py-name">record</tt><tt class="py-op">.</tt><tt class="py-name">levelname</tt> <tt class="py-op">==</tt> <tt class="py-string">'WARNING'</tt><tt class="py-op">:</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">            <tt class="py-name">color</tt> <tt class="py-op">=</tt> <tt id="link-10" class="py-name"><a title="trunk.papywizard.common.loggingServices.consoleLogColors" class="py-name" href="#" onclick="return doclink('link-10', 'consoleLogColors', 'link-5');">consoleLogColors</a></tt><tt class="py-op">[</tt><tt class="py-string">'warning'</tt><tt class="py-op">]</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">record</tt><tt class="py-op">.</tt><tt class="py-name">levelname</tt> <tt class="py-op">==</tt> <tt class="py-string">'ERROR'</tt><tt class="py-op">:</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">            <tt class="py-name">color</tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name"><a title="trunk.papywizard.common.loggingServices.consoleLogColors" class="py-name" href="#" onclick="return doclink('link-11', 'consoleLogColors', 'link-5');">consoleLogColors</a></tt><tt class="py-op">[</tt><tt class="py-string">'error'</tt><tt class="py-op">]</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">record</tt><tt class="py-op">.</tt><tt class="py-name">levelname</tt> <tt class="py-op">==</tt> <tt class="py-string">'EXCEPTION'</tt><tt class="py-op">:</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">            <tt class="py-name">color</tt> <tt class="py-op">=</tt> <tt id="link-12" class="py-name"><a title="trunk.papywizard.common.loggingServices.consoleLogColors" class="py-name" href="#" onclick="return doclink('link-12', 'consoleLogColors', 'link-5');">consoleLogColors</a></tt><tt class="py-op">[</tt><tt class="py-string">'exception'</tt><tt class="py-op">]</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">record</tt><tt class="py-op">.</tt><tt class="py-name">levelname</tt> <tt class="py-op">==</tt> <tt class="py-string">'CRITICAL'</tt><tt class="py-op">:</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">            <tt class="py-name">color</tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name"><a title="trunk.papywizard.common.loggingServices.consoleLogColors" class="py-name" href="#" onclick="return doclink('link-13', 'consoleLogColors', 'link-5');">consoleLogColors</a></tt><tt class="py-op">[</tt><tt class="py-string">'critical'</tt><tt class="py-op">]</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">            <tt class="py-name">color</tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name"><a title="trunk.papywizard.common.loggingServices.consoleLogColors" class="py-name" href="#" onclick="return doclink('link-14', 'consoleLogColors', 'link-5');">consoleLogColors</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt class="py-name">formattedMsg</tt> <tt class="py-op">=</tt> <tt id="link-15" class="py-name" targets="Class trunk.papywizard.common.loggingServices.DefaultFormatter=trunk.papywizard.common.loggingServices.DefaultFormatter-class.html"><a title="trunk.papywizard.common.loggingServices.DefaultFormatter" class="py-name" href="#" onclick="return doclink('link-15', 'DefaultFormatter', 'link-15');">DefaultFormatter</a></tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Method trunk.papywizard.common.loggingServices.ColorFormatter.format()=trunk.papywizard.common.loggingServices.ColorFormatter-class.html#format"><a title="trunk.papywizard.common.loggingServices.ColorFormatter.format" class="py-name" href="#" onclick="return doclink('link-16', 'format', 'link-16');">format</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">record</tt><tt class="py-op">)</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">color</tt> <tt class="py-op">+</tt> <tt class="py-name">formattedMsg</tt> <tt class="py-op">+</tt> <tt id="link-17" class="py-name"><a title="trunk.papywizard.common.loggingServices.consoleLogColors" class="py-name" href="#" onclick="return doclink('link-17', 'consoleLogColors', 'link-5');">consoleLogColors</a></tt><tt class="py-op">[</tt><tt class="py-string">'default'</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"> </tt>
+<a name="ColorFormatter.format"></a><div id="ColorFormatter.format-def"><a name="L118"></a><tt class="py-lineno">118</tt> <a class="py-toggle" href="#" id="ColorFormatter.format-toggle" onclick="return toggle('ColorFormatter.format');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.ColorFormatter-class.html#format">format</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">record</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ColorFormatter.format-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ColorFormatter.format-expanded"><a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-docstring">""" Record formating.</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name" targets="Method trunk.papywizard.common.loggingServices.ColorFormatter._colorFormat()=trunk.papywizard.common.loggingServices.ColorFormatter-class.html#_colorFormat"><a title="trunk.papywizard.common.loggingServices.ColorFormatter._colorFormat" class="py-name" href="#" onclick="return doclink('link-18', '_colorFormat', 'link-18');">_colorFormat</a></tt><tt class="py-op">(</tt><tt class="py-name">record</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"> </tt>
+<a name="Logger"></a><div id="Logger-def"><a name="L124"></a><tt class="py-lineno">124</tt> <a class="py-toggle" href="#" id="Logger-toggle" onclick="return toggle('Logger');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.Logger-class.html">Logger</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Logger-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Logger-expanded"><a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">    <tt class="py-docstring">""" Logger object.</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt class="py-docstring">    Logger is a Borg.</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">    <tt id="link-19" class="py-name" targets="Variable trunk.papywizard.common.configManager.ConfigManager.__state=trunk.papywizard.common.configManager.ConfigManager-class.html#__state,Variable trunk.papywizard.common.loggingServices.Logger.__state=trunk.papywizard.common.loggingServices.Logger-class.html#__state,Variable trunk.papywizard.controller.spy.Spy.__state=trunk.papywizard.controller.spy.Spy-class.html#__state"><a title="trunk.papywizard.common.configManager.ConfigManager.__state
+trunk.papywizard.common.loggingServices.Logger.__state
+trunk.papywizard.controller.spy.Spy.__state" class="py-name" href="#" onclick="return doclink('link-19', '__state', 'link-19');">__state</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">    <tt id="link-20" class="py-name" targets="Variable trunk.papywizard.common.configManager.ConfigManager.__init=trunk.papywizard.common.configManager.ConfigManager-class.html#__init,Variable trunk.papywizard.common.loggingServices.Logger.__init=trunk.papywizard.common.loggingServices.Logger-class.html#__init,Variable trunk.papywizard.controller.spy.Spy.__init=trunk.papywizard.controller.spy.Spy-class.html#__init"><a title="trunk.papywizard.common.configManager.ConfigManager.__init
+trunk.papywizard.common.loggingServices.Logger.__init
+trunk.papywizard.controller.spy.Spy.__init" class="py-name" href="#" onclick="return doclink('link-20', '__init', 'link-20');">__init</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"> </tt>
+<a name="Logger.__new__"></a><div id="Logger.__new__-def"><a name="L132"></a><tt class="py-lineno">132</tt> <a class="py-toggle" href="#" id="Logger.__new__-toggle" onclick="return toggle('Logger.__new__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.Logger-class.html#__new__">__new__</a><tt class="py-op">(</tt><tt class="py-param">cls</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwds</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Logger.__new__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Logger.__new__-expanded"><a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">        <tt class="py-docstring">""" Create the object.</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">        <tt class="py-name">self</tt> <tt class="py-op">=</tt> <tt class="py-name">object</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Static Method trunk.papywizard.common.configManager.ConfigManager.__new__()=trunk.papywizard.common.configManager.ConfigManager-class.html#__new__,Static Method trunk.papywizard.common.loggingServices.Logger.__new__()=trunk.papywizard.common.loggingServices.Logger-class.html#__new__,Static Method trunk.papywizard.controller.spy.Spy.__new__()=trunk.papywizard.controller.spy.Spy-class.html#__new__"><a title="trunk.papywizard.common.configManager.ConfigManager.__new__
+trunk.papywizard.common.loggingServices.Logger.__new__
+trunk.papywizard.controller.spy.Spy.__new__" class="py-name" href="#" onclick="return doclink('link-21', '__new__', 'link-21');">__new__</a></tt><tt class="py-op">(</tt><tt class="py-name">cls</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwds</tt><tt class="py-op">)</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt> <tt class="py-op">=</tt> <tt class="py-name">cls</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="trunk.papywizard.common.configManager.ConfigManager.__state
+trunk.papywizard.common.loggingServices.Logger.__state
+trunk.papywizard.controller.spy.Spy.__state" class="py-name" href="#" onclick="return doclink('link-22', '__state', 'link-19');">__state</a></tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt> </tt>
+</div><a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"> </tt>
+<a name="Logger.__init__"></a><div id="Logger.__init__-def"><a name="L139"></a><tt class="py-lineno">139</tt> <a class="py-toggle" href="#" id="Logger.__init__-toggle" onclick="return toggle('Logger.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.Logger-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Logger.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Logger.__init__-expanded"><a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">        <tt class="py-docstring">""" Init object.</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-23" class="py-name" targets="Class trunk.papywizard.common.loggingServices.Logger=trunk.papywizard.common.loggingServices.Logger-class.html"><a title="trunk.papywizard.common.loggingServices.Logger" class="py-name" href="#" onclick="return doclink('link-23', 'Logger', 'link-23');">Logger</a></tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="trunk.papywizard.common.configManager.ConfigManager.__init
+trunk.papywizard.common.loggingServices.Logger.__init
+trunk.papywizard.controller.spy.Spy.__init" class="py-name" href="#" onclick="return doclink('link-24', '__init', 'link-20');">__init</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">            <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">TRACE</tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">DEBUG</tt> <tt class="py-op">-</tt> <tt class="py-number">5</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">            <tt class="py-comment">#logging.EXCEPTION = logging.DEBUG + 5</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-comment"></tt>            <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">EXCEPTION</tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">ERROR</tt> <tt class="py-op">+</tt> <tt class="py-number">5</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">            <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">raiseExceptions</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">            <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">addLevelName</tt><tt class="py-op">(</tt><tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">TRACE</tt><tt class="py-op">,</tt> <tt class="py-string">"TRACE"</tt><tt class="py-op">)</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">            <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">addLevelName</tt><tt class="py-op">(</tt><tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">EXCEPTION</tt><tt class="py-op">,</tt> <tt class="py-string">"EXCEPTION"</tt><tt class="py-op">)</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">            <tt class="py-comment"># Formatters</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-comment"></tt>            <tt class="py-name">colorFormatter</tt> <tt class="py-op">=</tt> <tt id="link-25" class="py-name" targets="Class trunk.papywizard.common.loggingServices.ColorFormatter=trunk.papywizard.common.loggingServices.ColorFormatter-class.html"><a title="trunk.papywizard.common.loggingServices.ColorFormatter" class="py-name" href="#" onclick="return doclink('link-25', 'ColorFormatter', 'link-25');">ColorFormatter</a></tt><tt class="py-op">(</tt><tt id="link-26" class="py-name"><a title="trunk.papywizard.common.config" class="py-name" href="#" onclick="return doclink('link-26', 'config', 'link-4');">config</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Variable trunk.papywizard.common.config.LOGGER_FORMAT=trunk.papywizard.common.config-module.html#LOGGER_FORMAT"><a title="trunk.papywizard.common.config.LOGGER_FORMAT" class="py-name" href="#" onclick="return doclink('link-27', 'LOGGER_FORMAT', 'link-27');">LOGGER_FORMAT</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">            <tt class="py-name">defaultFormatter</tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name"><a title="trunk.papywizard.common.loggingServices.DefaultFormatter" class="py-name" href="#" onclick="return doclink('link-28', 'DefaultFormatter', 'link-15');">DefaultFormatter</a></tt><tt class="py-op">(</tt><tt id="link-29" class="py-name"><a title="trunk.papywizard.common.config" class="py-name" href="#" onclick="return doclink('link-29', 'config', 'link-4');">config</a></tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="trunk.papywizard.common.config.LOGGER_FORMAT" class="py-name" href="#" onclick="return doclink('link-30', 'LOGGER_FORMAT', 'link-27');">LOGGER_FORMAT</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">            <tt class="py-comment"># Handlers</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"><tt class="py-comment"></tt>            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__streamHandler</tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">StreamHandler</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__streamHandler</tt><tt class="py-op">.</tt><tt class="py-name">setFormatter</tt><tt class="py-op">(</tt><tt class="py-name">colorFormatter</tt><tt class="py-op">)</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">            <tt class="py-comment"># Loggers</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-comment"></tt>            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__logger</tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">getLogger</tt><tt class="py-op">(</tt><tt class="py-string">'papywizard'</tt><tt class="py-op">)</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__logger</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name" targets="Method trunk.papywizard.common.loggingServices.Logger.setLevel()=trunk.papywizard.common.loggingServices.Logger-class.html#setLevel"><a title="trunk.papywizard.common.loggingServices.Logger.setLevel" class="py-name" href="#" onclick="return doclink('link-31', 'setLevel', 'link-31');">setLevel</a></tt><tt class="py-op">(</tt><tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">TRACE</tt><tt class="py-op">)</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__logger</tt><tt class="py-op">.</tt><tt class="py-name">addHandler</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__streamHandler</tt><tt class="py-op">)</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">            <tt id="link-32" class="py-name"><a title="trunk.papywizard.common.loggingServices.Logger" class="py-name" href="#" onclick="return doclink('link-32', 'Logger', 'link-23');">Logger</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="trunk.papywizard.common.configManager.ConfigManager.__init
+trunk.papywizard.common.loggingServices.Logger.__init
+trunk.papywizard.controller.spy.Spy.__init" class="py-name" href="#" onclick="return doclink('link-33', '__init', 'link-20');">__init</a></tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"> </tt>
+<a name="Logger.setLevel"></a><div id="Logger.setLevel-def"><a name="L165"></a><tt class="py-lineno">165</tt> <a class="py-toggle" href="#" id="Logger.setLevel-toggle" onclick="return toggle('Logger.setLevel');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.Logger-class.html#setLevel">setLevel</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">level</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Logger.setLevel-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Logger.setLevel-expanded"><a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">        <tt class="py-docstring">""" Change logging level.</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-docstring">        @param level: new level, in ('trace', 'debug', 'info', 'warning', 'error', 'exception', 'critical')</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-docstring">        @type level: str</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">level</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-op">(</tt><tt class="py-string">'trace'</tt><tt class="py-op">,</tt> <tt class="py-string">'debug'</tt><tt class="py-op">,</tt> <tt class="py-string">'info'</tt><tt class="py-op">,</tt> <tt class="py-string">'warning'</tt><tt class="py-op">,</tt> <tt class="py-string">'error'</tt><tt class="py-op">,</tt> <tt class="py-string">'exception'</tt><tt class="py-op">,</tt> <tt class="py-string">'critical'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">ValueError</tt><tt class="py-op">(</tt><tt class="py-string">"Logger level must be in ('trace', 'debug', 'info', 'warning', 'error', 'exception', 'critical')"</tt><tt class="py-op">)</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">        <tt class="py-name">levels</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">'trace'</tt><tt class="py-op">:</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">TRACE</tt><tt class="py-op">,</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">                  <tt class="py-string">'debug'</tt><tt class="py-op">:</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">DEBUG</tt><tt class="py-op">,</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">                  <tt class="py-string">'info'</tt><tt class="py-op">:</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">INFO</tt><tt class="py-op">,</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">                  <tt class="py-string">'warning'</tt><tt class="py-op">:</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">WARNING</tt><tt class="py-op">,</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">                  <tt class="py-string">'error'</tt><tt class="py-op">:</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">ERROR</tt><tt class="py-op">,</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">                  <tt class="py-string">'exception'</tt><tt class="py-op">:</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">EXCEPTION</tt><tt class="py-op">,</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">                  <tt class="py-string">'critical'</tt><tt class="py-op">:</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">CRITICAL</tt><tt class="py-op">}</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__streamHandler</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="trunk.papywizard.common.loggingServices.Logger.setLevel" class="py-name" href="#" onclick="return doclink('link-34', 'setLevel', 'link-31');">setLevel</a></tt><tt class="py-op">(</tt><tt class="py-name">levels</tt><tt class="py-op">[</tt><tt class="py-name">level</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"> </tt>
+<a name="Logger.trace"></a><div id="Logger.trace-def"><a name="L182"></a><tt class="py-lineno">182</tt> <a class="py-toggle" href="#" id="Logger.trace-toggle" onclick="return toggle('Logger.trace');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.Logger-class.html#trace">trace</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">message</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Logger.trace-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Logger.trace-expanded"><a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">        <tt class="py-docstring">""" Logs a message with level TRACE.</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"><tt class="py-docstring">        @param message: message to log</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"><tt class="py-docstring">        @type message: string</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__logger</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name" targets="Method trunk.papywizard.common.loggingServices.Logger.log()=trunk.papywizard.common.loggingServices.Logger-class.html#log"><a title="trunk.papywizard.common.loggingServices.Logger.log" class="py-name" href="#" onclick="return doclink('link-35', 'log', 'link-35');">log</a></tt><tt class="py-op">(</tt><tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">TRACE</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">message</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"> </tt>
+<a name="Logger.debug"></a><div id="Logger.debug-def"><a name="L190"></a><tt class="py-lineno">190</tt> <a class="py-toggle" href="#" id="Logger.debug-toggle" onclick="return toggle('Logger.debug');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.Logger-class.html#debug">debug</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">message</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Logger.debug-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Logger.debug-expanded"><a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">        <tt class="py-docstring">""" Logs a message with level DEBUG.</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line"><tt class="py-docstring">        @param message: message to log</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"><tt class="py-docstring">        @type message: string</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__logger</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Method trunk.papywizard.common.loggingServices.Logger.debug()=trunk.papywizard.common.loggingServices.Logger-class.html#debug"><a title="trunk.papywizard.common.loggingServices.Logger.debug" class="py-name" href="#" onclick="return doclink('link-36', 'debug', 'link-36');">debug</a></tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">message</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"> </tt>
+<a name="Logger.info"></a><div id="Logger.info-def"><a name="L198"></a><tt class="py-lineno">198</tt> <a class="py-toggle" href="#" id="Logger.info-toggle" onclick="return toggle('Logger.info');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.Logger-class.html#info">info</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">message</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Logger.info-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Logger.info-expanded"><a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">        <tt class="py-docstring">""" Logs a message with level INFO.</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line"><tt class="py-docstring">        @param message: message to log</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"><tt class="py-docstring">        @type message: string</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__logger</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name" targets="Method trunk.papywizard.common.loggingServices.Logger.info()=trunk.papywizard.common.loggingServices.Logger-class.html#info"><a title="trunk.papywizard.common.loggingServices.Logger.info" class="py-name" href="#" onclick="return doclink('link-37', 'info', 'link-37');">info</a></tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">message</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line"> </tt>
+<a name="Logger.warning"></a><div id="Logger.warning-def"><a name="L206"></a><tt class="py-lineno">206</tt> <a class="py-toggle" href="#" id="Logger.warning-toggle" onclick="return toggle('Logger.warning');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.Logger-class.html#warning">warning</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">message</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Logger.warning-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Logger.warning-expanded"><a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">        <tt class="py-docstring">""" Logs a message with level WARNING.</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line"><tt class="py-docstring">        @param message: message to log</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line"><tt class="py-docstring">        @type message: string</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__logger</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Method trunk.papywizard.common.loggingServices.Logger.warning()=trunk.papywizard.common.loggingServices.Logger-class.html#warning"><a title="trunk.papywizard.common.loggingServices.Logger.warning" class="py-name" href="#" onclick="return doclink('link-38', 'warning', 'link-38');">warning</a></tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">message</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line"> </tt>
+<a name="Logger.error"></a><div id="Logger.error-def"><a name="L214"></a><tt class="py-lineno">214</tt> <a class="py-toggle" href="#" id="Logger.error-toggle" onclick="return toggle('Logger.error');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.Logger-class.html#error">error</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">message</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Logger.error-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Logger.error-expanded"><a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">        <tt class="py-docstring">""" Logs a message with level ERROR.</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line"><tt class="py-docstring">        @param message: message to log</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line"><tt class="py-docstring">        @type message: string</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__logger</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name" targets="Method trunk.papywizard.common.loggingServices.Logger.error()=trunk.papywizard.common.loggingServices.Logger-class.html#error"><a title="trunk.papywizard.common.loggingServices.Logger.error" class="py-name" href="#" onclick="return doclink('link-39', 'error', 'link-39');">error</a></tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">message</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line"> </tt>
+<a name="Logger.critical"></a><div id="Logger.critical-def"><a name="L222"></a><tt class="py-lineno">222</tt> <a class="py-toggle" href="#" id="Logger.critical-toggle" onclick="return toggle('Logger.critical');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.Logger-class.html#critical">critical</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">message</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Logger.critical-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Logger.critical-expanded"><a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">        <tt class="py-docstring">""" Logs a message with level CRITICAL.</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line"><tt class="py-docstring">        @param message: message to log</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line"><tt class="py-docstring">        @type message: string</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__logger</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name" targets="Method trunk.papywizard.common.loggingServices.Logger.critical()=trunk.papywizard.common.loggingServices.Logger-class.html#critical"><a title="trunk.papywizard.common.loggingServices.Logger.critical" class="py-name" href="#" onclick="return doclink('link-40', 'critical', 'link-40');">critical</a></tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">message</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line"> </tt>
+<a name="Logger.exception"></a><div id="Logger.exception-def"><a name="L230"></a><tt class="py-lineno">230</tt> <a class="py-toggle" href="#" id="Logger.exception-toggle" onclick="return toggle('Logger.exception');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.Logger-class.html#exception">exception</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">message</tt><tt class="py-op">=</tt><tt class="py-string">""</tt><tt class="py-op">,</tt> <tt class="py-param">debug</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Logger.exception-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Logger.exception-expanded"><a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line">        <tt class="py-docstring">""" Logs a message within an exception.</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"><tt class="py-docstring">        @param message: message to log</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"><tt class="py-docstring">        @type message: string</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line"><tt class="py-docstring">        @param debug: flag to log exception on DEBUG level instead of EXCEPTION one</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line"><tt class="py-docstring">        @type debug: bool</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">        <tt class="py-comment">#self.__logger.exception(message)</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">        <tt class="py-name">tracebackString</tt> <tt class="py-op">=</tt> <tt class="py-name">StringIO</tt><tt class="py-op">.</tt><tt class="py-name">StringIO</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">        <tt class="py-name">traceback</tt><tt class="py-op">.</tt><tt class="py-name">print_exc</tt><tt class="py-op">(</tt><tt class="py-name">file</tt><tt class="py-op">=</tt><tt class="py-name">tracebackString</tt><tt class="py-op">)</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">        <tt class="py-name">message</tt> <tt class="py-op">+=</tt> <tt class="py-string">"\n"</tt><tt class="py-op">+</tt><tt class="py-name">tracebackString</tt><tt class="py-op">.</tt><tt class="py-name">getvalue</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">        <tt class="py-name">tracebackString</tt><tt class="py-op">.</tt><tt class="py-name">close</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-41" class="py-name"><a title="trunk.papywizard.common.loggingServices.Logger.debug" class="py-name" href="#" onclick="return doclink('link-41', 'debug', 'link-36');">debug</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-42" class="py-name"><a title="trunk.papywizard.common.loggingServices.Logger.debug" class="py-name" href="#" onclick="return doclink('link-42', 'debug', 'link-36');">debug</a></tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">message</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="trunk.papywizard.common.loggingServices.Logger.log" class="py-name" href="#" onclick="return doclink('link-43', 'log', 'link-35');">log</a></tt><tt class="py-op">(</tt><tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">EXCEPTION</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">message</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line"> </tt>
+<a name="Logger.log"></a><div id="Logger.log-def"><a name="L250"></a><tt class="py-lineno">250</tt> <a class="py-toggle" href="#" id="Logger.log-toggle" onclick="return toggle('Logger.log');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.Logger-class.html#log">log</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">level</tt><tt class="py-op">,</tt> <tt class="py-param">message</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Logger.log-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Logger.log-expanded"><a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">        <tt class="py-docstring">""" Logs a message with given level.</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line"><tt class="py-docstring">        @param level: log level to use</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line"><tt class="py-docstring">        @type level: int</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line"><tt class="py-docstring">        @param message: message to log</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line"><tt class="py-docstring">        @type message: string</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__logger</tt><tt class="py-op">.</tt><tt id="link-44" class="py-name"><a title="trunk.papywizard.common.loggingServices.Logger.log" class="py-name" href="#" onclick="return doclink('link-44', 'log', 'link-35');">log</a></tt><tt class="py-op">(</tt><tt class="py-name">level</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">message</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line"> </tt>
+<a name="Logger.shutdown"></a><div id="Logger.shutdown-def"><a name="L261"></a><tt class="py-lineno">261</tt> <a class="py-toggle" href="#" id="Logger.shutdown-toggle" onclick="return toggle('Logger.shutdown');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.common.loggingServices.Logger-class.html#shutdown">shutdown</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Logger.shutdown-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Logger.shutdown-expanded"><a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">        <tt class="py-docstring">""" Shutdown the logging service.</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">        <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name" targets="Method trunk.papywizard.common.loggingServices.Logger.shutdown()=trunk.papywizard.common.loggingServices.Logger-class.html#shutdown,Method trunk.papywizard.hardware.bluetoothDriver.BluetoothDriver.shutdown()=trunk.papywizard.hardware.bluetoothDriver.BluetoothDriver-class.html#shutdown,Method trunk.papywizard.hardware.busDriver.BusDriver.shutdown()=trunk.papywizard.hardware.busDriver.BusDriver-class.html#shutdown,Method trunk.papywizard.hardware.head.Head.shutdown()=trunk.papywizard.hardware.head.Head-class.html#shutdown,Method trunk.papywizard.hardware.head.HeadSimulation.shutdown()=trunk.papywizard.hardware.head.HeadSimulation-class.html#shutdown,Method trunk.papywizard.hardware.serialDriver.SerialDriver.shutdown()=trunk.papywizard.hardware.serialDriver.SerialDriver-class.html#shutdown,Method trunk.papywizard.model.camera.Camera.shutdown()=trunk.papywizard.model.camera.Camera-class.html#shutdown,Method trunk.papywizard.model.lens.Lens.shutdown()=trunk.papywizard.model.lens.Lens-class.html#shutdown,Method trunk.papywizard.model.shooting.Shooting.shutdown()=trunk.papywizard.model.shooting.Shooting-class.html#shutdown"><a title="trunk.papywizard.common.loggingServices.Logger.shutdown
+trunk.papywizard.hardware.bluetoothDriver.BluetoothDriver.shutdown
+trunk.papywizard.hardware.busDriver.BusDriver.shutdown
+trunk.papywizard.hardware.head.Head.shutdown
+trunk.papywizard.hardware.head.HeadSimulation.shutdown
+trunk.papywizard.hardware.serialDriver.SerialDriver.shutdown
+trunk.papywizard.model.camera.Camera.shutdown
+trunk.papywizard.model.lens.Lens.shutdown
+trunk.papywizard.model.shooting.Shooting.shutdown" class="py-name" href="#" onclick="return doclink('link-45', 'shutdown', 'link-45');">shutdown</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Sep 15 15:49:11 2008
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

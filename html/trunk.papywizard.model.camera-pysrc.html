@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>trunk.papywizard.model.camera</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;trunk ::
+        <a href="trunk.papywizard-module.html">Package&nbsp;papywizard</a> ::
+        <a href="trunk.papywizard.model-module.html">Package&nbsp;model</a> ::
+        Module&nbsp;camera
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="trunk.papywizard.model.camera-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="trunk.papywizard.model.camera-module.html">Module trunk.papywizard.model.camera</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: iso-8859-1 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">""" Panohead remote control.</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">License</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">=======</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-docstring"> - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring">  - (C) 2007-2008 Fr&#233;d&#233;ric Mantegazza</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">This software is governed by the B{CeCILL} license under French law and</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring">abiding by the rules of distribution of free software.  You can  use, </tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring">modify and/or redistribute the software under the terms of the CeCILL</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring">license as circulated by CEA, CNRS and INRIA at the following URL</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">U{http://www.cecill.info}.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">As a counterpart to the access to the source code and  rights to copy,</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">modify and redistribute granted by the license, users are provided only</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">with a limited warranty  and the software's author,  the holder of the</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">economic rights,  and the successive licensors  have only  limited</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">liability. </tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-docstring">In this respect, the user's attention is drawn to the risks associated</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring">with loading,  using,  modifying and/or developing or reproducing the</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">software by the user in light of its specific status of free software,</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring">that may mean  that it is complicated to manipulate,  and  that  also</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">therefore means  that it is reserved for developers  and  experienced</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring">professionals having in-depth computer knowledge. Users are therefore</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring">encouraged to load and test the software's suitability as regards their</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-docstring">requirements in conditions enabling the security of their systems and/or </tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-docstring">data to be ensured and,  more generally, to use and operate it in the </tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">same conditions as regards security. </tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring">The fact that you are presently reading this means that you have had</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">knowledge of the CeCILL license and that you accept its terms.</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">Module purpose</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">==============</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">Model</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">Implements</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">==========</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">- Camera</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">@author: Fr&#233;d&#233;ric Mantegazza</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">@copyright: (C) 2007-2008 Fr&#233;d&#233;ric Mantegazza</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">@license: CeCILL</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable trunk.papywizard.common.config.__revision__=trunk.papywizard.common.config-module.html#__revision__,Variable trunk.papywizard.common.configManager.__revision__=trunk.papywizard.common.configManager-module.html#__revision__,Variable trunk.papywizard.common.data.__revision__=trunk.papywizard.common.data-module.html#__revision__,Variable trunk.papywizard.common.dataMosaic.__revision__=trunk.papywizard.common.dataMosaic-module.html#__revision__,Variable trunk.papywizard.common.dataPreset.__revision__=trunk.papywizard.common.dataPreset-module.html#__revision__,Variable trunk.papywizard.common.exception.__revision__=trunk.papywizard.common.exception-module.html#__revision__,Variable trunk.papywizard.common.helpers.__revision__=trunk.papywizard.common.helpers-module.html#__revision__,Variable trunk.papywizard.common.loggingServices.__revision__=trunk.papywizard.common.loggingServices-module.html#__revision__,Variable trunk.papywizard.common.serializer.__revision__=trunk.papywizard.common.serializer-module.html#__revision__,Variable trunk.papywizard.common.signal.__revision__=trunk.papywizard.common.signal-module.html#__revision__,Variable trunk.papywizard.controller.abstractController.__revision__=trunk.papywizard.controller.abstractController-module.html#__revision__,Variable trunk.papywizard.controller.configController.__revision__=trunk.papywizard.controller.configController-module.html#__revision__,Variable trunk.papywizard.controller.connectController.__revision__=trunk.papywizard.controller.connectController-module.html#__revision__,Variable trunk.papywizard.controller.mainController.__revision__=trunk.papywizard.controller.mainController-module.html#__revision__,Variable trunk.papywizard.controller.manualMoveController.__revision__=trunk.papywizard.controller.manualMoveController-module.html#__revision__,Variable trunk.papywizard.controller.shootController.__revision__=trunk.papywizard.controller.shootController-module.html#__revision__,Variable trunk.papywizard.controller.spy.__revision__=trunk.papywizard.controller.spy-module.html#__revision__,Variable trunk.papywizard.hardware.axis.__revision__=trunk.papywizard.hardware.axis-module.html#__revision__,Variable trunk.papywizard.hardware.bluetoothDriver.__revision__=trunk.papywizard.hardware.bluetoothDriver-module.html#__revision__,Variable trunk.papywizard.hardware.busDriver.__revision__=trunk.papywizard.hardware.busDriver-module.html#__revision__,Variable trunk.papywizard.hardware.driverFactory.__revision__=trunk.papywizard.hardware.driverFactory-module.html#__revision__,Variable trunk.papywizard.hardware.hardwareFactory.__revision__=trunk.papywizard.hardware.hardwareFactory-module.html#__revision__,Variable trunk.papywizard.hardware.head.__revision__=trunk.papywizard.hardware.head-module.html#__revision__,Variable trunk.papywizard.hardware.serialDriver.__revision__=trunk.papywizard.hardware.serialDriver-module.html#__revision__,Variable trunk.papywizard.hardware.usbDriver.__revision__=trunk.papywizard.hardware.usbDriver-module.html#__revision__,Variable trunk.papywizard.model.camera.__revision__=trunk.papywizard.model.camera-module.html#__revision__,Variable trunk.papywizard.model.lens.__revision__=trunk.papywizard.model.lens-module.html#__revision__,Variable trunk.papywizard.model.mosaic.__revision__=trunk.papywizard.model.mosaic-module.html#__revision__,Variable trunk.papywizard.model.preset.__revision__=trunk.papywizard.model.preset-module.html#__revision__,Variable trunk.papywizard.model.scan.__revision__=trunk.papywizard.model.scan-module.html#__revision__,Variable trunk.papywizard.model.shooting.__revision__=trunk.papywizard.model.shooting-module.html#__revision__,Variable trunk.papywizard.view.mosaicArea.__revision__=trunk.papywizard.view.mosaicArea-module.html#__revision__,Variable trunk.papywizard.view.presetArea.__revision__=trunk.papywizard.view.presetArea-module.html#__revision__,Variable trunk.papywizard.view.shootingArea.__revision__=trunk.papywizard.view.shootingArea-module.html#__revision__,Variable trunk.papywizard.view3D.view3D.__revision__=trunk.papywizard.view3D.view3D-module.html#__revision__"><a title="trunk.papywizard.common.config.__revision__
+trunk.papywizard.common.configManager.__revision__
+trunk.papywizard.common.data.__revision__
+trunk.papywizard.common.dataMosaic.__revision__
+trunk.papywizard.common.dataPreset.__revision__
+trunk.papywizard.common.exception.__revision__
+trunk.papywizard.common.helpers.__revision__
+trunk.papywizard.common.loggingServices.__revision__
+trunk.papywizard.common.serializer.__revision__
+trunk.papywizard.common.signal.__revision__
+trunk.papywizard.controller.abstractController.__revision__
+trunk.papywizard.controller.configController.__revision__
+trunk.papywizard.controller.connectController.__revision__
+trunk.papywizard.controller.mainController.__revision__
+trunk.papywizard.controller.manualMoveController.__revision__
+trunk.papywizard.controller.shootController.__revision__
+trunk.papywizard.controller.spy.__revision__
+trunk.papywizard.hardware.axis.__revision__
+trunk.papywizard.hardware.bluetoothDriver.__revision__
+trunk.papywizard.hardware.busDriver.__revision__
+trunk.papywizard.hardware.driverFactory.__revision__
+trunk.papywizard.hardware.hardwareFactory.__revision__
+trunk.papywizard.hardware.head.__revision__
+trunk.papywizard.hardware.serialDriver.__revision__
+trunk.papywizard.hardware.usbDriver.__revision__
+trunk.papywizard.model.camera.__revision__
+trunk.papywizard.model.lens.__revision__
+trunk.papywizard.model.mosaic.__revision__
+trunk.papywizard.model.preset.__revision__
+trunk.papywizard.model.scan.__revision__
+trunk.papywizard.model.shooting.__revision__
+trunk.papywizard.view.mosaicArea.__revision__
+trunk.papywizard.view.presetArea.__revision__
+trunk.papywizard.view.shootingArea.__revision__
+trunk.papywizard.view3D.view3D.__revision__" class="py-name" href="#" onclick="return doclink('link-0', '__revision__', 'link-0');">__revision__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"$Id: camera.py 442 2008-07-14 16:18:16Z fma $"</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Package trunk.papywizard=trunk.papywizard-module.html"><a title="trunk.papywizard" class="py-name" href="#" onclick="return doclink('link-1', 'papywizard', 'link-1');">papywizard</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Package trunk.papywizard.common=trunk.papywizard.common-module.html"><a title="trunk.papywizard.common" class="py-name" href="#" onclick="return doclink('link-2', 'common', 'link-2');">common</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Module trunk.papywizard.common.config=trunk.papywizard.common.config-module.html"><a title="trunk.papywizard.common.config" class="py-name" href="#" onclick="return doclink('link-3', 'config', 'link-3');">config</a></tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-4" class="py-name"><a title="trunk.papywizard" class="py-name" href="#" onclick="return doclink('link-4', 'papywizard', 'link-1');">papywizard</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name"><a title="trunk.papywizard.common" class="py-name" href="#" onclick="return doclink('link-5', 'common', 'link-2');">common</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Module trunk.papywizard.common.loggingServices=trunk.papywizard.common.loggingServices-module.html"><a title="trunk.papywizard.common.loggingServices" class="py-name" href="#" onclick="return doclink('link-6', 'loggingServices', 'link-6');">loggingServices</a></tt> <tt class="py-keyword">import</tt> <tt id="link-7" class="py-name" targets="Class trunk.papywizard.common.loggingServices.Logger=trunk.papywizard.common.loggingServices.Logger-class.html"><a title="trunk.papywizard.common.loggingServices.Logger" class="py-name" href="#" onclick="return doclink('link-7', 'Logger', 'link-7');">Logger</a></tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-8" class="py-name"><a title="trunk.papywizard" class="py-name" href="#" onclick="return doclink('link-8', 'papywizard', 'link-1');">papywizard</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name"><a title="trunk.papywizard.common" class="py-name" href="#" onclick="return doclink('link-9', 'common', 'link-2');">common</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Module trunk.papywizard.common.configManager=trunk.papywizard.common.configManager-module.html"><a title="trunk.papywizard.common.configManager" class="py-name" href="#" onclick="return doclink('link-10', 'configManager', 'link-10');">configManager</a></tt> <tt class="py-keyword">import</tt> <tt id="link-11" class="py-name" targets="Class trunk.papywizard.common.configManager.ConfigManager=trunk.papywizard.common.configManager.ConfigManager-class.html"><a title="trunk.papywizard.common.configManager.ConfigManager" class="py-name" href="#" onclick="return doclink('link-11', 'ConfigManager', 'link-11');">ConfigManager</a></tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-12" class="py-name"><a title="trunk.papywizard" class="py-name" href="#" onclick="return doclink('link-12', 'papywizard', 'link-1');">papywizard</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Package trunk.papywizard.model=trunk.papywizard.model-module.html"><a title="trunk.papywizard.model" class="py-name" href="#" onclick="return doclink('link-13', 'model', 'link-13');">model</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Module trunk.papywizard.model.lens=trunk.papywizard.model.lens-module.html"><a title="trunk.papywizard.model.lens" class="py-name" href="#" onclick="return doclink('link-14', 'lens', 'link-14');">lens</a></tt> <tt class="py-keyword">import</tt> <tt id="link-15" class="py-name" targets="Class trunk.papywizard.model.lens.Lens=trunk.papywizard.model.lens.Lens-class.html"><a title="trunk.papywizard.model.lens.Lens" class="py-name" href="#" onclick="return doclink('link-15', 'Lens', 'link-15');">Lens</a></tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"> </tt>
+<a name="Camera"></a><div id="Camera-def"><a name="L60"></a><tt class="py-lineno"> 60</tt> <a class="py-toggle" href="#" id="Camera-toggle" onclick="return toggle('Camera');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="trunk.papywizard.model.camera.Camera-class.html">Camera</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Camera-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Camera-expanded"><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">    <tt class="py-docstring">""" Camera model.</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="Camera.__init__"></a><div id="Camera.__init__-def"><a name="L63"></a><tt class="py-lineno"> 63</tt> <a class="py-toggle" href="#" id="Camera.__init__-toggle" onclick="return toggle('Camera.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.model.camera.Camera-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Camera.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Camera.__init__-expanded"><a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt class="py-docstring">""" Init the Camera object.</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-docstring">        Load values from preferences.</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="trunk.papywizard.model.lens" class="py-name" href="#" onclick="return doclink('link-16', 'lens', 'link-14');">lens</a></tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name"><a title="trunk.papywizard.model.lens.Lens" class="py-name" href="#" onclick="return doclink('link-17', 'Lens', 'link-15');">Lens</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"> </tt>
+<a name="Camera.__getSensorRatio"></a><div id="Camera.__getSensorRatio-def"><a name="L70"></a><tt class="py-lineno"> 70</tt> <a class="py-toggle" href="#" id="Camera.__getSensorRatio-toggle" onclick="return toggle('Camera.__getSensorRatio');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.model.camera.Camera-class.html#__getSensorRatio">__getSensorRatio</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Camera.__getSensorRatio-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Camera.__getSensorRatio-expanded"><a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-18" class="py-name"><a title="trunk.papywizard.common.configManager.ConfigManager" class="py-name" href="#" onclick="return doclink('link-18', 'ConfigManager', 'link-11');">ConfigManager</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method trunk.papywizard.common.configManager.ConfigManager.get()=trunk.papywizard.common.configManager.ConfigManager-class.html#get"><a title="trunk.papywizard.common.configManager.ConfigManager.get" class="py-name" href="#" onclick="return doclink('link-19', 'get', 'link-19');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'Preferences'</tt><tt class="py-op">,</tt> <tt class="py-string">'CAMERA_SENSOR_RATIO'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">     </tt>
+<a name="Camera.__setSensorRatio"></a><div id="Camera.__setSensorRatio-def"><a name="L75"></a><tt class="py-lineno"> 75</tt> <a class="py-toggle" href="#" id="Camera.__setSensorRatio-toggle" onclick="return toggle('Camera.__setSensorRatio');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.model.camera.Camera-class.html#__setSensorRatio">__setSensorRatio</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">sensorRatio</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Camera.__setSensorRatio-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Camera.__setSensorRatio-expanded"><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt id="link-20" class="py-name"><a title="trunk.papywizard.common.configManager.ConfigManager" class="py-name" href="#" onclick="return doclink('link-20', 'ConfigManager', 'link-11');">ConfigManager</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method trunk.papywizard.common.configManager.ConfigManager.set()=trunk.papywizard.common.configManager.ConfigManager-class.html#set"><a title="trunk.papywizard.common.configManager.ConfigManager.set" class="py-name" href="#" onclick="return doclink('link-21', 'set', 'link-21');">set</a></tt><tt class="py-op">(</tt><tt class="py-string">'Preferences'</tt><tt class="py-op">,</tt> <tt class="py-string">'CAMERA_SENSOR_RATIO'</tt><tt class="py-op">,</tt> <tt id="link-22" class="py-name" targets="Variable trunk.papywizard.model.camera.Camera.sensorRatio=trunk.papywizard.model.camera.Camera-class.html#sensorRatio"><a title="trunk.papywizard.model.camera.Camera.sensorRatio" class="py-name" href="#" onclick="return doclink('link-22', 'sensorRatio', 'link-22');">sensorRatio</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">         </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">    <tt id="link-23" class="py-name"><a title="trunk.papywizard.model.camera.Camera.sensorRatio" class="py-name" href="#" onclick="return doclink('link-23', 'sensorRatio', 'link-22');">sensorRatio</a></tt> <tt class="py-op">=</tt> <tt class="py-name">property</tt><tt class="py-op">(</tt><tt id="link-24" class="py-name" targets="Method trunk.papywizard.model.camera.Camera.__getSensorRatio()=trunk.papywizard.model.camera.Camera-class.html#__getSensorRatio"><a title="trunk.papywizard.model.camera.Camera.__getSensorRatio" class="py-name" href="#" onclick="return doclink('link-24', '__getSensorRatio', 'link-24');">__getSensorRatio</a></tt><tt class="py-op">,</tt> <tt id="link-25" class="py-name" targets="Method trunk.papywizard.model.camera.Camera.__setSensorRatio()=trunk.papywizard.model.camera.Camera-class.html#__setSensorRatio"><a title="trunk.papywizard.model.camera.Camera.__setSensorRatio" class="py-name" href="#" onclick="return doclink('link-25', '__setSensorRatio', 'link-25');">__setSensorRatio</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">     </tt>
+<a name="Camera.__getSensorCoef"></a><div id="Camera.__getSensorCoef-def"><a name="L82"></a><tt class="py-lineno"> 82</tt> <a class="py-toggle" href="#" id="Camera.__getSensorCoef-toggle" onclick="return toggle('Camera.__getSensorCoef');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.model.camera.Camera-class.html#__getSensorCoef">__getSensorCoef</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Camera.__getSensorCoef-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Camera.__getSensorCoef-expanded"><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-26" class="py-name"><a title="trunk.papywizard.common.configManager.ConfigManager" class="py-name" href="#" onclick="return doclink('link-26', 'ConfigManager', 'link-11');">ConfigManager</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Method trunk.papywizard.common.configManager.ConfigManager.getFloat()=trunk.papywizard.common.configManager.ConfigManager-class.html#getFloat"><a title="trunk.papywizard.common.configManager.ConfigManager.getFloat" class="py-name" href="#" onclick="return doclink('link-27', 'getFloat', 'link-27');">getFloat</a></tt><tt class="py-op">(</tt><tt class="py-string">'Preferences'</tt><tt class="py-op">,</tt> <tt class="py-string">'CAMERA_SENSOR_COEF'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">     </tt>
+<a name="Camera.__setSensorCoef"></a><div id="Camera.__setSensorCoef-def"><a name="L87"></a><tt class="py-lineno"> 87</tt> <a class="py-toggle" href="#" id="Camera.__setSensorCoef-toggle" onclick="return toggle('Camera.__setSensorCoef');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.model.camera.Camera-class.html#__setSensorCoef">__setSensorCoef</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">sensorCoef</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Camera.__setSensorCoef-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Camera.__setSensorCoef-expanded"><a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">        <tt id="link-28" class="py-name"><a title="trunk.papywizard.common.configManager.ConfigManager" class="py-name" href="#" onclick="return doclink('link-28', 'ConfigManager', 'link-11');">ConfigManager</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method trunk.papywizard.common.configManager.ConfigManager.setFloat()=trunk.papywizard.common.configManager.ConfigManager-class.html#setFloat"><a title="trunk.papywizard.common.configManager.ConfigManager.setFloat" class="py-name" href="#" onclick="return doclink('link-29', 'setFloat', 'link-29');">setFloat</a></tt><tt class="py-op">(</tt><tt class="py-string">'Preferences'</tt><tt class="py-op">,</tt> <tt class="py-string">'CAMERA_SENSOR_COEF'</tt><tt class="py-op">,</tt> <tt id="link-30" class="py-name" targets="Variable trunk.papywizard.model.camera.Camera.sensorCoef=trunk.papywizard.model.camera.Camera-class.html#sensorCoef"><a title="trunk.papywizard.model.camera.Camera.sensorCoef" class="py-name" href="#" onclick="return doclink('link-30', 'sensorCoef', 'link-30');">sensorCoef</a></tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">         </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">    <tt id="link-31" class="py-name"><a title="trunk.papywizard.model.camera.Camera.sensorCoef" class="py-name" href="#" onclick="return doclink('link-31', 'sensorCoef', 'link-30');">sensorCoef</a></tt> <tt class="py-op">=</tt> <tt class="py-name">property</tt><tt class="py-op">(</tt><tt id="link-32" class="py-name" targets="Method trunk.papywizard.model.camera.Camera.__getSensorCoef()=trunk.papywizard.model.camera.Camera-class.html#__getSensorCoef"><a title="trunk.papywizard.model.camera.Camera.__getSensorCoef" class="py-name" href="#" onclick="return doclink('link-32', '__getSensorCoef', 'link-32');">__getSensorCoef</a></tt><tt class="py-op">,</tt> <tt id="link-33" class="py-name" targets="Method trunk.papywizard.model.camera.Camera.__setSensorCoef()=trunk.papywizard.model.camera.Camera-class.html#__setSensorCoef"><a title="trunk.papywizard.model.camera.Camera.__setSensorCoef" class="py-name" href="#" onclick="return doclink('link-33', '__setSensorCoef', 'link-33');">__setSensorCoef</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">     </tt>
+<a name="Camera.__getTimeValue"></a><div id="Camera.__getTimeValue-def"><a name="L94"></a><tt class="py-lineno"> 94</tt> <a class="py-toggle" href="#" id="Camera.__getTimeValue-toggle" onclick="return toggle('Camera.__getTimeValue');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.model.camera.Camera-class.html#__getTimeValue">__getTimeValue</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Camera.__getTimeValue-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Camera.__getTimeValue-expanded"><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-34" class="py-name"><a title="trunk.papywizard.common.configManager.ConfigManager" class="py-name" href="#" onclick="return doclink('link-34', 'ConfigManager', 'link-11');">ConfigManager</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="trunk.papywizard.common.configManager.ConfigManager.getFloat" class="py-name" href="#" onclick="return doclink('link-35', 'getFloat', 'link-27');">getFloat</a></tt><tt class="py-op">(</tt><tt class="py-string">'Preferences'</tt><tt class="py-op">,</tt> <tt class="py-string">'CAMERA_TIME_VALUE'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">     </tt>
+<a name="Camera.__setTimeValue"></a><div id="Camera.__setTimeValue-def"><a name="L99"></a><tt class="py-lineno"> 99</tt> <a class="py-toggle" href="#" id="Camera.__setTimeValue-toggle" onclick="return toggle('Camera.__setTimeValue');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.model.camera.Camera-class.html#__setTimeValue">__setTimeValue</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">timeValue</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Camera.__setTimeValue-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Camera.__setTimeValue-expanded"><a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt id="link-36" class="py-name"><a title="trunk.papywizard.common.configManager.ConfigManager" class="py-name" href="#" onclick="return doclink('link-36', 'ConfigManager', 'link-11');">ConfigManager</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name"><a title="trunk.papywizard.common.configManager.ConfigManager.setFloat" class="py-name" href="#" onclick="return doclink('link-37', 'setFloat', 'link-29');">setFloat</a></tt><tt class="py-op">(</tt><tt class="py-string">'Preferences'</tt><tt class="py-op">,</tt> <tt class="py-string">'CAMERA_TIME_VALUE'</tt><tt class="py-op">,</tt> <tt id="link-38" class="py-name" targets="Variable trunk.papywizard.model.camera.Camera.timeValue=trunk.papywizard.model.camera.Camera-class.html#timeValue"><a title="trunk.papywizard.model.camera.Camera.timeValue" class="py-name" href="#" onclick="return doclink('link-38', 'timeValue', 'link-38');">timeValue</a></tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">         </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">    <tt id="link-39" class="py-name"><a title="trunk.papywizard.model.camera.Camera.timeValue" class="py-name" href="#" onclick="return doclink('link-39', 'timeValue', 'link-38');">timeValue</a></tt> <tt class="py-op">=</tt> <tt class="py-name">property</tt><tt class="py-op">(</tt><tt id="link-40" class="py-name" targets="Method trunk.papywizard.model.camera.Camera.__getTimeValue()=trunk.papywizard.model.camera.Camera-class.html#__getTimeValue"><a title="trunk.papywizard.model.camera.Camera.__getTimeValue" class="py-name" href="#" onclick="return doclink('link-40', '__getTimeValue', 'link-40');">__getTimeValue</a></tt><tt class="py-op">,</tt> <tt id="link-41" class="py-name" targets="Method trunk.papywizard.model.camera.Camera.__setTimeValue()=trunk.papywizard.model.camera.Camera-class.html#__setTimeValue"><a title="trunk.papywizard.model.camera.Camera.__setTimeValue" class="py-name" href="#" onclick="return doclink('link-41', '__setTimeValue', 'link-41');">__setTimeValue</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">     </tt>
+<a name="Camera.__getNbPicts"></a><div id="Camera.__getNbPicts-def"><a name="L106"></a><tt class="py-lineno">106</tt> <a class="py-toggle" href="#" id="Camera.__getNbPicts-toggle" onclick="return toggle('Camera.__getNbPicts');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.model.camera.Camera-class.html#__getNbPicts">__getNbPicts</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Camera.__getNbPicts-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Camera.__getNbPicts-expanded"><a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-42" class="py-name"><a title="trunk.papywizard.common.configManager.ConfigManager" class="py-name" href="#" onclick="return doclink('link-42', 'ConfigManager', 'link-11');">ConfigManager</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name" targets="Method trunk.papywizard.common.configManager.ConfigManager.getInt()=trunk.papywizard.common.configManager.ConfigManager-class.html#getInt"><a title="trunk.papywizard.common.configManager.ConfigManager.getInt" class="py-name" href="#" onclick="return doclink('link-43', 'getInt', 'link-43');">getInt</a></tt><tt class="py-op">(</tt><tt class="py-string">'Preferences'</tt><tt class="py-op">,</tt> <tt class="py-string">'CAMERA_NB_PICTS'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">     </tt>
+<a name="Camera.__setNbPicts"></a><div id="Camera.__setNbPicts-def"><a name="L111"></a><tt class="py-lineno">111</tt> <a class="py-toggle" href="#" id="Camera.__setNbPicts-toggle" onclick="return toggle('Camera.__setNbPicts');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.model.camera.Camera-class.html#__setNbPicts">__setNbPicts</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">nbPicts</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Camera.__setNbPicts-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Camera.__setNbPicts-expanded"><a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">        <tt id="link-44" class="py-name"><a title="trunk.papywizard.common.configManager.ConfigManager" class="py-name" href="#" onclick="return doclink('link-44', 'ConfigManager', 'link-11');">ConfigManager</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name" targets="Method trunk.papywizard.common.configManager.ConfigManager.setInt()=trunk.papywizard.common.configManager.ConfigManager-class.html#setInt"><a title="trunk.papywizard.common.configManager.ConfigManager.setInt" class="py-name" href="#" onclick="return doclink('link-45', 'setInt', 'link-45');">setInt</a></tt><tt class="py-op">(</tt><tt class="py-string">'Preferences'</tt><tt class="py-op">,</tt> <tt class="py-string">'CAMERA_NB_PICTS'</tt><tt class="py-op">,</tt> <tt id="link-46" class="py-name" targets="Variable trunk.papywizard.model.camera.Camera.nbPicts=trunk.papywizard.model.camera.Camera-class.html#nbPicts"><a title="trunk.papywizard.model.camera.Camera.nbPicts" class="py-name" href="#" onclick="return doclink('link-46', 'nbPicts', 'link-46');">nbPicts</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">    <tt id="link-47" class="py-name"><a title="trunk.papywizard.model.camera.Camera.nbPicts" class="py-name" href="#" onclick="return doclink('link-47', 'nbPicts', 'link-46');">nbPicts</a></tt> <tt class="py-op">=</tt> <tt class="py-name">property</tt><tt class="py-op">(</tt><tt id="link-48" class="py-name" targets="Method trunk.papywizard.model.camera.Camera.__getNbPicts()=trunk.papywizard.model.camera.Camera-class.html#__getNbPicts"><a title="trunk.papywizard.model.camera.Camera.__getNbPicts" class="py-name" href="#" onclick="return doclink('link-48', '__getNbPicts', 'link-48');">__getNbPicts</a></tt><tt class="py-op">,</tt> <tt id="link-49" class="py-name" targets="Method trunk.papywizard.model.camera.Camera.__setNbPicts()=trunk.papywizard.model.camera.Camera-class.html#__setNbPicts"><a title="trunk.papywizard.model.camera.Camera.__setNbPicts" class="py-name" href="#" onclick="return doclink('link-49', '__setNbPicts', 'link-49');">__setNbPicts</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"> </tt>
+<a name="Camera.getYawFov"></a><div id="Camera.getYawFov-def"><a name="L118"></a><tt class="py-lineno">118</tt> <a class="py-toggle" href="#" id="Camera.getYawFov-toggle" onclick="return toggle('Camera.getYawFov');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.model.camera.Camera-class.html#getYawFov">getYawFov</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">cameraOrientation</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Camera.getYawFov-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Camera.getYawFov-expanded"><a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-docstring">""" Compute the yaw FoV.</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-docstring">        @return: yaw FoV of the image</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-docstring">        @rtype: float</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-50" class="py-name" targets="Variable trunk.papywizard.model.mosaic.Mosaic.cameraOrientation=trunk.papywizard.model.mosaic.Mosaic-class.html#cameraOrientation"><a title="trunk.papywizard.model.mosaic.Mosaic.cameraOrientation" class="py-name" href="#" onclick="return doclink('link-50', 'cameraOrientation', 'link-50');">cameraOrientation</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'landscape'</tt><tt class="py-op">:</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">            <tt class="py-name">sensorSize</tt> <tt class="py-op">=</tt> <tt class="py-number">36.</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt id="link-51" class="py-name"><a title="trunk.papywizard.model.mosaic.Mosaic.cameraOrientation" class="py-name" href="#" onclick="return doclink('link-51', 'cameraOrientation', 'link-50');">cameraOrientation</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'portrait'</tt><tt class="py-op">:</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">            <tt class="py-name">sensorSize</tt> <tt class="py-op">=</tt> <tt class="py-number">36.</tt> <tt class="py-op">/</tt> <tt id="link-52" class="py-name"><a title="trunk.papywizard.common.config" class="py-name" href="#" onclick="return doclink('link-52', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-53" class="py-name" targets="Variable trunk.papywizard.common.config.SENSOR_RATIOS=trunk.papywizard.common.config-module.html#SENSOR_RATIOS"><a title="trunk.papywizard.common.config.SENSOR_RATIOS" class="py-name" href="#" onclick="return doclink('link-53', 'SENSOR_RATIOS', 'link-53');">SENSOR_RATIOS</a></tt><tt class="py-op">[</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="trunk.papywizard.model.camera.Camera.sensorRatio" class="py-name" href="#" onclick="return doclink('link-54', 'sensorRatio', 'link-22');">sensorRatio</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="trunk.papywizard.model.lens" class="py-name" href="#" onclick="return doclink('link-55', 'lens', 'link-14');">lens</a></tt><tt class="py-op">.</tt><tt id="link-56" class="py-name" targets="Method trunk.papywizard.model.lens.Lens.computeFov()=trunk.papywizard.model.lens.Lens-class.html#computeFov"><a title="trunk.papywizard.model.lens.Lens.computeFov" class="py-name" href="#" onclick="return doclink('link-56', 'computeFov', 'link-56');">computeFov</a></tt><tt class="py-op">(</tt><tt class="py-name">sensorSize</tt> <tt class="py-op">/</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="trunk.papywizard.model.camera.Camera.sensorCoef" class="py-name" href="#" onclick="return doclink('link-57', 'sensorCoef', 'link-30');">sensorCoef</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"> </tt>
+<a name="Camera.getPitchFov"></a><div id="Camera.getPitchFov-def"><a name="L131"></a><tt class="py-lineno">131</tt> <a class="py-toggle" href="#" id="Camera.getPitchFov-toggle" onclick="return toggle('Camera.getPitchFov');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.model.camera.Camera-class.html#getPitchFov">getPitchFov</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">cameraOrientation</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Camera.getPitchFov-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Camera.getPitchFov-expanded"><a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">        <tt class="py-docstring">""" Compute the pitch FoV.</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring">        @return: pitch FoV of the image</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-docstring">        @rtype: float</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-58" class="py-name"><a title="trunk.papywizard.model.mosaic.Mosaic.cameraOrientation" class="py-name" href="#" onclick="return doclink('link-58', 'cameraOrientation', 'link-50');">cameraOrientation</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'landscape'</tt><tt class="py-op">:</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">            <tt class="py-name">sensorSize</tt> <tt class="py-op">=</tt> <tt class="py-number">36.</tt> <tt class="py-op">/</tt> <tt id="link-59" class="py-name"><a title="trunk.papywizard.common.config" class="py-name" href="#" onclick="return doclink('link-59', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-60" class="py-name"><a title="trunk.papywizard.common.config.SENSOR_RATIOS" class="py-name" href="#" onclick="return doclink('link-60', 'SENSOR_RATIOS', 'link-53');">SENSOR_RATIOS</a></tt><tt class="py-op">[</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-61" class="py-name"><a title="trunk.papywizard.model.camera.Camera.sensorRatio" class="py-name" href="#" onclick="return doclink('link-61', 'sensorRatio', 'link-22');">sensorRatio</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt id="link-62" class="py-name"><a title="trunk.papywizard.model.mosaic.Mosaic.cameraOrientation" class="py-name" href="#" onclick="return doclink('link-62', 'cameraOrientation', 'link-50');">cameraOrientation</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'portrait'</tt><tt class="py-op">:</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">            <tt class="py-name">sensorSize</tt> <tt class="py-op">=</tt> <tt class="py-number">36.</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name"><a title="trunk.papywizard.model.lens" class="py-name" href="#" onclick="return doclink('link-63', 'lens', 'link-14');">lens</a></tt><tt class="py-op">.</tt><tt id="link-64" class="py-name"><a title="trunk.papywizard.model.lens.Lens.computeFov" class="py-name" href="#" onclick="return doclink('link-64', 'computeFov', 'link-56');">computeFov</a></tt><tt class="py-op">(</tt><tt class="py-name">sensorSize</tt> <tt class="py-op">/</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-65" class="py-name"><a title="trunk.papywizard.model.camera.Camera.sensorCoef" class="py-name" href="#" onclick="return doclink('link-65', 'sensorCoef', 'link-30');">sensorCoef</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"> </tt>
+<a name="Camera.shutdown"></a><div id="Camera.shutdown-def"><a name="L144"></a><tt class="py-lineno">144</tt> <a class="py-toggle" href="#" id="Camera.shutdown-toggle" onclick="return toggle('Camera.shutdown');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="trunk.papywizard.model.camera.Camera-class.html#shutdown">shutdown</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Camera.shutdown-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Camera.shutdown-expanded"><a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">        <tt class="py-docstring">""" Cleanly terminate the camera.</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring">        Save values to preferences.</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt id="link-66" class="py-name"><a title="trunk.papywizard.common.loggingServices.Logger" class="py-name" href="#" onclick="return doclink('link-66', 'Logger', 'link-7');">Logger</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-67" class="py-name" targets="Method trunk.papywizard.common.loggingServices.Logger.trace()=trunk.papywizard.common.loggingServices.Logger-class.html#trace"><a title="trunk.papywizard.common.loggingServices.Logger.trace" class="py-name" href="#" onclick="return doclink('link-67', 'trace', 'link-67');">trace</a></tt><tt class="py-op">(</tt><tt class="py-string">"Camera.shutdown()"</tt><tt class="py-op">)</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-68" class="py-name"><a title="trunk.papywizard.model.lens" class="py-name" href="#" onclick="return doclink('link-68', 'lens', 'link-14');">lens</a></tt><tt class="py-op">.</tt><tt id="link-69" class="py-name" targets="Method trunk.papywizard.common.loggingServices.Logger.shutdown()=trunk.papywizard.common.loggingServices.Logger-class.html#shutdown,Method trunk.papywizard.hardware.bluetoothDriver.BluetoothDriver.shutdown()=trunk.papywizard.hardware.bluetoothDriver.BluetoothDriver-class.html#shutdown,Method trunk.papywizard.hardware.busDriver.BusDriver.shutdown()=trunk.papywizard.hardware.busDriver.BusDriver-class.html#shutdown,Method trunk.papywizard.hardware.head.Head.shutdown()=trunk.papywizard.hardware.head.Head-class.html#shutdown,Method trunk.papywizard.hardware.head.HeadSimulation.shutdown()=trunk.papywizard.hardware.head.HeadSimulation-class.html#shutdown,Method trunk.papywizard.hardware.serialDriver.SerialDriver.shutdown()=trunk.papywizard.hardware.serialDriver.SerialDriver-class.html#shutdown,Method trunk.papywizard.model.camera.Camera.shutdown()=trunk.papywizard.model.camera.Camera-class.html#shutdown,Method trunk.papywizard.model.lens.Lens.shutdown()=trunk.papywizard.model.lens.Lens-class.html#shutdown,Method trunk.papywizard.model.shooting.Shooting.shutdown()=trunk.papywizard.model.shooting.Shooting-class.html#shutdown"><a title="trunk.papywizard.common.loggingServices.Logger.shutdown
+trunk.papywizard.hardware.bluetoothDriver.BluetoothDriver.shutdown
+trunk.papywizard.hardware.busDriver.BusDriver.shutdown
+trunk.papywizard.hardware.head.Head.shutdown
+trunk.papywizard.hardware.head.HeadSimulation.shutdown
+trunk.papywizard.hardware.serialDriver.SerialDriver.shutdown
+trunk.papywizard.model.camera.Camera.shutdown
+trunk.papywizard.model.lens.Lens.shutdown
+trunk.papywizard.model.shooting.Shooting.shutdown" class="py-name" href="#" onclick="return doclink('link-69', 'shutdown', 'link-69');">shutdown</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Sep 15 15:49:11 2008
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
