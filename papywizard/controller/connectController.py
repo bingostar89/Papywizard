@@ -77,7 +77,7 @@ class ConnectController(AbstractController):
         @type parent: {AbstractController}
 
         @param model: model to use
-        @type mode: {Shooting}
+        @type model: {Shooting}
         """
         self.__parent = parent
         self.__model = model

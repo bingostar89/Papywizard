@@ -70,7 +70,7 @@ class AbstractController(object):
         @type parent: {Controller}
 
         @param model: model to use
-        @type mode: {Shooting}
+        @type model: {Shooting}
         """
         self._parent = parent
         self._model = model

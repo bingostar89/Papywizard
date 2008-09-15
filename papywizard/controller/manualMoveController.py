@@ -68,10 +68,10 @@ class ManualMoveController(AbstractController):
         @type parent: {Controller}
 
         @param serializer: object used to serialize Tkinter events
-        @type serializer: {Serializer]
+        @type serializer: {Serializer}
 
         @param model: model to use
-        @type mode: {Shooting}
+        @type model: {Shooting}
 
         @param view: associated view
         @type view: {ManualMoveDialog}

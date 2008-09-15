@@ -85,8 +85,8 @@ def encodeAxisValue(value):
     @param value: value
     @type value: int
 
-    @return strValue: value to send to axis
-    @rtype strValue: str
+    @return: value to send to axis
+    @rtype: str
     """
     strHexValue = "000000%s" % hex(value)[2:]
     strValue = strHexValue[-2:] + strHexValue[-4:-2] + strHexValue[-6:-4]
@@ -109,8 +109,8 @@ def cod2deg(codPos):
 def deg2cod(pos):
     """ Convert degres to encoder value.
 
-    @param codPos: position, in °
-    @type codPos: float
+    @param pos: position, in °
+    @type pos: float
 
     @return: encoder position
     @rtype: int

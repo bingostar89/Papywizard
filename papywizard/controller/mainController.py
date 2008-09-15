@@ -83,7 +83,7 @@ class MainController(AbstractController):
         """ Init the controller.
 
         @param serializer: object used to serialize Tkinter events
-        @type serializer: {Serializer]
+        @type serializer: {Serializer}
         """
         super(MainController, self).__init__(None, model)
         self.__serializer = serializer

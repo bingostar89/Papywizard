@@ -80,10 +80,10 @@ class Spy(threading.Thread):
         """ Init the object.
 
         @param model: model to use
-        @type mode: {Shooting}
+        @type model: {Shooting}
 
-        @param view3D: associated view
-        @type view3D: {Head3D}
+        @param refresh: delay between 2 refreshs
+        @type refresh: int
         """
         if Spy.__init:
             if model is None or refresh is None:

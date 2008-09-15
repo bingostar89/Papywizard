@@ -42,10 +42,10 @@ Data management
 Implements
 ==========
 
-- DataMosaic
+ - DataMosaic
 
-Usage
-=====
+XML format
+==========
 
 <?xml version="1.0" ?>
 <papywizard>

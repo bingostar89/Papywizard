@@ -135,11 +135,11 @@ class ShootingArea(gtk.DrawingArea):
     def add_pict(self, yawIndex, pitchIndex):
         """ Add a pict at yaw/pitch coordinates.
         
-        @param yaw: pict yaw position index
-        @type yaw: int
+        @param yawIndex: pict yaw position index
+        @type yawIndex: int
         
-        @param pitch: pict pitch position index
-        @type pitc: int
+        @param pitchIndex: pict pitch position index
+        @type pitchIndex: int
         """
         #print "add_pict(yawIndex=%d, pitchIndex=%d)" % (yawIndex, pitchIndex)
         self._picts.append((yawIndex, pitchIndex))

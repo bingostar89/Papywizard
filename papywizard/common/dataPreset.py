@@ -42,10 +42,10 @@ Data management
 Implements
 ==========
 
-- DataPreset
+ - DataPreset
 
-Usage
-=====
+XML format
+==========
 
 <?xml version="1.0" ?>
 <papywizard>

@@ -42,7 +42,7 @@ Data management
 Implements
 ==========
 
-- Data
+ - Data
 
 Usage
 =====

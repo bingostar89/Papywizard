@@ -160,16 +160,16 @@ class Axis(object):
 
         # Choose between default (hardware) method or external closed-loop method
         if pos - currentPos > 6.:
-            self._drive1(pos)
+            self._driveWithInternalClosedLoop(pos)
         else:
-            self._drive1(pos)
+            self._driveWithInternalClosedLoop(pos)
 
         # Wait end of movement
         # Does not work for external closed-loop drive. Need to execute drive in a thread.
         if wait:
             self.waitEndOfDrive()
 
-    def _drive1(self, pos):
+    def _driveWithInternalClosedLoop(self, pos):
         """ Default (hardware) drive.
 
         @param pos: position to reach, in °
@@ -186,13 +186,16 @@ class Axis(object):
         finally:
             self._driver.releaseBus()
 
-    def _drive2(self, pos):
+    def _driveWithExternalClosedLoop(self, pos):
         """ External closed-loop drive.
 
         This method implements an external closed-loop regulation.
         It is faster for angles < 6-7°, because in this case, the
         head does not accelerate to full speed, but rather stays at
         very low speed.
+        
+        Problem: this drive can't be stopped, neither run concurrently
+        on both axis without big modifications in multi-threading stuff.
 
         @param pos: position to reach, in °
         @type pos: float

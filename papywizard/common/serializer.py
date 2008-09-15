@@ -42,7 +42,7 @@ Graphical toolkit helper
 Implements
 ==========
 
-- Serializer
+ - Serializer
 
 Usage
 =====
