@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use,
@@ -44,8 +44,8 @@ Implements
 
 - MainController
 
-@author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@author: Frï¿½dï¿½ric Mantegazza
+@copyright: (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 @license: CeCILL
 """
 
@@ -554,10 +554,11 @@ class MainController(AbstractController):
 
     def __openConfigDialog(self):
         controller = ConfigController(self, self._model)
-        controller.run()
+        response = controller.run()
         controller.destroyView()
-        Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
-        self.refreshView()
+        if response == 0:
+            Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
+            self.refreshView()
 
     def __onConfigButtonClicked(self, widget):
         Logger().trace("MainController.__onConfigButtonClicked()")
