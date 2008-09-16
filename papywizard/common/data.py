@@ -155,7 +155,6 @@ class Data(object):
         if ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE'):
             Logger().trace("Data.serialize()")
             fileFormat = os.path.join(config.HOME_DIR, ConfigManager().get('Data', 'DATA_FILE_FORMAT'))
-            print fileFormat
             dataFileFormatDict = {'date': self._date}
             xmlFile = file(fileFormat % dataFileFormatDict, 'w')
             self._doc.writexml(xmlFile, addindent="    ", newl='\n', encoding="utf-8")
