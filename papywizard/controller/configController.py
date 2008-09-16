@@ -9,7 +9,7 @@ License
   - (C) 2007-2008 Fr�d�ric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
 U{http://www.cecill.info}.
@@ -18,7 +18,7 @@ As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -27,9 +27,9 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
@@ -116,14 +116,15 @@ class ConfigController(AbstractController):
         self._model.camera.sensorCoef = self.sensorCoefSpinbutton.get_value()
         self._model.camera.sensorRatio = config.SENSOR_RATIOS_INDEX[self.sensorRatioCombobox.get_active()]
         self._model.camera.lens.focal = self.focalSpinbutton.get_value()
-        ConfigManager().set('Hardware', 'DRIVER', 
+        ConfigManager().set('Hardware', 'DRIVER',
                             config.DRIVER_INDEX[self.driverCombobox.get_active()])
         ConfigManager().set('Hardware', 'BLUETOOTH_DEVICE_ADDRESS', self.bluetoothDeviceAddressEntry.get_text())
         ConfigManager().set('Hardware', 'SERIAL_PORT', self.serialPortEntry.get_text())
         ConfigManager().setBoolean('Hardware', 'AUTO_CONNECT', self.hardwareAutoConnectCheckbutton.get_active())
         ConfigManager().set('Logger', 'LOGGER_LEVEL',
                             config.LOGGER_INDEX[self.loggerLevelCombobox.get_active()])
-        #ConfigManager().set('Data', 'DATA_FILE_FORMAT', self.dataFileFormatEntry.set_text()
+        dataFileFormat = self.dataFileFormatEntry.get_text().replace('%', '%%')
+        ConfigManager().set('Data', 'DATA_FILE_FORMAT', dataFileFormat)
 
     def __onCancelButtonClicked(self, widget):
         """ Cancel button has been clicked.
@@ -134,7 +135,7 @@ class ConfigController(AbstractController):
 
     def __onDriverComboboxChanged(self, widget):
         """ Driver combobox has changed.
-        
+
         Enable/disable BT address / serial port.
         """
         Logger().trace("ConfigController.__onDriverComboboxChanged()")
@@ -185,4 +186,4 @@ class ConfigController(AbstractController):
         self.serialPortEntry.set_text(ConfigManager().get('Hardware', 'SERIAL_PORT'))
         self.hardwareAutoConnectCheckbutton.set_active(ConfigManager().getBoolean('Hardware', 'AUTO_CONNECT'))
         self.loggerLevelCombobox.set_active(config.LOGGER_INDEX[ConfigManager().get('Logger', 'LOGGER_LEVEL')])
-        #self.dataFileFormatEntry.set_text(ConfigManager().get('Data', 'DATA_FILE_FORMAT'))
+        self.dataFileFormatEntry.set_text(ConfigManager().get('Data', 'DATA_FILE_FORMAT'))
