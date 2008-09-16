@@ -109,10 +109,6 @@ LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"
 LOGGER_INDEX = {'trace': 0, 'debug': 1, 'info': 2, 'warning' :3, 'error': 4, 'exception': 5, 'critical': 6,
                 0: 'trace', 1: 'debug', 2: 'info', 3: 'warning', 4: 'error', 5: 'exception', 6: 'critical'}
 
-
-# Data
-DATA_FILE = "papywizard-%s.xml"
-
 # Hardware
 AXIS_NUM_YAW = 1
 AXIS_NUM_PITCH = 2
