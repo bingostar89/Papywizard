@@ -73,7 +73,7 @@ from papywizard.controller.shootController import ShootController
 from papywizard.controller.connectController import ConnectController
 from papywizard.controller.spy import Spy
 
-path = os.path.dirname(__file__) # Remove as soon as help dialog has a controller
+path = os.path.dirname(__file__) # Remove as soon as help dialog has a controller???
 
 
 class MainController(AbstractController):
@@ -82,7 +82,7 @@ class MainController(AbstractController):
     def __init__(self, serializer, model):
         """ Init the controller.
 
-        @param serializer: object used to serialize Tkinter events
+        @param serializer: object used to serialize toolkit events
         @type serializer: {Serializer}
         """
         super(MainController, self).__init__(None, model)
@@ -152,7 +152,7 @@ class MainController(AbstractController):
         self.__pitchPos = 0
 
         self.__statusbarTimeoutEventId = None
-        self.__connect = None
+        self.__connectStatus = None
         self.__connectErrorMessage = None
 
     def _retreiveWidgets(self):
@@ -594,7 +594,7 @@ class MainController(AbstractController):
 
         Logger().info("Connecting to real hardware...")
         self.setStatusbarMessage("Connecting to real hardware...")
-        self.hardwareConnectMenuitem.set_sensitive(False)
+        #self.hardwareConnectMenuitem.set_sensitive(False)
 
         # Open connection banner (todo: use real banner on Nokia). Make a special object
         self.__connectStatus = None
@@ -626,7 +626,7 @@ class MainController(AbstractController):
             messageDialog.destroy()
             self.hardwareConnectMenuitem.set_active(False)
 
-        self.hardwareConnectMenuitem.set_sensitive(True)
+        #self.hardwareConnectMenuitem.set_sensitive(True)
 
     def __goToSimulationMode(self):
         """ Connect to simulated hardware.
