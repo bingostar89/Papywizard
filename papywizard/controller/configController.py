@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use, 
@@ -44,8 +44,8 @@ Implements
 
 - ConfigController
 
-@author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@author: Frï¿½dï¿½ric Mantegazza
+@copyright: (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 @license: CeCILL
 """
 
@@ -55,29 +55,25 @@ from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.bluetoothChooserController import BluetoothChooserController
 
 
 class ConfigController(AbstractController):
     """ Configuration controller object.
     """
-    def __init__(self, parent, model):
-        super(ConfigController, self).__init__(parent, model)
-
-        # Fill widgets
-        self.refreshView()
-
     def _init(self):
         self._gladeFile = "configDialog.glade"
         self._signalDict = {"on_okButton_clicked": self.__onOkButtonClicked,
                             "on_cancelButton_clicked": self.__onCancelButtonClicked,
-                            "on_driverCombobox_changed": self.__onDriverComboboxChanged
+                            "on_driverCombobox_changed": self.__onDriverComboboxChanged,
+                            "on_chooseBluetoothButton_clicked": self.__onChooseBluetoothButtonClicked
                         }
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
         super(ConfigController, self)._retreiveWidgets()
-        
+
         self.stabilizationDelaySpinbutton = self.wTree.get_widget("stabilizationDelaySpinbutton")
         self.cameraOrientationCombobox = self.wTree.get_widget("cameraOrientationCombobox")
         self.overlapSpinbutton = self.wTree.get_widget("overlapSpinbutton")
@@ -93,6 +89,7 @@ class ConfigController(AbstractController):
         self.driverCombobox = self.wTree.get_widget("driverCombobox")
         self.bluetoothDeviceAddressLabel = self.wTree.get_widget("bluetoothDeviceAddressLabel")
         self.bluetoothDeviceAddressEntry = self.wTree.get_widget("bluetoothDeviceAddressEntry")
+        self.chooseBluetoothButton = self.wTree.get_widget("chooseBluetoothButton")
         self.serialPortLabel = self.wTree.get_widget("serialPortLabel")
         self.serialPortEntry = self.wTree.get_widget("serialPortEntry")
         self.hardwareAutoConnectCheckbutton = self.wTree.get_widget("hardwareAutoConnectCheckbutton")
@@ -142,16 +139,33 @@ class ConfigController(AbstractController):
         """
         Logger().trace("ConfigController.__onDriverComboboxChanged()")
         driver = config.DRIVER_INDEX[self.driverCombobox.get_active()]
-        self.bluetoothDeviceAddressLabel.set_sensitive(False)
-        self.bluetoothDeviceAddressEntry.set_sensitive(False)
-        self.serialPortLabel.set_sensitive(False)
-        self.serialPortEntry.set_sensitive(False)
         if driver == 'bluetooth':
             self.bluetoothDeviceAddressLabel.set_sensitive(True)
             self.bluetoothDeviceAddressEntry.set_sensitive(True)
+            self.chooseBluetoothButton.set_sensitive(True)
+            self.serialPortLabel.set_sensitive(False)
+            self.serialPortEntry.set_sensitive(False)
         elif driver == 'serial':
+            self.bluetoothDeviceAddressLabel.set_sensitive(False)
+            self.bluetoothDeviceAddressEntry.set_sensitive(False)
+            self.chooseBluetoothButton.set_sensitive(False)
             self.serialPortLabel.set_sensitive(True)
             self.serialPortEntry.set_sensitive(True)
+
+    def __onChooseBluetoothButtonClicked(self, widget):
+        """ Choose bluetooth button clicked.
+
+        Open the bluetooth chooser dialog.
+        """
+        Logger().trace("ConfigController.__onChooseBluetoothButtonClicked()")
+        controller = BluetoothChooserController(self, self._model)
+        response = controller.run()
+        controller.destroyView()
+        if response == 0:
+            address, name = controller.getSelectedBluetoothAddress()
+            Logger().debug("ConfigController.__onChooseBluetoothButtonClicked(): address=%s, name=%s" % \
+                            (address, name))
+            self.bluetoothDeviceAddressEntry.set_text(address)
 
     def refreshView(self):
         self.stabilizationDelaySpinbutton.set_value(self._model.stabilizationDelay)
