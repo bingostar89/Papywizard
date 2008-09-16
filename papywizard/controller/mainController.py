@@ -9,7 +9,7 @@ License
   - (C) 2007-2008 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
 U{http://www.cecill.info}.
@@ -18,7 +18,7 @@ As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -27,9 +27,9 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
@@ -150,7 +150,7 @@ class MainController(AbstractController):
 
         self.__yawPos = 0
         self.__pitchPos = 0
-        
+
         self.__statusbarTimeoutEventId = None
         self.__connect = None
         self.__connectErrorMessage = None
@@ -203,7 +203,7 @@ class MainController(AbstractController):
         self.statusbar = self.wTree.get_widget("statusbar")
         self.statusbarContextId = self.statusbar.get_context_id("default")
         self.connectImage = self.wTree.get_widget("connectImage")
-        
+
         # Font
         self.yawPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
         self.pitchPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
@@ -245,7 +245,7 @@ class MainController(AbstractController):
 
     def _connectSignals(self):
         super(MainController, self)._connectSignals()
-        
+
         self.dialog.connect("destroy", gtk.main_quit)
         self.dialog.connect("key-press-event", self.__onKeyPressed)
         self.dialog.connect("key-release-event", self.__onKeyReleased)
@@ -256,7 +256,7 @@ class MainController(AbstractController):
     # Callbacks
     def __onKeyPressed(self, widget, event, *args):
         Logger().trace("MainController.__onKeyPressed()")
-        
+
         # 'FullScreen' key
         #if event.keyval == self.__key['FullScreen']:
             #if not self.__keyPressedDict['FullScreen']:
@@ -415,7 +415,7 @@ class MainController(AbstractController):
 
     def __onHardwareConnectMenuToggled(self, widget):
         switch = self.hardwareConnectMenuitem.get_active()
-        Logger().trace("MainController.__onHardwareConnectMenuActivated(%s)" % switch)
+        Logger().trace("MainController.__onHardwareConnectMenuToggled(%s)" % switch)
         if switch:
             self.__connectToHardware()
         else:
@@ -429,7 +429,7 @@ class MainController(AbstractController):
 
     def __onHelpAboutMenuActivated(self, widget):
         Logger().trace("MainController.__onHelpAboutMenuActivated()")
-        
+
         # Set the Glade file
         gladeFile = os.path.join(path, os.path.pardir, "view", "helpAboutDialog.glade")
         self.wTree = gtk.glade.XML(gladeFile) # Use a controller
@@ -578,38 +578,38 @@ class MainController(AbstractController):
         self.__connectStatus = flag
         self.__connectErrorMessage = message
         self.__connectController.closeBanner()
-    
+
     # Real work
     def __connectToHardware(self):
         """ Connect to real hardware.
         """
         def refreshProgressbar(progressbar):
             """ Refresh the progressbar in activity mode.
-            
+
             Should be called by a timeout.
             """
             progressbar.pulse()
             return True
-        
+
         Logger().info("Connecting to real hardware...")
         self.setStatusbarMessage("Connecting to real hardware...")
         self.hardwareConnectMenuitem.set_sensitive(False)
-        
+
         # Open connection banner (todo: use real banner on Nokia). Make a special object
         self.__connectStatus = None
         self.__connectController = ConnectController(self, self._model)
         self.__connectBanner = self.__connectController.connectBanner
         self.__connectBanner.show()
-        
+
         # Launch connexion thread
         thread.start_new_thread(self._model.switchToRealHardware, ())
-        
+
         # Wait for end of connection
         while self.__connectStatus is None:
             while gtk.events_pending():
                 gtk.main_iteration()
             time.sleep(0.05)
-        
+
         # Check connection status
         if self.__connectStatus:
             Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
@@ -624,7 +624,7 @@ class MainController(AbstractController):
             messageDialog.run()
             messageDialog.destroy()
             self.hardwareConnectMenuitem.set_active(False)
-            
+
         self.hardwareConnectMenuitem.set_sensitive(True)
 
     def __goToSimulationMode(self):
@@ -649,13 +649,13 @@ class MainController(AbstractController):
         self.__yawPos = yaw
         self.__pitchPos = pitch
         self.__serializer.apply(self.refreshView)
-        
+
     def setStatusbarMessage(self, message=None, delay=0):
         """ Display a message on the statusbar.
-        
+
         @param message: message to display. If None, clear statusbar
         @type message: str
-        
+
         @param delay: display message duration, in s (0 means forever)
         @type delay: int
         """

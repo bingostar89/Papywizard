@@ -9,7 +9,7 @@ License
   - (C) 2007-2008 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
 U{http://www.cecill.info}.
@@ -18,7 +18,7 @@ As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -27,9 +27,9 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
@@ -101,23 +101,24 @@ class Shooting(object):
     # Properties
     def __getMode(self):
         return ConfigManager().get('Preferences', 'SHOOTING_MODE')
-    
+
     def __setMode(self, mode):
         ConfigManager().set('Preferences', 'SHOOTING_MODE', mode)
-        
+
     mode = property(__getMode, __setMode)
-    
+
     def __getStabilizationDelay(self):
         return ConfigManager().getFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY')
-    
+
     def __setStabilizationDelay(self, stabilizationDelay):
         ConfigManager().setFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY', stabilizationDelay, 1)
-    
+
     stabilizationDelay = property(__getStabilizationDelay, __setStabilizationDelay)
 
     def switchToRealHardware(self):
         """ Use real hardware.
         """
+        Logger().trace("Shooting.switchToRealHardware()")
         try:
             #self.simulatedHardware.shutdown()
             self.realHardware.init()
@@ -126,13 +127,17 @@ class Shooting(object):
             self.hardware = self.realHardware
             self.switchToRealHardwareSignal.emit(True)
         except HardwareError, message:
-            Logger().exception("Shooting.switchToRealHardware()") 
+            Logger().exception("Shooting.switchToRealHardware()")
             self.switchToRealHardwareSignal.emit(False, str(message))
 
     def switchToSimulatedHardware(self):
         """ Use simulated hardware.
         """
-        self.realHardware.shutdown()
+        Logger().trace("Shooting.switchToSimulatedHardware()")
+        try:
+            self.realHardware.shutdown()
+        except:
+            Logger().exception("Shooting.switchToSimulatedHardware()")
         self.hardware = self.simulatedHardware
         self.hardware.init()
         self.position = self.hardware.readPosition()
@@ -250,7 +255,7 @@ class Shooting(object):
             self.error = True
         else:
             self.sequence = "Over"
-            
+
         self.__shooting = False
 
     def isShooting(self):
@@ -295,7 +300,8 @@ class Shooting(object):
         Save values to preferences.
         """
         Logger().trace("Shooting.shutdown()")
-        self.realHardware.shutdown()
-        self.simulatedHardware.shutdown()
+        #self.realHardware.shutdown()
+        #self.simulatedHardware.shutdown()
+        self.hardware.shutdown()
         self.camera.shutdown()
         ConfigManager().save()
