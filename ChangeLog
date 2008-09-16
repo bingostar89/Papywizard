@@ -17,6 +17,7 @@ xxxx-xx-xx Version SVN
     + custom xml data file for each shooting mode (partial)
     - config dir path is now ~/.config/papywizard/
     + added presets user dir support (partial)
+    x better hardware error handling
 
 2008-07-04 Version 0.9.1
     x fix a bug in nbPicts and 360/180 computations
@@ -63,6 +64,6 @@ xxxx-xx-xx Version SVN
 2007-12-21 Version 0.9-alpha2
     + added 3D view
     + first windows binary release
-    
+
 2007-05-21 Version 0.9-alpha1
     + initial version
