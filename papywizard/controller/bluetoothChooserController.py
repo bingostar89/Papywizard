@@ -55,6 +55,7 @@ import time
 import threading
 import os.path
 
+import bluetooth
 import pygtk
 pygtk.require("2.0")
 import gtk
@@ -72,49 +73,27 @@ path = os.path.dirname(__file__)
 class BluetoothChooserController(AbstractController):
     """ Bluetooth chooser controller object.
     """
-    def __init__(self, parent, model):
-        """ Init the object.
-
-        @param parent: parent controller
-        @type parent: {AbstractController}
-
-        @param model: model to use
-        @type model: {Shooting}
-        """
-        self.__parent = parent
-        self.__model = model
-
-        # Set the Glade file
-        gladeFile = os.path.join(path, os.path.pardir, "view", "bluetoothChooserDialog.glade")
-        self.wTree = gtk.glade.XML(gladeFile)
-
-        # Retreive usefull widgets
-        self._retreiveWidgets()
-
-        # Connect signal/slots
+    def _init(self):
+        self._gladeFile = "bluetoothChooserDialog.glade"
         self._signalDict = {"on_okButton_clicked": self.__onOkButtonClicked,
                             "on_cancelButton_clicked": self.__onCancelButtonClicked,
                             "on_refreshButton_clicked": self.__onRefreshButtonClicked
                         }
 
-        # Associated TreeModel
-        self.__bluetoothListStore = gtk.ListStore(gobject.TYPE_STRING)
-        self.bluetoothAddressCombobox.set_model(self.__bluetoothListStore)
-
-        # Fill widgets
-        self.refreshView()
-
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
-        self.bluetoothAddressCombobox = self.wTree.get_widget("bluetoothAddressCombobox")
+        super(BluetoothChooserController, self)._retreiveWidgets()
 
-        # Nokia plateform stuff
-        try:
-            import hildon
-            pass
-        except ImportError:
-            pass
+        self.bluetoothAddressCombobox = self.wTree.get_widget("bluetoothAddressCombobox")
+        self.__bluetoothListStore = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+        self.bluetoothAddressCombobox.set_model(self.__bluetoothListStore)
+        cell = gtk.CellRendererText()
+        self.bluetoothAddressCombobox.pack_start(cell, True)
+        self.bluetoothAddressCombobox.add_attribute(cell, 'text', 0)
+        cell = gtk.CellRendererText()
+        self.bluetoothAddressCombobox.pack_start(cell, True)
+        self.bluetoothAddressCombobox.add_attribute(cell, 'text', 1)
 
     # Callbacks
     def __onOkButtonClicked(self, widget):
@@ -129,19 +108,29 @@ class BluetoothChooserController(AbstractController):
         """
         Logger().trace("BluetoothChooserController.__onCancelButtonClicked()")
 
-    def __onRefreshButtonClicked(self):
+    def __onRefreshButtonClicked(self, widget):
         """ Refresh button has been clicked.
 
         Refresh bluetooth device list.
         """
+        Logger().trace("BluetoothChooserController.__onRefreshButtonClicked()")
         self.refreshView()
 
     def refreshView(self):
-        #addresses = self.__model.getBluetoothAddresses()
-        self.bluetoothAddressCombobox.clear()
-        for i, ad in enumerate(('first', 'second')):
-            self.__bluetoothListStore.append((ad, i))
+        try:
 
-    def getBluetoothAddress(self):
-        return self.__bluetoothListStore.get_value((bluetoothAddressCombobox.get_active_iter(), 0))
-        #return self.__model.xxx
+            # Move to model
+            devices = bluetooth.discover_devices(lookup_names=True)
+            #devices = [('00:50:C2:58:56:6B', 'AIRserial4 55293'),
+                       #('00:16:41:9E:5F:83', 'FODINGERPORT')]
+            self.__bluetoothListStore.clear()
+            for address, name in devices:
+                self.__bluetoothListStore.append([address, name])
+            self.bluetoothAddressCombobox.set_active(0)
+        except:
+            Logger().exception("BluetoothChooserController.__refreshView()")
+
+    # Real work
+    def getSelectedBluetoothAddress(self):
+         selectedIter = self.bluetoothAddressCombobox.get_active_iter()
+         return self.__bluetoothListStore.get(selectedIter, 0, 1)
