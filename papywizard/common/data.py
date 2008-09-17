@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use,
@@ -52,8 +52,8 @@ usefull information for stitchers. AutoPano Pro takes advantage of
 such datas, for example to correctly set unlinked pictures at their
 correct place (sky pictures without any details are often unlinked).
 
-@author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@author: Frï¿½dï¿½ric Mantegazza
+@copyright: (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 @license: CeCILL
 """
 
@@ -77,10 +77,16 @@ class Data(object):
         #@param headerInfo: informations stored in the <header> section
         #@type headerInfo: dict
         """
-        Logger().debug("Data.__init__(): create xml tree")
-        self._date = time.strftime("%Y-%m-%d_%H:%M:%S", time.localtime())
+        date = time.strftime("%Y-%m-%d", time.localtime())
+        time_ = time.strftime("%H:%M:%S", time.localtime())
+        mode = self._getMode()
+        self._dataFileFormatDict = {'date': date,
+                                    'time': time_,
+                                    'date_time': "%s_%s" % (date, time_),
+                                    'mode': mode}
 
         # Create xml tree
+        Logger().debug("Data.__init__(): create xml tree")
         self.__impl = xml.dom.minidom.getDOMImplementation()
         self._doc = self.__impl.createDocument(None, "papywizard", None)
         self._rootNode = self._doc.documentElement
@@ -94,6 +100,11 @@ class Data(object):
         self._rootNode.appendChild(self._shootNode)
 
         self._pictId = 1
+
+    def _getMode(self):
+        """ Return the shooting mode.
+        """
+        raise NotImplementedError
 
     def _createNode(self, parent, tag):
         """ Create a node.
@@ -154,9 +165,9 @@ class Data(object):
         """
         if ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE'):
             Logger().trace("Data.serialize()")
-            fileFormat = os.path.join(config.HOME_DIR, ConfigManager().get('Data', 'DATA_FILE_FORMAT'))
-            dataFileFormatDict = {'date': self._date}
-            xmlFile = file(fileFormat % dataFileFormatDict, 'w')
+            dataFileFormat = "papywizard_%s.xml" % ConfigManager().get('Data', 'DATA_FILE_FORMAT')
+            fileName = os.path.join(config.HOME_DIR, dataFileFormat)
+            xmlFile = file(fileName % self._dataFileFormatDict, 'w')
             self._doc.writexml(xmlFile, addindent="    ", newl='\n', encoding="utf-8")
             xmlFile.close()
 
@@ -169,31 +180,43 @@ class Data(object):
         Logger().debug("Data.createHeader(): values=%s" % values)
 
         # Shooting
-        node = self._addNode(self._headerNode, 'shooting')
+        node = self._addNode(self._headerNode, 'shooting', mode=self._getMode())
         self._addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
-        self._addNode(node, 'overlap', minimum=values['overlap'],
-                                       yaw=values['yawRealOverlap'],
-                                       pitch=values['pitchRealOverlap'])
-        self._addNode(node, 'cameraOrientation', values['cameraOrientation'])
 
-        # Camera
-        node = self._addNode(self._headerNode, 'camera')
-        self._addNode(node, 'timeValue', values['timeValue'])
-        self._addNode(node, 'nbPicts', values['nbPicts'])
-        self._addNode(node, 'sensor', coef=values['sensorCoef'],
-                                      ratio=values['sensorRatio'])
+    #def createHeader(self, values):
+        #""" Create the header.
 
-        # Lens
-        node = self._addNode(self._headerNode, 'lens')
-        self._addNode(node, 'focal', values['focal'])
+        #@param values: values to put in the header
+        #@type values: dict
+        #"""
+        #Logger().debug("Data.createHeader(): values=%s" % values)
 
-        # Mode
-        node = self._addNode(self._headerNode, 'mode', name=values['mode'])
-        self._addNode(node, 'nbPicts', yaw=values['yawNbPicts'],
-                                       pitch=values['pitchNbPicts'])
+        ## Shooting
+        #node = self._addNode(self._headerNode, 'shooting')
+        #self._addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
+        #self._addNode(node, 'overlap', minimum=values['overlap'],
+                                       #yaw=values['yawRealOverlap'],
+                                       #pitch=values['pitchRealOverlap'])
+        #self._addNode(node, 'cameraOrientation', values['cameraOrientation'])
 
-        # Serialize xml file
-        self._serialize()
+        ## Camera
+        #node = self._addNode(self._headerNode, 'camera')
+        #self._addNode(node, 'timeValue', values['timeValue'])
+        #self._addNode(node, 'nbPicts', values['nbPicts'])
+        #self._addNode(node, 'sensor', coef=values['sensorCoef'],
+                                      #ratio=values['sensorRatio'])
+
+        ## Lens
+        #node = self._addNode(self._headerNode, 'lens')
+        #self._addNode(node, 'focal', values['focal'])
+
+        ## Mode
+        #node = self._addNode(self._headerNode, 'mode', name=values['mode'])
+        #self._addNode(node, 'nbPicts', yaw=values['yawNbPicts'],
+                                       #pitch=values['pitchNbPicts'])
+
+        ## Serialize xml file
+        #self._serialize()
 
     def addPicture(self, num, yaw, pitch):
         """ Add a new picture node to shoot node.

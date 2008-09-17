@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use, 
@@ -87,8 +87,8 @@ XML format
     </shoot>
 </papywizard>
 
-@author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@author: Frï¿½dï¿½ric Mantegazza
+@copyright: (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 @license: CeCILL
 """
 
@@ -101,16 +101,14 @@ from papywizard.common.data import Data
 class DataMosaic(Data):
     """ Manage the data.
     """
-    def __init__(self):
-        super(DataMosaic, self).__init__()
+    def _getMode(self):
+        """ Return the shooting mode.
+        """
+        return 'mosaic'
 
     def createHeader(self, values):
-        Logger().debug("DataMosaic.createHeader(): values=%s" % values)
-        
-        # Shooting
-        node = self._addNode(self._headerNode, 'shooting', mode='mosaic')
-        self._addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
-        
+        super(DataMosaic, self).createHeader(values)
+
         # Mosaic
         node = self._addNode(self._headerNode, 'mosaic')
         self._addNode(node, 'nbPicts', yaw=values['yawNbPicts'],
@@ -119,7 +117,7 @@ class DataMosaic(Data):
                                        yaw=values['yawRealOverlap'],
                                        pitch=values['pitchRealOverlap'])
         self._addNode(node, 'cameraOrientation', values['cameraOrientation'])
-        
+
         # Camera
         node = self._addNode(self._headerNode, 'camera')
         self._addNode(node, 'timeValue', values['timeValue'])

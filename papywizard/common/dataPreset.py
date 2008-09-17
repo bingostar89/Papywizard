@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use, 
@@ -53,8 +53,7 @@ XML format
         <shooting mode="preset">
             <stabilizationDelay>0.5</stabilizationDelay>
         </shooting>
-        <preset>
-            <template>xxxx</template>
+        <preset template="xxxx"/>
         </preset>
         <camera>
             <timeValue>0.5</timeValue>
@@ -85,8 +84,8 @@ XML format
     </shoot>
 </papywizard>
 
-@author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@author: Frï¿½dï¿½ric Mantegazza
+@copyright: (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 @license: CeCILL
 """
 
@@ -99,20 +98,18 @@ from papywizard.common.data import Data
 class DataPreset(Data):
     """ Manage the data.
     """
-    def __init__(self):
-        super(DataPreset, self).__init__()
+    def _getMode(self):
+        """ Return the shooting mode.
+        """
+        return 'preset'
 
     def createHeader(self, values):
-        Logger().debug("DataPreset.createHeader(): values=%s" % values)
-        
-        # Shooting
-        node = self._addNode(self._headerNode, 'shooting', mode='preset')
-        self._addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
-        
+        super(DataPreset, self).createHeader(values)
+
         # Preset
-        node = self._addNode(self._headerNode, 'preset')
-        self._addNode(node, 'template', values['template'])
-        
+        node = self._addNode(self._headerNode, 'preset', template=values['template'])
+        #self._addNode(node, 'template', values['template'])
+
         # Camera
         node = self._addNode(self._headerNode, 'camera')
         self._addNode(node, 'timeValue', values['timeValue'])
