@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 
 """ Panohead remote control.
 
@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2008 FrÃ©dÃ©ric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use, 
@@ -44,8 +44,8 @@ Implements
 
 - DriverFactory
 
-@author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@author: FrÃ©dÃ©ric Mantegazza
+@copyright: (C) 2007-2008 FrÃ©dÃ©ric Mantegazza
 @license: CeCILL
 """
 

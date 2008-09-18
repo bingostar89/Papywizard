@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 
 """ Panohead remote control.
 
@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2008 FrÃ©dÃ©ric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use, 
@@ -44,8 +44,8 @@ Implements
 
 - MosaicArea
 
-@author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@author: FrÃ©dÃ©ric Mantegazza
+@copyright: (C) 2007-2008 FrÃ©dÃ©ric Mantegazza
 @license: CeCILL
 """
 
@@ -76,28 +76,28 @@ class MosaicArea(ShootingArea):
     def init(self, yawStart, yawEnd, pitchStart, pitchEnd, yawFov, pitchFov, yawCameraFov, pitchCameraFov, yawOverlap, pitchOverlap):
         """ Init internal values.
         
-        @param yawStart: yaw start position (°)
+        @param yawStart: yaw start position (ï¿½)
         @type yawStart: float
         
-        @param yawEnd: yaw end position (°)
+        @param yawEnd: yaw end position (ï¿½)
         @type yawEnd: float
         
-        @param pitchStart: pitch start position (°)
+        @param pitchStart: pitch start position (ï¿½)
         @type pitchStart: float
         
-        @param pitchEnd: pitch end position (°)
+        @param pitchEnd: pitch end position (ï¿½)
         @type pitchEnd: float
         
-        @param yawFov: yaw fov (°)
+        @param yawFov: yaw fov (ï¿½)
         @type yawFov: float
         
-        @param pitchFov: pitch fov (°)
+        @param pitchFov: pitch fov (ï¿½)
         @type pitchFov: float
         
-        @param yawCameraFov: pict yaw fov (°)
+        @param yawCameraFov: pict yaw fov (ï¿½)
         @type yawCameraFov: float
         
-        @param pitchCameraFov: pict pitch fov (°)
+        @param pitchCameraFov: pict pitch fov (ï¿½)
         @type pitchCameraFov: float
         
         @param yawOverlap: yaw real overlap (ratio)
@@ -148,7 +148,7 @@ class MosaicArea(ShootingArea):
             h -= 2
             self.window.draw_rectangle(self._fg2, True, x, y, w, h)
             
-        # Draw 360°x180° area
+        # Draw 360ï¿½x180ï¿½ area
         xFull = int(round(self._width / 2.)) - int(round(180 * self._scale))
         yFull = int(round(self._height / 2.)) - int(round(90 * self._scale))
         wFull = int(round(360 * self._scale))

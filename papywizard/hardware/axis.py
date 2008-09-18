@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 
 """ Panohead remote control.
 
@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Fr�d�ric Mantegazza
+  - (C) 2007-2008 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use, 
@@ -46,8 +46,8 @@ Implements
 - Axis
 - AxisSimulation
 
-@author: Fr�d�ric Mantegazza
-@copyright: (C) 2007-2008 Fr�d�ric Mantegazza
+@author: Frédéric Mantegazza
+@copyright: (C) 2007-2008 Frédéric Mantegazza
 @license: CeCILL
 """
 
@@ -122,7 +122,7 @@ class AbstractAxis(object):
     def read(self):
         """ Return the current position of axis.
 
-        @return: position, in �
+        @return: position, in é
         @rtype: float
         """
         raise NotImplementedError
@@ -130,7 +130,7 @@ class AbstractAxis(object):
     def drive(self, pos, inc=False, wait=True):
         """ Drive the axis.
 
-        @param pos: position to reach, in �
+        @param pos: position to reach, in é
         @type pos: float
 
         @param inc: if True, pos is an increment
@@ -269,7 +269,7 @@ class Axis(AbstractAxis):
     def _driveWithInternalClosedLoop(self, pos):
         """ Default (hardware) drive.
 
-        @param pos: position to reach, in �
+        @param pos: position to reach, in é
         @type pos: float
         """
         Logger().trace("Axis._drive1()")
@@ -287,14 +287,14 @@ class Axis(AbstractAxis):
         """ External closed-loop drive.
 
         This method implements an external closed-loop regulation.
-        It is faster for angles < 6-7�, because in this case, the
+        It is faster for angles < 6-7é, because in this case, the
         head does not accelerate to full speed, but rather stays at
         very low speed.
         
         Problem: this drive can't be stopped, neither run concurrently
         on both axis without big modifications in multi-threading stuff.
 
-        @param pos: position to reach, in �
+        @param pos: position to reach, in é
         @type pos: float
         """
         Logger().trace("Axis._drive2()")

@@ -1,4 +1,4 @@
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 
 """ Panohead remote control.
 
@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2008 FrÃ©dÃ©ric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use, 
@@ -39,8 +39,8 @@ Module purpose
 
 Unit tests
 
-@author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@author: FrÃ©dÃ©ric Mantegazza
+@copyright: (C) 2007-2008 FrÃ©dÃ©ric Mantegazza
 @license: CeCILL
 """
 import sys
@@ -99,10 +99,10 @@ def main3(driver):
     axis.init()
     Logger().debug("Done.")
     try:
-        Logger().debug("Drive yaw axis to 45°... ")
+        Logger().debug("Drive yaw axis to 45ï¿½... ")
         axis.drive(45)
         Logger().debug("Done.")
-        Logger().debug("Drive pitch axis to 0°... ")
+        Logger().debug("Drive pitch axis to 0ï¿½... ")
         axis.drive(0)
         Logger().debug("Done.")
 
@@ -119,13 +119,13 @@ def stress(xontroller):
     i = 1
     while True:
         Logger().info("Iteration %d" % i)
-        Logger().debug("    Drive yaw axis to 10°...")
+        Logger().debug("    Drive yaw axis to 10ï¿½...")
         yawAxis.drive(10.)
-        Logger().debug("    Drive pitch axis to 10°...")
+        Logger().debug("    Drive pitch axis to 10ï¿½...")
         pitchAxis.drive(10.)
-        Logger().debug("    Drive yaw axis to -10°...")
+        Logger().debug("    Drive yaw axis to -10ï¿½...")
         yawAxis.drive(-10.)
-        Logger().debug("    Drive pitch axis to -10°...")
+        Logger().debug("    Drive pitch axis to -10ï¿½...")
         pitchAxis.drive(-10.)
 
 
