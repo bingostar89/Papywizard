@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use, 
@@ -46,8 +46,8 @@ Implements
 - ColorFormatter
 - Logger
 
-@author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@author: Frï¿½dï¿½ric Mantegazza
+@copyright: (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 @license: CeCILL
 """
 
@@ -82,6 +82,7 @@ else:
                         'critical':"",
                         'default':"",
                         }
+
 
 class DefaultFormatter(logging.Formatter):
     """ Base class for formatters.
@@ -149,18 +150,31 @@ class Logger(object):
 
             # Formatters
             colorFormatter = ColorFormatter(config.LOGGER_FORMAT)
-            defaultFormatter = DefaultFormatter(config.LOGGER_FORMAT)
+            #defaultFormatter = DefaultFormatter(config.LOGGER_FORMAT)
 
             # Handlers
-            self.__streamHandler = logging.StreamHandler()
-            self.__streamHandler.setFormatter(colorFormatter)
+            self.__handlers = []
+            streamHandler = logging.StreamHandler()
+            streamHandler.setFormatter(colorFormatter)
+            self.__handlers.append(streamHandler)
 
             # Loggers
             self.__logger = logging.getLogger('papywizard')
             self.__logger.setLevel(logging.TRACE)
-            self.__logger.addHandler(self.__streamHandler)
+            self.__logger.addHandler(streamHandler)
 
             Logger.__init = False
+
+    def addStreamHandler(self, stream):
+        """ Add a new stream handler.
+
+        Can be used to register a new GUI handler.
+        """
+        handler = logging.StreamHandler(stream)
+        defaultFormatter = DefaultFormatter(config.LOGGER_FORMAT)
+        handler.setFormatter(defaultFormatter)
+        self.__logger.addHandler(handler)
+        self.__handlers.append(handler)
 
     def setLevel(self, level):
         """ Change logging level.
@@ -177,7 +191,8 @@ class Logger(object):
                   'error': logging.ERROR,
                   'exception': logging.EXCEPTION,
                   'critical': logging.CRITICAL}
-        self.__streamHandler.setLevel(levels[level])
+        for handler in self.__handlers:
+            handler.setLevel(levels[level])
 
     def trace(self, message):
         """ Logs a message with level TRACE.
