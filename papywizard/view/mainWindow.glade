@@ -63,7 +63,6 @@
                     <child>
                       <widget class="GtkMenuItem" id="setLimitMenuitem">
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
                         <property name="label" translatable="yes" context="yes">Set limit</property>
                         <property name="use_underline">True</property>
                         <child>
