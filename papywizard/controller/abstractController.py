@@ -95,6 +95,8 @@ class AbstractController(object):
         """ Get widgets from widget tree.
         """
         self.dialog = self.wTree.get_widget("dialog")
+        if self.dialog is None:
+            raise ValueError("can't retreive main dialog widget")
 
     def _connectSignals(self):
         """ Connect widgets signals.
