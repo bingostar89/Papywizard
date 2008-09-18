@@ -63,7 +63,7 @@ class LoggerController(AbstractController):
     """
     def _init(self):
         self._gladeFile = "loggerDialog.glade"
-        self._signalDict = {"on_clearButton_clicked":self.__onClearButtonClicked,
+        self._signalDict = {"on_clearButton_clicked": self.__onClearButtonClicked,
                             "on_doneButton_clicked": self.__onDoneButtonClicked,
                         }
 
@@ -72,6 +72,7 @@ class LoggerController(AbstractController):
         """
         super(LoggerController, self)._retreiveWidgets()
 
+        self.loggerScrolledwindow = self.wTree.get_widget("loggerScrolledwindow")
         self.loggerTextview = self.wTree.get_widget("loggerTextview")
 
     # Callbacks
@@ -89,4 +90,17 @@ class LoggerController(AbstractController):
 
     # Real work
     def refreshView(self):
+        pass
+
+    def setLogBuffer(self, buffer):
+        """ Set the associated buffer.
+
+        @param buffer: associated buffer
+        @type: L{TextBuffer <gtk>}
+        """
+        self.loggerTextview.set_buffer(buffer)
+
+    def scrollToBottom(self):
+        """ Scroll down to the last log.
+        """
         self.loggerTextview.scroll_to_iter(self.loggerTextview.get_buffer().get_end_iter(), 0.)

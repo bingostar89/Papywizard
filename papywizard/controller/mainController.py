@@ -464,8 +464,9 @@ class MainController(AbstractController):
 
     def __onHelpViewLogMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHelpViewLogMenuitemActivate()")
-        controller = LoggerController(self, self._model)
-        controller.loggerTextview.set_buffer(self.__gtkLogStream)
+        controller = LoggerController(self)
+        controller.setLogBuffer(self.__gtkLogStream)
+        controller.scrollToBottom()
         controller.run()
         controller.destroyView()
 
