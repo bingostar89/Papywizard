@@ -63,7 +63,7 @@ path = os.path.dirname(__file__)
 class AbstractController(object):
     """ Base class for controllers.
     """
-    def __init__(self, parent, model):
+    def __init__(self, parent=None, model=None):
         """ Init the controller.
 
         @param parent: parent controller
