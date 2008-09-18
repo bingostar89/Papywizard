@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use,
@@ -39,8 +39,8 @@ Module purpose
 
 Configurations.
 
-@author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@author: Frï¿½dï¿½ric Mantegazza
+@copyright: (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 @license: CeCILL
 """
 
@@ -108,6 +108,7 @@ PRESET = {'4@0 + Z + N': [(  0.,   0.), (90., 0.), (180., 0.), (270., 0),
 LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"
 LOGGER_INDEX = {'trace': 0, 'debug': 1, 'info': 2, 'warning' :3, 'error': 4, 'exception': 5, 'critical': 6,
                 0: 'trace', 1: 'debug', 2: 'info', 3: 'warning', 4: 'error', 5: 'exception', 6: 'critical'}
+LOGGER_MAX_COUNT_LINE = 100
 
 # Hardware
 AXIS_NUM_YAW = 1
