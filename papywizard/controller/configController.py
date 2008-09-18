@@ -56,31 +56,17 @@ from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.bluetoothChooserController import BluetoothChooserController
-from papywizard.controller.loggerController import LoggerController
-from papywizard.view.logBuffer import LogBuffer
 
 
 class ConfigController(AbstractController):
     """ Configuration controller object.
     """
-    def __init__(self, parent, model):
-        """ Init the controller.
-
-        @param serializer: object used to serialize toolkit events
-        @type serializer: {Serializer}
-        """
-        super(ConfigController, self).__init__(parent, model)
-
-        self.__gtkLogStream = LogBuffer()
-        Logger().addStreamHandler(self.__gtkLogStream)
-
     def _init(self):
         self._gladeFile = "configDialog.glade"
         self._signalDict = {"on_okButton_clicked": self.__onOkButtonClicked,
                             "on_cancelButton_clicked": self.__onCancelButtonClicked,
                             "on_driverCombobox_changed": self.__onDriverComboboxChanged,
                             "on_chooseBluetoothButton_clicked": self.__onChooseBluetoothButtonClicked,
-                            "on_viewLogButton_clicked": self.__onViewLogButtonClicked,
                         }
 
     def _retreiveWidgets(self):
@@ -181,15 +167,6 @@ class ConfigController(AbstractController):
             Logger().debug("ConfigController.__onChooseBluetoothButtonClicked(): address=%s, name=%s" % \
                             (address, name))
             self.bluetoothDeviceAddressEntry.set_text(address)
-
-    def __onViewLogButtonClicked(self, widget):
-        """ View log button clicked.
-        """
-        Logger().trace("ConfigController.__onViewLogButtonClicked()")
-        controller = LoggerController(self, self._model)
-        controller.loggerTextview.set_buffer(self.__gtkLogStream)
-        controller.run()
-        controller.destroyView()
 
     # Real work
     def refreshView(self):
