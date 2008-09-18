@@ -56,70 +56,60 @@ from papywizard.common import config
 class LogBuffer(gtk.TextBuffer):
     """ Log buffer storage.
 
-    To be used with a gtk.TextView.
+    Implement a log buffer, which automatically appends
+    a log at the end, with the right color, and limit the
+    buffer size to a specified value.
+
+    To be used within a gtk.TextView.
     """
     def __init__(self, *args, **kwargs):
         """ Init the log buffer.
         """
         super(LogBuffer, self).__init__(*args, **kwargs)
 
-        self.create_tag('TRACE', foreground='darkblue', background='black')
-        self.create_tag('DEBUG', foreground='blue', background='black')
-        self.create_tag('INFO', foreground='white', background='black')
-        self.create_tag('WARNING', foreground='yellow', background='black')
-        self.create_tag('ERROR', foreground='red', background='black')
-        self.create_tag('EXCEPTION', foreground='purple', background='black')
-        self.create_tag('CRITICAL', foreground='white', background='red')
+        self.create_tag('TRACE', foreground='blue', background='black', font="courrier 10")
+        self.create_tag('DEBUG', foreground='lightblue', background='black', font="courrier 10")
+        self.create_tag('INFO', foreground='white', background='black', font="courrier 10")
+        self.create_tag('WARNING', foreground='yellow', background='black', font="courrier 10")
+        self.create_tag('ERROR', foreground='red', background='black', font="courrier 10")
+        self.create_tag('EXCEPTION', foreground='purple', background='black', font="courrier 10")
+        self.create_tag('CRITICAL', foreground='white', background='red', font="courrier 10")
 
-        #tagTable = self.get_tag_table()
-        #traceTag = gtk.TextTag(name='TRACE')
-        #traceTag.set_property('foreground', 'darkblue')
-        #traceTag.set_property('background', 'black')
-        #tagTable.add(traceTag)
-        #debugTag = gtk.TextTag(name='DEBUG')
-        #debugTag.set_property('foreground', 'blue')
-        #debugTag.set_property('background', 'black')
-        #tagTable.add(debugTag)
-        #infoTag = gtk.TextTag(name='INFO')
-        #infoTag.set_property('foreground', 'white')
-        #infoTag.set_property('background', 'black')
-        #tagTable.add(infoTag)
-        #warningTag = gtk.TextTag(name='WARNING')
-        #warningTag.set_property('foreground', 'yellow')
-        #warningTag.set_property('background', 'black')
-        #tagTable.add(warningTag)
-        #errorTag = gtk.TextTag(name='ERROR')
-        #errorTag.set_property('foreground', 'red')
-        #errorTag.set_property('background', 'black')
-        #tagTable.add(errorTag)
-        #exceptionTag = gtk.TextTag(name='EXCEPTION')
-        #exceptionTag.set_property('foreground', 'purple')
-        #exceptionTag.set_property('background', 'black')
-        #tagTable.add(exceptionTag)
-        #criticalTag = gtk.TextTag(name='CRITICAL')
-        #criticalTag.set_property('foreground', 'white')
-        #criticalTag.set_property('background', 'red')
-        #tagTable.add(criticalTag)
+    def write(self, logMessage):
+        """ write a log message a the end of the buffer.
 
-    def append(self, line):
-        """ Append a line to the buffer.
+        @param logMessage: log to write
+        @type logMessage: str
 
-        @param line: line to append
-        @type line: str
+        @todo: check if we are in the GTK main thread;
+               ff not, need to use the serializer
         """
-        self.start_user_action()
+        self.begin_user_action()
         try:
-            self.insert_with_tags_by_name(self.get_end_iter(), line, 'DEBUG')
-            if self.get_line_count() > config.LOGGER_MAX_COUNT_LINE:
-                self.delete(self.get_iter_at_line(0), self.get_iter_at_line(1))
+            try:
+                level = logMessage.split('::')[2]
+                self.insert_with_tags_by_name(self.get_end_iter(), logMessage, level)
+            except IndexError:
+                self.insert_with_tags_by_name(self.get_end_iter(), logMessage, 'INFO')
+            overflow = self.get_line_count() - config.LOGGER_MAX_COUNT_LINE
+            if overflow > 0:
+                self.delete(self.get_iter_at_line(0), self.get_iter_at_line(overflow))
+                # todo: scroll to the bottom of the buffer
         finally:
             self.end_user_action()
 
     def clear(self):
         """ Clear teh log window.
         """
-        self.start_user_action()
+        self.begin_user_action()
         try:
             self.delete(*self.get_bounds())
         finally:
             self.end_user_action()
+
+    def flush():
+        """ Summy method.
+
+        Needed to use this class as logging stream.
+        """
+        pass
