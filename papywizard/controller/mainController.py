@@ -67,11 +67,13 @@ from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
 from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.manualMoveController import ManualMoveController
 from papywizard.controller.shootController import ShootController
 from papywizard.controller.connectController import ConnectController
 from papywizard.controller.spy import Spy
+from papywizard.view.logBuffer import LogBuffer
 
 path = os.path.dirname(__file__) # Remove as soon as help dialog has a controller???
 
@@ -87,6 +89,9 @@ class MainController(AbstractController):
         """
         super(MainController, self).__init__(None, model)
         self.__serializer = serializer
+        self.__gtkLogStream = LogBuffer()
+        Logger().addStreamHandler(self.__gtkLogStream)
+
 
         # Try to autoconnect to real hardware
         if ConfigManager().getBoolean('Hardware', 'AUTO_CONNECT'):
@@ -95,10 +100,17 @@ class MainController(AbstractController):
     def _init(self):
         self._gladeFile = "mainWindow.glade"
         self._signalDict = {"on_quitMenuitem_activate": gtk.main_quit,
-                            "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuToggled,
-                            "on_hardwareResetMenuitem_activate": self.__onHardwareResetMenuActivated,
-                            "on_helpAboutMenuitem_activate": self.__onHelpAboutMenuActivated,
+                            "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuitemToggled,
+                            "on_hardwareSetLimitYawPlusMenuitem_activate": self.__onHardwareSetLimitYawPlusMenuitemActivate,
+                            "on_hardwareSetLimitYawMinusMenuitem_activate": self.__onHardwareSetLimitYawMinusMenuitemActivate,
+                            "on_hardwareSetLimitPitchPlusMenuitem_activate": self.__onHardwareSetLimitPitchPlusMenuitemActivate,
+                            "on_hardwareSetLimitPitchMinusMenuitem_activate": self.__onHardwareSetLimitPitchMinusMenuitemActivate,
+                            "on_hardwareResetMenuitem_activate": self.__onHardwareResetMenuitemActivate,
+                            "on_helpViewLogMenuitem_activate": self.__onHelpViewLogMenuitemActivate,
+                            "on_helpAboutMenuitem_activate": self.__onHelpAboutMenuitemActivate,
+
                             "on_modeMosaicRadiobutton_toggled": self.__onModeMosaicRadiobuttonToggled,
+
                             "on_setYawStartButton_clicked": self.__onSetYawStartButtonClicked,
                             "on_setPitchStartButton_clicked": self.__onSetPitchStartButtonClicked,
                             "on_setYawEndButton_clicked": self.__onSetYawEndButtonClicked,
@@ -107,7 +119,9 @@ class MainController(AbstractController):
                             "on_setStartTogglebutton_released": self.__onSetStartTogglebuttonReleased,
                             "on_setEndTogglebutton_clicked": self.__onSetEndTogglebuttonClicked,
                             "on_setEndTogglebutton_released": self.__onSetEndTogglebuttonReleased,
+
                             "on_presetTemplateCombobox_changed": self.__onPresetTemplateComboboxChanged,
+
                             "on_hardwareSetOriginButton_clicked": self.__onHardwareSetOriginButtonClicked,
                             "on_yawMovePlusTogglebutton_pressed": self.__onYawMovePlusTogglebuttonPressed,
                             "on_yawMovePlusTogglebutton_released": self.__onYawMovePlusTogglebuttonReleased,
@@ -117,6 +131,7 @@ class MainController(AbstractController):
                             "on_yawMoveMinusTogglebutton_released": self.__onYawMoveMinusTogglebuttonReleased,
                             "on_pitchMoveMinusTogglebutton_pressed": self.__onPitchMoveMinusTogglebuttonPressed,
                             "on_pitchMoveMinusTogglebutton_released": self.__onPitchMoveMinusTogglebuttonReleased,
+
                             "on_configButton_clicked": self.__onConfigButtonClicked,
                             "on_shootButton_clicked": self.__onShootButtonClicked,
                         }
@@ -413,22 +428,49 @@ class MainController(AbstractController):
         #else:
             #self.window_in_fullscreen = False
 
-    def __onHardwareConnectMenuToggled(self, widget):
+    def __onHardwareConnectMenuitemToggled(self, widget):
         switch = self.hardwareConnectMenuitem.get_active()
-        Logger().trace("MainController.__onHardwareConnectMenuToggled(%s)" % switch)
+        Logger().trace("MainController.__onHardwareConnectMenuitemToggled(%s)" % switch)
         if switch:
             self.__connectToHardware()
         else:
             self.__goToSimulationMode()
 
-    def __onHardwareResetMenuActivated(self, widget):
-        Logger().trace("MainController.__onHardwareResetMenuActivated()")
+    def __onHardwareSetLimitYawPlusMenuitemActivate(self, widget):
+        yaw, pitch = self._model.hardware.readPosition()
+        self._model.hardware.setLimit('yaw', '+', yaw)
+        Logger().debug("MainController.__onHardwareSetLimitYawPlusMenuitemActivate(): yaw plus limit set to %.1f" % yaw)
+
+    def __onHardwareSetLimitYawMinusMenuitemActivate(self, widget):
+        yaw, pitch = self._model.hardware.readPosition()
+        self._model.hardware.setLimit('yaw', '-', yaw)
+        Logger().debug("MainController.__onHardwareSetLimitYawMinusMenuitemActivate() yaw minus limit set to %.1f" % yaw)
+
+    def __onHardwareSetLimitPitchPlusMenuitemActivate(self, widget):
+        yaw, pitch = self._model.hardware.readPosition()
+        self._model.hardware.setLimit('pitch', '+', yaw)
+        Logger().debug("MainController.__onHardwareSetLimitPitchPlusMenuitemActivate() pitch plus limit set to %.1f" % pitch)
+
+    def __onHardwareSetLimitPitchMinusMenuitemActivate(self, widget):
+        yaw, pitch = self._model.hardware.readPosition()
+        self._model.hardware.setLimit('pitch', '-', yaw)
+        Logger().debug("MainController.__onHardwareSetLimitPitchMinusMenuitemActivate() pitch minus limit set to %.1f" % pitch)
+
+    def __onHardwareResetMenuitemActivate(self, widget):
+        Logger().trace("MainController.__onHardwareResetMenuitemActivate()")
         Logger().info("Reseting hardware")
         self._model.hardware.reset()
         self.setStatusbarMessage("Hardware has been reseted", 10)
 
-    def __onHelpAboutMenuActivated(self, widget):
-        Logger().trace("MainController.__onHelpAboutMenuActivated()")
+    def __onHelpViewLogMenuitemActivate(self, widget):
+        Logger().trace("MainController.__onHelpViewLogMenuitemActivate()")
+        controller = LoggerController(self, self._model)
+        controller.loggerTextview.set_buffer(self.__gtkLogStream)
+        controller.run()
+        controller.destroyView()
+
+    def __onHelpAboutMenuitemActivate(self, widget):
+        Logger().trace("MainController.__onHelpAboutMenuitemActivate()")
 
         # Set the Glade file
         gladeFile = os.path.join(path, os.path.pardir, "view", "helpAboutDialog.glade")
