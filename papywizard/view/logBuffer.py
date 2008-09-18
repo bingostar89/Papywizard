@@ -99,7 +99,7 @@ class LogBuffer(gtk.TextBuffer):
             self.end_user_action()
 
     def clear(self):
-        """ Clear teh log window.
+        """ Clear the log window.
         """
         self.begin_user_action()
         try:
@@ -108,7 +108,7 @@ class LogBuffer(gtk.TextBuffer):
             self.end_user_action()
 
     def flush():
-        """ Summy method.
+        """ Dummy method.
 
         Needed to use this class as logging stream.
         """
