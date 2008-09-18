@@ -240,6 +240,7 @@ class Shooting(object):
                     # todo: add status of current picture (to draw it in red if failed to go)
 
                 except HardwareError:
+                    self.hardware.stopAxis()
                     Logger().exception("Shooting.start()")
                     Logger().warning("Shooting.start(): position (yaw=%.1f, pitch=%.1f) out of limits" % (yaw, pitch))
 
