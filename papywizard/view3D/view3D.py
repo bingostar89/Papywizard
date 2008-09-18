@@ -372,16 +372,16 @@ class View3D(vp.display):
     def draw(self, yaw, pitch, hFov=30, vFov=20):
         """ Redraw the view according to new position.
 
-        @param yaw: yaw angle (�)
+        @param yaw: yaw angle (°)
         @type yaw: float
 
-        @param pitch: pitch angle (�)
+        @param pitch: pitch angle (°)
         @type pitch: float
 
-        @param hFov: lens horiz. fov angle (�)
+        @param hFov: lens horiz. fov angle (°)
         @type hFov: float
 
-        @param vFov: lens vert. fov angle (�)
+        @param vFov: lens vert. fov angle (°)
         @type vFov: float
         """
         yaw *= math.pi / 180.

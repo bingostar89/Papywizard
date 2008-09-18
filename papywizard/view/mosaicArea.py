@@ -76,28 +76,28 @@ class MosaicArea(ShootingArea):
     def init(self, yawStart, yawEnd, pitchStart, pitchEnd, yawFov, pitchFov, yawCameraFov, pitchCameraFov, yawOverlap, pitchOverlap):
         """ Init internal values.
         
-        @param yawStart: yaw start position (�)
+        @param yawStart: yaw start position (°)
         @type yawStart: float
         
-        @param yawEnd: yaw end position (�)
+        @param yawEnd: yaw end position (°)
         @type yawEnd: float
         
-        @param pitchStart: pitch start position (�)
+        @param pitchStart: pitch start position (°)
         @type pitchStart: float
         
-        @param pitchEnd: pitch end position (�)
+        @param pitchEnd: pitch end position (°)
         @type pitchEnd: float
         
-        @param yawFov: yaw fov (�)
+        @param yawFov: yaw fov (°)
         @type yawFov: float
         
-        @param pitchFov: pitch fov (�)
+        @param pitchFov: pitch fov (°)
         @type pitchFov: float
         
-        @param yawCameraFov: pict yaw fov (�)
+        @param yawCameraFov: pict yaw fov (°)
         @type yawCameraFov: float
         
-        @param pitchCameraFov: pict pitch fov (�)
+        @param pitchCameraFov: pict pitch fov (°)
         @type pitchCameraFov: float
         
         @param yawOverlap: yaw real overlap (ratio)
@@ -148,7 +148,7 @@ class MosaicArea(ShootingArea):
             h -= 2
             self.window.draw_rectangle(self._fg2, True, x, y, w, h)
             
-        # Draw 360�x180� area
+        # Draw 360°x180° area
         xFull = int(round(self._width / 2.)) - int(round(180 * self._scale))
         yFull = int(round(self._height / 2.)) - int(round(90 * self._scale))
         wFull = int(round(360 * self._scale))

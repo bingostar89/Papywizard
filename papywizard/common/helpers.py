@@ -100,7 +100,7 @@ def cod2deg(codPos):
     @param codPos: encoder position
     @type codPos: int
 
-    @return: position, in �
+    @return: position, in °
     @rtype: float
     """
     return (codPos - config.ENCODER_ZERO) * 360. / config.ENCODER_360
@@ -109,7 +109,7 @@ def cod2deg(codPos):
 def deg2cod(pos):
     """ Convert degres to encoder value.
 
-    @param pos: position, in �
+    @param pos: position, in °
     @type pos: float
 
     @return: encoder position

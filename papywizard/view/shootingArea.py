@@ -81,16 +81,16 @@ class ShootingArea(gtk.DrawingArea):
     def init(self, yawFov, pitchFov, yawCameraFov, pitchCameraFov):
         """ Init internal values.
 
-        @param yawFov: yaw fov (�)
+        @param yawFov: yaw fov (°)
         @type yawFov: float
         
-        @param pitchFov: pitch fov (�)
+        @param pitchFov: pitch fov (°)
         @type pitchFov: float
         
-        @param yawCameraFov: pict yaw fov (�)
+        @param yawCameraFov: pict yaw fov (°)
         @type yawCameraFov: float
         
-        @param pitchCameraFov: pict pitch fov (�)
+        @param pitchCameraFov: pict pitch fov (°)
         @type pitchCameraFov: float
         """
         self._yawFov = yawFov

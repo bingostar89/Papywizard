@@ -100,7 +100,7 @@ class PresetArea(ShootingArea):
             h -= 2
             self.window.draw_rectangle(self._fg2, True, x, y, w, h)
             
-        # Draw 360�x180� area
+        # Draw 360°x180° area
         xFull = int(round(self._width / 2.)) - int(round(180 * self._scale))
         yFull = int(round(self._height / 2.)) - int(round(90 * self._scale))
         wFull = int(round(360 * self._scale)) - 1

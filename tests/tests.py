@@ -99,10 +99,10 @@ def main3(driver):
     axis.init()
     Logger().debug("Done.")
     try:
-        Logger().debug("Drive yaw axis to 45�... ")
+        Logger().debug("Drive yaw axis to 45°... ")
         axis.drive(45)
         Logger().debug("Done.")
-        Logger().debug("Drive pitch axis to 0�... ")
+        Logger().debug("Drive pitch axis to 0°... ")
         axis.drive(0)
         Logger().debug("Done.")
 
@@ -119,13 +119,13 @@ def stress(xontroller):
     i = 1
     while True:
         Logger().info("Iteration %d" % i)
-        Logger().debug("    Drive yaw axis to 10�...")
+        Logger().debug("    Drive yaw axis to 10°...")
         yawAxis.drive(10.)
-        Logger().debug("    Drive pitch axis to 10�...")
+        Logger().debug("    Drive pitch axis to 10°...")
         pitchAxis.drive(10.)
-        Logger().debug("    Drive yaw axis to -10�...")
+        Logger().debug("    Drive yaw axis to -10°...")
         yawAxis.drive(-10.)
-        Logger().debug("    Drive pitch axis to -10�...")
+        Logger().debug("    Drive pitch axis to -10°...")
         pitchAxis.drive(-10.)
 
 
