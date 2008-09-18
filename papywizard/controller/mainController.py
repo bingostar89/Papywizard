@@ -88,10 +88,10 @@ class MainController(AbstractController):
         @type serializer: {Serializer}
         """
         super(MainController, self).__init__(None, model)
+
         self.__serializer = serializer
         self.__gtkLogStream = LogBuffer()
         Logger().addStreamHandler(self.__gtkLogStream)
-
 
         # Try to autoconnect to real hardware
         if ConfigManager().getBoolean('Hardware', 'AUTO_CONNECT'):
