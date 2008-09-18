@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use, 
@@ -45,8 +45,8 @@ Implements
 - Head
 - HeadSimulation
 
-@author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@author: Frï¿½dï¿½ric Mantegazza
+@copyright: (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 @license: CeCILL
 """
 
@@ -118,6 +118,25 @@ class Head(object):
         self.yawAxis.setOrigin()
         self.pitchAxis.setOrigin()
 
+    def setLimit(self, axis, dir, limit):
+        """ Set a limit.
+
+        @param axis: axis to limit ('yaw', 'pitch')
+        @type axis: str
+
+        @param dir: direction to limit ('+', '-')
+        @type dir: char
+
+        @param limit: limit value
+        @type limit:float
+        """
+        if axis == 'yaw':
+            self.yawAxis.setLimit(dir, limit)
+        elif axis == 'pitch':
+            self.pitchAxis.setLimit(dir, limit)
+        else:
+            raise ValueError("axis must be in ('yaw', 'pitch')")
+
     def readPosition(self):
         """ Read current head position.
 
@@ -151,7 +170,7 @@ class Head(object):
         elif axis == 'pitch':
             self.pitchAxis.startJog(dir)
         else:
-            raise ValueError("axis must be in 'yaw', 'pitch'")
+            raise ValueError("axis must be in ('yaw', 'pitch')")
 
     def stopAxis(self, axis='all'):
         """ Stop the selected axis.
