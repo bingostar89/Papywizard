@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use,
@@ -44,8 +44,8 @@ Implements
 
 - Shooting
 
-@author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@author: Frï¿½dï¿½ric Mantegazza
+@copyright: (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 @license: CeCILL
 """
 
@@ -176,31 +176,23 @@ class Shooting(object):
 
         Logger().trace("Shooting.start()")
 
+        values = {'stabilizationDelay': "%.1f" % self.stabilizationDelay,
+                  'timeValue': "%.1f" % self.camera.timeValue,
+                  'nbPicts': "%d" % self.camera.nbPicts,
+                  'sensorCoef': "%.1f" % self.camera.sensorCoef,
+                  'sensorRatio': "%s" % self.camera.sensorRatio,
+                  'focal': "%.1f" % self.camera.lens.focal}
         if self.mode == 'mosaic':
             data = DataMosaic()
-            values = {'stabilizationDelay': "%.1f" % self.stabilizationDelay,
-                      'yawNbPicts': "%d" % self.mosaic.yawNbPicts,
-                      'pitchNbPicts': "%d" % self.mosaic.pitchNbPicts,
-                      'overlap': "%.2f" % self.mosaic.overlap,
-                      'yawRealOverlap': "%.2f" % self.mosaic.yawRealOverlap,
-                      'pitchRealOverlap': "%.2f" % self.mosaic.pitchRealOverlap,
-                      'cameraOrientation': "%s" % self.mosaic.cameraOrientation,
-                      'timeValue': "%.1f" % self.camera.timeValue,
-                      'nbPicts': "%d" % self.camera.nbPicts,
-                      'sensorCoef': "%.1f" % self.camera.sensorCoef,
-                      'sensorRatio': "%s" % self.camera.sensorRatio,
-                      'focal': "%.1f" % self.camera.lens.focal
-                  }
+            values.update({'yawNbPicts': "%d" % self.mosaic.yawNbPicts,
+                           'pitchNbPicts': "%d" % self.mosaic.pitchNbPicts,
+                           'overlap': "%.2f" % self.mosaic.overlap,
+                           'yawRealOverlap': "%.2f" % self.mosaic.yawRealOverlap,
+                           'pitchRealOverlap': "%.2f" % self.mosaic.pitchRealOverlap,
+                           'cameraOrientation': "%s" % self.mosaic.cameraOrientation})
         else:
             data = DataPreset()
-            values = {'stabilizationDelay': "%.1f" % self.stabilizationDelay,
-                      'template': "%s" % self.preset.template,
-                      'timeValue': "%.1f" % self.camera.timeValue,
-                      'nbPicts': "%d" % self.camera.nbPicts,
-                      'sensorCoef': "%.1f" % self.camera.sensorCoef,
-                      'sensorRatio': "%s" % self.camera.sensorRatio,
-                      'focal': "%.1f" % self.camera.lens.focal
-                  }
+            values.update({'template': "%s" % self.preset.template})
         data.createHeader(values)
         self.error = False
         self.progress = 0.
@@ -215,40 +207,46 @@ class Shooting(object):
             scan = self.preset
         try:
             for i, (yaw, pitch) in enumerate(scan.iterPositions()):
-                Logger().debug("Shooting.start(): Goto yaw=%.1f pitch=%.1f" % (yaw, pitch))
+                Logger().debug("Shooting.start(): goto yaw=%.1f pitch=%.1f" % (yaw, pitch))
                 Logger().info("Moving")
                 self.sequence = "Moving"
-                self.hardware.gotoPosition(yaw, pitch)
-
-                checkSuspendStop()
-
-                Logger().info("Stabilization")
-                self.sequence = "Stabilizing"
-                time.sleep(self.stabilizationDelay)
-
-                if self.__manualShoot:
-                    self.__suspend = True
-                    Logger().info("Manual shoot")
-
-                checkSuspendStop()
-
-                Logger().info("Shooting")
-                for pict in xrange(self.camera.nbPicts):
-                    Logger().debug("Shooting.start(): Shooting %d/%d" % (pict + 1, self.camera.nbPicts))
-                    self.sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
-                    self.hardware.shoot(self.camera.timeValue)
-                    data.addPicture(pict + 1, yaw, pitch)
+                try:
+                    self.hardware.gotoPosition(yaw, pitch)
 
                     checkSuspendStop()
 
-                progressFraction = float((i + 1)) / float(scan.totalNbPicts)
-                self.progress = progressFraction
-                self.newPictSignal.emit(yaw, pitch) # Include progress?
+                    Logger().info("Stabilization")
+                    self.sequence = "Stabilizing"
+                    time.sleep(self.stabilizationDelay)
+
+                    if self.__manualShoot:
+                        self.__suspend = True
+                        Logger().info("Manual shoot")
+
+                    checkSuspendStop()
+
+                    Logger().info("Shooting")
+                    for pict in xrange(self.camera.nbPicts):
+                        Logger().debug("Shooting.start(): shooting %d/%d" % (pict + 1, self.camera.nbPicts))
+                        self.sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
+                        self.hardware.shoot(self.camera.timeValue)
+                        data.addPicture(pict + 1, yaw, pitch)
+
+                        checkSuspendStop()
+
+                    progressFraction = float((i + 1)) / float(scan.totalNbPicts)
+                    self.progress = progressFraction
+                    self.newPictSignal.emit(yaw, pitch) # Include progress?
+                    # todo: add status of current picture (to draw it in red if failed to go)
+
+                except HardwareError:
+                    Logger().exception("Shooting.start()")
+                    Logger().warning("Shooting.start(): position (yaw=%.1f, pitch=%.1f) out of limits" % (yaw, pitch))
 
             Logger().debug("Shooting.start(): finished")
 
         except StopIteration:
-            Logger().debug("Shooting.start(): Stop detected")
+            Logger().debug("Shooting.start(): stop detected")
             self.sequence = "Canceled"
         except:
             Logger().exception("Shooting.start()")
