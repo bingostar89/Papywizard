@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Sep 18 13:57:51 2008 -->
+<!--Generated with glade3 3.4.5 on Thu Sep 18 14:09:58 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="border_width">5</property>
@@ -553,12 +553,11 @@ usb</property>
                     <child>
                       <widget class="GtkButton" id="viewLogButton">
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="label" translatable="yes">View</property>
                         <property name="response_id">0</property>
-                        <signal name="activate" handler="on_viewLogButton_activate"/>
+                        <signal name="clicked" handler="on_viewLogButton_clicked"/>
                       </widget>
                       <packing>
                         <property name="left_attach">2</property>
