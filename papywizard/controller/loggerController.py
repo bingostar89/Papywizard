@@ -63,7 +63,8 @@ class LoggerController(AbstractController):
     """
     def _init(self):
         self._gladeFile = "loggerDialog.glade"
-        self._signalDict = {"on_doneButton_clicked": self.__onDoneButtonClicked,
+        self._signalDict = {"on_clearButton_clicked":self.__onClearButtonClicked,
+                            "on_doneButton_clicked": self.__onDoneButtonClicked,
                         }
 
     def _retreiveWidgets(self):
@@ -74,6 +75,12 @@ class LoggerController(AbstractController):
         self.loggerTextview = self.wTree.get_widget("loggerTextview")
 
     # Callbacks
+    def __onClearButtonClicked(self, widget):
+        """ Clear button has been clicked.
+        """
+        Logger().trace("LoggerController.__onClearButtonClicked()")
+        self.loggerTextview.get_buffer().clear()
+
     def __onDoneButtonClicked(self, widget):
         """ Done button has been clicked.
         """
@@ -82,4 +89,4 @@ class LoggerController(AbstractController):
 
     # Real work
     def refreshView(self):
-        pass
+        self.loggerTextview.scroll_to_iter(self.loggerTextview.get_buffer().get_end_iter(), 0.)
