@@ -74,8 +74,8 @@ class AbstractAxis(object):
         super(AbstractAxis, self).__init__()
 
         self._num = num
-        self._plusLimit = 9999.
-        self._minusLimit = -9999.
+        self._plusLimit = 9999.9
+        self._minusLimit = -9999.9
 
     def _checkLimits(self, pos):
         """ Check if position is in axis limits.
@@ -84,7 +84,8 @@ class AbstractAxis(object):
         @type pos: float
         """
         if not self._minusLimit <= pos <= self._plusLimit:
-            raise HardwareError("Axis %d limit reached" % self._num)
+            raise HardwareError("Axis %d limit reached: %.1f not if [%.1f:%.1f]" % \
+                                 (self._num, pos, self._minusLimit, self._plusLimit))
 
     def init(self):
         """ Init the axis hardware.
@@ -103,21 +104,27 @@ class AbstractAxis(object):
         """
         raise NotImplementedError
 
-    def setLimit(self, dir, limit):
+    def setLimit(self, dir_, limit):
         """ Set the minus limit.
 
-        @param dir: direction to limit ('+', '-')
-        @type dir: char
+        @param dir_: direction to limit ('+', '-')
+        @type dir_: char
 
         @param limit: minus limit to set
         @type limit: float
         """
-        if dir == '+':
+        if dir_ == '+':
             self._plusLimit = limit
-        elif dir == '-':
+        elif dir_ == '-':
             self._minusLimit = limit
         else:
             raise ValueError("dir must be in ('+', '-')")
+
+    def clearLimits(self):
+        """ Clear all limits.
+        """
+        self._plusLimit = 9999.9
+        self._minusLimit = -9999.9
 
     def read(self):
         """ Return the current position of axis.
@@ -152,11 +159,11 @@ class AbstractAxis(object):
         """
         raise NotImplementedError
 
-    def startJog(self, dir):
+    def startJog(self, dir_):
         """ Start axis in specified direction.
 
-        @param dir: direction ('+', '-')
-        @type dir: char
+        @param dir_: direction ('+', '-')
+        @type dir_: char
         """
         raise NotImplementedError
 
@@ -345,13 +352,13 @@ class Axis(AbstractAxis):
             time.sleep(0.1)
         self.waitStop()
 
-    def startJog(self, dir):
+    def startJog(self, dir_):
         self.__driver.acquireBus()
         try:
             self._sendCmd("L")
-            if dir == '+':
+            if dir_ == '+':
                 self._sendCmd("G", "30")
-            elif dir == '-':
+            elif dir_ == '-':
                 self._sendCmd("G", "31")
             else:
                 raise ValueError("Axis %d dir. must be in ('+', '-')" % self._num)
@@ -468,7 +475,7 @@ class AxisSimulation(AbstractAxis, threading.Thread):
         else:
             self.__setpoint = pos
 
-        self._checkLimits(pos)
+        self._checkLimits(self.__setpoint)
 
         # Drive to requested position
         if self.__setpoint > self.__pos:
@@ -492,8 +499,8 @@ class AxisSimulation(AbstractAxis, threading.Thread):
         while self.__drive:
             time.sleep(0.1)
 
-    def startJog(self, dir):
-        self.__dir = dir
+    def startJog(self, dir_):
+        self.__dir = dir_
         self.__jog = True
 
     def waitStop(self):

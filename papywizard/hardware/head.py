@@ -96,7 +96,7 @@ class Head(object):
 
     def reset(self):
         """ Reseting hardware.
-        
+
         Reset driver connexion?
         """
         self.yawAxis.reset()
@@ -118,24 +118,30 @@ class Head(object):
         self.yawAxis.setOrigin()
         self.pitchAxis.setOrigin()
 
-    def setLimit(self, axis, dir, limit):
+    def setLimit(self, axis, dir_, limit):
         """ Set a limit.
 
         @param axis: axis to limit ('yaw', 'pitch')
         @type axis: str
 
-        @param dir: direction to limit ('+', '-')
-        @type dir: char
+        @param dir_: direction to limit ('+', '-')
+        @type dir_: char
 
         @param limit: limit value
         @type limit:float
         """
         if axis == 'yaw':
-            self.yawAxis.setLimit(dir, limit)
+            self.yawAxis.setLimit(dir_, limit)
         elif axis == 'pitch':
-            self.pitchAxis.setLimit(dir, limit)
+            self.pitchAxis.setLimit(dir_, limit)
         else:
             raise ValueError("axis must be in ('yaw', 'pitch')")
+
+    def clearLimits(self):
+        """ Clear all limits.
+        """
+        self.yawAxis.clearLimits()
+        self.pitchAxis.clearLimits()
 
     def readPosition(self):
         """ Read current head position.
@@ -156,19 +162,19 @@ class Head(object):
             self.yawAxis.waitEndOfDrive()
             self.pitchAxis.waitEndOfDrive()
 
-    def startAxis(self, axis, dir):
+    def startAxis(self, axis, dir_):
         """ Start an axis in the selected direction.
 
         @param axis: axis to jog ('yaw', 'pitch')
         @type axis: str
 
-        @param dir: direction ('+', '-')
-        @type dir: char
+        @param dir_: direction ('+', '-')
+        @type dir_: char
         """
         if axis == 'yaw':
-            self.yawAxis.startJog(dir)
+            self.yawAxis.startJog(dir_)
         elif axis == 'pitch':
-            self.pitchAxis.startJog(dir)
+            self.pitchAxis.startJog(dir_)
         else:
             raise ValueError("axis must be in ('yaw', 'pitch')")
 
