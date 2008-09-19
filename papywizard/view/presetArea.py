@@ -101,7 +101,7 @@ class PresetArea(ShootingArea):
         self.window.draw_line(self._fg3, x1, y1, x2, y2)
 
         # Draw picts
-        for i, (yaw, pitch) in enumerate(self._picts):
+        for i, (yaw, pitch, status) in enumerate(self._picts):
             pitch = 180 / 2. - pitch
             x = int(round(yaw * self._scale - self._yawCameraFov * self._scale / 2.)) + self.__yawMargin
             y = int(round(pitch * self._scale - self._pitchCameraFov * self._scale / 2.)) + self.__pitchMargin
@@ -114,7 +114,11 @@ class PresetArea(ShootingArea):
             y += 1
             w -= 2
             h -= 2
-            #self.window.draw_rectangle(self._fg2, True, x, y, w, h)
-            self.window.draw_arc(self._fg2, True, x, y, w, h, 0, 360 * 64)
+            if status == 'ok':
+                gc = self._fg2
+            else:
+                gc = self._fg3
+            #self.window.draw_rectangle(gc, True, x, y, w, h)
+            self.window.draw_arc(gc, True, x, y, w, h, 0, 360 * 64)
 
         return False

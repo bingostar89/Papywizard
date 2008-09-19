@@ -137,8 +137,16 @@ class MosaicArea(ShootingArea):
         self.window.draw_rectangle(self._back, True, xBack, yBack, wBack, hBack)
         #print "xBack=%d, yBack=%d, wBack=%d, hBack=%d" % (xBack, yBack, wBack, hBack)
 
+        ## Draw 360°x180° area
+        #xFull = int(round(self._width / 2. - 180 * self._scale))
+        #yFull = int(round(self._height / 2. - 90 * self._scale))
+        #wFull = int(round(360 * self._scale))
+        #hFull = int(round(180 * self._scale))
+        ##print "xFull=%.1f, yFull=%.1f, wFull=%.1f, hFull=%.1f" % (xFull, yFull, wFull, hFull)
+        #self.window.draw_rectangle(self._fg3, False, xFull, yFull, wFull, hFull)
+
         # Draw picts
-        for i, (yaw, pitch) in enumerate(self._picts):
+        for i, (yaw, pitch, status) in enumerate(self._picts):
             if cmp(self.__yawEnd, self.__yawStart) > 0:
                 yaw -= self.__yawStart
             else:
@@ -158,14 +166,10 @@ class MosaicArea(ShootingArea):
             y += 1
             w -= 2
             h -= 2
-            self.window.draw_rectangle(self._fg2, True, x, y, w, h)
-
-        ## Draw 360°x180° area
-        #xFull = int(round(self._width / 2. - 180 * self._scale))
-        #yFull = int(round(self._height / 2. - 90 * self._scale))
-        #wFull = int(round(360 * self._scale))
-        #hFull = int(round(180 * self._scale))
-        ##print "xFull=%.1f, yFull=%.1f, wFull=%.1f, hFull=%.1f" % (xFull, yFull, wFull, hFull)
-        #self.window.draw_rectangle(self._fg3, False, xFull, yFull, wFull, hFull)
+            if status == 'ok':
+                gc = self._fg2
+            else:
+                gc = self._fg3
+            self.window.draw_rectangle(gc, True, x, y, w, h)
 
         return False

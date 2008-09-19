@@ -129,7 +129,7 @@ class ShootingArea(gtk.DrawingArea):
         #print "refresh()"
         self.queue_draw_area(0, 0, self._width, self._height)
 
-    def add_pict(self, yawIndex, pitchIndex):
+    def add_pict(self, yawIndex, pitchIndex, status):
         """ Add a pict at yaw/pitch coordinates.
 
         @param yawIndex: pict yaw position index
@@ -137,9 +137,12 @@ class ShootingArea(gtk.DrawingArea):
 
         @param pitchIndex: pict pitch position index
         @type pitchIndex: int
+
+        @param status: status of the shooting at this position ('ok', 'error')
+        @type status: str
         """
         #print "add_pict(yawIndex=%d, pitchIndex=%d)" % (yawIndex, pitchIndex)
-        self._picts.append((yawIndex, pitchIndex))
+        self._picts.append((yawIndex, pitchIndex, status))
         self.refresh()
 
     def clear(self):
