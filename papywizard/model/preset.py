@@ -80,9 +80,18 @@ class Preset(Scan):
     def iterPositions(self):
         """ Iterate over all preset positions.
         """
+        yawPrevious = 0.
+        pitchPrevious = 0.
         for yaw, pitch in config.PRESET[self.template]:
+            if yaw is None:
+                yaw = yawPrevious
+            if pitch is None:
+                pitch = pitchPrevious
             Logger().debug("Preset.iterPositions(): yaw=%.1f, pitch=%.1f" % (yaw, pitch))
+
             yield yaw, pitch
+
+            yawPrevious, pitchPrevious = yaw, pitch
 
     # Properties
     def _getTotalNbPicts(self):
