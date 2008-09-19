@@ -14,9 +14,6 @@
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">
   <tr valign="middle">
-  <!-- Home link -->
-      <th>&nbsp;&nbsp;&nbsp;<a
-        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Tree link -->
       <th>&nbsp;&nbsp;&nbsp;<a
@@ -43,8 +40,8 @@
     <td width="100%">
       <span class="breadcrumbs">
         Package&nbsp;trunk ::
-        <a href="trunk.papywizard-module.html">Package&nbsp;papywizard</a> ::
-        <a href="trunk.papywizard.hardware-module.html">Package&nbsp;hardware</a> ::
+        Package&nbsp;papywizard ::
+        Package&nbsp;hardware ::
         Module&nbsp;usbDriver
       </span>
     </td>
@@ -63,7 +60,7 @@
 </table>
 <h1 class="epydoc">Source Code for <a href="trunk.papywizard.hardware.usbDriver-module.html">Module trunk.papywizard.hardware.usbDriver</a></h1>
 <pre class="py-src">
-<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: iso-8859-1 -*-</tt> </tt>
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
 <a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
 <a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring">""" Panohead remote control.</tt> </tt>
 <a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
@@ -114,44 +111,48 @@
 <a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line"><tt class="py-docstring">@license: CeCILL</tt> </tt>
 <a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
 <a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line"> </tt>
-<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable trunk.papywizard.common.config.__revision__=trunk.papywizard.common.config-module.html#__revision__,Variable trunk.papywizard.common.configManager.__revision__=trunk.papywizard.common.configManager-module.html#__revision__,Variable trunk.papywizard.common.data.__revision__=trunk.papywizard.common.data-module.html#__revision__,Variable trunk.papywizard.common.dataMosaic.__revision__=trunk.papywizard.common.dataMosaic-module.html#__revision__,Variable trunk.papywizard.common.dataPreset.__revision__=trunk.papywizard.common.dataPreset-module.html#__revision__,Variable trunk.papywizard.common.exception.__revision__=trunk.papywizard.common.exception-module.html#__revision__,Variable trunk.papywizard.common.helpers.__revision__=trunk.papywizard.common.helpers-module.html#__revision__,Variable trunk.papywizard.common.loggingServices.__revision__=trunk.papywizard.common.loggingServices-module.html#__revision__,Variable trunk.papywizard.common.serializer.__revision__=trunk.papywizard.common.serializer-module.html#__revision__,Variable trunk.papywizard.common.signal.__revision__=trunk.papywizard.common.signal-module.html#__revision__,Variable trunk.papywizard.controller.abstractController.__revision__=trunk.papywizard.controller.abstractController-module.html#__revision__,Variable trunk.papywizard.controller.configController.__revision__=trunk.papywizard.controller.configController-module.html#__revision__,Variable trunk.papywizard.controller.connectController.__revision__=trunk.papywizard.controller.connectController-module.html#__revision__,Variable trunk.papywizard.controller.mainController.__revision__=trunk.papywizard.controller.mainController-module.html#__revision__,Variable trunk.papywizard.controller.manualMoveController.__revision__=trunk.papywizard.controller.manualMoveController-module.html#__revision__,Variable trunk.papywizard.controller.shootController.__revision__=trunk.papywizard.controller.shootController-module.html#__revision__,Variable trunk.papywizard.controller.spy.__revision__=trunk.papywizard.controller.spy-module.html#__revision__,Variable trunk.papywizard.hardware.axis.__revision__=trunk.papywizard.hardware.axis-module.html#__revision__,Variable trunk.papywizard.hardware.bluetoothDriver.__revision__=trunk.papywizard.hardware.bluetoothDriver-module.html#__revision__,Variable trunk.papywizard.hardware.busDriver.__revision__=trunk.papywizard.hardware.busDriver-module.html#__revision__,Variable trunk.papywizard.hardware.driverFactory.__revision__=trunk.papywizard.hardware.driverFactory-module.html#__revision__,Variable trunk.papywizard.hardware.hardwareFactory.__revision__=trunk.papywizard.hardware.hardwareFactory-module.html#__revision__,Variable trunk.papywizard.hardware.head.__revision__=trunk.papywizard.hardware.head-module.html#__revision__,Variable trunk.papywizard.hardware.serialDriver.__revision__=trunk.papywizard.hardware.serialDriver-module.html#__revision__,Variable trunk.papywizard.hardware.usbDriver.__revision__=trunk.papywizard.hardware.usbDriver-module.html#__revision__,Variable trunk.papywizard.model.camera.__revision__=trunk.papywizard.model.camera-module.html#__revision__,Variable trunk.papywizard.model.lens.__revision__=trunk.papywizard.model.lens-module.html#__revision__,Variable trunk.papywizard.model.mosaic.__revision__=trunk.papywizard.model.mosaic-module.html#__revision__,Variable trunk.papywizard.model.preset.__revision__=trunk.papywizard.model.preset-module.html#__revision__,Variable trunk.papywizard.model.scan.__revision__=trunk.papywizard.model.scan-module.html#__revision__,Variable trunk.papywizard.model.shooting.__revision__=trunk.papywizard.model.shooting-module.html#__revision__,Variable trunk.papywizard.view.mosaicArea.__revision__=trunk.papywizard.view.mosaicArea-module.html#__revision__,Variable trunk.papywizard.view.presetArea.__revision__=trunk.papywizard.view.presetArea-module.html#__revision__,Variable trunk.papywizard.view.shootingArea.__revision__=trunk.papywizard.view.shootingArea-module.html#__revision__,Variable trunk.papywizard.view3D.view3D.__revision__=trunk.papywizard.view3D.view3D-module.html#__revision__"><a title="trunk.papywizard.common.config.__revision__
-trunk.papywizard.common.configManager.__revision__
-trunk.papywizard.common.data.__revision__
-trunk.papywizard.common.dataMosaic.__revision__
-trunk.papywizard.common.dataPreset.__revision__
-trunk.papywizard.common.exception.__revision__
-trunk.papywizard.common.helpers.__revision__
-trunk.papywizard.common.loggingServices.__revision__
-trunk.papywizard.common.serializer.__revision__
-trunk.papywizard.common.signal.__revision__
-trunk.papywizard.controller.abstractController.__revision__
-trunk.papywizard.controller.configController.__revision__
-trunk.papywizard.controller.connectController.__revision__
-trunk.papywizard.controller.mainController.__revision__
-trunk.papywizard.controller.manualMoveController.__revision__
-trunk.papywizard.controller.shootController.__revision__
-trunk.papywizard.controller.spy.__revision__
-trunk.papywizard.hardware.axis.__revision__
-trunk.papywizard.hardware.bluetoothDriver.__revision__
-trunk.papywizard.hardware.busDriver.__revision__
-trunk.papywizard.hardware.driverFactory.__revision__
-trunk.papywizard.hardware.hardwareFactory.__revision__
-trunk.papywizard.hardware.head.__revision__
-trunk.papywizard.hardware.serialDriver.__revision__
-trunk.papywizard.hardware.usbDriver.__revision__
-trunk.papywizard.model.camera.__revision__
-trunk.papywizard.model.lens.__revision__
-trunk.papywizard.model.mosaic.__revision__
-trunk.papywizard.model.preset.__revision__
-trunk.papywizard.model.scan.__revision__
-trunk.papywizard.model.shooting.__revision__
-trunk.papywizard.view.mosaicArea.__revision__
-trunk.papywizard.view.presetArea.__revision__
-trunk.papywizard.view.shootingArea.__revision__
-trunk.papywizard.view3D.view3D.__revision__" class="py-name" href="#" onclick="return doclink('link-0', '__revision__', 'link-0');">__revision__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"$Id: usbDriver.py 251 2008-06-11 13:41:42Z fma $"</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable papywizard.common.config.__revision__=papywizard.common.config-module.html#__revision__,Variable papywizard.common.configManager.__revision__=papywizard.common.configManager-module.html#__revision__,Variable papywizard.common.data.__revision__=papywizard.common.data-module.html#__revision__,Variable papywizard.common.dataMosaic.__revision__=papywizard.common.dataMosaic-module.html#__revision__,Variable papywizard.common.dataPreset.__revision__=papywizard.common.dataPreset-module.html#__revision__,Variable papywizard.common.exception.__revision__=papywizard.common.exception-module.html#__revision__,Variable papywizard.common.helpers.__revision__=papywizard.common.helpers-module.html#__revision__,Variable papywizard.common.loggingServices.__revision__=papywizard.common.loggingServices-module.html#__revision__,Variable papywizard.common.serializer.__revision__=papywizard.common.serializer-module.html#__revision__,Variable papywizard.common.signal.__revision__=papywizard.common.signal-module.html#__revision__,Variable papywizard.controller.abstractController.__revision__=papywizard.controller.abstractController-module.html#__revision__,Variable papywizard.controller.bluetoothChooserController.__revision__=papywizard.controller.bluetoothChooserController-module.html#__revision__,Variable papywizard.controller.configController.__revision__=papywizard.controller.configController-module.html#__revision__,Variable papywizard.controller.connectController.__revision__=papywizard.controller.connectController-module.html#__revision__,Variable papywizard.controller.loggerController.__revision__=papywizard.controller.loggerController-module.html#__revision__,Variable papywizard.controller.mainController.__revision__=papywizard.controller.mainController-module.html#__revision__,Variable papywizard.controller.manualMoveController.__revision__=papywizard.controller.manualMoveController-module.html#__revision__,Variable papywizard.controller.shootController.__revision__=papywizard.controller.shootController-module.html#__revision__,Variable papywizard.controller.spy.__revision__=papywizard.controller.spy-module.html#__revision__,Variable papywizard.controller.waitController.__revision__=papywizard.controller.waitController-module.html#__revision__,Variable papywizard.hardware.axis.__revision__=papywizard.hardware.axis-module.html#__revision__,Variable papywizard.hardware.bluetoothDriver.__revision__=papywizard.hardware.bluetoothDriver-module.html#__revision__,Variable papywizard.hardware.busDriver.__revision__=papywizard.hardware.busDriver-module.html#__revision__,Variable papywizard.hardware.driverFactory.__revision__=papywizard.hardware.driverFactory-module.html#__revision__,Variable papywizard.hardware.hardwareFactory.__revision__=papywizard.hardware.hardwareFactory-module.html#__revision__,Variable papywizard.hardware.head.__revision__=papywizard.hardware.head-module.html#__revision__,Variable papywizard.hardware.serialDriver.__revision__=papywizard.hardware.serialDriver-module.html#__revision__,Variable papywizard.model.camera.__revision__=papywizard.model.camera-module.html#__revision__,Variable papywizard.model.lens.__revision__=papywizard.model.lens-module.html#__revision__,Variable papywizard.model.mosaic.__revision__=papywizard.model.mosaic-module.html#__revision__,Variable papywizard.model.preset.__revision__=papywizard.model.preset-module.html#__revision__,Variable papywizard.model.scan.__revision__=papywizard.model.scan-module.html#__revision__,Variable papywizard.model.shooting.__revision__=papywizard.model.shooting-module.html#__revision__,Variable papywizard.view.logBuffer.__revision__=papywizard.view.logBuffer-module.html#__revision__,Variable papywizard.view.mosaicArea.__revision__=papywizard.view.mosaicArea-module.html#__revision__,Variable papywizard.view.presetArea.__revision__=papywizard.view.presetArea-module.html#__revision__,Variable papywizard.view.shootingArea.__revision__=papywizard.view.shootingArea-module.html#__revision__,Variable papywizard.view3D.view3D.__revision__=papywizard.view3D.view3D-module.html#__revision__,Variable trunk.papywizard.hardware.usbDriver.__revision__=trunk.papywizard.hardware.usbDriver-module.html#__revision__"><a title="papywizard.common.config.__revision__
+papywizard.common.configManager.__revision__
+papywizard.common.data.__revision__
+papywizard.common.dataMosaic.__revision__
+papywizard.common.dataPreset.__revision__
+papywizard.common.exception.__revision__
+papywizard.common.helpers.__revision__
+papywizard.common.loggingServices.__revision__
+papywizard.common.serializer.__revision__
+papywizard.common.signal.__revision__
+papywizard.controller.abstractController.__revision__
+papywizard.controller.bluetoothChooserController.__revision__
+papywizard.controller.configController.__revision__
+papywizard.controller.connectController.__revision__
+papywizard.controller.loggerController.__revision__
+papywizard.controller.mainController.__revision__
+papywizard.controller.manualMoveController.__revision__
+papywizard.controller.shootController.__revision__
+papywizard.controller.spy.__revision__
+papywizard.controller.waitController.__revision__
+papywizard.hardware.axis.__revision__
+papywizard.hardware.bluetoothDriver.__revision__
+papywizard.hardware.busDriver.__revision__
+papywizard.hardware.driverFactory.__revision__
+papywizard.hardware.hardwareFactory.__revision__
+papywizard.hardware.head.__revision__
+papywizard.hardware.serialDriver.__revision__
+papywizard.model.camera.__revision__
+papywizard.model.lens.__revision__
+papywizard.model.mosaic.__revision__
+papywizard.model.preset.__revision__
+papywizard.model.scan.__revision__
+papywizard.model.shooting.__revision__
+papywizard.view.logBuffer.__revision__
+papywizard.view.mosaicArea.__revision__
+papywizard.view.presetArea.__revision__
+papywizard.view.shootingArea.__revision__
+papywizard.view3D.view3D.__revision__
+trunk.papywizard.hardware.usbDriver.__revision__" class="py-name" href="#" onclick="return doclink('link-0', '__revision__', 'link-0');">__revision__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"$Id: usbDriver.py 557 2008-09-18 18:51:24Z fma $"</tt> </tt>
 <a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line"> </tt>
-<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Package trunk.papywizard=trunk.papywizard-module.html"><a title="trunk.papywizard" class="py-name" href="#" onclick="return doclink('link-1', 'papywizard', 'link-1');">papywizard</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Package trunk.papywizard.common=trunk.papywizard.common-module.html"><a title="trunk.papywizard.common" class="py-name" href="#" onclick="return doclink('link-2', 'common', 'link-2');">common</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Module trunk.papywizard.common.loggingServices=trunk.papywizard.common.loggingServices-module.html"><a title="trunk.papywizard.common.loggingServices" class="py-name" href="#" onclick="return doclink('link-3', 'loggingServices', 'link-3');">loggingServices</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Class trunk.papywizard.common.loggingServices.Logger=trunk.papywizard.common.loggingServices.Logger-class.html"><a title="trunk.papywizard.common.loggingServices.Logger" class="py-name" href="#" onclick="return doclink('link-4', 'Logger', 'link-4');">Logger</a></tt> </tt>
-<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-5" class="py-name"><a title="trunk.papywizard" class="py-name" href="#" onclick="return doclink('link-5', 'papywizard', 'link-1');">papywizard</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Package trunk.papywizard.hardware=trunk.papywizard.hardware-module.html"><a title="trunk.papywizard.hardware" class="py-name" href="#" onclick="return doclink('link-6', 'hardware', 'link-6');">hardware</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Module trunk.papywizard.hardware.busDriver=trunk.papywizard.hardware.busDriver-module.html"><a title="trunk.papywizard.hardware.busDriver" class="py-name" href="#" onclick="return doclink('link-7', 'busDriver', 'link-7');">busDriver</a></tt> <tt class="py-keyword">import</tt> <tt id="link-8" class="py-name" targets="Class trunk.papywizard.hardware.busDriver.BusDriver=trunk.papywizard.hardware.busDriver.BusDriver-class.html"><a title="trunk.papywizard.hardware.busDriver.BusDriver" class="py-name" href="#" onclick="return doclink('link-8', 'BusDriver', 'link-8');">BusDriver</a></tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">papywizard</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package papywizard.common=papywizard.common-module.html"><a title="papywizard.common" class="py-name" href="#" onclick="return doclink('link-1', 'common', 'link-1');">common</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module papywizard.common.loggingServices=papywizard.common.loggingServices-module.html"><a title="papywizard.common.loggingServices" class="py-name" href="#" onclick="return doclink('link-2', 'loggingServices', 'link-2');">loggingServices</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class papywizard.common.loggingServices.Logger=papywizard.common.loggingServices.Logger-class.html"><a title="papywizard.common.loggingServices.Logger" class="py-name" href="#" onclick="return doclink('link-3', 'Logger', 'link-3');">Logger</a></tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">papywizard</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Package papywizard.hardware=papywizard.hardware-module.html"><a title="papywizard.hardware" class="py-name" href="#" onclick="return doclink('link-4', 'hardware', 'link-4');">hardware</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Module papywizard.hardware.busDriver=papywizard.hardware.busDriver-module.html"><a title="papywizard.hardware.busDriver" class="py-name" href="#" onclick="return doclink('link-5', 'busDriver', 'link-5');">busDriver</a></tt> <tt class="py-keyword">import</tt> <tt id="link-6" class="py-name" targets="Class papywizard.hardware.busDriver.BusDriver=papywizard.hardware.busDriver.BusDriver-class.html"><a title="papywizard.hardware.busDriver.BusDriver" class="py-name" href="#" onclick="return doclink('link-6', 'BusDriver', 'link-6');">BusDriver</a></tt> </tt>
 <a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line"> </tt>
 <a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line"> </tt>
 <a name="USBDriver"></a><div id="USBDriver-def"><a name="L58"></a><tt class="py-lineno">58</tt> <a class="py-toggle" href="#" id="USBDriver-toggle" onclick="return toggle('USBDriver');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="trunk.papywizard.hardware.usbDriver.USBDriver-class.html">USBDriver</a><tt class="py-op">(</tt><tt class="py-base-class">BusDriver</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
@@ -169,9 +170,6 @@ expandto(location.href);
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">
   <tr valign="middle">
-  <!-- Home link -->
-      <th>&nbsp;&nbsp;&nbsp;<a
-        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Tree link -->
       <th>&nbsp;&nbsp;&nbsp;<a
@@ -196,7 +194,7 @@ expandto(location.href);
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon Sep 15 15:49:11 2008
+    Generated by Epydoc 3.0.1 on Fri Sep 19 20:35:24 2008
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

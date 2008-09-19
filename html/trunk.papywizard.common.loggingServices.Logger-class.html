@@ -68,17 +68,18 @@
 <center>  <map id="uml_class_diagram_for_trunk_pa_9" name="uml_class_diagram_for_trunk_pa_9">
 <area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#__new__" title="Create the object." alt="" coords="17,36,263,55"/>
 <area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#__init__" title="Init object." alt="" coords="17,55,263,73"/>
-<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#setLevel" title="Change logging level." alt="" coords="17,73,263,92"/>
-<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#trace" title="Logs a message with level TRACE." alt="" coords="17,92,263,111"/>
-<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#debug" title="Logs a message with level DEBUG." alt="" coords="17,111,263,129"/>
-<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#info" title="Logs a message with level INFO." alt="" coords="17,129,263,148"/>
-<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#warning" title="Logs a message with level WARNING." alt="" coords="17,148,263,167"/>
-<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#error" title="Logs a message with level ERROR." alt="" coords="17,167,263,185"/>
-<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#critical" title="Logs a message with level CRITICAL." alt="" coords="17,185,263,204"/>
-<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#exception" title="Logs a message within an exception." alt="" coords="17,204,263,223"/>
-<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#log" title="Logs a message with given level." alt="" coords="17,223,263,241"/>
-<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#shutdown" title="Shutdown the logging service." alt="" coords="17,241,263,260"/>
-<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html" title="Logger object." alt="" coords="16,11,264,261"/>
+<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#addStreamHandler" title="Add a new stream handler." alt="" coords="17,73,263,92"/>
+<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#setLevel" title="Change logging level." alt="" coords="17,92,263,111"/>
+<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#trace" title="Logs a message with level TRACE." alt="" coords="17,111,263,129"/>
+<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#debug" title="Logs a message with level DEBUG." alt="" coords="17,129,263,148"/>
+<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#info" title="Logs a message with level INFO." alt="" coords="17,148,263,167"/>
+<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#warning" title="Logs a message with level WARNING." alt="" coords="17,167,263,185"/>
+<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#error" title="Logs a message with level ERROR." alt="" coords="17,185,263,204"/>
+<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#critical" title="Logs a message with level CRITICAL." alt="" coords="17,204,263,223"/>
+<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#exception" title="Logs a message within an exception." alt="" coords="17,223,263,241"/>
+<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#log" title="Logs a message with given level." alt="" coords="17,241,263,260"/>
+<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html#shutdown" title="Shutdown the logging service." alt="" coords="17,260,263,279"/>
+<area shape="rect" href="trunk.papywizard.common.loggingServices.Logger-class.html" title="Logger object." alt="" coords="16,11,264,280"/>
 </map>
   <img src="uml_class_diagram_for_trunk_pa_9.gif" alt='' usemap="#uml_class_diagram_for_trunk_pa_9" ismap="ismap" class="graph-without-title" />
 </center>
@@ -114,6 +115,24 @@
       Init object.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="trunk.papywizard.common.loggingServices-pysrc.html#Logger.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.common.loggingServices.Logger-class.html#addStreamHandler" class="summary-sig-name">addStreamHandler</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">stream</span>)</span><br />
+      Add a new stream handler.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.common.loggingServices-pysrc.html#Logger.addStreamHandler">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -480,6 +499,27 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="addStreamHandler"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">addStreamHandler</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">stream</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.common.loggingServices-pysrc.html#Logger.addStreamHandler">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Add a new stream handler.</p>
+  <p>Can be used to register a new GUI handler.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
 <a name="setLevel"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -735,7 +775,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon Sep 15 15:49:09 2008
+    Generated by Epydoc 3.0.1 on Fri Sep 19 20:29:19 2008
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

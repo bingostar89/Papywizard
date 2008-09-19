@@ -65,23 +65,25 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class Head</h1><p class="nomargin-top"><span class="codelink"><a href="trunk.papywizard.hardware.head-pysrc.html#Head">source&nbsp;code</a></span></p>
 <center>
-<center>  <map id="uml_class_diagram_for_trunk_pa_25" name="uml_class_diagram_for_trunk_pa_25">
+<center>  <map id="uml_class_diagram_for_trunk_pa_29" name="uml_class_diagram_for_trunk_pa_29">
 <area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#__init__" title="Init the object." alt="" coords="17,36,255,55"/>
 <area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#init" title="Init the head." alt="" coords="17,55,255,73"/>
 <area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#reset" title="Reseting hardware." alt="" coords="17,73,255,92"/>
 <area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#shutdown" title="Shut down the hardware." alt="" coords="17,92,255,111"/>
 <area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#setOrigin" title="Set current axis positions as origin." alt="" coords="17,111,255,129"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#readPosition" title="Read current head position." alt="" coords="17,129,255,148"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#gotoPosition" title="Goto given position." alt="" coords="17,148,255,167"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#startAxis" title="Start an axis in the selected direction." alt="" coords="17,167,255,185"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#stopAxis" title="Stop the selected axis." alt="" coords="17,185,255,204"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#waitStopAxis" title="Wait until axis does not move anymore." alt="" coords="17,204,255,223"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#shoot" title="Take a picture." alt="" coords="17,223,255,241"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#panic" title="Stop all." alt="" coords="17,241,255,260"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html" title="Class for panohead hardware." alt="" coords="16,11,256,261"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.HeadSimulation-class.html" title="Class for simulated panohead hardware." alt="" coords="84,291,188,317"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#setLimit" title="Set a limit." alt="" coords="17,129,255,148"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#clearLimits" title="Clear all limits." alt="" coords="17,148,255,167"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#readPosition" title="Read current head position." alt="" coords="17,167,255,185"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#gotoPosition" title="Goto given position." alt="" coords="17,185,255,204"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#startAxis" title="Start an axis in the selected direction." alt="" coords="17,204,255,223"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#stopAxis" title="Stop the selected axis." alt="" coords="17,223,255,241"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#waitStopAxis" title="Wait until axis does not move anymore." alt="" coords="17,241,255,260"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#shoot" title="Take a picture." alt="" coords="17,260,255,279"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#panic" title="Stop all." alt="" coords="17,279,255,297"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html" title="Class for panohead hardware." alt="" coords="16,11,256,299"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.HeadSimulation-class.html" title="Class for simulated panohead hardware." alt="" coords="84,328,188,355"/>
 </map>
-  <img src="uml_class_diagram_for_trunk_pa_25.gif" alt='' usemap="#uml_class_diagram_for_trunk_pa_25" ismap="ismap" class="graph-without-title" />
+  <img src="uml_class_diagram_for_trunk_pa_29.gif" alt='' usemap="#uml_class_diagram_for_trunk_pa_29" ismap="ismap" class="graph-without-title" />
 </center>
 </center>
 <hr />
@@ -191,6 +193,43 @@
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.head.Head-class.html#setLimit" class="summary-sig-name">setLimit</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">axis</span>,
+        <span class="summary-sig-arg">dir_</span>,
+        <span class="summary-sig-arg">limit</span>)</span><br />
+      Set a limit.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.head-pysrc.html#Head.setLimit">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="clearLimits"></a><span class="summary-sig-name">clearLimits</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Clear all limits.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.head-pysrc.html#Head.clearLimits">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">tuple</span>
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -234,7 +273,7 @@
         <tr>
           <td><span class="summary-sig"><a href="trunk.papywizard.hardware.head.Head-class.html#startAxis" class="summary-sig-name">startAxis</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">axis</span>,
-        <span class="summary-sig-arg">dir</span>)</span><br />
+        <span class="summary-sig-arg">dir_</span>)</span><br />
       Start an axis in the selected direction.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="trunk.papywizard.hardware.head-pysrc.html#Head.startAxis">source&nbsp;code</a></span>
@@ -440,6 +479,34 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="setLimit"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setLimit</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">axis</span>,
+        <span class="sig-arg">dir_</span>,
+        <span class="sig-arg">limit</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.head-pysrc.html#Head.setLimit">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set a limit.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>axis</code></strong> (str) - axis to limit ('yaw', 'pitch')</li>
+        <li><strong class="pname"><code>dir_</code></strong> (char) - direction to limit ('+', '-')</li>
+        <li><strong class="pname"><code>limit</code></strong> (float) - limit value</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
 <a name="readPosition"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -470,7 +537,7 @@
   <tr valign="top"><td>
   <h3 class="epydoc"><span class="sig"><span class="sig-name">startAxis</span>(<span class="sig-arg">self</span>,
         <span class="sig-arg">axis</span>,
-        <span class="sig-arg">dir</span>)</span>
+        <span class="sig-arg">dir_</span>)</span>
   </h3>
   </td><td align="right" valign="top"
     ><span class="codelink"><a href="trunk.papywizard.hardware.head-pysrc.html#Head.startAxis">source&nbsp;code</a></span>&nbsp;
@@ -482,7 +549,7 @@
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
         <li><strong class="pname"><code>axis</code></strong> (str) - axis to jog ('yaw', 'pitch')</li>
-        <li><strong class="pname"><code>dir</code></strong> (char) - direction ('+', '-')</li>
+        <li><strong class="pname"><code>dir_</code></strong> (char) - direction ('+', '-')</li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -591,7 +658,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon Sep 15 15:49:10 2008
+    Generated by Epydoc 3.0.1 on Fri Sep 19 20:29:20 2008
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

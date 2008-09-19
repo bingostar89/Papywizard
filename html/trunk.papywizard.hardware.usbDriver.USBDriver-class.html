@@ -14,9 +14,6 @@
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">
   <tr valign="middle">
-  <!-- Home link -->
-      <th>&nbsp;&nbsp;&nbsp;<a
-        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Tree link -->
       <th>&nbsp;&nbsp;&nbsp;<a
@@ -43,8 +40,8 @@
     <td width="100%">
       <span class="breadcrumbs">
         Package&nbsp;trunk ::
-        <a href="trunk.papywizard-module.html">Package&nbsp;papywizard</a> ::
-        <a href="trunk.papywizard.hardware-module.html">Package&nbsp;hardware</a> ::
+        Package&nbsp;papywizard ::
+        Package&nbsp;hardware ::
         <a href="trunk.papywizard.hardware.usbDriver-module.html">Module&nbsp;usbDriver</a> ::
         Class&nbsp;USBDriver
       </span>
@@ -65,95 +62,19 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class USBDriver</h1><p class="nomargin-top"><span class="codelink"><a href="trunk.papywizard.hardware.usbDriver-pysrc.html#USBDriver">source&nbsp;code</a></span></p>
 <center>
-<center>  <map id="uml_class_diagram_for_trunk_pa_28" name="uml_class_diagram_for_trunk_pa_28">
-<area shape="rect" href="trunk.papywizard.hardware.usbDriver.USBDriver-class.html" title="Driver for USB connection." alt="" coords="48,179,109,211"/>
-<area shape="rect" href="trunk.papywizard.hardware.busDriver.BusDriver-class.html#__init__" title="Init the object." alt="" coords="17,36,140,55"/>
-<area shape="rect" href="trunk.papywizard.hardware.busDriver.BusDriver-class.html#init" title="Init the driver." alt="" coords="17,55,140,73"/>
-<area shape="rect" href="trunk.papywizard.hardware.busDriver.BusDriver-class.html#shutdown" title="Shut down the driver." alt="" coords="17,73,140,92"/>
-<area shape="rect" href="trunk.papywizard.hardware.busDriver.BusDriver-class.html#sendCmd" title="Send a command over the serial line, and return the answer." alt="" coords="17,92,140,111"/>
-<area shape="rect" href="trunk.papywizard.hardware.busDriver.BusDriver-class.html#acquireBus" title="Acquire and lock the bus." alt="" coords="17,111,140,129"/>
-<area shape="rect" href="trunk.papywizard.hardware.busDriver.BusDriver-class.html#releaseBus" title="Unlock and release the bus." alt="" coords="17,129,140,148"/>
-<area shape="rect" href="trunk.papywizard.hardware.busDriver.BusDriver-class.html" title="Base (abstract) class for bus drivers." alt="" coords="16,11,141,149"/>
+<center>  <map id="uml_class_diagram_for_trunk_pa" name="uml_class_diagram_for_trunk_pa">
+<area shape="rect" href="trunk.papywizard.hardware.usbDriver.USBDriver-class.html" title="Driver for USB connection." alt="" coords="16,11,77,43"/>
 </map>
-  <img src="uml_class_diagram_for_trunk_pa_28.gif" alt='' usemap="#uml_class_diagram_for_trunk_pa_28" ismap="ismap" class="graph-without-title" />
+  <img src="uml_class_diagram_for_trunk_pa.gif" alt='' usemap="#uml_class_diagram_for_trunk_pa" ismap="ismap" class="graph-without-title" />
 </center>
 </center>
 <hr />
 <p>Driver for USB connection.</p>
 
-<!-- ==================== INSTANCE METHODS ==================== -->
-<a name="section-InstanceMethods"></a>
-<table class="summary" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Instance Methods</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-InstanceMethods"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
-</tr>
-  <tr>
-    <td colspan="2" class="summary">
-    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="trunk.papywizard.hardware.busDriver.BusDriver-class.html">busDriver.BusDriver</a></code></b>:
-      <code><a href="trunk.papywizard.hardware.busDriver.BusDriver-class.html#__init__">__init__</a></code>,
-      <code><a href="trunk.papywizard.hardware.busDriver.BusDriver-class.html#acquireBus">acquireBus</a></code>,
-      <code><a href="trunk.papywizard.hardware.busDriver.BusDriver-class.html#init">init</a></code>,
-      <code><a href="trunk.papywizard.hardware.busDriver.BusDriver-class.html#releaseBus">releaseBus</a></code>,
-      <code><a href="trunk.papywizard.hardware.busDriver.BusDriver-class.html#sendCmd">sendCmd</a></code>,
-      <code><a href="trunk.papywizard.hardware.busDriver.BusDriver-class.html#shutdown">shutdown</a></code>
-      </p>
-    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
-      <code>__delattr__</code>,
-      <code>__getattribute__</code>,
-      <code>__hash__</code>,
-      <code>__new__</code>,
-      <code>__reduce__</code>,
-      <code>__reduce_ex__</code>,
-      <code>__repr__</code>,
-      <code>__setattr__</code>,
-      <code>__str__</code>
-      </p>
-    </td>
-  </tr>
-</table>
-<!-- ==================== PROPERTIES ==================== -->
-<a name="section-Properties"></a>
-<table class="summary" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr bgcolor="#70b0f0" class="table-header">
-  <td colspan="2" class="table-header">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-      <tr valign="top">
-        <td align="left"><span class="table-header">Properties</span></td>
-        <td align="right" valign="top"
-         ><span class="options">[<a href="#section-Properties"
-         class="privatelink" onclick="toggle_private();"
-         >hide private</a>]</span></td>
-      </tr>
-    </table>
-  </td>
-</tr>
-  <tr>
-    <td colspan="2" class="summary">
-    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
-      <code>__class__</code>
-      </p>
-    </td>
-  </tr>
-</table>
 <!-- ==================== NAVIGATION BAR ==================== -->
 <table class="navbar" border="0" width="100%" cellpadding="0"
        bgcolor="#a0c0ff" cellspacing="0">
   <tr valign="middle">
-  <!-- Home link -->
-      <th>&nbsp;&nbsp;&nbsp;<a
-        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
 
   <!-- Tree link -->
       <th>&nbsp;&nbsp;&nbsp;<a
@@ -178,7 +99,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon Sep 15 15:49:10 2008
+    Generated by Epydoc 3.0.1 on Fri Sep 19 20:35:23 2008
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

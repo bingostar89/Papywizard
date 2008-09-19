@@ -65,34 +65,37 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class AxisSimulation</h1><p class="nomargin-top"><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation">source&nbsp;code</a></span></p>
 <center>
-<center>  <map id="uml_class_diagram_for_trunk_pa_20" name="uml_class_diagram_for_trunk_pa_20">
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#__init__" title="Init the object." alt="" coords="17,303,236,321"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#run" title="Main entry of the thread." alt="" coords="17,321,236,340"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#stopThread" title="Stop the thread." alt="" coords="17,340,236,359"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#init" title="trunk.papywizard.hardware.axis.AxisSimulation.init" alt="" coords="17,359,236,377"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#reset" title="trunk.papywizard.hardware.axis.AxisSimulation.reset" alt="" coords="17,377,236,396"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#setOrigin" title="Set current axis position as origin." alt="" coords="17,396,236,415"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#read" title="Return the current position of axis." alt="" coords="17,415,236,433"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#drive" title="Drive the axis." alt="" coords="17,433,236,452"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#stop" title="Stop the axis while in drive mode." alt="" coords="17,452,236,471"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#waitEndOfDrive" title="trunk.papywizard.hardware.axis.AxisSimulation.waitEndOfDrive" alt="" coords="17,471,236,489"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#startJog" title="trunk.papywizard.hardware.axis.AxisSimulation.startJog" alt="" coords="17,489,236,508"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#waitStop" title="trunk.papywizard.hardware.axis.AxisSimulation.waitStop" alt="" coords="17,508,236,527"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#getStatus" title="Return the status of the axis." alt="" coords="17,527,236,545"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#setOutput" title="Set souput to level." alt="" coords="17,545,236,564"/>
-<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html" title="Simulated hardware axis." alt="" coords="16,277,237,565"/>
-<area shape="rect" href="javascript:void(0);" title="repr(x)" alt="" coords="44,97,209,116"/>
-<area shape="rect" href="javascript:void(0);" title="threading.Thread.start" alt="" coords="44,116,209,135"/>
-<area shape="rect" href="javascript:void(0);" title="threading.Thread.join" alt="" coords="44,135,209,153"/>
-<area shape="rect" href="javascript:void(0);" title="threading.Thread.getName" alt="" coords="44,153,209,172"/>
-<area shape="rect" href="javascript:void(0);" title="threading.Thread.setName" alt="" coords="44,172,209,191"/>
-<area shape="rect" href="javascript:void(0);" title="threading.Thread.isAlive" alt="" coords="44,191,209,209"/>
-<area shape="rect" href="javascript:void(0);" title="threading.Thread.isDaemon" alt="" coords="44,209,209,228"/>
-<area shape="rect" href="javascript:void(0);" title="threading.Thread.setDaemon" alt="" coords="44,228,209,247"/>
-<area shape="rect" href="javascript:void(0);" title="threading.Thread" alt="" coords="43,72,211,248"/>
-<area shape="rect" href="javascript:void(0);" title="threading._Verbose" alt="" coords="69,11,184,43"/>
+<center>  <map id="uml_class_diagram_for_trunk_pa_24" name="uml_class_diagram_for_trunk_pa_24">
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#__init__" title="Init the axis." alt="" coords="81,303,300,321"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#run" title="Main entry of the thread." alt="" coords="81,321,300,340"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#stopThread" title="Stop the thread." alt="" coords="81,340,300,359"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#init" title="Init the axis hardware." alt="" coords="81,359,300,377"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#reset" title="Reset the axis hardware." alt="" coords="81,377,300,396"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#setOrigin" title="Set current axis positions as origin." alt="" coords="81,396,300,415"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#read" title="Return the current position of axis." alt="" coords="81,415,300,433"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#drive" title="Drive the axis." alt="" coords="81,433,300,452"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#stop" title="stop drive axis." alt="" coords="81,452,300,471"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#waitEndOfDrive" title="Wait for end of drive." alt="" coords="81,471,300,489"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#startJog" title="Start axis in specified direction." alt="" coords="81,489,300,508"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#waitStop" title="Wait until axis does not move anymore (inertia)." alt="" coords="81,508,300,527"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#getStatus" title="Return the status of the axis." alt="" coords="81,527,300,545"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#setOutput" title="Set souput to level." alt="" coords="81,545,300,564"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html" title="Simulated hardware axis." alt="" coords="80,277,301,565"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#setLimit" title="Set the minus limit." alt="" coords="17,153,159,172"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#clearLimits" title="Clear all limits." alt="" coords="17,172,159,191"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html" title="Abstract axis." alt="" coords="16,128,160,192"/>
+<area shape="rect" href="javascript:void(0);" title="threading._Verbose" alt="" coords="237,11,352,43"/>
+<area shape="rect" href="javascript:void(0);" title="repr(x)" alt="" coords="212,97,377,116"/>
+<area shape="rect" href="javascript:void(0);" title="threading.Thread.start" alt="" coords="212,116,377,135"/>
+<area shape="rect" href="javascript:void(0);" title="threading.Thread.join" alt="" coords="212,135,377,153"/>
+<area shape="rect" href="javascript:void(0);" title="threading.Thread.getName" alt="" coords="212,153,377,172"/>
+<area shape="rect" href="javascript:void(0);" title="threading.Thread.setName" alt="" coords="212,172,377,191"/>
+<area shape="rect" href="javascript:void(0);" title="threading.Thread.isAlive" alt="" coords="212,191,377,209"/>
+<area shape="rect" href="javascript:void(0);" title="threading.Thread.isDaemon" alt="" coords="212,209,377,228"/>
+<area shape="rect" href="javascript:void(0);" title="threading.Thread.setDaemon" alt="" coords="212,228,377,247"/>
+<area shape="rect" href="javascript:void(0);" title="threading.Thread" alt="" coords="211,72,379,248"/>
 </map>
-  <img src="uml_class_diagram_for_trunk_pa_20.gif" alt='' usemap="#uml_class_diagram_for_trunk_pa_20" ismap="ismap" class="graph-without-title" />
+  <img src="uml_class_diagram_for_trunk_pa_24.gif" alt='' usemap="#uml_class_diagram_for_trunk_pa_24" ismap="ismap" class="graph-without-title" />
 </center>
 </center>
 <hr />
@@ -123,7 +126,7 @@
         <tr>
           <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
         <span class="summary-sig-arg">num</span>)</span><br />
-      Init the object.</td>
+      Init the axis.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.__init__">source&nbsp;code</a></span>
             
@@ -173,7 +176,8 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="init"></a><span class="summary-sig-name">init</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#init" class="summary-sig-name">init</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Init the axis hardware.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.init">source&nbsp;code</a></span>
             
@@ -189,7 +193,8 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="reset"></a><span class="summary-sig-name">reset</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#reset" class="summary-sig-name">reset</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Reset the axis hardware.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.reset">source&nbsp;code</a></span>
             
@@ -205,8 +210,8 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="setOrigin"></a><span class="summary-sig-name">setOrigin</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Set current axis position as origin.</td>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#setOrigin" class="summary-sig-name">setOrigin</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Set current axis positions as origin.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.setOrigin">source&nbsp;code</a></span>
             
@@ -259,8 +264,8 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="stop"></a><span class="summary-sig-name">stop</span>(<span class="summary-sig-arg">self</span>)</span><br />
-      Stop the axis while in drive mode.</td>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#stop" class="summary-sig-name">stop</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      stop drive axis.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.stop">source&nbsp;code</a></span>
             
@@ -276,7 +281,8 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="waitEndOfDrive"></a><span class="summary-sig-name">waitEndOfDrive</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#waitEndOfDrive" class="summary-sig-name">waitEndOfDrive</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Wait for end of drive.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.waitEndOfDrive">source&nbsp;code</a></span>
             
@@ -292,8 +298,9 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="startJog"></a><span class="summary-sig-name">startJog</span>(<span class="summary-sig-arg">self</span>,
-        <span class="summary-sig-arg">dir</span>)</span></td>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#startJog" class="summary-sig-name">startJog</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dir_</span>)</span><br />
+      Start axis in specified direction.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.startJog">source&nbsp;code</a></span>
             
@@ -309,7 +316,8 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="waitStop"></a><span class="summary-sig-name">waitStop</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#waitStop" class="summary-sig-name">waitStop</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Wait until axis does not move anymore (inertia).</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.waitStop">source&nbsp;code</a></span>
             
@@ -325,7 +333,7 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a name="getStatus"></a><span class="summary-sig-name">getStatus</span>(<span class="summary-sig-arg">self</span>)</span><br />
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AxisSimulation-class.html#getStatus" class="summary-sig-name">getStatus</a>(<span class="summary-sig-arg">self</span>)</span><br />
       Return the status of the axis.</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.getStatus">source&nbsp;code</a></span>
@@ -356,6 +364,13 @@
   </tr>
   <tr>
     <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html">AbstractAxis</a></code></b>:
+      <code><a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#clearLimits">clearLimits</a></code>,
+      <code><a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#setLimit">setLimit</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html">AbstractAxis</a></code></b> (private):
+      <code><a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#_checkLimits" onclick="show_private();">_checkLimits</a></code>
+      </p></div>
     <p class="indent-wrapped-lines"><b>Inherited from <code>threading.Thread</code></b>:
       <code>__repr__</code>,
       <code>getName</code>,
@@ -444,10 +459,15 @@
     </td>
   </tr></table>
   
-  <p>Init the object.</p>
+  <p>Init the axis.</p>
   <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>num</code></strong> - axis num (1: yaw, 2: pitch)</li>
+    </ul></dd>
     <dt>Overrides:
         object.__init__
+        <dd><em class="note">(inherited documentation)</em></dd>
     </dt>
   </dl>
 </td></tr></table>
@@ -474,6 +494,76 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="init"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">init</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.init">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Init the axis hardware.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#init">AbstractAxis.init</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="reset"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">reset</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.reset">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Reset the axis hardware.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#reset">AbstractAxis.reset</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="setOrigin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setOrigin</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.setOrigin">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set current axis positions as origin.</p>
+  <p>Use offset.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#setOrigin">AbstractAxis.setOrigin</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
 <a name="read"></a>
 <div>
 <table class="details" border="1" cellpadding="3"
@@ -491,7 +581,11 @@
   <p>Return the current position of axis.</p>
   <dl class="fields">
     <dt>Returns: float</dt>
-        <dd>position, in &#176;</dd>
+        <dd>position, in &#233;</dd>
+    <dt>Overrides:
+        <a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#read">AbstractAxis.read</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -516,10 +610,134 @@
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>pos</code></strong> (float) - position to reach, in &#176;</li>
-        <li><strong class="pname"><code>inc</code></strong> (bool) - if True, pos is an increment</li>
-        <li><strong class="pname"><code>wait</code></strong> (boot) - if True, wait for end of movement, returns immediatly otherwise.</li>
+        <li><strong class="pname"><code>pos</code></strong> - position to reach, in &#233;</li>
+        <li><strong class="pname"><code>inc</code></strong> - if True, pos is an increment</li>
+        <li><strong class="pname"><code>wait</code></strong> - if True, wait for end of movement, returns immediatly otherwise.</li>
     </ul></dd>
+    <dt>Overrides:
+        <a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#drive">AbstractAxis.drive</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="stop"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">stop</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.stop">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>stop drive axis.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#stop">AbstractAxis.stop</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="waitEndOfDrive"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">waitEndOfDrive</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.waitEndOfDrive">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Wait for end of drive.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#waitEndOfDrive">AbstractAxis.waitEndOfDrive</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="startJog"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">startJog</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">dir_</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.startJog">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Start axis in specified direction.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>dir_</code></strong> - direction ('+', '-')</li>
+    </ul></dd>
+    <dt>Overrides:
+        <a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#startJog">AbstractAxis.startJog</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="waitStop"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">waitStop</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.waitStop">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Wait until axis does not move anymore (inertia).</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#waitStop">AbstractAxis.waitStop</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="getStatus"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">getStatus</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AxisSimulation.getStatus">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return the status of the axis.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#getStatus">AbstractAxis.getStatus</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -544,8 +762,12 @@
   <dl class="fields">
     <dt>Parameters:</dt>
     <dd><ul class="nomargin-top">
-        <li><strong class="pname"><code>level</code></strong> (int) - level to set to shoot output</li>
+        <li><strong class="pname"><code>level</code></strong> - level to set to shoot output</li>
     </ul></dd>
+    <dt>Overrides:
+        <a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#setOutput">AbstractAxis.setOutput</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
   </dl>
 </td></tr></table>
 </div>
@@ -581,7 +803,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon Sep 15 15:49:09 2008
+    Generated by Epydoc 3.0.1 on Fri Sep 19 20:29:20 2008
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

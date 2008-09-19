@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>papywizard.view.shootingArea</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;papywizard ::
+        <a href="papywizard.view-module.html">Package&nbsp;view</a> ::
+        Module&nbsp;shootingArea
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="papywizard.view.shootingArea-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="papywizard.view.shootingArea-module.html">Module papywizard.view.shootingArea</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: utf-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">""" Panohead remote control.</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">License</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">=======</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-docstring"> - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring">  - (C) 2007-2008 Fr&#233;d&#233;ric Mantegazza</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">This software is governed by the B{CeCILL} license under French law and</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring">abiding by the rules of distribution of free software.  You can  use, </tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring">modify and/or redistribute the software under the terms of the CeCILL</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring">license as circulated by CEA, CNRS and INRIA at the following URL</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">U{http://www.cecill.info}.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">As a counterpart to the access to the source code and  rights to copy,</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">modify and redistribute granted by the license, users are provided only</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">with a limited warranty  and the software's author,  the holder of the</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">economic rights,  and the successive licensors  have only  limited</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">liability. </tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-docstring">In this respect, the user's attention is drawn to the risks associated</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring">with loading,  using,  modifying and/or developing or reproducing the</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">software by the user in light of its specific status of free software,</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring">that may mean  that it is complicated to manipulate,  and  that  also</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">therefore means  that it is reserved for developers  and  experienced</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring">professionals having in-depth computer knowledge. Users are therefore</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring">encouraged to load and test the software's suitability as regards their</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-docstring">requirements in conditions enabling the security of their systems and/or </tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-docstring">data to be ensured and,  more generally, to use and operate it in the </tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">same conditions as regards security. </tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring">The fact that you are presently reading this means that you have had</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">knowledge of the CeCILL license and that you accept its terms.</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">Module purpose</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">==============</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">View</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">Implements</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">==========</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">- ShootingArea</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">@author: Fr&#233;d&#233;ric Mantegazza</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">@copyright: (C) 2007-2008 Fr&#233;d&#233;ric Mantegazza</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">@license: CeCILL</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable papywizard.common.config.__revision__=papywizard.common.config-module.html#__revision__,Variable papywizard.common.configManager.__revision__=papywizard.common.configManager-module.html#__revision__,Variable papywizard.common.data.__revision__=papywizard.common.data-module.html#__revision__,Variable papywizard.common.dataMosaic.__revision__=papywizard.common.dataMosaic-module.html#__revision__,Variable papywizard.common.dataPreset.__revision__=papywizard.common.dataPreset-module.html#__revision__,Variable papywizard.common.exception.__revision__=papywizard.common.exception-module.html#__revision__,Variable papywizard.common.helpers.__revision__=papywizard.common.helpers-module.html#__revision__,Variable papywizard.common.loggingServices.__revision__=papywizard.common.loggingServices-module.html#__revision__,Variable papywizard.common.serializer.__revision__=papywizard.common.serializer-module.html#__revision__,Variable papywizard.common.signal.__revision__=papywizard.common.signal-module.html#__revision__,Variable papywizard.controller.abstractController.__revision__=papywizard.controller.abstractController-module.html#__revision__,Variable papywizard.controller.bluetoothChooserController.__revision__=papywizard.controller.bluetoothChooserController-module.html#__revision__,Variable papywizard.controller.configController.__revision__=papywizard.controller.configController-module.html#__revision__,Variable papywizard.controller.connectController.__revision__=papywizard.controller.connectController-module.html#__revision__,Variable papywizard.controller.loggerController.__revision__=papywizard.controller.loggerController-module.html#__revision__,Variable papywizard.controller.mainController.__revision__=papywizard.controller.mainController-module.html#__revision__,Variable papywizard.controller.manualMoveController.__revision__=papywizard.controller.manualMoveController-module.html#__revision__,Variable papywizard.controller.shootController.__revision__=papywizard.controller.shootController-module.html#__revision__,Variable papywizard.controller.spy.__revision__=papywizard.controller.spy-module.html#__revision__,Variable papywizard.controller.waitController.__revision__=papywizard.controller.waitController-module.html#__revision__,Variable papywizard.hardware.axis.__revision__=papywizard.hardware.axis-module.html#__revision__,Variable papywizard.hardware.bluetoothDriver.__revision__=papywizard.hardware.bluetoothDriver-module.html#__revision__,Variable papywizard.hardware.busDriver.__revision__=papywizard.hardware.busDriver-module.html#__revision__,Variable papywizard.hardware.driverFactory.__revision__=papywizard.hardware.driverFactory-module.html#__revision__,Variable papywizard.hardware.hardwareFactory.__revision__=papywizard.hardware.hardwareFactory-module.html#__revision__,Variable papywizard.hardware.head.__revision__=papywizard.hardware.head-module.html#__revision__,Variable papywizard.hardware.serialDriver.__revision__=papywizard.hardware.serialDriver-module.html#__revision__,Variable papywizard.model.camera.__revision__=papywizard.model.camera-module.html#__revision__,Variable papywizard.model.lens.__revision__=papywizard.model.lens-module.html#__revision__,Variable papywizard.model.mosaic.__revision__=papywizard.model.mosaic-module.html#__revision__,Variable papywizard.model.preset.__revision__=papywizard.model.preset-module.html#__revision__,Variable papywizard.model.scan.__revision__=papywizard.model.scan-module.html#__revision__,Variable papywizard.model.shooting.__revision__=papywizard.model.shooting-module.html#__revision__,Variable papywizard.view.logBuffer.__revision__=papywizard.view.logBuffer-module.html#__revision__,Variable papywizard.view.mosaicArea.__revision__=papywizard.view.mosaicArea-module.html#__revision__,Variable papywizard.view.presetArea.__revision__=papywizard.view.presetArea-module.html#__revision__,Variable papywizard.view.shootingArea.__revision__=papywizard.view.shootingArea-module.html#__revision__,Variable papywizard.view3D.view3D.__revision__=papywizard.view3D.view3D-module.html#__revision__,Variable trunk.papywizard.hardware.usbDriver.__revision__=trunk.papywizard.hardware.usbDriver-module.html#__revision__"><a title="papywizard.common.config.__revision__
+papywizard.common.configManager.__revision__
+papywizard.common.data.__revision__
+papywizard.common.dataMosaic.__revision__
+papywizard.common.dataPreset.__revision__
+papywizard.common.exception.__revision__
+papywizard.common.helpers.__revision__
+papywizard.common.loggingServices.__revision__
+papywizard.common.serializer.__revision__
+papywizard.common.signal.__revision__
+papywizard.controller.abstractController.__revision__
+papywizard.controller.bluetoothChooserController.__revision__
+papywizard.controller.configController.__revision__
+papywizard.controller.connectController.__revision__
+papywizard.controller.loggerController.__revision__
+papywizard.controller.mainController.__revision__
+papywizard.controller.manualMoveController.__revision__
+papywizard.controller.shootController.__revision__
+papywizard.controller.spy.__revision__
+papywizard.controller.waitController.__revision__
+papywizard.hardware.axis.__revision__
+papywizard.hardware.bluetoothDriver.__revision__
+papywizard.hardware.busDriver.__revision__
+papywizard.hardware.driverFactory.__revision__
+papywizard.hardware.hardwareFactory.__revision__
+papywizard.hardware.head.__revision__
+papywizard.hardware.serialDriver.__revision__
+papywizard.model.camera.__revision__
+papywizard.model.lens.__revision__
+papywizard.model.mosaic.__revision__
+papywizard.model.preset.__revision__
+papywizard.model.scan.__revision__
+papywizard.model.shooting.__revision__
+papywizard.view.logBuffer.__revision__
+papywizard.view.mosaicArea.__revision__
+papywizard.view.presetArea.__revision__
+papywizard.view.shootingArea.__revision__
+papywizard.view3D.view3D.__revision__
+trunk.papywizard.hardware.usbDriver.__revision__" class="py-name" href="#" onclick="return doclink('link-0', '__revision__', 'link-0');">__revision__</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"$Id: shooting.py 327 2008-06-25 14:29:36Z fma $"</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">pygtk</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-name">pygtk</tt><tt class="py-op">.</tt><tt class="py-name">require</tt><tt class="py-op">(</tt><tt class="py-string">"2.0"</tt><tt class="py-op">)</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">gtk</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">         </tt>
+<a name="ShootingArea"></a><div id="ShootingArea-def"><a name="L59"></a><tt class="py-lineno"> 59</tt> <a class="py-toggle" href="#" id="ShootingArea-toggle" onclick="return toggle('ShootingArea');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="papywizard.view.shootingArea.ShootingArea-class.html">ShootingArea</a><tt class="py-op">(</tt><tt class="py-base-class">gtk</tt><tt class="py-op">.</tt><tt class="py-base-class">DrawingArea</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ShootingArea-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ShootingArea-expanded"><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">    <tt class="py-docstring">""" GTK ShootingArea widget</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="ShootingArea.__init__"></a><div id="ShootingArea.__init__-def"><a name="L62"></a><tt class="py-lineno"> 62</tt> <a class="py-toggle" href="#" id="ShootingArea.__init__-toggle" onclick="return toggle('ShootingArea.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="papywizard.view.shootingArea.ShootingArea-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ShootingArea.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ShootingArea.__init__-expanded"><a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-docstring">""" Init ShootingArea widget.</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-name">gtk</tt><tt class="py-op">.</tt><tt class="py-name">DrawingArea</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Method papywizard.common.configManager.ConfigManager.__init__()=papywizard.common.configManager.ConfigManager-class.html#__init__,Method papywizard.common.data.Data.__init__()=papywizard.common.data.Data-class.html#__init__,Method papywizard.common.loggingServices.Logger.__init__()=papywizard.common.loggingServices.Logger-class.html#__init__,Method papywizard.common.serializer.Serializer.__init__()=papywizard.common.serializer.Serializer-class.html#__init__,Method papywizard.common.signal.Signal.__init__()=papywizard.common.signal.Signal-class.html#__init__,Method papywizard.common.signal._WeakMethod.__init__()=papywizard.common.signal._WeakMethod-class.html#__init__,Method papywizard.common.signal._WeakMethod_FuncHost.__init__()=papywizard.common.signal._WeakMethod_FuncHost-class.html#__init__,Method papywizard.controller.abstractController.AbstractController.__init__()=papywizard.controller.abstractController.AbstractController-class.html#__init__,Method papywizard.controller.connectController.ConnectController.__init__()=papywizard.controller.connectController.ConnectController-class.html#__init__,Method papywizard.controller.mainController.MainController.__init__()=papywizard.controller.mainController.MainController-class.html#__init__,Method papywizard.controller.manualMoveController.ManualMoveController.__init__()=papywizard.controller.manualMoveController.ManualMoveController-class.html#__init__,Method papywizard.controller.spy.Spy.__init__()=papywizard.controller.spy.Spy-class.html#__init__,Method papywizard.hardware.axis.AbstractAxis.__init__()=papywizard.hardware.axis.AbstractAxis-class.html#__init__,Method papywizard.hardware.axis.Axis.__init__()=papywizard.hardware.axis.Axis-class.html#__init__,Method papywizard.hardware.axis.AxisSimulation.__init__()=papywizard.hardware.axis.AxisSimulation-class.html#__init__,Method papywizard.hardware.busDriver.BusDriver.__init__()=papywizard.hardware.busDriver.BusDriver-class.html#__init__,Method papywizard.hardware.head.Head.__init__()=papywizard.hardware.head.Head-class.html#__init__,Method papywizard.hardware.head.HeadSimulation.__init__()=papywizard.hardware.head.HeadSimulation-class.html#__init__,Method papywizard.model.camera.Camera.__init__()=papywizard.model.camera.Camera-class.html#__init__,Method papywizard.model.lens.Lens.__init__()=papywizard.model.lens.Lens-class.html#__init__,Method papywizard.model.mosaic.Mosaic.__init__()=papywizard.model.mosaic.Mosaic-class.html#__init__,Method papywizard.model.preset.Preset.__init__()=papywizard.model.preset.Preset-class.html#__init__,Method papywizard.model.scan.Scan.__init__()=papywizard.model.scan.Scan-class.html#__init__,Method papywizard.model.shooting.Shooting.__init__()=papywizard.model.shooting.Shooting-class.html#__init__,Method papywizard.view.logBuffer.LogBuffer.__init__()=papywizard.view.logBuffer.LogBuffer-class.html#__init__,Method papywizard.view.mosaicArea.MosaicArea.__init__()=papywizard.view.mosaicArea.MosaicArea-class.html#__init__,Method papywizard.view.presetArea.PresetArea.__init__()=papywizard.view.presetArea.PresetArea-class.html#__init__,Method papywizard.view.shootingArea.ShootingArea.__init__()=papywizard.view.shootingArea.ShootingArea-class.html#__init__,Method papywizard.view3D.view3D.Apn3D.__init__()=papywizard.view3D.view3D.Apn3D-class.html#__init__,Method papywizard.view3D.view3D.Arm3D.__init__()=papywizard.view3D.view3D.Arm3D-class.html#__init__,Method papywizard.view3D.view3D.Body3D.__init__()=papywizard.view3D.view3D.Body3D-class.html#__init__,Method papywizard.view3D.view3D.Coords3D.__init__()=papywizard.view3D.view3D.Coords3D-class.html#__init__,Method papywizard.view3D.view3D.Fov3D.__init__()=papywizard.view3D.view3D.Fov3D-class.html#__init__,Method papywizard.view3D.view3D.Head3D.__init__()=papywizard.view3D.view3D.Head3D-class.html#__init__,Method papywizard.view3D.view3D.Object3D.__init__()=papywizard.view3D.view3D.Object3D-class.html#__init__,Method papywizard.view3D.view3D.Tripod3D.__init__()=papywizard.view3D.view3D.Tripod3D-class.html#__init__,Method papywizard.view3D.view3D.View3D.__init__()=papywizard.view3D.view3D.View3D-class.html#__init__,Method papywizard.view3D.view3D.World3D.__init__()=papywizard.view3D.view3D.World3D-class.html#__init__"><a title="papywizard.common.configManager.ConfigManager.__init__
+papywizard.common.data.Data.__init__
+papywizard.common.loggingServices.Logger.__init__
+papywizard.common.serializer.Serializer.__init__
+papywizard.common.signal.Signal.__init__
+papywizard.common.signal._WeakMethod.__init__
+papywizard.common.signal._WeakMethod_FuncHost.__init__
+papywizard.controller.abstractController.AbstractController.__init__
+papywizard.controller.connectController.ConnectController.__init__
+papywizard.controller.mainController.MainController.__init__
+papywizard.controller.manualMoveController.ManualMoveController.__init__
+papywizard.controller.spy.Spy.__init__
+papywizard.hardware.axis.AbstractAxis.__init__
+papywizard.hardware.axis.Axis.__init__
+papywizard.hardware.axis.AxisSimulation.__init__
+papywizard.hardware.busDriver.BusDriver.__init__
+papywizard.hardware.head.Head.__init__
+papywizard.hardware.head.HeadSimulation.__init__
+papywizard.model.camera.Camera.__init__
+papywizard.model.lens.Lens.__init__
+papywizard.model.mosaic.Mosaic.__init__
+papywizard.model.preset.Preset.__init__
+papywizard.model.scan.Scan.__init__
+papywizard.model.shooting.Shooting.__init__
+papywizard.view.logBuffer.LogBuffer.__init__
+papywizard.view.mosaicArea.MosaicArea.__init__
+papywizard.view.presetArea.PresetArea.__init__
+papywizard.view.shootingArea.ShootingArea.__init__
+papywizard.view3D.view3D.Apn3D.__init__
+papywizard.view3D.view3D.Arm3D.__init__
+papywizard.view3D.view3D.Body3D.__init__
+papywizard.view3D.view3D.Coords3D.__init__
+papywizard.view3D.view3D.Fov3D.__init__
+papywizard.view3D.view3D.Head3D.__init__
+papywizard.view3D.view3D.Object3D.__init__
+papywizard.view3D.view3D.Tripod3D.__init__
+papywizard.view3D.view3D.View3D.__init__
+papywizard.view3D.view3D.World3D.__init__" class="py-name" href="#" onclick="return doclink('link-1', '__init__', 'link-1');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">)</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_picts</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_width</tt> <tt class="py-op">=</tt> <tt class="py-number">300</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_height</tt> <tt class="py-op">=</tt> <tt class="py-number">150</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">set_size_request</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_width</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_height</tt><tt class="py-op">)</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_yawFov</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_pitchFov</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_yawCameraFov</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_pitchCameraFov</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_yawScale</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_pitchScale</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"> </tt>
+<a name="ShootingArea.init"></a><div id="ShootingArea.init-def"><a name="L79"></a><tt class="py-lineno"> 79</tt> <a class="py-toggle" href="#" id="ShootingArea.init-toggle" onclick="return toggle('ShootingArea.init');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="papywizard.view.shootingArea.ShootingArea-class.html#init">init</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">yawFov</tt><tt class="py-op">,</tt> <tt class="py-param">pitchFov</tt><tt class="py-op">,</tt> <tt class="py-param">yawCameraFov</tt><tt class="py-op">,</tt> <tt class="py-param">pitchCameraFov</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ShootingArea.init-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ShootingArea.init-expanded"><a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-docstring">""" Init internal values.</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring">        @param yawFov: yaw fov (&#176;)</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-docstring">        @type yawFov: float</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-docstring">        @param pitchFov: pitch fov (&#176;)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-docstring">        @type pitchFov: float</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-docstring">        @param yawCameraFov: pict yaw fov (&#176;)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-docstring">        @type yawCameraFov: float</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-docstring">        @param pitchCameraFov: pict pitch fov (&#176;)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-docstring">        @type pitchCameraFov: float</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_yawFov</tt> <tt class="py-op">=</tt> <tt id="link-2" class="py-name" targets="Variable papywizard.model.mosaic.Mosaic.yawFov=papywizard.model.mosaic.Mosaic-class.html#yawFov"><a title="papywizard.model.mosaic.Mosaic.yawFov" class="py-name" href="#" onclick="return doclink('link-2', 'yawFov', 'link-2');">yawFov</a></tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_pitchFov</tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name" targets="Variable papywizard.model.mosaic.Mosaic.pitchFov=papywizard.model.mosaic.Mosaic-class.html#pitchFov"><a title="papywizard.model.mosaic.Mosaic.pitchFov" class="py-name" href="#" onclick="return doclink('link-3', 'pitchFov', 'link-3');">pitchFov</a></tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_yawCameraFov</tt> <tt class="py-op">=</tt> <tt class="py-name">yawCameraFov</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_pitchCameraFov</tt> <tt class="py-op">=</tt> <tt class="py-name">pitchCameraFov</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-comment">#print "yawFov=%.1f, pitchFov=%.1f, yawCameraFov=%.1f, pitchCameraFov=%.1f" % (yawFov, pitchFov, yawCameraFov, pitchCameraFov)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Method papywizard.common.signal.Signal.connect()=papywizard.common.signal.Signal-class.html#connect"><a title="papywizard.common.signal.Signal.connect" class="py-name" href="#" onclick="return doclink('link-4', 'connect', 'link-4');">connect</a></tt><tt class="py-op">(</tt><tt class="py-string">"configure-event"</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Method papywizard.view.mosaicArea.MosaicArea._configure_cb()=papywizard.view.mosaicArea.MosaicArea-class.html#_configure_cb,Method papywizard.view.presetArea.PresetArea._configure_cb()=papywizard.view.presetArea.PresetArea-class.html#_configure_cb,Method papywizard.view.shootingArea.ShootingArea._configure_cb()=papywizard.view.shootingArea.ShootingArea-class.html#_configure_cb"><a title="papywizard.view.mosaicArea.MosaicArea._configure_cb
+papywizard.view.presetArea.PresetArea._configure_cb
+papywizard.view.shootingArea.ShootingArea._configure_cb" class="py-name" href="#" onclick="return doclink('link-5', '_configure_cb', 'link-5');">_configure_cb</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name"><a title="papywizard.common.signal.Signal.connect" class="py-name" href="#" onclick="return doclink('link-6', 'connect', 'link-4');">connect</a></tt><tt class="py-op">(</tt><tt class="py-string">"expose-event"</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method papywizard.view.mosaicArea.MosaicArea._expose_cb()=papywizard.view.mosaicArea.MosaicArea-class.html#_expose_cb,Method papywizard.view.presetArea.PresetArea._expose_cb()=papywizard.view.presetArea.PresetArea-class.html#_expose_cb,Method papywizard.view.shootingArea.ShootingArea._expose_cb()=papywizard.view.shootingArea.ShootingArea-class.html#_expose_cb"><a title="papywizard.view.mosaicArea.MosaicArea._expose_cb
+papywizard.view.presetArea.PresetArea._expose_cb
+papywizard.view.shootingArea.ShootingArea._expose_cb" class="py-name" href="#" onclick="return doclink('link-7', '_expose_cb', 'link-7');">_expose_cb</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">    <tt class="py-comment"># Callbacks</tt> </tt>
+<a name="ShootingArea._configure_cb"></a><div id="ShootingArea._configure_cb-def"><a name="L104"></a><tt class="py-lineno">104</tt> <a class="py-toggle" href="#" id="ShootingArea._configure_cb-toggle" onclick="return toggle('ShootingArea._configure_cb');">-</a><tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-keyword">def</tt> <a class="py-def-name" href="papywizard.view.shootingArea.ShootingArea-class.html#_configure_cb">_configure_cb</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">widget</tt><tt class="py-op">,</tt> <tt class="py-param">event</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ShootingArea._configure_cb-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ShootingArea._configure_cb-expanded"><a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-docstring">""" Called when the drawing area changes size.</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-docstring">        This callback is also the first called when creating the widget.</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method papywizard.view.shootingArea.ShootingArea._set_colors()=papywizard.view.shootingArea.ShootingArea-class.html#_set_colors"><a title="papywizard.view.shootingArea.ShootingArea._set_colors" class="py-name" href="#" onclick="return doclink('link-8', '_set_colors', 'link-8');">_set_colors</a></tt><tt class="py-op">(</tt><tt class="py-op">{</tt><tt class="py-string">'back'</tt><tt class="py-op">:</tt> <tt class="py-string">"#d0d0d0"</tt><tt class="py-op">,</tt> <tt class="py-string">'fg1'</tt><tt class="py-op">:</tt> <tt class="py-string">"#000000"</tt><tt class="py-op">,</tt> <tt class="py-string">'fg2'</tt><tt class="py-op">:</tt> <tt class="py-string">"#80ff80"</tt><tt class="py-op">,</tt> <tt class="py-string">'fg3'</tt><tt class="py-op">:</tt> <tt class="py-string">"#ff8080"</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">        <tt class="py-name">x</tt><tt class="py-op">,</tt> <tt class="py-name">y</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_width</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_height</tt> <tt class="py-op">=</tt> <tt class="py-name">widget</tt><tt class="py-op">.</tt><tt class="py-name">get_allocation</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-comment">#print "_width=%.1f, _height=%.1f" % (self._width, self._height)</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-name">yawScale</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_width</tt> <tt class="py-op">/</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_yawFov</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">        <tt class="py-name">pitchScale</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_height</tt> <tt class="py-op">/</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_pitchFov</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_scale</tt> <tt class="py-op">=</tt> <tt class="py-name">min</tt><tt class="py-op">(</tt><tt class="py-name">yawScale</tt><tt class="py-op">,</tt> <tt class="py-name">pitchScale</tt><tt class="py-op">)</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt class="py-comment">#print "yawScale=%f, pitchScale=%f, scale=%f" % (yawScale, pitchScale, self._scale)</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+</div><a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"> </tt>
+<a name="ShootingArea._expose_cb"></a><div id="ShootingArea._expose_cb-def"><a name="L119"></a><tt class="py-lineno">119</tt> <a class="py-toggle" href="#" id="ShootingArea._expose_cb-toggle" onclick="return toggle('ShootingArea._expose_cb');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="papywizard.view.shootingArea.ShootingArea-class.html#_expose_cb">_expose_cb</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">widget</tt><tt class="py-op">,</tt> <tt class="py-param">event</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ShootingArea._expose_cb-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ShootingArea._expose_cb-expanded"><a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-docstring">""" Called when the drawing area is exposed.</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-docstring">        This is where to implement all drawing stuff.</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt> </tt>
+</div><a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"> </tt>
+<a name="ShootingArea.refresh"></a><div id="ShootingArea.refresh-def"><a name="L126"></a><tt class="py-lineno">126</tt> <a class="py-toggle" href="#" id="ShootingArea.refresh-toggle" onclick="return toggle('ShootingArea.refresh');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="papywizard.view.shootingArea.ShootingArea-class.html#refresh">refresh</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ShootingArea.refresh-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ShootingArea.refresh-expanded"><a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">        <tt class="py-docstring">""" Refresh the shooting area</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">        <tt class="py-comment">#print "refresh()"</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">queue_draw_area</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_width</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_height</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"> </tt>
+<a name="ShootingArea.add_pict"></a><div id="ShootingArea.add_pict-def"><a name="L132"></a><tt class="py-lineno">132</tt> <a class="py-toggle" href="#" id="ShootingArea.add_pict-toggle" onclick="return toggle('ShootingArea.add_pict');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="papywizard.view.shootingArea.ShootingArea-class.html#add_pict">add_pict</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">yawIndex</tt><tt class="py-op">,</tt> <tt class="py-param">pitchIndex</tt><tt class="py-op">,</tt> <tt class="py-param">status</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ShootingArea.add_pict-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ShootingArea.add_pict-expanded"><a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">        <tt class="py-docstring">""" Add a pict at yaw/pitch coordinates.</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-docstring">        @param yawIndex: pict yaw position index</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-docstring">        @type yawIndex: int</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"><tt class="py-docstring">        @param pitchIndex: pict pitch position index</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt class="py-docstring">        @type pitchIndex: int</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-docstring">        @param status: status of the shooting at this position ('ok', 'error')</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-docstring">        @type status: str</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">        <tt class="py-comment">#print "add_pict(yawIndex=%d, pitchIndex=%d)" % (yawIndex, pitchIndex)</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_picts</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">yawIndex</tt><tt class="py-op">,</tt> <tt class="py-name">pitchIndex</tt><tt class="py-op">,</tt> <tt class="py-name">status</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Method papywizard.view.shootingArea.ShootingArea.refresh()=papywizard.view.shootingArea.ShootingArea-class.html#refresh"><a title="papywizard.view.shootingArea.ShootingArea.refresh" class="py-name" href="#" onclick="return doclink('link-9', 'refresh', 'link-9');">refresh</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"> </tt>
+<a name="ShootingArea.clear"></a><div id="ShootingArea.clear-def"><a name="L148"></a><tt class="py-lineno">148</tt> <a class="py-toggle" href="#" id="ShootingArea.clear-toggle" onclick="return toggle('ShootingArea.clear');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="papywizard.view.shootingArea.ShootingArea-class.html#clear">clear</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ShootingArea.clear-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ShootingArea.clear-expanded"><a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt class="py-docstring">""" Clear the shooting area</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">        <tt class="py-comment">#print "clear()"</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_picts</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="papywizard.view.shootingArea.ShootingArea.refresh" class="py-name" href="#" onclick="return doclink('link-10', 'refresh', 'link-9');">refresh</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"> </tt>
+<a name="ShootingArea._set_colors"></a><div id="ShootingArea._set_colors-def"><a name="L155"></a><tt class="py-lineno">155</tt> <a class="py-toggle" href="#" id="ShootingArea._set_colors-toggle" onclick="return toggle('ShootingArea._set_colors');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="papywizard.view.shootingArea.ShootingArea-class.html#_set_colors">_set_colors</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">colors</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ShootingArea._set_colors-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ShootingArea._set_colors-expanded"><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">        <tt class="py-comment">#print "set_colors()"</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-keyword">for</tt> <tt class="py-name">widget</tt><tt class="py-op">,</tt> <tt class="py-name">color</tt> <tt class="py-keyword">in</tt> <tt class="py-name">colors</tt><tt class="py-op">.</tt><tt class="py-name">iteritems</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">            <tt class="py-keyword">exec</tt> <tt class="py-string">"self._%s = gtk.gdk.GC(self.window)"</tt> <tt class="py-op">%</tt> <tt class="py-name">widget</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">            <tt class="py-keyword">exec</tt> <tt class="py-string">"self._%s.set_rgb_fg_color(gtk.gdk.color_parse('%s'))"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">widget</tt><tt class="py-op">,</tt> <tt class="py-name">color</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Fri Sep 19 20:35:25 2008
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,972 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>papywizard.model.mosaic.Mosaic</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;papywizard ::
+        <a href="papywizard.model-module.html">Package&nbsp;model</a> ::
+        <a href="papywizard.model.mosaic-module.html">Module&nbsp;mosaic</a> ::
+        Class&nbsp;Mosaic
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="papywizard.model.mosaic.Mosaic-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Mosaic</h1><p class="nomargin-top"><span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_papywiza_34" name="uml_class_diagram_for_papywiza_34">
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#cameraOrientation" title="papywizard.model.mosaic.Mosaic.cameraOrientation" alt="" coords="17,103,148,121"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#cr" title="papywizard.model.mosaic.Mosaic.cr" alt="" coords="17,121,148,140"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#initialDirection" title="papywizard.model.mosaic.Mosaic.initialDirection" alt="" coords="17,140,148,159"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#overlap" title="papywizard.model.mosaic.Mosaic.overlap" alt="" coords="17,159,148,177"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#overlapSquare" title="papywizard.model.mosaic.Mosaic.overlapSquare" alt="" coords="17,177,148,196"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#pitchFov" title="papywizard.model.mosaic.Mosaic.pitchFov" alt="" coords="17,196,148,215"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#pitchNbPicts" title="papywizard.model.mosaic.Mosaic.pitchNbPicts" alt="" coords="17,215,148,233"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#pitchRealOverlap" title="Recompute real pitch overlap." alt="" coords="17,233,148,252"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#startFrom" title="papywizard.model.mosaic.Mosaic.startFrom" alt="" coords="17,252,148,271"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#yawFov" title="papywizard.model.mosaic.Mosaic.yawFov" alt="" coords="17,271,148,289"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#yawNbPicts" title="papywizard.model.mosaic.Mosaic.yawNbPicts" alt="" coords="17,289,148,308"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#yawRealOverlap" title="Recompute real yaw overlap." alt="" coords="17,308,148,327"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#__init__" title="Init the Mosaic object." alt="" coords="17,329,148,348"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html#iterPositions" title="Iterate over all (yaw, pitch) positions." alt="" coords="17,348,148,367"/>
+<area shape="rect" href="papywizard.model.mosaic.Mosaic-class.html" title="Mosaic model." alt="" coords="16,85,149,368"/>
+<area shape="rect" href="papywizard.model.scan.Scan-class.html#totalNbPicts" title="Workarround to have totalNbPicts property working in subclasses." alt="" coords="44,28,121,47"/>
+<area shape="rect" href="papywizard.model.scan.Scan-class.html" title="Scan model." alt="" coords="43,11,123,56"/>
+</map>
+  <img src="uml_class_diagram_for_papywiza_34.gif" alt='' usemap="#uml_class_diagram_for_papywiza_34" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>Mosaic model.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getCR"></a><span class="summary-sig-name">__getCR</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__getCR">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getCameraOrientation"></a><span class="summary-sig-name">__getCameraOrientation</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__getCameraOrientation">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getInitialDirection"></a><span class="summary-sig-name">__getInitialDirection</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__getInitialDirection">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getOverlap"></a><span class="summary-sig-name">__getOverlap</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__getOverlap">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getOverlapSquare"></a><span class="summary-sig-name">__getOverlapSquare</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__getOverlapSquare">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getPitchFov"></a><span class="summary-sig-name">__getPitchFov</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__getPitchFov">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getPitchNbPicts"></a><span class="summary-sig-name">__getPitchNbPicts</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__getPitchNbPicts">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getPitchRealOverlap"></a><span class="summary-sig-name">__getPitchRealOverlap</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Recompute real pitch overlap.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__getPitchRealOverlap">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getStartFrom"></a><span class="summary-sig-name">__getStartFrom</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__getStartFrom">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getYawFov"></a><span class="summary-sig-name">__getYawFov</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__getYawFov">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getYawNbPicts"></a><span class="summary-sig-name">__getYawNbPicts</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__getYawNbPicts">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__getYawRealOverlap"></a><span class="summary-sig-name">__getYawRealOverlap</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Recompute real yaw overlap.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__getYawRealOverlap">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">camera</span>)</span><br />
+      Init the Mosaic object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__setCR"></a><span class="summary-sig-name">__setCR</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">cr</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__setCR">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__setCameraOrientation"></a><span class="summary-sig-name">__setCameraOrientation</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">cameraOrientation</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__setCameraOrientation">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__setInitialDirection"></a><span class="summary-sig-name">__setInitialDirection</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">initialDirection</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__setInitialDirection">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__setOverlap"></a><span class="summary-sig-name">__setOverlap</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">overlap</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__setOverlap">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__setOverlapSquare"></a><span class="summary-sig-name">__setOverlapSquare</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">overlapSquare</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__setOverlapSquare">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__setStartFrom"></a><span class="summary-sig-name">__setStartFrom</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">startFrom</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__setStartFrom">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#_getTotalNbPicts" class="summary-sig-name" onclick="show_private();">_getTotalNbPicts</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Compute the total number of pictures.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic._getTotalNbPicts">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#iterPositions" class="summary-sig-name">iterPositions</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Iterate over all (yaw, pitch) positions.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.iterPositions">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__str__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="papywizard.model.mosaic.Mosaic-class.html#cameraOrientation" class="summary-name">cameraOrientation</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="papywizard.model.mosaic.Mosaic-class.html#cr" class="summary-name">cr</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="papywizard.model.mosaic.Mosaic-class.html#initialDirection" class="summary-name">initialDirection</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="papywizard.model.mosaic.Mosaic-class.html#overlap" class="summary-name">overlap</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="papywizard.model.mosaic.Mosaic-class.html#overlapSquare" class="summary-name">overlapSquare</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="papywizard.model.mosaic.Mosaic-class.html#pitchFov" class="summary-name">pitchFov</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="papywizard.model.mosaic.Mosaic-class.html#pitchNbPicts" class="summary-name">pitchNbPicts</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="papywizard.model.mosaic.Mosaic-class.html#pitchRealOverlap" class="summary-name">pitchRealOverlap</a><br />
+      Recompute real pitch overlap.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="papywizard.model.mosaic.Mosaic-class.html#startFrom" class="summary-name">startFrom</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="papywizard.model.mosaic.Mosaic-class.html#yawFov" class="summary-name">yawFov</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="papywizard.model.mosaic.Mosaic-class.html#yawNbPicts" class="summary-name">yawNbPicts</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="papywizard.model.mosaic.Mosaic-class.html#yawRealOverlap" class="summary-name">yawRealOverlap</a><br />
+      Recompute real yaw overlap.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="papywizard.model.scan.Scan-class.html">scan.Scan</a></code></b>:
+      <code><a href="papywizard.model.scan.Scan-class.html#totalNbPicts">totalNbPicts</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">camera</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Init the Mosaic object.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>camera</code></strong> ({Camera}) - camera object</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_getTotalNbPicts"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_getTotalNbPicts</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic._getTotalNbPicts">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Compute the total number of pictures.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="papywizard.model.scan.Scan-class.html#_getTotalNbPicts" onclick="show_private();">scan.Scan._getTotalNbPicts</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="iterPositions"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">iterPositions</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="papywizard.model.mosaic-pysrc.html#Mosaic.iterPositions">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Iterate over all (yaw, pitch) positions.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="papywizard.model.scan.Scan-class.html#iterPositions">scan.Scan.iterPositions</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== PROPERTY DETAILS ==================== -->
+<a name="section-PropertyDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Property Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-PropertyDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="cameraOrientation"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">cameraOrientation</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__getCameraOrientation" class="summary-sig-name" onclick="show_private();">__getCameraOrientation</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__setCameraOrientation" class="summary-sig-name" onclick="show_private();">__setCameraOrientation</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">cameraOrientation</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="cr"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">cr</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__getCR" class="summary-sig-name" onclick="show_private();">__getCR</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__setCR" class="summary-sig-name" onclick="show_private();">__setCR</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">cr</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="initialDirection"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">initialDirection</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__getInitialDirection" class="summary-sig-name" onclick="show_private();">__getInitialDirection</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__setInitialDirection" class="summary-sig-name" onclick="show_private();">__setInitialDirection</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">initialDirection</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="overlap"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">overlap</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__getOverlap" class="summary-sig-name" onclick="show_private();">__getOverlap</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__setOverlap" class="summary-sig-name" onclick="show_private();">__setOverlap</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">overlap</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="overlapSquare"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">overlapSquare</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__getOverlapSquare" class="summary-sig-name" onclick="show_private();">__getOverlapSquare</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__setOverlapSquare" class="summary-sig-name" onclick="show_private();">__setOverlapSquare</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">overlapSquare</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="pitchFov"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">pitchFov</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__getPitchFov" class="summary-sig-name" onclick="show_private();">__getPitchFov</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">Total pitch FoV</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="pitchNbPicts"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">pitchNbPicts</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__getPitchNbPicts" class="summary-sig-name" onclick="show_private();">__getPitchNbPicts</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">Pitch nb picts</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="pitchRealOverlap"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">pitchRealOverlap</h3>
+  <p>Recompute real pitch overlap.</p>
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__getPitchRealOverlap" class="summary-sig-name" onclick="show_private();">__getPitchRealOverlap</a>(<span class="summary-sig-arg">self</span>)</span>
+        - Recompute real pitch overlap.
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">Pitch real overlap</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="startFrom"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">startFrom</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__getStartFrom" class="summary-sig-name" onclick="show_private();">__getStartFrom</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__setStartFrom" class="summary-sig-name" onclick="show_private();">__setStartFrom</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">startFrom</span>)</span>
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="yawFov"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">yawFov</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__getYawFov" class="summary-sig-name" onclick="show_private();">__getYawFov</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">Total yaw FoV</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="yawNbPicts"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">yawNbPicts</h3>
+  
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__getYawNbPicts" class="summary-sig-name" onclick="show_private();">__getYawNbPicts</a>(<span class="summary-sig-arg">self</span>)</span>
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">Yaw nb picts</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="yawRealOverlap"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">yawRealOverlap</h3>
+  <p>Recompute real yaw overlap.</p>
+  <dl class="fields">
+    <dt>Get Method:</dt>
+    <dd class="value"><span class="summary-sig"><a href="papywizard.model.mosaic.Mosaic-class.html#__getYawRealOverlap" class="summary-sig-name" onclick="show_private();">__getYawRealOverlap</a>(<span class="summary-sig-arg">self</span>)</span>
+        - Recompute real yaw overlap.
+    </dd>
+    <dt>Set Method:</dt>
+    <dd class="value"><table><tr><td><pre class="variable">
+<code class="variable-quote">'</code><code class="variable-string">Yaw real overlap</code><code class="variable-quote">'</code>
+</pre></td></tr></table>
+
+    </dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Fri Sep 19 20:35:22 2008
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

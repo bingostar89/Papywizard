@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>trunk.papywizard.hardware.axis.AbstractAxis</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;trunk ::
+        <a href="trunk.papywizard-module.html">Package&nbsp;papywizard</a> ::
+        <a href="trunk.papywizard.hardware-module.html">Package&nbsp;hardware</a> ::
+        <a href="trunk.papywizard.hardware.axis-module.html">Module&nbsp;axis</a> ::
+        Class&nbsp;AbstractAxis
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class AbstractAxis</h1><p class="nomargin-top"><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_trunk_pa_22" name="uml_class_diagram_for_trunk_pa_22">
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#__init__" title="Init the axis." alt="" coords="17,36,236,55"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#init" title="Init the axis hardware." alt="" coords="17,55,236,73"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#reset" title="Reset the axis hardware." alt="" coords="17,73,236,92"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#setOrigin" title="Set current axis positions as origin." alt="" coords="17,92,236,111"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#setLimit" title="Set the minus limit." alt="" coords="17,111,236,129"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#clearLimits" title="Clear all limits." alt="" coords="17,129,236,148"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#read" title="Return the current position of axis." alt="" coords="17,148,236,167"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#drive" title="Drive the axis." alt="" coords="17,167,236,185"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#stop" title="stop drive axis." alt="" coords="17,185,236,204"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#waitEndOfDrive" title="Wait for end of drive." alt="" coords="17,204,236,223"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#startJog" title="Start axis in specified direction." alt="" coords="17,223,236,241"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#waitStop" title="Wait until axis does not move anymore (inertia)." alt="" coords="17,241,236,260"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#getStatus" title="Return the status of the axis." alt="" coords="17,260,236,279"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#setOutput" title="Set souput to level." alt="" coords="17,279,236,297"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AbstractAxis-class.html" title="Abstract axis." alt="" coords="16,11,237,299"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.Axis-class.html" title="Hardware axis." alt="" coords="47,328,87,355"/>
+<area shape="rect" href="trunk.papywizard.hardware.axis.AxisSimulation-class.html" title="Simulated hardware axis." alt="" coords="137,328,239,355"/>
+</map>
+  <img src="uml_class_diagram_for_trunk_pa_22.gif" alt='' usemap="#uml_class_diagram_for_trunk_pa_22" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>Abstract axis.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num</span>)</span><br />
+      Init the axis.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#_checkLimits" class="summary-sig-name" onclick="show_private();">_checkLimits</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pos</span>)</span><br />
+      Check if position is in axis limits.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis._checkLimits">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="init"></a><span class="summary-sig-name">init</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Init the axis hardware.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.init">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="reset"></a><span class="summary-sig-name">reset</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Reset the axis hardware.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.reset">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#setOrigin" class="summary-sig-name">setOrigin</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Set current axis positions as origin.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.setOrigin">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#setLimit" class="summary-sig-name">setLimit</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dir_</span>,
+        <span class="summary-sig-arg">limit</span>)</span><br />
+      Set the minus limit.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.setLimit">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="clearLimits"></a><span class="summary-sig-name">clearLimits</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Clear all limits.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.clearLimits">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">float</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#read" class="summary-sig-name">read</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the current position of axis.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.read">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#drive" class="summary-sig-name">drive</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">pos</span>,
+        <span class="summary-sig-arg">inc</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">wait</span>=<span class="summary-sig-default">True</span>)</span><br />
+      Drive the axis.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.drive">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="stop"></a><span class="summary-sig-name">stop</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      stop drive axis.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.stop">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="waitEndOfDrive"></a><span class="summary-sig-name">waitEndOfDrive</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Wait for end of drive.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.waitEndOfDrive">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#startJog" class="summary-sig-name">startJog</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">dir_</span>)</span><br />
+      Start axis in specified direction.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.startJog">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="waitStop"></a><span class="summary-sig-name">waitStop</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Wait until axis does not move anymore (inertia).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.waitStop">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="getStatus"></a><span class="summary-sig-name">getStatus</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the status of the axis.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.getStatus">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.hardware.axis.AbstractAxis-class.html#setOutput" class="summary-sig-name">setOutput</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">level</span>)</span><br />
+      Set souput to level.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.setOutput">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__str__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">num</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Init the axis.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>num</code></strong> (int) - axis num (1: yaw, 2: pitch)</li>
+    </ul></dd>
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="_checkLimits"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_checkLimits</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pos</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis._checkLimits">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Check if position is in axis limits.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pos</code></strong> (float) - position to check</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="setOrigin"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setOrigin</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.setOrigin">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set current axis positions as origin.</p>
+  <p>Use offset.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="setLimit"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setLimit</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">dir_</span>,
+        <span class="sig-arg">limit</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.setLimit">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set the minus limit.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>dir_</code></strong> (char) - direction to limit ('+', '-')</li>
+        <li><strong class="pname"><code>limit</code></strong> (float) - minus limit to set</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="read"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">read</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.read">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return the current position of axis.</p>
+  <dl class="fields">
+    <dt>Returns: float</dt>
+        <dd>position, in &#233;</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="drive"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">drive</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">pos</span>,
+        <span class="sig-arg">inc</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">wait</span>=<span class="sig-default">True</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.drive">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Drive the axis.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>pos</code></strong> (float) - position to reach, in &#233;</li>
+        <li><strong class="pname"><code>inc</code></strong> (bool) - if True, pos is an increment</li>
+        <li><strong class="pname"><code>wait</code></strong> (boot) - if True, wait for end of movement, returns immediatly otherwise.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="startJog"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">startJog</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">dir_</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.startJog">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Start axis in specified direction.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>dir_</code></strong> (char) - direction ('+', '-')</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="setOutput"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">setOutput</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">level</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.hardware.axis-pysrc.html#AbstractAxis.setOutput">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set souput to level.</p>
+  <p>The output of the V axis is wired to the shoot opto. Using thie method
+  on the other axis does nothing.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>level</code></strong> (int) - level to set to shoot output</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Fri Sep 19 20:29:19 2008
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

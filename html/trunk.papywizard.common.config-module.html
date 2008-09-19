@@ -134,14 +134,14 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="__revision__"></a><span class="summary-name">__revision__</span> = <code title="'$Id: config.py 486 2008-09-08 19:12:45Z fma $'"><code class="variable-quote">'</code><code class="variable-string">$Id: config.py 486 2008-09-08 19:12:45Z fma $</code><code class="variable-quote">'</code></code>
+        <a name="__revision__"></a><span class="summary-name">__revision__</span> = <code title="'$Id: config.py 578 2008-09-19 17:44:16Z fma $'"><code class="variable-quote">'</code><code class="variable-string">$Id: config.py 578 2008-09-19 17:44:16Z fma $</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="VERSION"></a><span class="summary-name">VERSION</span> = <code title="'0.99'"><code class="variable-quote">'</code><code class="variable-string">0.99</code><code class="variable-quote">'</code></code>
+        <a name="VERSION"></a><span class="summary-name">VERSION</span> = <code title="'1.0'"><code class="variable-quote">'</code><code class="variable-string">1.0</code><code class="variable-quote">'</code></code>
     </td>
   </tr>
 <tr>
@@ -242,11 +242,11 @@
         <a href="trunk.papywizard.common.config-module.html#PRESET" class="summary-name">PRESET</a> = <code title="{'3 + 6 + 12 + 6 + 3 (28mm)': [(30.0, 70.0),
                                (150.0, 70.0),
                                (270.0, 70.0),
-                               (0.0, 40.0),
-                               (60.0, 40.0),
-                               (120.0, 40.0),
-                               (180.0, 40),
+                               (300.0, 40.0),
                                (240.0, 40.0),
+                               (180.0, 40.0),
+                               (120.0, 40.0),
+                               (60.0, 40.0),
 ..."><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">3 + 6 + 12 + 6 + 3 (28mm)</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-group">[</code><code class="variable-group">(</code>30.0<code class="variable-op">, </code>70.0<code class="variable-group">)</code><code class="variable-op">, </code><code class="variable-group">(</code>150.0<code class="variable-op">, </code><code class="variable-ellipsis">...</code></code>
     </td>
   </tr>
@@ -276,7 +276,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="DATA_FILE"></a><span class="summary-name">DATA_FILE</span> = <code title="'papywizard-%s.xml'"><code class="variable-quote">'</code><code class="variable-string">papywizard-%s.xml</code><code class="variable-quote">'</code></code>
+        <a name="LOGGER_MAX_COUNT_LINE"></a><span class="summary-name">LOGGER_MAX_COUNT_LINE</span> = <code title="100">100</code>
     </td>
   </tr>
 <tr>
@@ -548,11 +548,11 @@
 <code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">3 + 6 + 12 + 6 + 3 (28mm)</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-group">[</code><code class="variable-group">(</code>30.0<code class="variable-op">, </code>70.0<code class="variable-group">)</code><code class="variable-op">,</code>
                                <code class="variable-group">(</code>150.0<code class="variable-op">, </code>70.0<code class="variable-group">)</code><code class="variable-op">,</code>
                                <code class="variable-group">(</code>270.0<code class="variable-op">, </code>70.0<code class="variable-group">)</code><code class="variable-op">,</code>
-                               <code class="variable-group">(</code>0.0<code class="variable-op">, </code>40.0<code class="variable-group">)</code><code class="variable-op">,</code>
-                               <code class="variable-group">(</code>60.0<code class="variable-op">, </code>40.0<code class="variable-group">)</code><code class="variable-op">,</code>
-                               <code class="variable-group">(</code>120.0<code class="variable-op">, </code>40.0<code class="variable-group">)</code><code class="variable-op">,</code>
-                               <code class="variable-group">(</code>180.0<code class="variable-op">, </code>40<code class="variable-group">)</code><code class="variable-op">,</code>
+                               <code class="variable-group">(</code>300.0<code class="variable-op">, </code>40.0<code class="variable-group">)</code><code class="variable-op">,</code>
                                <code class="variable-group">(</code>240.0<code class="variable-op">, </code>40.0<code class="variable-group">)</code><code class="variable-op">,</code>
+                               <code class="variable-group">(</code>180.0<code class="variable-op">, </code>40.0<code class="variable-group">)</code><code class="variable-op">,</code>
+                               <code class="variable-group">(</code>120.0<code class="variable-op">, </code>40.0<code class="variable-group">)</code><code class="variable-op">,</code>
+                               <code class="variable-group">(</code>60.0<code class="variable-op">, </code>40.0<code class="variable-group">)</code><code class="variable-op">,</code>
 <code class="variable-ellipsis">...</code>
 </pre></td></tr></table>
 </dd>
@@ -658,7 +658,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon Sep 15 15:49:08 2008
+    Generated by Epydoc 3.0.1 on Fri Sep 19 20:29:18 2008
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

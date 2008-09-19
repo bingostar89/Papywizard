@@ -65,23 +65,25 @@
 <!-- ==================== CLASS DESCRIPTION ==================== -->
 <h1 class="epydoc">Class HeadSimulation</h1><p class="nomargin-top"><span class="codelink"><a href="trunk.papywizard.hardware.head-pysrc.html#HeadSimulation">source&nbsp;code</a></span></p>
 <center>
-<center>  <map id="uml_class_diagram_for_trunk_pa_26" name="uml_class_diagram_for_trunk_pa_26">
-<area shape="rect" href="trunk.papywizard.hardware.head.HeadSimulation-class.html#__init__" title="Init the object." alt="" coords="48,260,224,279"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.HeadSimulation-class.html#init" title="Init the head." alt="" coords="48,279,224,297"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.HeadSimulation-class.html#shutdown" title="Shut down the hardware." alt="" coords="48,297,224,316"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.HeadSimulation-class.html" title="Class for simulated panohead hardware." alt="" coords="47,235,225,317"/>
+<center>  <map id="uml_class_diagram_for_trunk_pa_30" name="uml_class_diagram_for_trunk_pa_30">
+<area shape="rect" href="trunk.papywizard.hardware.head.HeadSimulation-class.html#__init__" title="Init the object." alt="" coords="48,297,224,316"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.HeadSimulation-class.html#init" title="Init the head." alt="" coords="48,316,224,335"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.HeadSimulation-class.html#shutdown" title="Shut down the hardware." alt="" coords="48,335,224,353"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.HeadSimulation-class.html" title="Class for simulated panohead hardware." alt="" coords="47,272,225,355"/>
 <area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#reset" title="Reseting hardware." alt="" coords="17,36,255,55"/>
 <area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#setOrigin" title="Set current axis positions as origin." alt="" coords="17,55,255,73"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#readPosition" title="Read current head position." alt="" coords="17,73,255,92"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#gotoPosition" title="Goto given position." alt="" coords="17,92,255,111"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#startAxis" title="Start an axis in the selected direction." alt="" coords="17,111,255,129"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#stopAxis" title="Stop the selected axis." alt="" coords="17,129,255,148"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#waitStopAxis" title="Wait until axis does not move anymore." alt="" coords="17,148,255,167"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#shoot" title="Take a picture." alt="" coords="17,167,255,185"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#panic" title="Stop all." alt="" coords="17,185,255,204"/>
-<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html" title="Class for panohead hardware." alt="" coords="16,11,256,205"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#setLimit" title="Set a limit." alt="" coords="17,73,255,92"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#clearLimits" title="Clear all limits." alt="" coords="17,92,255,111"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#readPosition" title="Read current head position." alt="" coords="17,111,255,129"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#gotoPosition" title="Goto given position." alt="" coords="17,129,255,148"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#startAxis" title="Start an axis in the selected direction." alt="" coords="17,148,255,167"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#stopAxis" title="Stop the selected axis." alt="" coords="17,167,255,185"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#waitStopAxis" title="Wait until axis does not move anymore." alt="" coords="17,185,255,204"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#shoot" title="Take a picture." alt="" coords="17,204,255,223"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html#panic" title="Stop all." alt="" coords="17,223,255,241"/>
+<area shape="rect" href="trunk.papywizard.hardware.head.Head-class.html" title="Class for panohead hardware." alt="" coords="16,11,256,243"/>
 </map>
-  <img src="uml_class_diagram_for_trunk_pa_26.gif" alt='' usemap="#uml_class_diagram_for_trunk_pa_26" ismap="ismap" class="graph-without-title" />
+  <img src="uml_class_diagram_for_trunk_pa_30.gif" alt='' usemap="#uml_class_diagram_for_trunk_pa_30" ismap="ismap" class="graph-without-title" />
 </center>
 </center>
 <hr />
@@ -160,10 +162,12 @@
   <tr>
     <td colspan="2" class="summary">
     <p class="indent-wrapped-lines"><b>Inherited from <code><a href="trunk.papywizard.hardware.head.Head-class.html">Head</a></code></b>:
+      <code><a href="trunk.papywizard.hardware.head.Head-class.html#clearLimits">clearLimits</a></code>,
       <code><a href="trunk.papywizard.hardware.head.Head-class.html#gotoPosition">gotoPosition</a></code>,
       <code><a href="trunk.papywizard.hardware.head.Head-class.html#panic">panic</a></code>,
       <code><a href="trunk.papywizard.hardware.head.Head-class.html#readPosition">readPosition</a></code>,
       <code><a href="trunk.papywizard.hardware.head.Head-class.html#reset">reset</a></code>,
+      <code><a href="trunk.papywizard.hardware.head.Head-class.html#setLimit">setLimit</a></code>,
       <code><a href="trunk.papywizard.hardware.head.Head-class.html#setOrigin">setOrigin</a></code>,
       <code><a href="trunk.papywizard.hardware.head.Head-class.html#shoot">shoot</a></code>,
       <code><a href="trunk.papywizard.hardware.head.Head-class.html#startAxis">startAxis</a></code>,
@@ -329,7 +333,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Mon Sep 15 15:49:10 2008
+    Generated by Epydoc 3.0.1 on Fri Sep 19 20:29:20 2008
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>trunk.papywizard.view.logBuffer.LogBuffer</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;trunk ::
+        <a href="trunk.papywizard-module.html">Package&nbsp;papywizard</a> ::
+        <a href="trunk.papywizard.view-module.html">Package&nbsp;view</a> ::
+        <a href="trunk.papywizard.view.logBuffer-module.html">Module&nbsp;logBuffer</a> ::
+        Class&nbsp;LogBuffer
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="trunk.papywizard.view.logBuffer.LogBuffer-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class LogBuffer</h1><p class="nomargin-top"><span class="codelink"><a href="trunk.papywizard.view.logBuffer-pysrc.html#LogBuffer">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_trunk_pa_39" name="uml_class_diagram_for_trunk_pa_39">
+<area shape="rect" href="trunk.papywizard.view.logBuffer.LogBuffer-class.html#__init__" title="Init the log buffer." alt="" coords="20,753,196,772"/>
+<area shape="rect" href="trunk.papywizard.view.logBuffer.LogBuffer-class.html#write" title="write a log message a the end of the buffer." alt="" coords="20,772,196,791"/>
+<area shape="rect" href="trunk.papywizard.view.logBuffer.LogBuffer-class.html#clear" title="Clear the log window." alt="" coords="20,791,196,809"/>
+<area shape="rect" href="trunk.papywizard.view.logBuffer.LogBuffer-class.html#flush" title="Dummy method." alt="" coords="20,809,196,828"/>
+<area shape="rect" href="trunk.papywizard.view.logBuffer.LogBuffer-class.html" title="Log buffer storage." alt="" coords="19,728,197,829"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.__gtype__" alt="" coords="17,377,199,396"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.tag_table" alt="" coords="17,396,199,415"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.add_mark" alt="" coords="17,417,199,436"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.add_selection_clipboard" alt="" coords="17,436,199,455"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.apply_tag" alt="" coords="17,455,199,473"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.apply_tag_by_name" alt="" coords="17,473,199,492"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.backspace" alt="" coords="17,492,199,511"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.begin_user_action" alt="" coords="17,511,199,529"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.copy_clipboard" alt="" coords="17,529,199,548"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.create_child_anchor" alt="" coords="17,548,199,567"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.create_mark" alt="" coords="17,567,199,585"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.create_tag" alt="" coords="17,585,199,604"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.cut_clipboard" alt="" coords="17,604,199,623"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.delete" alt="" coords="17,623,199,641"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.delete_interactive" alt="" coords="17,641,199,660"/>
+<area shape="rect" href="javascript:void(0);" title="gtk.TextBuffer.unregister_serialize_format" alt="" coords="17,679,199,697"/>
+<area shape="rect" href="javascript:void(0);" title="Object GtkTextBuffer" alt="" coords="16,360,200,699"/>
+<area shape="rect" href="javascript:void(0);" title="gobject.GObject.__grefcount__" alt="" coords="35,28,181,47"/>
+<area shape="rect" href="javascript:void(0);" title="cmp(x,y)" alt="" coords="35,49,181,68"/>
+<area shape="rect" href="javascript:void(0);" title="x.__delattr__(&#39;name&#39;) &lt;==&gt; del x.name" alt="" coords="35,68,181,87"/>
+<area shape="rect" href="javascript:void(0);" title="gobject.GObject.__gdoc__" alt="" coords="35,87,181,105"/>
+<area shape="rect" href="javascript:void(0);" title="gobject.GObject.__gobject_init__" alt="" coords="35,105,181,124"/>
+<area shape="rect" href="javascript:void(0);" title="hash(x)" alt="" coords="35,124,181,143"/>
+<area shape="rect" href="javascript:void(0);" title="gobject.GObject.__new__" alt="" coords="35,143,181,161"/>
+<area shape="rect" href="javascript:void(0);" title="repr(x)" alt="" coords="35,161,181,180"/>
+<area shape="rect" href="javascript:void(0);" title="x.__setattr__(&#39;name&#39;, value) &lt;==&gt; x.name = value" alt="" coords="35,180,181,199"/>
+<area shape="rect" href="javascript:void(0);" title="gobject.GObject.chain" alt="" coords="35,199,181,217"/>
+<area shape="rect" href="javascript:void(0);" title="gobject.GObject.connect" alt="" coords="35,217,181,236"/>
+<area shape="rect" href="javascript:void(0);" title="gobject.GObject.connect_after" alt="" coords="35,236,181,255"/>
+<area shape="rect" href="javascript:void(0);" title="gobject.GObject.connect_object" alt="" coords="35,255,181,273"/>
+<area shape="rect" href="javascript:void(0);" title="gobject.GObject.connect_object_after" alt="" coords="35,273,181,292"/>
+<area shape="rect" href="javascript:void(0);" title="gobject.GObject.weak_ref" alt="" coords="35,311,181,329"/>
+<area shape="rect" href="javascript:void(0);" title="Object GObject" alt="" coords="33,11,183,331"/>
+</map>
+  <img src="uml_class_diagram_for_trunk_pa_39.gif" alt='' usemap="#uml_class_diagram_for_trunk_pa_39" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>Log buffer storage.</p>
+  <p>Implement a log buffer, which automatically appends a log at the end, 
+  with the right color, and limit the buffer size to a specified value.</p>
+  <p>To be used within a gtk.TextView.</p>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.view.logBuffer.LogBuffer-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Init the log buffer.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.view.logBuffer-pysrc.html#LogBuffer.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.view.logBuffer.LogBuffer-class.html#write" class="summary-sig-name">write</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">logMessage</span>)</span><br />
+      write a log message a the end of the buffer.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.view.logBuffer-pysrc.html#LogBuffer.write">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="clear"></a><span class="summary-sig-name">clear</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Clear the log window.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.view.logBuffer-pysrc.html#LogBuffer.clear">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="trunk.papywizard.view.logBuffer.LogBuffer-class.html#flush" class="summary-sig-name">flush</a>()</span><br />
+      Dummy method.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="trunk.papywizard.view.logBuffer-pysrc.html#LogBuffer.flush">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>gtk.TextBuffer</code></b>:
+      <code>add_mark</code>,
+      <code>add_selection_clipboard</code>,
+      <code>apply_tag</code>,
+      <code>apply_tag_by_name</code>,
+      <code>backspace</code>,
+      <code>begin_user_action</code>,
+      <code>copy_clipboard</code>,
+      <code>create_child_anchor</code>,
+      <code>create_mark</code>,
+      <code>create_tag</code>,
+      <code>cut_clipboard</code>,
+      <code>delete</code>,
+      <code>delete_interactive</code>,
+      <code>delete_mark</code>,
+      <code>delete_mark_by_name</code>,
+      <code>delete_selection</code>,
+      <code>deserialize</code>,
+      <code>deserialize_get_can_create_tags</code>,
+      <code>deserialize_set_can_create_tags</code>,
+      <code>do_apply_tag</code>,
+      <code>do_begin_user_action</code>,
+      <code>do_changed</code>,
+      <code>do_delete_range</code>,
+      <code>do_end_user_action</code>,
+      <code>do_insert_child_anchor</code>,
+      <code>do_insert_pixbuf</code>,
+      <code>do_insert_text</code>,
+      <code>do_mark_deleted</code>,
+      <code>do_mark_set</code>,
+      <code>do_modified_changed</code>,
+      <code>do_remove_tag</code>,
+      <code>end_user_action</code>,
+      <code>get_bounds</code>,
+      <code>get_char_count</code>,
+      <code>get_copy_target_list</code>,
+      <code>get_deserialize_formats</code>,
+      <code>get_end_iter</code>,
+      <code>get_has_selection</code>,
+      <code>get_insert</code>,
+      <code>get_iter_at_child_anchor</code>,
+      <code>get_iter_at_line</code>,
+      <code>get_iter_at_line_index</code>,
+      <code>get_iter_at_line_offset</code>,
+      <code>get_iter_at_mark</code>,
+      <code>get_iter_at_offset</code>,
+      <code>get_line_count</code>,
+      <code>get_mark</code>,
+      <code>get_modified</code>,
+      <code>get_paste_target_list</code>,
+      <code>get_selection_bound</code>,
+      <code>get_selection_bounds</code>,
+      <code>get_serialize_formats</code>,
+      <code>get_slice</code>,
+      <code>get_start_iter</code>,
+      <code>get_tag_table</code>,
+      <code>get_text</code>,
+      <code>insert</code>,
+      <code>insert_at_cursor</code>,
+      <code>insert_child_anchor</code>,
+      <code>insert_interactive</code>,
+      <code>insert_interactive_at_cursor</code>,
+      <code>insert_pixbuf</code>,
+      <code>insert_range</code>,
+      <code>insert_range_interactive</code>,
+      <code>insert_with_tags</code>,
+      <code>insert_with_tags_by_name</code>,
+      <code>move_mark</code>,
+      <code>move_mark_by_name</code>,
+      <code>paste_clipboard</code>,
+      <code>place_cursor</code>,
+      <code>register_deserialize_format</code>,
+      <code>register_deserialize_tagset</code>,
+      <code>register_serialize_format</code>,
+      <code>register_serialize_tagset</code>,
+      <code>remove_all_tags</code>,
+      <code>remove_selection_clipboard</code>,
+      <code>remove_tag</code>,
+      <code>remove_tag_by_name</code>,
+      <code>select_range</code>,
+      <code>serialize</code>,
+      <code>set_modified</code>,
+      <code>set_text</code>,
+      <code>unregister_deserialize_format</code>,
+      <code>unregister_serialize_format</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>gobject.GObject</code></b>:
+      <code>__cmp__</code>,
+      <code>__delattr__</code>,
+      <code>__gdoc__</code>,
+      <code>__gobject_init__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>chain</code>,
+      <code>connect</code>,
+      <code>connect_after</code>,
+      <code>connect_object</code>,
+      <code>connect_object_after</code>,
+      <code>disconnect</code>,
+      <code>disconnect_by_func</code>,
+      <code>emit</code>,
+      <code>emit_stop_by_name</code>,
+      <code>freeze_notify</code>,
+      <code>get_data</code>,
+      <code>get_properties</code>,
+      <code>get_property</code>,
+      <code>handler_block</code>,
+      <code>handler_block_by_func</code>,
+      <code>handler_disconnect</code>,
+      <code>handler_is_connected</code>,
+      <code>handler_unblock</code>,
+      <code>handler_unblock_by_func</code>,
+      <code>notify</code>,
+      <code>props</code>,
+      <code>set_data</code>,
+      <code>set_properties</code>,
+      <code>set_property</code>,
+      <code>stop_emission</code>,
+      <code>thaw_notify</code>,
+      <code>weak_ref</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__getattribute__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__str__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>gtk.TextBuffer</code></b>:
+      <code>__gtype__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>gtk.TextBuffer</code></b>:
+      <code>tag_table</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>gobject.GObject</code></b>:
+      <code>__grefcount__</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.view.logBuffer-pysrc.html#LogBuffer.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Init the log buffer.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="write"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">write</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">logMessage</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.view.logBuffer-pysrc.html#LogBuffer.write">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>write a log message a the end of the buffer.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>logMessage</code></strong> (str) - log to write</li>
+    </ul></dd>
+  </dl>
+<div class="fields">      <p><strong>To Do:</strong>
+        check if we are in the GTK main thread; ff not, need to use the 
+    serializer
+      </p>
+</div></td></tr></table>
+</div>
+<a name="flush"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">flush</span>()</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="trunk.papywizard.view.logBuffer-pysrc.html#LogBuffer.flush">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Dummy method.</p>
+  <p>Needed to use this class as logging stream.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="trunk.papywizard-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Fri Sep 19 20:29:20 2008
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
