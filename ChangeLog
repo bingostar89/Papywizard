@@ -5,23 +5,25 @@ ChangeLog
 x bug fix
 
 xxxx-xx-xx Version SVN
+
+2008-09-19 Version 1.0
     + preset shooting mode for full spherical
-    + graphical progress (mosaic only)
+    + graphical progress
     - removed 360/180 buttons in mosaic mode
     x bug correction in number of pictures
-    + nice icons for buttons
+    + nice icons for buttons and menus
     + key shortcuts dynamically activate buttons
-    + added version in Help > About dialog
+    + version in Help > About dialog
     - removed view python modules
     + added hardware auto-connect config option
-    + custom xml data file for each shooting mode (partial) ???!!???
+    + custom data file name format
     - user config dir path is now ~/.config/papywizard/
-    + presets user config dir support (partial)
     x better hardware error handling
     + scan bluetooth devices
     x corrected data file format config path
     + custom xml data file format
-    + log viewer from GUI
+    + log viewer
+    + software limits
 
 2008-07-04 Version 0.9.1
     x fix a bug in nbPicts and 360/180 computations
