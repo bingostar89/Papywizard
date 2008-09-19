@@ -68,28 +68,26 @@ class ShootingArea(gtk.DrawingArea):
         self._width = 300
         self._height = 150
         self.set_size_request(self._width, self._height)
-        
+
         self._yawFov = None
         self._pitchFov = None
         self._yawCameraFov = None
         self._pitchCameraFov = None
         self._yawScale = None
         self._pitchScale = None
-        self._yawOffset = None
-        self._pitchOffset = None
-        
+
     def init(self, yawFov, pitchFov, yawCameraFov, pitchCameraFov):
         """ Init internal values.
 
         @param yawFov: yaw fov (°)
         @type yawFov: float
-        
+
         @param pitchFov: pitch fov (°)
         @type pitchFov: float
-        
+
         @param yawCameraFov: pict yaw fov (°)
         @type yawCameraFov: float
-        
+
         @param pitchCameraFov: pict pitch fov (°)
         @type pitchCameraFov: float
         """
@@ -105,7 +103,7 @@ class ShootingArea(gtk.DrawingArea):
     # Callbacks
     def _configure_cb(self, widget, event):
         """ Called when the drawing area changes size.
-        
+
         This callback is also the first called when creating the widget.
         """
         self._set_colors({'back': "#d0d0d0", 'fg1': "#000000", 'fg2': "#80ff80", 'fg3': "#ff8080"})
@@ -114,14 +112,13 @@ class ShootingArea(gtk.DrawingArea):
         yawScale = self._width / self._yawFov
         pitchScale = self._height / self._pitchFov
         self._scale = min(yawScale, pitchScale)
-        self._yawOffset = (self._width - self._yawFov * self._scale) / 2.
-        self._pitchOffset = (self._height - self._pitchFov * self._scale) / 2.
-        #print "yawScale=%f, pitchScale=%f, scale=%f, yawOffset=%f, pitchOffset=%f" % (yawScale, pitchScale, self._scale, self._yawOffset, self._pitchOffset)
+        #print "yawScale=%f, pitchScale=%f, scale=%f" % (yawScale, pitchScale, self._scale)
+
         return True
-        
+
     def _expose_cb(self, widget, event):
         """ Called when the drawing area is exposed.
-        
+
         This is where to implement all drawing stuff.
         """
         raise NotImplementedError
@@ -134,10 +131,10 @@ class ShootingArea(gtk.DrawingArea):
 
     def add_pict(self, yawIndex, pitchIndex):
         """ Add a pict at yaw/pitch coordinates.
-        
+
         @param yawIndex: pict yaw position index
         @type yawIndex: int
-        
+
         @param pitchIndex: pict pitch position index
         @type pitchIndex: int
         """

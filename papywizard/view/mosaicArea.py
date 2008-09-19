@@ -66,77 +66,89 @@ class MosaicArea(ShootingArea):
         """
         ShootingArea.__init__(self)
 
-        self._yawStart = None
-        self._yawEnd = None
-        self._pitchStart = None
-        self._pitchEnd = None
-        self._yawOverlap = None
-        self._pitchOverlap = None
-        
+        self.__yawOffset = None
+        self.__pitchOffset = None
+        self.__yawStart = None
+        self.__yawEnd = None
+        self.__pitchStart = None
+        self.__pitchEnd = None
+        self.__yawOverlap = None
+        self.__pitchOverlap = None
+
     def init(self, yawStart, yawEnd, pitchStart, pitchEnd, yawFov, pitchFov, yawCameraFov, pitchCameraFov, yawOverlap, pitchOverlap):
         """ Init internal values.
-        
+
         @param yawStart: yaw start position (°)
         @type yawStart: float
-        
+
         @param yawEnd: yaw end position (°)
         @type yawEnd: float
-        
+
         @param pitchStart: pitch start position (°)
         @type pitchStart: float
-        
+
         @param pitchEnd: pitch end position (°)
         @type pitchEnd: float
-        
+
         @param yawFov: yaw fov (°)
         @type yawFov: float
-        
+
         @param pitchFov: pitch fov (°)
         @type pitchFov: float
-        
+
         @param yawCameraFov: pict yaw fov (°)
         @type yawCameraFov: float
-        
+
         @param pitchCameraFov: pict pitch fov (°)
         @type pitchCameraFov: float
-        
+
         @param yawOverlap: yaw real overlap (ratio)
         @type yawOverlap: float
-        
+
         @param pitchOverlap: pitch overlap (ratio)
         @type pitchOverlap: float
         """
-        self._yawStart = yawStart
-        self._yawEnd = yawEnd
-        self._pitchStart = pitchStart
-        self._pitchEnd = pitchEnd
-        self._yawOverlap = yawOverlap
-        self._pitchOverlap = pitchOverlap
+        self.__yawStart = yawStart
+        self.__yawEnd = yawEnd
+        self.__pitchStart = pitchStart
+        self.__pitchEnd = pitchEnd
+        self.__yawOverlap = yawOverlap
+        self.__pitchOverlap = pitchOverlap
+
         ShootingArea.init(self, yawFov, pitchFov, yawCameraFov, pitchCameraFov)
 
     # Callbacks
+    def _configure_cb(self, widget, event):
+        ShootingArea._configure_cb(self, widget, event)
+
+        self.__yawOffset = (self._width - self._yawFov * self._scale) / 2.
+        self.__pitchOffset = (self._height - self._pitchFov * self._scale) / 2.
+        #print "yawOffset=%f, pitchOffset=%f" % (self.__yawOffset, self.__pitchOffset)
+
+        return True
+
     def _expose_cb(self, widget, event):
-        
+
         # Draw background
-        xBack = int(round(self._yawOffset))
-        yBack = int(round(self._pitchOffset))
-        wBack = self._width - int(round(2 * self._yawOffset))
-        hBack = self._height - int(round(2 * self._pitchOffset))
+        xBack = int(round(self.__yawOffset))
+        yBack = int(round(self.__pitchOffset))
+        wBack = self._width - int(round(2 * self.__yawOffset))
+        hBack = self._height - int(round(2 * self.__pitchOffset))
         self.window.draw_rectangle(self._back, True, xBack, yBack, wBack, hBack)
         #print "xBack=%d, yBack=%d, wBack=%d, hBack=%d" % (xBack, yBack, wBack, hBack)
-                                                
+
         # Draw picts
         for i, (yaw, pitch) in enumerate(self._picts):
-            if cmp(self._yawEnd, self._yawStart) > 0:
-                yaw -= self._yawStart
+            if cmp(self.__yawEnd, self.__yawStart) > 0:
+                yaw -= self.__yawStart
             else:
-                yaw -= self._yawEnd
-            if cmp(self._pitchEnd, self._pitchStart) > 0:
-                pitch -= self._pitchStart
+                yaw -= self.__yawEnd
+            if cmp(self.__pitchEnd, self.__pitchStart) > 0:
+                pitch -= self.__pitchStart
             else:
-                pitch -= self._pitchEnd
-            x = int(round(yaw * self._scale)) + int(round(self._yawOffset))
-            y = int(round(pitch * self._scale)) + int(round(self._pitchOffset))
+                pitch -= self.__pitchEnd
+            x = int(round(yaw * self._scale + self.__yawOffset))
+            y = int(round(pitch * self._scale + self.__pitchOffset))
             w = int(round(self._yawCameraFov * self._scale))
             h = int(round(self._pitchCameraFov * self._scale))
             y = self._height - y - h
@@ -147,13 +159,13 @@ class MosaicArea(ShootingArea):
             w -= 2
             h -= 2
             self.window.draw_rectangle(self._fg2, True, x, y, w, h)
-            
-        # Draw 360°x180° area
-        xFull = int(round(self._width / 2.)) - int(round(180 * self._scale))
-        yFull = int(round(self._height / 2.)) - int(round(90 * self._scale))
-        wFull = int(round(360 * self._scale))
-        hFull = int(round(180 * self._scale))
-        #print "xFull=%.1f, yFull=%.1f, wFull=%.1f, hFull=%.1f" % (xFull, yFull, wFull, hFull)
-        self.window.draw_rectangle(self._fg3, False, xFull, yFull, wFull, hFull)
-        
+
+        ## Draw 360°x180° area
+        #xFull = int(round(self._width / 2. - 180 * self._scale))
+        #yFull = int(round(self._height / 2. - 90 * self._scale))
+        #wFull = int(round(360 * self._scale))
+        #hFull = int(round(180 * self._scale))
+        ##print "xFull=%.1f, yFull=%.1f, wFull=%.1f, hFull=%.1f" % (xFull, yFull, wFull, hFull)
+        #self.window.draw_rectangle(self._fg3, False, xFull, yFull, wFull, hFull)
+
         return False
