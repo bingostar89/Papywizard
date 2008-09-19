@@ -109,7 +109,7 @@ class LoggerController(AbstractController):
         """ Set the associated buffer.
 
         @param buffer: associated buffer
-        @type: L{TextBuffer <gtk>}
+        @type buffer: gtk.TextBuffer
         """
         self.loggerTextview.set_buffer(buffer)
 
