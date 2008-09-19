@@ -101,10 +101,11 @@ class MainController(AbstractController):
         self._gladeFile = "mainWindow.glade"
         self._signalDict = {"on_quitMenuitem_activate": gtk.main_quit,
                             "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuitemToggled,
-                            "on_hardwareSetLimitYawPlusMenuitem_activate": self.__onHardwareSetLimitYawPlusMenuitemActivate,
                             "on_hardwareSetLimitYawMinusMenuitem_activate": self.__onHardwareSetLimitYawMinusMenuitemActivate,
+                            "on_hardwareSetLimitYawPlusMenuitem_activate": self.__onHardwareSetLimitYawPlusMenuitemActivate,
                             "on_hardwareSetLimitPitchPlusMenuitem_activate": self.__onHardwareSetLimitPitchPlusMenuitemActivate,
                             "on_hardwareSetLimitPitchMinusMenuitem_activate": self.__onHardwareSetLimitPitchMinusMenuitemActivate,
+                            "on_hardwareClearLimitsMenuitem_activate": self.__onHardwareClearLimitsMenuitemActivate,
                             "on_hardwareResetMenuitem_activate": self.__onHardwareResetMenuitemActivate,
                             "on_helpViewLogMenuitem_activate": self.__onHelpViewLogMenuitemActivate,
                             "on_helpAboutMenuitem_activate": self.__onHelpAboutMenuitemActivate,
@@ -436,29 +437,34 @@ class MainController(AbstractController):
         else:
             self.__goToSimulationMode()
 
-    def __onHardwareSetLimitYawPlusMenuitemActivate(self, widget):
-        yaw, pitch = self._model.hardware.readPosition()
-        self._model.hardware.setLimit('yaw', '+', yaw)
-        Logger().debug("MainController.__onHardwareSetLimitYawPlusMenuitemActivate(): yaw plus limit set to %.1f" % yaw)
-        self.setStatusbarMessage("Yaw plus limit set", 10)
-
     def __onHardwareSetLimitYawMinusMenuitemActivate(self, widget):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('yaw', '-', yaw)
         Logger().debug("MainController.__onHardwareSetLimitYawMinusMenuitemActivate() yaw minus limit set to %.1f" % yaw)
         self.setStatusbarMessage("Yaw minus limit set", 10)
 
+    def __onHardwareSetLimitYawPlusMenuitemActivate(self, widget):
+        yaw, pitch = self._model.hardware.readPosition()
+        self._model.hardware.setLimit('yaw', '+', yaw)
+        Logger().debug("MainController.__onHardwareSetLimitYawPlusMenuitemActivate(): yaw plus limit set to %.1f" % yaw)
+        self.setStatusbarMessage("Yaw plus limit set", 10)
+
     def __onHardwareSetLimitPitchPlusMenuitemActivate(self, widget):
         yaw, pitch = self._model.hardware.readPosition()
-        self._model.hardware.setLimit('pitch', '+', yaw)
+        self._model.hardware.setLimit('pitch', '+', pitch)
         Logger().debug("MainController.__onHardwareSetLimitPitchPlusMenuitemActivate() pitch plus limit set to %.1f" % pitch)
         self.setStatusbarMessage("Pitch plus limit set", 10)
 
     def __onHardwareSetLimitPitchMinusMenuitemActivate(self, widget):
         yaw, pitch = self._model.hardware.readPosition()
-        self._model.hardware.setLimit('pitch', '-', yaw)
+        self._model.hardware.setLimit('pitch', '-', pitch)
         Logger().debug("MainController.__onHardwareSetLimitPitchMinusMenuitemActivate() pitch minus limit set to %.1f" % pitch)
         self.setStatusbarMessage("Pitch minus limit set", 10)
+
+    def __onHardwareClearLimitsMenuitemActivate(self, widget):
+        Logger().trace("MainController.__onHardwareClearLimitsMenuitemActivate()")
+        self._model.hardware.clearLimits()
+        self.setStatusbarMessage("Limits cleared", 10)
 
     def __onHardwareResetMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHardwareResetMenuitemActivate()")
