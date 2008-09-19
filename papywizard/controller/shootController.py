@@ -235,9 +235,9 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__onDoneButtonClicked()")
         self.dialog.response(0)
 
-    def __addPicture(self, yaw, pitch):
+    def __addPicture(self, yaw, pitch, status):
         Logger().trace("ShootController.__addPicture()")
-        self.shootingArea.add_pict(yaw, pitch)
+        self.shootingArea.add_pict(yaw, pitch, status)
 
     # Real work
     def __startShooting(self):
