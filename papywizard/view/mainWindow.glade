@@ -179,7 +179,7 @@
                     <child>
                       <widget class="GtkImageMenuItem" id="helpViewLogMenuitem">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">View Log...</property>
+                        <property name="label" translatable="yes">View log...</property>
                         <property name="use_underline">True</property>
                         <signal name="activate" handler="on_helpViewLogMenuitem_activate"/>
                         <child internal-child="image">
