@@ -110,8 +110,8 @@ class ShootController(AbstractController):
                                    self._model.camera.getPitchFov(self._model.mosaic.cameraOrientation),
                                    self._model.mosaic.yawRealOverlap, self._model.mosaic.pitchRealOverlap)
         else:
-            self.shootingArea.init(500., 250., # fov
-                                   120., 120.) # camera fov
+            self.shootingArea.init(440., 220., # visible fov
+                                    16.,  16.) # camera fov
         self.shootingArea.show()
         self.progressbar = self.wTree.get_widget("progressbar")
         self.manualShootCheckbutton = self.wTree.get_widget("manualShootCheckbutton")
@@ -206,30 +206,20 @@ class ShootController(AbstractController):
             Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
 
     def __onManualShootCheckbuttonToggled(self, widget):
-        """ Manual shoot checkbutton togled.
-        """
         Logger().trace("ShootController.____onManualShootCheckbuttonToggled()")
         switch = self.manualShootCheckbutton.get_active()
         self._model.setManualShoot(switch)
 
     def __onDataFileEnableCheckbuttonToggled(self, widget):
-        """ Data file enable checkbutton togled.
-        """
         Logger().trace("ShootController.__onDataFileEnableCheckbuttonToggled()")
         switch = self.dataFileEnableCheckbutton.get_active()
         ConfigManager().setBoolean('Data', 'DATA_FILE_ENABLE', self.dataFileEnableCheckbutton.get_active())
 
     def __onStartButtonClicked(self, widget):
-        """ Start button has been clicked.
-
-        The model's start() method is called in a thread
-        """
         Logger().trace("ShootController.__startButtonClicked()")
         self.__startShooting()
 
     def __onSuspendResumeButtonClicked(self, widget):
-        """ SuspendResume button has been clicked.
-        """
         Logger().trace("ShootController.__suspendResumeButtonClicked()")
         if self._model.isShooting(): # Should always be true here, but...
             if not self._model.isSuspended():
@@ -238,14 +228,10 @@ class ShootController(AbstractController):
                 self.__resumeShooting()
 
     def __onStopButtonClicked(self, widget):
-        """ Stop button has been clicked.
-        """
         Logger().trace("ShootController.__stopButtonClicked()")
         self.__stopShooting()
 
     def __onDoneButtonClicked(self, widget):
-        """ Done button has been clicked.
-        """
         Logger().trace("ShootController.__onDoneButtonClicked()")
         self.dialog.response(0)
 
@@ -255,14 +241,8 @@ class ShootController(AbstractController):
 
     # Real work
     def __startShooting(self):
-        def checkEnd():
-            """ Check end of shooting.
-
-            This method executes once, then registers itself in the TKinter
-            event handler to be execute again after a delay, and exits.
-            This way, GUI events can be handled while model is shooting.
-            """
-            Logger().trace("ShootController.__startShooting().checkEnd()")
+        def monitorShooting():
+            Logger().trace("ShootController.__startShooting().monitorShooting()")
 
             # Check if model suspended (manual shoot mode)
             if self._model.isSuspended():
@@ -272,8 +252,8 @@ class ShootController(AbstractController):
 
             # Check end of shooting
             if not self._model.isShooting():
-                Logger().debug("checkEnd(): model not shooting anymore")
-                
+                Logger().debug("monitorShooting(): model not shooting anymore")
+
                 # Check status
                 #if self._model.error:
                     #messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
@@ -281,7 +261,7 @@ class ShootController(AbstractController):
                     #messageDialog.format_secondary_text("Please report bug (include logs)")
                     #messageDialog.run()
                     #messageDialog.destroy()
-                    
+
                 self.dataFileEnableCheckbutton.set_sensitive(True)
                 self.startButton.set_sensitive(True)
                 self.suspendResumeLabel.set_text("Suspend")
@@ -290,8 +270,8 @@ class ShootController(AbstractController):
                 self.doneButton.set_sensitive(True)
                 self.refreshView()
                 thread.join()
-                Logger().debug("ShootController.__startShooting().checkEnd(): model thread over")
-                
+                Logger().debug("ShootController.__startShooting().monitorShooting(): model thread over")
+
                 return False # Stop execution by Gtk timeout
 
             self.refreshView() # Can conflict with Spy?
@@ -310,8 +290,8 @@ class ShootController(AbstractController):
         #self._model.startEvent.wait() # Does not work under Nokia
         time.sleep(0.2)
 
-        # Check end of shooting
-        gobject.timeout_add(200, checkEnd)
+        # Monitor shooting process
+        gobject.timeout_add(200, monitorShooting)
 
     def __suspendShooting(self):
         self._model.suspend()
@@ -328,16 +308,6 @@ class ShootController(AbstractController):
         # todo: use condition
         while self._model.isShooting():
             time.sleep(0.1)
-
-    def run(self):
-        """ Run the dialog.
-        """
-        self.dialog.run()
-        
-    def destroyView(self):
-        """ Destroy the view.
-        """
-        self.dialog.destroy()
 
     def refreshView(self):
         self.progressbar.set_fraction(self._model.progress)
