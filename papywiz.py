@@ -61,6 +61,7 @@ from papywizard.common.serializer import Serializer
 from papywizard.common.exception import HardwareError
 from papywizard.model.shooting import Shooting
 from papywizard.controller.mainController import MainController
+from papywizard.controller.tracebackController import TracebackController
 from papywizard.controller.spy import Spy
 from papywizard.hardware.head import Head, HeadSimulation
 if config.VIEW3D_ENABLE:
@@ -114,8 +115,7 @@ try:
     Logger().info("Papywizard app stopped")
 
 except Exception, msg:
-    messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                      message_format="Internal error")
-    messageDialog.format_secondary_text(str(msg))
-    messageDialog.run()
-    messageDialog.destroy()
+    tracebackDialog = TracebackController()
+    tracebackDialog.run()
+    tracebackDialog.destroyView()
+
