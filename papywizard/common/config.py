@@ -67,6 +67,7 @@ except OSError, (errno, errmsg):
         raise
 CONFIG_FILE = "papywizard.conf"
 USER_CONFIG_FILE = os.path.join(USER_CONFIG_DIR, CONFIG_FILE)
+USER_GUIDE_URL = "http://trac.gbiloba.org/papywizard/wiki/UserGuide"
 
 SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3.}
 SENSOR_RATIOS_INDEX = {'3:2': 0, '4:3': 1, '5:4': 5./4.,
