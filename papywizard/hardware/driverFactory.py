@@ -78,7 +78,7 @@ class DriverFactory(object):
                 return USBDriver()
             else:
                 raise HardwareError("Unknown '%s' driver type" % type_)
-        except:
+        except Exception, msg:
             Logger().exception("DriverFactory.create()")
-            raise HardwareError("Can't create '%s' driver" % type_)
+            raise HardwareError(str(msg))
             

@@ -54,7 +54,6 @@ __revision__ = "$Id: shootController.py 333 2008-06-25 21:08:42Z fma $"
 import time
 import thread
 
-import bluetooth
 import pygtk
 pygtk.require("2.0")
 import gtk
@@ -136,6 +135,7 @@ class BluetoothChooserController(AbstractController):
             try:
 
                 # Move to model
+                import bluetooth
                 self.__bluetoothDevices = bluetooth.discover_devices(lookup_names=True)
                 self.__refreshStatus = True
             except Exception, msg:
@@ -171,10 +171,10 @@ class BluetoothChooserController(AbstractController):
             self.bluetoothAddressCombobox.set_active(0)
             Logger().info("Bluetooth available devices: %s" % self.__bluetoothDevices)
         else:
-            Logger().critical("Internal error. See logs for more details")
+            Logger().error("Can't scan bluetooth\n%s" % self.__refreshErrorMessage)
             messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                              message_format="Can't scan bluetooth devices")
-            messageDialog.set_title("Internal error")
+                                              message_format="Can't scan bluetooth")
+            messageDialog.set_title("Error")
             messageDialog.format_secondary_text(self.__refreshErrorMessage)
             messageDialog.run()
             messageDialog.destroy()

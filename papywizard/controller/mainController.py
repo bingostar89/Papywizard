@@ -72,7 +72,7 @@ from papywizard.controller.helpAboutController import HelpAboutController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.manualMoveController import ManualMoveController
 from papywizard.controller.shootController import ShootController
-from papywizard.controller.connectController import ConnectController
+from papywizard.controller.waitController import WaitController
 from papywizard.controller.spy import Spy
 from papywizard.view.logBuffer import LogBuffer
 
@@ -626,7 +626,7 @@ class MainController(AbstractController):
         Logger().debug("MainController.__switchToRealHardwareCallback(): flag=%s" % flag)
         self.__connectStatus = flag
         self.__connectErrorMessage = message
-        self.__connectController.closeBanner()
+        self.__waitController.closeBanner()
 
     # Real work
     def __connectToHardware(self):
@@ -646,9 +646,9 @@ class MainController(AbstractController):
 
         # Open connection banner (todo: use real banner on Nokia). Make a special object
         self.__connectStatus = None
-        self.__connectController = ConnectController(self, self._model)
-        self.__connectBanner = self.__connectController.connectBanner
-        self.__connectBanner.show()
+        self.__waitController = WaitController(self, self._model)
+        self.__waitBanner = self.__waitController.waitBanner
+        self.__waitBanner.show()
 
         # Launch connexion thread
         thread.start_new_thread(self._model.switchToRealHardware, ())
@@ -666,10 +666,10 @@ class MainController(AbstractController):
             Logger().info("Now connected to real hardware")
             self.setStatusbarMessage("Now connected to real hardware", 5)
         else:
-            Logger().critical("Internal error. See logs for more details")
+            Logger().error("Can't connect to hardware\n%s" % self.__connectErrorMessage)
             messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                              message_format="Connection to hardware failed")
-            messageDialog.set_title("Internal error")
+                                              message_format="Can't connect to hardware")
+            messageDialog.set_title("Error")
             messageDialog.format_secondary_text(self.__connectErrorMessage)
             messageDialog.run()
             messageDialog.destroy()
