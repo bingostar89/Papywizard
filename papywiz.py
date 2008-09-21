@@ -67,47 +67,55 @@ if config.VIEW3D_ENABLE:
     from papywizard.view3D.view3D import View3D
 
 
-Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
-Logger().info("Starting Papywizard app...")
+try:
+    Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
+    Logger().info("Starting Papywizard app...")
+    
+    # Threads
+    gtk.gdk.threads_init()
+    gtk.gdk.threads_enter()
+    
+    # Create hardware and model
+    head = Head()
+    headSimulation = HeadSimulation()
+    model = Shooting(head, headSimulation)
+    
+    # Launch spy thread
+    Spy(model, config.SPY_FAST_REFRESH)
+    Spy().start()
+    
+    # Create 3D view
+    if config.VIEW3D_ENABLE:
+        view3D = View3D("Papywizard", scale=(1, 1, 1))
+        Spy().newPosSignal.connect(view3D.draw)
+        #Spy().newPosSignal.connect(view3D.viewFromCamera)
+    
+    # Create serializer, for async events
+    serializer = Serializer()
+    gobject.timeout_add(50, serializer.processWork)
+    
+    # Create main controller
+    controller = MainController(serializer, model)
+    
+    # Enter in Gtk mainloop
+    gtk.main()
+    
+    # App closed
+    Spy().stop()
+    Spy().join()
+    model.shutdown()
+    
+    # Threads
+    gtk.gdk.threads_leave()
+    
+    #if config.VIEW3D_ENABLE:
+        #view3D.terminate() # vpython has not yet a way to terminate the mainloop
 
-# Threads
-gtk.gdk.threads_init()
-gtk.gdk.threads_enter()
+    Logger().info("Papywizard app stopped")
 
-# Create hardware and model
-head = Head()
-headSimulation = HeadSimulation()
-model = Shooting(head, headSimulation)
-
-# Launch spy thread
-Spy(model, config.SPY_FAST_REFRESH)
-Spy().start()
-
-# Create 3D view
-if config.VIEW3D_ENABLE:
-    view3D = View3D("Papywizard", scale=(1, 1, 1))
-    Spy().newPosSignal.connect(view3D.draw)
-    #Spy().newPosSignal.connect(view3D.viewFromCamera)
-
-# Create serializer, for async events
-serializer = Serializer()
-gobject.timeout_add(50, serializer.processWork)
-
-# Create main controller
-controller = MainController(serializer, model)
-
-# Enter in Gtk mainloop
-gtk.main()
-
-# App closed
-Spy().stop()
-Spy().join()
-model.shutdown()
-
-# Threads
-gtk.gdk.threads_leave()
-
-#if config.VIEW3D_ENABLE:
-    #view3D.terminate() # vpython has not yet a way to terminate the mainloop
-
-Logger().info("Papywizard app stopped")
+except Exception, msg:
+    messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
+                                      message_format="Internal error")
+    messageDialog.format_secondary_text(str(msg))
+    messageDialog.run()
+    messageDialog.destroy()
