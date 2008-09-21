@@ -53,7 +53,7 @@ __revision__ = "$Id$"
 
 import time
 import thread
-import os.path
+import webbrowser
 
 import pygtk
 pygtk.require("2.0")
@@ -68,14 +68,13 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.loggerController import LoggerController
+from papywizard.controller.helpAboutController import HelpAboutController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.manualMoveController import ManualMoveController
 from papywizard.controller.shootController import ShootController
 from papywizard.controller.connectController import ConnectController
 from papywizard.controller.spy import Spy
 from papywizard.view.logBuffer import LogBuffer
-
-path = os.path.dirname(__file__) # Remove as soon as help dialog has a controller???
 
 
 class MainController(AbstractController):
@@ -107,6 +106,7 @@ class MainController(AbstractController):
                             "on_hardwareSetLimitPitchMinusMenuitem_activate": self.__onHardwareSetLimitPitchMinusMenuitemActivate,
                             "on_hardwareClearLimitsMenuitem_activate": self.__onHardwareClearLimitsMenuitemActivate,
                             "on_hardwareResetMenuitem_activate": self.__onHardwareResetMenuitemActivate,
+                            "on_helpManualMenuitem_activate": self.__onHelpManualMenuitemActivate,
                             "on_helpViewLogMenuitem_activate": self.__onHelpViewLogMenuitemActivate,
                             "on_helpAboutMenuitem_activate": self.__onHelpAboutMenuitemActivate,
 
@@ -472,6 +472,10 @@ class MainController(AbstractController):
         self._model.hardware.reset()
         self.setStatusbarMessage("Hardware has been reseted", 10)
 
+    def __onHelpManualMenuitemActivate(self, widget):
+        Logger().trace("MainController.__onHelpManualMenuitemActivate()")
+        webbrowser.open(config.USER_GUIDE_URL)
+
     def __onHelpViewLogMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHelpViewLogMenuitemActivate()")
         controller = LoggerController(self)
@@ -482,18 +486,9 @@ class MainController(AbstractController):
 
     def __onHelpAboutMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHelpAboutMenuitemActivate()")
-
-        # Set the Glade file
-        gladeFile = os.path.join(path, os.path.pardir, "view", "helpAboutDialog.glade")
-        self.wTree = gtk.glade.XML(gladeFile) # Use a controller
-
-        # Retreive usefull widgets
-        helpAboutDialog = self.wTree.get_widget("helpAboutDialog")
-
-        # Set version
-        helpAboutDialog.set_version(config.VERSION)
+        helpAboutDialog = HelpAboutController(self)
         helpAboutDialog.run()
-        helpAboutDialog.destroy()
+        helpAboutDialog.destroyView()
 
     def __onModeMosaicRadiobuttonToggled(self, widget):
         Logger().trace("MainController.__onModeMosaicRadiobuttonToggled()")
