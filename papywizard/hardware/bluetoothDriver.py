@@ -78,7 +78,7 @@ class BluetoothDriver(BusDriver):
                 self._init = True
             except Exception, msg:
                 Logger().exception("BluetoothDriver.init()")
-                raise HardwareError("Can't init BluetoothDriver object\n\n%s" % msg)
+                raise HardwareError(msg)
             else:
                 Logger().debug("BluetoothDriver.init(): successfully connected to %s" % address)
 

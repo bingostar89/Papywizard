@@ -137,9 +137,6 @@ class BluetoothChooserController(AbstractController):
 
                 # Move to model
                 self.__bluetoothDevices = bluetooth.discover_devices(lookup_names=True)
-                #time.sleep(3)
-                #self.__bluetoothDevices = [('00:50:C2:58:56:6B', 'AIRserial4 55293'),
-                                           #('00:16:41:9E:5F:83', 'FODINGERPORT')]
                 self.__refreshStatus = True
             except Exception, msg:
                 Logger().exception("refreshBluetoothList()")
@@ -148,7 +145,6 @@ class BluetoothChooserController(AbstractController):
             self.__waitController.closeBanner()
 
         Logger().info("Scanning available bluetooth devices...")
-        #self.__parent.setStatusbarMessage("Scanning available bluetooth devices...")
         #self.refreshButton.set_sensitive(False)
 
         # Open wait banner (todo: use real banner on Nokia). Make a special object
@@ -174,15 +170,14 @@ class BluetoothChooserController(AbstractController):
                 self.__bluetoothListStore.append([address, name])
             self.bluetoothAddressCombobox.set_active(0)
             Logger().info("Bluetooth available devices: %s" % self.__bluetoothDevices)
-            #self.__parent.setStatusbarMessage("Bluetooth devices scanned.", 5)
         else:
-            Logger().error("Can't scan bluetooth devices(%s)" % self.__refreshErrorMessage)
+            Logger().critical("Internal error. See logs for more details")
             messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                              message_format="Scanning bluetooth devices failed")
+                                              message_format="Can't scan bluetooth devices")
+            messageDialog.set_title("Internal error")
             messageDialog.format_secondary_text(self.__refreshErrorMessage)
             messageDialog.run()
             messageDialog.destroy()
-            #self.__parent.setStatusbarMessage()
 
         #self.refreshButton.set_sensitive(True)
 
