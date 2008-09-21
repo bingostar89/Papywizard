@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.3 on Sat Apr 26 21:34:40 2008 -->
+<!--Generated with glade3 3.4.5 on Sun Sep 21 20:25:21 2008 -->
 <glade-interface>
-  <widget class="GtkAboutDialog" id="helpAboutDialog">
+  <widget class="GtkAboutDialog" id="dialog">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">À propos de Papywizard</property>
     <property name="resizable">False</property>
