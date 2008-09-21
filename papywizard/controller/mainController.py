@@ -666,9 +666,10 @@ class MainController(AbstractController):
             Logger().info("Now connected to real hardware")
             self.setStatusbarMessage("Now connected to real hardware", 5)
         else:
-            Logger().error("Connection to hardware failed (%s)" % self.__connectErrorMessage)
+            Logger().critical("Internal error. See logs for more details")
             messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
                                               message_format="Connection to hardware failed")
+            messageDialog.set_title("Internal error")
             messageDialog.format_secondary_text(self.__connectErrorMessage)
             messageDialog.run()
             messageDialog.destroy()
