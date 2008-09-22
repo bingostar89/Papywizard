@@ -7,20 +7,25 @@
             nadir
         </tooltip>
         <shoot>
-            <pict yaw="  0.0" pitch="  0.0">
-            <pict yaw=" 90.0" pitch="  0.0">
-            <pict yaw="180.0" pitch="  0.0">
-            <pict yaw="270.0" pitch="  0.0">
-            <pict yaw="270.0" pitch=" 90.0">
-            <pict yaw="270.0" pitch="-90.0">
+            <pict yaw="0." pitch="0." />
+            <pict yaw="90." pitch="0." />
+            <pict yaw="180." pitch="0." />
+            <pict yaw="270." pitch="0." />
+            <pict yaw="None" pitch="90." />
+            <pict yaw="None" pitch="-90." />
         </shoot>
     </preset>
     <preset name="3@-15 + Z">
         <tooltip>
+            Nikkor 10.5mm
             3 picts @ -15°
             zenith
         </tooltip>
         <shoot>
+            <pict yaw="0." pitch="-15." />
+            <pict yaw="120." pitch="-15." />
+            <pict yaw="240." pitch="-15." />
+            <pict yaw="None" pitch="90." />
         </shoot>
     </preset>
     <preset name="6@30 + 6@-15 + N">
@@ -30,40 +35,61 @@
             nadir
         </tooltip>
         <shoot>
+            <pict yaw="0." pitch="30." />
+            <pict yaw="60." pitch="30." />
+            <pict yaw="120." pitch="30." />
+            <pict yaw="180." pitch="30." />
+            <pict yaw="240." pitch="30." />
+            <pict yaw="300." pitch="30." />
+            <pict yaw="300." pitch="-15." />
+            <pict yaw="240." pitch="-15." />
+            <pict yaw="180." pitch="-15." />
+            <pict yaw="120." pitch="-15." />
+            <pict yaw="60." pitch="-15." />
+            <pict yaw="0." pitch="-15." />
+            <pict yaw="None" pitch="-90." />
         </shoot>
     </preset>
     <preset name="3 + 6 + 12 + 6 + 3 (28mm)">
         <tooltip>
-            for 28mm equiv. lenses
+            28mm equiv. lenses
             3  picts @ +70°
             6  picts @ +40°
-            12 picts @ -10°/+10°
+            12 picts @  10°/-10°
             6  picts @ -40°
             3  picts @ -70°
         </tooltip>
         <shoot>
+            <pict yaw="30." pitch="70." />
+            <pict yaw="150." pitch="70." />
+            <pict yaw="270." pitch="70." />
+            <pict yaw="300." pitch="40." />
+            <pict yaw="240." pitch="40." />
+            <pict yaw="180." pitch="40." />
+            <pict yaw="120." pitch="40." />
+            <pict yaw="60." pitch="40." />
+            <pict yaw="0." pitch="40." />
+            <pict yaw="0." pitch="10." />
+            <pict yaw="30." pitch="-10." />
+            <pict yaw="60." pitch="10." />
+            <pict yaw="90." pitch="-10." />
+            <pict yaw="120." pitch="10." />
+            <pict yaw="150." pitch="-10." />
+            <pict yaw="180." pitch="10." />
+            <pict yaw="210." pitch="-10." />
+            <pict yaw="240." pitch="10." />
+            <pict yaw="270." pitch="-10." />
+            <pict yaw="300." pitch="10." />
+            <pict yaw="330." pitch="-10." />
+            <pict yaw="300." pitch="-40." />
+            <pict yaw="240." pitch="-40." />
+            <pict yaw="180." pitch="-40." />
+            <pict yaw="120." pitch="-40." />
+            <pict yaw="60." pitch="-40." />
+            <pict yaw="0." pitch="-40." />
+            <pict yaw="30." pitch="-70." />
+            <pict yaw="150." pitch="-70." />
+            <pict yaw="270." pitch="-70." />
         </shoot>
     </preset>
 </papywizard>
-
-<!--
-PRESET = {'4@0 + Z + N': [(  0.,   0.), (90., 0.), (180., 0.), (270., 0),
-                          (270.,  90.),
-                          (270., -90.)],
-          '3@-15 + Z': [(  0., -15.), (120., -15.), (240., -15.),
-                        (240.,  90.)],
-          '6@-15 + 6@30 + N': [(  0., -15.), ( 60., -15.), (120., -15.), (180., -15.), (240., -15.), (300., -15.),
-                               (300.,  30.), (240.,  30.), (180.,  30.), (120.,  30.), ( 60.,  30.), (  0.,  30.),
-                               (  0., -90.)],
-          '3 + 6 + 12 + 6 + 3 (28mm)': [(30.,  70.), (150.,  70.), (270.,  70.),
-                                        ( 0.,  40.), ( 60.,  40.), (120.,  40.), (180.,  40), (240.,  40.), (300.,  40.),
-                                        ( 0.,  10.), ( 30., -10.), ( 60.,  10.), ( 90., -10), (120.,  10.), (150., -10.), (180., 10), (210., -10.), (240., 10.), (270., -10), (300., 10.), (330., -10.),
-                                        ( 0., -40.), ( 60., -40.), (120., -40.), (180., -40), (240., -40.), (300., -40.),
-                                        (30., -70.), (150., -70.), (270., -70.)]}
-
-Faire un fichier contenant les preset fournis par defaut.
-Donner la possibilite de fournir des preset supplementaires :
-    - a mettre dans le repertoire .config/papywizard/presets (a creer !)
-    - un ou plusieurs preset par fichier; les presets utilisateur ecrasent ceux fournis
-
--->
