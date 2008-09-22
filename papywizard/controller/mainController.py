@@ -107,6 +107,7 @@ class MainController(AbstractController):
                             "on_hardwareClearLimitsMenuitem_activate": self.__onHardwareClearLimitsMenuitemActivate,
                             "on_hardwareResetMenuitem_activate": self.__onHardwareResetMenuitemActivate,
                             "on_helpManualMenuitem_activate": self.__onHelpManualMenuitemActivate,
+                            "on_helpWhatsThisMenuitem_activate": self.__onHelpWhatsThisMenuitemActivate,
                             "on_helpViewLogMenuitem_activate": self.__onHelpViewLogMenuitemActivate,
                             "on_helpAboutMenuitem_activate": self.__onHelpAboutMenuitemActivate,
 
@@ -477,6 +478,10 @@ class MainController(AbstractController):
     def __onHelpManualMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHelpManualMenuitemActivate()")
         webbrowser.open(config.USER_GUIDE_URL)
+
+    def __onHelpWhatsThisMenuitemActivate(self, widget):
+        Logger().trace("MainController.__onHelpWhatsThisMenuitemActivate()")
+        Logger().warning("Not yet implemented")
 
     def __onHelpViewLogMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHelpViewLogMenuitemActivate()")
