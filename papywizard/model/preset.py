@@ -54,16 +54,20 @@ __revision__ = "$Id: preset.py 307 2008-06-24 06:02:36Z fma $"
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
+from papywizard.common.presetManager import PresetManager
 from papywizard.model.scan import Scan
 
 
 class Preset(Scan):
     """ Preset model.
+
+    @todo: find another name (PresetScan)
     """
     def __init__(self):
         """ Init the Preset object.
         """
         super(Preset, self).__init__()
+        self.__presets = PresetManager().getPresets()
     
     def __getTemplate(self):
         """
@@ -78,23 +82,13 @@ class Preset(Scan):
     template = property(__getTemplate, __setTemplate, "Preset template")
 
     def iterPositions(self):
-        """ Iterate over all preset positions.
-        """
-        yawPrevious = 0.
-        pitchPrevious = 0.
-        for yaw, pitch in config.PRESET[self.template]:
-            if yaw is None:
-                yaw = yawPrevious
-            if pitch is None:
-                pitch = pitchPrevious
-            Logger().debug("Preset.iterPositions(): yaw=%.1f, pitch=%.1f" % (yaw, pitch))
-
-            yield yaw, pitch
-
-            yawPrevious, pitchPrevious = yaw, pitch
+        preset = self.__presets.getByName(self.template)
+        Logger().debug("PresetScan.__init__(): preset=%s" % preset)
+        return preset.iterPositions()
 
     # Properties
     def _getTotalNbPicts(self):
         """ Compute the total number of pictures.
         """
-        return len(config.PRESET[self.template])
+        preset = self.__presets.getByName(self.template)
+        return preset.getNbPicts()

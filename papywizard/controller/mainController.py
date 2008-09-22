@@ -65,6 +65,7 @@ import gobject
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
+from papywizard.common.presetManager import PresetManager
 from papywizard.common.exception import HardwareError
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.loggerController import LoggerController
@@ -202,10 +203,12 @@ class MainController(AbstractController):
         cell = gtk.CellRendererText()
         self.presetTemplateCombobox.pack_start(cell, True)
         #self.presetTemplateCombobox.add_attribute(cell, 'text', 0)
+        presets = PresetManager().getPresets()
         i = 0
         while True:
             try:
-                text = config.PRESET_INDEX[i]
+                preset = presets.getIndexByNum(i)
+                text = preset.getName()
                 self.presetTemplateCombobox.append_text(text)
                 i += 1
             except KeyError:
@@ -546,8 +549,9 @@ class MainController(AbstractController):
         self.setEndTogglebutton.set_active(False)
 
     def __onPresetTemplateComboboxChanged(self, widget):
-        Logger().trace("MainController.__onPresetTemplateComboboxChanged()")
-        self._model.preset.template = config.PRESET_INDEX[self.presetTemplateCombobox.get_active()]
+        presets = PresetManager().getPresets()
+        preset = presets.getIndexByNum(self.presetTemplateCombobox.get_active())
+        self._model.preset.template = preset.getName()
         Logger().debug("MainController.__onPresetTemplateComboboxChanged(): new preset template='%s'" % self._model.preset.template)
 
     def __onHardwareSetOriginButtonClicked(self, widget):
@@ -738,8 +742,9 @@ class MainController(AbstractController):
         self.pitchNbPictsLabel.set_text("%d" % self._model.mosaic.pitchNbPicts)
         self.yawRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.yawRealOverlap)))
         self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
+        presets = PresetManager().getPresets()
         try:
-            self.presetTemplateCombobox.set_active(config.PRESET_INDEX[self._model.preset.template])
+            self.presetTemplateCombobox.set_active(presets.getIndexByName(self._model.preset.template))
         except KeyError:
             self.presetTemplateCombobox.set_active(0)
 
