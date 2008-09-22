@@ -228,6 +228,8 @@ class Shooting(object):
                         Logger().debug("Shooting.start(): shooting %d/%d" % (pict + 1, self.camera.nbPicts))
                         self.sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
                         self.hardware.shoot(self.camera.timeValue)
+                        time.sleep(0.5) # ensure shutter is closed()
+
                         data.addPicture(pict + 1, yaw, pitch)
 
                         checkSuspendStop()
