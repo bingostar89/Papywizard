@@ -5,6 +5,9 @@ ChangeLog
 x bug fix
 
 xxxx-xx-xx Version SVN
+    + open on-line manual page in a web browser
+    + presets user config dir support
+    + global try/except statement with traceback in GUI
 
 2008-09-19 Version 1.0
     + preset shooting mode for full spherical
