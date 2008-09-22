@@ -52,7 +52,6 @@ Implements
 __revision__ = "$Id$"
 
 import os.path
-import sets
 import ConfigParser
 
 from papywizard.common import config
