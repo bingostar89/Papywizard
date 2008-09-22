@@ -42,7 +42,9 @@ Data management
 Implements
 ==========
 
- - Data
+- Data
+- MosaicData
+- Presetdata
 
 Usage
 =====
@@ -68,7 +70,7 @@ from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 
 
-class Data(object):
+class AbstractData(object):
     """ Manage the data.
     """
     def __init__(self):
@@ -77,6 +79,7 @@ class Data(object):
         #@param headerInfo: informations stored in the <header> section
         #@type headerInfo: dict
         """
+        super(AbstractData, self).__init__()
         date = time.strftime("%Y-%m-%d", time.localtime())
         time_ = time.strftime("%H:%M:%S", time.localtime())
         mode = self._getMode()
@@ -183,41 +186,6 @@ class Data(object):
         node = self._addNode(self._headerNode, 'shooting', mode=self._getMode())
         self._addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
 
-    #def createHeader(self, values):
-        #""" Create the header.
-
-        #@param values: values to put in the header
-        #@type values: dict
-        #"""
-        #Logger().debug("Data.createHeader(): values=%s" % values)
-
-        ## Shooting
-        #node = self._addNode(self._headerNode, 'shooting')
-        #self._addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
-        #self._addNode(node, 'overlap', minimum=values['overlap'],
-                                       #yaw=values['yawRealOverlap'],
-                                       #pitch=values['pitchRealOverlap'])
-        #self._addNode(node, 'cameraOrientation', values['cameraOrientation'])
-
-        ## Camera
-        #node = self._addNode(self._headerNode, 'camera')
-        #self._addNode(node, 'timeValue', values['timeValue'])
-        #self._addNode(node, 'nbPicts', values['nbPicts'])
-        #self._addNode(node, 'sensor', coef=values['sensorCoef'],
-                                      #ratio=values['sensorRatio'])
-
-        ## Lens
-        #node = self._addNode(self._headerNode, 'lens')
-        #self._addNode(node, 'focal', values['focal'])
-
-        ## Mode
-        #node = self._addNode(self._headerNode, 'mode', name=values['mode'])
-        #self._addNode(node, 'nbPicts', yaw=values['yawNbPicts'],
-                                       #pitch=values['pitchNbPicts'])
-
-        ## Serialize xml file
-        #self._serialize()
-
     def addPicture(self, num, yaw, pitch):
         """ Add a new picture node to shoot node.
 
@@ -235,6 +203,148 @@ class Data(object):
         self._pictId += 1
         self._addNode(node, 'time', time.ctime())
         self._addNode(node, 'position', yaw="%.1f" % yaw, pitch="%.1f" % pitch)
+
+        # Serialize xml file
+        self._serialize()
+
+
+class MosaicData(AbstractData):
+    """ Manage the data for mosaic.
+
+    <?xml version="1.0" ?>
+    <papywizard>
+        <header>
+            <shooting mode="mosaic">
+                <stabilizationDelay>0.5</stabilizationDelay>
+            </shooting>
+            <mosaic>
+                <nbPicts pitch="1" yaw="2"/>
+                <overlap minimum="0.25" pitch="1.00" yaw="0.58"/>
+                <cameraOrientation>portrait</cameraOrientation>
+            </mosaic>
+            <camera>
+                <timeValue>0.5</timeValue>
+                <nbPicts>2</nbPicts>
+                <sensor coef="1.6" ratio="3:2"/>
+            </camera>
+            <lens>
+                <focal>17.0</focal>
+            </lens>
+        </header>
+        <shoot>
+            <pict id="1" num="1">
+                <time>Wed Jun 25 10:37:16 2008</time>
+                <position pitch="0.0" yaw="0.0"/>
+            </pict>
+            <pict id="2" num="2">
+                <time>Wed Jun 25 10:37:17 2008</time>
+                <position pitch="0.0" yaw="0.0"/>
+            </pict>
+            <pict id="3" num="1">
+                <time>Wed Jun 25 10:37:20 2008</time>
+                <position pitch="0.0" yaw="20.1"/>
+            </pict>
+            <pict id="4" num="2">
+                <time>Wed Jun 25 10:37:21 2008</time>
+                <position pitch="0.0" yaw="20.1"/>
+            </pict>
+        </shoot>
+    </papywizard>
+    """
+    def _getMode(self):
+        """ Return the shooting mode.
+        """
+        return 'mosaic'
+
+    def createHeader(self, values):
+        super(MosaicData, self).createHeader(values)
+
+        # Mosaic
+        node = self._addNode(self._headerNode, 'mosaic')
+        self._addNode(node, 'nbPicts', yaw=values['yawNbPicts'],
+                                       pitch=values['pitchNbPicts'])
+        self._addNode(node, 'overlap', minimum=values['overlap'],
+                                       yaw=values['yawRealOverlap'],
+                                       pitch=values['pitchRealOverlap'])
+        self._addNode(node, 'cameraOrientation', values['cameraOrientation'])
+
+        # Camera
+        node = self._addNode(self._headerNode, 'camera')
+        self._addNode(node, 'timeValue', values['timeValue'])
+        self._addNode(node, 'nbPicts', values['nbPicts'])
+        self._addNode(node, 'sensor', coef=values['sensorCoef'],
+                                      ratio=values['sensorRatio'])
+
+        # Lens
+        node = self._addNode(self._headerNode, 'lens')
+        self._addNode(node, 'focal', values['focal'])
+
+        # Serialize xml file
+        self._serialize()
+
+
+class PresetData(AbstractData):
+    """ Manage the data for presets.
+
+    <?xml version="1.0" ?>
+    <papywizard>
+        <header>
+            <shooting mode="preset">
+                <stabilizationDelay>0.5</stabilizationDelay>
+            </shooting>
+            <preset template="xxxx"/>
+            </preset>
+            <camera>
+                <timeValue>0.5</timeValue>
+                <nbPicts>2</nbPicts>
+                <sensor coef="1.6" ratio="3:2"/>
+            </camera>
+            <lens>
+                <focal>17.0</focal>
+            </lens>
+        </header>
+        <shoot>
+            <pict id="1" num="1">
+                <time>Wed Jun 25 10:37:16 2008</time>
+                <position pitch="0.0" yaw="0.0"/>
+            </pict>
+            <pict id="2" num="2">
+                <time>Wed Jun 25 10:37:17 2008</time>
+                <position pitch="0.0" yaw="0.0"/>
+            </pict>
+            <pict id="3" num="1">
+                <time>Wed Jun 25 10:37:20 2008</time>
+                <position pitch="0.0" yaw="20.1"/>
+            </pict>
+            <pict id="4" num="2">
+                <time>Wed Jun 25 10:37:21 2008</time>
+                <position pitch="0.0" yaw="20.1"/>
+            </pict>
+        </shoot>
+    </papywizard>
+    """
+    def _getMode(self):
+        """ Return the shooting mode.
+        """
+        return 'preset'
+
+    def createHeader(self, values):
+        super(PresetData, self).createHeader(values)
+
+        # Preset
+        node = self._addNode(self._headerNode, 'preset', template=values['template'])
+        #self._addNode(node, 'template', values['template'])
+
+        # Camera
+        node = self._addNode(self._headerNode, 'camera')
+        self._addNode(node, 'timeValue', values['timeValue'])
+        self._addNode(node, 'nbPicts', values['nbPicts'])
+        self._addNode(node, 'sensor', coef=values['sensorCoef'],
+                                      ratio=values['sensorRatio'])
+
+        # Lens
+        node = self._addNode(self._headerNode, 'lens')
+        self._addNode(node, 'focal', values['focal'])
 
         # Serialize xml file
         self._serialize()
