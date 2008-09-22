@@ -71,7 +71,6 @@ from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.helpAboutController import HelpAboutController
 from papywizard.controller.configController import ConfigController
-from papywizard.controller.manualMoveController import ManualMoveController
 from papywizard.controller.shootController import ShootController
 from papywizard.controller.waitController import WaitController
 from papywizard.controller.spy import Spy
