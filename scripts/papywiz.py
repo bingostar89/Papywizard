@@ -116,6 +116,7 @@ try:
     Logger().info("Papywizard app stopped")
 
 except Exception, msg:
+    Logger().exception("main()")
     tracebackString = StringIO.StringIO()
     traceback.print_exc(file=tracebackString)
     message = tracebackString.getvalue().strip()
