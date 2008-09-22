@@ -204,17 +204,19 @@ class Head(object):
         if axis in ('pitch', 'all'):
             self.pitchAxis.waitStop()
 
-    def shoot(self, delay=1):
+    def shoot(self, delay=None):
         """ Take a picture.
 
-        @param delay: delay to wait at each shot (s)
+        @param delay: optional delay while shutter is keep pressed (s)
         @type delay: float
         """
         Logger().trace("Head.shoot()")
         self.yawAxis.setOutput(1)
-        time.sleep(config.SHOOT_PULSE)
+        if delay is not None:
+            time.sleep(delay)
+        else:
+            time.sleep(config.SHOOT_PULSE)
         self.yawAxis.setOutput(0)
-        time.sleep(delay)
 
     def panic(self):
         """ Stop all.
