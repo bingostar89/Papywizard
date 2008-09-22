@@ -68,3 +68,6 @@ class SplashController(AbstractController):
 
     def refreshView(self):
         pass
+
+    def close(self):
+        self.dialog.hide()
