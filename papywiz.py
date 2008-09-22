@@ -48,6 +48,8 @@ Main script
 __revision__ = "$Id$"
 
 import sys
+import traceback
+import StringIO
 
 import pygtk
 pygtk.require("2.0")
@@ -61,7 +63,6 @@ from papywizard.common.serializer import Serializer
 from papywizard.common.exception import HardwareError
 from papywizard.model.shooting import Shooting
 from papywizard.controller.mainController import MainController
-from papywizard.controller.tracebackController import TracebackController
 from papywizard.controller.spy import Spy
 from papywizard.hardware.head import Head, HeadSimulation
 if config.VIEW3D_ENABLE:
@@ -115,7 +116,12 @@ try:
     Logger().info("Papywizard app stopped")
 
 except Exception, msg:
-    tracebackDialog = TracebackController()
-    tracebackDialog.run()
-    tracebackDialog.destroyView()
-
+    tracebackString = StringIO.StringIO()
+    traceback.print_exc(file=tracebackString)
+    message = tracebackString.getvalue().strip()
+    tracebackString.close()
+    messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
+                                        message_format="Internal error")
+    messageDialog.format_secondary_text(message)
+    messageDialog.run()
+    messageDialog.destroy()
