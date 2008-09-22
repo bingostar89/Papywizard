@@ -49,7 +49,7 @@ __revision__ = "$Id$"
 import sys
 import os.path
 
-VERSION = "1.0"
+VERSION = "1.1"
 PACKAGE_VERSION = 1
 
 HOME_DIR = os.path.expanduser("~")
@@ -57,9 +57,8 @@ if sys.platform == 'win32': # and win64 ?
     USER_CONFIG_DIR = os.path.join(os.path.expandvars("$APPDATA"), "papywizard")
 else:
     USER_CONFIG_DIR = os.path.join(HOME_DIR, ".config", "papywizard") # OpenDesktop standard
-USER_PRESET_DIR = os.path.join(USER_CONFIG_DIR, "presets")
 try:
-    os.makedirs(USER_PRESET_DIR)
+    os.makedirs(USER_CONFIG_DIR)
 except OSError, (errno, errmsg):
     if errno in (17, 183): # dir already exists
         pass
@@ -67,6 +66,8 @@ except OSError, (errno, errmsg):
         raise
 CONFIG_FILE = "papywizard.conf"
 USER_CONFIG_FILE = os.path.join(USER_CONFIG_DIR, CONFIG_FILE)
+PRESET_FILE = "presets.xml"
+USER_PRESET_FILE = os.path.join(USER_CONFIG_DIR, PRESET_FILE)
 USER_GUIDE_URL = "http://trac.gbiloba.org/papywizard/wiki/UserGuide"
 
 SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3.}
@@ -81,29 +82,6 @@ MOSAIC_START_FROM_INDEX = {'start': 0, 'end': 1,
 
 MOSAIC_INITIAL_DIR_INDEX = {'yaw': 0, 'pitch': 1,
                             0: 'yaw', 1: 'pitch'}
-
-PRESET_INDEX = {'4@0 + Z + N': 0,
-                '3@-15 + Z': 1,
-                '6@-15 + 6@30 + N': 2,
-                '3 + 6 + 12 + 6 + 3 (28mm)': 3,
-                0: '4@0 + Z + N',
-                1: '3@-15 + Z',
-                2: '6@-15 + 6@30 + N',
-                3: '3 + 6 + 12 + 6 + 3 (28mm)'}
-
-PRESET = {'4@0 + Z + N': [(  0.,   0.), (90., 0.), (180., 0.), (270., 0.),
-                          (None,  90.),
-                          (None, -90.)],
-          '3@-15 + Z': [(  0., -15.), (120., -15.), (240., -15.),
-                        (None,  90.)],
-          '6@-15 + 6@30 + N': [(  0., -15.), ( 60., -15.), (120., -15.), (180., -15.), (240., -15.), (300., -15.),
-                               (300.,  30.), (240.,  30.), (180.,  30.), (120.,  30.), ( 60.,  30.), (  0.,  30.),
-                               (None, -90.)],
-          '3 + 6 + 12 + 6 + 3 (28mm)': [( 30.,  70.), (150.,  70.), (270.,  70.),
-                                        (300.,  40.), (240.,  40.), (180.,  40.), (120.,  40.), ( 60.,  40.), (  0.,  40.),
-                                        (  0.,  10.), ( 30., -10.), ( 60.,  10.), ( 90., -10.), (120.,  10.), (150., -10.), (180.,  10.), (210.,-10.), (240.,  10.), (270.,-10.), (300.,  10.), (330.,-10.),
-                                        (300., -40.), (240., -40.), (180., -40.), (120., -40.), ( 60., -40.), (  0., -40.),
-                                        ( 30., -70.), (150., -70.), (270., -70.)]}
 
 # Logger
 LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"
