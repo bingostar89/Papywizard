@@ -47,6 +47,7 @@ Main script
 
 __revision__ = "$Id$"
 
+import sys
 import os.path
 import traceback
 import StringIO
@@ -56,6 +57,11 @@ pygtk.require("2.0")
 import gtk
 import gobject
 
+try:
+    import papywizard
+except ImportError:
+    path = os.path.dirname(__file__)
+    sys.path.append(os.path.join(path, os.path.pardir))
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
@@ -69,70 +75,11 @@ from papywizard.hardware.head import Head, HeadSimulation
 if config.VIEW3D_ENABLE:
     from papywizard.view3D.view3D import View3D
 
-def main():
-    try:
-        Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
-        Logger().info("Starting Papywizard app...")
-
-        # Threads
-        gtk.gdk.threads_init()
-        gtk.gdk.threads_enter()
-
-        # Create hardware and model
-        head = Head()
-        headSimulation = HeadSimulation()
-        model = Shooting(head, headSimulation)
-
-        # Launch spy thread
-        Spy(model, config.SPY_FAST_REFRESH)
-        Spy().start()
-
-        # Create 3D view
-        if config.VIEW3D_ENABLE:
-            view3D = View3D("Papywizard", scale=(1, 1, 1))
-            Spy().newPosSignal.connect(view3D.draw)
-            #Spy().newPosSignal.connect(view3D.viewFromCamera)
-
-        # Create serializer, for async events
-        serializer = Serializer()
-        gobject.timeout_add(50, serializer.processWork)
-
-        # Create main controller
-        controller = MainController(serializer, model)
-
-        # Enter in Gtk mainloop
-        gtk.main()
-
-        # App closed
-        Spy().stop()
-        Spy().join()
-        model.shutdown()
-
-        # Threads
-        gtk.gdk.threads_leave()
-
-        #if config.VIEW3D_ENABLE:
-            #view3D.terminate() # vpython has not yet a way to terminate the mainloop
-
-        Logger().info("Papywizard app stopped")
-
-    except Exception, msg:
-        Logger().exception("main()")
-        tracebackString = StringIO.StringIO()
-        traceback.print_exc(file=tracebackString)
-        message = tracebackString.getvalue().strip()
-        tracebackString.close()
-        messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                            message_format="Internal error")
-        messageDialog.format_secondary_text(message)
-        messageDialog.run()
-        messageDialog.destroy()
-
 
 class Papywizard(object):
     """ Main application class.
     """
-    def __init__(self, splash, *args, **kwargs):
+    def __init__(self):
         """ Init the application.
         """
         Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
@@ -164,19 +111,14 @@ class Papywizard(object):
         # Create main controller
         controller = MainController(serializer, self.__model)
 
-        import time
-        print "Simulate application loading..."
-        time.sleep(2)
-        print "Application loaded"
-        splash.hide()
-
-    def close():
-        """ Close the application.
+    def run(self):
+        """ Run the appliction.
         """
-        if gtk.main_level() > 0: # needed if app_close is called explicitly
-            gtk.main_quit()
+        gtk.main()
 
-        # App closed
+    def shutdown(self):
+        """ Shutdown the application.
+        """
         Spy().stop()
         Spy().join()
         self.__model.shutdown()
@@ -190,16 +132,14 @@ class Papywizard(object):
         Logger().info("Papywizard app stopped")
 
 
-def createApplication(splash, *args, **kwargs):
-    """ Function creating the application.
-    """
+def main():
     try:
-        globals()['application'] = Papywizard(splash, *args, **kwargs)
+        app = Papywizard()
+        app.run()
+        app.shutdown()
 
     except Exception, msg:
-        gtk.main_quit()
-        splash.destroy()
-        Logger().exception("createApplication()")
+        Logger().exception("main()")
         tracebackString = StringIO.StringIO()
         traceback.print_exc(file=tracebackString)
         message = tracebackString.getvalue().strip()
@@ -210,29 +150,6 @@ def createApplication(splash, *args, **kwargs):
         messageDialog.run()
         messageDialog.destroy()
 
-
-def mainWithSplashScreen():
-    splash = gtk.Window()
-    image = gtk.Image()
-    path = os.path.dirname(__file__)
-    image.set_from_file(os.path.join(path, os.path.pardir, "papywizard", "view", "splash.png"))
-    splash.add(image)
-    splash.realize()
-    splash.window.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_SPLASHSCREEN)
-    splash.set_decorated(False)
-    splash.set_position(gtk.WIN_POS_CENTER)
-    splash.show_all()
-
-    # ensure it is rendered immediately
-    #while gtk.events_pending():
-        #gtk.main_iteration()
-
-    #gobject.timeout_add(5000, splash.hide) # 5*1000 miliseconds
-    gobject.idle_add(createApplication, splash)
-    gtk.main()
-
-    if application:
-        application.close()
 
 if __name__ == "__main__":
     main()
