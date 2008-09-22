@@ -64,8 +64,7 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.spy import Spy
-from papywizard.view.mosaicArea import MosaicArea
-from papywizard.view.presetArea import PresetArea
+from papywizard.view.shootingArea import MosaicArea, PresetArea
 
 
 class ShootController(AbstractController):
