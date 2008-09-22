@@ -58,11 +58,9 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.signal import Signal
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.exception import HardwareError
-from papywizard.common.dataMosaic import DataMosaic
-from papywizard.common.dataPreset import DataPreset
 from papywizard.model.camera import Camera
-from papywizard.model.mosaic import Mosaic
-from papywizard.model.preset import Preset
+from papywizard.model.data import MosaicData, PresetData
+from papywizard.model.scan import MosaicScan, PresetScan
 
 
 class Shooting(object):
@@ -91,8 +89,8 @@ class Shooting(object):
         self.startEvent = threading.Event()
         self.startEvent.clear()
         self.camera = Camera()
-        self.mosaic = Mosaic(self.camera)
-        self.preset = Preset()
+        self.mosaic = MosaicScan(self.camera)
+        self.preset = PresetScan()
 
         self.position = self.hardware.readPosition()
         self.progress = 0.
@@ -183,7 +181,7 @@ class Shooting(object):
                   'sensorRatio': "%s" % self.camera.sensorRatio,
                   'focal': "%.1f" % self.camera.lens.focal}
         if self.mode == 'mosaic':
-            data = DataMosaic()
+            data = MosaicData()
             values.update({'yawNbPicts': "%d" % self.mosaic.yawNbPicts,
                            'pitchNbPicts': "%d" % self.mosaic.pitchNbPicts,
                            'overlap': "%.2f" % self.mosaic.overlap,
@@ -191,7 +189,7 @@ class Shooting(object):
                            'pitchRealOverlap': "%.2f" % self.mosaic.pitchRealOverlap,
                            'cameraOrientation': "%s" % self.mosaic.cameraOrientation})
         else:
-            data = DataPreset()
+            data = PresetData()
             values.update({'template': "%s" % self.preset.template})
         data.createHeader(values)
         self.error = False
