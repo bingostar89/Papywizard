@@ -69,7 +69,6 @@ from papywizard.common.serializer import Serializer
 from papywizard.common.exception import HardwareError
 from papywizard.model.shooting import Shooting
 from papywizard.controller.mainController import MainController
-from papywizard.controller.splashController import SplashController
 from papywizard.controller.spy import Spy
 from papywizard.hardware.head import Head, HeadSimulation
 if config.VIEW3D_ENABLE:
