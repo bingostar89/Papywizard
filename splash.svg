@@ -639,7 +639,7 @@
      borderopacity="1.0"
      id="base"
      inkscape:current-layer="layer1"
-     inkscape:cx="242.32416"
+     inkscape:cx="192.24717"
      inkscape:cy="116.46573"
      inkscape:grid-bbox="false"
      inkscape:pageopacity="0.0"
@@ -648,7 +648,7 @@
      inkscape:window-width="1592"
      inkscape:window-x="0"
      inkscape:window-y="0"
-     inkscape:zoom="1.9539942"
+     inkscape:zoom="2.4629752"
      pagecolor="#ffffff"
      showgrid="false">
     <inkscape:grid
@@ -681,7 +681,10 @@
        sodipodi:cy="160.9375"
        sodipodi:cx="75"
        id="path1230"
-       d="M 141.875,160.9375 A 66.875,19.0625 0 1 1 8.125,160.9375 A 66.875,19.0625 0 1 1 141.875,160.9375 z" />
+       d="M 141.875,160.9375 A 66.875,19.0625 0 1 1 8.125,160.9375 A 66.875,19.0625 0 1 1 141.875,160.9375 z"
+       inkscape:export-filename="/home/fma/develop/papywizard/trunk/splash.png"
+       inkscape:export-xdpi="70.456177"
+       inkscape:export-ydpi="70.456177" />
     <path
        transform="matrix(0.567742,8.452137e-2,-8.452137e-2,0.567742,40.488022,45.94375)"
        style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
@@ -691,25 +694,17 @@
        sodipodi:cy="160.9375"
        sodipodi:cx="75"
        id="path1857"
-       d="M 141.875,160.9375 A 66.875,19.0625 0 1 1 8.125,160.9375 A 66.875,19.0625 0 1 1 141.875,160.9375 z" />
-    <g
-       id="g3625"
-       transform="translate(382,-42)">
-      <path
-         d="M 49.477408,165.0419 C 43.106275,135.64786 37.23437,104.35617 52.380661,61.262457 C 68.475986,94.92698 72.723776,135.96889 69.178546,170.61017 C 71.085156,135.45288 75.946716,96.03535 98.926592,66.489887 C 111.42209,108.5663 98.866852,145.47284 87.233286,172.32261 C 83.490056,172.09739 49.477408,165.0419 49.477408,165.0419 z"
-         id="path5565"
-         sodipodi:nodetypes="cccccc"
-         style="fill:#e1e1e1;fill-opacity:1;fill-rule:evenodd;stroke:#898989;stroke-width:3.75;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1" />
-      <path
-         d="M 53.848689,154.46665 C 48.103446,131.63299 47.219563,104.37992 52.964806,79.778492 C 62.098268,105.55843 63.718722,128.68671 64.455292,158.00218 C 68.580076,158.29681 70.937096,158.1495 75.061886,158.44412 C 77.713546,132.36956 83.458786,107.62082 95.833157,84.63985 C 99.810642,109.68322 92.739567,136.49435 86.110446,160.21189 C 74.767266,158.73875 64.307979,158.1495 52.964806,156.67636"
-         id="path5566"
-         sodipodi:nodetypes="ccccccc"
-         style="fill:#ffcbdb;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1" />
-    </g>
+       d="M 141.875,160.9375 A 66.875,19.0625 0 1 1 8.125,160.9375 A 66.875,19.0625 0 1 1 141.875,160.9375 z"
+       inkscape:export-filename="/home/fma/develop/papywizard/trunk/splash.png"
+       inkscape:export-xdpi="70.456177"
+       inkscape:export-ydpi="70.456177" />
     <g
        inkscape:label="Layer 1"
        id="g3591"
-       transform="matrix(0.4370987,-0.8994135,0.8994135,0.4370987,4.8979686,162.1039)">
+       transform="matrix(0.4370987,-0.8994135,0.8994135,0.4370987,4.8979686,162.1039)"
+       inkscape:export-filename="/home/fma/develop/papywizard/trunk/splash.png"
+       inkscape:export-xdpi="70.456177"
+       inkscape:export-ydpi="70.456177">
       <g
          id="g2111">
         <path
@@ -767,22 +762,34 @@
        style="fill:url(#linearGradient3612);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1"
        sodipodi:nodetypes="ccccc"
        id="path1866"
-       d="M 91.807315,222.31611 L 107.3157,149.69362 C 101.21583,163.36614 44.734591,163.7804 36.425009,144.30729 L 24.345768,210.46003 C 28.420641,214.77313 49.181417,233.40357 91.807315,222.31611 z" />
+       d="M 91.807315,222.31611 L 107.3157,149.69362 C 101.21583,163.36614 44.734591,163.7804 36.425009,144.30729 L 24.345768,210.46003 C 28.420641,214.77313 49.181417,233.40357 91.807315,222.31611 z"
+       inkscape:export-filename="/home/fma/develop/papywizard/trunk/splash.png"
+       inkscape:export-xdpi="70.456177"
+       inkscape:export-ydpi="70.456177" />
     <path
        style="opacity:0.65;fill:url(#linearGradient3609);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1"
        sodipodi:nodetypes="ccccc"
        id="path1867"
-       d="M 91.378466,222.45998 L 106.76317,152.72613 C 96.592007,160.22018 59.904349,159.31733 36.47494,147.36594 L 24.117704,211.23625 C 27.598584,215.15917 48.752562,233.54744 91.378466,222.45998 z" />
+       d="M 91.378466,222.45998 L 106.76317,152.72613 C 96.592007,160.22018 59.904349,159.31733 36.47494,147.36594 L 24.117704,211.23625 C 27.598584,215.15917 48.752562,233.54744 91.378466,222.45998 z"
+       inkscape:export-filename="/home/fma/develop/papywizard/trunk/splash.png"
+       inkscape:export-xdpi="70.456177"
+       inkscape:export-ydpi="70.456177" />
     <path
        style="fill:url(#radialGradient3605);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
        sodipodi:nodetypes="ccccccc"
        id="path1890"
-       d="M 107.64626,149.5871 C 108.53563,143.61303 137.44571,144.61681 135.89626,155.0246 C 134.34681,165.43239 103.47135,169.49159 66.95876,164.05585 C 30.446171,158.62012 2.0655724,145.7449 3.6150104,135.3371 C 5.1644484,124.9293 32.598136,132.30053 31.70876,138.2746 C 30.819384,144.24867 47.125565,151.62325 68.083756,154.74335 C 89.041956,157.86346 106.75689,155.56117 107.64626,149.5871 z" />
+       d="M 107.64626,149.5871 C 108.53563,143.61303 137.44571,144.61681 135.89626,155.0246 C 134.34681,165.43239 103.47135,169.49159 66.95876,164.05585 C 30.446171,158.62012 2.0655724,145.7449 3.6150104,135.3371 C 5.1644484,124.9293 32.598136,132.30053 31.70876,138.2746 C 30.819384,144.24867 47.125565,151.62325 68.083756,154.74335 C 89.041956,157.86346 106.75689,155.56117 107.64626,149.5871 z"
+       inkscape:export-filename="/home/fma/develop/papywizard/trunk/splash.png"
+       inkscape:export-xdpi="70.456177"
+       inkscape:export-ydpi="70.456177" />
     <path
        style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:url(#linearGradient4218);stroke-width:6.84726906;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
        sodipodi:nodetypes="cc"
        id="path5568"
-       d="M 55.516095,-2.2571996 L 233.1048,90.744686" />
+       d="M 55.516095,-2.2571996 L 233.1048,90.744686"
+       inkscape:export-filename="/home/fma/develop/papywizard/trunk/splash.png"
+       inkscape:export-xdpi="70.456177"
+       inkscape:export-ydpi="70.456177" />
     <rect
        y="-31.96932"
        x="44.045776"
@@ -792,7 +799,10 @@
        ry="1.3841118"
        rx="1.9999951"
        id="rect5577"
-       height="7.5256367" />
+       height="7.5256367"
+       inkscape:export-filename="/home/fma/develop/papywizard/trunk/splash.png"
+       inkscape:export-xdpi="70.456177"
+       inkscape:export-ydpi="70.456177" />
     <rect
        y="-31.95874"
        x="43.944126"
@@ -802,7 +812,10 @@
        ry="1.3841094"
        rx="1.9999942"
        id="rect5583"
-       height="7.5256233" />
+       height="7.5256233"
+       inkscape:export-filename="/home/fma/develop/papywizard/trunk/splash.png"
+       inkscape:export-xdpi="70.456177"
+       inkscape:export-ydpi="70.456177" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Swift;-inkscape-font-specification:Swift Italic"
@@ -810,7 +823,10 @@
        y="177.1393"
        id="text2663"
        sodipodi:linespacing="125%"
-       inkscape:label="texte normal"><tspan
+       inkscape:label="texte normal"
+       inkscape:export-filename="/home/fma/develop/papywizard/trunk/splash.png"
+       inkscape:export-xdpi="70.456177"
+       inkscape:export-ydpi="70.456177"><tspan
          sodipodi:role="line"
          id="tspan2665"
          x="152.53638"
@@ -822,20 +838,26 @@
        y="179.09758"
        id="text3629"
        sodipodi:linespacing="125%"
-       inkscape:label="text ombre"><tspan
+       inkscape:label="text ombre"
+       inkscape:export-filename="/home/fma/develop/papywizard/trunk/splash.png"
+       inkscape:export-xdpi="70.456177"
+       inkscape:export-ydpi="70.456177"><tspan
          sodipodi:role="line"
          id="tspan3631"
          x="154.53201"
          y="179.09758">Papywizard</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:40px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#ff6600;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3641);font-family:Swift;-inkscape-font-specification:Swift Italic"
+       style="font-size:40px;font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#999999;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter3641);font-family:Swift;-inkscape-font-specification:Swift Italic"
        x="152.59961"
        y="177.94423"
        id="text3637"
        sodipodi:linespacing="125%"
        inkscape:label="texte effet"
-       mask="url(#mask4434)"><tspan
+       mask="url(#mask4434)"
+       inkscape:export-filename="/home/fma/develop/papywizard/trunk/splash.png"
+       inkscape:export-xdpi="70.456177"
+       inkscape:export-ydpi="70.456177"><tspan
          sodipodi:role="line"
          id="tspan3639"
          x="152.59961"
