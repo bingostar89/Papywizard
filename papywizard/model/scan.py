@@ -42,7 +42,9 @@ Model
 Implements
 ==========
 
-- Scan
+- AbstractScan
+- MosaicScan
+- PresetScan
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
@@ -51,9 +53,13 @@ Implements
 
 __revision__ = "$Id: scan.py 307 2008-06-24 06:02:36Z fma $"
 
+from papywizard.common.loggingServices import Logger
+from papywizard.common.configManager import ConfigManager
+from papywizard.common.presetManager import PresetManager
 
-class Scan(object):
-    """ Scan model.
+
+class AbstractScan(object):
+    """ AbstractScan object.
 
     Scan is the base object for shooting object.
 
@@ -64,7 +70,7 @@ class Scan(object):
     def __init__(self):
         """ Init the Scan object.
         """
-        super(Scan, self).__init__()
+        super(AbstractScan, self).__init__()
 
     def iterPositions(self):
         """ Iterate over all (yaw, pitch) positions.
@@ -83,4 +89,294 @@ class Scan(object):
         return self._getTotalNbPicts()
 
     totalNbPicts = property(__getTotalNbPicts)
+
+
+class MosaicScan(AbstractScan):
+    """ MosaicScan model.
+    """
+    def __init__(self, camera):
+        """ Init the MosaicScan object.
+        
+        @param camera: camera object
+        @type camera: {Camera}
+        """
+        super(MosaicScan, self).__init__()
+        self.__camera = camera
+        self.__yawIndex = None
+        self.__pitchIndex = None
+        self.__yawInc = None
+        self.__pitchInc = None
+        self.__yawIndex = None
+        self.__pitchIndex = None
+        self.__yawSens = None
+        self.__pitchSens = None
+
+        self.yawStart = 0.
+        self.pitchStart = 0.
+        self.yawEnd = 0.
+        self.pitchEnd = 0.
+
+    def iterPositions(self):
+        """ Iterate over all (yaw, pitch) positions.
+        """
+        yawCameraFov = self.__camera.getYawFov(self.cameraOrientation)
+        pitchCameraFov = self.__camera.getPitchFov(self.cameraOrientation)
+        try:
+            self.__yawInc = (self.yawFov - yawCameraFov) / (self.yawNbPicts - 1)
+        except ZeroDivisionError:
+            self.__yawInc = self.yawFov - yawCameraFov
+        try:
+            self.__pitchInc = (self.pitchFov - pitchCameraFov) / (self.pitchNbPicts - 1)
+        except ZeroDivisionError:
+            self.__pitchInc = self.pitchFov - pitchCameraFov
+        self.__yawInc *= cmp(self.yawEnd, self.yawStart)
+        self.__pitchInc *= cmp(self.pitchEnd, self.pitchStart)
+
+        self.__yawIndex = 0
+        self.__pitchIndex = 0
+        self.__yawSens = 1
+        self.__pitchSens = 1
+
+        while True:
+            if self.startFrom == "start":
+                yaw = self.yawStart + self.__yawIndex * self.__yawInc
+                pitch = self.pitchStart + self.__pitchIndex * self.__pitchInc
+            elif self.startFrom == "end":
+                yaw = self.yawEnd - self.__yawIndex * self.__yawInc
+                pitch = self.pitchEnd - self.__pitchIndex * self.__pitchInc
+            else:
+                raise ValueError("Unknown '%s' <Start from> param" % self.startFrom)
+            Logger().debug("MosaicScan.iterPositions(): __yawIndex=%d, __pitchIndex=%d" % (self.__yawIndex, self.__pitchIndex))
+            Logger().debug("MosaicScan.iterPositions(): yaw=%.1f, pitch=%.1f" % (yaw, pitch))
+            yield yaw, pitch
+
+            # Compute next position
+            if self.initialDirection == "yaw":
+                self.__yawIndex += self.__yawSens
+            elif self.initialDirection == "pitch":
+                self.__pitchIndex += self.__pitchSens
+
+            for i in xrange(2):
+                if self.__yawIndex == self.yawNbPicts: # __yawSens was 1
+                    if self.initialDirection == "pitch":
+                        raise StopIteration
+                    if self.cr:
+                        self.__yawIndex = 0
+                        self.__yawSens = 1
+                    else:
+                        self.__yawIndex = self.yawNbPicts - 1
+                        self.__yawSens = -1
+                    self.__pitchIndex += self.__pitchSens
+                    continue
+                elif self.__yawIndex == -1:            # __yawSens was -1
+                    if self.initialDirection == "pitch":
+                        raise StopIteration
+                    if self.cr:
+                        self.__yawIndex = self.yawNbPicts - 1
+                        self.__yawSens = -1
+                    else:
+                        self.__yawIndex = 0
+                        self.__yawSens = 1
+                    self.__pitchIndex += self.__pitchSens
+                    continue
+
+                if self.__pitchIndex == self.pitchNbPicts: # __pitchSens was 1
+                    if self.initialDirection == "yaw":
+                        raise StopIteration
+                    if self.cr:
+                        self.__pitchIndex = 0
+                        self.__pitchSens = 1
+                    else:
+                        self.__pitchIndex = self.pitchNbPicts - 1
+                        self.__pitchSens = -1
+                    self.__yawIndex += self.__yawSens
+                    continue
+                elif self.__pitchIndex == -1:              # __pitchSens was -1
+                    if self.initialDirection == "yaw":
+                        raise StopIteration
+                    if self.cr:
+                        self.__pitchIndex = self.pitchNbPicts - 1
+                        self.__pitchSens = -1
+                    else:
+                        self.__pitchIndex = 0
+                        self.__pitchSens = 1
+                    self.__yawIndex += self.__yawSens
+                    continue
+                break
+
+    # Properties
+    def __getStartFrom(self):
+        """
+        """
+        return ConfigManager().get('Preferences', 'MOSAIC_START_FROM')
+
+    def __setStartFrom(self, startFrom):
+        """
+        """
+        ConfigManager().set('Preferences', 'MOSAIC_START_FROM', startFrom)
+
+    startFrom = property(__getStartFrom, __setStartFrom)
+
+    def __getInitialDirection(self):
+        """
+        """
+        return ConfigManager().get('Preferences', 'MOSAIC_INITAL_DIR')
+
+    def __setInitialDirection(self, initialDirection):
+        """
+        """
+        ConfigManager().set('Preferences', 'MOSAIC_INITAL_DIR', initialDirection)
+
+    initialDirection = property(__getInitialDirection, __setInitialDirection)
+
+    def __getCR(self):
+        """
+        """
+        return ConfigManager().getBoolean('Preferences', 'MOSAIC_CR')
+
+    def __setCR(self, cr):
+        """
+        """
+        ConfigManager().setBoolean('Preferences', 'MOSAIC_CR', cr)
+
+    cr = property(__getCR, __setCR)
+
+    def __getCameraOrientation(self):
+        """
+        """
+        return ConfigManager().get('Preferences', 'MOSAIC_CAMERA_ORIENTATION')
+
+    def __setCameraOrientation(self, cameraOrientation):
+        """
+        """
+        ConfigManager().set('Preferences', 'MOSAIC_CAMERA_ORIENTATION', cameraOrientation)
+
+    cameraOrientation = property(__getCameraOrientation, __setCameraOrientation)
+
+    def __getOverlap(self):
+        """
+        """
+        return ConfigManager().getFloat('Preferences', 'MOSAIC_OVERLAP')
+
+    def __setOverlap(self, overlap):
+        """
+        """
+        ConfigManager().setFloat('Preferences', 'MOSAIC_OVERLAP', overlap, 2)
+
+    overlap = property(__getOverlap, __setOverlap)
+
+    def __getOverlapSquare(self):
+        """
+        """
+        return ConfigManager().getBoolean('Preferences', 'MOSAIC_OVERLAP_SQUARE')
+
+    def __setOverlapSquare(self, overlapSquare):
+        """
+        """
+        ConfigManager().setBoolean('Preferences', 'MOSAIC_OVERLAP_SQUARE', overlapSquare)
+
+    overlapSquare = property(__getOverlapSquare, __setOverlapSquare)
+
+    def __getYawFov(self):
+        """
+        """
+        yawCameraFov = self.__camera.getYawFov(self.cameraOrientation)
+        yawFov = abs(self.yawEnd - self.yawStart) + yawCameraFov
+        return yawFov
+
+    yawFov = property(__getYawFov, "Total yaw FoV")
+
+    def __getPitchFov(self):
+        """
+        """
+        pitchCameraFov = self.__camera.getPitchFov(self.cameraOrientation)
+        pitchFov = abs(self.pitchEnd - self.pitchStart) + pitchCameraFov
+        return pitchFov
+
+    pitchFov = property(__getPitchFov, "Total pitch FoV")
+
+    def __getYawNbPicts(self):
+        """
+        """
+        yawCameraFov = self.__camera.getYawFov(self.cameraOrientation)
+        if round(self.yawFov - yawCameraFov, 1) >= 0.1:
+            yawNbPicts = int(((self.yawFov - self.overlap * yawCameraFov) / (yawCameraFov * (1 - self.overlap))) + 1)
+        else:
+            yawNbPicts = 1
+        return yawNbPicts
+
+    yawNbPicts = property(__getYawNbPicts, "Yaw nb picts")
+
+    def __getPitchNbPicts(self):
+        """
+        """
+        pitchCameraFov = self.__camera.getPitchFov(self.cameraOrientation)
+        if round(self.pitchFov - pitchCameraFov, 1) >= 0.1:
+           nbPicts = int(((self.pitchFov - self.overlap * pitchCameraFov) / (pitchCameraFov * (1 - self.overlap))) + 1)
+        else:
+            nbPicts = 1
+        return nbPicts
+
+    pitchNbPicts = property(__getPitchNbPicts, "Pitch nb picts")
+
+    def _getTotalNbPicts(self):
+        return self.yawNbPicts * self.pitchNbPicts
+
+    def __getYawRealOverlap(self):
+        """ Recompute real yaw overlap.
+        """
+        yawCameraFov = self.__camera.getYawFov(self.cameraOrientation)
+        if self.yawNbPicts > 1:
+            yawOverlap = (self.yawNbPicts * yawCameraFov - self.yawFov) / (yawCameraFov * (self.yawNbPicts - 1))
+        else:
+            yawOverlap = 1.
+        return yawOverlap
+
+    yawRealOverlap = property(__getYawRealOverlap, "Yaw real overlap")
+
+    def __getPitchRealOverlap(self):
+        """ Recompute real pitch overlap.
+        """
+        pitchCameraFov = self.__camera.getPitchFov(self.cameraOrientation)
+        if self.pitchNbPicts > 1:
+            pitchOverlap = (self.pitchNbPicts * pitchCameraFov - self.pitchFov) / (pitchCameraFov * (self.pitchNbPicts - 1))
+        else:
+            pitchOverlap = 1.
+        return pitchOverlap
+
+    pitchRealOverlap = property(__getPitchRealOverlap, "Pitch real overlap")
+
+
+
+class PresetScan(AbstractScan):
+    """ PresetScan model.
+    """
+    def __init__(self):
+        """ Init the Preset object.
+        """
+        super(PresetScan, self).__init__()
+        self.__presets = PresetManager().getPresets()
     
+    def __getTemplate(self):
+        """
+        """
+        return ConfigManager().get("Preferences", "PRESET_TEMPLATE")
+    
+    def __setTemplate(self, template):
+        """
+        """
+        ConfigManager().set("Preferences", "PRESET_TEMPLATE", template)
+
+    template = property(__getTemplate, __setTemplate, "Preset template")
+
+    def iterPositions(self):
+        preset = self.__presets.getByName(self.template)
+        Logger().debug("PresetScan.__init__(): preset=%s" % preset)
+        return preset.iterPositions()
+
+    # Properties
+    def _getTotalNbPicts(self):
+        """ Compute the total number of pictures.
+        """
+        preset = self.__presets.getByName(self.template)
+        return preset.getNbPicts()
