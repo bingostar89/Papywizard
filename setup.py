@@ -67,19 +67,19 @@ setup(name="papywizard",
       description="Merlin/Orion panohead control software",
       #long_description="",
       download_url="http://trac.gbiloba.org/papywizard/wiki/WikiStart#Download",
-      scripts=["papywiz.py"],
+      scripts=["scripts/papywiz.py"],
       #package_dir={'papywizard': "papywizard"},
       packages=["papywizard", "papywizard.common", "papywizard.model",
                 "papywizard.controller", "papywizard.hardware",
                 "papywizard.view", "papywizard.view3D"],
-      package_data={'papywizard': ["view/*.glade", "view/lcdLabelChars.txt", "common/papywizard.conf", "common/presets.xml"]},
-      data_files=[("share/applications/hildon", ["papywizard.desktop"]),
-                  ('share/pixmaps', ["papywizard.png"])],
+      package_data={'papywizard': ["view/*.glade", "common/papywizard.conf", "common/presets.xml"]},
 
-      # pymaemo stuff
+      # Nokia stuff
+      data_files=[("share/applications/hildon", ["papywizard.desktop"]),
+                  ('share/pixmaps', ["icon16x16.png"])],
       section="user/graphics",
       depends="python2.5, python2.5-hildon, python2.5-gtk2",
-      icon="papywizard.png",
+      icon="icon16x16.png",
       cmdclass={'bdist_debian': bdist_debian},
   )
 
