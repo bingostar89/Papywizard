@@ -43,6 +43,8 @@ Implements
 ==========
 
 - ShootingArea
+- MosaicArea
+- PresetArea
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
@@ -55,7 +57,7 @@ import pygtk
 pygtk.require("2.0")
 import gtk
 
-        
+
 class ShootingArea(gtk.DrawingArea):
     """ GTK ShootingArea widget
     """
@@ -157,4 +159,187 @@ class ShootingArea(gtk.DrawingArea):
         for widget, color in colors.iteritems():
             exec "self._%s = gtk.gdk.GC(self.window)" % widget
             exec "self._%s.set_rgb_fg_color(gtk.gdk.color_parse('%s'))" % (widget, color)
+
+
+class MosaicArea(ShootingArea):
+    """ GTK MosaicArea widget
+    """
+    def __init__(self):
+        """ Init MosaicArea widget.
+        """
+        ShootingArea.__init__(self)
+
+        self.__yawOffset = None
+        self.__pitchOffset = None
+        self.__yawStart = None
+        self.__yawEnd = None
+        self.__pitchStart = None
+        self.__pitchEnd = None
+        self.__yawOverlap = None
+        self.__pitchOverlap = None
+
+    def init(self, yawStart, yawEnd, pitchStart, pitchEnd, yawFov, pitchFov, yawCameraFov, pitchCameraFov, yawOverlap, pitchOverlap):
+        """ Init internal values.
+
+        @param yawStart: yaw start position (°)
+        @type yawStart: float
+
+        @param yawEnd: yaw end position (°)
+        @type yawEnd: float
+
+        @param pitchStart: pitch start position (°)
+        @type pitchStart: float
+
+        @param pitchEnd: pitch end position (°)
+        @type pitchEnd: float
+
+        @param yawFov: yaw fov (°)
+        @type yawFov: float
+
+        @param pitchFov: pitch fov (°)
+        @type pitchFov: float
+
+        @param yawCameraFov: pict yaw fov (°)
+        @type yawCameraFov: float
+
+        @param pitchCameraFov: pict pitch fov (°)
+        @type pitchCameraFov: float
+
+        @param yawOverlap: yaw real overlap (ratio)
+        @type yawOverlap: float
+
+        @param pitchOverlap: pitch overlap (ratio)
+        @type pitchOverlap: float
+        """
+        self.__yawStart = yawStart
+        self.__yawEnd = yawEnd
+        self.__pitchStart = pitchStart
+        self.__pitchEnd = pitchEnd
+        self.__yawOverlap = yawOverlap
+        self.__pitchOverlap = pitchOverlap
+
+        ShootingArea.init(self, yawFov, pitchFov, yawCameraFov, pitchCameraFov)
+
+    # Callbacks
+    def _configure_cb(self, widget, event):
+        ShootingArea._configure_cb(self, widget, event)
+
+        self.__yawOffset = (self._width - self._yawFov * self._scale) / 2.
+        self.__pitchOffset = (self._height - self._pitchFov * self._scale) / 2.
+        #print "yawOffset=%f, pitchOffset=%f" % (self.__yawOffset, self.__pitchOffset)
+
+        return True
+
+    def _expose_cb(self, widget, event):
+
+        # Draw background
+        xBack = int(round(self.__yawOffset))
+        yBack = int(round(self.__pitchOffset))
+        wBack = self._width - int(round(2 * self.__yawOffset))
+        hBack = self._height - int(round(2 * self.__pitchOffset))
+        self.window.draw_rectangle(self._back, True, xBack, yBack, wBack, hBack)
+        #print "xBack=%d, yBack=%d, wBack=%d, hBack=%d" % (xBack, yBack, wBack, hBack)
+
+        ## Draw 360°x180° area
+        #xFull = int(round(self._width / 2. - 180 * self._scale))
+        #yFull = int(round(self._height / 2. - 90 * self._scale))
+        #wFull = int(round(360 * self._scale))
+        #hFull = int(round(180 * self._scale))
+        ##print "xFull=%.1f, yFull=%.1f, wFull=%.1f, hFull=%.1f" % (xFull, yFull, wFull, hFull)
+        #self.window.draw_rectangle(self._fg3, False, xFull, yFull, wFull, hFull)
+
+        # Draw picts
+        for i, (yaw, pitch, status) in enumerate(self._picts):
+            if cmp(self.__yawEnd, self.__yawStart) > 0:
+                yaw -= self.__yawStart
+            else:
+                yaw -= self.__yawEnd
+            if cmp(self.__pitchEnd, self.__pitchStart) > 0:
+                pitch -= self.__pitchStart
+            else:
+                pitch -= self.__pitchEnd
+            x = int(round(yaw * self._scale + self.__yawOffset))
+            y = int(round(pitch * self._scale + self.__pitchOffset))
+            w = int(round(self._yawCameraFov * self._scale))
+            h = int(round(self._pitchCameraFov * self._scale))
+            y = self._height - y - h
+            #print "pict=%d, yaw=%.1f, pitch=%.1f, x=%.1f, y=%.1f, w=%.1f, h=%.1f" % (i + 1, yaw, pitch, x, y, w, h)
+            self.window.draw_rectangle(self._fg1, True, x, y, w, h)
+            x += 1
+            y += 1
+            w -= 2
+            h -= 2
+            if status == 'ok':
+                gc = self._fg2
+            else:
+                gc = self._fg3
+            self.window.draw_rectangle(gc, True, x, y, w, h)
+
+        return False
+
+
+class PresetArea(ShootingArea):
+    """ GTK PresetArea widget
+    """
+    def __init__(self):
+        ShootingArea.__init__(self)
+
+        self.__yawMargin = None
+        self.__pitchMargin = None
+
+    # Callbacks
+    def _configure_cb(self, widget, event):
+        ShootingArea._configure_cb(self, widget, event)
+
+        self.__yawMargin = int(round((self._width - 360. * self._scale) / 2.))
+        self.__pitchMargin = int(round((self._height - 180. * self._scale) / 2.))
+        #print "yawMargin=%d, pitchMargin=%d" % (self.__yawMargin, self.__pitchMargin)
+
+        return True
+
+    def _expose_cb(self, widget, event):
+
+        # Draw background
+        self.window.draw_rectangle(self._back, True, 0, 0, self._width, self._height)
+
+        # Draw 360°x180° area and axis
+        xFull = int(round(self._width / 2. - 180 * self._scale))
+        yFull = int(round(self._height / 2. - 90 * self._scale))
+        wFull = int(round(360 * self._scale)) - 1
+        hFull = int(round(180 * self._scale)) - 1
+        #print "xFull=%.1f, yFull=%.1f, wFull=%.1f, hFull=%.1f" % (xFull, yFull, wFull, hFull)
+        self.window.draw_rectangle(self._fg3, False, xFull, yFull, wFull, hFull)
+        x1 = 0
+        y1 = int(round(self._height / 2.)) + 1
+        x2 = self._width
+        y2 = y1
+        self.window.draw_line(self._fg3, x1, y1, x2, y2)
+        x1 = self.__yawMargin
+        y1 = 0
+        x2 = x1
+        y2 = self._height
+        self.window.draw_line(self._fg3, x1, y1, x2, y2)
+
+        # Draw picts
+        for i, (yaw, pitch, status) in enumerate(self._picts):
+            pitch = 180 / 2. - pitch
+            x = int(round(yaw * self._scale - self._yawCameraFov * self._scale / 2.)) + self.__yawMargin
+            y = int(round(pitch * self._scale - self._pitchCameraFov * self._scale / 2.)) + self.__pitchMargin
+            w = int(round(self._yawCameraFov * self._scale))
+            h = int(round(self._pitchCameraFov * self._scale))
+            #print "pict=%d, yaw=%.1f, pitch=%.1f, x=%.1f, y=%.1f, w=%.1f, h=%.1f" % (i + 1, yaw, pitch, x, y, w, h)
+            #self.window.draw_rectangle(self._fg1, True, x, y, w, h)
+            self.window.draw_arc(self._fg1, True, x, y, w, h, 0, 360 * 64)
+            x += 1
+            y += 1
+            w -= 2
+            h -= 2
+            if status == 'ok':
+                gc = self._fg2
+            else:
+                gc = self._fg3
+            #self.window.draw_rectangle(gc, True, x, y, w, h)
+            self.window.draw_arc(gc, True, x, y, w, h, 0, 360 * 64)
+
+        return False
 
