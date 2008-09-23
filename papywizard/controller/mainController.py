@@ -442,36 +442,36 @@ class MainController(AbstractController):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('yaw', '-', yaw)
         Logger().debug("MainController.__onHardwareSetLimitYawMinusMenuitemActivate() yaw minus limit set to %.1f" % yaw)
-        self.setStatusbarMessage("Yaw minus limit set", 10)
+        self.setStatusbarMessage(_("Yaw - limit set"), 10)
 
     def __onHardwareSetLimitYawPlusMenuitemActivate(self, widget):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('yaw', '+', yaw)
         Logger().debug("MainController.__onHardwareSetLimitYawPlusMenuitemActivate(): yaw plus limit set to %.1f" % yaw)
-        self.setStatusbarMessage("Yaw plus limit set", 10)
+        self.setStatusbarMessage(_("Yaw + limit set"), 10)
 
     def __onHardwareSetLimitPitchPlusMenuitemActivate(self, widget):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('pitch', '+', pitch)
         Logger().debug("MainController.__onHardwareSetLimitPitchPlusMenuitemActivate() pitch plus limit set to %.1f" % pitch)
-        self.setStatusbarMessage("Pitch plus limit set", 10)
+        self.setStatusbarMessage(_("Pitch + limit set"), 10)
 
     def __onHardwareSetLimitPitchMinusMenuitemActivate(self, widget):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('pitch', '-', pitch)
         Logger().debug("MainController.__onHardwareSetLimitPitchMinusMenuitemActivate() pitch minus limit set to %.1f" % pitch)
-        self.setStatusbarMessage("Pitch minus limit set", 10)
+        self.setStatusbarMessage(_("Pitch - limit set"), 10)
 
     def __onHardwareClearLimitsMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHardwareClearLimitsMenuitemActivate()")
         self._model.hardware.clearLimits()
-        self.setStatusbarMessage("Limits cleared", 10)
+        self.setStatusbarMessage(_("Limits cleared"), 10)
 
     def __onHardwareResetMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHardwareResetMenuitemActivate()")
         Logger().info("Reseting hardware")
         self._model.hardware.reset()
-        self.setStatusbarMessage("Hardware has been reseted", 10)
+        self.setStatusbarMessage(_("Hardware has been reseted"), 10)
 
     def __onHelpManualMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHelpManualMenuitemActivate()")
@@ -654,7 +654,7 @@ class MainController(AbstractController):
             return True
 
         Logger().info("Connecting to real hardware...")
-        self.setStatusbarMessage("Connecting to real hardware...")
+        self.setStatusbarMessage(_("Connecting to real hardware..."))
         #self.hardwareConnectMenuitem.set_sensitive(False)
 
         # Open connection banner (todo: use real banner on Nokia). Make a special object
@@ -677,12 +677,12 @@ class MainController(AbstractController):
             Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
             self.connectImage.set_from_stock(gtk.STOCK_YES, 4)
             Logger().info("Now connected to real hardware")
-            self.setStatusbarMessage("Now connected to real hardware", 5)
+            self.setStatusbarMessage(_("Now connected to real hardware"), 5)
         else:
             Logger().error("Can't connect to hardware\n%s" % self.__connectErrorMessage)
             messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                              message_format="Can't connect to hardware")
-            messageDialog.set_title("Error")
+                                              message_format=_("Can't connect to hardware"))
+            messageDialog.set_title(_("Error"))
             messageDialog.format_secondary_text(self.__connectErrorMessage)
             messageDialog.run()
             messageDialog.destroy()
@@ -697,7 +697,7 @@ class MainController(AbstractController):
         self._model.switchToSimulatedHardware()
         Spy().setRefreshRate(config.SPY_FAST_REFRESH)
         self.connectImage.set_from_stock(gtk.STOCK_NO, 4)
-        self.setStatusbarMessage("Now in simulation mode", 5)
+        self.setStatusbarMessage(_("Now in simulation mode"), 5)
 
     def __refreshPos(self, yaw, pitch):
         """ Refresh position according to new pos.
