@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Sep 22 08:53:19 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Sep 23 14:21:03 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="border_width">5</property>
@@ -53,14 +53,10 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="label" translatable="yes">gtk-ok</property>
+                <property name="use_stock">True</property>
                 <property name="response_id">0</property>
                 <signal name="clicked" handler="on_okButton_clicked"/>
-                <child>
-                  <widget class="GtkImage" id="image2">
-                    <property name="visible">True</property>
-                    <property name="stock">gtk-ok</property>
-                  </widget>
-                </child>
               </widget>
             </child>
             <child>
@@ -68,14 +64,10 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="label" translatable="yes">gtk-cancel</property>
+                <property name="use_stock">True</property>
                 <property name="response_id">1</property>
                 <signal name="clicked" handler="on_cancelButton_clicked"/>
-                <child>
-                  <widget class="GtkImage" id="image3">
-                    <property name="visible">True</property>
-                    <property name="stock">gtk-cancel</property>
-                  </widget>
-                </child>
               </widget>
               <packing>
                 <property name="position">1</property>
