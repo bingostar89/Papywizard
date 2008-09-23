@@ -77,31 +77,31 @@ class ConfigManager(object):
         """ Init the object.
         """
         if ConfigManager.__init:
-            
+
             # Load dist config.
             distConfig = ConfigParser.SafeConfigParser()
             distConfigFile = os.path.join(path, config.CONFIG_FILE)
             if distConfig.read(distConfigFile) == []:
-                raise IOError("Can't read configuration file (%s)" % distConfigFile)
+                raise IOError(_("Can't read configuration file (%s)" % distConfigFile))
             distConfigVersion = distConfig.getint('General', 'CONFIG_VERSION')
-            
+
             # Check if user config. exists
             userConfig = ConfigParser.SafeConfigParser()
             if userConfig.read(config.USER_CONFIG_FILE) == []:
-                Logger().debug("ConfigManager.__init__(): User config. does not exist; copying from dist config.")
+                Logger().debug(_("ConfigManager.__init__(): User config. does not exist; copying from dist config."))
                 distConfig.write(file(config.USER_CONFIG_FILE, 'w'))
                 userConfig.read(config.USER_CONFIG_FILE)
 
             # Check if user config. needs to be updated
             elif distConfigVersion > userConfig.getint('General', 'CONFIG_VERSION'):
-                Logger().debug("ConfigManager.__init__(): User config. has wrong version.; updating from dist config.")
-                
+                Logger().debug(_("ConfigManager.__init__(): User config. has wrong version.; updating from dist config."))
+
                 # Remove obsolete sections
                 distSections = distConfig.sections()
                 for userSection in userConfig.sections():
                     if userSection not in distSections:
                         userConfig.remove_section(userSection)
-                        Logger().debug("ConfigManager.__init__(): Removed [%s] section" % userSection)
+                        Logger().debug(_("ConfigManager.__init__(): Removed [%s] section" % userSection))
 
                 # Update all sections
                 for distSection in distSections:
@@ -109,48 +109,48 @@ class ConfigManager(object):
                     # Create new sections
                     if not userConfig.has_section(distSection):
                         userConfig.add_section(distSection)
-                        Logger().debug("ConfigManager.__init__(): Added [%s] section" % distSection)
+                        Logger().debug(_("ConfigManager.__init__(): Added [%s] section" % distSection))
 
                     # Remove obsolete options
                     for option in userConfig.options(distSection):
                         if not distConfig.has_option(distSection, option):
                             userConfig.remove_option(distSection, option)
-                            Logger().debug("ConfigManager.__init__(): Removed [%s] %s option" % (distSection, option))
+                            Logger().debug(_("ConfigManager.__init__(): Removed [%s] %s option" % (distSection, option)))
 
                     # Update the options
                     for option, value in distConfig.items(distSection):
                         if not userConfig.has_option(distSection, option) or \
                            value != userConfig.get(distSection, option) and not distSection.endswith("Preferences"):
                             userConfig.set(distSection, option, value)
-                            Logger().debug("ConfigManager.__init__(): Updated [%s] %s option with %s" % (distSection, option, value))
-                        
+                            Logger().debug((_"ConfigManager.__init__(): Updated [%s] %s option with %s" % (distSection, option, value)))
+
                     # Set config. version
                     userConfig.set('General', 'CONFIG_VERSION', "%d" % distConfigVersion)
-                
+
                 # Write user config.
                 userConfig.write(file(config.USER_CONFIG_FILE, 'w'))
-                Logger().debug("ConfigManager.__init__(): User config. written to file")
-                
+                Logger().debug(_("ConfigManager.__init__(): User config. written to file"))
+
             self.__config = userConfig
 
             ConfigManager.__init = False
 
     def save(self):
         """ Save config.
-        
+
         Config is saved in user directory. Preferences are first
         set back to config.
         """
-        Logger().trace("ConfigManager.save()")
+        Logger().trace((_"ConfigManager.save()"))
         self.__config.write(file(config.USER_CONFIG_FILE, 'w'))
-        Logger().info("Configuration saved")
+        Logger().info(_("Configuration saved"))
 
     def get(self, section, option):
         """ Get a value.
-        
+
         @param section: section name to use
         @type section: str
-        
+
         @param option: option to get value from
         @type option: str
         """
@@ -158,10 +158,10 @@ class ConfigManager(object):
 
     def getInt(self, section, option):
         """ Get a value.
-        
+
         @param section: section name to use
         @type section: str
-        
+
         @param option: option to get value from
         @type option: int
         """
@@ -169,10 +169,10 @@ class ConfigManager(object):
 
     def getFloat(self, section, option):
         """ Get a value.
-        
+
         @param section: section name to use
         @type section: str
-        
+
         @param option: option to get value from
         @type option: float
         """
@@ -180,71 +180,70 @@ class ConfigManager(object):
 
     def getBoolean(self, section, option):
         """ Get a value.
-        
+
         @param section: section name to use
         @type section: str
-        
+
         @param option: option to get value from
         @type option: bool
         """
         return self.__config.getboolean(section, option)
-        
+
     def set(self, section, option, value):
         """ Set a value.
-        
+
         @param section: section name to use
         @type section: str
-        
+
         @param option: option to set value to
         @type option: str
-        
+
         @param value: value to set
         @type value: str
         """
         self.__config.set(section, option, value)
-        
+
     def setInt(self, section, option, value):
         """ Set a value as int.
-        
+
         @param section: section name to use
         @type section: str
-        
+
         @param option: option to set value to
         @type option: str
-        
+
         @param value: value to set
         @type value: int
         """
         self.__config.set(section, option, "%d" % value)
-        
+
     def setFloat(self, section, option, value, prec):
         """ Set a value as float.
-        
+
         @param section: section name to use
         @type section: str
-        
+
         @param option: option to set value to
         @type option: str
-        
+
         @param value: value to set
         @type value: float
-        
+
         @param prec: precision
         @type prec: int
         """
         self.__config.set(section, option, ("%(format)s" % {'format': "%%.%df" % prec}) % value)
-        
+
     def setBoolean(self, section, option, value):
         """ Set a value.
-        
+
         @param section: section name to use
         @type section: str
-        
+
         @param option: option to set value to
         @type option: str
-        
+
         @param value: value to set
         @type value: str
         """
         self.__config.set(section, option, str(value))
-        
