@@ -759,6 +759,7 @@ class MainController(AbstractController):
         try:
             self.presetTemplateCombobox.set_active(presets.nameToIndex(self._model.preset.template))
         except KeyError:
+            Logger().warning("Previously selected '%s' preset template not found" % self._model.preset.template)
             self.presetTemplateCombobox.set_active(0)
 
         self.yawPosLabel.set_text("%.1f" % self.__yawPos)
