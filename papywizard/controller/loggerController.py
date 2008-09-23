@@ -51,6 +51,11 @@ Implements
 
 __revision__ = "$Id: configController.py 523 2008-09-16 14:03:24Z fma $"
 
+import pygtk
+pygtk.require("2.0")
+import gtk
+import gtk.gdk
+
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractController
 
@@ -80,7 +85,7 @@ class LoggerController(AbstractController):
                 vadjust.set_value(vadjust.upper-vadjust.page_size)
                 vadjust.need_scroll = True
         self.loggerScrolledwindow.get_vadjustment().connect("changed", changed)
-    
+
         def value_changed(vadjust):
             vadjust.need_scroll = abs(vadjust.value + vadjust.page_size - vadjust.upper) < vadjust.step_increment
         self.loggerScrolledwindow.get_vadjustment().connect("value-changed", value_changed)
@@ -109,8 +114,3 @@ class LoggerController(AbstractController):
         @type buffer: gtk.TextBuffer
         """
         self.loggerTextview.set_buffer(buffer)
-
-    def scrollToBottom(self):
-        """ Scroll down to the last log.
-        """
-        self.loggerTextview.scroll_to_iter(self.loggerTextview.get_buffer().get_end_iter(), 0.)
