@@ -74,12 +74,14 @@ setup(name="papywizard",
                 "papywizard.view", "papywizard.view3D"],
       package_data={'papywizard': ["view/*.glade", "common/papywizard.conf", "common/presets.xml"]},
 
-      # Nokia stuff
-      data_files=[("share/applications/hildon", ["papywizard.desktop"]),
-                  ('share/pixmaps', ["icon16x16.png"])],
-      section="user/graphics",
-      depends="python2.5, python2.5-hildon, python2.5-gtk2",
-      icon="icon16x16.png",
-      cmdclass={'bdist_debian': bdist_debian},
-  )
+      data_files=[("share/locale/en/LC_MESSAGES", ["locale/en/LC_MESSAGES/papywizard.mo"]),
+                  ("share/locale/fr/LC_MESSAGES", ["locale/fr/LC_MESSAGES/papywizard.mo"]),
+                  ("share/applications", ["papywizard.desktop"]),
+                  ('share/pixmaps', ["papywizard.png"])],
 
+      # Debian package
+      section="user/graphics",
+      depends="python2.5, python2.5-gtk2", # Recommended python2.5-bluez
+      icon="papywizard.png",
+      cmdclass={'bdist_debian': bdist_debian},
+)
