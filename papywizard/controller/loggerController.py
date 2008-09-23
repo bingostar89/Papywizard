@@ -51,11 +51,8 @@ Implements
 
 __revision__ = "$Id: configController.py 523 2008-09-16 14:03:24Z fma $"
 
-from papywizard.common import config
-from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractController
-from papywizard.controller.bluetoothChooserController import BluetoothChooserController
 
 
 class LoggerController(AbstractController):
