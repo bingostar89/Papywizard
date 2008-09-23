@@ -82,7 +82,7 @@ class ConfigManager(object):
             distConfig = ConfigParser.SafeConfigParser()
             distConfigFile = os.path.join(path, config.CONFIG_FILE)
             if distConfig.read(distConfigFile) == []:
-                raise IOError(_("Can't read configuration file (%s)" % distConfigFile))
+                raise IOError(_("Can't read configuration file (%s)") % distConfigFile)
             distConfigVersion = distConfig.getint('General', 'CONFIG_VERSION')
 
             # Check if user config. exists
@@ -101,7 +101,7 @@ class ConfigManager(object):
                 for userSection in userConfig.sections():
                     if userSection not in distSections:
                         userConfig.remove_section(userSection)
-                        Logger().debug(_("ConfigManager.__init__(): Removed [%s] section" % userSection))
+                        Logger().debug(_("ConfigManager.__init__(): Removed [%s] section") % userSection)
 
                 # Update all sections
                 for distSection in distSections:
@@ -109,20 +109,20 @@ class ConfigManager(object):
                     # Create new sections
                     if not userConfig.has_section(distSection):
                         userConfig.add_section(distSection)
-                        Logger().debug(_("ConfigManager.__init__(): Added [%s] section" % distSection))
+                        Logger().debug(_("ConfigManager.__init__(): Added [%s] section") % distSection)
 
                     # Remove obsolete options
                     for option in userConfig.options(distSection):
                         if not distConfig.has_option(distSection, option):
                             userConfig.remove_option(distSection, option)
-                            Logger().debug(_("ConfigManager.__init__(): Removed [%s] %s option" % (distSection, option)))
+                            Logger().debug(_("ConfigManager.__init__(): Removed [%s] %s option") % (distSection, option))
 
                     # Update the options
                     for option, value in distConfig.items(distSection):
                         if not userConfig.has_option(distSection, option) or \
                            value != userConfig.get(distSection, option) and not distSection.endswith("Preferences"):
                             userConfig.set(distSection, option, value)
-                            Logger().debug((_"ConfigManager.__init__(): Updated [%s] %s option with %s" % (distSection, option, value)))
+                            Logger().debug(_("ConfigManager.__init__(): Updated [%s] %s option with %s") % (distSection, option, value))
 
                     # Set config. version
                     userConfig.set('General', 'CONFIG_VERSION', "%d" % distConfigVersion)
@@ -141,7 +141,7 @@ class ConfigManager(object):
         Config is saved in user directory. Preferences are first
         set back to config.
         """
-        Logger().trace((_"ConfigManager.save()"))
+        Logger().trace(_("ConfigManager.save()"))
         self.__config.write(file(config.USER_CONFIG_FILE, 'w'))
         Logger().info(_("Configuration saved"))
 
