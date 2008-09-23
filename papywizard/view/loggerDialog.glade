@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Sep 23 18:08:22 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Sep 23 23:20:30 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="border_width">5</property>
@@ -23,7 +23,6 @@
                 <property name="height_request">250</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="tooltip_text">Log window</property>
                 <property name="editable">False</property>
                 <property name="left_margin">5</property>
                 <property name="right_margin">5</property>
@@ -43,6 +42,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip" translatable="yes">Clear the log window</property>
                 <property name="label" translatable="yes">Clear logs</property>
                 <property name="response_id">0</property>
                 <signal name="clicked" handler="on_clearButton_clicked"/>

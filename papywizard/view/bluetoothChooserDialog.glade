@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Sep 23 14:21:03 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Sep 23 23:17:26 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="border_width">5</property>
@@ -18,6 +18,7 @@
             <child>
               <widget class="GtkComboBox" id="bluetoothAddressCombobox">
                 <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">Bluetooth devices list</property>
               </widget>
             </child>
             <child>

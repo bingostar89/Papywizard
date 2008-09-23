@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Sep 23 18:09:03 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Sep 23 23:21:39 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="visible">True</property>
@@ -31,6 +31,7 @@
             <child>
               <widget class="GtkProgressBar" id="progressbar">
                 <property name="visible">True</property>
+                <property name="tooltip" translatable="yes">Progression and status of the shooting</property>
                 <property name="show_text">True</property>
                 <property name="text" translatable="yes">Progression...</property>
               </widget>
@@ -51,6 +52,7 @@
               <widget class="GtkCheckButton" id="manualShootCheckbutton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tooltip" translatable="yes">Manual shoot at each position</property>
                 <property name="label" translatable="yes">Manual shooting</property>
                 <property name="response_id">0</property>
                 <property name="draw_indicator">True</property>
@@ -61,6 +63,7 @@
               <widget class="GtkCheckButton" id="dataFileEnableCheckbutton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tooltip" translatable="yes">Write data file</property>
                 <property name="label" translatable="yes">Data file enable</property>
                 <property name="response_id">0</property>
                 <property name="draw_indicator">True</property>
@@ -85,6 +88,7 @@
                 <property name="can_focus">True</property>
                 <property name="has_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip" translatable="yes">Start shooting</property>
                 <property name="response_id">0</property>
                 <signal name="clicked" handler="on_startButton_clicked"/>
                 <child>
@@ -117,6 +121,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip" translatable="yes">Suspend shooting</property>
                 <property name="response_id">0</property>
                 <signal name="clicked" handler="on_suspendResumeButton_clicked"/>
                 <child>
@@ -152,6 +157,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip" translatable="yes">Stop shooting</property>
                 <property name="response_id">0</property>
                 <signal name="clicked" handler="on_stopButton_clicked"/>
                 <child>
