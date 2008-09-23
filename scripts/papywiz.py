@@ -86,7 +86,7 @@ class Papywizard(object):
         Logger().addStreamHandler(gtkLogStream)
         Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
 
-        Logger().info("Starting Papywizard app...")
+        Logger().info(_("Starting Papywizard app..."))
 
         # Threads
         gtk.gdk.threads_init()
@@ -132,7 +132,7 @@ class Papywizard(object):
         #if config.VIEW3D_ENABLE:
             #self.__view3D.terminate() # vpython has not yet a way to terminate the mainloop
 
-        Logger().info("Papywizard app stopped")
+        Logger().info(_("Papywizard app stopped"))
 
 
 def main():
@@ -148,7 +148,7 @@ def main():
         message = tracebackString.getvalue().strip()
         tracebackString.close()
         messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                          message_format="Internal error")
+                                          message_format=_("Internal error"))
         messageDialog.format_secondary_text(message)
         messageDialog.run()
         messageDialog.destroy()
