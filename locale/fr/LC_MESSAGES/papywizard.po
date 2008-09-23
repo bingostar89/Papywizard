@@ -1,0 +1,420 @@
+# French translations for PACKAGE package.
+# Copyright (C) 2008 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-09-23 15:22+0200\n"
+"PO-Revision-Date: 2008-09-23 15:03+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: scripts/papywiz.py:140
+msgid "Starting Papywizard app..."
+msgstr "Lancement de Papywizard..."
+
+#: scripts/papywiz.py:186
+msgid "Papywizard app stopped"
+msgstr "Arrêt de Papywizard"
+
+#: scripts/papywiz.py:202
+msgid "Internal error"
+msgstr "Erreur interne"
+
+#: tmp/bluetoothChooserDialog.glade.h:1
+msgid "Bluetooth"
+msgstr ""
+
+#: tmp/bluetoothChooserDialog.glade.h:2 tmp/configDialog.glade.h:32
+msgid "gtk-cancel"
+msgstr ""
+
+#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:33
+msgid "gtk-ok"
+msgstr ""
+
+#: tmp/configDialog.glade.h:1
+msgid ""
+"3:2\n"
+"4:3\n"
+"5:4"
+msgstr ""
+
+#: tmp/configDialog.glade.h:4
+msgid "Auto-connect"
+msgstr ""
+
+#: tmp/configDialog.glade.h:5
+msgid "BT device address"
+msgstr "Adresse convertisseur BT"
+
+#: tmp/configDialog.glade.h:6
+msgid "CR"
+msgstr ""
+
+#: tmp/configDialog.glade.h:7
+msgid "Camera / lens"
+msgstr "Appareil / objectif"
+
+#: tmp/configDialog.glade.h:8
+msgid "Choose..."
+msgstr "Sélectionne..."
+
+#: tmp/configDialog.glade.h:9
+msgid "Configuration"
+msgstr ""
+
+#: tmp/configDialog.glade.h:10
+msgid "Data file format"
+msgstr "Format fichier de données"
+
+#: tmp/configDialog.glade.h:11
+msgid "Driver"
+msgstr "Pilote"
+
+#: tmp/configDialog.glade.h:12 tmp/mainWindow.glade.h:15
+msgid "Hardware"
+msgstr "Matériel"
+
+#: tmp/configDialog.glade.h:13
+msgid "Inital direction"
+msgstr "Direction primaire"
+
+#: tmp/configDialog.glade.h:14
+msgid "Lens focal (mm)"
+msgstr "Focale objectif (mm)"
+
+#: tmp/configDialog.glade.h:15
+msgid "Logger level"
+msgstr "Niveau de log"
+
+#: tmp/configDialog.glade.h:16
+msgid "Misc"
+msgstr "Divers"
+
+#: tmp/configDialog.glade.h:17
+msgid "Number of pictures"
+msgstr "Nomber de photos"
+
+#: tmp/configDialog.glade.h:18
+msgid "Orientation"
+msgstr ""
+
+#: tmp/configDialog.glade.h:20
+msgid "Overlap (%)"
+msgstr "Recouvrement (%)"
+
+#: tmp/configDialog.glade.h:21
+msgid "Sensor coef."
+msgstr "Coef. capteur"
+
+#: tmp/configDialog.glade.h:22
+msgid "Sensor ratio"
+msgstr "Ratio capteur"
+
+#: tmp/configDialog.glade.h:23
+msgid "Serial port"
+msgstr "Port série"
+
+#: tmp/configDialog.glade.h:24
+msgid "Shooting"
+msgstr "Prise de vue"
+
+#: tmp/configDialog.glade.h:25
+msgid "Square"
+msgstr "Carré"
+
+#: tmp/configDialog.glade.h:26
+msgid "Stab. delay (sec)"
+msgstr "Délai de stab. (s)"
+
+#: tmp/configDialog.glade.h:27
+msgid "Start from"
+msgstr "Commence depuis"
+
+#: tmp/configDialog.glade.h:28
+msgid "Time value (sec)"
+msgstr "Temps d'exposition"
+
+#: tmp/configDialog.glade.h:29
+msgid ""
+"bluetooth\n"
+"serial\n"
+"usb"
+msgstr ""
+"bluetooth\n"
+"série\n"
+"usb"
+
+#: tmp/configDialog.glade.h:34
+msgid ""
+"portrait\n"
+"landscape"
+msgstr ""
+"portrait\n"
+"paysage"
+
+#: tmp/configDialog.glade.h:36
+msgid ""
+"start\n"
+"end"
+msgstr ""
+"début\n"
+"fin"
+
+#: tmp/configDialog.glade.h:38
+msgid ""
+"trace\n"
+"debug\n"
+"info\n"
+"warning\n"
+"error\n"
+"exception\n"
+"critical"
+msgstr ""
+
+#: tmp/configDialog.glade.h:45
+msgid ""
+"yaw\n"
+"pitch"
+msgstr ""
+"lacet\n"
+"tanguage"
+
+#: tmp/helpAboutDialog.glade.h:1
+msgid "(C) 2007-2008 Frédéric Mantegazza"
+msgstr ""
+
+#: tmp/helpAboutDialog.glade.h:2
+msgid ""
+"Papywizard is a panohead\n"
+"control software, mainly developped\n"
+"for the Merlin/Orion astronomic mount\n"
+"but usable for other panoheads."
+msgstr ""
+
+#: tmp/helpAboutDialog.glade.h:6
+msgid ""
+"This software is governed by the CeCILL license under French law and\n"
+"abiding by the rules of distribution of free software.  You can  use, \n"
+"modify and/or redistribute the software under the terms of the CeCILL\n"
+"license as circulated by CEA, CNRS and INRIA at the following URL\n"
+"http://www.cecill.info.\n"
+"\n"
+"As a counterpart to the access to the source code and  rights to copy,\n"
+"modify and redistribute granted by the license, users are provided only\n"
+"with a limited warranty  and the software's author,  the holder of the\n"
+"economic rights,  and the successive licensors  have only  limited\n"
+"liability. \n"
+"\n"
+"In this respect, the user's attention is drawn to the risks associated\n"
+"with loading,  using,  modifying and/or developing or reproducing the\n"
+"software by the user in light of its specific status of free software,\n"
+"that may mean  that it is complicated to manipulate,  and  that  also\n"
+"therefore means  that it is reserved for developers  and  experienced\n"
+"professionals having in-depth computer knowledge. Users are therefore\n"
+"encouraged to load and test the software's suitability as regards their\n"
+"requirements in conditions enabling the security of their systems and/or \n"
+"data to be ensured and,  more generally, to use and operate it in the \n"
+"same conditions as regards security. \n"
+"\n"
+"The fact that you are presently reading this means that you have had\n"
+"knowledge of the CeCILL license and that you accept its terms.\n"
+"CeCILL"
+msgstr ""
+
+#: tmp/helpAboutDialog.glade.h:32
+msgid "À propos de Papywizard"
+msgstr ""
+
+#: tmp/loggerDialog.glade.h:1
+msgid "Clear logs"
+msgstr "Efface log"
+
+#: tmp/loggerDialog.glade.h:2
+msgid "Log viewer"
+msgstr "Visualiseur de log"
+
+#: tmp/loggerDialog.glade.h:3 tmp/presetTemplateInfoDialog.glade.h:2
+#: tmp/shootDialog.glade.h:8
+msgid "gtk-close"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:1
+msgid "    Pitch    "
+msgstr ""
+
+#: tmp/mainWindow.glade.h:2
+msgid "    Yaw    "
+msgstr ""
+
+#: tmp/mainWindow.glade.h:3
+msgid "   Yaw   "
+msgstr ""
+
+#: tmp/mainWindow.glade.h:4
+msgid "--"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:5
+msgid "<b>Mosaic settings</b>"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:6
+msgid "<b>Move</b>"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:7
+msgid "<b>Preset settings</b>"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:8
+msgid "About"
+msgstr "À propos"
+
+#: tmp/mainWindow.glade.h:9
+msgid "Clear Limits"
+msgstr "Efface les butées"
+
+#: tmp/mainWindow.glade.h:10
+msgid "Configure..."
+msgstr ""
+
+#: tmp/mainWindow.glade.h:11
+msgid "Connect..."
+msgstr "Connecter..."
+
+#: tmp/mainWindow.glade.h:12
+msgid "Connection status"
+msgstr "Statut connection"
+
+#: tmp/mainWindow.glade.h:13
+msgid "End (°)"
+msgstr "Fin (°)"
+
+#: tmp/mainWindow.glade.h:14
+msgid "File"
+msgstr "Fichier"
+
+#: tmp/mainWindow.glade.h:16
+msgid "Help"
+msgstr "Aide"
+
+#: tmp/mainWindow.glade.h:17
+msgid "Manual"
+msgstr "Manuel"
+
+#: tmp/mainWindow.glade.h:18
+msgid "Mosaic"
+msgstr "Mosaîque"
+
+#: tmp/mainWindow.glade.h:19
+msgid "Nb picts"
+msgstr "Nb photos"
+
+#: tmp/mainWindow.glade.h:20
+msgid "Papywizard"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:21
+msgid "Pitch +"
+msgstr "Tangage +"
+
+#: tmp/mainWindow.glade.h:22
+msgid "Pitch -"
+msgstr "Tangage -"
+
+#: tmp/mainWindow.glade.h:23
+msgid "Preset"
+msgstr "Présélection"
+
+#: tmp/mainWindow.glade.h:24
+msgid "Quit"
+msgstr "Quitte"
+
+#: tmp/mainWindow.glade.h:26
+msgid "Real overlap (%)"
+msgstr "Recouvrement réel (%)"
+
+#: tmp/mainWindow.glade.h:27
+msgid "Reset"
+msgstr "Réinitialisation"
+
+#: tmp/mainWindow.glade.h:28
+msgid "Set limit"
+msgstr "Fixe butée"
+
+#: tmp/mainWindow.glade.h:29
+msgid "Shoot..."
+msgstr "Prise de vue..."
+
+#: tmp/mainWindow.glade.h:30
+msgid "Start (°)"
+msgstr "Début (%)"
+
+#: tmp/mainWindow.glade.h:31
+msgid "Template"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:32
+msgid "Total Fov (°)"
+msgstr "AdC total (°)"
+
+#: tmp/mainWindow.glade.h:33
+msgid "View Log..."
+msgstr "Voir Log..."
+
+#: tmp/mainWindow.glade.h:34
+msgid "What's This?"
+msgstr "Qu'est-ce que c'est ?"
+
+#: tmp/mainWindow.glade.h:35
+msgid "Yaw +"
+msgstr "Lacet +"
+
+#: tmp/mainWindow.glade.h:36
+msgid "Yaw -"
+msgstr "Lacet -"
+
+#: tmp/presetTemplateInfoDialog.glade.h:1
+msgid "Preset templates"
+msgstr ""
+
+#: tmp/shootDialog.glade.h:1
+msgid "Data file enable"
+msgstr "Fichier de données activé"
+
+#: tmp/shootDialog.glade.h:2
+msgid "Manual shooting"
+msgstr "Prise de vue manuelle"
+
+#: tmp/shootDialog.glade.h:3
+msgid "Progression..."
+msgstr ""
+
+#: tmp/shootDialog.glade.h:4
+msgid "Shoot"
+msgstr "Déclenchement"
+
+#: tmp/shootDialog.glade.h:5
+msgid "Start"
+msgstr "Commence"
+
+#: tmp/shootDialog.glade.h:6
+msgid "Stop"
+msgstr "Arrête"
+
+#: tmp/shootDialog.glade.h:7
+msgid "Suspend"
+msgstr "Suspend"
+
+#: tmp/waitBanner.glade.h:1
+msgid "Please wait..."
+msgstr "Attendez..."
