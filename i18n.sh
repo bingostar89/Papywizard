@@ -1,9 +1,10 @@
 #/bin/sh
 
+APP_NAME="papywizard"
 TMP_DIR="tmp"
-POT_FILE="papywizard.pot"
-PO_FILE="papywizard.po"
-MO_FILE="papywizard.mo"
+POT_FILE="$APP_NAME.pot"
+PO_FILE="$APP_NAME.po"
+MO_FILE="$APP_NAME.mo"
 LOCALE_DIR="locale"
 
 mkdir -p $TMP_DIR
@@ -11,14 +12,14 @@ mkdir -p $TMP_DIR
 # Extract strings from python files
 python_files="scripts/papywiz.py"
 python_files="$python_files `find papywizard -type f -name \"*.py\"`"
-xgettext --language=Python --from-code=utf-8 --keyword=_ --no-wrap --output=$TMP_DIR/$POT_FILE $python_files
+xgettext --language=Python --from-code=utf-8 --default-domain=$APP_NAME --keyword=_ --no-wrap --output=$TMP_DIR/$APP_NAME $python_files
 
 # Extract strings from glade files
 glade_files=`ls papywizard/view/*.glade`
 for file in $glade_files; do
     intltool-extract -l --type=gettext/glade $file
 done
-xgettext --language=Python --from-code=utf-8 --keyword=_ --keyword=N_ --no-wrap --output=$TMP_DIR/$POT_FILE $python_files $TMP_DIR/*.h
+xgettext --language=Python --from-code=utf-8 --default-domain=$APP_NAME --keyword=_ --keyword=N_ --no-wrap --output=$TMP_DIR/$POT_FILE $python_files $TMP_DIR/*.h
 
 # Generate PO and MO files
 for lang in 'en' 'fr'; do
