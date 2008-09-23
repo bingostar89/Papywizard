@@ -173,8 +173,8 @@ class BluetoothChooserController(AbstractController):
         else:
             Logger().error("Can't scan bluetooth\n%s" % self.__refreshErrorMessage)
             messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                              message_format="Can't scan bluetooth")
-            messageDialog.set_title("Error")
+                                              message_format=_("Can't scan bluetooth"))
+            messageDialog.set_title(_("Error"))
             messageDialog.format_secondary_text(self.__refreshErrorMessage)
             messageDialog.run()
             messageDialog.destroy()
