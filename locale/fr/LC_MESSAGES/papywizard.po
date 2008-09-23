@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-23 18:31+0200\n"
+"POT-Creation-Date: 2008-09-23 20:03+0200\n"
 "PO-Revision-Date: 2008-09-23 18:35+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -28,17 +28,91 @@ msgstr "Arrêt de Papywizard"
 msgid "Internal error"
 msgstr "Erreur interne"
 
+#: papywizard/model/shooting.py:97 papywizard/model/shooting.py:157
+#: papywizard/model/shooting.py:167
+msgid "Idle"
+msgstr "Repos"
+
+#: papywizard/model/shooting.py:210
+msgid "Moving"
+msgstr "Déplacement"
+
+#: papywizard/model/shooting.py:217
+msgid "Stabilizing"
+msgstr "Stabilisation"
+
+#: papywizard/model/shooting.py:229
+#, fuzzy, python-format
+msgid "Shooting %d/%d"
+msgstr "Prise de vue %d/%d"
+
+#: papywizard/model/shooting.py:256
+msgid "Canceled"
+msgstr "Annulé"
+
+#: papywizard/model/shooting.py:261
+#, fuzzy
+msgid "Over"
+msgstr "Terminé"
+
+#: papywizard/controller/bluetoothChooserController.py:176
+msgid "Can't scan bluetooth"
+msgstr "Impossible de scruter le bluetooth"
+
+#: papywizard/controller/bluetoothChooserController.py:177
+#: papywizard/controller/mainController.py:685
+msgid "Error"
+msgstr "Erreur"
+
+#: papywizard/controller/mainController.py:445
+msgid "Yaw - limit set"
+msgstr "Limite Lacet - fixée"
+
+#: papywizard/controller/mainController.py:451
+msgid "Yaw + limit set"
+msgstr "Limite Lacet + fixée"
+
+#: papywizard/controller/mainController.py:457
+msgid "Pitch + limit set"
+msgstr "Limite Tangage + fixée"
+
+#: papywizard/controller/mainController.py:463
+msgid "Pitch - limit set"
+msgstr "Limite Tangage - fixée"
+
+#: papywizard/controller/mainController.py:468
+msgid "Limits cleared"
+msgstr "Limites effacées"
+
+#: papywizard/controller/mainController.py:474
+msgid "Hardware has been reseted"
+msgstr "Matériel réinitialisé"
+
+#: papywizard/controller/mainController.py:657
+msgid "Connecting to real hardware..."
+msgstr "Connexion au matériel..."
+
+#: papywizard/controller/mainController.py:680
+msgid "Now connected to real hardware"
+msgstr "Maintenant connecté au matériel"
+
+#: papywizard/controller/mainController.py:684
+msgid "Can't connect to hardware"
+msgstr "Impossible de se connecter au matériel"
+
+#: papywizard/controller/mainController.py:700
+msgid "Now in simulation mode"
+msgstr "Maintenant en mode simulation"
+
 #: tmp/bluetoothChooserDialog.glade.h:1
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:2
-#: tmp/configDialog.glade.h:32
+#: tmp/bluetoothChooserDialog.glade.h:2 tmp/configDialog.glade.h:32
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:3
-#: tmp/configDialog.glade.h:33
+#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:33
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -84,8 +158,7 @@ msgstr "Format fichier de données"
 msgid "Driver"
 msgstr "Pilote"
 
-#: tmp/configDialog.glade.h:12
-#: tmp/mainWindow.glade.h:15
+#: tmp/configDialog.glade.h:12 tmp/mainWindow.glade.h:15
 msgid "Hardware"
 msgstr "Matériel"
 
@@ -129,8 +202,7 @@ msgstr "Ratio capteur"
 msgid "Serial port"
 msgstr "Port série"
 
-#: tmp/configDialog.glade.h:24
-#: tmp/shootDialog.glade.h:4
+#: tmp/configDialog.glade.h:24 tmp/shootDialog.glade.h:4
 msgid "Shooting"
 msgstr "Prise de vue"
 
@@ -215,7 +287,7 @@ msgid ""
 msgstr ""
 "Papywizard est un logiciel\n"
 "de pilotage de tête panoramique\n"
-"principalement développer pour la\n"
+"principalement développé pour la\n"
 "tête astronomique Merlin/Orion\n"
 "mais utilisable pour d'autres têtes."
 
@@ -286,10 +358,9 @@ msgstr "Effacer logs"
 #: tmp/loggerDialog.glade.h:2
 #, fuzzy
 msgid "Logger"
-msgstr "Niveau de log"
+msgstr "Logger"
 
-#: tmp/loggerDialog.glade.h:3
-#: tmp/presetTemplateInfoDialog.glade.h:2
+#: tmp/loggerDialog.glade.h:3 tmp/presetTemplateInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:8
 msgid "gtk-close"
 msgstr "gtk-close"
@@ -328,7 +399,7 @@ msgstr "À propos"
 
 #: tmp/mainWindow.glade.h:9
 msgid "Clear Limits"
-msgstr "Effacer les butées"
+msgstr "Effacer les limites"
 
 #: tmp/mainWindow.glade.h:10
 msgid "Configure..."
@@ -412,7 +483,7 @@ msgstr "Patron"
 
 #: tmp/mainWindow.glade.h:32
 msgid "Total Fov (°)"
-msgstr "AdC total (°)"
+msgstr "Adc total (°)"
 
 #: tmp/mainWindow.glade.h:33
 msgid "View Log..."
@@ -420,7 +491,7 @@ msgstr "Voir Log..."
 
 #: tmp/mainWindow.glade.h:34
 msgid "What's This?"
-msgstr "Qu'est-ce donc ?"
+msgstr "Késako ?"
 
 #: tmp/mainWindow.glade.h:35
 msgid "Yaw +"
@@ -462,4 +533,3 @@ msgstr "Suspendre"
 #: tmp/waitBanner.glade.h:1
 msgid "Please wait..."
 msgstr "Patienter..."
-
