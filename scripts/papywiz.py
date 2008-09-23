@@ -81,9 +81,11 @@ if config.VIEW3D_ENABLE:
     from papywizard.view3D.view3D import View3D
 
 
-# Localization (thanks to Mark Mruss from http://www.learningpython.com)
+# Localization support (thanks to Mark Mruss from http://www.learningpython.com)
 # Get the local directory since we are not installing anything
 localePath = os.path.realpath(os.path.dirname(sys.argv[0]))
+localePath = os.path.join(localePath, "locale")
+print localePath
 
 # Init the list of languages to support
 langs = []
@@ -100,13 +102,14 @@ language = os.environ.get('LANGUAGE', None)
 if (language):
 
     # Language comes back something like en_CA:en_US:en_GB:en
-    # on linuxy systems, on Win32 it's nothing, so we need to
+    # on linux systems, on Win32 it's nothing, so we need to
     # split it up into a list
     langs += language.split(":")
 
 # Now add on to the back of the list the translations that we
 # know that we have, our defaults
 langs += ["en_US", "fr_FR"]
+print langs
 
 # Now langs is a list of all of the languages that we are going
 # to try to use.  First we check the default, then what the system
@@ -118,11 +121,13 @@ gtk.glade.bindtextdomain(APP_NAME, localePath)
 gtk.glade.textdomain(APP_NAME)
 
 # Get the language to use
-lang = gettext.translation(APP_NAME, localePath, languages=langs, fallback=True)
+lang = gettext.translation(APP_NAME, localePath, languages=langs)#, fallback=True)
 
 # Install the language, map _()
-global _
 _ = lang.gettext
+
+# Install globally
+gettext.install(APP_NAME)
 
 
 class Papywizard(object):
