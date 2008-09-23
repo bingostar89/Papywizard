@@ -2,8 +2,11 @@
 
 TMP_DIR="tmp"
 POT_FILE="papywizard.pot"
+PO_FILE="papywizard.po"
 MO_FILE="papywizard.mo"
 LOCALE_DIR="locale"
+
+mkdir -p $TMP_DIR
 
 # Extract strings from python files
 python_files="scripts/papywiz.py"
@@ -17,13 +20,13 @@ for file in $glade_files; do
 done
 xgettext --language=Python --from-code=utf-8 --keyword=_ --keyword=N_ --no-wrap --output=$TMP_DIR/$POT_FILE $python_files $TMP_DIR/*.h
 
-# Generate PO files
+# Generate PO and MO files
 for lang in 'en' 'fr'; do
     mkdir -p $LOCALE_DIR/$lang/LC_MESSAGES
-    if [ -e $TMP_DIR/$lang.po ]; then
-        msgmerge -U $TMP_DIR/$lang.po $TMP_DIR/$POT_FILE
+    if [ -e $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE ]; then
+        msgmerge -U $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE $TMP_DIR/$POT_FILE
     else
-        msginit --input=$TMP_DIR/$POT_FILE --locale=$lang --no-translator --no-wrap --output=$TMP_DIR/$lang.po
+        msginit --input=$TMP_DIR/$POT_FILE --locale=$lang --no-translator --no-wrap --output=$LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE
     fi
-    msgfmt -v --output-file=$LOCALE_DIR/$lang/LC_MESSAGES/$MO_FILE $TMP_DIR/$lang.po
+    msgfmt -v --output-file=$LOCALE_DIR/$lang/LC_MESSAGES/$MO_FILE $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE
 done
