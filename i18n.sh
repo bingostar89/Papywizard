@@ -18,7 +18,7 @@ done
 xgettext --language=Python --from-code=utf-8 --keyword=_ --keyword=N_ --no-wrap --output=$TMP_DIR/$POT_FILE $python_files $TMP_DIR/*.h
 
 # Generate PO files
-for lang in 'en_US' 'fr_FR'; do
+for lang in 'en' 'fr'; do
     mkdir -p $LOCALE_DIR/$lang/LC_MESSAGES
     if [ -e $TMP_DIR/$lang.po ]; then
         msgmerge -U $TMP_DIR/$lang.po $TMP_DIR/$POT_FILE
