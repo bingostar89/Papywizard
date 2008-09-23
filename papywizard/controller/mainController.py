@@ -58,7 +58,6 @@ import webbrowser
 import pygtk
 pygtk.require("2.0")
 import gtk
-import gtk.glade
 import pango
 import gobject
 
@@ -70,6 +69,7 @@ from papywizard.common.exception import HardwareError
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.helpAboutController import HelpAboutController
+from papywizard.controller.presetTemplateInfoController import PresetTemplateInfoController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.shootController import ShootController
 from papywizard.controller.waitController import WaitController
@@ -123,6 +123,7 @@ class MainController(AbstractController):
                             "on_setEndTogglebutton_released": self.__onSetEndTogglebuttonReleased,
 
                             "on_presetTemplateCombobox_changed": self.__onPresetTemplateComboboxChanged,
+                            "on_presetTemplateInfoButton_clicked": self.__onPresetTemplateInfoButtonClicked,
 
                             "on_hardwareSetOriginButton_clicked": self.__onHardwareSetOriginButtonClicked,
                             "on_yawMovePlusTogglebutton_pressed": self.__onYawMovePlusTogglebuttonPressed,
@@ -207,9 +208,9 @@ class MainController(AbstractController):
         i = 0
         while True:
             try:
-                preset = presets.getIndexByNum(i)
-                text = preset.getName()
-                self.presetTemplateCombobox.append_text(text)
+                preset = presets.getByIndex(i)
+                name = preset.getName()
+                self.presetTemplateCombobox.append_text(name)
                 i += 1
             except KeyError:
                 break
@@ -554,9 +555,20 @@ class MainController(AbstractController):
 
     def __onPresetTemplateComboboxChanged(self, widget):
         presets = PresetManager().getPresets()
-        preset = presets.getIndexByNum(self.presetTemplateCombobox.get_active())
+        preset = presets.getByIndex(self.presetTemplateCombobox.get_active())
         self._model.preset.template = preset.getName()
+        tooltip = preset.getTooltip()
+        # Store tooltip to combobox...
+        self.presetTemplateCombobox.set_tooltip_text(tooltip)
+
+        # Updated tooltip
         Logger().debug("MainController.__onPresetTemplateComboboxChanged(): new preset template='%s'" % self._model.preset.template)
+
+    def __onPresetTemplateInfoButtonClicked(self, widget):
+        Logger().trace("MainController.__onPresetTemplateInfoButtonClicked()")
+        controller = PresetTemplateInfoController(self)
+        controller.run()
+        controller.destroyView()
 
     def __onHardwareSetOriginButtonClicked(self, widget):
         Logger().trace("MainController.onHardwareSetOriginButtonClicked()")
@@ -748,7 +760,7 @@ class MainController(AbstractController):
         self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
         presets = PresetManager().getPresets()
         try:
-            self.presetTemplateCombobox.set_active(presets.getIndexByName(self._model.preset.template))
+            self.presetTemplateCombobox.set_active(presets.nameToIndex(self._model.preset.template))
         except KeyError:
             self.presetTemplateCombobox.set_active(0)
 
