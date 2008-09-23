@@ -96,7 +96,7 @@ class AbstractController(object):
         """
         self.dialog = self.wTree.get_widget("dialog")
         if self.dialog is None:
-            raise ValueError("can't retreive main dialog widget")
+            raise ValueError("Can't retreive main dialog widget")
 
     def _connectSignals(self):
         """ Connect widgets signals.
