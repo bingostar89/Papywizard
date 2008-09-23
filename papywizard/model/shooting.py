@@ -94,7 +94,7 @@ class Shooting(object):
 
         self.position = self.hardware.readPosition()
         self.progress = 0.
-        self.sequence = "Idle"
+        self.sequence = _("Idle")
 
     # Properties
     def __getMode(self):
@@ -154,7 +154,7 @@ class Shooting(object):
         """ Init progress value.
         """
         self.progress = 0.
-        self.sequence = "Idle" # find better
+        self.sequence = _("Idle") # find better
 
     def start(self):
         """ Start pano shooting.
@@ -164,7 +164,7 @@ class Shooting(object):
             """
             if self.__suspend:
                 Logger().info("Suspend")
-                self.sequence = "Idle"
+                self.sequence = _("Idle")
                 while self.__suspend:
                     time.sleep(0.1)
                 Logger().info("Resume")
@@ -207,14 +207,14 @@ class Shooting(object):
             for i, (yaw, pitch) in enumerate(scan.iterPositions()):
                 Logger().debug("Shooting.start(): goto yaw=%.1f pitch=%.1f" % (yaw, pitch))
                 Logger().info("Moving")
-                self.sequence = "Moving"
+                self.sequence = _("Moving")
                 try:
                     self.hardware.gotoPosition(yaw, pitch)
 
                     checkSuspendStop()
 
                     Logger().info("Stabilization")
-                    self.sequence = "Stabilizing"
+                    self.sequence = _("Stabilizing")
                     time.sleep(self.stabilizationDelay)
 
                     if self.__manualShoot:
@@ -226,7 +226,7 @@ class Shooting(object):
                     Logger().info("Shooting")
                     for pict in xrange(self.camera.nbPicts):
                         Logger().debug("Shooting.start(): shooting %d/%d" % (pict + 1, self.camera.nbPicts))
-                        self.sequence = "Shooting %d/%d" % (pict + 1, self.camera.nbPicts)
+                        self.sequence = _("Shooting %d/%d") % (pict + 1, self.camera.nbPicts)
                         self.hardware.shoot(self.camera.timeValue)
                         time.sleep(0.5) # ensure shutter is closed()
 
@@ -253,12 +253,12 @@ class Shooting(object):
 
         except StopIteration:
             Logger().debug("Shooting.start(): stop detected")
-            self.sequence = "Canceled"
+            self.sequence = _("Canceled")
         except:
             Logger().exception("Shooting.start()")
             self.error = True
         else:
-            self.sequence = "Over"
+            self.sequence = _("Over")
 
         self.__shooting = False
 
