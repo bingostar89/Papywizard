@@ -83,7 +83,7 @@ class Preset(object):
         tooltipLines = domTooltip.firstChild.data.strip()
         self.__tooltip = ""
         for line in tooltipLines.split('\n'):
-            self.__tooltip += line.strip()
+            self.__tooltip += "%s\n" % line.strip()
 
         domShoot = domElement.getElementsByTagName('shoot')[0]
         domPicts = domShoot.getElementsByTagName('pict')
@@ -138,8 +138,9 @@ class Presets(object):
         """
         super(Presets, self).__init__()
         self.__presets = sets.Set()
-        self.__numIndex = 0
-        self.__index = {}
+        self.__index = 0
+        self.__indexToPreset = {}
+        self.__PresetNameToIndex = {}
 
     def add(self, preset):
         """ Add a preset.
@@ -147,22 +148,25 @@ class Presets(object):
         @param preset: the preset to add
         @type preset {Preset}
         """
-        self.__presets.add(preset)
-        self.__index[self.__numIndex] = preset
-        self.__index[preset.getName()] = self.__numIndex
-        self.__numIndex += 1
+        if preset not in self.__presets:
+            self.__presets.add(preset)
+            self.__indexToPreset[self.__index] = preset
+            self.__PresetNameToIndex[preset.getName()] = self.__index
+            self.__index += 1
+        else:
+            Logger().warning("Presets.add(): Preset '%s' alreay in presets table" % preset.getName())
 
-    def getIndexByName(self, name):
-        """ Get the index.
+    def nameToIndex(self, name):
+        """ Get the index of the preset.
 
         Mainly use by the GUI for combobox.
 
         @param name: name of the preset to get the index
         @type name: str
         """
-        return self.__index[name]
+        return self.__PresetNameToIndex[name]
 
-    def getIndexByNum(self, num):
+    def getByIndex(self, index):
         """ Get the index.
 
         Mainly use by the GUI for combobox.
@@ -170,7 +174,7 @@ class Presets(object):
         @param num: index of the preset to get the name
         @type num: int
         """
-        return self.__index[num]
+        return self.__indexToPreset[index]
 
     def getByName(self, name):
         """ Return the preset from its given name.
@@ -184,6 +188,7 @@ class Presets(object):
         for preset in self.__presets:
             if preset.getName() == name:
                 return preset
+        raise ValueError("Preset '%s' not found" % name)
 
     def getAll(self):
         """ Get all presets.
