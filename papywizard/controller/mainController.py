@@ -485,7 +485,6 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onHelpViewLogMenuitemActivate()")
         controller = LoggerController(self)
         controller.setLogBuffer(self.__gtkLogStream)
-        controller.scrollToBottom()
         controller.run()
         controller.destroyView()
 
