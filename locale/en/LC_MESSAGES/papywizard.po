@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-23 15:22+0200\n"
+"POT-Creation-Date: 2008-09-23 18:31+0200\n"
 "PO-Revision-Date: 2008-09-23 15:03+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,15 +16,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: scripts/papywiz.py:140
+#: scripts/papywiz.py:143
 msgid "Starting Papywizard app..."
 msgstr "Starting Papywizard app..."
 
-#: scripts/papywiz.py:186
+#: scripts/papywiz.py:189
 msgid "Papywizard app stopped"
 msgstr "Papywizard app stopped"
 
-#: scripts/papywiz.py:202
+#: scripts/papywiz.py:205
 msgid "Internal error"
 msgstr "Internal error"
 
@@ -126,7 +126,7 @@ msgstr "Sensor ratio"
 msgid "Serial port"
 msgstr "Serial port"
 
-#: tmp/configDialog.glade.h:24
+#: tmp/configDialog.glade.h:24 tmp/shootDialog.glade.h:4
 msgid "Shooting"
 msgstr "Shooting"
 
@@ -279,8 +279,9 @@ msgid "Clear logs"
 msgstr "Clear logs"
 
 #: tmp/loggerDialog.glade.h:2
-msgid "Log viewer"
-msgstr "Log viewer"
+#, fuzzy
+msgid "Logger"
+msgstr "Logger level"
 
 #: tmp/loggerDialog.glade.h:3 tmp/presetTemplateInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:8
@@ -424,8 +425,9 @@ msgid "Yaw -"
 msgstr "Yaw -"
 
 #: tmp/presetTemplateInfoDialog.glade.h:1
-msgid "Preset templates"
-msgstr "Preset templates"
+#, fuzzy
+msgid "Templates"
+msgstr "Template"
 
 #: tmp/shootDialog.glade.h:1
 msgid "Data file enable"
@@ -438,10 +440,6 @@ msgstr "Manual shooting"
 #: tmp/shootDialog.glade.h:3
 msgid "Progression..."
 msgstr "Progression..."
-
-#: tmp/shootDialog.glade.h:4
-msgid "Shoot"
-msgstr "Shoot"
 
 #: tmp/shootDialog.glade.h:5
 msgid "Start"
@@ -458,6 +456,19 @@ msgstr "Suspend"
 #: tmp/waitBanner.glade.h:1
 msgid "Please wait..."
 msgstr "Please wait..."
+
+#, fuzzy
+#~ msgid "Presets"
+#~ msgstr "Preset"
+
+#~ msgid "Log viewer"
+#~ msgstr "Log viewer"
+
+#~ msgid "Preset templates"
+#~ msgstr "Preset templates"
+
+#~ msgid "Shoot"
+#~ msgstr "Shoot"
 
 #~ msgid "Can't read configuration file (%s)"
 #~ msgstr "Can't read configuration file (%s)"

@@ -7,38 +7,40 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-23 15:22+0200\n"
-"PO-Revision-Date: 2008-09-23 15:03+0200\n"
-"Last-Translator: Automatically generated\n"
+"POT-Creation-Date: 2008-09-23 18:31+0200\n"
+"PO-Revision-Date: 2008-09-23 18:35+0100\n"
+"Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: scripts/papywiz.py:140
+#: scripts/papywiz.py:143
 msgid "Starting Papywizard app..."
-msgstr "Lancement de Papywizard..."
+msgstr "Démarrage de Papywizard..."
 
-#: scripts/papywiz.py:186
+#: scripts/papywiz.py:189
 msgid "Papywizard app stopped"
 msgstr "Arrêt de Papywizard"
 
-#: scripts/papywiz.py:202
+#: scripts/papywiz.py:205
 msgid "Internal error"
 msgstr "Erreur interne"
 
 #: tmp/bluetoothChooserDialog.glade.h:1
 msgid "Bluetooth"
-msgstr ""
+msgstr "Bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:2 tmp/configDialog.glade.h:32
+#: tmp/bluetoothChooserDialog.glade.h:2
+#: tmp/configDialog.glade.h:32
 msgid "gtk-cancel"
-msgstr ""
+msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:33
+#: tmp/bluetoothChooserDialog.glade.h:3
+#: tmp/configDialog.glade.h:33
 msgid "gtk-ok"
-msgstr ""
+msgstr "gtk-ok"
 
 #: tmp/configDialog.glade.h:1
 msgid ""
@@ -46,18 +48,21 @@ msgid ""
 "4:3\n"
 "5:4"
 msgstr ""
+"3:2\n"
+"4:3\n"
+"5:4"
 
 #: tmp/configDialog.glade.h:4
 msgid "Auto-connect"
-msgstr ""
+msgstr "Connection automatique"
 
 #: tmp/configDialog.glade.h:5
 msgid "BT device address"
-msgstr "Adresse convertisseur BT"
+msgstr "Adresse interface BT"
 
 #: tmp/configDialog.glade.h:6
 msgid "CR"
-msgstr ""
+msgstr "CR"
 
 #: tmp/configDialog.glade.h:7
 msgid "Camera / lens"
@@ -65,11 +70,11 @@ msgstr "Appareil / objectif"
 
 #: tmp/configDialog.glade.h:8
 msgid "Choose..."
-msgstr "Sélectionne..."
+msgstr "Choisir..."
 
 #: tmp/configDialog.glade.h:9
 msgid "Configuration"
-msgstr ""
+msgstr "Configuration"
 
 #: tmp/configDialog.glade.h:10
 msgid "Data file format"
@@ -79,17 +84,18 @@ msgstr "Format fichier de données"
 msgid "Driver"
 msgstr "Pilote"
 
-#: tmp/configDialog.glade.h:12 tmp/mainWindow.glade.h:15
+#: tmp/configDialog.glade.h:12
+#: tmp/mainWindow.glade.h:15
 msgid "Hardware"
 msgstr "Matériel"
 
 #: tmp/configDialog.glade.h:13
 msgid "Inital direction"
-msgstr "Direction primaire"
+msgstr "Direction initiale"
 
 #: tmp/configDialog.glade.h:14
 msgid "Lens focal (mm)"
-msgstr "Focale objectif (mm)"
+msgstr "Focale de l'objectif (mm)"
 
 #: tmp/configDialog.glade.h:15
 msgid "Logger level"
@@ -101,11 +107,11 @@ msgstr "Divers"
 
 #: tmp/configDialog.glade.h:17
 msgid "Number of pictures"
-msgstr "Nomber de photos"
+msgstr "Nombre de d'images"
 
 #: tmp/configDialog.glade.h:18
 msgid "Orientation"
-msgstr ""
+msgstr "Orientation"
 
 #: tmp/configDialog.glade.h:20
 msgid "Overlap (%)"
@@ -124,6 +130,7 @@ msgid "Serial port"
 msgstr "Port série"
 
 #: tmp/configDialog.glade.h:24
+#: tmp/shootDialog.glade.h:4
 msgid "Shooting"
 msgstr "Prise de vue"
 
@@ -141,7 +148,7 @@ msgstr "Commence depuis"
 
 #: tmp/configDialog.glade.h:28
 msgid "Time value (sec)"
-msgstr "Temps d'exposition"
+msgstr "Durée d'exposition"
 
 #: tmp/configDialog.glade.h:29
 msgid ""
@@ -179,6 +186,13 @@ msgid ""
 "exception\n"
 "critical"
 msgstr ""
+"trace\n"
+"debug\n"
+"info\n"
+"warning\n"
+"error\n"
+"exception\n"
+"critical"
 
 #: tmp/configDialog.glade.h:45
 msgid ""
@@ -190,7 +204,7 @@ msgstr ""
 
 #: tmp/helpAboutDialog.glade.h:1
 msgid "(C) 2007-2008 Frédéric Mantegazza"
-msgstr ""
+msgstr "(C) 2007-2008 Frédéric Mantegazza"
 
 #: tmp/helpAboutDialog.glade.h:2
 msgid ""
@@ -199,6 +213,11 @@ msgid ""
 "for the Merlin/Orion astronomic mount\n"
 "but usable for other panoheads."
 msgstr ""
+"Papywizard est un logiciel\n"
+"de pilotage de tête panoramique\n"
+"principalement développer pour la\n"
+"tête astronomique Merlin/Orion\n"
+"mais utilisable pour d'autres têtes."
 
 #: tmp/helpAboutDialog.glade.h:6
 msgid ""
@@ -229,51 +248,79 @@ msgid ""
 "knowledge of the CeCILL license and that you accept its terms.\n"
 "CeCILL"
 msgstr ""
+"Ce logiciel est régi par la licence CeCILL soumise au droit français et\n"
+"respectant les principes de diffusion des logiciels libres. Vous pouvez\n"
+"utiliser, modifier et/ou redistribuer ce programme sous les conditions\n"
+"de la licence CeCILL telle que diffusée par le CEA, le CNRS et l'INRIA\n"
+"sur le site \"http://www.cecill.info\".\n"
+"\n"
+"En contrepartie de l'accessibilité au code source et des droits de copie,\n"
+"de modification et de redistribution accordés par cette licence, il n'est\n"
+"offert aux utilisateurs qu'une garantie limitée.  Pour les mêmes raisons,\n"
+"seule une responsabilité restreinte pèse sur l'auteur du programme, le\n"
+"titulaire des droits patrimoniaux et les concédants successifs.\n"
+"\n"
+"A cet égard  l'attention de l'utilisateur est attirée sur les risques\n"
+"associés au chargement,  à l'utilisation,  à la modification et/ou au\n"
+"développement et à la reproduction du logiciel par l'utilisateur étant \n"
+"donné sa spécificité de logiciel libre, qui peut le rendre complexe à \n"
+"manipuler et qui le réserve donc à des développeurs et des professionnels\n"
+"avertis possédant  des  connaissances  informatiques approfondies.  Les\n"
+"utilisateurs sont donc invités à charger  et  tester  l'adéquation  du\n"
+"logiciel à leurs besoins dans des conditions permettant d'assurer la\n"
+"sécurité de leurs systèmes et ou de leurs données et, plus généralement,\n"
+"à l'utiliser et l'exploiter dans les mêmes conditions de sécurité. \n"
+"\n"
+"Le fait que vous puissiez accéder à cet en-tête signifie que vous avez \n"
+"pris connaissance de la licence CeCILL, et que vous en avez accepté les\n"
+"termes."
 
 #: tmp/helpAboutDialog.glade.h:32
 msgid "À propos de Papywizard"
-msgstr ""
+msgstr "À propos de Papywizard"
 
 #: tmp/loggerDialog.glade.h:1
 msgid "Clear logs"
-msgstr "Efface log"
+msgstr "Effacer logs"
 
 #: tmp/loggerDialog.glade.h:2
-msgid "Log viewer"
-msgstr "Visualiseur de log"
+#, fuzzy
+msgid "Logger"
+msgstr "Niveau de log"
 
-#: tmp/loggerDialog.glade.h:3 tmp/presetTemplateInfoDialog.glade.h:2
+#: tmp/loggerDialog.glade.h:3
+#: tmp/presetTemplateInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:8
 msgid "gtk-close"
-msgstr ""
+msgstr "gtk-close"
 
 #: tmp/mainWindow.glade.h:1
 msgid "    Pitch    "
-msgstr ""
+msgstr "Tangage"
 
 #: tmp/mainWindow.glade.h:2
 msgid "    Yaw    "
-msgstr ""
+msgstr "Lacet"
 
 #: tmp/mainWindow.glade.h:3
 msgid "   Yaw   "
-msgstr ""
+msgstr "Lacet"
 
 #: tmp/mainWindow.glade.h:4
 msgid "--"
-msgstr ""
+msgstr "--"
 
 #: tmp/mainWindow.glade.h:5
 msgid "<b>Mosaic settings</b>"
-msgstr ""
+msgstr "<b>Paramètres Mosaïque</b>"
 
 #: tmp/mainWindow.glade.h:6
 msgid "<b>Move</b>"
-msgstr ""
+msgstr "<b>Déplacement</b>"
 
 #: tmp/mainWindow.glade.h:7
 msgid "<b>Preset settings</b>"
-msgstr ""
+msgstr "<b>Paramètres Présélection</b>"
 
 #: tmp/mainWindow.glade.h:8
 msgid "About"
@@ -281,11 +328,11 @@ msgstr "À propos"
 
 #: tmp/mainWindow.glade.h:9
 msgid "Clear Limits"
-msgstr "Efface les butées"
+msgstr "Effacer les butées"
 
 #: tmp/mainWindow.glade.h:10
 msgid "Configure..."
-msgstr ""
+msgstr "Configurer..."
 
 #: tmp/mainWindow.glade.h:11
 msgid "Connect..."
@@ -293,7 +340,7 @@ msgstr "Connecter..."
 
 #: tmp/mainWindow.glade.h:12
 msgid "Connection status"
-msgstr "Statut connection"
+msgstr "Statut de la connexion"
 
 #: tmp/mainWindow.glade.h:13
 msgid "End (°)"
@@ -313,7 +360,7 @@ msgstr "Manuel"
 
 #: tmp/mainWindow.glade.h:18
 msgid "Mosaic"
-msgstr "Mosaîque"
+msgstr "Mosaïque"
 
 #: tmp/mainWindow.glade.h:19
 msgid "Nb picts"
@@ -321,7 +368,7 @@ msgstr "Nb photos"
 
 #: tmp/mainWindow.glade.h:20
 msgid "Papywizard"
-msgstr ""
+msgstr "Papywizard"
 
 #: tmp/mainWindow.glade.h:21
 msgid "Pitch +"
@@ -337,7 +384,7 @@ msgstr "Présélection"
 
 #: tmp/mainWindow.glade.h:24
 msgid "Quit"
-msgstr "Quitte"
+msgstr "Quitter"
 
 #: tmp/mainWindow.glade.h:26
 msgid "Real overlap (%)"
@@ -345,11 +392,11 @@ msgstr "Recouvrement réel (%)"
 
 #: tmp/mainWindow.glade.h:27
 msgid "Reset"
-msgstr "Réinitialisation"
+msgstr "Réinitialiser"
 
 #: tmp/mainWindow.glade.h:28
 msgid "Set limit"
-msgstr "Fixe butée"
+msgstr "Fixer butée"
 
 #: tmp/mainWindow.glade.h:29
 msgid "Shoot..."
@@ -361,7 +408,7 @@ msgstr "Début (%)"
 
 #: tmp/mainWindow.glade.h:31
 msgid "Template"
-msgstr ""
+msgstr "Patron"
 
 #: tmp/mainWindow.glade.h:32
 msgid "Total Fov (°)"
@@ -373,7 +420,7 @@ msgstr "Voir Log..."
 
 #: tmp/mainWindow.glade.h:34
 msgid "What's This?"
-msgstr "Qu'est-ce que c'est ?"
+msgstr "Qu'est-ce donc ?"
 
 #: tmp/mainWindow.glade.h:35
 msgid "Yaw +"
@@ -384,37 +431,35 @@ msgid "Yaw -"
 msgstr "Lacet -"
 
 #: tmp/presetTemplateInfoDialog.glade.h:1
-msgid "Preset templates"
-msgstr ""
+#, fuzzy
+msgid "Templates"
+msgstr "Patrons"
 
 #: tmp/shootDialog.glade.h:1
 msgid "Data file enable"
-msgstr "Fichier de données activé"
+msgstr "Fichier de données"
 
 #: tmp/shootDialog.glade.h:2
 msgid "Manual shooting"
-msgstr "Prise de vue manuelle"
+msgstr "Déclench. manuel"
 
 #: tmp/shootDialog.glade.h:3
 msgid "Progression..."
-msgstr ""
-
-#: tmp/shootDialog.glade.h:4
-msgid "Shoot"
-msgstr "Déclenchement"
+msgstr "Progression..."
 
 #: tmp/shootDialog.glade.h:5
 msgid "Start"
-msgstr "Commence"
+msgstr "Démarrer"
 
 #: tmp/shootDialog.glade.h:6
 msgid "Stop"
-msgstr "Arrête"
+msgstr "Arrêter"
 
 #: tmp/shootDialog.glade.h:7
 msgid "Suspend"
-msgstr "Suspend"
+msgstr "Suspendre"
 
 #: tmp/waitBanner.glade.h:1
 msgid "Please wait..."
-msgstr "Attendez..."
+msgstr "Patienter..."
+
