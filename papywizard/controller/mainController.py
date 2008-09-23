@@ -558,10 +558,7 @@ class MainController(AbstractController):
         preset = presets.getByIndex(self.presetTemplateCombobox.get_active())
         self._model.preset.template = preset.getName()
         tooltip = preset.getTooltip()
-        # Store tooltip to combobox...
         self.presetTemplateCombobox.set_tooltip_text(tooltip)
-
-        # Updated tooltip
         Logger().debug("MainController.__onPresetTemplateComboboxChanged(): new preset template='%s'" % self._model.preset.template)
 
     def __onPresetTemplateInfoButtonClicked(self, widget):
