@@ -84,7 +84,7 @@ class AbstractAxis(object):
         @type pos: float
         """
         if not self._minusLimit <= pos <= self._plusLimit:
-            raise HardwareError("Axis %d limit reached: %.1f not if [%.1f:%.1f]" % \
+            raise HardwareError("Axis %d limit reached: %.1f not in [%.1f:%.1f]" % \
                                  (self._num, pos, self._minusLimit, self._plusLimit))
 
     def init(self):
