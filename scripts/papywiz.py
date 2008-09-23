@@ -67,10 +67,11 @@ from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.serializer import Serializer
 from papywizard.common.exception import HardwareError
+from papywizard.hardware.head import Head, HeadSimulation
 from papywizard.model.shooting import Shooting
 from papywizard.controller.mainController import MainController
 from papywizard.controller.spy import Spy
-from papywizard.hardware.head import Head, HeadSimulation
+from papywizard.view.logBuffer import LogBuffer
 if config.VIEW3D_ENABLE:
     from papywizard.view3D.view3D import View3D
 
@@ -81,7 +82,10 @@ class Papywizard(object):
     def __init__(self):
         """ Init the application.
         """
+        gtkLogStream = LogBuffer()
+        Logger().addStreamHandler(gtkLogStream)
         Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
+
         Logger().info("Starting Papywizard app...")
 
         # Threads
@@ -108,7 +112,7 @@ class Papywizard(object):
         gobject.timeout_add(50, serializer.processWork)
 
         # Create main controller
-        controller = MainController(serializer, self.__model)
+        controller = MainController(serializer, self.__model, gtkLogStream)
 
     def run(self):
         """ Run the appliction.

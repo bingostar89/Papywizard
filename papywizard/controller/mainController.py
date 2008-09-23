@@ -74,23 +74,20 @@ from papywizard.controller.configController import ConfigController
 from papywizard.controller.shootController import ShootController
 from papywizard.controller.waitController import WaitController
 from papywizard.controller.spy import Spy
-from papywizard.view.logBuffer import LogBuffer
 
 
 class MainController(AbstractController):
     """ Main controller object.
     """
-    def __init__(self, serializer, model):
+    def __init__(self, serializer, model, gtkLogStream):
         """ Init the controller.
 
         @param serializer: object used to serialize toolkit events
         @type serializer: {Serializer}
         """
         super(MainController, self).__init__(None, model)
-
         self.__serializer = serializer
-        self.__gtkLogStream = LogBuffer()
-        Logger().addStreamHandler(self.__gtkLogStream)
+        self.__gtkLogStream = gtkLogStream
 
         # Try to autoconnect to real hardware
         if ConfigManager().getBoolean('Hardware', 'AUTO_CONNECT'):
