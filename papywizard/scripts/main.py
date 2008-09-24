@@ -53,7 +53,6 @@ import traceback
 import StringIO
 import locale
 import gettext
-import sets
 
 import pygtk
 pygtk.require("2.0")
@@ -61,11 +60,6 @@ import gtk
 import gtk.glade
 import gobject
 
-try:
-    import papywizard
-except ImportError:
-    path = os.path.dirname(__file__)
-    sys.path.append(os.path.join(path, os.path.pardir))
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
@@ -79,7 +73,7 @@ from papywizard.view.logBuffer import LogBuffer
 if config.VIEW3D_ENABLE:
     from papywizard.view3D.view3D import View3D
 
-APP_NAME = "papywizard"
+DOMAIN = "papywizard"
 LANGS = ('en_US', 'fr_FR', 'pl_PL')
 
 _ = lambda s: s
@@ -130,50 +124,60 @@ class Papywizard(object):
 
         Thanks to Mark Mruss from http://www.learningpython.com
         """
-
-        # Get the local directory since we are not installing anything
-        localePath = os.path.realpath(os.path.dirname(sys.argv[0]))
-        localePath = os.path.join(localePath, "locale")
-        Logger().debug("Papywizard.in10n(): localePath=%s" % localePath)
-
-        # Init the list of languages to support
-        langs = sets.Set()
+        langs = []
 
         # Check the default locale
         lc, encoding = locale.getdefaultlocale()
         if lc:
 
-            # if we have a default, it's the first in the list
-            langs.add(lc)
+            # If we have a default, it's the first in the list
+            langs.append(lc)
 
         # Now lets get all of the supported languages on the system
         language = os.environ.get('LANGUAGE', None)
-        if (language):
+        if language:
 
             # Language comes back something like en_CA:en_US:en_GB:en
             # on linux systems, on Win32 it's nothing, so we need to
             # split it up into a list
             for lang in language.split(":"):
-                langs.add(lang)
+                if lang not in langs:
+                    langs.append(lang)
 
         # Now add on to the back of the list the translations that we
         # know that we have, our defaults
         for lang in LANGS:
-            langs.add(lang)
+            if lang not in langs:
+                langs.append(lang)
 
         Logger().debug("Papywizard.in10n(): langs=%s" % langs)
 
-        gettext.bindtextdomain(APP_NAME, localePath)
-        gettext.textdomain(APP_NAME)
-        gtk.glade.bindtextdomain(APP_NAME, localePath)
-        gtk.glade.textdomain(APP_NAME)
+        # Get the locale dir
+        # Search in default system dirs
+        localeFile = gettext.find(DOMAIN, languages=langs)
+        if localeFile is None:
+            localeFile = gettext.find(DOMAIN, "/usr/local/share/locale", languages=langs)
 
-        # Get the language to use
+        if localeFile is not None:
+            localeDir = os.path.join(os.path.dirname(localeFile), os.pardir, os.pardir)
+        else:
+            
+            # Search in local dir
+            localeDir = os.path.realpath(os.path.dirname(sys.argv[0]))
+            localeDir = os.path.join(localeDir, "locale")
+        Logger().debug("Papywizard.in10n(): localeDir=%s" % localeDir)
+
+        gettext.bindtextdomain(DOMAIN, localeDir)
+        gettext.textdomain(DOMAIN)
+        gtk.glade.bindtextdomain(DOMAIN, localeDir)
+        gtk.glade.textdomain(DOMAIN)
+
+        # Get the Translation object
         try:
-            lang = gettext.translation(APP_NAME, localePath, languages=langs)
+            lang = gettext.translation(DOMAIN, localeDir, languages=langs)
         except IOError:
-            Logger().warning("Can't find i18n file; use default one")
-            lang = gettext.translation(APP_NAME, localePath, languages=langs, fallback=True)
+            Logger().warning("Can't find local i18n file")
+            lang = gettext.translation(DOMAIN, localeDir, languages=langs, fallback=True)
 
         # Install the language, map _()
         _ = lang.gettext
