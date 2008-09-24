@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2008 FrÃ©ddÃ©dric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use, 
@@ -46,8 +46,8 @@ Implements
 - setup
 
 @author: Mario Beauchamp
-@author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@author: FrÃ©ddÃ©dric Mantegazza
+@copyright: (C) 2007-2008 Frï¿½dï¿½ric Mantegazza
 @license: CeCILL
 """
 
@@ -69,7 +69,7 @@ class Target:
         self.__dict__.update(kw)
         self.version = config.VERSION
         self.company_name = ""
-        self.copyright = "(C) 2007-2008 Frédéric Mantegazza"
+        self.copyright = "(C) 2007-2008 FrÃ©ddÃ©dric Mantegazza"
         self.name = ""
 
 dlls = ["iconv.dll", "intl.dll", "libatk-1.0-0.dll", "libgdk-win32-2.0-0.dll",
@@ -79,7 +79,7 @@ dlls = ["iconv.dll", "intl.dll", "libatk-1.0-0.dll", "libgdk-win32-2.0-0.dll",
         "libpangowin32-1.0-0.dll"]
 
 target = Target(description="Merlin/Orion panohead control software",
-                script="papywizard.py",
+                script="papywizard.bat",
                 #icon_resources=[(1, "papywizard.ico")],
                 dest_base="papywizard")
 
