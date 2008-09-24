@@ -10,8 +10,7 @@ LOCALE_DIR="locale"
 mkdir -p $TMP_DIR
 
 # Extract strings from python files
-python_files="scripts/papywiz.py"
-python_files="$python_files `find papywizard -type f -name \"*.py\"`"
+python_files="`find papywizard -type f -name \"*.py\"`"
 
 xgettext --language=Python --from-code=utf-8 --default-domain=$APP_NAME --keyword=_ --no-wrap --output=$TMP_DIR/$APP_NAME $python_files
 
@@ -24,14 +23,13 @@ done
 xgettext --language=Python --from-code=utf-8 --default-domain=$APP_NAME --keyword=_ --keyword=N_ --no-wrap --output=$TMP_DIR/$POT_FILE $python_files $TMP_DIR/*.h
 
 # Generate PO and MO files
-for lang in 'en' 'fr'; do
+for lang in 'en' 'fr' 'pl'; do
+    mkdir -p $LOCALE_DIR/$lang/LC_MESSAGES
+    if ! [ -e $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE ]; then
+        msginit --input=$TMP_DIR/$POT_FILE --locale=$lang --no-translator --no-wrap --output=$LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE
+    fi
     if [ $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE -nt $LOCALE_DIR/$lang/LC_MESSAGES/$MO_FILE ]; then
-        mkdir -p $LOCALE_DIR/$lang/LC_MESSAGES
-        if [ -e $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE ]; then
-            msgmerge -U $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE $TMP_DIR/$POT_FILE
-        else
-            msginit --input=$TMP_DIR/$POT_FILE --locale=$lang --no-translator --no-wrap --output=$LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE
-        fi
+        msgmerge -U $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE $TMP_DIR/$POT_FILE
         msgfmt -v --output-file=$LOCALE_DIR/$lang/LC_MESSAGES/$MO_FILE $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE
     fi
 done
