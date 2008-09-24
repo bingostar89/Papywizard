@@ -70,7 +70,7 @@ setup(name="papywizard",
       #package_dir={'papywizard': "papywizard"},
       packages=["papywizard", "papywizard.common", "papywizard.model",
                 "papywizard.controller", "papywizard.hardware",
-                "papywizard.view", "papywizard.view3D"],
+                "papywizard.view", "papywizard.view3D", "papywizard.scripts"],
       package_data={'papywizard': ["view/*.glade", "common/papywizard.conf", "common/presets.xml"]},
 
       data_files=[("share/locale/en/LC_MESSAGES", ["locale/en/LC_MESSAGES/papywizard.mo"]),
