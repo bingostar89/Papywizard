@@ -77,7 +77,7 @@ setup(name="papywizard",
       data_files=[("share/locale/en/LC_MESSAGES", ["locale/en/LC_MESSAGES/papywizard.mo"]),
                   ("share/locale/fr/LC_MESSAGES", ["locale/fr/LC_MESSAGES/papywizard.mo"]),
                   ("share/applications", ["papywizard.desktop"]),
-                  ('share/pixmaps', ["papywizard.png", "papywizard.png"])],
+                  ('share/pixmaps', ["papywizard.png", "papywizard-16.png"])],
 
       # Debian package
       section="user/graphics", # ???
