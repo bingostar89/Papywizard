@@ -152,6 +152,12 @@ class ConfigController(AbstractController):
             self.chooseBluetoothButton.set_sensitive(False)
             self.serialPortLabel.set_sensitive(True)
             self.serialPortEntry.set_sensitive(True)
+        else:
+            self.bluetoothDeviceAddressLabel.set_sensitive(False)
+            self.bluetoothDeviceAddressEntry.set_sensitive(False)
+            self.chooseBluetoothButton.set_sensitive(False)
+            self.serialPortLabel.set_sensitive(False)
+            self.serialPortEntry.set_sensitive(False)
 
     def __onChooseBluetoothButtonClicked(self, widget):
         """ Choose bluetooth button clicked.
