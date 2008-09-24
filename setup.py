@@ -52,7 +52,6 @@ Implements
 __revision__ = "$Id$"
 
 from distutils.core import setup
-from bdist_debian import bdist_debian
 
 from papywizard.common import config
 
@@ -67,7 +66,7 @@ setup(name="papywizard",
       description="Merlin/Orion panohead control software",
       #long_description="",
       download_url="http://trac.gbiloba.org/papywizard/wiki/WikiStart#Download",
-      scripts=["scripts/papywiz.py"],
+      scripts=["papywizard.sh"],
       #package_dir={'papywizard': "papywizard"},
       packages=["papywizard", "papywizard.common", "papywizard.model",
                 "papywizard.controller", "papywizard.hardware",
@@ -78,10 +77,4 @@ setup(name="papywizard",
                   ("share/locale/fr/LC_MESSAGES", ["locale/fr/LC_MESSAGES/papywizard.mo"]),
                   ("share/applications", ["papywizard.desktop"]),
                   ('share/pixmaps', ["papywizard.png"])],
-
-      # Debian package
-      section="user/graphics",
-      depends="python2.5, python2.5-gtk2", # Recommended python2.5-bluez
-      icon="papywizard.png",
-      cmdclass={'bdist_debian': bdist_debian},
 )
