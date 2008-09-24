@@ -1,4 +1,4 @@
 #/bin/sh
 
-python -c "from scripts.papywiz import main; main()"
+python -c "from papywizard.scripts.main import main; main()"
 
