@@ -53,14 +53,13 @@ import traceback
 import StringIO
 import locale
 import gettext
+import sets
 
 import pygtk
 pygtk.require("2.0")
 import gtk
 import gtk.glade
 import gobject
-
-APP_NAME = "papywizard"
 
 try:
     import papywizard
@@ -80,55 +79,10 @@ from papywizard.view.logBuffer import LogBuffer
 if config.VIEW3D_ENABLE:
     from papywizard.view3D.view3D import View3D
 
+APP_NAME = "papywizard"
+LANGS = ('en_US', 'fr_FR')
 
-# Localization support (thanks to Mark Mruss from http://www.learningpython.com)
-# Get the local directory since we are not installing anything
-localePath = os.path.realpath(os.path.dirname(sys.argv[0]))
-localePath = os.path.join(localePath, "locale")
-print localePath
-
-# Init the list of languages to support
-langs = []
-
-# Check the default locale
-lc, encoding = locale.getdefaultlocale()
-if (lc):
-
-    # if we have a default, it's the first in the list
-    langs = [lc]
-
-# Now lets get all of the supported languages on the system
-language = os.environ.get('LANGUAGE', None)
-if (language):
-
-    # Language comes back something like en_CA:en_US:en_GB:en
-    # on linux systems, on Win32 it's nothing, so we need to
-    # split it up into a list
-    langs += language.split(":")
-
-# Now add on to the back of the list the translations that we
-# know that we have, our defaults
-langs += ["en_US", "fr_FR"]
-print langs
-
-# Now langs is a list of all of the languages that we are going
-# to try to use.  First we check the default, then what the system
-# told us, and finally the 'known' list
-
-gettext.bindtextdomain(APP_NAME, localePath)
-gettext.textdomain(APP_NAME)
-gtk.glade.bindtextdomain(APP_NAME, localePath)
-gtk.glade.textdomain(APP_NAME)
-
-# Get the language to use
-lang = gettext.translation(APP_NAME, localePath, languages=langs)#, fallback=True)
-
-# Install the language, map _()
-_ = lang.gettext
-
-# Install globally
-gettext.install(APP_NAME)
-
+_ = lambda s: s
 
 class Papywizard(object):
     """ Main application class.
@@ -136,11 +90,14 @@ class Papywizard(object):
     def __init__(self):
         """ Init the application.
         """
-        gtkLogStream = LogBuffer()
-        Logger().addStreamHandler(gtkLogStream)
+        self.__gtkLogStream = LogBuffer()
+        Logger().addStreamHandler(self.__gtkLogStream)
         Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
 
-        Logger().info(_("Starting Papywizard app..."))
+    def init(self):
+        """ Init the application.
+        """
+        Logger().info("Starting Papywizard app...")
 
         # Threads
         gtk.gdk.threads_init()
@@ -166,7 +123,63 @@ class Papywizard(object):
         gobject.timeout_add(50, serializer.processWork)
 
         # Create main controller
-        controller = MainController(serializer, self.__model, gtkLogStream)
+        controller = MainController(serializer, self.__model, self.__gtkLogStream)
+
+    def i10n(self):
+        """ i10n stuff.
+
+        Thanks to Mark Mruss from http://www.learningpython.com
+        """
+
+        # Get the local directory since we are not installing anything
+        localePath = os.path.realpath(os.path.dirname(sys.argv[0]))
+        localePath = os.path.join(localePath, "locale")
+        Logger().debug("Papywizard.in10n(): localePath=%s" % localePath)
+
+        # Init the list of languages to support
+        langs = sets.Set()
+
+        # Check the default locale
+        lc, encoding = locale.getdefaultlocale()
+        if lc:
+
+            # if we have a default, it's the first in the list
+            langs.add(lc)
+
+        # Now lets get all of the supported languages on the system
+        language = os.environ.get('LANGUAGE', None)
+        if (language):
+
+            # Language comes back something like en_CA:en_US:en_GB:en
+            # on linux systems, on Win32 it's nothing, so we need to
+            # split it up into a list
+            for lang in language.split(":"):
+                langs.add(lang)
+
+        # Now add on to the back of the list the translations that we
+        # know that we have, our defaults
+        for lang in LANGS:
+            langs.add(lang)
+
+        Logger().debug("Papywizard.in10n(): langs=%s" % langs)
+
+        gettext.bindtextdomain(APP_NAME, localePath)
+        gettext.textdomain(APP_NAME)
+        gtk.glade.bindtextdomain(APP_NAME, localePath)
+        gtk.glade.textdomain(APP_NAME)
+
+        # Get the language to use
+        try:
+            lang = gettext.translation(APP_NAME, localePath, languages=langs)
+        except IOError:
+            Logger().warning("Can't find i18n file; use default one")
+            lang = gettext.translation(APP_NAME, localePath, languages=langs, fallback=True)
+
+        # Install the language, map _()
+        _ = lang.gettext
+
+        # Install globally
+        lang.install()
 
     def run(self):
         """ Run the appliction.
@@ -186,12 +199,14 @@ class Papywizard(object):
         #if config.VIEW3D_ENABLE:
             #self.__view3D.terminate() # vpython has not yet a way to terminate the mainloop
 
-        Logger().info(_("Papywizard app stopped"))
+        Logger().info("Papywizard app stopped")
 
 
 def main():
     try:
         app = Papywizard()
+        app.i10n()
+        app.init()
         app.run()
         app.shutdown()
 
