@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-24 13:28+0200\n"
-"PO-Revision-Date: 2008-09-24 13:28+0200\n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2008-09-24 13:33+0100\n"
+"Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: papywizard/model/shooting.py:97 papywizard/model/shooting.py:157
+#: papywizard/model/shooting.py:97
+#: papywizard/model/shooting.py:157
 #: papywizard/model/shooting.py:167
 msgid "Idle"
 msgstr ""
@@ -103,13 +104,15 @@ msgstr ""
 msgid "Bluetooth devices list"
 msgstr ""
 
-#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:50
+#: tmp/bluetoothChooserDialog.glade.h:3
+#: tmp/configDialog.glade.h:50
 msgid "gtk-cancel"
-msgstr ""
+msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:4 tmp/configDialog.glade.h:51
+#: tmp/bluetoothChooserDialog.glade.h:4
+#: tmp/configDialog.glade.h:51
 msgid "gtk-ok"
-msgstr ""
+msgstr "gtk-ok"
 
 #: tmp/configDialog.glade.h:1
 msgid ""
@@ -117,6 +120,9 @@ msgid ""
 "4:3\n"
 "5:4"
 msgstr ""
+"3:2\n"
+"4:3\n"
+"5:4"
 
 #: tmp/configDialog.glade.h:4
 msgid "Address of the bluetooth converter"
@@ -194,7 +200,8 @@ msgstr ""
 msgid "From where to start shooting (mosaic mode)"
 msgstr ""
 
-#: tmp/configDialog.glade.h:23 tmp/mainWindow.glade.h:15
+#: tmp/configDialog.glade.h:23
+#: tmp/mainWindow.glade.h:15
 msgid "Hardware"
 msgstr ""
 
@@ -262,7 +269,8 @@ msgstr ""
 msgid "Serial port"
 msgstr ""
 
-#: tmp/configDialog.glade.h:41 tmp/shootDialog.glade.h:6
+#: tmp/configDialog.glade.h:41
+#: tmp/shootDialog.glade.h:6
 msgid "Shooting"
 msgstr ""
 
@@ -315,6 +323,13 @@ msgid ""
 "exception\n"
 "critical"
 msgstr ""
+"trace\n"
+"debug\n"
+"info\n"
+"warning\n"
+"error\n"
+"exception\n"
+"critical"
 
 #: tmp/configDialog.glade.h:63
 msgid ""
@@ -324,7 +339,7 @@ msgstr ""
 
 #: tmp/helpAboutDialog.glade.h:1
 msgid "(C) 2007-2008 Frédéric Mantegazza"
-msgstr ""
+msgstr "(C) 2007-2008 Frédéric Mantegazza"
 
 #: tmp/helpAboutDialog.glade.h:2
 msgid ""
@@ -380,10 +395,11 @@ msgstr ""
 msgid "Logger"
 msgstr ""
 
-#: tmp/loggerDialog.glade.h:4 tmp/presetTemplateInfoDialog.glade.h:2
+#: tmp/loggerDialog.glade.h:4
+#: tmp/presetTemplateInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:14
 msgid "gtk-close"
-msgstr ""
+msgstr "gtk-close"
 
 #: tmp/mainWindow.glade.h:1
 msgid "    Pitch    "
@@ -399,7 +415,7 @@ msgstr ""
 
 #: tmp/mainWindow.glade.h:4
 msgid "--"
-msgstr ""
+msgstr "--"
 
 #: tmp/mainWindow.glade.h:5
 msgid "<b>Mosaic settings</b>"
@@ -632,3 +648,4 @@ msgstr ""
 #: tmp/waitBanner.glade.h:1
 msgid "Please wait..."
 msgstr ""
+
