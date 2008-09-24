@@ -80,7 +80,7 @@ if config.VIEW3D_ENABLE:
     from papywizard.view3D.view3D import View3D
 
 APP_NAME = "papywizard"
-LANGS = ('en_US', 'fr_FR')
+LANGS = ('en_US', 'fr_FR', 'pl_PL')
 
 _ = lambda s: s
 
