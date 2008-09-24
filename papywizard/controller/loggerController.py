@@ -76,6 +76,7 @@ class LoggerController(AbstractController):
 
         self.loggerScrolledwindow = self.wTree.get_widget("loggerScrolledwindow")
         self.loggerTextview = self.wTree.get_widget("loggerTextview")
+        self.loggerTextview.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('black'))
 
         # The following code is taken from pychess project;
         # it keeps the scroller at the bottom of the text
