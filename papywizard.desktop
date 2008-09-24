@@ -1,8 +1,13 @@
 [Desktop Entry]
-Version=1.0
-Encoding=UTF-8
-Icon=papywizard
-Name=Papywizard
-Exec=/usr/bin/papywiz.py
+Version=1.1
+Name=Papywizard Merlin/Orion panohead control software
+GenericName=Papywizard Merlin/Orion panohead control software
+Comment=Papywizard Merlin/Orion panohead control software
+Exec=papywizard.sh
+Icon=ppaywizard
+Terminal=false
 Type=Application
-X-Osso-Type=application/x-executable
+Categories=Graphics;Photography;GTK;
+GenericName[en_US]=Papywizard Merlin/Orion panohead control software
+StartupNotify=true
+MimeType=

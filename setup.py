@@ -37,7 +37,7 @@ knowledge of the CeCILL license and that you accept its terms.
 Module purpose
 ==============
 
-Installation
+Installation from source
 
 Implements
 ==========

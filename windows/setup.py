@@ -37,7 +37,7 @@ knowledge of the CeCILL license and that you accept its terms.
 Module purpose
 ==============
 
-Installation
+Installation for windows plateform
 
 Implements
 ==========
@@ -49,6 +49,8 @@ Implements
 @author: Fréddédric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
 @license: CeCILL
+
+@todo: l10n and i18n
 """
 
 __revision__ = "$Id: setup.py 471 2008-09-05 07:47:31Z fma $"
@@ -79,8 +81,8 @@ dlls = ["iconv.dll", "intl.dll", "libatk-1.0-0.dll", "libgdk-win32-2.0-0.dll",
         "libpangowin32-1.0-0.dll"]
 
 target = Target(description="Merlin/Orion panohead control software",
-                script="papywizard.bat",
-                #icon_resources=[(1, "papywizard.ico")],
+                script="windows/papywizard.bat",
+                #icon_resources=[(1, "windows/papywizard.ico")],
                 dest_base="papywizard")
 
 setup(options={"py2exe": {'compressed': 1,
@@ -93,9 +95,6 @@ setup(options={"py2exe": {'compressed': 1,
       windows=[target],
       data_files=[("papywizard/common", ["papywizard/common/papywizard.conf",
                                          "papywizard/common/presets.xml"]),
-                  ("papywizard/view", ["papywizard/view/configDialog.glade",
-                                       "papywizard/view/connectBanner.glade",
-                                       "papywizard/view/helpAboutDialog.glade",
-                                       "papywizard/view/mainWindow.glade",
-                                       "papywizard/view/shootDialog.glade",])],
+                  ("papywizard/view", ["papywizard/view/*.glade",])],
      )
+

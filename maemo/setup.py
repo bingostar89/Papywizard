@@ -37,7 +37,7 @@ knowledge of the CeCILL license and that you accept its terms.
 Module purpose
 ==============
 
-Installation for Maemo plateform
+Installation for maemo plateform
 
 Implements
 ==========
@@ -51,9 +51,15 @@ Implements
 
 __revision__ = "$Id: setup.py 623 2008-09-22 11:17:04Z fma $"
 
+import os
+import os.path
+import sys
 from distutils.core import setup
+
 from bdist_debian import bdist_debian
 
+path = os.path.dirname(__file__)
+sys.path.append(os.path.join(path, os.pardir))
 from papywizard.common import config
 
 
@@ -76,7 +82,7 @@ setup(name="papywizard",
 
       data_files=[("share/locale/en/LC_MESSAGES", ["locale/en/LC_MESSAGES/papywizard.mo"]),
                   ("share/locale/fr/LC_MESSAGES", ["locale/fr/LC_MESSAGES/papywizard.mo"]),
-                  ("share/applications/hildon", ["papywizard.desktop"]),
+                  ("share/applications/hildon", ["maemo/papywizard.desktop"]),
                   ('share/pixmaps', ["papywizard.png", "papywizard-16.png"])],
 
       # Debian package for maemo

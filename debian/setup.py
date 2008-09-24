@@ -37,7 +37,7 @@ knowledge of the CeCILL license and that you accept its terms.
 Module purpose
 ==============
 
-Installation
+Installation for debian package
 
 Implements
 ==========
@@ -51,9 +51,15 @@ Implements
 
 __revision__ = "$Id: setup.py 678 2008-09-23 12:57:30Z fma $"
 
+import os
+import os.path
+import sys
 from distutils.core import setup
+
 from bdist_debian import bdist_debian
 
+path = os.path.dirname(__file__)
+sys.path.append(os.path.join(path, os.pardir))
 from papywizard.common import config
 
 
