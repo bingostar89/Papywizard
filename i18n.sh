@@ -28,7 +28,7 @@ for lang in 'en' 'fr' 'pl'; do
     if ! [ -e $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE ]; then
         msginit --input=$TMP_DIR/$POT_FILE --locale=$lang --no-translator --no-wrap --output=$LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE
     fi
-    if [ $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE -nt $LOCALE_DIR/$lang/LC_MESSAGES/$MO_FILE ]; then
+    if [ $TMP_DIR/$POT_FILE -nt $LOCALE_DIR/$lang/LC_MESSAGES/$MO_FILE ]; then
         msgmerge -U $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE $TMP_DIR/$POT_FILE
         msgfmt -v --output-file=$LOCALE_DIR/$lang/LC_MESSAGES/$MO_FILE $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE
     fi
