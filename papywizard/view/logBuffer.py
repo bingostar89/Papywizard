@@ -67,13 +67,13 @@ class LogBuffer(gtk.TextBuffer):
         """
         super(LogBuffer, self).__init__(*args, **kwargs)
 
-        self.create_tag('TRACE', foreground='blue', paragraph_background='black', font="courrier 8")
-        self.create_tag('DEBUG', foreground='lightblue', paragraph_background='black', font="courrier 8")
-        self.create_tag('INFO', foreground='white', paragraph_background='black', font="courrier 8")
-        self.create_tag('WARNING', foreground='yellow', paragraph_background='black', font="courrier 8")
-        self.create_tag('ERROR', foreground='red', paragraph_background='black', font="courrier 8")
-        self.create_tag('EXCEPTION', foreground='purple', paragraph_background='black', font="courrier 8")
-        self.create_tag('CRITICAL', foreground='white', paragraph_background='black', font="courrier 8")
+        self.create_tag('TRACE', foreground='blue', background='black', font="courrier 8")
+        self.create_tag('DEBUG', foreground='lightblue', background='black', font="courrier 8")
+        self.create_tag('INFO', foreground='white', background='black', font="courrier 8")
+        self.create_tag('WARNING', foreground='yellow', background='black', font="courrier 8")
+        self.create_tag('ERROR', foreground='red', background='black', font="courrier 8")
+        self.create_tag('EXCEPTION', foreground='purple', background='black', font="courrier 8")
+        self.create_tag('CRITICAL', foreground='white', background='black', font="courrier 8")
 
     def write(self, logMessage):
         """ write a log message a the end of the buffer.
