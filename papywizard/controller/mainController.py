@@ -159,7 +159,7 @@ class MainController(AbstractController):
             import hildon
             self.__key['Home'] = gtk.keysyms.F8
             self.__key['End'] = gtk.keysyms.F7
-            self.window_in_fullscreen = False
+            #self.window_in_fullscreen = False
         except ImportError:
             pass
 
@@ -169,6 +169,8 @@ class MainController(AbstractController):
         self.__statusbarTimeoutEventId = None
         self.__connectStatus = None
         self.__connectErrorMessage = None
+
+        #self.window_in_fullscreen = False
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
@@ -509,31 +511,31 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onSetYawStartButtonClicked()")
         self._model.mosaic.yawStart = self.__yawPos
         self.refreshView()
-        self.setStatusbarMessage("Yaw start set from current position", 10)
+        self.setStatusbarMessage(_("Yaw start set from current position"), 10)
 
     def __onSetPitchStartButtonClicked(self, widget):
         Logger().trace("MainController.__onSetPitchStartButtonClicked()")
         self._model.mosaic.pitchStart = self.__pitchPos
         self.refreshView()
-        self.setStatusbarMessage("Pitch start set from current position", 10)
+        self.setStatusbarMessage(_("Pitch start set from current position"), 10)
 
     def __onSetYawEndButtonClicked(self, widget):
         Logger().trace("MainController.__onSetYawEndButtonClicked()")
         self._model.mosaic.yawEnd = self.__yawPos
         self.refreshView()
-        self.setStatusbarMessage("Yaw end set from current position", 10)
+        self.setStatusbarMessage(_("Yaw end set from current position"), 10)
 
     def __onSetPitchEndButtonClicked(self, widget):
         Logger().trace("MainController.__onSetEndPitchButtonClicked()")
         self._model.mosaic.pitchEnd = self.__pitchPos
         self.refreshView()
-        self.setStatusbarMessage("Pitch end set from current position", 10)
+        self.setStatusbarMessage(_("Pitch end set from current position"), 10)
 
     def __onSetStartTogglebuttonClicked(self, widget):
         Logger().trace("MainController.__onSetStartTogglebuttonClicked()")
         self._model.mosaic.yawStart, self._model.mosaic.pitchStart = self.__yawPos, self.__pitchPos
         self.refreshView()
-        self.setStatusbarMessage("Yaw/pitch start set from current position", 10)
+        self.setStatusbarMessage(_("Yaw/pitch start set from current position"), 10)
 
     def __onSetStartTogglebuttonReleased(self, widget):
         Logger().trace("MainController.__onSetStartTogglebuttonReleased()")
@@ -543,7 +545,7 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onSetEndTogglebuttonClicked()")
         self._model.mosaic.yawEnd, self._model.mosaic.pitchEnd = self.__yawPos, self.__pitchPos
         self.refreshView()
-        self.setStatusbarMessage("Yaw/pitch end position set from current position", 10)
+        self.setStatusbarMessage(_("Yaw/pitch end position set from current position"), 10)
 
     def __onSetEndTogglebuttonReleased(self, widget):
         Logger().trace("MainController.__onSetEndTogglebuttonReleased()")
@@ -554,7 +556,10 @@ class MainController(AbstractController):
         preset = presets.getByIndex(self.presetTemplateCombobox.get_active())
         self._model.preset.template = preset.getName()
         tooltip = preset.getTooltip()
-        self.presetTemplateCombobox.set_tooltip_text(tooltip)
+        try:
+            self.presetTemplateCombobox.set_tooltip_text(tooltip)
+        except:
+            pass # PyGTK on maemo does not have set_tooltip_text() method
         Logger().debug("MainController.__onPresetTemplateComboboxChanged(): new preset template='%s'" % self._model.preset.template)
 
     def __onPresetTemplateInfoButtonClicked(self, widget):
@@ -567,7 +572,7 @@ class MainController(AbstractController):
         Logger().trace("MainController.onHardwareSetOriginButtonClicked()")
         Logger().info("Set hardware origin")
         self._model.hardware.setOrigin()
-        self.setStatusbarMessage("Origin set at current position", 10)
+        self.setStatusbarMessage(_("Origin set at current position"), 10)
 
     def __onYawMovePlusTogglebuttonPressed(self, widget):
         Logger().trace("MainController.__yawMovePlusTogglebuttonPressed()")
