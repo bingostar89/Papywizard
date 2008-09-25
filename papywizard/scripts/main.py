@@ -123,6 +123,8 @@ class Papywizard(object):
         """ i10n stuff.
 
         Thanks to Mark Mruss from http://www.learningpython.com
+
+        @todo: even if launch locally, locales are first earch in system dir
         """
         langs = []
 
@@ -161,7 +163,7 @@ class Papywizard(object):
         if localeFile is not None:
             localeDir = os.path.join(os.path.dirname(localeFile), os.pardir, os.pardir)
         else:
-            
+
             # Search in local dir
             localeDir = os.path.realpath(os.path.dirname(sys.argv[0]))
             localeDir = os.path.join(localeDir, "locale")
@@ -176,13 +178,11 @@ class Papywizard(object):
         try:
             lang = gettext.translation(DOMAIN, localeDir, languages=langs)
         except IOError:
-            Logger().warning("Can't find local i18n file")
+            Logger().warning("Can't find i18n file")
             lang = gettext.translation(DOMAIN, localeDir, languages=langs, fallback=True)
 
         # Install the language, map _()
         _ = lang.gettext
-
-        # Install globally
         lang.install()
 
     def run(self):
