@@ -51,6 +51,10 @@ Implements
 
 __revision__ = "$Id$"
 
+import pygtk
+pygtk.require("2.0")
+import gtk
+
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
@@ -153,6 +157,12 @@ class ConfigController(AbstractController):
             self.serialPortLabel.set_sensitive(True)
             self.serialPortEntry.set_sensitive(True)
         else:
+            Logger().warning("USB driver not implemented")
+            messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
+                                              message_format=_("Not implemented"))
+            messageDialog.format_secondary_text(_("If you are using a usb-to-serial adapter\nplease choose the 'serial' driver"))
+            messageDialog.run()
+            messageDialog.destroy()
             self.bluetoothDeviceAddressLabel.set_sensitive(False)
             self.bluetoothDeviceAddressEntry.set_sensitive(False)
             self.chooseBluetoothButton.set_sensitive(False)
