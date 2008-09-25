@@ -83,12 +83,12 @@ setup(name="papywizard",
       data_files=[("share/locale/en/LC_MESSAGES", ["locale/en/LC_MESSAGES/papywizard.mo"]),
                   ("share/locale/fr/LC_MESSAGES", ["locale/fr/LC_MESSAGES/papywizard.mo"]),
                   ("share/applications/hildon", ["maemo/papywizard.desktop"]),
-                  ('share/pixmaps', ["papywizard.png", "papywizard-16.png"])],
+                  ('share/pixmaps', ["maemo/papywizard.png"])],
 
       # Debian package for maemo
       section="user/graphics",
       depends="python2.5, python2.5-hildon, python2.5-gtk2",
-      icon="papywizard-16.png",
+      icon="papywizard.png",
       cmdclass={'bdist_debian': bdist_debian},
   )
 
