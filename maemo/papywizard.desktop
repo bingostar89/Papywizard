@@ -3,6 +3,6 @@ Version=1.0
 Encoding=UTF-8
 Icon=papywizard
 Name=Papywizard
-Exec=/usr/bin/papywiz.py
+Exec=/usr/bin/papywizard.sh
 Type=Application
 X-Osso-Type=application/x-executable
