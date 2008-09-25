@@ -9,7 +9,10 @@ xxxx-xx-xx Version SVN
     + presets user config dir support
     + global try/except statement with traceback in GUI
     + preset templates information window + tooltip
-    + l10n/i18n
+    + l10n/i18n (english, french, polish)
+    x log viewer background now entire black
+    x bluetooth/serial params disabled if usb selected
+    - source structure modified
 
 2008-09-19 Version 1.0
     + preset shooting mode for full spherical
