@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-24 09:38+0200\n"
-"PO-Revision-Date: 2008-09-23 23:33+0100\n"
+"POT-Creation-Date: 2008-09-24 23:57+0200\n"
+"PO-Revision-Date: 2008-09-25 00:20+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -16,11 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: scripts/papywiz.py:220
-msgid "Internal error"
-msgstr "Erreur interne"
-
-#: papywizard/model/shooting.py:97 papywizard/model/shooting.py:157
+#: papywizard/model/shooting.py:97
+#: papywizard/model/shooting.py:157
 #: papywizard/model/shooting.py:167
 msgid "Idle"
 msgstr "Repos"
@@ -46,12 +43,16 @@ msgstr "Annulé"
 msgid "Over"
 msgstr "Terminé"
 
+#: papywizard/scripts/main.py:224
+msgid "Internal error"
+msgstr "Erreur interne"
+
 #: papywizard/controller/bluetoothChooserController.py:176
 msgid "Can't scan bluetooth"
 msgstr "Impossible de scruter le bluetooth"
 
 #: papywizard/controller/bluetoothChooserController.py:177
-#: papywizard/controller/mainController.py:685
+#: papywizard/controller/mainController.py:688
 msgid "Error"
 msgstr "Erreur"
 
@@ -79,19 +80,47 @@ msgstr "Limites effacées"
 msgid "Hardware has been reseted"
 msgstr "Matériel réinitialisé"
 
-#: papywizard/controller/mainController.py:657
+#: papywizard/controller/mainController.py:512
+msgid "Yaw start set from current position"
+msgstr "Début de lacet fixé depuis position courante"
+
+#: papywizard/controller/mainController.py:518
+msgid "Pitch start set from current position"
+msgstr "Début de tangage fixé depuis position courante"
+
+#: papywizard/controller/mainController.py:524
+msgid "Yaw end set from current position"
+msgstr "Fin de lacet fixée depuis position courante"
+
+#: papywizard/controller/mainController.py:530
+msgid "Pitch end set from current position"
+msgstr "Fin de tangage fixée depuis position courante"
+
+#: papywizard/controller/mainController.py:536
+msgid "Yaw/pitch start set from current position"
+msgstr "Début de lacet/tangage fixé depuis position courante"
+
+#: papywizard/controller/mainController.py:546
+msgid "Yaw/pitch end position set from current position"
+msgstr "Fin de lacet/tangage fixée depuis position courante"
+
+#: papywizard/controller/mainController.py:573
+msgid "Origin set at current position"
+msgstr "Origine fixée à la position courante"
+
+#: papywizard/controller/mainController.py:660
 msgid "Connecting to real hardware..."
 msgstr "Connexion au matériel..."
 
-#: papywizard/controller/mainController.py:680
+#: papywizard/controller/mainController.py:683
 msgid "Now connected to real hardware"
 msgstr "Maintenant connecté au matériel"
 
-#: papywizard/controller/mainController.py:684
+#: papywizard/controller/mainController.py:687
 msgid "Can't connect to hardware"
 msgstr "Impossible de se connecter au matériel"
 
-#: papywizard/controller/mainController.py:700
+#: papywizard/controller/mainController.py:703
 msgid "Now in simulation mode"
 msgstr "Maintenant en mode simulation"
 
@@ -103,11 +132,13 @@ msgstr "Bluetooth"
 msgid "Bluetooth devices list"
 msgstr "Liste des convertisseurs bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:50
+#: tmp/bluetoothChooserDialog.glade.h:3
+#: tmp/configDialog.glade.h:50
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:4 tmp/configDialog.glade.h:51
+#: tmp/bluetoothChooserDialog.glade.h:4
+#: tmp/configDialog.glade.h:51
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -147,9 +178,7 @@ msgstr "Appareil / objectif"
 
 #: tmp/configDialog.glade.h:10
 msgid "Cariage return at each end of raw/col (mosaic mode)"
-msgstr ""
-"Effectue un retour à la ligne àa la fin de chaque ligne/colonne (mode "
-"mosaïque)"
+msgstr "Effectue un retour à la ligne àa la fin de chaque ligne/colonne (mode mosaïque)"
 
 #: tmp/configDialog.glade.h:11
 msgid "Choose..."
@@ -199,7 +228,8 @@ msgstr "Format du nom du fichier de données xml"
 msgid "From where to start shooting (mosaic mode)"
 msgstr "D'où commencer la prise de vue (mode mosaïque)"
 
-#: tmp/configDialog.glade.h:23 tmp/mainWindow.glade.h:15
+#: tmp/configDialog.glade.h:23
+#: tmp/mainWindow.glade.h:15
 msgid "Hardware"
 msgstr "Matériel"
 
@@ -267,7 +297,8 @@ msgstr "Ratio capteur"
 msgid "Serial port"
 msgstr "Port série"
 
-#: tmp/configDialog.glade.h:41 tmp/shootDialog.glade.h:6
+#: tmp/configDialog.glade.h:41
+#: tmp/shootDialog.glade.h:6
 msgid "Shooting"
 msgstr "Prise de vue"
 
@@ -432,7 +463,8 @@ msgstr "Effacer la fenêtre de log"
 msgid "Logger"
 msgstr "Logger"
 
-#: tmp/loggerDialog.glade.h:4 tmp/presetTemplateInfoDialog.glade.h:2
+#: tmp/loggerDialog.glade.h:4
+#: tmp/presetTemplateInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:14
 msgid "gtk-close"
 msgstr "gtk-close"
@@ -546,88 +578,100 @@ msgid "Pitch -"
 msgstr "Tangage -"
 
 #: tmp/mainWindow.glade.h:29
+msgid "Pitch current position"
+msgstr "Position de tangage courante"
+
+#: tmp/mainWindow.glade.h:30
 msgid "Preset"
 msgstr "Présélection"
 
-#: tmp/mainWindow.glade.h:30
+#: tmp/mainWindow.glade.h:31
 msgid "Quit"
 msgstr "Quitter"
 
-#: tmp/mainWindow.glade.h:32
-msgid "Real overlap (%)"
-msgstr "Recouvrement réel (%)"
-
 #: tmp/mainWindow.glade.h:33
+msgid "Real overlap (%)"
+msgstr "Recouvr. réel (%)"
+
+#: tmp/mainWindow.glade.h:34
 msgid "Reset"
 msgstr "Réinitialiser"
 
-#: tmp/mainWindow.glade.h:34
+#: tmp/mainWindow.glade.h:35
 msgid "Set end from current position"
 msgstr "Fixe position de fin depuis position courante"
 
-#: tmp/mainWindow.glade.h:35
-msgid "Set limit"
-msgstr "Fixer butée"
-
 #: tmp/mainWindow.glade.h:36
+msgid "Set limit"
+msgstr "Fixer limite"
+
+#: tmp/mainWindow.glade.h:37
+msgid "Set origin from current position"
+msgstr "Définie l'origine depuis la position courante"
+
+#: tmp/mainWindow.glade.h:38
 msgid "Set pitch end from current position"
 msgstr "Fixe position fin de tangage depuis position courante"
 
-#: tmp/mainWindow.glade.h:37
+#: tmp/mainWindow.glade.h:39
 msgid "Set pitch start from current position"
 msgstr "Fixe position début de tangage depuis position courante"
 
-#: tmp/mainWindow.glade.h:38
+#: tmp/mainWindow.glade.h:40
 msgid "Set start from current position"
 msgstr "Fixe position de début depuis position courante"
 
-#: tmp/mainWindow.glade.h:39
+#: tmp/mainWindow.glade.h:41
 msgid "Set yaw end from current position"
 msgstr "Fixe position fin de lacet depuis position courante"
 
-#: tmp/mainWindow.glade.h:40
+#: tmp/mainWindow.glade.h:42
 msgid "Set yaw start from current position"
 msgstr "Fixe position début de lacet depuis position courante"
 
-#: tmp/mainWindow.glade.h:41
+#: tmp/mainWindow.glade.h:43
 msgid "Shoot..."
 msgstr "Prise de vue..."
 
-#: tmp/mainWindow.glade.h:42
+#: tmp/mainWindow.glade.h:44
 msgid "Start (°)"
 msgstr "Début (%)"
 
-#: tmp/mainWindow.glade.h:43
+#: tmp/mainWindow.glade.h:45
 msgid "Template"
 msgstr "Patron"
 
-#: tmp/mainWindow.glade.h:44
+#: tmp/mainWindow.glade.h:46
 msgid "Template list for preset shooting"
 msgstr "Liste despatrons pour le mode présélection"
 
-#: tmp/mainWindow.glade.h:45
+#: tmp/mainWindow.glade.h:47
 msgid "Templates information"
 msgstr "Information sur les patrons"
 
-#: tmp/mainWindow.glade.h:46
+#: tmp/mainWindow.glade.h:48
 msgid "Total Fov (°)"
 msgstr "Adc total (°)"
 
-#: tmp/mainWindow.glade.h:47
+#: tmp/mainWindow.glade.h:49
 msgid "View Log..."
 msgstr "Voir Log..."
 
-#: tmp/mainWindow.glade.h:48
+#: tmp/mainWindow.glade.h:50
 msgid "What's This?"
 msgstr "Késako ?"
 
-#: tmp/mainWindow.glade.h:49
+#: tmp/mainWindow.glade.h:51
 msgid "Yaw +"
 msgstr "Lacet +"
 
-#: tmp/mainWindow.glade.h:50
+#: tmp/mainWindow.glade.h:52
 msgid "Yaw -"
 msgstr "Lacet -"
+
+#: tmp/mainWindow.glade.h:53
+msgid "Yaw current position"
+msgstr "Position de lacet courante"
 
 #: tmp/presetTemplateInfoDialog.glade.h:1
 msgid "Templates"
@@ -635,7 +679,7 @@ msgstr "Patrons"
 
 #: tmp/shootDialog.glade.h:1
 msgid "Data file enable"
-msgstr "Fichier de données"
+msgstr "Fichier données"
 
 #: tmp/shootDialog.glade.h:2
 msgid "Manual shoot at each position"
@@ -687,6 +731,6 @@ msgstr "Patienter..."
 
 #~ msgid "Starting Papywizard app..."
 #~ msgstr "Démarrage de Papywizard..."
-
 #~ msgid "Papywizard app stopped"
 #~ msgstr "Arrêt de Papywizard"
+
