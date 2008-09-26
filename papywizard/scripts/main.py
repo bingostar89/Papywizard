@@ -222,6 +222,7 @@ def main():
         tracebackString.close()
         messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
                                           message_format=_("Internal error"))
+        messageDialog.set_title(_("Error"))
         messageDialog.format_secondary_text(message)
         messageDialog.run()
         messageDialog.destroy()
