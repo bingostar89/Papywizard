@@ -158,8 +158,9 @@ class ConfigController(AbstractController):
             self.serialPortEntry.set_sensitive(True)
         else:
             Logger().warning("USB driver not implemented")
-            messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
+            messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_CLOSE,
                                               message_format=_("Not implemented"))
+            messageDialog.set_title(_("Warning"))
             messageDialog.format_secondary_text(_("If you are using a usb-to-serial adapter\nplease choose the 'serial' driver"))
             messageDialog.run()
             messageDialog.destroy()
