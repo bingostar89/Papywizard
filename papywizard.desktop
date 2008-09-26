@@ -1,16 +1,13 @@
 [Desktop Entry]
-Name=papywizard
+Type=Application
+Version=1.0
+Name=Papywizard
 GenericName=Merlin/Orion panohead control software
 GenericName[en]=Merlin/Orion panohead control software
 GenericName[fr]=Pilotage tête panoramique Merlin/Orion
 Comment=automate hi-res and full-spherical panos shots
 Comment[en]=automate hi-res and full-spherical panos shots
 Comment[fr]=automatise la prise de vue panoramique
-Exec=papywizard.sh
 Icon=paywizard
-Terminal=false
-Type=Application
-Encoding=UTF-8
+Exec=papywizard.sh
 Categories=Application;Graphics;
-StartupNotify=true
-StartupWMClass=papywizard
