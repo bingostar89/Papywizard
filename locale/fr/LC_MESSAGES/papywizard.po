@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-25 22:54+0200\n"
-"PO-Revision-Date: 2008-09-25 22:55+0100\n"
+"POT-Creation-Date: 2008-09-25 23:12+0200\n"
+"PO-Revision-Date: 2008-09-25 23:12+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -47,14 +47,15 @@ msgstr "Terminé"
 msgid "Internal error"
 msgstr "Erreur interne"
 
-#: papywizard/controller/bluetoothChooserController.py:176
-msgid "Can't scan bluetooth"
-msgstr "Impossible de scruter le bluetooth"
-
+#: papywizard/scripts/main.py:225
 #: papywizard/controller/bluetoothChooserController.py:177
 #: papywizard/controller/mainController.py:690
 msgid "Error"
 msgstr "Erreur"
+
+#: papywizard/controller/bluetoothChooserController.py:176
+msgid "Can't scan bluetooth"
+msgstr "Impossible de scruter le bluetooth"
 
 #: papywizard/controller/mainController.py:447
 msgid "Yaw - limit set"
@@ -129,6 +130,10 @@ msgid "Not implemented"
 msgstr "Non implémenté"
 
 #: papywizard/controller/configController.py:163
+msgid "Warning"
+msgstr "Attention"
+
+#: papywizard/controller/configController.py:164
 msgid ""
 "If you are using a usb-to-serial adapter\n"
 "please choose the 'serial' driver"

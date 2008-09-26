@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-25 22:54+0200\n"
+"POT-Creation-Date: 2008-09-25 23:12+0200\n"
 "PO-Revision-Date: 2008-09-23 15:03+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -47,13 +47,14 @@ msgstr "Driver"
 msgid "Internal error"
 msgstr "Internal error"
 
-#: papywizard/controller/bluetoothChooserController.py:176
-msgid "Can't scan bluetooth"
-msgstr ""
-
+#: papywizard/scripts/main.py:225
 #: papywizard/controller/bluetoothChooserController.py:177
 #: papywizard/controller/mainController.py:690
 msgid "Error"
+msgstr ""
+
+#: papywizard/controller/bluetoothChooserController.py:176
+msgid "Can't scan bluetooth"
 msgstr ""
 
 #: papywizard/controller/mainController.py:447
@@ -130,6 +131,10 @@ msgid "Not implemented"
 msgstr ""
 
 #: papywizard/controller/configController.py:163
+msgid "Warning"
+msgstr ""
+
+#: papywizard/controller/configController.py:164
 msgid ""
 "If you are using a usb-to-serial adapter\n"
 "please choose the 'serial' driver"
