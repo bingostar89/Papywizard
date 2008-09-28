@@ -60,15 +60,15 @@
             3  picts @ -70°
         </tooltip>
         <shoot>
-            <pict yaw="30." pitch="70." />
-            <pict yaw="150." pitch="70." />
-            <pict yaw="270." pitch="70." />
-            <pict yaw="300." pitch="40." />
-            <pict yaw="240." pitch="40." />
-            <pict yaw="180." pitch="40." />
-            <pict yaw="120." pitch="40." />
-            <pict yaw="60." pitch="40." />
-            <pict yaw="0." pitch="40." />
+            <pict yaw="60." pitch="70." />
+            <pict yaw="180." pitch="70." />
+            <pict yaw="300." pitch="70." />
+            <pict yaw="330." pitch="40." />
+            <pict yaw="270." pitch="40." />
+            <pict yaw="210." pitch="40." />
+            <pict yaw="150." pitch="40." />
+            <pict yaw="90." pitch="40." />
+            <pict yaw="30." pitch="40." />
             <pict yaw="0." pitch="10." />
             <pict yaw="30." pitch="-10." />
             <pict yaw="60." pitch="10." />
