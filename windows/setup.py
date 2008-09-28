@@ -46,7 +46,7 @@ Implements
 - setup
 
 @author: Mario Beauchamp
-@author: Fréddédric Mantegazza
+@author: Frédéric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
 @license: CeCILL
 
