@@ -150,7 +150,7 @@ class BluetoothChooserController(AbstractController):
         # Open wait banner (todo: use real banner on Nokia). Make a special object
         self.__refreshStatus = None
         self.__waitController = WaitController(self, self._model, self._serializer)
-        self.__waitBanner = self.__waitController.waitBanner
+        self.__waitBanner = self.__waitController.dialog
         self.__waitBanner.show()
 
         # Launch refresh thread

@@ -66,14 +66,10 @@ class WaitController(AbstractController):
         self._gladeFile = "waitBanner.glade"
         self._signalDict = {}
 
-        self.__eventId = gobject.timeout_add(100, self.__refreshProgressbar)
-        # Move to _connectSignals()?
-
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
         super(WaitController, self)._retreiveWidgets()
-        self.waitBanner = self.wTree.get_widget("waitBanner")
         self.progressbar = self.wTree.get_widget("progressbar")
 
         # Nokia plateform stuff
@@ -84,7 +80,8 @@ class WaitController(AbstractController):
 
     def _connectSignals(self):
         super(WaitController, self)._connectSignals()
-        self.waitBanner.connect("delete-event", self.__onDelete)
+        self.__eventId = gobject.timeout_add(100, self.__refreshProgressbar)
+        self.dialog.connect("delete-event", self.__onDelete)
 
     # Callbacks
     def __onDelete(self, widget, event):
@@ -100,4 +97,4 @@ class WaitController(AbstractController):
 
     def closeBanner(self):
         gobject.source_remove(self.__eventId)
-        self._serializer.apply(self.waitBanner.destroy)
+        self._serializer.apply(self.dialog.destroy)
