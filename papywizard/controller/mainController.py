@@ -79,14 +79,13 @@ from papywizard.controller.spy import Spy
 class MainController(AbstractController):
     """ Main controller object.
     """
-    def __init__(self, serializer, model, gtkLogStream):
+    def __init__(self, model, serializer, gtkLogStream):
         """ Init the controller.
 
         @param serializer: object used to serialize toolkit events
         @type serializer: {Serializer}
         """
-        super(MainController, self).__init__(None, model)
-        self.__serializer = serializer
+        super(MainController, self).__init__(None, model, serializer)
         self.__gtkLogStream = gtkLogStream
 
         # Try to autoconnect to real hardware
@@ -485,14 +484,14 @@ class MainController(AbstractController):
 
     def __onHelpViewLogMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHelpViewLogMenuitemActivate()")
-        controller = LoggerController(self)
+        controller = LoggerController(self, self._model, self._serializer)
         controller.setLogBuffer(self.__gtkLogStream)
         controller.run()
         controller.destroyView()
 
     def __onHelpAboutMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHelpAboutMenuitemActivate()")
-        helpAboutDialog = HelpAboutController(self)
+        helpAboutDialog = HelpAboutController(self, self._model, self._serializer)
         helpAboutDialog.run()
         helpAboutDialog.destroyView()
 
@@ -564,7 +563,7 @@ class MainController(AbstractController):
 
     def __onPresetTemplateInfoButtonClicked(self, widget):
         Logger().trace("MainController.__onPresetTemplateInfoButtonClicked()")
-        controller = PresetTemplateInfoController(self)
+        controller = PresetTemplateInfoController(self, self._model, self._serializer)
         controller.run()
         controller.destroyView()
 
@@ -619,7 +618,7 @@ class MainController(AbstractController):
         self.refreshView()
 
     def __openConfigDialog(self):
-        controller = ConfigController(self, self._model)
+        controller = ConfigController(self, self._model, self._serializer)
         response = controller.run()
         controller.destroyView()
         if response == 0:
@@ -632,7 +631,7 @@ class MainController(AbstractController):
 
     def __openShootdialog(self):
         self._model.initProgress()
-        controller = ShootController(self, self._model)
+        controller = ShootController(self, self._model, self._serializer)
         controller.run()
         controller.destroyView()
 
@@ -664,7 +663,7 @@ class MainController(AbstractController):
 
         # Open connection banner (todo: use real banner on Nokia). Make a special object
         self.__connectStatus = None
-        self.__waitController = WaitController(self, self._model)
+        self.__waitController = WaitController(self, self._model, self._serializer)
         self.__waitBanner = self.__waitController.waitBanner
         self.__waitBanner.show()
 
@@ -716,7 +715,7 @@ class MainController(AbstractController):
         Logger().trace("MainController.__refreshPos()")
         self.__yawPos = yaw
         self.__pitchPos = pitch
-        self.__serializer.apply(self.refreshView)
+        self._serializer.apply(self.refreshView)
 
     def setStatusbarMessage(self, message=None, delay=0):
         """ Display a message on the statusbar.

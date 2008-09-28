@@ -176,7 +176,7 @@ class ConfigController(AbstractController):
         Open the bluetooth chooser dialog.
         """
         Logger().trace("ConfigController.__onChooseBluetoothButtonClicked()")
-        controller = BluetoothChooserController(self, self._model)
+        controller = BluetoothChooserController(self, self._model, self._serializer)
         response = controller.run()
         controller.destroyView()
         if response == 0:

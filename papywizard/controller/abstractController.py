@@ -63,7 +63,7 @@ path = os.path.dirname(__file__)
 class AbstractController(object):
     """ Base class for controllers.
     """
-    def __init__(self, parent=None, model=None):
+    def __init__(self, parent=None, model=None, serializer=None):
         """ Init the controller.
 
         @param parent: parent controller
@@ -71,9 +71,13 @@ class AbstractController(object):
 
         @param model: model to use
         @type model: {Shooting}
+        
+        @param serializer: serializer for multi-threading operations
+        @type serializer: {Serializer}
         """
         self._parent = parent
         self._model = model
+        self._serializer = serializer
 
         self._init()
 

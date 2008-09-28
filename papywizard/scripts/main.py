@@ -117,7 +117,7 @@ class Papywizard(object):
         gobject.timeout_add(50, serializer.processWork)
 
         # Create main controller
-        controller = MainController(serializer, self.__model, self.__gtkLogStream)
+        controller = MainController(self.__model, serializer, self.__gtkLogStream)
 
     def i10n(self):
         """ i10n stuff.

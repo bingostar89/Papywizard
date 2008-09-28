@@ -72,6 +72,7 @@ class WaitController(AbstractController):
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
+        super(WaitController, self)._retreiveWidgets()
         self.waitBanner = self.wTree.get_widget("waitBanner")
         self.progressbar = self.wTree.get_widget("progressbar")
 
@@ -99,4 +100,4 @@ class WaitController(AbstractController):
 
     def closeBanner(self):
         gobject.source_remove(self.__eventId)
-        self.waitBanner.destroy()
+        self._serializer.apply(self.waitBanner.destroy)
