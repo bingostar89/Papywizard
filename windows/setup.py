@@ -37,7 +37,10 @@ knowledge of the CeCILL license and that you accept its terms.
 Module purpose
 ==============
 
-Installation for windows plateform
+Installation script for Windows plateform.
+Run this script as:
+
+>>> python setup.py py2exe
 
 Implements
 ==========
@@ -62,23 +65,12 @@ from distutils.core import setup
 
 import py2exe
 
-path = os.path.dirname(__file__)
-#sys.path.append(os.path.join(path, os.pardir))
-sys.path.append("C:\\Documents and Settings\fma\Mes documents\papywizard\trunk")
+#path = os.path.dirname(__file__)
+#sys.path.append("C:\\Documents and Settings\\fma\\Mes documents\\papywizard\\trunk")
 #from papywizard.common import config
 
+VERSION = "1.1"
 
-class Target:
-    """
-    """
-    def __init__(self, **kw):
-        """
-        """
-        self.__dict__.update(kw)
-        self.version = "1.1" #config.VERSION
-        self.company_name = ""
-        self.copyright = "(C) 2007-2008 Frédéric Mantegazza"
-        self.name = ""
 
 dlls = ["iconv.dll", "intl.dll", "libatk-1.0-0.dll", "libgdk-win32-2.0-0.dll",
         "libgdk_pixbuf-2.0-0.dll", "libglib-2.0-0.dll", "libgmodule-2.0-0.dll",
@@ -86,12 +78,17 @@ dlls = ["iconv.dll", "intl.dll", "libatk-1.0-0.dll", "libgdk-win32-2.0-0.dll",
         "libpangocairo-1.0-0.dll", "libcairo-2.dll", "libpango-1.0-0.dll",
         "libpangowin32-1.0-0.dll"]
 
-target = Target(description="Merlin/Orion panohead control software",
-                script="../papywizard/scripts/main.py",
-                #icon_resources=[(1, "windows/papywizard.ico")],
-                dest_base="papywizard")
 
-setup(options={"py2exe": {'compressed': 0,
+class Target:
+    def __init__(self, **kw):
+        self.__dict__.update(kw)
+        self.version = VERSION # config.VERSION
+        self.company_name = ""
+        self.copyright = "(C) 2007-2008 Frédéric Mantegazza"
+        self.name = ""
+
+
+setup(options={"py2exe": {'compressed': 1,
                           'optimize': 2,
                           'includes': ['gtk', 'atk', 'cairo', 'pango', 'pangocairo', 'gobject',
                                        "gtk.keysyms"],
@@ -99,7 +96,10 @@ setup(options={"py2exe": {'compressed': 0,
                           'dll_excludes': dlls,
                           'dist_dir': "./dist",
                           'bundle_files': 1}},
-      windows=[target],
+      windows=[Target(description="Merlin/Orion panohead control software",
+                      script="../papywizard/scripts/main.py",
+                      #icon_resources=[(1, "windows/papywizard.ico")],
+                      dest_base="papywizard")],
       data_files=[("papywizard/common", ["../papywizard/common/papywizard.conf",
                                          "../papywizard/common/presets.xml"]),
                   ("papywizard/view", ["../papywizard/view/bluetoothChooserDialog.glade",
