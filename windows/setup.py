@@ -55,11 +55,17 @@ Implements
 
 __revision__ = "$Id: setup.py 471 2008-09-05 07:47:31Z fma $"
 
+import sys
+import os
+import os.path
 from distutils.core import setup
 
 import py2exe
 
-from common import config
+path = os.path.dirname(__file__)
+#sys.path.append(os.path.join(path, os.pardir))
+sys.path.append("C:\\Documents and Settings\fma\Mes documents\papywizard\trunk")
+#from papywizard.common import config
 
 
 class Target:
@@ -69,7 +75,7 @@ class Target:
         """
         """
         self.__dict__.update(kw)
-        self.version = config.VERSION
+        self.version = "1.1" #config.VERSION
         self.company_name = ""
         self.copyright = "(C) 2007-2008 Frédéric Mantegazza"
         self.name = ""
@@ -81,20 +87,32 @@ dlls = ["iconv.dll", "intl.dll", "libatk-1.0-0.dll", "libgdk-win32-2.0-0.dll",
         "libpangowin32-1.0-0.dll"]
 
 target = Target(description="Merlin/Orion panohead control software",
-                script="windows/papywizard.bat",
+                script="../papywizard/scripts/main.py",
                 #icon_resources=[(1, "windows/papywizard.ico")],
                 dest_base="papywizard")
 
-setup(options={"py2exe": {'compressed': 1,
+setup(options={"py2exe": {'compressed': 0,
                           'optimize': 2,
-                          'includes': ['atk', 'cairo', 'pango', 'pangocairo', 'gobject'],
+                          'includes': ['gtk', 'atk', 'cairo', 'pango', 'pangocairo', 'gobject',
+                                       "gtk.keysyms"],
                           'excludes': [],
                           'dll_excludes': dlls,
                           'dist_dir': "./dist",
                           'bundle_files': 1}},
       windows=[target],
-      data_files=[("papywizard/common", ["papywizard/common/papywizard.conf",
-                                         "papywizard/common/presets.xml"]),
-                  ("papywizard/view", ["papywizard/view/*.glade",])],
+      data_files=[("papywizard/common", ["../papywizard/common/papywizard.conf",
+                                         "../papywizard/common/presets.xml"]),
+                  ("papywizard/view", ["../papywizard/view/bluetoothChooserDialog.glade",
+                                       "../papywizard/view/configDialog.glade",
+                                       "../papywizard/view/helpAboutDialog.glade",
+                                       "../papywizard/view/loggerDialog.glade",
+                                       "../papywizard/view/mainWindow.glade",
+                                       "../papywizard/view/presetTemplateInfoDialog.glade",
+                                       "../papywizard/view/shootDialog.glade",
+                                       "../papywizard/view/waitBanner.glade",
+                                       ]),
+                  ("share/locale/en/LC_MESSAGES", ["../locale/en/LC_MESSAGES/papywizard.mo"]),
+                  ("share/locale/fr/LC_MESSAGES", ["../locale/fr/LC_MESSAGES/papywizard.mo"]),
+                  ("share/locale/pl/LC_MESSAGES", ["../locale/pl/LC_MESSAGES/papywizard.mo"])]
      )
 
