@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>papywizard.model.data.PresetData</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;papywizard ::
+        <a href="papywizard.model-module.html">Package&nbsp;model</a> ::
+        <a href="papywizard.model.data-module.html">Module&nbsp;data</a> ::
+        Class&nbsp;PresetData
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="papywizard.model.data.PresetData-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class PresetData</h1><p class="nomargin-top"><span class="codelink"><a href="papywizard.model.data-pysrc.html#PresetData">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_papywiza_35" name="uml_class_diagram_for_papywiza_35">
+<area shape="rect" href="papywizard.model.data.PresetData-class.html#createHeader" title="Create the header." alt="" coords="37,129,192,148"/>
+<area shape="rect" href="papywizard.model.data.PresetData-class.html" title="Manage the data for presets." alt="" coords="36,104,193,149"/>
+<area shape="rect" href="papywizard.model.data.AbstractData-class.html#__init__" title="Init object." alt="" coords="17,36,212,55"/>
+<area shape="rect" href="papywizard.model.data.AbstractData-class.html#addPicture" title="Add a new picture node to shoot node." alt="" coords="17,55,212,73"/>
+<area shape="rect" href="papywizard.model.data.AbstractData-class.html" title="Manage the data." alt="" coords="16,11,213,75"/>
+</map>
+  <img src="uml_class_diagram_for_papywiza_35.gif" alt='' usemap="#uml_class_diagram_for_papywiza_35" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<p>Manage the data for presets.</p>
+  <p>Format for mosaic data:</p>
+<pre class="literalblock">
+   &lt;?xml version=&quot;1.0&quot; ?&gt;
+   &lt;papywizard&gt;
+       &lt;header&gt;
+           &lt;shooting mode=&quot;preset&quot;&gt;
+               &lt;stabilizationDelay&gt;0.5&lt;/stabilizationDelay&gt;
+           &lt;/shooting&gt;
+           &lt;preset template=&quot;xxxx&quot;/&gt;
+           &lt;/preset&gt;
+           &lt;camera&gt;
+               &lt;timeValue&gt;0.5&lt;/timeValue&gt;
+               &lt;nbPicts&gt;2&lt;/nbPicts&gt;
+               &lt;sensor coef=&quot;1.6&quot; ratio=&quot;3:2&quot;/&gt;
+           &lt;/camera&gt;
+           &lt;lens&gt;
+               &lt;focal&gt;17.0&lt;/focal&gt;
+           &lt;/lens&gt;
+       &lt;/header&gt;
+       &lt;shoot&gt;
+           &lt;pict id=&quot;1&quot; num=&quot;1&quot;&gt;
+               &lt;time&gt;Wed Jun 25 10:37:16 2008&lt;/time&gt;
+               &lt;position pitch=&quot;0.0&quot; yaw=&quot;0.0&quot;/&gt;
+           &lt;/pict&gt;
+           &lt;pict id=&quot;2&quot; num=&quot;2&quot;&gt;
+               &lt;time&gt;Wed Jun 25 10:37:17 2008&lt;/time&gt;
+               &lt;position pitch=&quot;0.0&quot; yaw=&quot;0.0&quot;/&gt;
+           &lt;/pict&gt;
+           &lt;pict id=&quot;3&quot; num=&quot;1&quot;&gt;
+               &lt;time&gt;Wed Jun 25 10:37:20 2008&lt;/time&gt;
+               &lt;position pitch=&quot;0.0&quot; yaw=&quot;20.1&quot;/&gt;
+           &lt;/pict&gt;
+           &lt;pict id=&quot;4&quot; num=&quot;2&quot;&gt;
+               &lt;time&gt;Wed Jun 25 10:37:21 2008&lt;/time&gt;
+               &lt;position pitch=&quot;0.0&quot; yaw=&quot;20.1&quot;/&gt;
+           &lt;/pict&gt;
+       &lt;/shoot&gt;
+   &lt;/papywizard&gt;
+</pre>
+
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="papywizard.model.data.PresetData-class.html#_getMode" class="summary-sig-name" onclick="show_private();">_getMode</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      Return the shooting mode.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.data-pysrc.html#PresetData._getMode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="papywizard.model.data.PresetData-class.html#createHeader" class="summary-sig-name">createHeader</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">values</span>)</span><br />
+      Create the header.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="papywizard.model.data-pysrc.html#PresetData.createHeader">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="papywizard.model.data.AbstractData-class.html">AbstractData</a></code></b>:
+      <code><a href="papywizard.model.data.AbstractData-class.html#__init__">__init__</a></code>,
+      <code><a href="papywizard.model.data.AbstractData-class.html#addPicture">addPicture</a></code>
+      </p>
+    <div class="private">    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="papywizard.model.data.AbstractData-class.html">AbstractData</a></code></b> (private):
+      <code><a href="papywizard.model.data.AbstractData-class.html#_addNode" onclick="show_private();">_addNode</a></code>,
+      <code><a href="papywizard.model.data.AbstractData-class.html#_createNode" onclick="show_private();">_createNode</a></code>,
+      <code><a href="papywizard.model.data.AbstractData-class.html#_createTextNode" onclick="show_private();">_createTextNode</a></code>,
+      <code><a href="papywizard.model.data.AbstractData-class.html#_serialize" onclick="show_private();">_serialize</a></code>
+      </p></div>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__repr__</code>,
+      <code>__setattr__</code>,
+      <code>__str__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="_getMode"></a>
+<div class="private">
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">_getMode</span>(<span class="sig-arg">self</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="papywizard.model.data-pysrc.html#PresetData._getMode">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return the shooting mode.</p>
+  <dl class="fields">
+    <dt>Overrides:
+        <a href="papywizard.model.data.AbstractData-class.html#_getMode" onclick="show_private();">AbstractData._getMode</a>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="createHeader"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">createHeader</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">values</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="papywizard.model.data-pysrc.html#PresetData.createHeader">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Create the header.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>values</code></strong> - values to put in the header</li>
+    </ul></dd>
+    <dt>Overrides:
+        <a href="papywizard.model.data.AbstractData-class.html#createHeader">AbstractData.createHeader</a>
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://trac.gbiloba.org/papywizard">Papywizard</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Mon Sep 29 15:27:36 2008
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
