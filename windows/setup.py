@@ -90,8 +90,7 @@ class Target:
 
 setup(options={"py2exe": {'compressed': 1,
                           'optimize': 2,
-                          'includes': ['gtk', 'atk', 'cairo', 'pango', 'pangocairo', 'gobject',
-                                       "gtk.keysyms"],
+                          'includes': ["atk", "cairo", "pango", "pangocairo", "gobject", "gtk.keysyms"],
                           'excludes': [],
                           'dll_excludes': dlls,
                           'dist_dir': "./dist",

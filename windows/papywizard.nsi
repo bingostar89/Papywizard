@@ -138,7 +138,7 @@ Section Uninstall
   Delete "$INSTDIR\msvcr71.dll"
   Delete "$INSTDIR\papywizard.exe"
   Delete "$INSTDIR\w9xpopen.exe"
-  
+  Delete "$INSTDIR\papywizard.exe.log"
   Delete "$SMPROGRAMS\papywizard\Uninstall.lnk"
   Delete "$SMPROGRAMS\papywizard\Website.lnk"
   Delete "$SMPROGRAMS\papywizard\papywizard.lnk"
