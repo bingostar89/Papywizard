@@ -211,45 +211,47 @@ class AbstractData(object):
 class MosaicData(AbstractData):
     """ Manage the data for mosaic.
 
-    <?xml version="1.0" ?>
-    <papywizard>
-        <header>
-            <shooting mode="mosaic">
-                <stabilizationDelay>0.5</stabilizationDelay>
-            </shooting>
-            <mosaic>
-                <nbPicts pitch="1" yaw="2"/>
-                <overlap minimum="0.25" pitch="1.00" yaw="0.58"/>
-                <cameraOrientation>portrait</cameraOrientation>
-            </mosaic>
-            <camera>
-                <timeValue>0.5</timeValue>
-                <nbPicts>2</nbPicts>
-                <sensor coef="1.6" ratio="3:2"/>
-            </camera>
-            <lens>
-                <focal>17.0</focal>
-            </lens>
-        </header>
-        <shoot>
-            <pict id="1" num="1">
-                <time>Wed Jun 25 10:37:16 2008</time>
-                <position pitch="0.0" yaw="0.0"/>
-            </pict>
-            <pict id="2" num="2">
-                <time>Wed Jun 25 10:37:17 2008</time>
-                <position pitch="0.0" yaw="0.0"/>
-            </pict>
-            <pict id="3" num="1">
-                <time>Wed Jun 25 10:37:20 2008</time>
-                <position pitch="0.0" yaw="20.1"/>
-            </pict>
-            <pict id="4" num="2">
-                <time>Wed Jun 25 10:37:21 2008</time>
-                <position pitch="0.0" yaw="20.1"/>
-            </pict>
-        </shoot>
-    </papywizard>
+    Format for mosaic data::
+
+        <?xml version="1.0" ?>
+        <papywizard>
+            <header>
+                <shooting mode="mosaic">
+                    <stabilizationDelay>0.5</stabilizationDelay>
+                </shooting>
+                <mosaic>
+                    <nbPicts pitch="1" yaw="2"/>
+                    <overlap minimum="0.25" pitch="1.00" yaw="0.58"/>
+                    <cameraOrientation>portrait</cameraOrientation>
+                </mosaic>
+                <camera>
+                    <timeValue>0.5</timeValue>
+                    <nbPicts>2</nbPicts>
+                    <sensor coef="1.6" ratio="3:2"/>
+                </camera>
+                <lens>
+                    <focal>17.0</focal>
+                </lens>
+            </header>
+            <shoot>
+                <pict id="1" num="1">
+                    <time>Wed Jun 25 10:37:16 2008</time>
+                    <position pitch="0.0" yaw="0.0"/>
+                </pict>
+                <pict id="2" num="2">
+                    <time>Wed Jun 25 10:37:17 2008</time>
+                    <position pitch="0.0" yaw="0.0"/>
+                </pict>
+                <pict id="3" num="1">
+                    <time>Wed Jun 25 10:37:20 2008</time>
+                    <position pitch="0.0" yaw="20.1"/>
+                </pict>
+                <pict id="4" num="2">
+                    <time>Wed Jun 25 10:37:21 2008</time>
+                    <position pitch="0.0" yaw="20.1"/>
+                </pict>
+            </shoot>
+        </papywizard>
     """
     def _getMode(self):
         """ Return the shooting mode.
@@ -286,42 +288,44 @@ class MosaicData(AbstractData):
 class PresetData(AbstractData):
     """ Manage the data for presets.
 
-    <?xml version="1.0" ?>
-    <papywizard>
-        <header>
-            <shooting mode="preset">
-                <stabilizationDelay>0.5</stabilizationDelay>
-            </shooting>
-            <preset template="xxxx"/>
-            </preset>
-            <camera>
-                <timeValue>0.5</timeValue>
-                <nbPicts>2</nbPicts>
-                <sensor coef="1.6" ratio="3:2"/>
-            </camera>
-            <lens>
-                <focal>17.0</focal>
-            </lens>
-        </header>
-        <shoot>
-            <pict id="1" num="1">
-                <time>Wed Jun 25 10:37:16 2008</time>
-                <position pitch="0.0" yaw="0.0"/>
-            </pict>
-            <pict id="2" num="2">
-                <time>Wed Jun 25 10:37:17 2008</time>
-                <position pitch="0.0" yaw="0.0"/>
-            </pict>
-            <pict id="3" num="1">
-                <time>Wed Jun 25 10:37:20 2008</time>
-                <position pitch="0.0" yaw="20.1"/>
-            </pict>
-            <pict id="4" num="2">
-                <time>Wed Jun 25 10:37:21 2008</time>
-                <position pitch="0.0" yaw="20.1"/>
-            </pict>
-        </shoot>
-    </papywizard>
+    Format for mosaic data::
+
+        <?xml version="1.0" ?>
+        <papywizard>
+            <header>
+                <shooting mode="preset">
+                    <stabilizationDelay>0.5</stabilizationDelay>
+                </shooting>
+                <preset template="xxxx"/>
+                </preset>
+                <camera>
+                    <timeValue>0.5</timeValue>
+                    <nbPicts>2</nbPicts>
+                    <sensor coef="1.6" ratio="3:2"/>
+                </camera>
+                <lens>
+                    <focal>17.0</focal>
+                </lens>
+            </header>
+            <shoot>
+                <pict id="1" num="1">
+                    <time>Wed Jun 25 10:37:16 2008</time>
+                    <position pitch="0.0" yaw="0.0"/>
+                </pict>
+                <pict id="2" num="2">
+                    <time>Wed Jun 25 10:37:17 2008</time>
+                    <position pitch="0.0" yaw="0.0"/>
+                </pict>
+                <pict id="3" num="1">
+                    <time>Wed Jun 25 10:37:20 2008</time>
+                    <position pitch="0.0" yaw="20.1"/>
+                </pict>
+                <pict id="4" num="2">
+                    <time>Wed Jun 25 10:37:21 2008</time>
+                    <position pitch="0.0" yaw="20.1"/>
+                </pict>
+            </shoot>
+        </papywizard>
     """
     def _getMode(self):
         """ Return the shooting mode.

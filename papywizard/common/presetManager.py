@@ -175,8 +175,8 @@ class Presets(object):
 
         Mainly use by the GUI for combobox.
 
-        @param num: index of the preset to get the name
-        @type num: int
+        @param index: index of the preset to get the name
+        @type index: int
         """
         return self.__indexToPreset[index]
 
