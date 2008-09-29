@@ -68,9 +68,9 @@ Section "SectionPrincipale" SEC01
   File "dist\library.zip"
   ;
   ; Sources
-  File "__init__.py"
+  File "..\__init__.py"
   SetOutPath "$INSTDIR\papywizard"
-  File "papywizard\__init__.py"
+  File "..\papywizard\__init__.py"
   SetOutPath "$INSTDIR\papywizard\scripts"
   File "..\papywizard\common\*.*"
   SetOutPath "$INSTDIR\papywizard\common"
@@ -146,7 +146,7 @@ Section Uninstall
   Delete "$DESKTOP\papywizard.lnk"
 
   ; Sources
-  STDIR\__init__.py"
+  Delete "$INSTDIR\__init__.py"
   Delete "$INSTDIR\papywizard\__init__.py"
   Delete "$INSTDIR\papywizard\scripts\*.*"
   Delete "$INSTDIR\papywizard\common\*.*"
