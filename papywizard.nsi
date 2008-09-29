@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "papywizard"
-!define PRODUCT_VERSION "0.99"
+!define PRODUCT_VERSION "1.1"
 !define PRODUCT_WEB_SITE "http://trac.gbiloba.org/papywizard"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\papywizard.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -24,7 +24,7 @@
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
 ; License page
-!insertmacro MUI_PAGE_LICENSE "Licence_CeCILL_V2-en.txt"
+!insertmacro MUI_PAGE_LICENSE "..\licence_CeCILL_V2-en.txt"
 ; Components page
 !insertmacro MUI_PAGE_COMPONENTS
 ; Directory page
@@ -72,17 +72,23 @@ Section "SectionPrincipale" SEC01
   SetOutPath "$INSTDIR\papywizard"
   File "papywizard\__init__.py"
   SetOutPath "$INSTDIR\papywizard\scripts"
-  File "papywizard\common\*.*"
+  File "..\papywizard\common\*.*"
   SetOutPath "$INSTDIR\papywizard\common"
-  File "papywizard\common\*.*"
+  File "..\papywizard\common\*.*"
   SetOutPath "$INSTDIR\papywizard\controller"
-  File "papywizard\controller\*.*"
+  File "..\papywizard\controller\*.*"
   SetOutPath "$INSTDIR\papywizard\hardware"
-  File "papywizard\hardware\*.*"
+  File "..\papywizard\hardware\*.*"
   SetOutPath "$INSTDIR\papywizard\model"
-  File "papywizard\model\*.*"
+  File "..\papywizard\model\*.*"
   SetOutPath "$INSTDIR\papywizard\view"
-  File "papywizard\view\*.*"
+  File "..\papywizard\view\*.*"
+  SetOutPath "$INSTDIR\share\locale\en\LC_MESSAGES"
+  File "..\locale\en\LC_MESSAGES\papywizard.mo"
+  SetOutPath "$INSTDIR\share\locale\fr\LC_MESSAGES"
+  File "..\locale\fr\LC_MESSAGES\papywizard.mo"
+  SetOutPath "$INSTDIR\share\locale\pl\LC_MESSAGES"
+  File "..\locale\pl\LC_MESSAGES\papywizard.mo"
 SectionEnd
 
 Section "GTK+ runtime" SEC02
@@ -140,7 +146,7 @@ Section Uninstall
   Delete "$DESKTOP\papywizard.lnk"
 
   ; Sources
-  Delete "$INSTDIR\__init__.py"
+  STDIR\__init__.py"
   Delete "$INSTDIR\papywizard\__init__.py"
   Delete "$INSTDIR\papywizard\scripts\*.*"
   Delete "$INSTDIR\papywizard\common\*.*"
@@ -148,6 +154,9 @@ Section Uninstall
   Delete "$INSTDIR\papywizard\hardware\*.*"
   Delete "$INSTDIR\papywizard\model\*.*"
   Delete "$INSTDIR\papywizard\view\*.*"
+  Delete "$INSTDIR\share\locale\en\LC_MESSAGES\papywizard.mo"
+  Delete "$INSTDIR\share\locale\fr\LC_MESSAGES\papywizard.mo"
+  Delete "$INSTDIR\share\locale\pl\LC_MESSAGES\papywizard.mo"
   RMDir  "$INSTDIR\papywizard\scripts"
   RMDir  "$INSTDIR\papywizard\common"
   RMDir  "$INSTDIR\papywizard\controller"
@@ -155,7 +164,14 @@ Section Uninstall
   RMDir  "$INSTDIR\papywizard\model"
   RMDir  "$INSTDIR\papywizard\view"
   RMDir  "$INSTDIR\papywizard"
-
+  RMDir  "$INSTDIR\share\locale\en\LC_MESSAGES"
+  RMDir  "$INSTDIR\share\locale\en"
+  RMDir  "$INSTDIR\share\locale\fr\LC_MESSAGES"
+  RMDir  "$INSTDIR\share\locale\fr"
+  RMDir  "$INSTDIR\share\locale\pl\LC_MESSAGES"
+  RMDir  "$INSTDIR\share\locale\pl"
+  RMDir  "$INSTDIR\share\locale"
+  RMDir  "$INSTDIR\share"
   RMDir  "$INSTDIR"
   
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
