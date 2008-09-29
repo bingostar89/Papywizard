@@ -155,18 +155,23 @@ class Papywizard(object):
         Logger().debug("Papywizard.in10n(): langs=%s" % langs)
 
         # Get the locale dir
-        # Search in default system dirs
-        localeFile = gettext.find(DOMAIN, languages=langs)
-        if localeFile is None:
-            localeFile = gettext.find(DOMAIN, "/usr/local/share/locale", languages=langs)
-
-        if localeFile is not None:
-            localeDir = os.path.join(os.path.dirname(localeFile), os.pardir, os.pardir)
+        # First check in windows install
+        if hasattr(sys, "frozen"):
+            localeDir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "share", "locale")
         else:
 
-            # Search in local dir
-            localeDir = os.path.realpath(os.path.dirname(sys.argv[0]))
-            localeDir = os.path.join(localeDir, "locale")
+            # Search in default system dirs
+            localeFile = gettext.find(DOMAIN, languages=langs)
+            if localeFile is None:
+                localeFile = gettext.find(DOMAIN, "/usr/local/share/locale", languages=langs)
+
+            if localeFile is not None:
+                localeDir = os.path.join(os.path.dirname(localeFile), os.pardir, os.pardir)
+            else:
+
+                # Search in local dir
+                localeDir = os.path.realpath(os.path.dirname(sys.argv[0]))
+                localeDir = os.path.join(localeDir, "locale")
         Logger().debug("Papywizard.in10n(): localeDir=%s" % localeDir)
 
         gettext.bindtextdomain(DOMAIN, localeDir)
