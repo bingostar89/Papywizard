@@ -52,6 +52,7 @@ Implements
 __revision__ = "$Id: configManager.py 557 2008-09-18 18:51:24Z fma $"
 
 import copy
+import sys
 import os.path
 import sets
 import xml.dom.minidom
@@ -59,7 +60,10 @@ import xml.dom.minidom
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 
-path = os.path.dirname(__file__)
+if hasattr(sys, "frozen"):
+    path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "common")
+else:
+    path = os.path.dirname(__file__)
 
 
 class Preset(object):

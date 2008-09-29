@@ -51,13 +51,17 @@ Implements
 
 __revision__ = "$Id$"
 
+import sys
 import os.path
 import ConfigParser
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 
-path = os.path.dirname(__file__)
+if hasattr(sys, "frozen"):
+    path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "common")
+else:
+    path = os.path.dirname(__file__)
 
 
 class ConfigManager(object):
