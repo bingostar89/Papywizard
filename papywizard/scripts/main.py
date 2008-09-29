@@ -124,7 +124,7 @@ class Papywizard(object):
 
         Thanks to Mark Mruss from http://www.learningpython.com
 
-        @todo: even if launch locally, locales are first earch in system dir
+        @todo: even if launch locally, locales are first searched in system dir
         """
         langs = []
 
