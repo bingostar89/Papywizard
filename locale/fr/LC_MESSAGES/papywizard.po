@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-25 23:12+0200\n"
-"PO-Revision-Date: 2008-09-25 23:12+0100\n"
+"POT-Creation-Date: 2008-09-30 14:19+0200\n"
+"PO-Revision-Date: 2008-09-30 14:21+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -43,13 +43,13 @@ msgstr "Annulé"
 msgid "Over"
 msgstr "Terminé"
 
-#: papywizard/scripts/main.py:224
+#: papywizard/scripts/main.py:229
 msgid "Internal error"
 msgstr "Erreur interne"
 
-#: papywizard/scripts/main.py:225
+#: papywizard/scripts/main.py:230
 #: papywizard/controller/bluetoothChooserController.py:177
-#: papywizard/controller/mainController.py:690
+#: papywizard/controller/mainController.py:689
 msgid "Error"
 msgstr "Erreur"
 
@@ -57,71 +57,71 @@ msgstr "Erreur"
 msgid "Can't scan bluetooth"
 msgstr "Impossible de scruter le bluetooth"
 
-#: papywizard/controller/mainController.py:447
+#: papywizard/controller/mainController.py:446
 msgid "Yaw - limit set"
 msgstr "Limite lacet - fixée"
 
-#: papywizard/controller/mainController.py:453
+#: papywizard/controller/mainController.py:452
 msgid "Yaw + limit set"
 msgstr "Limite lacet + fixée"
 
-#: papywizard/controller/mainController.py:459
+#: papywizard/controller/mainController.py:458
 msgid "Pitch + limit set"
 msgstr "Limite tangage + fixée"
 
-#: papywizard/controller/mainController.py:465
+#: papywizard/controller/mainController.py:464
 msgid "Pitch - limit set"
 msgstr "Limite tangage - fixée"
 
-#: papywizard/controller/mainController.py:470
+#: papywizard/controller/mainController.py:469
 msgid "Limits cleared"
 msgstr "Limites effacées"
 
-#: papywizard/controller/mainController.py:476
+#: papywizard/controller/mainController.py:475
 msgid "Hardware has been reseted"
 msgstr "Matériel réinitialisé"
 
-#: papywizard/controller/mainController.py:514
+#: papywizard/controller/mainController.py:513
 msgid "Yaw start set from current position"
 msgstr "Début de lacet fixé depuis position courante"
 
-#: papywizard/controller/mainController.py:520
+#: papywizard/controller/mainController.py:519
 msgid "Pitch start set from current position"
 msgstr "Début de tangage fixé depuis position courante"
 
-#: papywizard/controller/mainController.py:526
+#: papywizard/controller/mainController.py:525
 msgid "Yaw end set from current position"
 msgstr "Fin de lacet fixée depuis position courante"
 
-#: papywizard/controller/mainController.py:532
+#: papywizard/controller/mainController.py:531
 msgid "Pitch end set from current position"
 msgstr "Fin de tangage fixée depuis position courante"
 
-#: papywizard/controller/mainController.py:538
+#: papywizard/controller/mainController.py:537
 msgid "Yaw/pitch start set from current position"
 msgstr "Début de lacet/tangage fixé depuis position courante"
 
-#: papywizard/controller/mainController.py:548
+#: papywizard/controller/mainController.py:547
 msgid "Yaw/pitch end position set from current position"
 msgstr "Fin de lacet/tangage fixée depuis position courante"
 
-#: papywizard/controller/mainController.py:575
+#: papywizard/controller/mainController.py:574
 msgid "Origin set at current position"
 msgstr "Origine fixée à la position courante"
 
-#: papywizard/controller/mainController.py:662
+#: papywizard/controller/mainController.py:661
 msgid "Connecting to real hardware..."
 msgstr "Connexion au matériel..."
 
-#: papywizard/controller/mainController.py:685
+#: papywizard/controller/mainController.py:684
 msgid "Now connected to real hardware"
 msgstr "Maintenant connecté au matériel"
 
-#: papywizard/controller/mainController.py:689
+#: papywizard/controller/mainController.py:688
 msgid "Can't connect to hardware"
 msgstr "Impossible de se connecter au matériel"
 
-#: papywizard/controller/mainController.py:705
+#: papywizard/controller/mainController.py:704
 msgid "Now in simulation mode"
 msgstr "Maintenant en mode simulation"
 
@@ -195,7 +195,7 @@ msgstr "Appareil / objectif"
 
 #: tmp/configDialog.glade.h:10
 msgid "Cariage return at each end of raw/col (mosaic mode)"
-msgstr "Effectue un retour à la ligne àa la fin de chaque ligne/colonne (mode mosaïque)"
+msgstr "Effectue un retour à la ligne à la fin de chaque ligne/colonne (mode mosaïque)"
 
 #: tmp/configDialog.glade.h:11
 msgid "Choose..."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-25 23:12+0200\n"
+"POT-Creation-Date: 2008-09-30 14:19+0200\n"
 "PO-Revision-Date: 2008-09-23 15:03+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -43,13 +43,13 @@ msgstr ""
 msgid "Over"
 msgstr "Driver"
 
-#: papywizard/scripts/main.py:224
+#: papywizard/scripts/main.py:229
 msgid "Internal error"
 msgstr "Internal error"
 
-#: papywizard/scripts/main.py:225
+#: papywizard/scripts/main.py:230
 #: papywizard/controller/bluetoothChooserController.py:177
-#: papywizard/controller/mainController.py:690
+#: papywizard/controller/mainController.py:689
 msgid "Error"
 msgstr ""
 
@@ -57,72 +57,72 @@ msgstr ""
 msgid "Can't scan bluetooth"
 msgstr ""
 
-#: papywizard/controller/mainController.py:447
+#: papywizard/controller/mainController.py:446
 msgid "Yaw - limit set"
 msgstr ""
 
-#: papywizard/controller/mainController.py:453
+#: papywizard/controller/mainController.py:452
 msgid "Yaw + limit set"
 msgstr ""
 
-#: papywizard/controller/mainController.py:459
+#: papywizard/controller/mainController.py:458
 msgid "Pitch + limit set"
 msgstr ""
 
-#: papywizard/controller/mainController.py:465
+#: papywizard/controller/mainController.py:464
 msgid "Pitch - limit set"
 msgstr ""
 
-#: papywizard/controller/mainController.py:470
+#: papywizard/controller/mainController.py:469
 msgid "Limits cleared"
 msgstr ""
 
-#: papywizard/controller/mainController.py:476
+#: papywizard/controller/mainController.py:475
 msgid "Hardware has been reseted"
 msgstr ""
 
-#: papywizard/controller/mainController.py:514
+#: papywizard/controller/mainController.py:513
 msgid "Yaw start set from current position"
 msgstr ""
 
-#: papywizard/controller/mainController.py:520
+#: papywizard/controller/mainController.py:519
 msgid "Pitch start set from current position"
 msgstr ""
 
-#: papywizard/controller/mainController.py:526
+#: papywizard/controller/mainController.py:525
 msgid "Yaw end set from current position"
 msgstr ""
 
-#: papywizard/controller/mainController.py:532
+#: papywizard/controller/mainController.py:531
 msgid "Pitch end set from current position"
 msgstr ""
 
-#: papywizard/controller/mainController.py:538
+#: papywizard/controller/mainController.py:537
 msgid "Yaw/pitch start set from current position"
 msgstr ""
 
-#: papywizard/controller/mainController.py:548
+#: papywizard/controller/mainController.py:547
 msgid "Yaw/pitch end position set from current position"
 msgstr ""
 
-#: papywizard/controller/mainController.py:575
+#: papywizard/controller/mainController.py:574
 #, fuzzy
 msgid "Origin set at current position"
 msgstr "Manual shooting"
 
-#: papywizard/controller/mainController.py:662
+#: papywizard/controller/mainController.py:661
 msgid "Connecting to real hardware..."
 msgstr ""
 
-#: papywizard/controller/mainController.py:685
+#: papywizard/controller/mainController.py:684
 msgid "Now connected to real hardware"
 msgstr ""
 
-#: papywizard/controller/mainController.py:689
+#: papywizard/controller/mainController.py:688
 msgid "Can't connect to hardware"
 msgstr ""
 
-#: papywizard/controller/mainController.py:705
+#: papywizard/controller/mainController.py:704
 msgid "Now in simulation mode"
 msgstr ""
 
