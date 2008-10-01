@@ -153,15 +153,14 @@ class Logger(object):
             #defaultFormatter = DefaultFormatter(config.LOGGER_FORMAT)
 
             # Handlers
-            self.__handlers = []
-            streamHandler = logging.StreamHandler()
-            streamHandler.setFormatter(colorFormatter)
-            self.__handlers.append(streamHandler)
+            stdoutStreamHandler = logging.StreamHandler()
+            stdoutStreamHandler.setFormatter(colorFormatter)
 
-            # Loggers
+            # Logger
             self.__logger = logging.getLogger('papywizard')
             self.__logger.setLevel(logging.TRACE)
-            self.__logger.addHandler(streamHandler)
+            if not hasattr(sys, "frozen"):
+                self.__logger.addHandler(stdoutStreamHandler) # No console if exe
 
             Logger.__init = False
 
@@ -174,7 +173,6 @@ class Logger(object):
         defaultFormatter = DefaultFormatter(config.LOGGER_FORMAT)
         handler.setFormatter(defaultFormatter)
         self.__logger.addHandler(handler)
-        self.__handlers.append(handler)
 
     def setLevel(self, level):
         """ Change logging level.
@@ -191,8 +189,7 @@ class Logger(object):
                   'error': logging.ERROR,
                   'exception': logging.EXCEPTION,
                   'critical': logging.CRITICAL}
-        for handler in self.__handlers:
-            handler.setLevel(levels[level])
+        self.__logger.setLevel(levels[level])
 
     def trace(self, message):
         """ Logs a message with level TRACE.
