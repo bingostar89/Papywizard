@@ -76,7 +76,15 @@ if config.VIEW3D_ENABLE:
 DOMAIN = "papywizard"
 LANGS = ('en_US', 'fr_FR', 'pl_PL')
 
-_ = lambda s: s
+
+class BlackHole:
+    """ Dummy class for stderr redirection.
+    """
+    softspace = 0
+    
+    def write(self, text): 
+        pass
+
 
 class Papywizard(object):
     """ Main application class.
@@ -212,6 +220,9 @@ class Papywizard(object):
 
 
 def main():
+    if hasattr(sys, "frozen"):
+        sys.stderr = BlackHole()
+
     try:
         app = Papywizard()
         app.i10n()
