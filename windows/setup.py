@@ -66,7 +66,7 @@ from distutils.core import setup
 import py2exe
 
 #path = os.path.dirname(__file__)
-#sys.path.append("C:\\Documents and Settings\\fma\\Mes documents\\papywizard\\trunk")
+sys.path.append("C:\\Documents and Settings\\fma\\Mes documents\\papywizard\\trunk")
 #from papywizard.common import config
 
 VERSION = "1.1"
