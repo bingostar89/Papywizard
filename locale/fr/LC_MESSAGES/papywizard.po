@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-30 14:19+0200\n"
-"PO-Revision-Date: 2008-09-30 14:21+0100\n"
+"POT-Creation-Date: 2008-10-05 16:11+0200\n"
+"PO-Revision-Date: 2008-10-05 16:12+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -43,11 +43,11 @@ msgstr "Annulé"
 msgid "Over"
 msgstr "Terminé"
 
-#: papywizard/scripts/main.py:229
+#: papywizard/scripts/main.py:241
 msgid "Internal error"
 msgstr "Erreur interne"
 
-#: papywizard/scripts/main.py:230
+#: papywizard/scripts/main.py:242
 #: papywizard/controller/bluetoothChooserController.py:177
 #: papywizard/controller/mainController.py:689
 msgid "Error"
@@ -397,6 +397,14 @@ msgstr "(C) 2007-2008 Frédéric Mantegazza"
 
 #: tmp/helpAboutDialog.glade.h:2
 msgid ""
+"Frédéric Mantegazza (français)\n"
+"Maciej Dworak (polish)"
+msgstr ""
+"Frédéric Mantegazza (français)\n"
+"Maciej Dworak (polish)"
+
+#: tmp/helpAboutDialog.glade.h:4
+msgid ""
 "Papywizard is a panohead\n"
 "control software, mainly developped\n"
 "for the Merlin/Orion astronomic mount\n"
@@ -408,7 +416,7 @@ msgstr ""
 "tête astronomique Merlin/Orion\n"
 "mais utilisable pour d'autres têtes."
 
-#: tmp/helpAboutDialog.glade.h:6
+#: tmp/helpAboutDialog.glade.h:8
 msgid ""
 "This software is governed by the CeCILL license under French law and\n"
 "abiding by the rules of distribution of free software.  You can  use, \n"
@@ -464,7 +472,7 @@ msgstr ""
 "pris connaissance de la licence CeCILL, et que vous en avez accepté les\n"
 "termes."
 
-#: tmp/helpAboutDialog.glade.h:32
+#: tmp/helpAboutDialog.glade.h:34
 msgid "À propos de Papywizard"
 msgstr "À propos de Papywizard"
 
