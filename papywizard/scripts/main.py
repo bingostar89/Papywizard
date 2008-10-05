@@ -76,6 +76,8 @@ if config.VIEW3D_ENABLE:
 DOMAIN = "papywizard"
 LANGS = ('en_US', 'fr_FR', 'pl_PL')
 
+_ = lambda a: a
+
 
 class BlackHole:
     """ Dummy class for stderr redirection.
@@ -168,22 +170,21 @@ class Papywizard(object):
             localeDir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "share", "locale")
         else:
 
-            # Search in default system dirs
-            localeFile = gettext.find(DOMAIN, languages=langs)
+            # Search in current dir
+            localeDir = os.path.realpath(os.path.dirname(sys.argv[0]))
+            localeDir = os.path.join(localeDir, "locale")
+            localeFile = gettext.find(DOMAIN, localeDir, languages=langs)
             if localeFile is None:
-                localeFile = gettext.find(DOMAIN, "/usr/local/share/locale", languages=langs)
 
-            if localeFile is not None:
-                localeDir = os.path.join(os.path.dirname(localeFile), os.pardir, os.pardir)
-            else:
+                # Search in default system dirs
+                localeFile = gettext.find(DOMAIN, languages=langs)
+                if localeFile is None:
+                    localeFile = gettext.find(DOMAIN, "/usr/local/share/locale", languages=langs)
 
-                # Search in local dir
-                localeDir = os.path.realpath(os.path.dirname(sys.argv[0]))
-                localeDir = os.path.join(localeDir, "locale")
+                if localeFile is not None:
+                    localeDir = os.path.join(os.path.dirname(localeFile), os.pardir, os.pardir)
         Logger().debug("Papywizard.in10n(): localeDir=%s" % localeDir)
 
-        gettext.bindtextdomain(DOMAIN, localeDir)
-        gettext.textdomain(DOMAIN)
         gtk.glade.bindtextdomain(DOMAIN, localeDir)
         gtk.glade.textdomain(DOMAIN)
 
@@ -236,6 +237,17 @@ def main():
         traceback.print_exc(file=tracebackString)
         message = tracebackString.getvalue().strip()
         tracebackString.close()
+        #try:
+            #message_format = _("Internal error")
+            #title = _("Error")
+        #except NameError:
+
+            ## The error occured before the localization
+            #message_format = "Internal error"
+            #title = "Error"
+        #messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
+                                          #message_format=message_format)
+        #messageDialog.set_title(title)
         messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
                                           message_format=_("Internal error"))
         messageDialog.set_title(_("Error"))
