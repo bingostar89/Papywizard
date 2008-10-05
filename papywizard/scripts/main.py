@@ -147,7 +147,7 @@ class Papywizard(object):
 
         # Now lets get all of the supported languages on the system
         language = os.environ.get('LANGUAGE', None)
-        if language:
+        if language is not None:
 
             # Language comes back something like en_CA:en_US:en_GB:en
             # on linux systems, on Win32 it's nothing, so we need to
