@@ -129,7 +129,7 @@ class AbstractAxis(object):
     def read(self):
         """ Return the current position of axis.
 
-        @return: position, in é
+        @return: position, in °
         @rtype: float
         """
         raise NotImplementedError
@@ -137,7 +137,7 @@ class AbstractAxis(object):
     def drive(self, pos, inc=False, wait=True):
         """ Drive the axis.
 
-        @param pos: position to reach, in é
+        @param pos: position to reach, in °
         @type pos: float
 
         @param inc: if True, pos is an increment
@@ -276,7 +276,7 @@ class Axis(AbstractAxis):
     def _driveWithInternalClosedLoop(self, pos):
         """ Default (hardware) drive.
 
-        @param pos: position to reach, in é
+        @param pos: position to reach, in °
         @type pos: float
         """
         Logger().trace("Axis._drive1()")
@@ -294,14 +294,14 @@ class Axis(AbstractAxis):
         """ External closed-loop drive.
 
         This method implements an external closed-loop regulation.
-        It is faster for angles < 6-7é, because in this case, the
+        It is faster for angles < 6-7°, because in this case, the
         head does not accelerate to full speed, but rather stays at
         very low speed.
         
         Problem: this drive can't be stopped, neither run concurrently
         on both axis without big modifications in multi-threading stuff.
 
-        @param pos: position to reach, in é
+        @param pos: position to reach, in °
         @type pos: float
         """
         Logger().trace("Axis._drive2()")
