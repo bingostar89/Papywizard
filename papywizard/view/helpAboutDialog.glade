@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sun Oct  5 12:52:00 2008 -->
+<!--Generated with glade3 3.4.5 on Sun Oct  5 22:51:15 2008 -->
 <glade-interface>
   <widget class="GtkAboutDialog" id="dialog">
     <property name="border_width">5</property>
@@ -47,6 +47,7 @@ CeCILL</property>
 Maciej Dworak (polish)</property>
     <property name="artists">Hubert Pawlowski
 Frédéric Mantegazza</property>
+    <property name="logo">papywizard.png</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
