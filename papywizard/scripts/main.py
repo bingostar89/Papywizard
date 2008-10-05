@@ -237,17 +237,6 @@ def main():
         traceback.print_exc(file=tracebackString)
         message = tracebackString.getvalue().strip()
         tracebackString.close()
-        #try:
-            #message_format = _("Internal error")
-            #title = _("Error")
-        #except NameError:
-
-            ## The error occured before the localization
-            #message_format = "Internal error"
-            #title = "Error"
-        #messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                          #message_format=message_format)
-        #messageDialog.set_title(title)
         messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
                                           message_format=_("Internal error"))
         messageDialog.set_title(_("Error"))
