@@ -91,12 +91,12 @@ Section "SectionPrincipale" SEC01
   File "..\locale\pl\LC_MESSAGES\papywizard.mo"
 SectionEnd
 
-;Section "GTK+ runtime" SEC02
-;  SetOutPath $TEMP
-;  File "dist\gtk+-2.10.13-setup.exe"
-;  ExecWait '"$TEMP\gtk+-2.10.13-setup.exe" /SP- /SILENT'
-;  Delete "$TEMP\gtk+-2.10.13-setup.exe"
-;SectionEnd
+Section "GTK+ runtime" SEC02
+  SetOutPath $TEMP
+  File "dist\gtk+-2.10.13-setup.exe"
+  ExecWait '"$TEMP\gtk+-2.10.13-setup.exe" /SP- /SILENT'
+  Delete "$TEMP\gtk+-2.10.13-setup.exe"
+SectionEnd
 
 Section -AdditionalIcons
   WriteIniStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
@@ -117,7 +117,7 @@ SectionEnd
 ; Section descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "Papywizard"
-;  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "GTK+ 2.10.13 runtime"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "GTK+ 2.10.13 runtime"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Function un.onUninstSuccess
