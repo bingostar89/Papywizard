@@ -64,9 +64,9 @@ Section "SectionPrincipale" SEC01
   CreateShortCut "$DESKTOP\papywizard.lnk" "$INSTDIR\papywizard.exe"
   ;File "dist\python25.dll"    ; pas nessaire, inclus dans library.zip
   File "dist\papywizard.exe"
-;  File "dist\papywizard.ico"
   File "dist\msvcr71.dll"
   File "dist\library.zip"
+  File "papywizard.ico"
   ;
   ; Sources
   File "..\__init__.py"
@@ -138,9 +138,9 @@ Section Uninstall
   Delete "$INSTDIR\library.zip"
   Delete "$INSTDIR\msvcr71.dll"
   Delete "$INSTDIR\papywizard.exe"
-;  Delete "$INSTDIR\papywizard.ico"
   Delete "$INSTDIR\w9xpopen.exe"
-  Delete "$INSTDIR\papywizard.exe.log"
+;  Delete "$INSTDIR\papywizard.exe.log"
+  Delete "$INSTDIR\papywizard.ico"
   Delete "$SMPROGRAMS\papywizard\Uninstall.lnk"
   Delete "$SMPROGRAMS\papywizard\Website.lnk"
   Delete "$SMPROGRAMS\papywizard\papywizard.lnk"
