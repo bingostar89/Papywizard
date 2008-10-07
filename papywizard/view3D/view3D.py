@@ -335,7 +335,7 @@ class View3D(vp.display):
         """ Init View3D object.
         """
         vp.display.__init__(self, title=title, width=width, height=height, center=(0, 0, 0), fov=fov, scale=scale,
-                            background=vp.color.black, up=(0, 0, 1), forward=forward)
+                            background=vp.color.black, up=(0, 0, 1), forward=forward, visible=False)
 
         self.lights = [1 * vp.vector(0, 2, 1).norm(),
                        0.1 * vp.vector(0, -1, 3).norm(),
