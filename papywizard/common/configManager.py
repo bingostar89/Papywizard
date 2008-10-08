@@ -125,6 +125,8 @@ class ConfigManager(object):
                     for option, value in distConfig.items(distSection):
                         if not userConfig.has_option(distSection, option) or \
                            value != userConfig.get(distSection, option) and not distSection.endswith("Preferences"):
+                            if isinstance(s, str):
+                                value = value.replace("%", "%%")
                             userConfig.set(distSection, option, value)
                             Logger().debug("ConfigManager.__init__(): Updated [%s] %s option with %s" % (distSection, option, value))
 
@@ -205,6 +207,7 @@ class ConfigManager(object):
         @param value: value to set
         @type value: str
         """
+        value = value.replace("%", "%%")
         self.__config.set(section, option, value)
 
     def setInt(self, section, option, value):
