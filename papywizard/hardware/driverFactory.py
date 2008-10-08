@@ -76,6 +76,9 @@ class DriverFactory(object):
             elif type_ == "usb":
                 from usbDriver import USBDriver
                 return USBDriver()
+            elif type_ == "socket":
+                from socketDriver import SocketDriver
+                return SocketDriver()
             else:
                 raise HardwareError("Unknown '%s' driver type" % type_)
         except Exception, msg:
