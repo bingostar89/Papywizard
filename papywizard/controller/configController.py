@@ -185,7 +185,7 @@ class ConfigController(AbstractController):
         elif driver == 'socket':
             self.bluetoothDeviceAddressLabel.set_sensitive(False)
             self.bluetoothDeviceAddressEntry.set_sensitive(False)
-            self.bluetoothChooseButton.set_sensitive(True)
+            self.bluetoothChooseButton.set_sensitive(False)
             self.serialPortLabel.set_sensitive(False)
             self.serialPortEntry.set_sensitive(False)
             self.socketHostPortLabel.set_sensitive(True)
