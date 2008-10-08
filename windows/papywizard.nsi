@@ -60,8 +60,8 @@ Section "SectionPrincipale" SEC01
   SetOverwrite ifnewer
   File "dist\w9xpopen.exe"
   CreateDirectory "$SMPROGRAMS\papywizard"
-  CreateShortCut "$SMPROGRAMS\papywizard\papywizard.lnk" "$INSTDIR\papywizard.exe"
-  CreateShortCut "$DESKTOP\papywizard.lnk" "$INSTDIR\papywizard.exe"
+  CreateShortCut "$SMPROGRAMS\papywizard\papywizard.lnk" "$INSTDIR\papywizard.exe" "$INSTDIR\papywizard.ico"
+  CreateShortCut "$DESKTOP\papywizard.lnk" "$INSTDIR\papywizard.exe" "$INSTDIR\papywizard.ico"
   ;File "dist\python25.dll"    ; pas nessaire, inclus dans library.zip
   File "dist\papywizard.exe"
   File "dist\msvcr71.dll"
