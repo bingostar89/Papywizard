@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-05 16:11+0200\n"
+"POT-Creation-Date: 2008-10-08 14:37+0200\n"
 "PO-Revision-Date: 2008-09-23 15:03+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -126,15 +126,15 @@ msgstr ""
 msgid "Now in simulation mode"
 msgstr ""
 
-#: papywizard/controller/configController.py:162
+#: papywizard/controller/configController.py:174
 msgid "Not implemented"
 msgstr ""
 
-#: papywizard/controller/configController.py:163
+#: papywizard/controller/configController.py:175
 msgid "Warning"
 msgstr ""
 
-#: papywizard/controller/configController.py:164
+#: papywizard/controller/configController.py:176
 msgid ""
 "If you are using a usb-to-serial adapter\n"
 "please choose the 'serial' driver"
@@ -148,11 +148,11 @@ msgstr "Bluetooth"
 msgid "Bluetooth devices list"
 msgstr ""
 
-#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:50
+#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:54
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:4 tmp/configDialog.glade.h:51
+#: tmp/bluetoothChooserDialog.glade.h:4 tmp/configDialog.glade.h:55
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -247,122 +247,136 @@ msgid "Hardware"
 msgstr "Hardware"
 
 #: tmp/configDialog.glade.h:24
+msgid "Host/IP of the socket"
+msgstr ""
+
+#: tmp/configDialog.glade.h:25
 msgid "Inital direction"
 msgstr "Inital direction"
 
-#: tmp/configDialog.glade.h:25
+#: tmp/configDialog.glade.h:26
 msgid "Lens focal (mm)"
 msgstr "Lens focal (mm)"
 
-#: tmp/configDialog.glade.h:26
+#: tmp/configDialog.glade.h:27
 msgid "Level of the logger"
 msgstr ""
 
-#: tmp/configDialog.glade.h:27
+#: tmp/configDialog.glade.h:28
 msgid "Logger level"
 msgstr "Logger level"
 
-#: tmp/configDialog.glade.h:28
+#: tmp/configDialog.glade.h:29
 msgid "Minimum wanted overlap (mosaic mode)"
 msgstr ""
 
-#: tmp/configDialog.glade.h:29
+#: tmp/configDialog.glade.h:30
 msgid "Misc"
 msgstr "Misc"
 
-#: tmp/configDialog.glade.h:30
+#: tmp/configDialog.glade.h:31
 msgid "Number of pictures"
 msgstr "Number of pictures"
 
-#: tmp/configDialog.glade.h:31
+#: tmp/configDialog.glade.h:32
 msgid "Number of pictures to shoot at each position"
 msgstr ""
 
-#: tmp/configDialog.glade.h:32
+#: tmp/configDialog.glade.h:33
 msgid "Orientation"
 msgstr "Orientation"
 
-#: tmp/configDialog.glade.h:33
+#: tmp/configDialog.glade.h:34
 msgid "Orientation of the camera (mosaic mode)"
 msgstr ""
 
-#: tmp/configDialog.glade.h:35
+#: tmp/configDialog.glade.h:36
 msgid "Overlap (%)"
 msgstr "Overlap (%)"
 
-#: tmp/configDialog.glade.h:36
+#: tmp/configDialog.glade.h:37
 msgid "Port of the serial converter"
 msgstr ""
 
-#: tmp/configDialog.glade.h:37
+#: tmp/configDialog.glade.h:38
+msgid "Port of the socket"
+msgstr ""
+
+#: tmp/configDialog.glade.h:39
 msgid "Ratio of the sensor"
 msgstr ""
 
-#: tmp/configDialog.glade.h:38
+#: tmp/configDialog.glade.h:40
 msgid "Sensor coef."
 msgstr "Sensor coef."
 
-#: tmp/configDialog.glade.h:39
+#: tmp/configDialog.glade.h:41
 msgid "Sensor ratio"
 msgstr "Sensor ratio"
 
-#: tmp/configDialog.glade.h:40
+#: tmp/configDialog.glade.h:42
 msgid "Serial port"
 msgstr "Serial port"
 
-#: tmp/configDialog.glade.h:41 tmp/shootDialog.glade.h:6
+#: tmp/configDialog.glade.h:43 tmp/shootDialog.glade.h:6
 msgid "Shooting"
 msgstr "Shooting"
 
-#: tmp/configDialog.glade.h:42
+#: tmp/configDialog.glade.h:44
+msgid "Socket host/port"
+msgstr ""
+
+#: tmp/configDialog.glade.h:45
 msgid "Square"
 msgstr "Square"
 
-#: tmp/configDialog.glade.h:43
+#: tmp/configDialog.glade.h:46
 msgid "Stab. delay (sec)"
 msgstr "Stab. delay (sec)"
 
-#: tmp/configDialog.glade.h:44
+#: tmp/configDialog.glade.h:47
 msgid "Start from"
 msgstr "Start from"
 
-#: tmp/configDialog.glade.h:45
+#: tmp/configDialog.glade.h:48
 msgid "Time value (sec)"
 msgstr "Time value (sec)"
 
-#: tmp/configDialog.glade.h:46
+#: tmp/configDialog.glade.h:49
 #, fuzzy
 msgid "Time value of the camera"
 msgstr "Time value (sec)"
 
-#: tmp/configDialog.glade.h:47
+#: tmp/configDialog.glade.h:50
+#, fuzzy
 msgid ""
 "bluetooth\n"
 "serial\n"
-"usb"
+"usb\n"
+"socket"
 msgstr ""
 "bluetooth\n"
 "serial\n"
 "usb"
-
-#: tmp/configDialog.glade.h:52
-msgid ""
-"portrait\n"
-"landscape"
-msgstr ""
-"portrait\n"
-"landscape"
-
-#: tmp/configDialog.glade.h:54
-msgid ""
-"start\n"
-"end"
-msgstr ""
-"start\n"
-"end"
 
 #: tmp/configDialog.glade.h:56
 msgid ""
+"portrait\n"
+"landscape"
+msgstr ""
+"portrait\n"
+"landscape"
+
+#: tmp/configDialog.glade.h:58
+msgid ""
+"start\n"
+"end"
+msgstr ""
+"start\n"
+"end"
+
+#: tmp/configDialog.glade.h:60
+msgid ""
 "trace\n"
 "debug\n"
 "info\n"
@@ -379,7 +393,7 @@ msgstr ""
 "exception\n"
 "critical"
 
-#: tmp/configDialog.glade.h:63
+#: tmp/configDialog.glade.h:67
 msgid ""
 "yaw\n"
 "pitch"
