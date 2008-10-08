@@ -42,7 +42,7 @@ Tests
 Implements
 ==========
 
-- 
+- Sniffer
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
@@ -87,10 +87,8 @@ class Sniffer(object):
                         data += c
                 if data[0] == ':':
                     cmd = data[1:-1]
-                    #Logger().info("Command: %s" % data[1:-1])
                 elif data[0] == '=':
                     resp = data[1:-1]
-                    #Logger().info("Response: %s" % data[1:-1])
                     Logger().info("%10s -> %10s" % (cmd, resp))
                 else:
                     Logger().debug("%s" % data[1:-1])
