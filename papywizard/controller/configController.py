@@ -70,7 +70,7 @@ class ConfigController(AbstractController):
         self._signalDict = {"on_okButton_clicked": self.__onOkButtonClicked,
                             "on_cancelButton_clicked": self.__onCancelButtonClicked,
                             "on_driverCombobox_changed": self.__onDriverComboboxChanged,
-                            "on_chooseBluetoothButton_clicked": self.__onChooseBluetoothButtonClicked,
+                            "on_bluetoothChooseButton_clicked": self.__onBluetoothChooseButtonClicked,
                         }
 
     def _retreiveWidgets(self):
@@ -93,9 +93,12 @@ class ConfigController(AbstractController):
         self.driverCombobox = self.wTree.get_widget("driverCombobox")
         self.bluetoothDeviceAddressLabel = self.wTree.get_widget("bluetoothDeviceAddressLabel")
         self.bluetoothDeviceAddressEntry = self.wTree.get_widget("bluetoothDeviceAddressEntry")
-        self.chooseBluetoothButton = self.wTree.get_widget("chooseBluetoothButton")
+        self.bluetoothChooseButton = self.wTree.get_widget("bluetoothChooseButton")
         self.serialPortLabel = self.wTree.get_widget("serialPortLabel")
         self.serialPortEntry = self.wTree.get_widget("serialPortEntry")
+        self.socketHostPortLabel = self.wTree.get_widget("socketHostPortLabel")
+        self.socketHostEntry = self.wTree.get_widget("socketHostEntry")
+        self.socketPortSpinbutton = self.wTree.get_widget("socketPortSpinbutton")
         self.hardwareAutoConnectCheckbutton = self.wTree.get_widget("hardwareAutoConnectCheckbutton")
         self.loggerLevelCombobox = self.wTree.get_widget("loggerCLevelCombobox")
         self.dataFileFormatEntry = self.wTree.get_widget("dataFileFormatEntry")
@@ -124,11 +127,12 @@ class ConfigController(AbstractController):
                             config.DRIVER_INDEX[self.driverCombobox.get_active()])
         ConfigManager().set('Hardware', 'BLUETOOTH_DEVICE_ADDRESS', self.bluetoothDeviceAddressEntry.get_text())
         ConfigManager().set('Hardware', 'SERIAL_PORT', self.serialPortEntry.get_text())
+        ConfigManager().set('Hardware', 'SOCKET_HOST', self.socketHostEntry.get_text())
+        ConfigManager().setInt('Hardware', 'SOCKET_PORT', int(self.socketPortSpinbutton.get_value()))
         ConfigManager().setBoolean('Hardware', 'AUTO_CONNECT', self.hardwareAutoConnectCheckbutton.get_active())
         ConfigManager().set('Logger', 'LOGGER_LEVEL',
                             config.LOGGER_INDEX[self.loggerLevelCombobox.get_active()])
-        dataFileFormat = self.dataFileFormatEntry.get_text().replace('%', '%%')
-        ConfigManager().set('Data', 'DATA_FILE_FORMAT', dataFileFormat)
+        ConfigManager().set('Data', 'DATA_FILE_FORMAT', self.dataFileFormatEntry.get_text())
 
     def __onCancelButtonClicked(self, widget):
         """ Cancel button has been clicked.
@@ -147,16 +151,22 @@ class ConfigController(AbstractController):
         if driver == 'bluetooth':
             self.bluetoothDeviceAddressLabel.set_sensitive(True)
             self.bluetoothDeviceAddressEntry.set_sensitive(True)
-            self.chooseBluetoothButton.set_sensitive(True)
+            self.bluetoothChooseButton.set_sensitive(True)
             self.serialPortLabel.set_sensitive(False)
             self.serialPortEntry.set_sensitive(False)
+            self.socketHostPortLabel.set_sensitive(False)
+            self.socketHostEntry.set_sensitive(False)
+            self.socketPortSpinbutton.set_sensitive(False)
         elif driver == 'serial':
             self.bluetoothDeviceAddressLabel.set_sensitive(False)
             self.bluetoothDeviceAddressEntry.set_sensitive(False)
-            self.chooseBluetoothButton.set_sensitive(False)
+            self.bluetoothChooseButton.set_sensitive(False)
             self.serialPortLabel.set_sensitive(True)
             self.serialPortEntry.set_sensitive(True)
-        else:
+            self.socketHostPortLabel.set_sensitive(False)
+            self.socketHostEntry.set_sensitive(False)
+            self.socketPortSpinbutton.set_sensitive(False)
+        elif driver == 'usb':
             Logger().warning("USB driver not implemented")
             messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_CLOSE,
                                               message_format=_("Not implemented"))
@@ -166,16 +176,28 @@ class ConfigController(AbstractController):
             messageDialog.destroy()
             self.bluetoothDeviceAddressLabel.set_sensitive(False)
             self.bluetoothDeviceAddressEntry.set_sensitive(False)
-            self.chooseBluetoothButton.set_sensitive(False)
+            self.bluetoothChooseButton.set_sensitive(False)
             self.serialPortLabel.set_sensitive(False)
             self.serialPortEntry.set_sensitive(False)
+            self.socketHostPortLabel.set_sensitive(False)
+            self.socketHostEntry.set_sensitive(False)
+            self.socketPortSpinbutton.set_sensitive(False)
+        elif driver == 'socket':
+            self.bluetoothDeviceAddressLabel.set_sensitive(False)
+            self.bluetoothDeviceAddressEntry.set_sensitive(False)
+            self.bluetoothChooseButton.set_sensitive(True)
+            self.serialPortLabel.set_sensitive(False)
+            self.serialPortEntry.set_sensitive(False)
+            self.socketHostPortLabel.set_sensitive(True)
+            self.socketHostEntry.set_sensitive(True)
+            self.socketPortSpinbutton.set_sensitive(True)
 
-    def __onChooseBluetoothButtonClicked(self, widget):
+    def __onBluetoothChooseButtonClicked(self, widget):
         """ Choose bluetooth button clicked.
 
         Open the bluetooth chooser dialog.
         """
-        Logger().trace("ConfigController.__onChooseBluetoothButtonClicked()")
+        Logger().trace("ConfigController.__onBluetoothChooseButtonClicked()")
         controller = BluetoothChooserController(self, self._model, self._serializer)
         response = controller.run()
         controller.destroyView()
@@ -202,6 +224,8 @@ class ConfigController(AbstractController):
         self.driverCombobox.set_active(config.DRIVER_INDEX[ConfigManager().get('Hardware', 'Driver')])
         self.bluetoothDeviceAddressEntry.set_text(ConfigManager().get('Hardware', 'BLUETOOTH_DEVICE_ADDRESS'))
         self.serialPortEntry.set_text(ConfigManager().get('Hardware', 'SERIAL_PORT'))
+        self.socketHostEntry.set_text(ConfigManager().get('Hardware', 'SOCKET_HOST'))
+        self.socketPortSpinbutton.set_value(ConfigManager().getInt('Hardware', 'SOCKET_PORT'))
         self.hardwareAutoConnectCheckbutton.set_active(ConfigManager().getBoolean('Hardware', 'AUTO_CONNECT'))
         self.loggerLevelCombobox.set_active(config.LOGGER_INDEX[ConfigManager().get('Logger', 'LOGGER_LEVEL')])
         self.dataFileFormatEntry.set_text(ConfigManager().get('Data', 'DATA_FILE_FORMAT'))
