@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Sep 24 23:41:36 2008 -->
+<!--Generated with glade3 3.4.5 on Wed Oct  8 14:37:11 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="border_width">5</property>
@@ -189,7 +189,7 @@ landscape</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes">Force overlap to get square pictures (mosaic mode)</property>
+                        <property name="tooltip" translatable="yes" context="yes">Force overlap to get square pictures (mosaic mode)</property>
                         <property name="label" translatable="yes" context="yes">Square</property>
                         <property name="response_id">0</property>
                         <property name="draw_indicator">True</property>
@@ -396,7 +396,7 @@ landscape</property>
                 <child>
                   <widget class="GtkTable" id="table4">
                     <property name="visible">True</property>
-                    <property name="n_rows">4</property>
+                    <property name="n_rows">5</property>
                     <property name="n_columns">3</property>
                     <property name="column_spacing">5</property>
                     <property name="row_spacing">5</property>
@@ -413,7 +413,7 @@ landscape</property>
                       <placeholder/>
                     </child>
                     <child>
-                      <widget class="GtkButton" id="chooseBluetoothButton">
+                      <widget class="GtkButton" id="bluetoothChooseButton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
@@ -421,7 +421,7 @@ landscape</property>
                         <property name="tooltip_text">choose address of the bluetooth device from list</property>
                         <property name="label" translatable="yes" context="yes">Choose...</property>
                         <property name="response_id">0</property>
-                        <signal name="clicked" handler="on_chooseBluetoothButton_clicked"/>
+                        <signal name="clicked" handler="on_bluetoothChooseButton_clicked"/>
                       </widget>
                       <packing>
                         <property name="left_attach">2</property>
@@ -487,7 +487,8 @@ landscape</property>
                         <property name="tooltip" translatable="yes" context="yes">Driver to use to connect to hardware</property>
                         <property name="items" translatable="yes" context="yes">bluetooth
 serial
-usb</property>
+usb
+socket</property>
                         <signal name="changed" handler="on_driverCombobox_changed"/>
                       </widget>
                       <packing>
@@ -515,6 +516,43 @@ usb</property>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
+                        <property name="top_attach">4</property>
+                        <property name="bottom_attach">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="socketHostPortLabel">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="yes">Socket host/port</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkEntry" id="socketHostEntry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="tooltip" translatable="yes">Host/IP of the socket</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkSpinButton" id="socketPortSpinbutton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="tooltip" translatable="yes">Port of the socket</property>
+                        <property name="adjustment">1024 1024 65535 1 10 10</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="right_attach">3</property>
                         <property name="top_attach">3</property>
                         <property name="bottom_attach">4</property>
                       </packing>
