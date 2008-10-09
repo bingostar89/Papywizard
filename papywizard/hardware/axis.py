@@ -172,6 +172,14 @@ class AbstractAxis(object):
         """
         raise NotImplementedError
 
+    def isMoving(self):
+        """ Check if axis is moving.
+
+        @return: True if moving, False if stopped
+        @rtype: bool
+        """
+        raise NotImplementedError
+
     def getStatus(self):
         """ Return the status of the axis.
         """
@@ -327,11 +335,9 @@ class Axis(AbstractAxis):
         # Closed-loop drive
         stopRequest = False
         while abs(pos - self.read()) > .5: # optimal delta depends on speed/inertia
-            
+
             # Test if a stop request has been sent
-            status = self.getStatus()
-            if status[1] == '0':
-                stopRequest = True
+            if not self.isMoving():
                 break
             time.sleep(0.1)
         self.stop()
@@ -346,8 +352,7 @@ class Axis(AbstractAxis):
 
     def waitEndOfDrive(self):
         while True:
-            status = self.getStatus()
-            if status[1] == '0':
+            if not self.isMoving():
                 break
             time.sleep(0.1)
         self.waitStop()
@@ -376,6 +381,13 @@ class Axis(AbstractAxis):
                 break
             pos = self.read()
             time.sleep(0.05)
+
+    def isMoving(self):
+        status = self.getStatus()
+        if status[1] != '0':
+            return True
+        else:
+            return False
 
     def getStatus(self):
         return self._sendCmd("f")
@@ -505,6 +517,9 @@ class AxisSimulation(AbstractAxis, threading.Thread):
 
     def waitStop(self):
         pass
+
+    def isMoving(self):
+        return self.__jog
 
     def getStatus(self):
         return "000"
