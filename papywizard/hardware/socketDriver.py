@@ -128,6 +128,8 @@ class SocketDriver(BusDriver):
                     raise IOError("Timeout while reading on socket")
                 except socket.error, msg:
                     raise IOError(msg)
+                if not c:
+                    raise IOError("Connection lost")
             data = ""
             while True:
                 try:
@@ -137,6 +139,8 @@ class SocketDriver(BusDriver):
                     raise IOError("Timeout while reading on socket")
                 except socket.error, msg:
                     raise IOError(msg)
+                if not c:
+                    raise IOError("Connection lost")
                 if c == '\r':
                     break
                 data += c
