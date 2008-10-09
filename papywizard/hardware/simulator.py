@@ -60,60 +60,178 @@ import bluetooth
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
+from papywizard.common.helpers import decodeAxisValue, encodeAxisValue, deg2cod, cod2deg
+from papywizard.hardware.head import HeadSimulation
 
 
 class MerlinOrionBaseHandler(object):
     """ Abstract handler for Merlin/Orion commands set.
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self):
         """ Init the abstract handler.
         """
         super(MerlinOrionBaseHandler, self).__init__()
+        self._head = HeadSimulation()
+        self._axis = {1: self._head.yawAxis,
+                      2: self._head.pitchAxis}
+        self._axisCmd = {}
+        self._axisDir = {}
+        self._axisSpeed = {}
+        self._axisPos = {}
 
-    def _handleCmd(self, cmd):
+    def _handleCmd(self, cmdStr):
         """ Handle a command.
 
-        @param cmd: commande to simulate
-        @type cmd: str
+        @param cmdStr: command to simulate
+        @type cmdStr: str
 
         @return: response
         @rtype: str
 
         raise HardwareError: wrong command
         """
-        Logger().debug("MerlinOrionBaseHandler._handleCmd(): cmd=%s" % (repr(cmd)))
-        if not cmd.startswith(':'):
+        if not cmdStr.startswith(':'):
             raise HardwareError("Invalid command format")
 
-        return "=\r"
+        # Split cmdStr
+        cmd = cmdStr[1]
+        numAxis = int(cmdStr[2])
+        if numAxis not in (1, 2):
+            raise HardwareError("Invalid axis number")
+        param = cmdStr[3:-1]
+        Logger().debug("MerlinOrionBaseHandler._handleCmd(): cmdStr=%s, cmd=%s, numAxis=%d, param=%s" % (repr(cmdStr), cmd, numAxis, param))
+
+        # Compute command response
+        # Stop command
+        if cmd == 'L':
+            Logger().trace("MerlinOrionBaseHandler._handleCmd(): stop")
+            self._axis[numAxis].stop()
+            response = ""
+
+        # ??? command
+        elif cmd == 'F':
+            Logger().trace("MerlinOrionBaseHandler._handleCmd(): ???")
+            response = ""
+
+        # ??? command
+        elif cmd == 'a':
+            Logger().trace("MerlinOrionBaseHandler._handleCmd(): ???")
+            response = "D3620E"
+
+        # ??? command
+        elif cmd == 'D':
+            Logger().trace("MerlinOrionBaseHandler._handleCmd(): ???")
+            response = "F90600"
+
+        # read command
+        elif cmd == 'j':
+            Logger().trace("MerlinOrionBaseHandler._handleCmd(): read")
+            pos = self._axis[numAxis].read()
+            response = encodeAxisValue(deg2cod(pos))
+
+        # status command
+        elif cmd == 'f':
+            Logger().trace("MerlinOrionBaseHandler._handleCmd(): status")
+            if self._axis[numAxis].isMoving():
+                response = "-1-"
+            else:
+                response = "-0-"
+
+        # command command
+        elif cmd == 'G':
+            Logger().trace("MerlinOrionBaseHandler._handleCmd(): command")
+            if param[0] == '0':
+                self._axisCmd[numAxis] = 'drive'
+            elif param[0] == '3':
+                self._axisCmd[numAxis] = 'jog'
+                if param[1] == '0':
+                    self._axisDir[numAxis] = '+'
+                elif param[1] == '1':
+                    self._axisDir[numAxis] = '-'
+                else:
+                    raise HardwareError("Invalid param")
+                Logger().debug("MerlinOrionBaseHandler._handleCmd(): axis %d direction=%s" % (numAxis, self._axisDir[numAxis]))
+            else:
+                raise NotImplementedError
+            response = ""
+
+        # speed command
+        elif cmd == 'I':
+            Logger().trace("MerlinOrionBaseHandler._handleCmd(): speed")
+            try:
+                speed = decodeAxisValue(param)
+                Logger().debug("MerlinOrionBaseHandler._handleCmd(): axis %d speed=%d" % (numAxis, speed))
+                self._axisSpeed[numAxis] = speed
+                response = ""
+            except KeyError:
+                raise HardwareError("No direction has been set")
+
+        # position command
+        elif cmd == 'S':
+            Logger().trace("MerlinOrionBaseHandler._handleCmd(): position")
+            self._axisPos[numAxis] = cod2deg(decodeAxisValue(param))
+            response = ""
+
+        # run command
+        elif cmd == 'J':
+            Logger().trace("MerlinOrionBaseHandler._handleCmd(): run")
+            try:
+                if self._axisCmd[numAxis] == 'jog':
+                    dir_ = self._axisDir[numAxis]
+                    speed = self._axisSpeed[numAxis]
+                    self._axis[numAxis].startJog(dir_)
+                elif self._axisCmd[numAxis] == 'drive':
+                    pos = self._axisPos[numAxis]
+                    self._axis[numAxis].drive(pos, wait=False)
+                response = ""
+            except KeyError:
+                raise HardwareError("Missing one axis cmd/direction/speed value")
+
+        # shutter command
+        elif cmd == 'O':
+            Logger().trace("MerlinOrionBaseHandler._handleCmd(): shutter")
+            response = ""
+
+        else:
+            raise HardwareError("Invalid command")
+
+        return "=%s\r" % response
 
 
-class MerlinOrionSocketHandler(SocketServer.BaseRequestHandler, MerlinOrionBaseHandler):
+class MerlinOrionSocketHandler(MerlinOrionBaseHandler, SocketServer.BaseRequestHandler):
     """ Socket-based handler.
     """
     def __init__(self, *args, **kwargs):
-        super(MerlinOrionSocketHandler, self).__init__(*args, **kwargs)
+        MerlinOrionBaseHandler.__init__(self)
+        SocketServer.BaseRequestHandler.__init__(self, *args, **kwargs)
 
     def handle(self):
         Logger().debug("MerlinOrionHandler.handle(): connection request from ('%s', %d)" % self.client_address)
         Logger().info("New connection established")
         while True:
-            cmd = ""
-            while not cmd.endswith('\r'):
-                data = self.request.recv(1)
-                if not data: # connection lost?
-                    Logger().error("MerlinOrionSocketHandler.handle(): can't read data")
+            try:
+                cmd = ""
+                while not cmd.endswith('\r'):
+                    data = self.request.recv(1)
+                    if not data: # connection lost?
+                        Logger().error("MerlinOrionSocketHandler.handle(): can't read data")
+                        break
+                    cmd += data
+                if cmd:
+                    response = self._handleCmd(cmd)
+                    Logger().debug("MerlinOrionHandler.handle(): response=%s" % repr(response))
+                    self.request.sendall(response)
+                else:
+                    self.request.close()
+                    Logger().debug("MerlinOrionHandler.handle(): lost connection with ('%s', %d)" % self.client_address)
+                    Logger().info("Connection closed")
                     break
-                cmd += data
-            if cmd:
-                response = self._handleCmd(cmd)
-                Logger().debug("MerlinOrionHandler.handle(): response=%s" % repr(response))
-                self.request.sendall(response)
-            else:
+            except KeyboardInterrupt:
                 self.request.close()
-                Logger().debug("MerlinOrionHandler.handle(): lost connection with ('%s', %d)" % self.client_address)
                 Logger().info("Connection closed")
                 break
+            except:
+                Logger().exception("MerlinOrionHandler.handle()")
 
 
 class MerlinOrionBaseSimulator(object):
@@ -138,19 +256,23 @@ class MerlinOrionBaseSimulator(object):
 
 class MerlinOrionSocketSimulator(MerlinOrionBaseSimulator):
     """ Socket-based simulator.
-
-    handle_error(request, client_address)
     """
+    class SimulatorTCPServer(SocketServer.TCPServer):
+        allow_reuse_address = True
+
+        def handle_error(self, request, client_address):
+            Logger().error("Error while handling request=from ('%s', %d)" % client_address)
+
     def _init(self):
-        self.__server = SocketServer.TCPServer(("localhost", config.SIMUL_SOCKET_PORT), MerlinOrionSocketHandler)
+        self.__server = MerlinOrionSocketSimulator.SimulatorTCPServer(("localhost", config.SIMUL_SOCKET_PORT), MerlinOrionSocketHandler)
         self.__server.socket.settimeout(1.)
 
     def run(self):
-        Logger().info("Socket-based simulator started")
+        Logger().debug("Starting ocket-based simulator...")
         try:
             self.__server.serve_forever()
         except KeyboardInterrupt:
-            Logger().info("Socket-based simulator stopped")
+            Logger().debug("Socket-based simulator stopped")
 
 
 class MerlinOrionSerialHandler(object):
@@ -210,12 +332,3 @@ class MerlinOrionSerialSimulator(object):
         except:
             Logger().exception("Serial-based simulator.run()")
             Logger().info("Serial-based simulator stopped")
-
-
-def main():
-    simulator = MerlinOrionSocketSimulator()
-    simulator.run()
-
-
-if __name__ == "__main__":
-    main()
