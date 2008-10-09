@@ -111,22 +111,33 @@ class SocketDriver(BusDriver):
             # Empty buffer
             #self._sock.read(self._sock.inWaiting())
 
-            count = self._sock.send(":%s\r" % cmd)
+            try:
+                count = self._sock.send(":%s\r" % cmd)
+            except socket.timeout:
+                raise IOError("Timeout while writing on socket")
+            except socket.error, msg:
+                raise IOError(msg)
             if count != len(cmd) + 2:
                 raise IOError("Failed to send data on socket")
             c = ''
             while c != '=':
-                c = self._sock.recv(1)
-                #Logger().debug("SocketDriver.sendCmd(): c=%s" % repr(c))
-                if not c:
+                try:
+                    c = self._sock.recv(1)
+                    #Logger().debug("SocketDriver.sendCmd(): c=%s" % repr(c))
+                except socket.timeout:
                     raise IOError("Timeout while reading on socket")
+                except socket.error, msg:
+                    raise IOError(msg)
             data = ""
             while True:
-                c = self._sock.recv(1)
-                #Logger().debug("SocketDriver.sendCmd(): c=%s, data=%s" % (repr(c), repr(data)))
-                if not c:
+                try:
+                    c = self._sock.recv(1)
+                    #Logger().debug("SocketDriver.sendCmd(): c=%s, data=%s" % (repr(c), repr(data)))
+                except socket.timeout:
                     raise IOError("Timeout while reading on socket")
-                elif c == '\r':
+                except socket.error, msg:
+                    raise IOError(msg)
+                if c == '\r':
                     break
                 data += c
 
