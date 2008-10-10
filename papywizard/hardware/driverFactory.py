@@ -73,12 +73,9 @@ class DriverFactory(object):
             elif type_ == "serial":
                 from serialDriver import SerialDriver
                 return SerialDriver()
-            elif type_ == "usb":
-                from usbDriver import USBDriver
-                return USBDriver()
-            elif type_ == "socket":
-                from socketDriver import SocketDriver
-                return SocketDriver()
+            elif type_ == "ethernet":
+                from ethernetDriver import EthernetDriver
+                return EthernetDriver()
             else:
                 raise HardwareError("Unknown '%s' driver type" % type_)
         except Exception, msg:
