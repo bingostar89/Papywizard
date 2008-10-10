@@ -245,7 +245,6 @@ class Axis(AbstractAxis):
         pass # find commands to send...
 
     def setOrigin(self):
-        Logger().warning("Axis.setOrigin(): not yet implemented")
         self.__offset += self.read()
 
     def read(self):
