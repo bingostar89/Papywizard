@@ -5,8 +5,6 @@ ChangeLog
 x bug fix
 
 xxxx-xx-xx Version SVN
-
-2008-09-xx Version 1.1
     + open on-line manual page in a web browser
     + custom user presets support
     + global try/except statement with traceback in GUI
@@ -14,13 +12,16 @@ xxxx-xx-xx Version SVN
     + l10n/i18n (english, french, polish)
     x log viewer background now entire black
     x bluetooth/serial driver params disabled if usb selected
-    - warning if select unimplemented usb driver
-    + socket driver (to use with ethernet-serial converter or harware simulator)
-    - source structure modified
-    x preset template for 28mm lens modified
+    - removed usb driver
+    + new network (socket) driver
+    - source structure revisited
+    x preset template for 28mm lens corrected
     x multi-thread bug corrrection for windows
     + windows installer (without bluetooth support)
     + nice papywizard icon
+    + low-level hardware simulator
+    + view 3D is now another program
+    - remove debian setup script (need a real debian packaging)
 
 2008-09-19 Version 1.0
     + preset shooting mode for full spherical
