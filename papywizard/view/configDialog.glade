@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Oct  8 14:37:11 2008 -->
+<!--Generated with glade3 3.4.5 on Thu Oct  9 20:14:15 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="border_width">5</property>
@@ -487,8 +487,7 @@ landscape</property>
                         <property name="tooltip" translatable="yes" context="yes">Driver to use to connect to hardware</property>
                         <property name="items" translatable="yes" context="yes">bluetooth
 serial
-usb
-socket</property>
+ethernet</property>
                         <signal name="changed" handler="on_driverCombobox_changed"/>
                       </widget>
                       <packing>
@@ -521,9 +520,9 @@ socket</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="socketHostPortLabel">
+                      <widget class="GtkLabel" id="ethernetHostPortLabel">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes" context="yes">Socket host/port</property>
+                        <property name="label" translatable="yes" context="yes">Ethernet host/port</property>
                       </widget>
                       <packing>
                         <property name="top_attach">3</property>
@@ -531,10 +530,10 @@ socket</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkEntry" id="socketHostEntry">
+                      <widget class="GtkEntry" id="ethernetHostEntry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip" translatable="yes">Host/IP of the socket</property>
+                        <property name="tooltip" translatable="yes" context="yes">Host name or IP address</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -544,10 +543,10 @@ socket</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkSpinButton" id="socketPortSpinbutton">
+                      <widget class="GtkSpinButton" id="ethernetPortSpinbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip" translatable="yes">Port of the socket</property>
+                        <property name="tooltip" translatable="yes" context="yes">Ethernet port</property>
                         <property name="adjustment">1024 1024 65535 1 10 10</property>
                       </widget>
                       <packing>
