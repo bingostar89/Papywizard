@@ -42,7 +42,7 @@ Hardware driver
 Implements
 ==========
 
-- SocketDriver
+- EthernetDriver
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
@@ -59,14 +59,14 @@ from papywizard.common.exception import HardwareError
 from papywizard.hardware.busDriver import BusDriver
 
 
-class SocketDriver(BusDriver):
-    """ Driver for TCP socket connection.
+class EthernetDriver(BusDriver):
+    """ Driver for TCP ethernet connection.
     """
     def init(self):
         if not self._init:
-            host = ConfigManager().get('Hardware', 'SOCKET_HOST')
-            port = ConfigManager().getInt('Hardware', 'SOCKET_PORT')
-            Logger().debug("SocketDriver.init(): trying to connect to %s:%d..." % (host, port))
+            host = ConfigManager().get('Hardware', 'ETHERNET_HOST')
+            port = ConfigManager().getInt('Hardware', 'ETHERNET_PORT')
+            Logger().debug("EthernetDriver.init(): trying to connect to %s:%d..." % (host, port))
             try:
                 #import time
                 #time.sleep(3)
@@ -76,10 +76,10 @@ class SocketDriver(BusDriver):
                 self._sock.settimeout(1.)
                 self._init = True
             except Exception, msg:
-                Logger().exception("SocketDriver.init()")
+                Logger().exception("EthernetDriver.init()")
                 raise HardwareError(msg)
             else:
-                Logger().debug("SocketDriver.init(): successfully connected to %s:%d" % (host, port))
+                Logger().debug("EthernetDriver.init(): successfully connected to %s:%d" % (host, port))
 
     def shutdown(self):
         if self._init:
@@ -89,10 +89,10 @@ class SocketDriver(BusDriver):
     def setDeviceHostPort(self, host, port):
         """ Set the host and port of the device to connect to.
 
-        @param host: host of the device socket
+        @param host: host of the ethernet device
         @type host: str
 
-        @param port: port of the device socket
+        @param port: port of the ethernet device
         @type port: int
         """
         self.__host = host
@@ -102,9 +102,9 @@ class SocketDriver(BusDriver):
         """
         @todo: see how to empty buffer.
         """
-        #Logger().debug("SocketDriver.sendCmd(): cmd=%s" % cmd)
+        #Logger().debug("EthernetDriver.sendCmd(): cmd=%s" % cmd)
         if not self._init:
-            raise HardwareError("SocketDriver not initialized")
+            raise HardwareError("EthernetDriver not initialized")
 
         self.acquireBus()
         try:
@@ -114,18 +114,18 @@ class SocketDriver(BusDriver):
             try:
                 count = self._sock.send(":%s\r" % cmd)
             except socket.timeout:
-                raise IOError("Timeout while writing on socket")
+                raise IOError("Timeout while writing on ethernet")
             except socket.error, msg:
                 raise IOError(msg)
             if count != len(cmd) + 2:
-                raise IOError("Failed to send data on socket")
+                raise IOError("Failed to send data on ethernet")
             c = ''
             while c != '=':
                 try:
                     c = self._sock.recv(1)
-                    #Logger().debug("SocketDriver.sendCmd(): c=%s" % repr(c))
+                    #Logger().debug("EthernetDriver.sendCmd(): c=%s" % repr(c))
                 except socket.timeout:
-                    raise IOError("Timeout while reading on socket")
+                    raise IOError("Timeout while reading on ethernet")
                 except socket.error, msg:
                     raise IOError(msg)
                 if not c:
@@ -134,9 +134,9 @@ class SocketDriver(BusDriver):
             while True:
                 try:
                     c = self._sock.recv(1)
-                    #Logger().debug("SocketDriver.sendCmd(): c=%s, data=%s" % (repr(c), repr(data)))
+                    #Logger().debug("EthernetDriver.sendCmd(): c=%s, data=%s" % (repr(c), repr(data)))
                 except socket.timeout:
-                    raise IOError("Timeout while reading on socket")
+                    raise IOError("Timeout while reading on ethernet")
                 except socket.error, msg:
                     raise IOError(msg)
                 if not c:
