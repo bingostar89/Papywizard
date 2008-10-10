@@ -102,10 +102,11 @@ class Spy(threading.Thread):
             except HardwareError:
                 Logger().exception("Spy.run(): can't read position")
             Spy.__init = False
-        
+
     def run(self):
         """ Main entry of the thread.
         """
+        Logger().info("Starting Spy...")
         self.__run = True
         while self.__run:
             if self.__suspend:
@@ -113,9 +114,9 @@ class Spy(threading.Thread):
                     time.sleep(self.__refresh)
             self.execute()
             time.sleep(self.__refresh)
-            
-        Logger().debug("Spy.run(): terminated")
-            
+
+        Logger().info("Spy stopped")
+
     def execute(self):
         """ Execute one refresh.
         """
@@ -131,7 +132,7 @@ class Spy(threading.Thread):
                 self.__pitch = pitch
         except HardwareError:
             Logger().exception("Spy.execute(): can't read position")
-            
+
         return True
 
     def stop(self):
@@ -144,16 +145,24 @@ class Spy(threading.Thread):
         """ Suspend thread execution.
         """
         self.__suspend = True
-        
+
     def resume(self):
         """ Resume thread execution.
         """
         self.__suspend = False
-        
+
     def setRefreshRate(self, refresh):
         """ Set the refresh rate.
-        
+
         @param refresh: refresh rate
         @type refresh: float
         """
         self.__refresh = refresh
+
+    def isRunning(self):
+        """ Test if spy is running.
+
+        @return: True if running, False if not
+        @rtype: bool
+        """
+        return self.__run
