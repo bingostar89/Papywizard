@@ -105,6 +105,5 @@ def main():
     Logger().info("Papywizard simulator stopped")
 
 
-
 if __name__ == "__main__":
     main()
