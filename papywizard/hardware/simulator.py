@@ -37,13 +37,19 @@ knowledge of the CeCILL license and that you accept its terms.
 Module purpose
 ==============
 
-Tests
+Complete simulation of the Merlin/Orion head protocole.
+This simulator can be use to check all low-level messages
+between Papywizard and the head.
 
 Implements
 ==========
 
-- MerlinOrionHandler
-- Simulator
+- MerlinOrionBaseHandler
+- MerlinOrionEthernetHandler
+- MerlinOrionSerialHandler
+- MerlinOrionBaseSimulator
+- MerlinOrionEthernetSimulator
+- MerlinOrionSerialSimulator
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
@@ -103,7 +109,7 @@ class MerlinOrionBaseHandler(object):
 
         # Compute command response
         response = ""
-        
+
         # Stop command
         if cmd == 'L':
             Logger().trace("MerlinOrionBaseHandler._handleCmd(): stop")
