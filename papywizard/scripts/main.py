@@ -65,13 +65,12 @@ from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.serializer import Serializer
 from papywizard.common.exception import HardwareError
+from papywizard.common.publisher import Publisher
 from papywizard.hardware.head import Head, HeadSimulation
 from papywizard.model.shooting import Shooting
 from papywizard.controller.mainController import MainController
 from papywizard.controller.spy import Spy
 from papywizard.view.logBuffer import LogBuffer
-if config.VIEW3D_ENABLE:
-    from papywizard.view3D.view3D import View3D
 
 DOMAIN = "papywizard"
 LANGS = ('en_US', 'fr_FR', 'pl_PL')
@@ -83,7 +82,7 @@ class BlackHole:
     """ Dummy class for stderr redirection.
     """
     softspace = 0
-    
+
     def write(self, text): 
         pass
 
@@ -101,9 +100,9 @@ class Papywizard(object):
     def init(self):
         """ Init the application.
         """
-        Logger().info("Starting Papywizard app...")
+        Logger().info("Starting Papywizard...")
 
-        # Threads
+        # Gtk threads
         gtk.gdk.threads_init()
         gtk.gdk.threads_enter()
 
@@ -112,15 +111,12 @@ class Papywizard(object):
         headSimulation = HeadSimulation()
         self.__model = Shooting(head, headSimulation)
 
-        # Launch spy thread
+        # Create spy thread
         Spy(self.__model, config.SPY_FAST_REFRESH)
-        Spy().start()
+        #Spy().start()
 
-        # Create 3D view
-        if config.VIEW3D_ENABLE:
-            self.__view3D = View3D("Papywizard", scale=(1, 1, 1))
-            Spy().newPosSignal.connect(self.__view3D.draw)
-            #Spy().newPosSignal.connect(self.__view3D.viewFromCamera)
+        # Create publisher thread
+        self.__publisher = Publisher()
 
         # Create serializer, for async events
         serializer = Serializer()
@@ -138,7 +134,7 @@ class Papywizard(object):
             logMethods(HeadSimulation)
             logMethods(MainController)
         except ImportError:
-            Logger().warning("'aspects' module from Logilab must be installed to use logging aspects")
+            Logger().warning("Lobilab aspects module must be installed to use logging aspects")
 
     def i10n(self):
         """ i10n stuff.
@@ -213,6 +209,9 @@ class Papywizard(object):
     def run(self):
         """ Run the appliction.
         """
+        Spy().start()
+        if config.PUBLISHER_ENABLE:
+            self.__publisher.start()
         gtk.main()
 
     def shutdown(self):
@@ -220,15 +219,13 @@ class Papywizard(object):
         """
         Spy().stop()
         Spy().join()
+        del self.__publisher
         self.__model.shutdown()
 
-        # Threads
+        # Gtk threads
         gtk.gdk.threads_leave()
 
-        #if config.VIEW3D_ENABLE:
-            #self.__view3D.terminate() # vpython has not yet a way to terminate the mainloop
-
-        Logger().info("Papywizard app stopped")
+        Logger().info("Papywizard stopped")
 
 
 def main():
@@ -240,7 +237,10 @@ def main():
         app.i10n()
         app.init()
         #app.weave()
-        app.run()
+        try:
+            app.run()
+        except KeyboardInterrupt:
+            pass
         app.shutdown()
 
     except Exception, msg:
