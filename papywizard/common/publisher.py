@@ -85,6 +85,8 @@ class PublisherHandler(SocketServer.BaseRequestHandler):
         except socket.error, msg:
             Logger().exception("PublisherHandler.__newPosition()")
             self.request.close()
+            Spy().newPosSignal.disconnect(self.__newPosition)
+            Logger().debug("PublisherHandler.handle(): connection from %s:%d closed" % self.client_address)
 
 
 class PublisherServer(SocketServer.ThreadingTCPServer):
