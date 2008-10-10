@@ -71,9 +71,9 @@ def main():
     parser.add_option("-s", "--serial-port", action="store",
                                              dest="serialPort",
                                              help="Serial port")
-    parser.set_defaults(hostname=config.SIMUL_ETHERNET_HOST)
+    parser.set_defaults(ethernetHost=config.SIMUL_ETHERNET_HOST)
     parser.add_option("-n", "--hostname", action="store",
-                                          dest="hostname",
+                                          dest="ethernetHost",
                                           help="Ethernet hostname/IP address")
     parser.set_defaults(ethernetPort=config.SIMUL_ETHERNET_PORT)
     parser.add_option("-p", "--ethernet-port", action="store",
