@@ -91,17 +91,19 @@ class MerlinOrionBaseHandler(object):
         raise HardwareError: wrong command
         """
         if not cmdStr.startswith(':'):
-            raise HardwareError("Invalid command format")
+            raise HardwareError("Invalid command format (%s)" % repr(cmdStr))
 
         # Split cmdStr
         cmd = cmdStr[1]
         numAxis = int(cmdStr[2])
         if numAxis not in (1, 2):
-            raise HardwareError("Invalid axis number")
+            raise HardwareError("Invalid axis number (%d)" % numAxis)
         param = cmdStr[3:-1]
         Logger().debug("MerlinOrionBaseHandler._handleCmd(): cmdStr=%s, cmd=%s, numAxis=%d, param=%s" % (repr(cmdStr), cmd, numAxis, param))
 
         # Compute command response
+        response = ""
+        
         # Stop command
         if cmd == 'L':
             Logger().trace("MerlinOrionBaseHandler._handleCmd(): stop")
@@ -111,12 +113,10 @@ class MerlinOrionBaseHandler(object):
         # ??? command
         elif cmd == 'F':
             Logger().trace("MerlinOrionBaseHandler._handleCmd(): ???")
-            response = ""
 
         # ??? command
         elif cmd == 'a':
             Logger().trace("MerlinOrionBaseHandler._handleCmd(): ???")
-            response = "D3620E"
 
         # ??? command
         elif cmd == 'D':
@@ -153,7 +153,6 @@ class MerlinOrionBaseHandler(object):
                 Logger().debug("MerlinOrionBaseHandler._handleCmd(): axis %d direction=%s" % (numAxis, self._axisDir[numAxis]))
             else:
                 raise NotImplementedError
-            response = ""
 
         # speed command
         elif cmd == 'I':
@@ -162,7 +161,6 @@ class MerlinOrionBaseHandler(object):
                 speed = decodeAxisValue(param)
                 Logger().debug("MerlinOrionBaseHandler._handleCmd(): axis %d speed=%d" % (numAxis, speed))
                 self._axisSpeed[numAxis] = speed
-                response = ""
             except KeyError:
                 raise HardwareError("No direction has been set")
 
@@ -170,7 +168,6 @@ class MerlinOrionBaseHandler(object):
         elif cmd == 'S':
             Logger().trace("MerlinOrionBaseHandler._handleCmd(): position")
             self._axisPos[numAxis] = cod2deg(decodeAxisValue(param))
-            response = ""
 
         # run command
         elif cmd == 'J':
@@ -183,14 +180,12 @@ class MerlinOrionBaseHandler(object):
                 elif self._axisCmd[numAxis] == 'drive':
                     pos = self._axisPos[numAxis]
                     self._axis[numAxis].drive(pos, wait=False)
-                response = ""
             except KeyError:
                 raise HardwareError("Missing one axis cmd/direction/speed value")
 
         # shutter command
         elif cmd == 'O':
             Logger().trace("MerlinOrionBaseHandler._handleCmd(): shutter")
-            response = ""
 
         else:
             raise HardwareError("Invalid command")
@@ -198,40 +193,81 @@ class MerlinOrionBaseHandler(object):
         return "=%s\r" % response
 
 
-class MerlinOrionSocketHandler(MerlinOrionBaseHandler, SocketServer.BaseRequestHandler):
-    """ Socket-based handler.
+class MerlinOrionEthernetHandler(MerlinOrionBaseHandler, SocketServer.BaseRequestHandler):
+    """ Ethernet-based handler.
     """
     def __init__(self, *args, **kwargs):
         MerlinOrionBaseHandler.__init__(self)
         SocketServer.BaseRequestHandler.__init__(self, *args, **kwargs)
 
     def handle(self):
-        Logger().debug("MerlinOrionHandler.handle(): connection request from ('%s', %d)" % self.client_address)
-        Logger().info("New connection established")
+        Logger().debug("MerlinOrionEthernetHandler.handle(): connection request from ('%s', %d)" % self.client_address)
+        Logger().info("New ethernet connection established")
         while True:
             try:
                 cmd = ""
                 while not cmd.endswith('\r'):
                     data = self.request.recv(1)
                     if not data: # connection lost?
-                        Logger().error("MerlinOrionSocketHandler.handle(): can't read data")
+                        Logger().error("Can't read data from ethernet")
                         break
                     cmd += data
                 if cmd:
                     response = self._handleCmd(cmd)
-                    Logger().debug("MerlinOrionHandler.handle(): response=%s" % repr(response))
+                    Logger().debug("MerlinOrionEthernetHandler.handle(): response=%s" % repr(response))
                     self.request.sendall(response)
                 else:
                     self.request.close()
-                    Logger().debug("MerlinOrionHandler.handle(): lost connection with ('%s', %d)" % self.client_address)
-                    Logger().info("Connection closed")
+                    Logger().debug("MerlinOrionEthernetHandler.handle(): lost connection with ('%s', %d)" % self.client_address)
+                    Logger().info("Ethernet connection closed")
                     break
             except KeyboardInterrupt:
                 self.request.close()
-                Logger().info("Connection closed")
+                Logger().info("Ethernet connection closed")
                 break
             except:
-                Logger().exception("MerlinOrionHandler.handle()")
+                Logger().exception("MerlinOrionEthernetHandler.handle()")
+
+
+class MerlinOrionSerialHandler(MerlinOrionBaseHandler):
+    """ Serial-based handler.
+    """
+    def __init__(self, serial):
+        """ Init the base handler.
+
+        @param serial: serial object
+        @type serial: {Serial<serial>}
+        """
+        super(MerlinOrionSerialHandler, self).__init__()
+        self.serial = serial
+
+    def handle(self):
+        Logger().info("New serial connection established")
+        while True:
+            try:
+                cmd = ""
+                while not cmd.endswith('\r'):
+                    data = self.serial.read(1)
+                    #Logger().debug("MerlinOrionSerialHandler.handle(): data=%s" % repr(data))
+                    if not data:
+                        Logger().error("Timeout while reading on serial bus")
+                        break
+                    cmd += data
+                if cmd:
+                    response = self._handleCmd(cmd)
+                    Logger().debug("MerlinOrionSerialHandler.handle(): response=%s" % repr(response))
+                    self.serial.write(response)
+                else:
+                    #self.serial.close()
+                    Logger().debug("MerlinOrionSerialHandler.handle(): lost connection")
+                    Logger().info("Serial connection closed")
+                    break
+            except KeyboardInterrupt:
+                #self.serial.close()
+                Logger().info("Serial connection closed")
+                raise
+            except:
+                Logger().exception("MerlinOrionSerialHandler.handle()")
 
 
 class MerlinOrionBaseSimulator(object):
@@ -254,81 +290,52 @@ class MerlinOrionBaseSimulator(object):
         raise NotImplementedError
 
 
-class MerlinOrionSocketSimulator(MerlinOrionBaseSimulator):
-    """ Socket-based simulator.
+class MerlinOrionEthernetSimulator(MerlinOrionBaseSimulator):
+    """ Ethernet-based simulator.
     """
-    class SimulatorTCPServer(SocketServer.TCPServer):
+    class SimulatorTCPServer(SocketServer.ThreadingTCPServer):
         allow_reuse_address = True
 
         def handle_error(self, request, client_address):
             Logger().error("Error while handling request=from ('%s', %d)" % client_address)
 
+    def __init__(self, host, port):
+        self.__host = host
+        self.__port = port
+        super(MerlinOrionEthernetSimulator, self).__init__()
+
     def _init(self):
-        self.__server = MerlinOrionSocketSimulator.SimulatorTCPServer(("localhost", config.SIMUL_SOCKET_PORT), MerlinOrionSocketHandler)
+        self.__server = MerlinOrionEthernetSimulator.SimulatorTCPServer((self.__host, self.__port), MerlinOrionEthernetHandler)
         self.__server.socket.settimeout(1.)
 
     def run(self):
-        Logger().debug("Starting ocket-based simulator...")
         try:
             self.__server.serve_forever()
         except KeyboardInterrupt:
-            Logger().debug("Socket-based simulator stopped")
+            pass
 
 
-class MerlinOrionSerialHandler(object):
-    """ Serial-based handler.
-    """
-    def __init__(self):
-        """ Init the base handler.
-        """
-        super(MerlinOrionBaseHandler, self).__init__()
-
-    def handle(self):
-        data = ""
-        while True:
-            data = self.__serial.read()
-            if not data:
-                raise IOError("Timeout while reading on serial bus")
-            while data[-1] != '\r':
-                c = self.__serial.read()
-                if not c:
-                    raise IOError("Timeout while reading on serial bus")
-                else:
-                    data += c
-
-
-class MerlinOrionSerialSimulator(object):
+class MerlinOrionSerialSimulator(MerlinOrionBaseSimulator):
     """ Serial-based simulator.
     """
+    def __init__(self, port):
+        self.__port = port
+        super(MerlinOrionSerialSimulator, self).__init__()
+
     def _init(self):
-        self.__serial = serial.Serial(config.DEFAULT_SERIAL_PORT)
-        self.__serial.setBaudrate(config.SIMUL_SERIAL_BAUDRATE)
-        self.__serial.setTimeout(1.)
+        self.__serial = serial.Serial(self.__port)
+        self.__serial.timeout = 5. # This force the server to close the connection
+                                   # after a while.The timeout must be greater than
+                                   # the spy refresh value (~ 0.5 s)
 
     def run(self):
-        """ Run the sniffer.
 
-        Listen to the serial line and display commands/responses.
-        """
-        Logger().info("Serial-based simulator started")
+        # Empty serial buffer
+        self.__serial.read(self.__serial.inWaiting())
         try:
             while True:
-                data = self.__serial.read()
-                if not data:
-                    raise IOError("Timeout while reading on serial bus")
-                while data[-1] != '\r':
-                    c = self.__serial.read()
-                    if not c:
-                        raise IOError("Timeout while reading on serial bus")
-                    else:
-                        data += c
-                if data[0] == ':':
-                    cmd = data[1:-1]
-                elif data[0] == '=':
-                    resp = data[1:-1]
-                    Logger().info("%10s -> %10s" % (cmd, resp))
-                else:
-                    Logger().debug("%s" % data[1:-1])
-        except:
-            Logger().exception("Serial-based simulator.run()")
-            Logger().info("Serial-based simulator stopped")
+                if self.__serial.inWaiting():
+                    handler = MerlinOrionSerialHandler(self.__serial)
+                    handler.handle()
+        except KeyboardInterrupt:
+            pass
