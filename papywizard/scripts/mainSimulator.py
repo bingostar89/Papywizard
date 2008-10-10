@@ -47,18 +47,63 @@ Main script for simulator
 
 __revision__ = "$Id$"
 
+import sys
+import optparse
 
-#from papywizard.common import config
+from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
-from papywizard.hardware.simulator import MerlinOrionSocketSimulator
+from papywizard.hardware.simulator import MerlinOrionEthernetSimulator, MerlinOrionSerialSimulator
 
 
 def main():
+    usage = "Usage: %prog bluetooth|serial|ethernet [options]"
+    version = "%%prog %s" % config.VERSION
+    parser = optparse.OptionParser(usage=usage, version=version)
+    parser.add_option("-c", "--connection", action="store",
+                                            dest="connection",
+                                            choices=('bluetooth', 'serial', 'ethernet'),
+                                            help="Connection")
+    parser.add_option("-a", "--address", action="store",
+                                         dest="btAddress",
+                                         help="Bluetooth device address")
+    parser.set_defaults(serialPort=config.SIMUL_SERIAL_PORT)
+    parser.add_option("-s", "--serial-port", action="store",
+                                             dest="serialPort",
+                                             help="Serial port")
+    parser.set_defaults(hostname=config.SIMUL_ETHERNET_HOST)
+    parser.add_option("-n", "--hostname", action="store",
+                                          dest="hostname",
+                                          help="Ethernet hostname/IP address")
+    parser.set_defaults(ethernetPort=config.SIMUL_ETHERNET_PORT)
+    parser.add_option("-p", "--ethernet-port", action="store",
+                                               dest="ethernetPort",
+                                               help="Ethernet port")
+    parser.set_defaults(loggerLevel=config.SIMUL_LOGGER_LEVEL)
+    parser.add_option("-l", "--logger-level", action="store",
+                                              choices=('trace', 'debug', 'info', 'warning', \
+                                                       'error', 'exception', 'critical'),
+                                              dest="loggerLevel",
+                                              help="Logger level")
+    (option, args) = parser.parse_args()
+    #Logger().debug("option=%s" % option)
+
+    if option.connection == 'serial':
+        simulator = MerlinOrionSerialSimulator(option.serialPort)
+    elif option.connection == 'bluetooth':
+        Logger().warning("Bluetooth simulator not yet impemented")
+        sys.exit(1)
+    elif option.connection == 'ethernet':
+        simulator = MerlinOrionEthernetSimulator(option.ethernetHost, option.ethernetPort)
+    else:
+        parser.print_help()
+        sys.exit(1)
+
+    Logger().setLevel(option.loggerLevel)
     Logger().info("Starting Papywizard simulator...")
-    simulator = MerlinOrionSocketSimulator()
     simulator.run()
     Logger().info("Papywizard simulator stopped")
+
 
 
 if __name__ == "__main__":
