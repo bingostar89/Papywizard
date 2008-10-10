@@ -68,13 +68,13 @@ class LoggingAspect(AbstractAspect):
 
     tab = ""
 
-    def __init__(self, cls): #, method_name):
+    def __init__(self, cls):
         """ Create and return the logger aspect.
 
         @param cls: the class or class instance to aspect
         @param method_name: the name of the method to wrap
         """
-        AbstractAspect.__init__(self, cls) # , method_name)
+        AbstractAspect.__init__(self, cls)
         self.__log = Logger()
 
     def before(self, wobj, context, *args, **kwargs):
