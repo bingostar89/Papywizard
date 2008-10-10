@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-08 14:37+0200\n"
+"POT-Creation-Date: 2008-10-09 20:14+0200\n"
 "PO-Revision-Date: 2008-10-04 16:11+0100\n"
 "Last-Translator: DrSlony <drslony@panopixel.org>\n"
 "Language-Team: none\n"
@@ -43,11 +43,11 @@ msgstr "Anulowano"
 msgid "Over"
 msgstr "Zakończone"
 
-#: papywizard/scripts/main.py:241
+#: papywizard/scripts/main.py:250
 msgid "Internal error"
 msgstr "Błąd wewnętrzny"
 
-#: papywizard/scripts/main.py:242
+#: papywizard/scripts/main.py:251
 #: papywizard/controller/bluetoothChooserController.py:177
 #: papywizard/controller/mainController.py:689
 msgid "Error"
@@ -132,20 +132,6 @@ msgstr "Nie mogę połączyć się ze sprzętem"
 msgid "Now in simulation mode"
 msgstr "Tryb symulacji"
 
-#: papywizard/controller/configController.py:174
-msgid "Not implemented"
-msgstr ""
-
-#: papywizard/controller/configController.py:175
-msgid "Warning"
-msgstr ""
-
-#: papywizard/controller/configController.py:176
-msgid ""
-"If you are using a usb-to-serial adapter\n"
-"please choose the 'serial' driver"
-msgstr ""
-
 #: tmp/bluetoothChooserDialog.glade.h:1
 msgid "Bluetooth"
 msgstr ""
@@ -154,11 +140,11 @@ msgstr ""
 msgid "Bluetooth devices list"
 msgstr "Lista urządzeń Bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:54
+#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:53
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:4 tmp/configDialog.glade.h:55
+#: tmp/bluetoothChooserDialog.glade.h:4 tmp/configDialog.glade.h:54
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -233,106 +219,105 @@ msgid "Driver to use to connect to hardware"
 msgstr "Sterownik do połączenia ze sprzętem"
 
 #: tmp/configDialog.glade.h:19
+msgid "Ethernet host/port"
+msgstr ""
+
+#: tmp/configDialog.glade.h:20
+msgid "Ethernet port"
+msgstr ""
+
+#: tmp/configDialog.glade.h:21
 msgid "Focal of the lens"
 msgstr "Ogniskowa"
 
-#: tmp/configDialog.glade.h:20
+#: tmp/configDialog.glade.h:22
 msgid "Force overlap to get square pictures (mosaic mode)"
 msgstr ""
 "Wymuś zachodzenie na siebie aby uzyskać kwadratowy obraz (tryb mozaika)"
 
-#: tmp/configDialog.glade.h:21
+#: tmp/configDialog.glade.h:23
 msgid "Format of the xml data file name"
 msgstr "Format nazwy pliku danych xml"
 
-#: tmp/configDialog.glade.h:22
+#: tmp/configDialog.glade.h:24
 msgid "From where to start shooting (mosaic mode)"
 msgstr "Skąd zacząć strzelać (tryb mozaika)"
 
-#: tmp/configDialog.glade.h:23 tmp/mainWindow.glade.h:15
+#: tmp/configDialog.glade.h:25 tmp/mainWindow.glade.h:15
 msgid "Hardware"
 msgstr "Sprzęt"
 
-#: tmp/configDialog.glade.h:24
-msgid "Host/IP of the socket"
+#: tmp/configDialog.glade.h:26
+msgid "Host name or IP address"
 msgstr ""
 
-#: tmp/configDialog.glade.h:25
+#: tmp/configDialog.glade.h:27
 msgid "Inital direction"
 msgstr "Pierwotny kierunek"
 
-#: tmp/configDialog.glade.h:26
+#: tmp/configDialog.glade.h:28
 msgid "Lens focal (mm)"
 msgstr "Ogniskowa (mm)"
 
-#: tmp/configDialog.glade.h:27
+#: tmp/configDialog.glade.h:29
 msgid "Level of the logger"
 msgstr "Poziom loggera"
 
-#: tmp/configDialog.glade.h:28
+#: tmp/configDialog.glade.h:30
 msgid "Logger level"
 msgstr "Poziom Loggera"
 
-#: tmp/configDialog.glade.h:29
+#: tmp/configDialog.glade.h:31
 msgid "Minimum wanted overlap (mosaic mode)"
 msgstr "Minimalny poziom zachodzenia na siebie (tryb mozaiki)"
 
-#: tmp/configDialog.glade.h:30
+#: tmp/configDialog.glade.h:32
 msgid "Misc"
 msgstr "Różne"
 
-#: tmp/configDialog.glade.h:31
+#: tmp/configDialog.glade.h:33
 msgid "Number of pictures"
 msgstr "Ilość zdjęć"
 
-#: tmp/configDialog.glade.h:32
+#: tmp/configDialog.glade.h:34
 msgid "Number of pictures to shoot at each position"
 msgstr "Ile zdjęć strzelać przy każdej pozycji"
 
-#: tmp/configDialog.glade.h:33
+#: tmp/configDialog.glade.h:35
 msgid "Orientation"
 msgstr "Orientacja"
 
-#: tmp/configDialog.glade.h:34
+#: tmp/configDialog.glade.h:36
 msgid "Orientation of the camera (mosaic mode)"
 msgstr "Orientacja aparatu (tryb mozaiki)"
 
-#: tmp/configDialog.glade.h:36
+#: tmp/configDialog.glade.h:38
 msgid "Overlap (%)"
 msgstr "Zachodzenie (%)"
 
-#: tmp/configDialog.glade.h:37
+#: tmp/configDialog.glade.h:39
 msgid "Port of the serial converter"
 msgstr "Port konwertera szeregowego"
 
-#: tmp/configDialog.glade.h:38
-#, fuzzy
-msgid "Port of the socket"
-msgstr "Port konwertera szeregowego"
-
-#: tmp/configDialog.glade.h:39
+#: tmp/configDialog.glade.h:40
 msgid "Ratio of the sensor"
 msgstr "Proporcja matrycy"
 
-#: tmp/configDialog.glade.h:40
+#: tmp/configDialog.glade.h:41
 msgid "Sensor coef."
 msgstr "Ekwiwalent matrycy"
 
-#: tmp/configDialog.glade.h:41
+#: tmp/configDialog.glade.h:42
 msgid "Sensor ratio"
 msgstr "Proporcja matrycy"
 
-#: tmp/configDialog.glade.h:42
+#: tmp/configDialog.glade.h:43
 msgid "Serial port"
 msgstr "Port szeregowy"
 
-#: tmp/configDialog.glade.h:43 tmp/shootDialog.glade.h:6
+#: tmp/configDialog.glade.h:44 tmp/shootDialog.glade.h:6
 msgid "Shooting"
 msgstr "Strzelam"
-
-#: tmp/configDialog.glade.h:44
-msgid "Socket host/port"
-msgstr ""
 
 #: tmp/configDialog.glade.h:45
 msgid "Square"
@@ -359,14 +344,13 @@ msgstr ""
 msgid ""
 "bluetooth\n"
 "serial\n"
-"usb\n"
-"socket"
+"ethernet"
 msgstr ""
 "bluetooth\n"
 "szeregowy\n"
 "usb"
 
-#: tmp/configDialog.glade.h:56
+#: tmp/configDialog.glade.h:55
 msgid ""
 "portrait\n"
 "landscape"
@@ -374,7 +358,7 @@ msgstr ""
 "pionowy\n"
 "poziomy"
 
-#: tmp/configDialog.glade.h:58
+#: tmp/configDialog.glade.h:57
 msgid ""
 "start\n"
 "end"
@@ -382,7 +366,7 @@ msgstr ""
 "początek\n"
 "koniec"
 
-#: tmp/configDialog.glade.h:60
+#: tmp/configDialog.glade.h:59
 msgid ""
 "trace\n"
 "debug\n"
@@ -400,7 +384,7 @@ msgstr ""
 "exception\n"
 "critical"
 
-#: tmp/configDialog.glade.h:67
+#: tmp/configDialog.glade.h:66
 msgid ""
 "yaw\n"
 "pitch"
@@ -742,3 +726,7 @@ msgstr "Zapisz plik danych"
 #: tmp/waitBanner.glade.h:1
 msgid "Please wait..."
 msgstr "Prosze poczekać..."
+
+#, fuzzy
+#~ msgid "Port of the socket"
+#~ msgstr "Port konwertera szeregowego"
