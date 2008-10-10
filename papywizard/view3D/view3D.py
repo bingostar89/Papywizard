@@ -385,7 +385,7 @@ class View3D(vp.display):
         @type vFov: float
         """
         yaw *= math.pi / 180.
-        pitch *= math.pi / 180.
+        pitch *= -1 * math.pi / 180.
         self.head3D.body.rotate(angle=-(yaw-self.__prevYaw), axis=(0, 0, 1))
         self.head3D.arm.rotate(angle=-(pitch-self.__prevPitch), axis=(1, 0, 0))
         self.__prevYaw = yaw
