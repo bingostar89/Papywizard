@@ -92,6 +92,9 @@ class PublisherHandler(SocketServer.BaseRequestHandler):
 class PublisherServer(SocketServer.ThreadingTCPServer):
     allow_reuse_address = True
 
+    def handle_error(self, request, client_address):
+        Logger().error("Error while handling request from ('%s', %d)" % client_address)
+
 
 class Publisher(threading.Thread):
     """ Publisher object.
