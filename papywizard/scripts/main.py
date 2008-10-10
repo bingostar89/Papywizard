@@ -129,6 +129,17 @@ class Papywizard(object):
         # Create main controller
         controller = MainController(self.__model, serializer, self.__gtkLogStream)
 
+    def weave(str):
+        """ Weave stuffs.
+        """
+        try:
+            from papywizard.common.loggingAspects import logMethods
+            logMethods(Head)
+            logMethods(HeadSimulation)
+            logMethods(MainController)
+        except ImportError:
+            Logger().warning("'aspects' module from Logilab must be installed to use logging aspects")
+
     def i10n(self):
         """ i10n stuff.
 
@@ -228,6 +239,7 @@ def main():
         app = Papywizard()
         app.i10n()
         app.init()
+        #app.weave()
         app.run()
         app.shutdown()
 
