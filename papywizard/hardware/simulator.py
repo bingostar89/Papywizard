@@ -48,6 +48,7 @@ Implements
 - MerlinOrionEthernetHandler
 - MerlinOrionSerialHandler
 - MerlinOrionBaseSimulator
+- SimulatorTCPServer
 - MerlinOrionEthernetSimulator
 - MerlinOrionSerialSimulator
 
@@ -296,22 +297,23 @@ class MerlinOrionBaseSimulator(object):
         raise NotImplementedError
 
 
+class SimulatorTCPServer(SocketServer.ThreadingTCPServer):
+    allow_reuse_address = True
+
+    def handle_error(self, request, client_address):
+        Logger().error("Error while handling request from ('%s', %d)" % client_address)
+
+
 class MerlinOrionEthernetSimulator(MerlinOrionBaseSimulator):
     """ Ethernet-based simulator.
     """
-    class SimulatorTCPServer(SocketServer.ThreadingTCPServer):
-        allow_reuse_address = True
-
-        def handle_error(self, request, client_address):
-            Logger().error("Error while handling request=from ('%s', %d)" % client_address)
-
     def __init__(self, host, port):
         self.__host = host
         self.__port = port
         super(MerlinOrionEthernetSimulator, self).__init__()
 
     def _init(self):
-        self.__server = MerlinOrionEthernetSimulator.SimulatorTCPServer((self.__host, self.__port), MerlinOrionEthernetHandler)
+        self.__server = SimulatorTCPServer((self.__host, self.__port), MerlinOrionEthernetHandler)
         self.__server.socket.settimeout(1.)
 
     def run(self):
