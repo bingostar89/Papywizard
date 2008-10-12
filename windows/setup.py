@@ -66,8 +66,9 @@ from distutils.core import setup
 import py2exe
 
 #path = os.path.dirname(__file__)
+#print "path=%s" % path
 sys.path.append("C:\\Documents and Settings\\fma\\Mes documents\\papywizard")
-#from papywizard.common import config
+from papywizard.common import config
 
 VERSION = "1.1"
 
@@ -82,7 +83,7 @@ dlls = ["iconv.dll", "intl.dll", "libatk-1.0-0.dll", "libgdk-win32-2.0-0.dll",
 class Target:
     def __init__(self, **kw):
         self.__dict__.update(kw)
-        self.version = VERSION # config.VERSION
+        self.version = config.VERSION
         self.company_name = ""
         self.copyright = "(C) 2007-2008 Frédéric Mantegazza"
         self.name = ""
@@ -98,7 +99,15 @@ setup(options={"py2exe": {'compressed': 1,
       windows=[Target(description="Merlin/Orion panohead control software",
                       script="../papywizard/scripts/main.py",
                       icon_resources=[(1, "papywizard.ico")],
-                      dest_base="papywizard")],
+                      dest_base="papywizard"),
+               Target(description="Merlin/Orion panohead control software",
+                      script="../papywizard/scripts/main3D.py",
+                      icon_resources=[(1, "papywizard.ico")],
+                      dest_base="papywizard3D"),
+               Target(description="Merlin/Orion panohead control software",
+                      script="../papywizard/scripts/mainSimul.py",
+                      icon_resources=[(1, "papywizard.ico")],
+                      dest_base="papywizardSimul")],
       data_files=[("papywizard/common", ["../papywizard/common/papywizard.conf",
                                          "../papywizard/common/presets.xml"]),
                   ("papywizard/view", ["../papywizard/view/papywizard.png",
