@@ -1,0 +1,693 @@
+# German translations for PACKAGE package.
+# Copyright (C) 2008 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Automatically generated, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-10-13 15:32+0200\n"
+"PO-Revision-Date: 2008-10-13 15:32+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: papywizard/model/shooting.py:97 papywizard/model/shooting.py:157
+#: papywizard/model/shooting.py:167
+msgid "Idle"
+msgstr ""
+
+#: papywizard/model/shooting.py:211
+msgid "Moving"
+msgstr ""
+
+#: papywizard/model/shooting.py:218
+msgid "Stabilizing"
+msgstr ""
+
+#: papywizard/model/shooting.py:230
+#, python-format
+msgid "Shooting %d/%d"
+msgstr ""
+
+#: papywizard/model/shooting.py:257
+msgid "Canceled"
+msgstr ""
+
+#: papywizard/model/shooting.py:262
+msgid "Over"
+msgstr ""
+
+#: papywizard/scripts/main.py:253
+msgid "Internal error"
+msgstr ""
+
+#: papywizard/scripts/main.py:254
+#: papywizard/controller/bluetoothChooserController.py:177
+#: papywizard/controller/mainController.py:689
+msgid "Error"
+msgstr ""
+
+#: papywizard/controller/bluetoothChooserController.py:176
+msgid "Can't scan bluetooth"
+msgstr ""
+
+#: papywizard/controller/mainController.py:446
+msgid "Yaw - limit set"
+msgstr ""
+
+#: papywizard/controller/mainController.py:452
+msgid "Yaw + limit set"
+msgstr ""
+
+#: papywizard/controller/mainController.py:458
+msgid "Pitch + limit set"
+msgstr ""
+
+#: papywizard/controller/mainController.py:464
+msgid "Pitch - limit set"
+msgstr ""
+
+#: papywizard/controller/mainController.py:469
+msgid "Limits cleared"
+msgstr ""
+
+#: papywizard/controller/mainController.py:475
+msgid "Hardware has been reseted"
+msgstr ""
+
+#: papywizard/controller/mainController.py:513
+msgid "Yaw start set from current position"
+msgstr ""
+
+#: papywizard/controller/mainController.py:519
+msgid "Pitch start set from current position"
+msgstr ""
+
+#: papywizard/controller/mainController.py:525
+msgid "Yaw end set from current position"
+msgstr ""
+
+#: papywizard/controller/mainController.py:531
+msgid "Pitch end set from current position"
+msgstr ""
+
+#: papywizard/controller/mainController.py:537
+msgid "Yaw/pitch start set from current position"
+msgstr ""
+
+#: papywizard/controller/mainController.py:547
+msgid "Yaw/pitch end position set from current position"
+msgstr ""
+
+#: papywizard/controller/mainController.py:574
+msgid "Origin set at current position"
+msgstr ""
+
+#: papywizard/controller/mainController.py:661
+msgid "Connecting to real hardware..."
+msgstr ""
+
+#: papywizard/controller/mainController.py:684
+msgid "Now connected to real hardware"
+msgstr ""
+
+#: papywizard/controller/mainController.py:688
+msgid "Can't connect to hardware"
+msgstr ""
+
+#: papywizard/controller/mainController.py:704
+msgid "Now in simulation mode"
+msgstr ""
+
+#: tmp/bluetoothChooserDialog.glade.h:1
+msgid "Bluetooth"
+msgstr ""
+
+#: tmp/bluetoothChooserDialog.glade.h:2
+msgid "Bluetooth devices list"
+msgstr ""
+
+#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:53
+msgid "gtk-cancel"
+msgstr ""
+
+#: tmp/bluetoothChooserDialog.glade.h:4 tmp/configDialog.glade.h:54
+msgid "gtk-ok"
+msgstr ""
+
+#: tmp/configDialog.glade.h:1
+msgid ""
+"3:2\n"
+"4:3\n"
+"5:4"
+msgstr ""
+
+#: tmp/configDialog.glade.h:4
+msgid "Address of the bluetooth converter"
+msgstr ""
+
+#: tmp/configDialog.glade.h:5
+msgid "Auto-connect"
+msgstr ""
+
+#: tmp/configDialog.glade.h:6
+msgid "Automatically connect to hardware at startup"
+msgstr ""
+
+#: tmp/configDialog.glade.h:7
+msgid "BT device address"
+msgstr ""
+
+#: tmp/configDialog.glade.h:8
+msgid "CR"
+msgstr ""
+
+#: tmp/configDialog.glade.h:9
+msgid "Camera / lens"
+msgstr ""
+
+#: tmp/configDialog.glade.h:10
+msgid "Cariage return at each end of raw/col (mosaic mode)"
+msgstr ""
+
+#: tmp/configDialog.glade.h:11
+msgid "Choose..."
+msgstr ""
+
+#: tmp/configDialog.glade.h:12
+msgid "Coef. of the sensor to 35mm size"
+msgstr ""
+
+#: tmp/configDialog.glade.h:13
+msgid "Configuration"
+msgstr ""
+
+#: tmp/configDialog.glade.h:14
+msgid "Data file format"
+msgstr ""
+
+#: tmp/configDialog.glade.h:15
+msgid "Delay to wait after each move"
+msgstr ""
+
+#: tmp/configDialog.glade.h:16
+msgid "Direction of the first move (mosaic mode)"
+msgstr ""
+
+#: tmp/configDialog.glade.h:17
+msgid "Driver"
+msgstr ""
+
+#: tmp/configDialog.glade.h:18
+msgid "Driver to use to connect to hardware"
+msgstr ""
+
+#: tmp/configDialog.glade.h:19
+msgid "Ethernet host/port"
+msgstr ""
+
+#: tmp/configDialog.glade.h:20
+msgid "Ethernet port"
+msgstr ""
+
+#: tmp/configDialog.glade.h:21
+msgid "Focal of the lens"
+msgstr ""
+
+#: tmp/configDialog.glade.h:22
+msgid "Force overlap to get square pictures (mosaic mode)"
+msgstr ""
+
+#: tmp/configDialog.glade.h:23
+msgid "Format of the xml data file name"
+msgstr ""
+
+#: tmp/configDialog.glade.h:24
+msgid "From where to start shooting (mosaic mode)"
+msgstr ""
+
+#: tmp/configDialog.glade.h:25 tmp/mainWindow.glade.h:15
+msgid "Hardware"
+msgstr ""
+
+#: tmp/configDialog.glade.h:26
+msgid "Host name or IP address"
+msgstr ""
+
+#: tmp/configDialog.glade.h:27
+msgid "Inital direction"
+msgstr ""
+
+#: tmp/configDialog.glade.h:28
+msgid "Lens focal (mm)"
+msgstr ""
+
+#: tmp/configDialog.glade.h:29
+msgid "Level of the logger"
+msgstr ""
+
+#: tmp/configDialog.glade.h:30
+msgid "Logger level"
+msgstr ""
+
+#: tmp/configDialog.glade.h:31
+msgid "Minimum wanted overlap (mosaic mode)"
+msgstr ""
+
+#: tmp/configDialog.glade.h:32
+msgid "Misc"
+msgstr ""
+
+#: tmp/configDialog.glade.h:33
+msgid "Number of pictures"
+msgstr ""
+
+#: tmp/configDialog.glade.h:34
+msgid "Number of pictures to shoot at each position"
+msgstr ""
+
+#: tmp/configDialog.glade.h:35
+msgid "Orientation"
+msgstr ""
+
+#: tmp/configDialog.glade.h:36
+msgid "Orientation of the camera (mosaic mode)"
+msgstr ""
+
+#: tmp/configDialog.glade.h:38
+msgid "Overlap (%)"
+msgstr ""
+
+#: tmp/configDialog.glade.h:39
+msgid "Port of the serial converter"
+msgstr ""
+
+#: tmp/configDialog.glade.h:40
+msgid "Ratio of the sensor"
+msgstr ""
+
+#: tmp/configDialog.glade.h:41
+msgid "Sensor coef."
+msgstr ""
+
+#: tmp/configDialog.glade.h:42
+msgid "Sensor ratio"
+msgstr ""
+
+#: tmp/configDialog.glade.h:43
+msgid "Serial port"
+msgstr ""
+
+#: tmp/configDialog.glade.h:44 tmp/shootDialog.glade.h:6
+msgid "Shooting"
+msgstr ""
+
+#: tmp/configDialog.glade.h:45
+msgid "Square"
+msgstr ""
+
+#: tmp/configDialog.glade.h:46
+msgid "Stab. delay (sec)"
+msgstr ""
+
+#: tmp/configDialog.glade.h:47
+msgid "Start from"
+msgstr ""
+
+#: tmp/configDialog.glade.h:48
+msgid "Time value (sec)"
+msgstr ""
+
+#: tmp/configDialog.glade.h:49
+msgid "Time value of the camera"
+msgstr ""
+
+#: tmp/configDialog.glade.h:50
+msgid ""
+"bluetooth\n"
+"serial\n"
+"ethernet"
+msgstr ""
+
+#: tmp/configDialog.glade.h:55
+msgid ""
+"portrait\n"
+"landscape"
+msgstr ""
+
+#: tmp/configDialog.glade.h:57
+msgid ""
+"start\n"
+"end"
+msgstr ""
+
+#: tmp/configDialog.glade.h:59
+msgid ""
+"trace\n"
+"debug\n"
+"info\n"
+"warning\n"
+"error\n"
+"exception\n"
+"critical"
+msgstr ""
+
+#: tmp/configDialog.glade.h:66
+msgid ""
+"yaw\n"
+"pitch"
+msgstr ""
+
+#: tmp/helpAboutDialog.glade.h:1
+msgid "(C) 2007-2008 Frédéric Mantegazza"
+msgstr ""
+
+#: tmp/helpAboutDialog.glade.h:2
+msgid ""
+"Frédéric Mantegazza (français)\n"
+"Maciej Dworak (polish)"
+msgstr ""
+
+#: tmp/helpAboutDialog.glade.h:4
+msgid ""
+"Papywizard is a panohead\n"
+"control software, mainly developped\n"
+"for the Merlin/Orion astronomic mount\n"
+"but usable for other panoheads."
+msgstr ""
+
+#: tmp/helpAboutDialog.glade.h:8
+msgid ""
+"This software is governed by the CeCILL license under French law and\n"
+"abiding by the rules of distribution of free software.  You can  use, \n"
+"modify and/or redistribute the software under the terms of the CeCILL\n"
+"license as circulated by CEA, CNRS and INRIA at the following URL\n"
+"http://www.cecill.info.\n"
+"\n"
+"As a counterpart to the access to the source code and  rights to copy,\n"
+"modify and redistribute granted by the license, users are provided only\n"
+"with a limited warranty  and the software's author,  the holder of the\n"
+"economic rights,  and the successive licensors  have only  limited\n"
+"liability. \n"
+"\n"
+"In this respect, the user's attention is drawn to the risks associated\n"
+"with loading,  using,  modifying and/or developing or reproducing the\n"
+"software by the user in light of its specific status of free software,\n"
+"that may mean  that it is complicated to manipulate,  and  that  also\n"
+"therefore means  that it is reserved for developers  and  experienced\n"
+"professionals having in-depth computer knowledge. Users are therefore\n"
+"encouraged to load and test the software's suitability as regards their\n"
+"requirements in conditions enabling the security of their systems and/or \n"
+"data to be ensured and,  more generally, to use and operate it in the \n"
+"same conditions as regards security. \n"
+"\n"
+"The fact that you are presently reading this means that you have had\n"
+"knowledge of the CeCILL license and that you accept its terms.\n"
+"CeCILL"
+msgstr ""
+
+#: tmp/helpAboutDialog.glade.h:34
+msgid "À propos de Papywizard"
+msgstr ""
+
+#: tmp/loggerDialog.glade.h:1
+msgid "Clear logs"
+msgstr ""
+
+#: tmp/loggerDialog.glade.h:2
+msgid "Clear the log window"
+msgstr ""
+
+#: tmp/loggerDialog.glade.h:3
+msgid "Logger"
+msgstr ""
+
+#: tmp/loggerDialog.glade.h:4 tmp/presetTemplateInfoDialog.glade.h:2
+#: tmp/shootDialog.glade.h:14
+msgid "gtk-close"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:1
+msgid "    Pitch    "
+msgstr ""
+
+#: tmp/mainWindow.glade.h:2
+msgid "    Yaw    "
+msgstr ""
+
+#: tmp/mainWindow.glade.h:3
+msgid "   Yaw   "
+msgstr ""
+
+#: tmp/mainWindow.glade.h:4
+msgid "--"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:5
+msgid "<b>Mosaic settings</b>"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:6
+msgid "<b>Move</b>"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:7
+msgid "<b>Preset settings</b>"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:8
+msgid "About"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:9
+msgid "Clear Limits"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:10
+msgid "Configure..."
+msgstr ""
+
+#: tmp/mainWindow.glade.h:11
+msgid "Connect..."
+msgstr ""
+
+#: tmp/mainWindow.glade.h:12
+msgid "Connection status"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:13
+msgid "End (°)"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:14
+msgid "File"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:16
+msgid "Help"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:17
+msgid "Manual"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:18
+msgid "Mosaic"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:19
+msgid "Move pitch +"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:20
+msgid "Move pitch -"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:21
+msgid "Move yaw +"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:22
+msgid "Move yaw -"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:23
+msgid "Nb picts"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:24
+msgid "Open configure dialog"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:25
+msgid "Open shooting dialog"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:26
+msgid "Papywizard"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:27
+msgid "Pitch +"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:28
+msgid "Pitch -"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:29
+msgid "Pitch current position"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:30
+msgid "Preset"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:31
+msgid "Quit"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:33
+msgid "Real overlap (%)"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:34
+msgid "Reset"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:35
+msgid "Set end from current position"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:36
+msgid "Set limit"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:37
+msgid "Set origin from current position"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:38
+msgid "Set pitch end from current position"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:39
+msgid "Set pitch start from current position"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:40
+msgid "Set start from current position"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:41
+msgid "Set yaw end from current position"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:42
+msgid "Set yaw start from current position"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:43
+msgid "Shoot..."
+msgstr ""
+
+#: tmp/mainWindow.glade.h:44
+msgid "Start (°)"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:45
+msgid "Template"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:46
+msgid "Template list for preset shooting"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:47
+msgid "Templates information"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:48
+msgid "Total Fov (°)"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:49
+msgid "View Log..."
+msgstr ""
+
+#: tmp/mainWindow.glade.h:50
+msgid "What's This?"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:51
+msgid "Yaw +"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:52
+msgid "Yaw -"
+msgstr ""
+
+#: tmp/mainWindow.glade.h:53
+msgid "Yaw current position"
+msgstr ""
+
+#: tmp/presetTemplateInfoDialog.glade.h:1
+msgid "Templates"
+msgstr ""
+
+#: tmp/shootDialog.glade.h:1
+msgid "Data file enable"
+msgstr ""
+
+#: tmp/shootDialog.glade.h:2
+msgid "Manual shoot at each position"
+msgstr ""
+
+#: tmp/shootDialog.glade.h:3
+msgid "Manual shooting"
+msgstr ""
+
+#: tmp/shootDialog.glade.h:4
+msgid "Progression and status of the shooting"
+msgstr ""
+
+#: tmp/shootDialog.glade.h:5
+msgid "Progression..."
+msgstr ""
+
+#: tmp/shootDialog.glade.h:7
+msgid "Start"
+msgstr ""
+
+#: tmp/shootDialog.glade.h:8
+msgid "Start shooting"
+msgstr ""
+
+#: tmp/shootDialog.glade.h:9
+msgid "Stop"
+msgstr ""
+
+#: tmp/shootDialog.glade.h:10
+msgid "Stop shooting"
+msgstr ""
+
+#: tmp/shootDialog.glade.h:11
+msgid "Suspend"
+msgstr ""
+
+#: tmp/shootDialog.glade.h:12
+msgid "Suspend shooting"
+msgstr ""
+
+#: tmp/shootDialog.glade.h:13
+msgid "Write data file"
+msgstr ""
+
+#: tmp/waitBanner.glade.h:1
+msgid "Please wait..."
+msgstr ""
