@@ -175,6 +175,7 @@ class Shooting(object):
         Logger().trace("Shooting.start()")
 
         values = {'stabilizationDelay': "%.1f" % self.stabilizationDelay,
+                  'comment': "Not Yet implemented",
                   'timeValue': "%.1f" % self.camera.timeValue,
                   'nbPicts': "%d" % self.camera.nbPicts,
                   'sensorCoef': "%.1f" % self.camera.sensorCoef,
