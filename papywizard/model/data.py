@@ -69,15 +69,14 @@ from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 
+XML_VERSION = "0.9"
+
 
 class AbstractData(object):
     """ Manage the data.
     """
     def __init__(self):
         """ Init object.
-
-        #@param headerInfo: informations stored in the <header> section
-        #@type headerInfo: dict
         """
         super(AbstractData, self).__init__()
         date = time.strftime("%Y-%m-%d", time.localtime())
@@ -93,6 +92,7 @@ class AbstractData(object):
         self.__impl = xml.dom.minidom.getDOMImplementation()
         self._doc = self.__impl.createDocument(None, "papywizard", None)
         self._rootNode = self._doc.documentElement
+        self._rootNode.setAttribute("version", XML_VERSION)
 
         # Create 'header' node
         self._headerNode = self._doc.createElement('header')
@@ -167,6 +167,10 @@ class AbstractData(object):
         """ Serialize xml tree to file.
         """
         if ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE'):
+
+            # Update end shooting date
+            #self._headerShootingEnd.
+
             Logger().trace("Data.serialize()")
             dataFileFormat = "papywizard_%s.xml" % ConfigManager().get('Data', 'DATA_FILE_FORMAT')
             fileName = os.path.join(config.HOME_DIR, dataFileFormat)
@@ -185,6 +189,20 @@ class AbstractData(object):
         # Shooting
         node = self._addNode(self._headerNode, 'shooting', mode=self._getMode())
         self._addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
+        self._addNode(node, 'start', time.ctime())
+        self._headerShootingEnd = self._addNode(node, 'end', time.ctime())
+        self._addNode(node, 'comment', values['comment'])
+
+        # Camera
+        node = self._addNode(self._headerNode, 'camera')
+        self._addNode(node, 'timeValue', values['timeValue'])
+        self._addNode(node, 'nbPicts', values['nbPicts'])
+        self._addNode(node, 'sensor', coef=values['sensorCoef'],
+                                      ratio=values['sensorRatio'])
+
+        # Lens
+        node = self._addNode(self._headerNode, 'lens')
+        self._addNode(node, 'focal', values['focal'])
 
     def addPicture(self, num, yaw, pitch):
         """ Add a new picture node to shoot node.
@@ -203,6 +221,7 @@ class AbstractData(object):
         self._pictId += 1
         self._addNode(node, 'time', time.ctime())
         self._addNode(node, 'position', yaw="%.1f" % yaw, pitch="%.1f" % pitch)
+        self._headerShootingEnd.firstChild.data = time.ctime()
 
         # Serialize xml file
         self._serialize()
@@ -213,45 +232,68 @@ class MosaicData(AbstractData):
 
     Format for mosaic data::
 
-        <?xml version="1.0" ?>
-        <papywizard>
-            <header>
-                <shooting mode="mosaic">
-                    <stabilizationDelay>0.5</stabilizationDelay>
-                </shooting>
-                <mosaic>
-                    <nbPicts pitch="1" yaw="2"/>
-                    <overlap minimum="0.25" pitch="1.00" yaw="0.58"/>
-                    <cameraOrientation>portrait</cameraOrientation>
-                </mosaic>
-                <camera>
-                    <timeValue>0.5</timeValue>
-                    <nbPicts>2</nbPicts>
-                    <sensor coef="1.6" ratio="3:2"/>
-                </camera>
-                <lens>
-                    <focal>17.0</focal>
-                </lens>
-            </header>
-            <shoot>
-                <pict id="1" num="1">
-                    <time>Wed Jun 25 10:37:16 2008</time>
-                    <position pitch="0.0" yaw="0.0"/>
-                </pict>
-                <pict id="2" num="2">
-                    <time>Wed Jun 25 10:37:17 2008</time>
-                    <position pitch="0.0" yaw="0.0"/>
-                </pict>
-                <pict id="3" num="1">
-                    <time>Wed Jun 25 10:37:20 2008</time>
-                    <position pitch="0.0" yaw="20.1"/>
-                </pict>
-                <pict id="4" num="2">
-                    <time>Wed Jun 25 10:37:21 2008</time>
-                    <position pitch="0.0" yaw="20.1"/>
-                </pict>
-            </shoot>
-        </papywizard>
+    <?xml version="1.0" encoding="utf-8"?>
+    <papywizard version="0.9">
+        <header>
+            <shooting mode="mosaic">
+                <stabilizationDelay>0.5</stabilizationDelay>
+                <start>Mon Oct 13 10:52:33 2008</start>
+                <end>Mon Oct 13 10:52:53 2008</end>
+                <comment>Néron mountain</comment>
+            </shooting>
+            <mosaic>
+                <nbPicts pitch="1" yaw="3"/>
+                <overlap minimum="0.25" pitch="1.00" yaw="0.26"/>
+                <cameraOrientation>portrait</cameraOrientation>
+            </mosaic>
+            <camera>
+                <timeValue>0.5</timeValue>
+                <nbPicts>3</nbPicts>
+                <sensor coef="1.6" ratio="3:2"/>
+            </camera>
+            <lens>
+                <focal>17.0</focal>
+            </lens>
+        </header>
+        <shoot>
+            <pict id="1" num="1">
+                <time>Mon Oct 13 10:52:39 2008</time>
+                <position pitch="0.0" yaw="-44.4"/>
+            </pict>
+            <pict id="2" num="2">
+                <time>Mon Oct 13 10:52:40 2008</time>
+                <position pitch="0.0" yaw="-44.4"/>
+            </pict>
+            <pict id="3" num="3">
+                <time>Mon Oct 13 10:52:41 2008</time>
+                <position pitch="0.0" yaw="-44.4"/>
+            </pict>
+            <pict id="4" num="1">
+                <time>Mon Oct 13 10:52:45 2008</time>
+                <position pitch="0.0" yaw="-9.3"/>
+            </pict>
+            <pict id="5" num="2">
+                <time>Mon Oct 13 10:52:46 2008</time>
+                <position pitch="0.0" yaw="-9.3"/>
+            </pict>
+            <pict id="6" num="3">
+                <time>Mon Oct 13 10:52:47 2008</time>
+                <position pitch="0.0" yaw="-9.3"/>
+            </pict>
+            <pict id="7" num="1">
+                <time>Mon Oct 13 10:52:51 2008</time>
+                <position pitch="0.0" yaw="25.7"/>
+            </pict>
+            <pict id="8" num="2">
+                <time>Mon Oct 13 10:52:52 2008</time>
+                <position pitch="0.0" yaw="25.7"/>
+            </pict>
+            <pict id="9" num="3">
+                <time>Mon Oct 13 10:52:53 2008</time>
+                <position pitch="0.0" yaw="25.7"/>
+            </pict>
+        </shoot>
+    </papywizard>
     """
     def _getMode(self):
         """ Return the shooting mode.
@@ -270,17 +312,6 @@ class MosaicData(AbstractData):
                                        pitch=values['pitchRealOverlap'])
         self._addNode(node, 'cameraOrientation', values['cameraOrientation'])
 
-        # Camera
-        node = self._addNode(self._headerNode, 'camera')
-        self._addNode(node, 'timeValue', values['timeValue'])
-        self._addNode(node, 'nbPicts', values['nbPicts'])
-        self._addNode(node, 'sensor', coef=values['sensorCoef'],
-                                      ratio=values['sensorRatio'])
-
-        # Lens
-        node = self._addNode(self._headerNode, 'lens')
-        self._addNode(node, 'focal', values['focal'])
-
         # Serialize xml file
         self._serialize()
 
@@ -288,44 +319,78 @@ class MosaicData(AbstractData):
 class PresetData(AbstractData):
     """ Manage the data for presets.
 
-    Format for mosaic data::
+    Format for mosaic data:
 
-        <?xml version="1.0" ?>
-        <papywizard>
-            <header>
-                <shooting mode="preset">
-                    <stabilizationDelay>0.5</stabilizationDelay>
-                </shooting>
-                <preset template="xxxx"/>
-                </preset>
-                <camera>
-                    <timeValue>0.5</timeValue>
-                    <nbPicts>2</nbPicts>
-                    <sensor coef="1.6" ratio="3:2"/>
-                </camera>
-                <lens>
-                    <focal>17.0</focal>
-                </lens>
-            </header>
-            <shoot>
-                <pict id="1" num="1">
-                    <time>Wed Jun 25 10:37:16 2008</time>
-                    <position pitch="0.0" yaw="0.0"/>
-                </pict>
-                <pict id="2" num="2">
-                    <time>Wed Jun 25 10:37:17 2008</time>
-                    <position pitch="0.0" yaw="0.0"/>
-                </pict>
-                <pict id="3" num="1">
-                    <time>Wed Jun 25 10:37:20 2008</time>
-                    <position pitch="0.0" yaw="20.1"/>
-                </pict>
-                <pict id="4" num="2">
-                    <time>Wed Jun 25 10:37:21 2008</time>
-                    <position pitch="0.0" yaw="20.1"/>
-                </pict>
-            </shoot>
-        </papywizard>
+    <?xml version="1.0" encoding="utf-8"?>
+    <papywizard version="0.9">
+        <header>
+            <shooting mode="preset">
+                <stabilizationDelay>0.5</stabilizationDelay>
+                <start>Mon Oct 13 10:30:47 2008</start>
+                <end>Mon Oct 13 10:31:40 2008</end>
+                <comment>Inside my living room</comment>
+            </shooting>
+            <preset template="3@-15 + Z"/>
+            <camera>
+                <timeValue>0.5</timeValue>
+                <nbPicts>3</nbPicts>
+                <sensor coef="1.6" ratio="3:2"/>
+            </camera>
+            <lens>
+                <focal>17.0</focal>
+            </lens>
+        </header>
+        <shoot>
+            <pict id="1" num="1">
+                <time>Mon Oct 13 10:31:04 2008</time>
+                <position pitch="-15.0" yaw="0.0"/>
+            </pict>
+            <pict id="2" num="2">
+                <time>Mon Oct 13 10:31:05 2008</time>
+                <position pitch="-15.0" yaw="0.0"/>
+            </pict>
+            <pict id="3" num="3">
+                <time>Mon Oct 13 10:31:06 2008</time>
+                <position pitch="-15.0" yaw="0.0"/>
+            </pict>
+            <pict id="4" num="1">
+                <time>Mon Oct 13 10:31:16 2008</time>
+                <position pitch="-15.0" yaw="120.0"/>
+            </pict>
+            <pict id="5" num="2">
+                <time>Mon Oct 13 10:31:17 2008</time>
+                <position pitch="-15.0" yaw="120.0"/>
+            </pict>
+            <pict id="6" num="3">
+                <time>Mon Oct 13 10:31:18 2008</time>
+                <position pitch="-15.0" yaw="120.0"/>
+            </pict>
+            <pict id="7" num="1">
+                <time>Mon Oct 13 10:31:27 2008</time>
+                <position pitch="-15.0" yaw="240.0"/>
+            </pict>
+            <pict id="8" num="2">
+                <time>Mon Oct 13 10:31:28 2008</time>
+                <position pitch="-15.0" yaw="240.0"/>
+            </pict>
+            <pict id="9" num="3">
+                <time>Mon Oct 13 10:31:29 2008</time>
+                <position pitch="-15.0" yaw="240.0"/>
+            </pict>
+            <pict id="10" num="1">
+                <time>Mon Oct 13 10:31:38 2008</time>
+                <position pitch="90.0" yaw="240.0"/>
+            </pict>
+            <pict id="11" num="2">
+                <time>Mon Oct 13 10:31:39 2008</time>
+                <position pitch="90.0" yaw="240.0"/>
+            </pict>
+            <pict id="12" num="3">
+                <time>Mon Oct 13 10:31:40 2008</time>
+                <position pitch="90.0" yaw="240.0"/>
+            </pict>
+        </shoot>
+    </papywizard>
     """
     def _getMode(self):
         """ Return the shooting mode.
@@ -338,17 +403,6 @@ class PresetData(AbstractData):
         # Preset
         node = self._addNode(self._headerNode, 'preset', template=values['template'])
         #self._addNode(node, 'template', values['template'])
-
-        # Camera
-        node = self._addNode(self._headerNode, 'camera')
-        self._addNode(node, 'timeValue', values['timeValue'])
-        self._addNode(node, 'nbPicts', values['nbPicts'])
-        self._addNode(node, 'sensor', coef=values['sensorCoef'],
-                                      ratio=values['sensorRatio'])
-
-        # Lens
-        node = self._addNode(self._headerNode, 'lens')
-        self._addNode(node, 'focal', values['focal'])
 
         # Serialize xml file
         self._serialize()
