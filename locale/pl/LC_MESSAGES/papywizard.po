@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-09 20:14+0200\n"
+"POT-Creation-Date: 2008-10-13 15:28+0200\n"
 "PO-Revision-Date: 2008-10-04 16:11+0100\n"
 "Last-Translator: DrSlony <drslony@panopixel.org>\n"
 "Language-Team: none\n"
@@ -22,32 +22,32 @@ msgstr ""
 msgid "Idle"
 msgstr "Bezczynny"
 
-#: papywizard/model/shooting.py:210
+#: papywizard/model/shooting.py:211
 msgid "Moving"
 msgstr "Namierzam"
 
-#: papywizard/model/shooting.py:217
+#: papywizard/model/shooting.py:218
 msgid "Stabilizing"
 msgstr "Stabilizuje"
 
-#: papywizard/model/shooting.py:229
+#: papywizard/model/shooting.py:230
 #, python-format
 msgid "Shooting %d/%d"
 msgstr "Strzelam %d/%d"
 
-#: papywizard/model/shooting.py:256
+#: papywizard/model/shooting.py:257
 msgid "Canceled"
 msgstr "Anulowano"
 
-#: papywizard/model/shooting.py:261
+#: papywizard/model/shooting.py:262
 msgid "Over"
 msgstr "Zakończone"
 
-#: papywizard/scripts/main.py:250
+#: papywizard/scripts/main.py:253
 msgid "Internal error"
 msgstr "Błąd wewnętrzny"
 
-#: papywizard/scripts/main.py:251
+#: papywizard/scripts/main.py:254
 #: papywizard/controller/bluetoothChooserController.py:177
 #: papywizard/controller/mainController.py:689
 msgid "Error"

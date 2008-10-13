@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-09 20:14+0200\n"
+"POT-Creation-Date: 2008-10-13 15:28+0200\n"
 "PO-Revision-Date: 2008-09-23 15:03+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -21,33 +21,33 @@ msgstr ""
 msgid "Idle"
 msgstr ""
 
-#: papywizard/model/shooting.py:210
+#: papywizard/model/shooting.py:211
 msgid "Moving"
 msgstr ""
 
-#: papywizard/model/shooting.py:217
+#: papywizard/model/shooting.py:218
 msgid "Stabilizing"
 msgstr ""
 
-#: papywizard/model/shooting.py:229
+#: papywizard/model/shooting.py:230
 #, fuzzy, python-format
 msgid "Shooting %d/%d"
 msgstr "Shooting"
 
-#: papywizard/model/shooting.py:256
+#: papywizard/model/shooting.py:257
 msgid "Canceled"
 msgstr ""
 
-#: papywizard/model/shooting.py:261
+#: papywizard/model/shooting.py:262
 #, fuzzy
 msgid "Over"
 msgstr "Driver"
 
-#: papywizard/scripts/main.py:250
+#: papywizard/scripts/main.py:253
 msgid "Internal error"
 msgstr "Internal error"
 
-#: papywizard/scripts/main.py:251
+#: papywizard/scripts/main.py:254
 #: papywizard/controller/bluetoothChooserController.py:177
 #: papywizard/controller/mainController.py:689
 msgid "Error"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-09 20:14+0200\n"
+"POT-Creation-Date: 2008-10-13 15:28+0200\n"
 "PO-Revision-Date: 2008-10-09 20:14+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -16,38 +16,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: papywizard/model/shooting.py:97
-#: papywizard/model/shooting.py:157
+#: papywizard/model/shooting.py:97 papywizard/model/shooting.py:157
 #: papywizard/model/shooting.py:167
 msgid "Idle"
 msgstr "Repos"
 
-#: papywizard/model/shooting.py:210
+#: papywizard/model/shooting.py:211
 msgid "Moving"
 msgstr "Déplacement"
 
-#: papywizard/model/shooting.py:217
+#: papywizard/model/shooting.py:218
 msgid "Stabilizing"
 msgstr "Stabilisation"
 
-#: papywizard/model/shooting.py:229
+#: papywizard/model/shooting.py:230
 #, python-format
 msgid "Shooting %d/%d"
 msgstr "Prise de vue %d/%d"
 
-#: papywizard/model/shooting.py:256
+#: papywizard/model/shooting.py:257
 msgid "Canceled"
 msgstr "Annulé"
 
-#: papywizard/model/shooting.py:261
+#: papywizard/model/shooting.py:262
 msgid "Over"
 msgstr "Terminé"
 
-#: papywizard/scripts/main.py:250
+#: papywizard/scripts/main.py:253
 msgid "Internal error"
 msgstr "Erreur interne"
 
-#: papywizard/scripts/main.py:251
+#: papywizard/scripts/main.py:254
 #: papywizard/controller/bluetoothChooserController.py:177
 #: papywizard/controller/mainController.py:689
 msgid "Error"
@@ -133,13 +132,11 @@ msgstr "Bluetooth"
 msgid "Bluetooth devices list"
 msgstr "Liste des convertisseurs bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:3
-#: tmp/configDialog.glade.h:53
+#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:53
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:4
-#: tmp/configDialog.glade.h:54
+#: tmp/bluetoothChooserDialog.glade.h:4 tmp/configDialog.glade.h:54
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -179,7 +176,9 @@ msgstr "Appareil / objectif"
 
 #: tmp/configDialog.glade.h:10
 msgid "Cariage return at each end of raw/col (mosaic mode)"
-msgstr "Effectue un retour à la ligne à la fin de chaque ligne/colonne (mode mosaïque)"
+msgstr ""
+"Effectue un retour à la ligne à la fin de chaque ligne/colonne (mode "
+"mosaïque)"
 
 #: tmp/configDialog.glade.h:11
 msgid "Choose..."
@@ -237,8 +236,7 @@ msgstr "Format du nom du fichier de données xml"
 msgid "From where to start shooting (mosaic mode)"
 msgstr "D'où commencer la prise de vue (mode mosaïque)"
 
-#: tmp/configDialog.glade.h:25
-#: tmp/mainWindow.glade.h:15
+#: tmp/configDialog.glade.h:25 tmp/mainWindow.glade.h:15
 msgid "Hardware"
 msgstr "Matériel"
 
@@ -310,8 +308,7 @@ msgstr "Ratio capteur"
 msgid "Serial port"
 msgstr "Port série"
 
-#: tmp/configDialog.glade.h:44
-#: tmp/shootDialog.glade.h:6
+#: tmp/configDialog.glade.h:44 tmp/shootDialog.glade.h:6
 msgid "Shooting"
 msgstr "Prise de vue"
 
@@ -484,8 +481,7 @@ msgstr "Effacer la fenêtre de log"
 msgid "Logger"
 msgstr "Logger"
 
-#: tmp/loggerDialog.glade.h:4
-#: tmp/presetTemplateInfoDialog.glade.h:2
+#: tmp/loggerDialog.glade.h:4 tmp/presetTemplateInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:14
 msgid "gtk-close"
 msgstr "gtk-close"
@@ -752,20 +748,25 @@ msgstr "Patienter..."
 
 #~ msgid "Port of the socket"
 #~ msgstr "Port du socket"
+
 #~ msgid "Not implemented"
 #~ msgstr "Non implémenté"
+
 #~ msgid "Warning"
 #~ msgstr "Attention"
+
 #~ msgid ""
 #~ "If you are using a usb-to-serial adapter\n"
 #~ "please choose the 'serial' driver"
 #~ msgstr ""
 #~ "Si vous utilisez un adaptateur usb-série\n"
 #~ "choisissez le driver 'série'"
+
 #~ msgid "Host/IP of the socket"
 #~ msgstr "Nom d'hôte ou IP du socket"
+
 #~ msgid "Starting Papywizard app..."
 #~ msgstr "Démarrage de Papywizard..."
+
 #~ msgid "Papywizard app stopped"
 #~ msgstr "Arrêt de Papywizard"
-
