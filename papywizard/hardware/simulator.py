@@ -62,7 +62,7 @@ __revision__ = "$Id: serialDriver.py 557 2008-09-18 18:51:24Z fma $"
 import SocketServer
 
 import serial
-import bluetooth
+#import bluetooth
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
@@ -200,6 +200,49 @@ class MerlinOrionBaseHandler(object):
         return "=%s\r" % response
 
 
+class MerlinOrionBluetoothHandler(MerlinOrionBaseHandler):
+    """ Bluetooth-based handler.
+    """
+    def __init__(self, serial):
+        raise NotImplementedError
+
+
+class MerlinOrionSerialHandler(MerlinOrionBaseHandler):
+    """ Serial-based handler.
+    """
+    def __init__(self, serial):
+        super(MerlinOrionSerialHandler, self).__init__()
+        self.serial = serial
+
+    def handle(self):
+        Logger().info("New serial connection established")
+        while True:
+            try:
+                cmd = ""
+                while not cmd.endswith('\r'):
+                    data = self.serial.read(1)
+                    #Logger().debug("MerlinOrionSerialHandler.handle(): data=%s" % repr(data))
+                    if not data:
+                        Logger().error("Timeout while reading on serial bus")
+                        break
+                    cmd += data
+                if cmd:
+                    response = self._handleCmd(cmd)
+                    Logger().debug("MerlinOrionSerialHandler.handle(): response=%s" % repr(response))
+                    self.serial.write(response)
+                else:
+                    #self.serial.close()
+                    Logger().debug("MerlinOrionSerialHandler.handle(): lost connection")
+                    Logger().info("Serial connection closed")
+                    break
+            except KeyboardInterrupt:
+                #self.serial.close()
+                Logger().info("Serial connection closed")
+                raise
+            except:
+                Logger().exception("MerlinOrionSerialHandler.handle()")
+
+
 class MerlinOrionEthernetHandler(MerlinOrionBaseHandler, SocketServer.BaseRequestHandler):
     """ Ethernet-based handler.
     """
@@ -236,47 +279,6 @@ class MerlinOrionEthernetHandler(MerlinOrionBaseHandler, SocketServer.BaseReques
                 Logger().exception("MerlinOrionEthernetHandler.handle()")
 
 
-class MerlinOrionSerialHandler(MerlinOrionBaseHandler):
-    """ Serial-based handler.
-    """
-    def __init__(self, serial):
-        """ Init the base handler.
-
-        @param serial: serial object
-        @type serial: {Serial<serial>}
-        """
-        super(MerlinOrionSerialHandler, self).__init__()
-        self.serial = serial
-
-    def handle(self):
-        Logger().info("New serial connection established")
-        while True:
-            try:
-                cmd = ""
-                while not cmd.endswith('\r'):
-                    data = self.serial.read(1)
-                    #Logger().debug("MerlinOrionSerialHandler.handle(): data=%s" % repr(data))
-                    if not data:
-                        Logger().error("Timeout while reading on serial bus")
-                        break
-                    cmd += data
-                if cmd:
-                    response = self._handleCmd(cmd)
-                    Logger().debug("MerlinOrionSerialHandler.handle(): response=%s" % repr(response))
-                    self.serial.write(response)
-                else:
-                    #self.serial.close()
-                    Logger().debug("MerlinOrionSerialHandler.handle(): lost connection")
-                    Logger().info("Serial connection closed")
-                    break
-            except KeyboardInterrupt:
-                #self.serial.close()
-                Logger().info("Serial connection closed")
-                raise
-            except:
-                Logger().exception("MerlinOrionSerialHandler.handle()")
-
-
 class MerlinOrionBaseSimulator(object):
     """ Abstract Merlin/Orion simulator.
     """
@@ -297,30 +299,11 @@ class MerlinOrionBaseSimulator(object):
         raise NotImplementedError
 
 
-class SimulatorTCPServer(SocketServer.ThreadingTCPServer):
-    allow_reuse_address = True
-
-    def handle_error(self, request, client_address):
-        Logger().error("Error while handling request from ('%s', %d)" % client_address)
-
-
-class MerlinOrionEthernetSimulator(MerlinOrionBaseSimulator):
-    """ Ethernet-based simulator.
+class MerlinOrionBluetoothSimulator(MerlinOrionBaseSimulator):
+    """ Bluetooth-based simulator.
     """
-    def __init__(self, host, port):
-        self.__host = host
-        self.__port = port
-        super(MerlinOrionEthernetSimulator, self).__init__()
-
-    def _init(self):
-        self.__server = SimulatorTCPServer((self.__host, self.__port), MerlinOrionEthernetHandler)
-        self.__server.socket.settimeout(1.)
-
-    def run(self):
-        try:
-            self.__server.serve_forever()
-        except KeyboardInterrupt:
-            pass
+    def __init__(self):
+        raise NotImplementedError
 
 
 class MerlinOrionSerialSimulator(MerlinOrionBaseSimulator):
@@ -345,5 +328,31 @@ class MerlinOrionSerialSimulator(MerlinOrionBaseSimulator):
                 if self.__serial.inWaiting():
                     handler = MerlinOrionSerialHandler(self.__serial)
                     handler.handle()
+        except KeyboardInterrupt:
+            pass
+
+
+class SimulatorTCPServer(SocketServer.ThreadingTCPServer):
+    allow_reuse_address = True
+
+    def handle_error(self, request, client_address):
+        Logger().error("Error while handling request from ('%s', %d)" % client_address)
+
+
+class MerlinOrionEthernetSimulator(MerlinOrionBaseSimulator):
+    """ Ethernet-based simulator.
+    """
+    def __init__(self, host, port):
+        self.__host = host
+        self.__port = port
+        super(MerlinOrionEthernetSimulator, self).__init__()
+
+    def _init(self):
+        self.__server = SimulatorTCPServer((self.__host, self.__port), MerlinOrionEthernetHandler)
+        self.__server.socket.settimeout(1.)
+
+    def run(self):
+        try:
+            self.__server.serve_forever()
         except KeyboardInterrupt:
             pass
