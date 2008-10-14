@@ -122,6 +122,7 @@ setup(options={"py2exe": {'compressed': 1,
                                        ]),
                   ("share/locale/en/LC_MESSAGES", ["../locale/en/LC_MESSAGES/papywizard.mo"]),
                   ("share/locale/fr/LC_MESSAGES", ["../locale/fr/LC_MESSAGES/papywizard.mo"]),
-                  ("share/locale/pl/LC_MESSAGES", ["../locale/pl/LC_MESSAGES/papywizard.mo"])]
+                  ("share/locale/pl/LC_MESSAGES", ["../locale/pl/LC_MESSAGES/papywizard.mo"]),
+                  ("share/locale/de/LC_MESSAGES", ["../locale/de/LC_MESSAGES/papywizard.mo"])]
      )
 
