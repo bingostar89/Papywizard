@@ -7,7 +7,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 FrÃ©dÃ©ric Mantegazza
+  - (C) 2007-2008 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use,
@@ -40,8 +40,8 @@ Module purpose
 
 Main script for simulator
 
-@author: FrÃ©dÃ©ric Mantegazza
-@copyright: (C) 2007-2008 FrÃ©dÃ©ric Mantegazza
+@author: FrédÃéic Mantegazza
+@copyright: (C) 2007-2008 Frédéric Mantegazza
 @license: CeCILL
 """
 
@@ -92,7 +92,7 @@ def main():
     if option.connexion == 'serial':
         simulator = MerlinOrionSerialSimulator(option.serialPort)
     elif option.connexion == 'bluetooth':
-        Logger().warning("Bluetooth simulator not yet impemented")
+        Logger().warning("Bluetooth simulator not yet implemented")
         sys.exit(1)
     elif option.connexion == 'ethernet':
         simulator = MerlinOrionEthernetSimulator(option.ethernetHost, option.ethernetPort)
