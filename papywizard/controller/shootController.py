@@ -245,9 +245,9 @@ class ShootController(AbstractController):
 
             # Check if model suspended (manual shoot mode)
             if self._model.isSuspended():
-                self.suspendResumeLabel.set_text("Resume")
+                self.suspendResumeLabel.set_text(_("Resume"))
             else:
-                self.suspendResumeLabel.set_text("Suspend")
+                self.suspendResumeLabel.set_text(_("Suspend"))
 
             # Check end of shooting
             if not self._model.isShooting():
@@ -263,7 +263,7 @@ class ShootController(AbstractController):
 
                 self.dataFileEnableCheckbutton.set_sensitive(True)
                 self.startButton.set_sensitive(True)
-                self.suspendResumeLabel.set_text("Suspend")
+                self.suspendResumeLabel.set_text(_("Suspend"))
                 self.suspendResumeButton.set_sensitive(False)
                 self.stopButton.set_sensitive(False)
                 self.doneButton.set_sensitive(True)
@@ -294,11 +294,11 @@ class ShootController(AbstractController):
 
     def __suspendShooting(self):
         self._model.suspend()
-        #self.suspendResumeLabel.set_text("Resume")
+        #self.suspendResumeLabel.set_text(_("Resume"))
 
     def __resumeShooting(self):
         self._model.resume()
-        #self.suspendResumeLabel.set_text("Suspend")
+        #self.suspendResumeLabel.set_text(_("Suspend"))
 
     def __stopShooting(self):
         self._model.stop()
