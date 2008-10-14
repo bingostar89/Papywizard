@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-13 19:48+0200\n"
-"PO-Revision-Date: 2008-10-13 19:49+0100\n"
-"Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
+"POT-Creation-Date: 2008-10-14 15:20+0200\n"
+"PO-Revision-Date: 2008-10-14 16:55+0100\n"
+"Last-Translator: Jo Lutum <jo.lutum@lycos.de>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,15 +43,25 @@ msgstr "Abgebrochen"
 msgid "Over"
 msgstr "zu Ende"
 
-#: papywizard/scripts/main.py:253
+#: papywizard/scripts/main.py:257
 msgid "Internal error"
 msgstr "Interner Fehler"
 
-#: papywizard/scripts/main.py:254
+#: papywizard/scripts/main.py:258
 #: papywizard/controller/bluetoothChooserController.py:177
 #: papywizard/controller/mainController.py:689
 msgid "Error"
 msgstr "Fehler"
+
+#: papywizard/controller/shootController.py:248
+msgid "Resume"
+msgstr "Fortsetzen"
+
+#: papywizard/controller/shootController.py:250
+#: papywizard/controller/shootController.py:266
+#: tmp/shootDialog.glade.h:11
+msgid "Suspend"
+msgstr "Anhalten"
 
 #: papywizard/controller/bluetoothChooserController.py:176
 msgid "Can't scan bluetooth"
@@ -136,7 +146,7 @@ msgstr "Bluetooth Geräteliste"
 #: tmp/bluetoothChooserDialog.glade.h:3
 #: tmp/configDialog.glade.h:53
 msgid "gtk-cancel"
-msgstr "gtk-cancel"
+msgstr "gtk-Abbruch"
 
 #: tmp/bluetoothChooserDialog.glade.h:4
 #: tmp/configDialog.glade.h:54
@@ -489,7 +499,7 @@ msgstr "Logger"
 #: tmp/presetTemplateInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:14
 msgid "gtk-close"
-msgstr "gtk-close"
+msgstr "gtk-Schliessen"
 
 #: tmp/mainWindow.glade.h:1
 msgid "    Pitch    "
@@ -553,7 +563,7 @@ msgstr "Hilfe"
 
 #: tmp/mainWindow.glade.h:17
 msgid "Manual"
-msgstr "Manuell"
+msgstr "Anleitung"
 
 #: tmp/mainWindow.glade.h:18
 msgid "Mosaic"
@@ -735,13 +745,9 @@ msgstr "Stop"
 msgid "Stop shooting"
 msgstr "Stop Aufnahme"
 
-#: tmp/shootDialog.glade.h:11
-msgid "Suspend"
-msgstr "Anhalten"
-
 #: tmp/shootDialog.glade.h:12
-msgid "Suspend shooting"
-msgstr "Aufnahme anhalten"
+msgid "Suspend/resume shooting"
+msgstr "Aufnahme anhalten/fortsetzen"
 
 #: tmp/shootDialog.glade.h:13
 msgid "Write data file"

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-13 19:48+0200\n"
-"PO-Revision-Date: 2008-10-13 19:49+0100\n"
+"POT-Creation-Date: 2008-10-14 15:20+0200\n"
+"PO-Revision-Date: 2008-10-14 15:20+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -43,15 +43,25 @@ msgstr "Annulé"
 msgid "Over"
 msgstr "Terminé"
 
-#: papywizard/scripts/main.py:253
+#: papywizard/scripts/main.py:257
 msgid "Internal error"
 msgstr "Erreur interne"
 
-#: papywizard/scripts/main.py:254
+#: papywizard/scripts/main.py:258
 #: papywizard/controller/bluetoothChooserController.py:177
 #: papywizard/controller/mainController.py:689
 msgid "Error"
 msgstr "Erreur"
+
+#: papywizard/controller/shootController.py:248
+msgid "Resume"
+msgstr "Reprendre"
+
+#: papywizard/controller/shootController.py:250
+#: papywizard/controller/shootController.py:266
+#: tmp/shootDialog.glade.h:11
+msgid "Suspend"
+msgstr "Suspendre"
 
 #: papywizard/controller/bluetoothChooserController.py:176
 msgid "Can't scan bluetooth"
@@ -736,13 +746,9 @@ msgstr "Arrêter"
 msgid "Stop shooting"
 msgstr "Stopper la prise de vue"
 
-#: tmp/shootDialog.glade.h:11
-msgid "Suspend"
-msgstr "Suspendre"
-
 #: tmp/shootDialog.glade.h:12
-msgid "Suspend shooting"
-msgstr "Suspendre la prise de vue"
+msgid "Suspend/resume shooting"
+msgstr "Suspendre/reprendre la prise de vue"
 
 #: tmp/shootDialog.glade.h:13
 msgid "Write data file"

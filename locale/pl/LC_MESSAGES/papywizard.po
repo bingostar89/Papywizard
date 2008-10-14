@@ -7,17 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-13 19:48+0200\n"
+"POT-Creation-Date: 2008-10-14 15:20+0200\n"
 "PO-Revision-Date: 2008-10-13 19:50+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 
-#: papywizard/model/shooting.py:97
-#: papywizard/model/shooting.py:157
+#: papywizard/model/shooting.py:97 papywizard/model/shooting.py:157
 #: papywizard/model/shooting.py:167
 msgid "Idle"
 msgstr "Bezczynny"
@@ -43,15 +43,25 @@ msgstr "Anulowano"
 msgid "Over"
 msgstr "Zakończone"
 
-#: papywizard/scripts/main.py:253
+#: papywizard/scripts/main.py:257
 msgid "Internal error"
 msgstr "Błąd wewnętrzny"
 
-#: papywizard/scripts/main.py:254
+#: papywizard/scripts/main.py:258
 #: papywizard/controller/bluetoothChooserController.py:177
 #: papywizard/controller/mainController.py:689
 msgid "Error"
 msgstr "Błąd"
+
+#: papywizard/controller/shootController.py:248
+#, fuzzy
+msgid "Resume"
+msgstr "Zresetuj"
+
+#: papywizard/controller/shootController.py:250
+#: papywizard/controller/shootController.py:266 tmp/shootDialog.glade.h:11
+msgid "Suspend"
+msgstr "Zawieś"
 
 #: papywizard/controller/bluetoothChooserController.py:176
 msgid "Can't scan bluetooth"
@@ -140,13 +150,11 @@ msgstr ""
 msgid "Bluetooth devices list"
 msgstr "Lista urządzeń Bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:3
-#: tmp/configDialog.glade.h:53
+#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:53
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:4
-#: tmp/configDialog.glade.h:54
+#: tmp/bluetoothChooserDialog.glade.h:4 tmp/configDialog.glade.h:54
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -234,7 +242,8 @@ msgstr "Ogniskowa"
 
 #: tmp/configDialog.glade.h:22
 msgid "Force overlap to get square pictures (mosaic mode)"
-msgstr "Wymuś zachodzenie na siebie aby uzyskać kwadratowy obraz (tryb mozaika)"
+msgstr ""
+"Wymuś zachodzenie na siebie aby uzyskać kwadratowy obraz (tryb mozaika)"
 
 #: tmp/configDialog.glade.h:23
 msgid "Format of the xml data file name"
@@ -244,8 +253,7 @@ msgstr "Format nazwy pliku danych xml"
 msgid "From where to start shooting (mosaic mode)"
 msgstr "Skąd zacząć strzelać (tryb mozaika)"
 
-#: tmp/configDialog.glade.h:25
-#: tmp/mainWindow.glade.h:15
+#: tmp/configDialog.glade.h:25 tmp/mainWindow.glade.h:15
 msgid "Hardware"
 msgstr "Sprzęt"
 
@@ -317,8 +325,7 @@ msgstr "Proporcja matrycy"
 msgid "Serial port"
 msgstr "Port szeregowy"
 
-#: tmp/configDialog.glade.h:44
-#: tmp/shootDialog.glade.h:6
+#: tmp/configDialog.glade.h:44 tmp/shootDialog.glade.h:6
 msgid "Shooting"
 msgstr "Strzelam"
 
@@ -466,8 +473,7 @@ msgstr "Wyczyść okno z logiem"
 msgid "Logger"
 msgstr ""
 
-#: tmp/loggerDialog.glade.h:4
-#: tmp/presetTemplateInfoDialog.glade.h:2
+#: tmp/loggerDialog.glade.h:4 tmp/presetTemplateInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:14
 msgid "gtk-close"
 msgstr "gtk-close"
@@ -719,12 +725,9 @@ msgstr ""
 msgid "Stop shooting"
 msgstr "Zatrzymaj strzelanie"
 
-#: tmp/shootDialog.glade.h:11
-msgid "Suspend"
-msgstr "Zawieś"
-
 #: tmp/shootDialog.glade.h:12
-msgid "Suspend shooting"
+#, fuzzy
+msgid "Suspend/resume shooting"
 msgstr "Zawieś strzelanie"
 
 #: tmp/shootDialog.glade.h:13
@@ -738,4 +741,3 @@ msgstr "Prosze poczekać..."
 #, fuzzy
 #~ msgid "Port of the socket"
 #~ msgstr "Port konwertera szeregowego"
-
