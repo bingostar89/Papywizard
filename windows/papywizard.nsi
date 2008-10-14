@@ -45,7 +45,7 @@
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "Install.exe"
+OutFile "Papywizard_${PRODUCT_VERSION}.exe"
 InstallDir "$PROGRAMFILES\papywizard"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -61,9 +61,13 @@ Section "SectionPrincipale" SEC01
   File "dist\w9xpopen.exe"
   CreateDirectory "$SMPROGRAMS\papywizard"
   CreateShortCut "$SMPROGRAMS\papywizard\papywizard.lnk" "$INSTDIR\papywizard.exe" "$INSTDIR\papywizard.ico"
+  CreateShortCut "$SMPROGRAMS\papywizard\papywizard3D.lnk" "$INSTDIR\papywizard3D.exe" "$INSTDIR\papywizard.ico"
+  CreateShortCut "$SMPROGRAMS\papywizard\papywizardSimul.lnk" "$INSTDIR\papywizardSimul.exe" "$INSTDIR\papywizard.ico"
   CreateShortCut "$DESKTOP\papywizard.lnk" "$INSTDIR\papywizard.exe" "$INSTDIR\papywizard.ico"
   ;File "dist\python25.dll"    ; pas nessaire, inclus dans library.zip
   File "dist\papywizard.exe"
+  File "dist\papywizard3D.exe"
+  File "dist\papywizardSimul.exe"
   File "dist\msvcr71.dll"
   File "dist\library.zip"
   File "papywizard.ico"
@@ -138,12 +142,16 @@ Section Uninstall
   Delete "$INSTDIR\library.zip"
   Delete "$INSTDIR\msvcr71.dll"
   Delete "$INSTDIR\papywizard.exe"
+  Delete "$INSTDIR\papywizard3D.exe"
+  Delete "$INSTDIR\papywizardSimul.exe"
   Delete "$INSTDIR\w9xpopen.exe"
-;  Delete "$INSTDIR\papywizard.exe.log"
+  Delete "$INSTDIR\papywizard.exe.log"
   Delete "$INSTDIR\papywizard.ico"
   Delete "$SMPROGRAMS\papywizard\Uninstall.lnk"
   Delete "$SMPROGRAMS\papywizard\Website.lnk"
   Delete "$SMPROGRAMS\papywizard\papywizard.lnk"
+  Delete "$SMPROGRAMS\papywizard\papywizard3D.lnk"
+  Delete "$SMPROGRAMS\papywizard\papywizardSimul.lnk"
   RMDir  "$SMPROGRAMS\papywizard"
   Delete "$DESKTOP\papywizard.lnk"
 
