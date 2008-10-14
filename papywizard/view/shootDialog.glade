@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Sep 23 23:21:39 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Oct 14 15:19:57 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="visible">True</property>
@@ -121,7 +121,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="tooltip" translatable="yes">Suspend shooting</property>
+                <property name="tooltip" translatable="yes" context="yes">Suspend/resume shooting</property>
                 <property name="response_id">0</property>
                 <signal name="clicked" handler="on_suspendResumeButton_clicked"/>
                 <child>
@@ -157,7 +157,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="tooltip" translatable="yes">Stop shooting</property>
+                <property name="tooltip" translatable="yes" context="yes">Stop shooting</property>
                 <property name="response_id">0</property>
                 <signal name="clicked" handler="on_stopButton_clicked"/>
                 <child>
