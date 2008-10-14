@@ -72,7 +72,6 @@ class LoggingAspect(AbstractAspect):
         """ Create and return the logger aspect.
 
         @param cls: the class or class instance to aspect
-        @param method_name: the name of the method to wrap
         """
         AbstractAspect.__init__(self, cls)
         self.__log = Logger()
