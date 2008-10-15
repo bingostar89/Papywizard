@@ -45,7 +45,7 @@
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "Papywizard_${PRODUCT_VERSION}.exe"
+OutFile "Papywizard_${PRODUCT_VERSION}_Install.exe"
 InstallDir "$PROGRAMFILES\papywizard"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
