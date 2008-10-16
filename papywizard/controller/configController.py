@@ -69,6 +69,7 @@ class ConfigController(AbstractController):
         self._gladeFile = "configDialog.glade"
         self._signalDict = {"on_okButton_clicked": self.__onOkButtonClicked,
                             "on_cancelButton_clicked": self.__onCancelButtonClicked,
+                            "on_lensTypeCombobox_changed": self.__onLensTypeComboboxChanged,
                             "on_driverCombobox_changed": self.__onDriverComboboxChanged,
                             "on_bluetoothChooseButton_clicked": self.__onBluetoothChooseButtonClicked,
                         }
@@ -86,9 +87,12 @@ class ConfigController(AbstractController):
         self.initialDirectionCombobox = self.wTree.get_widget("initialDirectionCombobox")
         self.crCheckbutton = self.wTree.get_widget("crCheckbutton")
         self.timeValueSpinbutton = self.wTree.get_widget("timeValueSpinbutton")
-        self.nbPictsSpinbutton = self.wTree.get_widget("nbPictsSpinbutton")
+        self.bracketingNbPictsSpinbutton = self.wTree.get_widget("bracketingNbPictsSpinbutton")
+        self.bracketingIntentCombobox = self.wTree.get_widget("bracketingIntentCombobox")
         self.sensorCoefSpinbutton = self.wTree.get_widget("sensorCoefSpinbutton")
         self.sensorRatioCombobox = self.wTree.get_widget("sensorRatioCombobox")
+        self.lensTypeCombobox = self.wTree.get_widget("lensTypeCombobox")
+        self.focalLabel = self.wTree.get_widget("focalLabel")
         self.focalSpinbutton = self.wTree.get_widget("focalSpinbutton")
         self.driverCombobox = self.wTree.get_widget("driverCombobox")
         self.bluetoothDeviceAddressLabel = self.wTree.get_widget("bluetoothDeviceAddressLabel")
@@ -112,16 +116,18 @@ class ConfigController(AbstractController):
         Logger().trace("ConfigController.__onOkButtonClicked()")
 
         self._model.stabilizationDelay = self.stabilizationDelaySpinbutton.get_value()
+        self._model.cameraOrientation = config.SHOOTING_ORIENTATION_INDEX[self.cameraOrientationCombobox.get_active()]
         self._model.mosaic.overlap = self.overlapSpinbutton.get_value() / 100.
         self._model.mosaic.overlapSquare = self.overlapSquareCheckbutton.get_active()
-        self._model.mosaic.cameraOrientation = config.CAMERA_ORIENTATION_INDEX[self.cameraOrientationCombobox.get_active()]
         self._model.mosaic.startFrom = config.MOSAIC_START_FROM_INDEX[self.startFromCombobox.get_active()]
         self._model.mosaic.initialDirection = config.MOSAIC_INITIAL_DIR_INDEX[self.initialDirectionCombobox.get_active()]
         self._model.mosaic.cr = self.crCheckbutton.get_active()
         self._model.camera.timeValue = self.timeValueSpinbutton.get_value()
-        self._model.camera.nbPicts = int(self.nbPictsSpinbutton.get_value())
+        self._model.camera.bracketingNbPicts = int(self.bracketingNbPictsSpinbutton.get_value())
+        self._model.camera.bracketingIntent = config.CAMERA_BRACKETING_INTENT_INDEX[self.bracketingIntentCombobox.get_active()]
         self._model.camera.sensorCoef = self.sensorCoefSpinbutton.get_value()
         self._model.camera.sensorRatio = config.SENSOR_RATIOS_INDEX[self.sensorRatioCombobox.get_active()]
+        self._model.camera.lens.type_ = config.LENS_TYPE_INDEX[self.lensTypeCombobox.get_active()]
         self._model.camera.lens.focal = self.focalSpinbutton.get_value()
         ConfigManager().set('Hardware', 'DRIVER',
                             config.DRIVER_INDEX[self.driverCombobox.get_active()])
@@ -140,6 +146,20 @@ class ConfigController(AbstractController):
         Close the pref. dialog.
         """
         Logger().trace("ConfigController.__onCancelButtonClicked()")
+
+    def __onLensTypeComboboxChanged(self, widget):
+        """ Lens type combobox has changed.
+
+        Enable/disable focal lens.
+        """
+        Logger().trace("ConfigController.__onLensTypeComboboxChanged()")
+        type_ = config.LENS_TYPE_INDEX[self.lensTypeCombobox.get_active()]
+        if type_ == 'rectilinear':
+            self.focalLabel.set_sensitive(True)
+            self.focalSpinbutton.set_sensitive(True)
+        else:
+            self.focalLabel.set_sensitive(False)
+            self.focalSpinbutton.set_sensitive(False)
 
     def __onDriverComboboxChanged(self, widget):
         """ Driver combobox has changed.
@@ -194,16 +214,18 @@ class ConfigController(AbstractController):
     # Real work
     def refreshView(self):
         self.stabilizationDelaySpinbutton.set_value(self._model.stabilizationDelay)
-        self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[self._model.mosaic.cameraOrientation])
+        self.cameraOrientationCombobox.set_active(config.SHOOTING_ORIENTATION_INDEX[self._model.cameraOrientation])
         self.overlapSpinbutton.set_value(int(100 * self._model.mosaic.overlap))
         self.overlapSquareCheckbutton.set_active(self._model.mosaic.overlapSquare)
         self.startFromCombobox.set_active(config.MOSAIC_START_FROM_INDEX[self._model.mosaic.startFrom])
         self.initialDirectionCombobox.set_active(config.MOSAIC_INITIAL_DIR_INDEX[self._model.mosaic.initialDirection])
         self.crCheckbutton.set_active(self._model.mosaic.cr)
         self.timeValueSpinbutton.set_value(self._model.camera.timeValue)
-        self.nbPictsSpinbutton.set_value(self._model.camera.nbPicts)
+        self.bracketingNbPictsSpinbutton.set_value(self._model.camera.bracketingNbPicts)
+        self.bracketingIntentCombobox.set_active(config.CAMERA_BRACKETING_INTENT_INDEX[self._model.camera.bracketingIntent])
         self.sensorCoefSpinbutton.set_value(self._model.camera.sensorCoef)
         self.sensorRatioCombobox.set_active(config.SENSOR_RATIOS_INDEX[self._model.camera.sensorRatio])
+        self.lensTypeCombobox.set_active(config.LENS_TYPE_INDEX[self._model.camera.lens.type_])
         self.focalSpinbutton.set_value(self._model.camera.lens.focal)
         try:
             driverIndex = config.DRIVER_INDEX[ConfigManager().get('Hardware', 'Driver')]
