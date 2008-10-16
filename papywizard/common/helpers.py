@@ -138,6 +138,14 @@ def prettyFormat(value):
 
     return prettyStr
 
+def isOdd(value):
+    """ Test if value is odd.
+
+    @param value: value to test
+    @type value: int
+    """
+    return int(value / 2.) != value / 2.
+
 def decodeAxisValue(strValue):
     """ Decode value from axis.
 
@@ -149,6 +157,8 @@ def decodeAxisValue(strValue):
 
     @return: value
     @rtype: int
+
+    @todo: put in merlinHelpers?
     """
     value = 0
     for i in xrange(3):
@@ -167,6 +177,8 @@ def encodeAxisValue(value):
 
     @return: value to send to axis
     @rtype: str
+
+    @todo: put in merlinHelpers?
     """
     strHexValue = "000000%s" % hex(value)[2:]
     strValue = strHexValue[-2:] + strHexValue[-4:-2] + strHexValue[-6:-4]
@@ -181,6 +193,8 @@ def cod2deg(codPos):
 
     @return: position, in °
     @rtype: float
+
+    @todo: put in merlinHelpers?
     """
     return (codPos - config.ENCODER_ZERO) * 360. / config.ENCODER_360
 
@@ -192,5 +206,8 @@ def deg2cod(pos):
 
     @return: encoder position
     @rtype: int
+
+    @todo: put in merlinHelpers?
     """
     return int(pos * config.ENCODER_360 / 360. + config.ENCODER_ZERO)
+
