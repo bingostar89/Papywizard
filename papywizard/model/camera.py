@@ -71,49 +71,61 @@ class Camera(object):
         """
         """
         return ConfigManager().get('Preferences', 'CAMERA_SENSOR_RATIO')
-    
+
     def __setSensorRatio(self, sensorRatio):
         """
         """
         ConfigManager().set('Preferences', 'CAMERA_SENSOR_RATIO', sensorRatio)
-        
+
     sensorRatio = property(__getSensorRatio, __setSensorRatio)
-    
+
     def __getSensorCoef(self):
         """
         """
         return ConfigManager().getFloat('Preferences', 'CAMERA_SENSOR_COEF')
-    
+
     def __setSensorCoef(self, sensorCoef):
         """
         """
         ConfigManager().setFloat('Preferences', 'CAMERA_SENSOR_COEF', sensorCoef, 1)
-        
+
     sensorCoef = property(__getSensorCoef, __setSensorCoef)
-    
+
     def __getTimeValue(self):
         """
         """
         return ConfigManager().getFloat('Preferences', 'CAMERA_TIME_VALUE')
-    
+
     def __setTimeValue(self, timeValue):
         """
         """
         ConfigManager().setFloat('Preferences', 'CAMERA_TIME_VALUE', timeValue, 1)
-        
-    timeValue = property(__getTimeValue, __setTimeValue)
-    
-    def __getNbPicts(self):
-        """
-        """
-        return ConfigManager().getInt('Preferences', 'CAMERA_NB_PICTS')
-    
-    def __setNbPicts(self, nbPicts):
-        """
-        """
-        ConfigManager().setInt('Preferences', 'CAMERA_NB_PICTS', nbPicts)
 
-    nbPicts = property(__getNbPicts, __setNbPicts)
+    timeValue = property(__getTimeValue, __setTimeValue)
+
+    def __getBracketingNbPicts(self):
+        """
+        """
+        return ConfigManager().getInt('Preferences', 'CAMERA_BRACKETING_NBPICTS')
+
+    def __setBracketingNbPicts(self, bracketingNbPicts):
+        """
+        """
+        ConfigManager().setInt('Preferences', 'CAMERA_BRACKETING_NBPICTS', bracketingNbPicts)
+
+    bracketingNbPicts = property(__getBracketingNbPicts, __setBracketingNbPicts)
+
+    def __getBracketingIntent(self):
+        """
+        """
+        return ConfigManager().get('Preferences', 'CAMERA_BRACKETING_INTENT')
+
+    def __setBracketingIntent(self, bracketingIntent):
+        """
+        """
+        ConfigManager().set('Preferences', 'CAMERA_BRACKETING_INTENT', bracketingIntent)
+
+    bracketingIntent = property(__getBracketingIntent, __setBracketingIntent)
 
     def getYawFov(self, cameraOrientation):
         """ Compute the yaw FoV.
