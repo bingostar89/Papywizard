@@ -54,7 +54,6 @@ Implements
 __revision__ = "$Id$"
 
 import sys
-import os.path
 import logging
 import logging.handlers
 import StringIO
@@ -137,7 +136,7 @@ class Logger(object):
         self.__dict__ = cls.__state
         return self
 
-    def __init__(self):
+    def __init__(self, defaultStream=True):
         """ Init object.
         """
         if Logger.__init:
@@ -159,8 +158,8 @@ class Logger(object):
             # Logger
             self.__logger = logging.getLogger('papywizard')
             self.__logger.setLevel(logging.TRACE)
-            if not hasattr(sys, "frozen"):
-                self.__logger.addHandler(stdoutStreamHandler) # No console if exe
+            if defaultStream:
+                self.__logger.addHandler(stdoutStreamHandler)
 
             Logger.__init = False
 
