@@ -117,12 +117,15 @@ class Spy(threading.Thread):
 
         Logger().info("Spy stopped")
 
-    def execute(self):
+    def execute(self, force=False):
         """ Execute one refresh.
+
+        @param force: if True, emit signal even if same position
+        @type force: bool
         """
         try:
             yaw, pitch = self.__model.hardware.readPosition()
-            if yaw != self.__yaw or pitch != self.__pitch:
+            if yaw != self.__yaw or pitch != self.__pitch or force:
                 #Logger().debug("Spy.execute(): new yaw=%.1f, new pitch=%.1f" % (yaw, pitch))
                 try:
                     self.newPosSignal.emit(yaw, pitch)
