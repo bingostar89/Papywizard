@@ -189,6 +189,7 @@ class AbstractData(object):
         # Shooting
         node = self._addNode(self._headerNode, 'shooting', mode=self._getMode())
         self._addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
+        self._addNode(node, 'cameraOrientation', values['cameraOrientation'])
         self._addNode(node, 'start', time.ctime())
         self._headerShootingEnd = self._addNode(node, 'end', time.ctime())
         self._addNode(node, 'comment', values['comment'])
@@ -196,19 +197,21 @@ class AbstractData(object):
         # Camera
         node = self._addNode(self._headerNode, 'camera')
         self._addNode(node, 'timeValue', values['timeValue'])
-        self._addNode(node, 'nbPicts', values['nbPicts'])
+        self._addNode(node, 'bracketing', nbPicts=values['bracketingNbPicts'],
+                                          intent=values['bracketingIntent'])
         self._addNode(node, 'sensor', coef=values['sensorCoef'],
                                       ratio=values['sensorRatio'])
 
         # Lens
-        node = self._addNode(self._headerNode, 'lens')
-        self._addNode(node, 'focal', values['focal'])
+        node = self._addNode(self._headerNode, 'lens', type=values['lensType'])
+        if values['lensType'] == 'rectilinear':
+            self._addNode(node, 'focal', values['focal'])
 
-    def addPicture(self, num, yaw, pitch):
+    def addPicture(self, bracket, yaw, pitch):
         """ Add a new picture node to shoot node.
 
-        @param num: num of the pict (bracketing)
-        @type num: int
+        @param bracket: num of the pict (bracketing)
+        @type bracket: int
 
         @param yaw: yaw position
         @type yaw: float
@@ -216,8 +219,8 @@ class AbstractData(object):
         @param pitch: pitch position
         @type pitch: float
         """
-        Logger().debug("Data.addPicture(): num=%d, yaw=%.1f, pitch=%.1f" % (num, yaw, pitch))
-        node = self._addNode(self._shootNode, 'pict', id="%d" % self._pictId, num="%d" % num)
+        Logger().debug("Data.addPicture(): bracket=%d, yaw=%.1f, pitch=%.1f" % (bracket, yaw, pitch))
+        node = self._addNode(self._shootNode, 'pict', id="%d" % self._pictId, bracket="%d" % bracket)
         self._pictId += 1
         self._addNode(node, 'time', time.ctime())
         self._addNode(node, 'position', yaw="%.1f" % yaw, pitch="%.1f" % pitch)
@@ -237,6 +240,7 @@ class MosaicData(AbstractData):
         <header>
             <shooting mode="mosaic">
                 <stabilizationDelay>0.5</stabilizationDelay>
+                <cameraOrientation>portrait</cameraOrientation>
                 <start>Mon Oct 13 10:52:33 2008</start>
                 <end>Mon Oct 13 10:52:53 2008</end>
                 <comment>Néron mountain</comment>
@@ -244,51 +248,50 @@ class MosaicData(AbstractData):
             <mosaic>
                 <nbPicts pitch="1" yaw="3"/>
                 <overlap minimum="0.25" pitch="1.00" yaw="0.26"/>
-                <cameraOrientation>portrait</cameraOrientation>
             </mosaic>
             <camera>
                 <timeValue>0.5</timeValue>
-                <nbPicts>3</nbPicts>
+                <bracketing intent="focus" nbPicts="1"/>
                 <sensor coef="1.6" ratio="3:2"/>
             </camera>
-            <lens>
+            <lens type="rectilinear">
                 <focal>17.0</focal>
             </lens>
         </header>
         <shoot>
-            <pict id="1" num="1">
+            <pict id="1" bracket="1">
                 <time>Mon Oct 13 10:52:39 2008</time>
                 <position pitch="0.0" yaw="-44.4"/>
             </pict>
-            <pict id="2" num="2">
+            <pict id="2" bracket="2">
                 <time>Mon Oct 13 10:52:40 2008</time>
                 <position pitch="0.0" yaw="-44.4"/>
             </pict>
-            <pict id="3" num="3">
+            <pict id="3" bracket="3">
                 <time>Mon Oct 13 10:52:41 2008</time>
                 <position pitch="0.0" yaw="-44.4"/>
             </pict>
-            <pict id="4" num="1">
+            <pict id="4" bracket="1">
                 <time>Mon Oct 13 10:52:45 2008</time>
                 <position pitch="0.0" yaw="-9.3"/>
             </pict>
-            <pict id="5" num="2">
+            <pict id="5" bracket="2">
                 <time>Mon Oct 13 10:52:46 2008</time>
                 <position pitch="0.0" yaw="-9.3"/>
             </pict>
-            <pict id="6" num="3">
+            <pict id="6" bracket="3">
                 <time>Mon Oct 13 10:52:47 2008</time>
                 <position pitch="0.0" yaw="-9.3"/>
             </pict>
-            <pict id="7" num="1">
+            <pict id="7" bracket="1">
                 <time>Mon Oct 13 10:52:51 2008</time>
                 <position pitch="0.0" yaw="25.7"/>
             </pict>
-            <pict id="8" num="2">
+            <pict id="8" bracket="2">
                 <time>Mon Oct 13 10:52:52 2008</time>
                 <position pitch="0.0" yaw="25.7"/>
             </pict>
-            <pict id="9" num="3">
+            <pict id="9" bracket="3">
                 <time>Mon Oct 13 10:52:53 2008</time>
                 <position pitch="0.0" yaw="25.7"/>
             </pict>
@@ -310,7 +313,6 @@ class MosaicData(AbstractData):
         self._addNode(node, 'overlap', minimum=values['overlap'],
                                        yaw=values['yawRealOverlap'],
                                        pitch=values['pitchRealOverlap'])
-        self._addNode(node, 'cameraOrientation', values['cameraOrientation'])
 
         # Serialize xml file
         self._serialize()
@@ -326,6 +328,7 @@ class PresetData(AbstractData):
         <header>
             <shooting mode="preset">
                 <stabilizationDelay>0.5</stabilizationDelay>
+                <cameraOrientation>portrait</cameraOrientation>
                 <start>Mon Oct 13 10:30:47 2008</start>
                 <end>Mon Oct 13 10:31:40 2008</end>
                 <comment>Inside my living room</comment>
@@ -333,59 +336,57 @@ class PresetData(AbstractData):
             <preset template="3@-15 + Z"/>
             <camera>
                 <timeValue>0.5</timeValue>
-                <nbPicts>3</nbPicts>
+                <bracketing intent="focus" nbPicts="1"/>
                 <sensor coef="1.6" ratio="3:2"/>
             </camera>
-            <lens>
-                <focal>17.0</focal>
-            </lens>
+            <lens type="fisheye"/>
         </header>
         <shoot>
-            <pict id="1" num="1">
+            <pict id="1" bracket="1">
                 <time>Mon Oct 13 10:31:04 2008</time>
                 <position pitch="-15.0" yaw="0.0"/>
             </pict>
-            <pict id="2" num="2">
+            <pict id="2" bracket="2">
                 <time>Mon Oct 13 10:31:05 2008</time>
                 <position pitch="-15.0" yaw="0.0"/>
             </pict>
-            <pict id="3" num="3">
+            <pict id="3" bracket="3">
                 <time>Mon Oct 13 10:31:06 2008</time>
                 <position pitch="-15.0" yaw="0.0"/>
             </pict>
-            <pict id="4" num="1">
+            <pict id="4" bracket="1">
                 <time>Mon Oct 13 10:31:16 2008</time>
                 <position pitch="-15.0" yaw="120.0"/>
             </pict>
-            <pict id="5" num="2">
+            <pict id="5" bracket="2">
                 <time>Mon Oct 13 10:31:17 2008</time>
                 <position pitch="-15.0" yaw="120.0"/>
             </pict>
-            <pict id="6" num="3">
+            <pict id="6" bracket="3">
                 <time>Mon Oct 13 10:31:18 2008</time>
                 <position pitch="-15.0" yaw="120.0"/>
             </pict>
-            <pict id="7" num="1">
+            <pict id="7" bracket="1">
                 <time>Mon Oct 13 10:31:27 2008</time>
                 <position pitch="-15.0" yaw="240.0"/>
             </pict>
-            <pict id="8" num="2">
+            <pict id="8" bracket="2">
                 <time>Mon Oct 13 10:31:28 2008</time>
                 <position pitch="-15.0" yaw="240.0"/>
             </pict>
-            <pict id="9" num="3">
+            <pict id="9" bracket="3">
                 <time>Mon Oct 13 10:31:29 2008</time>
                 <position pitch="-15.0" yaw="240.0"/>
             </pict>
-            <pict id="10" num="1">
+            <pict id="10" bracket="1">
                 <time>Mon Oct 13 10:31:38 2008</time>
                 <position pitch="90.0" yaw="240.0"/>
             </pict>
-            <pict id="11" num="2">
+            <pict id="11" bracket="2">
                 <time>Mon Oct 13 10:31:39 2008</time>
                 <position pitch="90.0" yaw="240.0"/>
             </pict>
-            <pict id="12" num="3">
+            <pict id="12" bracket="3">
                 <time>Mon Oct 13 10:31:40 2008</time>
                 <position pitch="90.0" yaw="240.0"/>
             </pict>
