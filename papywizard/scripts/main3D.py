@@ -135,6 +135,9 @@ class Papywizard3D(object):
 def main():
     if hasattr(sys, "frozen"):
         sys.stderr = BlackHole()
+        Logger(defaultStream=False)
+    else:
+        Logger()
 
     app = Papywizard3D()
     try:

@@ -235,6 +235,9 @@ class Papywizard(object):
 def main():
     if hasattr(sys, "frozen"):
         sys.stderr = BlackHole()
+        Logger(defaultStream=False)
+    else:
+        Logger()
 
     try:
         app = Papywizard()
