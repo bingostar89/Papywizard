@@ -7,39 +7,39 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-14 15:20+0200\n"
-"PO-Revision-Date: 2008-10-13 19:50+0100\n"
+"POT-Creation-Date: 2008-10-16 14:02+0200\n"
+"PO-Revision-Date: 2008-10-16 14:05+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: papywizard/model/shooting.py:97 papywizard/model/shooting.py:157
-#: papywizard/model/shooting.py:167
+#: papywizard/model/shooting.py:97
+#: papywizard/model/shooting.py:169
+#: papywizard/model/shooting.py:179
 msgid "Idle"
 msgstr "Bezczynny"
 
-#: papywizard/model/shooting.py:211
+#: papywizard/model/shooting.py:225
 msgid "Moving"
 msgstr "Namierzam"
 
-#: papywizard/model/shooting.py:218
+#: papywizard/model/shooting.py:232
 msgid "Stabilizing"
 msgstr "Stabilizuje"
 
-#: papywizard/model/shooting.py:230
+#: papywizard/model/shooting.py:244
 #, python-format
 msgid "Shooting %d/%d"
 msgstr "Strzelam %d/%d"
 
-#: papywizard/model/shooting.py:257
+#: papywizard/model/shooting.py:271
 msgid "Canceled"
 msgstr "Anulowano"
 
-#: papywizard/model/shooting.py:262
+#: papywizard/model/shooting.py:276
 msgid "Over"
 msgstr "Zakończone"
 
@@ -59,7 +59,8 @@ msgid "Resume"
 msgstr "Zresetuj"
 
 #: papywizard/controller/shootController.py:250
-#: papywizard/controller/shootController.py:266 tmp/shootDialog.glade.h:11
+#: papywizard/controller/shootController.py:266
+#: tmp/shootDialog.glade.h:11
 msgid "Suspend"
 msgstr "Zawieś"
 
@@ -144,17 +145,19 @@ msgstr "Tryb symulacji"
 
 #: tmp/bluetoothChooserDialog.glade.h:1
 msgid "Bluetooth"
-msgstr ""
+msgstr "Bluetooth"
 
 #: tmp/bluetoothChooserDialog.glade.h:2
 msgid "Bluetooth devices list"
 msgstr "Lista urządzeń Bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:53
+#: tmp/bluetoothChooserDialog.glade.h:3
+#: tmp/configDialog.glade.h:61
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:4 tmp/configDialog.glade.h:54
+#: tmp/bluetoothChooserDialog.glade.h:4
+#: tmp/configDialog.glade.h:62
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -185,171 +188,189 @@ msgid "BT device address"
 msgstr "Adres Bluetooth"
 
 #: tmp/configDialog.glade.h:8
-msgid "CR"
+msgid "Bracketing"
 msgstr ""
 
 #: tmp/configDialog.glade.h:9
-msgid "Camera / lens"
-msgstr "Aparat / soczewka"
+msgid "CR"
+msgstr ""
 
 #: tmp/configDialog.glade.h:10
+#, fuzzy
+msgid "Camera"
+msgstr "Aparat / soczewka"
+
+#: tmp/configDialog.glade.h:11
 msgid "Cariage return at each end of raw/col (mosaic mode)"
 msgstr "Powrót głowicy pod koniec każdego rzędu/kolumny (tryb mozaika)"
 
-#: tmp/configDialog.glade.h:11
+#: tmp/configDialog.glade.h:12
 msgid "Choose..."
 msgstr "Wybierz..."
 
-#: tmp/configDialog.glade.h:12
+#: tmp/configDialog.glade.h:13
 msgid "Coef. of the sensor to 35mm size"
 msgstr "Ekwiwalent matrycy do 35mm"
 
-#: tmp/configDialog.glade.h:13
+#: tmp/configDialog.glade.h:14
 msgid "Configuration"
 msgstr "Konfiguracja"
 
-#: tmp/configDialog.glade.h:14
+#: tmp/configDialog.glade.h:15
 msgid "Data file format"
 msgstr "Format pliku danych"
 
-#: tmp/configDialog.glade.h:15
+#: tmp/configDialog.glade.h:16
 msgid "Delay to wait after each move"
 msgstr "Ile czekać po każdym ruchu"
 
-#: tmp/configDialog.glade.h:16
+#: tmp/configDialog.glade.h:17
 msgid "Direction of the first move (mosaic mode)"
 msgstr "Kierunek pierwszego ruchu (tryb mozaika)"
 
-#: tmp/configDialog.glade.h:17
+#: tmp/configDialog.glade.h:18
 msgid "Driver"
 msgstr "Sterownik"
 
-#: tmp/configDialog.glade.h:18
+#: tmp/configDialog.glade.h:19
 msgid "Driver to use to connect to hardware"
 msgstr "Sterownik do połączenia ze sprzętem"
 
-#: tmp/configDialog.glade.h:19
+#: tmp/configDialog.glade.h:20
 msgid "Ethernet host/port"
 msgstr ""
 
-#: tmp/configDialog.glade.h:20
+#: tmp/configDialog.glade.h:21
 msgid "Ethernet port"
 msgstr ""
 
-#: tmp/configDialog.glade.h:21
+#: tmp/configDialog.glade.h:22
+#, fuzzy
+msgid "Focal (mm)"
+msgstr "Ogniskowa (mm)"
+
+#: tmp/configDialog.glade.h:23
 msgid "Focal of the lens"
 msgstr "Ogniskowa"
 
-#: tmp/configDialog.glade.h:22
+#: tmp/configDialog.glade.h:24
 msgid "Force overlap to get square pictures (mosaic mode)"
-msgstr ""
-"Wymuś zachodzenie na siebie aby uzyskać kwadratowy obraz (tryb mozaika)"
+msgstr "Wymuś zachodzenie na siebie aby uzyskać kwadratowy obraz (tryb mozaika)"
 
-#: tmp/configDialog.glade.h:23
+#: tmp/configDialog.glade.h:25
 msgid "Format of the xml data file name"
 msgstr "Format nazwy pliku danych xml"
 
-#: tmp/configDialog.glade.h:24
+#: tmp/configDialog.glade.h:26
 msgid "From where to start shooting (mosaic mode)"
 msgstr "Skąd zacząć strzelać (tryb mozaika)"
 
-#: tmp/configDialog.glade.h:25 tmp/mainWindow.glade.h:15
+#: tmp/configDialog.glade.h:27
+#: tmp/mainWindow.glade.h:15
 msgid "Hardware"
 msgstr "Sprzęt"
 
-#: tmp/configDialog.glade.h:26
+#: tmp/configDialog.glade.h:28
 msgid "Host name or IP address"
 msgstr ""
 
-#: tmp/configDialog.glade.h:27
+#: tmp/configDialog.glade.h:29
 msgid "Inital direction"
 msgstr "Pierwotny kierunek"
 
-#: tmp/configDialog.glade.h:28
-msgid "Lens focal (mm)"
-msgstr "Ogniskowa (mm)"
+#: tmp/configDialog.glade.h:30
+#, fuzzy
+msgid "Intent of the bracketing"
+msgstr "Port konwertera szeregowego"
 
-#: tmp/configDialog.glade.h:29
+#: tmp/configDialog.glade.h:31
+msgid "Lens"
+msgstr ""
+
+#: tmp/configDialog.glade.h:32
 msgid "Level of the logger"
 msgstr "Poziom loggera"
 
-#: tmp/configDialog.glade.h:30
+#: tmp/configDialog.glade.h:33
 msgid "Logger level"
 msgstr "Poziom Loggera"
 
-#: tmp/configDialog.glade.h:31
+#: tmp/configDialog.glade.h:34
 msgid "Minimum wanted overlap (mosaic mode)"
 msgstr "Minimalny poziom zachodzenia na siebie (tryb mozaiki)"
 
-#: tmp/configDialog.glade.h:32
+#: tmp/configDialog.glade.h:35
 msgid "Misc"
 msgstr "Różne"
 
-#: tmp/configDialog.glade.h:33
-msgid "Number of pictures"
-msgstr "Ilość zdjęć"
-
-#: tmp/configDialog.glade.h:34
-msgid "Number of pictures to shoot at each position"
+#: tmp/configDialog.glade.h:36
+#, fuzzy
+msgid "Number of pictures of the bracketing"
 msgstr "Ile zdjęć strzelać przy każdej pozycji"
 
-#: tmp/configDialog.glade.h:35
+#: tmp/configDialog.glade.h:37
 msgid "Orientation"
 msgstr "Orientacja"
 
-#: tmp/configDialog.glade.h:36
-msgid "Orientation of the camera (mosaic mode)"
+#: tmp/configDialog.glade.h:38
+#, fuzzy
+msgid "Orientation of the camera"
 msgstr "Orientacja aparatu (tryb mozaiki)"
 
-#: tmp/configDialog.glade.h:38
+#: tmp/configDialog.glade.h:40
 msgid "Overlap (%)"
 msgstr "Zachodzenie (%)"
 
-#: tmp/configDialog.glade.h:39
+#: tmp/configDialog.glade.h:41
 msgid "Port of the serial converter"
 msgstr "Port konwertera szeregowego"
 
-#: tmp/configDialog.glade.h:40
+#: tmp/configDialog.glade.h:42
 msgid "Ratio of the sensor"
 msgstr "Proporcja matrycy"
 
-#: tmp/configDialog.glade.h:41
+#: tmp/configDialog.glade.h:43
 msgid "Sensor coef."
 msgstr "Ekwiwalent matrycy"
 
-#: tmp/configDialog.glade.h:42
+#: tmp/configDialog.glade.h:44
 msgid "Sensor ratio"
 msgstr "Proporcja matrycy"
 
-#: tmp/configDialog.glade.h:43
+#: tmp/configDialog.glade.h:45
 msgid "Serial port"
 msgstr "Port szeregowy"
 
-#: tmp/configDialog.glade.h:44 tmp/shootDialog.glade.h:6
+#: tmp/configDialog.glade.h:46
+#: tmp/shootDialog.glade.h:6
 msgid "Shooting"
 msgstr "Strzelam"
 
-#: tmp/configDialog.glade.h:45
+#: tmp/configDialog.glade.h:47
 msgid "Square"
 msgstr "Kwadratowe"
 
-#: tmp/configDialog.glade.h:46
+#: tmp/configDialog.glade.h:48
 msgid "Stab. delay (sec)"
 msgstr "Opóźnienie stabilizacyjne (s)"
 
-#: tmp/configDialog.glade.h:47
+#: tmp/configDialog.glade.h:49
 msgid "Start from"
 msgstr "Zacznij od"
 
-#: tmp/configDialog.glade.h:48
+#: tmp/configDialog.glade.h:50
 msgid "Time value (sec)"
 msgstr ""
 
-#: tmp/configDialog.glade.h:49
+#: tmp/configDialog.glade.h:51
 msgid "Time value of the camera"
 msgstr ""
 
-#: tmp/configDialog.glade.h:50
+#: tmp/configDialog.glade.h:52
+msgid "Type"
+msgstr ""
+
+#: tmp/configDialog.glade.h:53
 #, fuzzy
 msgid ""
 "bluetooth\n"
@@ -360,7 +381,16 @@ msgstr ""
 "szeregowy\n"
 "usb"
 
-#: tmp/configDialog.glade.h:55
+#: tmp/configDialog.glade.h:56
+msgid ""
+"exposure\n"
+"focus\n"
+"white balance\n"
+"movement\n"
+"mirror lockup"
+msgstr ""
+
+#: tmp/configDialog.glade.h:63
 msgid ""
 "portrait\n"
 "landscape"
@@ -368,7 +398,13 @@ msgstr ""
 "pionowy\n"
 "poziomy"
 
-#: tmp/configDialog.glade.h:57
+#: tmp/configDialog.glade.h:65
+msgid ""
+"recilinear\n"
+"fisheye"
+msgstr ""
+
+#: tmp/configDialog.glade.h:67
 msgid ""
 "start\n"
 "end"
@@ -376,7 +412,7 @@ msgstr ""
 "początek\n"
 "koniec"
 
-#: tmp/configDialog.glade.h:59
+#: tmp/configDialog.glade.h:69
 msgid ""
 "trace\n"
 "debug\n"
@@ -394,11 +430,13 @@ msgstr ""
 "exception\n"
 "critical"
 
-#: tmp/configDialog.glade.h:66
+#: tmp/configDialog.glade.h:76
 msgid ""
 "yaw\n"
 "pitch"
 msgstr ""
+"yaw\n"
+"pitch"
 
 #: tmp/helpAboutDialog.glade.h:1
 msgid "(C) 2007-2008 Frédéric Mantegazza"
@@ -456,6 +494,32 @@ msgid ""
 "knowledge of the CeCILL license and that you accept its terms.\n"
 "CeCILL"
 msgstr ""
+"This software is governed by the CeCILL license under French law and\n"
+"abiding by the rules of distribution of free software.  You can  use, \n"
+"modify and/or redistribute the software under the terms of the CeCILL\n"
+"license as circulated by CEA, CNRS and INRIA at the following URL\n"
+"http://www.cecill.info.\n"
+"\n"
+"As a counterpart to the access to the source code and  rights to copy,\n"
+"modify and redistribute granted by the license, users are provided only\n"
+"with a limited warranty  and the software's author,  the holder of the\n"
+"economic rights,  and the successive licensors  have only  limited\n"
+"liability. \n"
+"\n"
+"In this respect, the user's attention is drawn to the risks associated\n"
+"with loading,  using,  modifying and/or developing or reproducing the\n"
+"software by the user in light of its specific status of free software,\n"
+"that may mean  that it is complicated to manipulate,  and  that  also\n"
+"therefore means  that it is reserved for developers  and  experienced\n"
+"professionals having in-depth computer knowledge. Users are therefore\n"
+"encouraged to load and test the software's suitability as regards their\n"
+"requirements in conditions enabling the security of their systems and/or \n"
+"data to be ensured and,  more generally, to use and operate it in the \n"
+"same conditions as regards security. \n"
+"\n"
+"The fact that you are presently reading this means that you have had\n"
+"knowledge of the CeCILL license and that you accept its terms.\n"
+"CeCILL"
 
 #: tmp/helpAboutDialog.glade.h:35
 msgid "À propos de Papywizard"
@@ -473,22 +537,23 @@ msgstr "Wyczyść okno z logiem"
 msgid "Logger"
 msgstr ""
 
-#: tmp/loggerDialog.glade.h:4 tmp/presetTemplateInfoDialog.glade.h:2
+#: tmp/loggerDialog.glade.h:4
+#: tmp/presetTemplateInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:14
 msgid "gtk-close"
 msgstr "gtk-close"
 
 #: tmp/mainWindow.glade.h:1
 msgid "    Pitch    "
-msgstr ""
+msgstr "Pitch"
 
 #: tmp/mainWindow.glade.h:2
 msgid "    Yaw    "
-msgstr ""
+msgstr "Yaw"
 
 #: tmp/mainWindow.glade.h:3
 msgid "   Yaw   "
-msgstr ""
+msgstr "Yaw"
 
 #: tmp/mainWindow.glade.h:4
 msgid "--"
@@ -738,6 +803,6 @@ msgstr "Zapisz plik danych"
 msgid "Please wait..."
 msgstr "Prosze poczekać..."
 
-#, fuzzy
-#~ msgid "Port of the socket"
-#~ msgstr "Port konwertera szeregowego"
+#~ msgid "Number of pictures"
+#~ msgstr "Ilość zdjęć"
+
