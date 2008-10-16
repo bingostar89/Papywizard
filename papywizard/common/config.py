@@ -74,8 +74,14 @@ SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3.}
 SENSOR_RATIOS_INDEX = {'3:2': 0, '4:3': 1, '5:4': 5./4.,
                        0: '3:2', 1: '4:3', 2: '5:4'}
 
-CAMERA_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1,
-                            0: 'portrait', 1: 'landscape'}
+SHOOTING_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1,
+                              0: 'portrait', 1: 'landscape'}
+
+CAMERA_BRACKETING_INTENT_INDEX = {'exposure': 0, 'focus' : 1, 'white balance': 2, 'movement': 3, 'mirror lockup': 4,
+                                  0: 'exposure', 1: 'focus', 2: 'white balance', 3: 'movement', 4: 'mirror lockup'}
+
+LENS_TYPE_INDEX = {'rectilinear': 0, 'fisheye': 1,
+                   0: 'rectilinear', 1: 'fisheye'}
 
 MOSAIC_START_FROM_INDEX = {'start': 0, 'end': 1,
                            0: 'start', 1 : 'end'}
