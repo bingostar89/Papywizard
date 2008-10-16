@@ -103,7 +103,7 @@ class ConfigManager(object):
 
                 # Check dev. versions
                 if isOdd(distConfigVersion) or \
-                   isPar(distConfigVersion) and isOdd(userConfigVersion):
+                   not isOdd(distConfigVersion) and isOdd(userConfigVersion):
                     Logger().debug("ConfigManager.__init__(): Dev. version detected; user config. overwritten with dist. config.")
                     distConfig.write(file(config.USER_CONFIG_FILE, 'w'))
                     userConfig = ConfigParser.SafeConfigParser()
