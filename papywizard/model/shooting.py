@@ -90,7 +90,7 @@ class Shooting(object):
         self.startEvent.clear()
         self.camera = Camera()
         self.mosaic = MosaicScan(self)
-        self.preset = PresetScan()
+        self.preset = PresetScan(self)
 
         self.position = self.hardware.readPosition()
         self.progress = 0.
