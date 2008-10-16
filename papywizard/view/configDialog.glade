@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Oct 16 13:39:15 2008 -->
+<!--Generated with glade3 3.4.5 on Thu Oct 16 21:02:09 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="border_width">5</property>
@@ -27,56 +27,116 @@
                     <property name="column_spacing">5</property>
                     <property name="row_spacing">5</property>
                     <child>
-                      <widget class="GtkCheckButton" id="overlapSquareCheckbutton">
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <widget class="GtkCheckButton" id="crCheckbutton">
                         <property name="visible">True</property>
-                        <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Force overlap to get square pictures (mosaic mode)</property>
-                        <property name="label" translatable="yes" context="yes">Square</property>
+                        <property name="tooltip" translatable="yes" context="yes">Cariage return at each end of raw/col (mosaic mode)</property>
+                        <property name="label" translatable="yes" context="yes">CR</property>
                         <property name="response_id">0</property>
                         <property name="draw_indicator">True</property>
                       </widget>
                       <packing>
                         <property name="left_attach">2</property>
                         <property name="right_attach">3</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
+                        <property name="top_attach">4</property>
+                        <property name="bottom_attach">5</property>
                       </packing>
                     </child>
                     <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <widget class="GtkComboBox" id="cameraOrientationCombobox">
+                      <widget class="GtkComboBox" id="startFromCombobox">
                         <property name="visible">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Orientation of the camera</property>
-                        <property name="items" translatable="yes" context="yes">portrait
-landscape</property>
+                        <property name="tooltip" translatable="yes" context="yes">From where to start shooting (mosaic mode)</property>
+                        <property name="items" translatable="yes" context="yes">start
+end</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label53">
+                      <widget class="GtkLabel" id="label10">
                         <property name="visible">True</property>
                         <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Orientation</property>
+                        <property name="label" translatable="yes" context="yes">Inital direction</property>
                       </widget>
                       <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
+                        <property name="top_attach">4</property>
+                        <property name="bottom_attach">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label8">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes" context="yes">Start from</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkComboBox" id="initialDirectionCombobox">
+                        <property name="visible">True</property>
+                        <property name="has_tooltip">True</property>
+                        <property name="tooltip" translatable="yes" context="yes">Direction of the first move (mosaic mode)</property>
+                        <property name="items" translatable="yes" context="yes">yaw
+pitch</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">4</property>
+                        <property name="bottom_attach">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkSpinButton" id="stabilizationDelaySpinbutton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="has_tooltip">True</property>
+                        <property name="tooltip" translatable="yes" context="yes">Delay to wait after each move</property>
+                        <property name="max_length">5</property>
+                        <property name="width_chars">5</property>
+                        <property name="xalign">1</property>
+                        <property name="adjustment">0.5 0 10 0.5 10 10</property>
+                        <property name="digits">1</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label49">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes" context="yes">Stab. delay (sec)</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label51">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes" context="yes">Overlap (%)</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
                       </packing>
                     </child>
                     <child>
@@ -98,107 +158,47 @@ landscape</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label51">
+                      <widget class="GtkLabel" id="label53">
                         <property name="visible">True</property>
                         <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Overlap (%)</property>
+                        <property name="label" translatable="yes" context="yes">Camera orientation</property>
                       </widget>
                       <packing>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label49">
+                      <widget class="GtkComboBox" id="cameraOrientationCombobox">
                         <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Stab. delay (sec)</property>
+                        <property name="has_tooltip">True</property>
+                        <property name="tooltip" translatable="yes" context="yes">Orientation of the camera</property>
+                        <property name="items" translatable="yes" context="yes">portrait
+landscape</property>
                       </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
                     </child>
                     <child>
-                      <widget class="GtkSpinButton" id="stabilizationDelaySpinbutton">
+                      <widget class="GtkCheckButton" id="overlapSquareCheckbutton">
                         <property name="visible">True</property>
+                        <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Delay to wait after each move</property>
-                        <property name="max_length">5</property>
-                        <property name="width_chars">5</property>
-                        <property name="xalign">1</property>
-                        <property name="adjustment">0.5 0 10 0.5 10 10</property>
-                        <property name="digits">1</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkComboBox" id="initialDirectionCombobox">
-                        <property name="visible">True</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Direction of the first move (mosaic mode)</property>
-                        <property name="items" translatable="yes" context="yes">yaw
-pitch</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">4</property>
-                        <property name="bottom_attach">5</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label8">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Start from</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label10">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Inital direction</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">4</property>
-                        <property name="bottom_attach">5</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkComboBox" id="startFromCombobox">
-                        <property name="visible">True</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">From where to start shooting (mosaic mode)</property>
-                        <property name="items" translatable="yes" context="yes">start
-end</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkCheckButton" id="crCheckbutton">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Cariage return at each end of raw/col (mosaic mode)</property>
-                        <property name="label" translatable="yes" context="yes">CR</property>
+                        <property name="tooltip" translatable="yes" context="yes">Force overlap to get square pictures (mosaic mode)</property>
+                        <property name="label" translatable="yes" context="yes">Square</property>
                         <property name="response_id">0</property>
                         <property name="draw_indicator">True</property>
                       </widget>
                       <packing>
                         <property name="left_attach">2</property>
                         <property name="right_attach">3</property>
-                        <property name="top_attach">4</property>
-                        <property name="bottom_attach">5</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
                       </packing>
                     </child>
                   </widget>
@@ -238,83 +238,33 @@ end</property>
                       <placeholder/>
                     </child>
                     <child>
-                      <widget class="GtkComboBox" id="bracketingIntentCombobox">
-                        <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Intent of the bracketing</property>
-                        <property name="items" translatable="yes">exposure
-focus
-white balance
-movement
-mirror lockup</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">2</property>
-                        <property name="right_attach">3</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkComboBox" id="sensorRatioCombobox">
-                        <property name="visible">True</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Ratio of the sensor</property>
-                        <property name="items" translatable="yes" context="yes">3:2
-4:3
-5:4</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                        <property name="x_padding">5</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label7">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Sensor ratio</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label47">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Time value (sec)</property>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkSpinButton" id="timeValueSpinbutton">
+                      <widget class="GtkSpinButton" id="sensorCoefSpinbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Time value of the camera</property>
-                        <property name="max_length">6</property>
-                        <property name="width_chars">6</property>
+                        <property name="tooltip" translatable="yes" context="yes">Coef. of the sensor to 35mm size</property>
+                        <property name="max_length">5</property>
+                        <property name="width_chars">5</property>
                         <property name="xalign">1</property>
-                        <property name="adjustment">0.10000000000000001 0.10000000000000001 100 0.10000000000000001 10 10</property>
+                        <property name="adjustment">1.6000000000000001 0.10000000000000001 10 0.10000000000000001 1 1</property>
                         <property name="digits">1</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label48">
+                      <widget class="GtkLabel" id="label50">
                         <property name="visible">True</property>
                         <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Bracketing</property>
+                        <property name="label" translatable="yes" context="yes">Sensor coef.</property>
                       </widget>
                       <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
                       </packing>
                     </child>
                     <child>
@@ -337,33 +287,83 @@ mirror lockup</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label50">
+                      <widget class="GtkLabel" id="label48">
                         <property name="visible">True</property>
                         <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Sensor coef.</property>
+                        <property name="label" translatable="yes" context="yes">Bracketing</property>
                       </widget>
                       <packing>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkSpinButton" id="sensorCoefSpinbutton">
+                      <widget class="GtkSpinButton" id="timeValueSpinbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Coef. of the sensor to 35mm size</property>
-                        <property name="max_length">5</property>
-                        <property name="width_chars">5</property>
+                        <property name="tooltip" translatable="yes" context="yes">Time value of the camera</property>
+                        <property name="max_length">6</property>
+                        <property name="width_chars">6</property>
                         <property name="xalign">1</property>
-                        <property name="adjustment">1.6000000000000001 0.10000000000000001 10 0.10000000000000001 1 1</property>
+                        <property name="adjustment">0.10000000000000001 0.10000000000000001 100 0.10000000000000001 10 10</property>
                         <property name="digits">1</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label47">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes" context="yes">Time value (sec)</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label7">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes" context="yes">Sensor ratio</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkComboBox" id="sensorRatioCombobox">
+                        <property name="visible">True</property>
+                        <property name="has_tooltip">True</property>
+                        <property name="tooltip" translatable="yes" context="yes">Ratio of the sensor</property>
+                        <property name="items" translatable="yes" context="yes">3:2
+4:3
+5:4</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
+                        <property name="x_padding">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkComboBox" id="bracketingIntentCombobox">
+                        <property name="visible">True</property>
+                        <property name="tooltip" translatable="yes" context="yes">Intent of the bracketing</property>
+                        <property name="items" translatable="yes" context="yes">exposure
+focus
+white balance
+movement
+mirror lockup</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="right_attach">3</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
                       </packing>
                     </child>
                   </widget>
@@ -398,6 +398,36 @@ mirror lockup</property>
                     <property name="column_spacing">5</property>
                     <property name="row_spacing">5</property>
                     <child>
+                      <widget class="GtkLabel" id="label13">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes" context="yes">Type</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkComboBox" id="lensTypeCombobox">
+                        <property name="visible">True</property>
+                        <property name="items" translatable="yes" context="yes">recilinear
+fisheye</property>
+                        <signal name="changed" handler="on_lensTypeCombobox_changed"/>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="focalLabel">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes" context="yes">Focal (mm)</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
                       <widget class="GtkSpinButton" id="focalSpinbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -415,36 +445,6 @@ mirror lockup</property>
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
                       </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="focalLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Focal (mm)</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkComboBox" id="lensTypeCombobox">
-                        <property name="visible">True</property>
-                        <property name="items" translatable="yes">recilinear
-fisheye</property>
-                        <signal name="changed" handler="on_lensTypeCombobox_changed"/>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label13">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes">Type</property>
-                      </widget>
                     </child>
                   </widget>
                   <packing>
@@ -490,94 +490,41 @@ fisheye</property>
                       <placeholder/>
                     </child>
                     <child>
-                      <widget class="GtkButton" id="bluetoothChooseButton">
+                      <widget class="GtkSpinButton" id="ethernetPortSpinbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip_text">choose address of the bluetooth device from list</property>
-                        <property name="label" translatable="yes" context="yes">Choose...</property>
-                        <property name="response_id">0</property>
-                        <signal name="clicked" handler="on_bluetoothChooseButton_clicked"/>
+                        <property name="tooltip" translatable="yes" context="yes">Ethernet port</property>
+                        <property name="adjustment">1024 1024 65535 1 10 10</property>
                       </widget>
                       <packing>
                         <property name="left_attach">2</property>
                         <property name="right_attach">3</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkEntry" id="serialPortEntry">
+                      <widget class="GtkEntry" id="ethernetHostEntry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Port of the serial converter</property>
+                        <property name="tooltip" translatable="yes" context="yes">Host name or IP address</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkEntry" id="bluetoothDeviceAddressEntry">
+                      <widget class="GtkLabel" id="ethernetHostPortLabel">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Address of the bluetooth converter</property>
+                        <property name="label" translatable="yes" context="yes">Ethernet host/port</property>
                       </widget>
                       <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
                       </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="serialPortLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Serial port</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="bluetoothDeviceAddressLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">BT device address</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkComboBox" id="driverCombobox">
-                        <property name="visible">True</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Driver to use to connect to hardware</property>
-                        <property name="items" translatable="yes" context="yes">bluetooth
-serial
-ethernet</property>
-                        <signal name="changed" handler="on_driverCombobox_changed"/>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label11">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Driver</property>
-                      </widget>
                     </child>
                     <child>
                       <widget class="GtkCheckButton" id="hardwareAutoConnectCheckbutton">
@@ -597,40 +544,93 @@ ethernet</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="ethernetHostPortLabel">
+                      <widget class="GtkLabel" id="label11">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes" context="yes">Ethernet host/port</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes" context="yes">Driver</property>
                       </widget>
-                      <packing>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                      </packing>
                     </child>
                     <child>
-                      <widget class="GtkEntry" id="ethernetHostEntry">
+                      <widget class="GtkComboBox" id="driverCombobox">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Host name or IP address</property>
+                        <property name="has_tooltip">True</property>
+                        <property name="tooltip" translatable="yes" context="yes">Driver to use to connect to hardware</property>
+                        <property name="items" translatable="yes" context="yes">bluetooth
+serial
+ethernet</property>
+                        <signal name="changed" handler="on_driverCombobox_changed"/>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkSpinButton" id="ethernetPortSpinbutton">
+                      <widget class="GtkLabel" id="bluetoothDeviceAddressLabel">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes" context="yes">BT device address</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="serialPortLabel">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes" context="yes">Serial port</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkEntry" id="bluetoothDeviceAddressEntry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Ethernet port</property>
-                        <property name="adjustment">1024 1024 65535 1 10 10</property>
+                        <property name="has_tooltip">True</property>
+                        <property name="tooltip" translatable="yes" context="yes">Address of the bluetooth converter</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkEntry" id="serialPortEntry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="has_tooltip">True</property>
+                        <property name="tooltip" translatable="yes" context="yes">Port of the serial converter</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkButton" id="bluetoothChooseButton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="has_tooltip">True</property>
+                        <property name="tooltip_text">choose address of the bluetooth device from list</property>
+                        <property name="label" translatable="yes" context="yes">Choose...</property>
+                        <property name="response_id">0</property>
+                        <signal name="clicked" handler="on_bluetoothChooseButton_clicked"/>
                       </widget>
                       <packing>
                         <property name="left_attach">2</property>
                         <property name="right_attach">3</property>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
                       </packing>
                     </child>
                   </widget>
@@ -665,6 +665,39 @@ ethernet</property>
                     <property name="column_spacing">5</property>
                     <property name="row_spacing">5</property>
                     <child>
+                      <widget class="GtkEntry" id="dataFileFormatEntry">
+                        <property name="width_request">275</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="has_tooltip">True</property>
+                        <property name="tooltip" translatable="yes" context="yes">Format of the xml data file name</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label5">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes" context="yes">Data file format</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label6">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes" context="yes">Logger level</property>
+                      </widget>
+                    </child>
+                    <child>
                       <widget class="GtkComboBox" id="loggerCLevelCombobox">
                         <property name="width_request">250</property>
                         <property name="visible">True</property>
@@ -684,39 +717,6 @@ critical</property>
                         <property name="y_options">GTK_EXPAND</property>
                       </packing>
                     </child>
-                    <child>
-                      <widget class="GtkLabel" id="label6">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Logger level</property>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label5">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Data file format</property>
-                      </widget>
-                      <packing>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkEntry" id="dataFileFormatEntry">
-                        <property name="width_request">275</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Format of the xml data file name</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">1</property>
-                        <property name="right_attach">2</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                      </packing>
-                    </child>
                   </widget>
                   <packing>
                     <property name="fill">False</property>
@@ -730,7 +730,7 @@ critical</property>
             <child>
               <widget class="GtkLabel" id="label9">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Misc</property>
+                <property name="label" translatable="yes" context="yes">Misc</property>
               </widget>
               <packing>
                 <property name="type">tab</property>
