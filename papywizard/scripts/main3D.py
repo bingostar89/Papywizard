@@ -52,6 +52,7 @@ import sys
 import socket
 
 from papywizard.common import config
+from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.view3D.view3D import View3D
 
@@ -73,18 +74,30 @@ class Papywizard3D(object):
         """
         Logger().setLevel(config.VIEW3D_LOGGER_LEVEL)
 
+    def _connect(self):
+        """ Connect to server socket.
+        """
+        Logger().debug("Papywizard3D._connect(): try to connect to server...")
+        while True:
+            try:
+
+                # Create and connect socket for Papywizard main app connection
+                self.__sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                self.__sock.connect((config.PUBLISHER_HOST, config.PUBLISHER_PORT))
+            except socket.error:
+                Logger().warning("Can't connect to server. Renewing in 5 s...")
+                time.sleep(5)
+                continue
+            else:
+                Logger().debug("Papywizard3D._connect(): connection established")
+                break
+
     def init(self):
         """ Init the application.
         """
-
-        # Create 3D view
         self.__view3D = View3D("Papywizard3D", scale=(1, 1, 1))
-        #Spy().newPosSignal.connect(self.__view3D.draw)
-        #Spy().newPosSignal.connect(self.__view3D.viewFromCamera)
-
-        # Create socket for Papywizard main app connection
-        self.__sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+        self.__view3D.visible = True
+        self._connect()
         self.__run = False
 
     def run(self):
@@ -92,18 +105,24 @@ class Papywizard3D(object):
         """
         Logger().info("Starting Papywizard 3D...")
         self.__run = True
-        self.__view3D.visible = True
 
-        # Connect to Papywizard main app
-        self.__sock.connect((config.PUBLISHER_HOST, config.PUBLISHER_PORT))
         while self.__run:
-            data = self.__sock.recv(4096)
-            if data:
-                data = data.split(',')
-                yaw = float(data[0])
-                pitch = float(data[1])
-                Logger().debug("Papywizard3D.run(): yaw=%.1f, pitch=%.1f" % (yaw, pitch))
-                self.__view3D.draw(yaw, pitch)
+            data = ""
+            try:
+                data = self.__sock.recv(4096)
+            except socket.error:
+                Logger().exception("Papywizard3D.run()")
+            else:
+                if data:
+                    data = data.split(',')
+                    yaw = float(data[0])
+                    pitch = float(data[1])
+                    Logger().debug("Papywizard3D.run(): yaw=%.1f, pitch=%.1f" % (yaw, pitch))
+                    self.__view3D.draw(yaw, pitch)
+                else:
+                    Logger().error("Papywizard3D.run(): lost connection with server")
+                    time.sleep(1)
+                    self._connect()
 
         Logger().info("Papywizard 3D stopped")
 
@@ -118,8 +137,8 @@ def main():
         sys.stderr = BlackHole()
 
     app = Papywizard3D()
-    app.init()
     try:
+        app.init()
         app.run()
     except KeyboardInterrupt:
         pass
