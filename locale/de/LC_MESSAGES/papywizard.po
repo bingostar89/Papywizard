@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-16 14:02+0200\n"
-"PO-Revision-Date: 2008-10-16 20:17+0100\n"
+"POT-Creation-Date: 2008-10-16 21:03+0200\n"
+"PO-Revision-Date: 2008-10-16 21:14+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -43,11 +43,11 @@ msgstr "Abgebrochen"
 msgid "Over"
 msgstr "zu Ende"
 
-#: papywizard/scripts/main.py:257
+#: papywizard/scripts/main.py:260
 msgid "Internal error"
 msgstr "Interner Fehler"
 
-#: papywizard/scripts/main.py:258
+#: papywizard/scripts/main.py:261
 #: papywizard/controller/bluetoothChooserController.py:177
 #: papywizard/controller/mainController.py:689
 msgid "Error"
@@ -192,113 +192,113 @@ msgid "Camera"
 msgstr "Kamera"
 
 #: tmp/configDialog.glade.h:11
+msgid "Camera orientation"
+msgstr "Ausrichtung der Kamera"
+
+#: tmp/configDialog.glade.h:12
 msgid "Cariage return at each end of raw/col (mosaic mode)"
 msgstr "Zeilenvorschub am Ende jeder Spalte/Zeile (Raster)"
 
-#: tmp/configDialog.glade.h:12
+#: tmp/configDialog.glade.h:13
 msgid "Choose..."
 msgstr "Wähle..."
 
-#: tmp/configDialog.glade.h:13
+#: tmp/configDialog.glade.h:14
 msgid "Coef. of the sensor to 35mm size"
 msgstr "Sensorfaktor zu 35mm"
 
-#: tmp/configDialog.glade.h:14
+#: tmp/configDialog.glade.h:15
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: tmp/configDialog.glade.h:15
+#: tmp/configDialog.glade.h:16
 msgid "Data file format"
 msgstr "Dateiname"
 
-#: tmp/configDialog.glade.h:16
+#: tmp/configDialog.glade.h:17
 msgid "Delay to wait after each move"
 msgstr "Pause nach jeder Bewegung"
 
-#: tmp/configDialog.glade.h:17
+#: tmp/configDialog.glade.h:18
 msgid "Direction of the first move (mosaic mode)"
 msgstr "Richtung der ersten Bewegung (Raster)"
 
-#: tmp/configDialog.glade.h:18
+#: tmp/configDialog.glade.h:19
 msgid "Driver"
 msgstr "Treiber"
 
-#: tmp/configDialog.glade.h:19
+#: tmp/configDialog.glade.h:20
 msgid "Driver to use to connect to hardware"
 msgstr "Treiber für Hardwareverbindung"
 
-#: tmp/configDialog.glade.h:20
+#: tmp/configDialog.glade.h:21
 msgid "Ethernet host/port"
 msgstr "Ethernet host/port"
 
-#: tmp/configDialog.glade.h:21
+#: tmp/configDialog.glade.h:22
 msgid "Ethernet port"
 msgstr "Ethernet port"
 
-#: tmp/configDialog.glade.h:22
+#: tmp/configDialog.glade.h:23
 msgid "Focal (mm)"
 msgstr "Brennweite (mm)"
 
-#: tmp/configDialog.glade.h:23
+#: tmp/configDialog.glade.h:24
 msgid "Focal of the lens"
 msgstr "Brennweite"
 
-#: tmp/configDialog.glade.h:24
+#: tmp/configDialog.glade.h:25
 msgid "Force overlap to get square pictures (mosaic mode)"
 msgstr "Überlappung vorgeben für quadr. Bilder (Raster)"
 
-#: tmp/configDialog.glade.h:25
+#: tmp/configDialog.glade.h:26
 msgid "Format of the xml data file name"
 msgstr "Format des XML-Dateinamens"
 
-#: tmp/configDialog.glade.h:26
+#: tmp/configDialog.glade.h:27
 msgid "From where to start shooting (mosaic mode)"
 msgstr "Wo soll Aufnahme starten (Raster)"
 
-#: tmp/configDialog.glade.h:27
+#: tmp/configDialog.glade.h:28
 #: tmp/mainWindow.glade.h:15
 msgid "Hardware"
 msgstr "Hardware"
 
-#: tmp/configDialog.glade.h:28
+#: tmp/configDialog.glade.h:29
 msgid "Host name or IP address"
 msgstr "Hostname oder IP-Addresse"
 
-#: tmp/configDialog.glade.h:29
+#: tmp/configDialog.glade.h:30
 msgid "Inital direction"
 msgstr "Anfangsrichtung"
 
-#: tmp/configDialog.glade.h:30
+#: tmp/configDialog.glade.h:31
 msgid "Intent of the bracketing"
 msgstr "Art der Mehrfachbelichtung"
 
-#: tmp/configDialog.glade.h:31
+#: tmp/configDialog.glade.h:32
 msgid "Lens"
 msgstr "Objektiv"
 
-#: tmp/configDialog.glade.h:32
+#: tmp/configDialog.glade.h:33
 msgid "Level of the logger"
 msgstr "Logger-Stufe"
 
-#: tmp/configDialog.glade.h:33
+#: tmp/configDialog.glade.h:34
 msgid "Logger level"
 msgstr "Logger level"
 
-#: tmp/configDialog.glade.h:34
+#: tmp/configDialog.glade.h:35
 msgid "Minimum wanted overlap (mosaic mode)"
 msgstr "Minimale Überlappung (Raster)"
 
-#: tmp/configDialog.glade.h:35
+#: tmp/configDialog.glade.h:36
 msgid "Misc"
 msgstr "Verschiedenes"
 
-#: tmp/configDialog.glade.h:36
+#: tmp/configDialog.glade.h:37
 msgid "Number of pictures of the bracketing"
 msgstr "Anzahl Bilder der Belichtungsreihe"
-
-#: tmp/configDialog.glade.h:37
-msgid "Orientation"
-msgstr "Ausrichtung"
 
 #: tmp/configDialog.glade.h:38
 msgid "Orientation of the camera"
@@ -375,27 +375,27 @@ msgid ""
 "movement\n"
 "mirror lockup"
 msgstr ""
-"aufnahme\n"
-"fokus\n"
-"weißabgleich\n"
-"bewegung\n"
-"spiegelvorauslösung"
+"Aufnahme\n"
+"Fokus\n"
+"Weißabgleich\n"
+"Bewegung\n"
+"Spiegelvorauslösung"
 
 #: tmp/configDialog.glade.h:63
 msgid ""
 "portrait\n"
 "landscape"
 msgstr ""
-"hoch\n"
-"quer"
+"Hoch\n"
+"Quer"
 
 #: tmp/configDialog.glade.h:65
 msgid ""
 "recilinear\n"
 "fisheye"
 msgstr ""
-"rechtwinklig\n"
-"fischauge"
+"Rechtwinklig\n"
+"Fischauge"
 
 #: tmp/configDialog.glade.h:67
 msgid ""
