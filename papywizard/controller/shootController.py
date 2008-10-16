@@ -89,7 +89,7 @@ class ShootController(AbstractController):
 
     def _retreiveWidgets(self):
         super(ShootController, self)._retreiveWidgets()
-        
+
         vbox = self.wTree.get_widget("vbox")
         drawingarea = self.wTree.get_widget("drawingarea")
         drawingarea.destroy()
@@ -100,13 +100,13 @@ class ShootController(AbstractController):
         vbox.pack_start(self.shootingArea)
         vbox.reorder_child(self.shootingArea, 0)
         if self._model.mode == 'mosaic':
-            
+
             # todo: give args in shootingArea.__init__()
             self.shootingArea.init(self._model.mosaic.yawStart, self._model.mosaic.yawEnd,
                                    self._model.mosaic.pitchStart, self._model.mosaic.pitchEnd,
                                    self._model.mosaic.yawFov, self._model.mosaic.pitchFov,
-                                   self._model.camera.getYawFov(self._model.mosaic.cameraOrientation),
-                                   self._model.camera.getPitchFov(self._model.mosaic.cameraOrientation),
+                                   self._model.camera.getYawFov(self._model.cameraOrientation),
+                                   self._model.camera.getPitchFov(self._model.cameraOrientation),
                                    self._model.mosaic.yawRealOverlap, self._model.mosaic.pitchRealOverlap)
         else:
             self.shootingArea.init(440., 220., # visible fov
@@ -120,17 +120,17 @@ class ShootController(AbstractController):
         self.suspendResumeLabel = self.wTree.get_widget("suspendResumeLabel")
         self.stopButton = self.wTree.get_widget("stopButton")
         self.doneButton = self.wTree.get_widget("doneButton")
-        
+
         self.suspendResumeButton.set_sensitive(False)
         self.stopButton.set_sensitive(False)
 
     def _connectSignals(self):
         super(ShootController, self)._connectSignals()
-        
+
         self.dialog.connect("key-press-event", self.__onKeyPressed)
         self.dialog.connect("key-release-event", self.__onKeyReleased)
         self.dialog.connect("delete-event", self.__onDelete)
-        
+
         self._model.newPictSignal.connect(self.__addPicture)
 
     # Callbacks
@@ -145,20 +145,20 @@ class ShootController(AbstractController):
             if not self.__keyPressedDict['Return']:
                 Logger().debug("shootController.__onKeyPressed(): 'Return' key pressed")
                 self.__keyPressedDict['Return'] = True
-    
+
                 # Pressing 'Return' while not shooting starts shooting
                 if not self._model.isShooting():
                     Logger().debug("shootController.__onKeyPressed(): start shooting")
                     self.__startShooting()
-    
+
                 # Pressing 'Return' while shooting...
                 else:
-    
+
                     # ...and not suspended suspends shooting
                     if not self._model.isSuspended():
                         Logger().debug("shootController.__onKeyPressed(): suspend shooting")
                         self.__suspendShooting()
-    
+
                     #... and suspended resumes shooting
                     else:
                         Logger().debug("shootController.__onKeyPressed(): resume shooting")
@@ -170,12 +170,12 @@ class ShootController(AbstractController):
            if not self.__keyPressedDict['Escape']:
                Logger().debug("shootController.__onKeyPressed(): 'Escape' key pressed")
                self.__keyPressedDict['Escape'] = True
-   
+
                # Pressing 'Escape' while not shooting exit shoot dialog
                if not self._model.isShooting():
                    Logger().debug("shootController.__onKeyPressed(): close shooting dialog")
                    self.dialog.response(0)
-   
+
                # Pressing 'Escape' while shooting stops shooting
                else:
                    Logger().debug("shootController.__onKeyPressed(): stop shooting")
