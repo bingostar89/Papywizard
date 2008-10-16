@@ -57,7 +57,7 @@ import ConfigParser
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
-from papywizard.common.helpers import isOdd, isPar
+from papywizard.common.helpers import isOdd
 
 if hasattr(sys, "frozen"):
     path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "common")
