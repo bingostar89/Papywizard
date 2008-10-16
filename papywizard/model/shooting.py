@@ -89,7 +89,7 @@ class Shooting(object):
         self.startEvent = threading.Event()
         self.startEvent.clear()
         self.camera = Camera()
-        self.mosaic = MosaicScan(self.camera)
+        self.mosaic = MosaicScan(self)
         self.preset = PresetScan()
 
         self.position = self.hardware.readPosition()
@@ -112,6 +112,18 @@ class Shooting(object):
         ConfigManager().setFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY', stabilizationDelay, 1)
 
     stabilizationDelay = property(__getStabilizationDelay, __setStabilizationDelay)
+
+    def __getCameraOrientation(self):
+        """
+        """
+        return ConfigManager().get('Preferences', 'SHOOTING_CAMERA_ORIENTATION')
+
+    def __setCameraOrientation(self, cameraOrientation):
+        """
+        """
+        ConfigManager().set('Preferences', 'SHOOTING_CAMERA_ORIENTATION', cameraOrientation)
+
+    cameraOrientation = property(__getCameraOrientation, __setCameraOrientation)
 
     def switchToRealHardware(self):
         """ Use real hardware.
@@ -175,11 +187,14 @@ class Shooting(object):
         Logger().trace("Shooting.start()")
 
         values = {'stabilizationDelay': "%.1f" % self.stabilizationDelay,
+                  'cameraOrientation': "%s" % self.cameraOrientation,
                   'comment': "Not Yet implemented",
                   'timeValue': "%.1f" % self.camera.timeValue,
-                  'nbPicts': "%d" % self.camera.nbPicts,
+                  'bracketingNbPicts': "%d" % self.camera.bracketingNbPicts,
+                  'bracketingIntent': "%s" % self.camera.bracketingIntent,
                   'sensorCoef': "%.1f" % self.camera.sensorCoef,
                   'sensorRatio': "%s" % self.camera.sensorRatio,
+                  'lensType': "%s" % self.camera.lens.type_,
                   'focal': "%.1f" % self.camera.lens.focal}
         if self.mode == 'mosaic':
             data = MosaicData()
@@ -187,8 +202,7 @@ class Shooting(object):
                            'pitchNbPicts': "%d" % self.mosaic.pitchNbPicts,
                            'overlap': "%.2f" % self.mosaic.overlap,
                            'yawRealOverlap': "%.2f" % self.mosaic.yawRealOverlap,
-                           'pitchRealOverlap': "%.2f" % self.mosaic.pitchRealOverlap,
-                           'cameraOrientation': "%s" % self.mosaic.cameraOrientation})
+                           'pitchRealOverlap': "%.2f" % self.mosaic.pitchRealOverlap})
         else:
             data = PresetData()
             values.update({'template': "%s" % self.preset.template})
@@ -225,13 +239,13 @@ class Shooting(object):
                     checkSuspendStop()
 
                     Logger().info("Shooting")
-                    for pict in xrange(self.camera.nbPicts):
-                        Logger().debug("Shooting.start(): shooting %d/%d" % (pict + 1, self.camera.nbPicts))
-                        self.sequence = _("Shooting %d/%d") % (pict + 1, self.camera.nbPicts)
+                    for bracket in xrange(self.camera.bracketingNbPicts):
+                        Logger().debug("Shooting.start(): shooting %d/%d" % (bracket + 1, self.camera.bracketingNbPicts))
+                        self.sequence = _("Shooting %d/%d") % (bracket + 1, self.camera.bracketingNbPicts)
                         self.hardware.shoot(self.camera.timeValue)
                         time.sleep(0.5) # ensure shutter is closed()
 
-                        data.addPicture(pict + 1, yaw, pitch)
+                        data.addPicture(bracket + 1, yaw, pitch)
 
                         checkSuspendStop()
 
