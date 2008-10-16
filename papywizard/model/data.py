@@ -80,7 +80,7 @@ class AbstractData(object):
         """
         super(AbstractData, self).__init__()
         date = time.strftime("%Y-%m-%d", time.localtime())
-        time_ = time.strftime("%H:%M:%S", time.localtime())
+        time_ = time.strftime("%Hh%Mm%Ss", time.localtime())
         mode = self._getMode()
         self._dataFileFormatDict = {'date': date,
                                     'time': time_,
