@@ -70,6 +70,7 @@ class PublisherHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         Logger().debug("PublisherHandler.handle(): new connection from %s:%d" % self.client_address)
         Spy().newPosSignal.connect(self.__newPosition)
+        Spy().execute(force=True)
 
         # Wait forever
         while Spy().isRunning():
@@ -93,6 +94,7 @@ class PublisherServer(SocketServer.ThreadingTCPServer):
     allow_reuse_address = True
 
     def handle_error(self, request, client_address):
+        Logger().exception("PublisherServer.handle_error()")
         Logger().error("Error while handling request from ('%s', %d)" % client_address)
 
 
