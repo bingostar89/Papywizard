@@ -349,7 +349,7 @@ class MerlinOrionEthernetSimulator(MerlinOrionBaseSimulator):
 
     def _init(self):
         self.__server = SimulatorTCPServer((self.__host, self.__port), MerlinOrionEthernetHandler)
-        self.__server.socket.settimeout(1.)
+        self.__server.socket.setblocking(1)
 
     def run(self):
         try:
