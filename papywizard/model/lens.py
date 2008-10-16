@@ -66,18 +66,30 @@ class Lens(object):
     def __init__(self):
         """ Init object.
         """
+    def __getType(self):
+        """
+        """
+        return ConfigManager().get('Preferences', 'LENS_TYPE')
+
+    def __setType(self, type_):
+        """
+        """
+        ConfigManager().set('Preferences', 'LENS_TYPE', type_)
+
+    type_ = property(__getType, __setType)
+
     def __getFocal(self):
         """
         """
         return ConfigManager().getFloat('Preferences', 'LENS_FOCAL')
-    
+
     def __setFocal(self, focal):
         """
         """
         ConfigManager().setFloat('Preferences', 'LENS_FOCAL', focal, 1)
-        
+
     focal = property(__getFocal, __setFocal)
-    
+
     def computeFov(self, size):
         """ Compute FoV.
 
