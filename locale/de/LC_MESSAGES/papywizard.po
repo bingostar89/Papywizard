@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-10-16 14:02+0200\n"
-"PO-Revision-Date: 2008-10-16 14:05+0100\n"
+"PO-Revision-Date: 2008-10-16 20:17+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -181,7 +181,7 @@ msgstr "BT Geräteadresse"
 
 #: tmp/configDialog.glade.h:8
 msgid "Bracketing"
-msgstr ""
+msgstr "Belichtungsreihe"
 
 #: tmp/configDialog.glade.h:9
 msgid "CR"
@@ -270,7 +270,7 @@ msgstr "Anfangsrichtung"
 
 #: tmp/configDialog.glade.h:30
 msgid "Intent of the bracketing"
-msgstr ""
+msgstr "Art der Mehrfachbelichtung"
 
 #: tmp/configDialog.glade.h:31
 msgid "Lens"
@@ -294,7 +294,7 @@ msgstr "Verschiedenes"
 
 #: tmp/configDialog.glade.h:36
 msgid "Number of pictures of the bracketing"
-msgstr ""
+msgstr "Anzahl Bilder der Belichtungsreihe"
 
 #: tmp/configDialog.glade.h:37
 msgid "Orientation"
@@ -355,7 +355,7 @@ msgstr "Verschlusszeit"
 
 #: tmp/configDialog.glade.h:52
 msgid "Type"
-msgstr ""
+msgstr "Art"
 
 #: tmp/configDialog.glade.h:53
 msgid ""
@@ -375,6 +375,11 @@ msgid ""
 "movement\n"
 "mirror lockup"
 msgstr ""
+"aufnahme\n"
+"fokus\n"
+"weißabgleich\n"
+"bewegung\n"
+"spiegelvorauslösung"
 
 #: tmp/configDialog.glade.h:63
 msgid ""
@@ -389,6 +394,8 @@ msgid ""
 "recilinear\n"
 "fisheye"
 msgstr ""
+"rechtwinklig\n"
+"fischauge"
 
 #: tmp/configDialog.glade.h:67
 msgid ""
