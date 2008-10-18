@@ -154,12 +154,23 @@ class ConfigController(AbstractController):
         """
         Logger().trace("ConfigController.__onLensTypeComboboxChanged()")
         type_ = config.LENS_TYPE_INDEX[self.lensTypeCombobox.get_active()]
-        if type_ == 'rectilinear':
-            self.focalLabel.set_sensitive(True)
-            self.focalSpinbutton.set_sensitive(True)
+        if type_ == 'fisheye' and self._model.mode == 'mosaic':
+            messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_CLOSE,
+                                                message_format=_("Wrong value for lens type"))
+            messageDialog.set_title(_("Invalid configuration"))
+            messageDialog.format_secondary_text(_("Can't set lens type to 'fisheye'\n" \
+                                                    "while in 'mosaic' mode"))
+            messageDialog.run()
+            messageDialog.destroy()
+            self.lensTypeCombobox.set_active(config.LENS_TYPE_INDEX['rectilinear'])
         else:
-            self.focalLabel.set_sensitive(False)
-            self.focalSpinbutton.set_sensitive(False)
+            if type_ == 'rectilinear':
+                self.focalLabel.set_sensitive(True)
+                self.focalSpinbutton.set_sensitive(True)
+            else:
+                self.focalLabel.set_sensitive(False)
+                self.focalSpinbutton.set_sensitive(False)
+            Logger().debug("ConfigController.__onLensTypeComboboxChanged(): lens type set to '%s'" % type_)
 
     def __onDriverComboboxChanged(self, widget):
         """ Driver combobox has changed.

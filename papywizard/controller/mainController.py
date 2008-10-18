@@ -498,13 +498,24 @@ class MainController(AbstractController):
     def __onModeMosaicRadiobuttonToggled(self, widget):
         Logger().trace("MainController.__onModeMosaicRadiobuttonToggled()")
         modeMosaic = self.modeMosaicRadiobutton.get_active()
-        self.mosaicFrame.set_sensitive(modeMosaic)
-        self.presetFrame.set_sensitive(not modeMosaic)
-        if modeMosaic:
-            self._model.mode = 'mosaic'
+        if modeMosaic and self._model.camera.lens.type_ == 'fisheye':
+            messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_CLOSE,
+                                              message_format=_("Wrong shooting mode"))
+            messageDialog.set_title(_("Invalid configuration"))
+            messageDialog.format_secondary_text(_("Can't set shooting mode to 'mosaic'\n" \
+                                                  "while using 'fisheye' lens type"))
+            messageDialog.run()
+            messageDialog.destroy()
+            self.modeMosaicRadiobutton.set_active(False)
+            self.modePresetRadiobutton.set_active(True)
         else:
-            self._model.mode = 'preset'
-        Logger().debug("MainController.__onModeMosaicRadiobuttonToggled(): shooting mode set to '%s'" % self._model.mode)
+            self.mosaicFrame.set_sensitive(modeMosaic)
+            self.presetFrame.set_sensitive(not modeMosaic)
+            if modeMosaic:
+                self._model.mode = 'mosaic'
+            else:
+                self._model.mode = 'preset'
+            Logger().debug("MainController.__onModeMosaicRadiobuttonToggled(): shooting mode set to '%s'" % self._model.mode)
 
     def __onSetYawStartButtonClicked(self, widget):
         Logger().trace("MainController.__onSetYawStartButtonClicked()")
