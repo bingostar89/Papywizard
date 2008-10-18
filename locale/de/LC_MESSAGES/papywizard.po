@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-16 21:03+0200\n"
-"PO-Revision-Date: 2008-10-16 21:14+0100\n"
-"Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
+"POT-Creation-Date: 2008-10-17 14:23+0200\n"
+"PO-Revision-Date: 2008-10-17 14:00+0100\n"
+"Last-Translator: Jo Lutum <jo.lutum@lycos.de>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: papywizard/model/shooting.py:97
-#: papywizard/model/shooting.py:169
+#: papywizard/model/shooting.py:97 papywizard/model/shooting.py:169
 #: papywizard/model/shooting.py:179
 msgid "Idle"
 msgstr "Warte"
@@ -40,8 +39,8 @@ msgid "Canceled"
 msgstr "Abgebrochen"
 
 #: papywizard/model/shooting.py:276
-msgid "Over"
-msgstr "zu Ende"
+msgid "Finished"
+msgstr "Beendet"
 
 #: papywizard/scripts/main.py:260
 msgid "Internal error"
@@ -49,7 +48,7 @@ msgstr "Interner Fehler"
 
 #: papywizard/scripts/main.py:261
 #: papywizard/controller/bluetoothChooserController.py:177
-#: papywizard/controller/mainController.py:689
+#: papywizard/controller/mainController.py:700
 msgid "Error"
 msgstr "Fehler"
 
@@ -58,8 +57,7 @@ msgid "Resume"
 msgstr "Fortsetzen"
 
 #: papywizard/controller/shootController.py:250
-#: papywizard/controller/shootController.py:266
-#: tmp/shootDialog.glade.h:11
+#: papywizard/controller/shootController.py:266 tmp/shootDialog.glade.h:11
 msgid "Suspend"
 msgstr "Anhalten"
 
@@ -91,49 +89,78 @@ msgstr "Limits gelöscht"
 msgid "Hardware has been reseted"
 msgstr "Hardware zurückgesetzt"
 
-#: papywizard/controller/mainController.py:513
+#: papywizard/controller/mainController.py:503
+msgid "Wrong shooting mode"
+msgstr "Falscher Aufnahmemodus"
+
+#: papywizard/controller/mainController.py:504
+#: papywizard/controller/configController.py:160
+msgid "Invalid configuration"
+msgstr "Ungültige Konfiguration"
+
+#: papywizard/controller/mainController.py:505
+msgid ""
+"Can't set shooting mode to 'mosaic'\n"
+"while using 'fisheye' lens type"
+msgstr ""
+"Rastermodus nicht möglich\n"
+"mit Fischaugen-Objektiv"
+
+#: papywizard/controller/mainController.py:524
 msgid "Yaw start set from current position"
 msgstr "Aktuelle Position als Dreh-Start gesetzt"
 
-#: papywizard/controller/mainController.py:519
+#: papywizard/controller/mainController.py:530
 msgid "Pitch start set from current position"
 msgstr "Aktuelle Position als Neige-Start gesetzt"
 
-#: papywizard/controller/mainController.py:525
+#: papywizard/controller/mainController.py:536
 msgid "Yaw end set from current position"
 msgstr "Aktuelle Position als Dreh-Ende gesetzt"
 
-#: papywizard/controller/mainController.py:531
+#: papywizard/controller/mainController.py:542
 msgid "Pitch end set from current position"
 msgstr "Aktuelle Position als Neige-Ende gesetzt"
 
-#: papywizard/controller/mainController.py:537
+#: papywizard/controller/mainController.py:548
 msgid "Yaw/pitch start set from current position"
 msgstr "Aktuelle Position als Dreh-Neige-Start gesetzt"
 
-#: papywizard/controller/mainController.py:547
+#: papywizard/controller/mainController.py:558
 msgid "Yaw/pitch end position set from current position"
 msgstr "Aktuelle Position als Dreh-Neige-Ende gesetzt"
 
-#: papywizard/controller/mainController.py:574
+#: papywizard/controller/mainController.py:585
 msgid "Origin set at current position"
 msgstr "Aktuelle Position als Nullpunkt gesetzt"
 
-#: papywizard/controller/mainController.py:661
+#: papywizard/controller/mainController.py:672
 msgid "Connecting to real hardware..."
-msgstr "mit Hardware verbinden..."
+msgstr "Mit Hardware verbinden..."
 
-#: papywizard/controller/mainController.py:684
+#: papywizard/controller/mainController.py:695
 msgid "Now connected to real hardware"
 msgstr "Mit Hardware verbunden"
 
-#: papywizard/controller/mainController.py:688
+#: papywizard/controller/mainController.py:699
 msgid "Can't connect to hardware"
 msgstr "Kann Hardware nicht verbinden"
 
-#: papywizard/controller/mainController.py:704
+#: papywizard/controller/mainController.py:715
 msgid "Now in simulation mode"
 msgstr "Simulationsmodus"
+
+#: papywizard/controller/configController.py:159
+msgid "Wrong value for lens type"
+msgstr "Falscher Wert für Objektiv-Typ"
+
+#: papywizard/controller/configController.py:161
+msgid ""
+"Can't set lens type to 'fisheye'\n"
+"while in 'mosaic' mode"
+msgstr ""
+"Objektivtyp 'Fischauge' nicht wählbar\n"
+"im Rastermodus"
 
 #: tmp/bluetoothChooserDialog.glade.h:1
 msgid "Bluetooth"
@@ -144,12 +171,14 @@ msgid "Bluetooth devices list"
 msgstr "Bluetooth Geräteliste"
 
 #: tmp/bluetoothChooserDialog.glade.h:3
-#: tmp/configDialog.glade.h:61
+msgid "Refresh the bluetooth devices list"
+msgstr "Bluetooth-Geräteliste wird aktualisiert"
+
+#: tmp/bluetoothChooserDialog.glade.h:4 tmp/configDialog.glade.h:62
 msgid "gtk-cancel"
 msgstr "gtk-Abbruch"
 
-#: tmp/bluetoothChooserDialog.glade.h:4
-#: tmp/configDialog.glade.h:62
+#: tmp/bluetoothChooserDialog.glade.h:5 tmp/configDialog.glade.h:63
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -259,8 +288,7 @@ msgstr "Format des XML-Dateinamens"
 msgid "From where to start shooting (mosaic mode)"
 msgstr "Wo soll Aufnahme starten (Raster)"
 
-#: tmp/configDialog.glade.h:28
-#: tmp/mainWindow.glade.h:15
+#: tmp/configDialog.glade.h:28 tmp/mainWindow.glade.h:15
 msgid "Hardware"
 msgstr "Hardware"
 
@@ -328,8 +356,7 @@ msgstr "Sensorverhältnis"
 msgid "Serial port"
 msgstr "Serieller Anschluss"
 
-#: tmp/configDialog.glade.h:46
-#: tmp/shootDialog.glade.h:6
+#: tmp/configDialog.glade.h:46 tmp/shootDialog.glade.h:6
 msgid "Shooting"
 msgstr "Aufnahme"
 
@@ -358,6 +385,11 @@ msgid "Type"
 msgstr "Art"
 
 #: tmp/configDialog.glade.h:53
+#, fuzzy
+msgid "Type of the lens"
+msgstr "Brennweite"
+
+#: tmp/configDialog.glade.h:54
 msgid ""
 "bluetooth\n"
 "serial\n"
@@ -367,7 +399,7 @@ msgstr ""
 "serial\n"
 "ethernet"
 
-#: tmp/configDialog.glade.h:56
+#: tmp/configDialog.glade.h:57
 msgid ""
 "exposure\n"
 "focus\n"
@@ -381,7 +413,7 @@ msgstr ""
 "Bewegung\n"
 "Spiegelvorauslösung"
 
-#: tmp/configDialog.glade.h:63
+#: tmp/configDialog.glade.h:64
 msgid ""
 "portrait\n"
 "landscape"
@@ -389,7 +421,7 @@ msgstr ""
 "Hoch\n"
 "Quer"
 
-#: tmp/configDialog.glade.h:65
+#: tmp/configDialog.glade.h:66
 msgid ""
 "recilinear\n"
 "fisheye"
@@ -397,15 +429,15 @@ msgstr ""
 "Rechtwinklig\n"
 "Fischauge"
 
-#: tmp/configDialog.glade.h:67
+#: tmp/configDialog.glade.h:68
 msgid ""
 "start\n"
 "end"
 msgstr ""
-"start\n"
-"end"
+"Start\n"
+"Ende"
 
-#: tmp/configDialog.glade.h:69
+#: tmp/configDialog.glade.h:70
 msgid ""
 "trace\n"
 "debug\n"
@@ -423,7 +455,7 @@ msgstr ""
 "exception\n"
 "critical"
 
-#: tmp/configDialog.glade.h:76
+#: tmp/configDialog.glade.h:77
 msgid ""
 "yaw\n"
 "pitch"
@@ -529,8 +561,7 @@ msgstr "Logfenster leeren"
 msgid "Logger"
 msgstr "Logger"
 
-#: tmp/loggerDialog.glade.h:4
-#: tmp/presetTemplateInfoDialog.glade.h:2
+#: tmp/loggerDialog.glade.h:4 tmp/presetTemplateInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:14
 msgid "gtk-close"
 msgstr "gtk-Schliessen"
@@ -791,6 +822,8 @@ msgstr "Datenfile schreiben"
 msgid "Please wait..."
 msgstr "Bitte warten..."
 
+#~ msgid "Over"
+#~ msgstr "zu Ende"
+
 #~ msgid "Number of pictures"
 #~ msgstr "Anzahl Aufnahmen"
-

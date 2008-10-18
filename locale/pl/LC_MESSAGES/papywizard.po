@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-16 21:03+0200\n"
+"POT-Creation-Date: 2008-10-17 13:48+0200\n"
 "PO-Revision-Date: 2008-10-16 14:05+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -40,8 +40,8 @@ msgid "Canceled"
 msgstr "Anulowano"
 
 #: papywizard/model/shooting.py:276
-msgid "Over"
-msgstr "Zakończone"
+msgid "Finished"
+msgstr ""
 
 #: papywizard/scripts/main.py:260
 msgid "Internal error"
@@ -49,7 +49,7 @@ msgstr "Błąd wewnętrzny"
 
 #: papywizard/scripts/main.py:261
 #: papywizard/controller/bluetoothChooserController.py:177
-#: papywizard/controller/mainController.py:689
+#: papywizard/controller/mainController.py:700
 msgid "Error"
 msgstr "Błąd"
 
@@ -91,56 +91,83 @@ msgstr "Limity usunięto"
 msgid "Hardware has been reseted"
 msgstr "Sprzęt został zrestartowany"
 
-#: papywizard/controller/mainController.py:513
+#: papywizard/controller/mainController.py:503
+#, fuzzy
+msgid "Wrong shooting mode"
+msgstr "Zatrzymaj strzelanie"
+
+#: papywizard/controller/mainController.py:504
+#: papywizard/controller/configController.py:160
+#, fuzzy
+msgid "Invalid configuration"
+msgstr "Konfiguracja"
+
+#: papywizard/controller/mainController.py:505
+msgid ""
+"Can't set shooting mode to 'mosaic'\n"
+"while using 'fisheye' lens type"
+msgstr ""
+
+#: papywizard/controller/mainController.py:524
 #, fuzzy
 msgid "Yaw start set from current position"
 msgstr "Ustaw tą pozycję jako początkową yaw"
 
-#: papywizard/controller/mainController.py:519
+#: papywizard/controller/mainController.py:530
 #, fuzzy
 msgid "Pitch start set from current position"
 msgstr "Ustaw tą pozycję jako początkową pitch"
 
-#: papywizard/controller/mainController.py:525
+#: papywizard/controller/mainController.py:536
 #, fuzzy
 msgid "Yaw end set from current position"
 msgstr "Ustaw tą pozycję jako końcową yaw"
 
-#: papywizard/controller/mainController.py:531
+#: papywizard/controller/mainController.py:542
 #, fuzzy
 msgid "Pitch end set from current position"
 msgstr "Ustaw tą pozycję jako końcową pitch"
 
-#: papywizard/controller/mainController.py:537
+#: papywizard/controller/mainController.py:548
 #, fuzzy
 msgid "Yaw/pitch start set from current position"
 msgstr "Ustaw tą pozycję jako początkową pitch"
 
-#: papywizard/controller/mainController.py:547
+#: papywizard/controller/mainController.py:558
 #, fuzzy
 msgid "Yaw/pitch end position set from current position"
 msgstr "Ustaw tą pozycję jako końcową pitch"
 
-#: papywizard/controller/mainController.py:574
+#: papywizard/controller/mainController.py:585
 #, fuzzy
 msgid "Origin set at current position"
 msgstr "Ustaw tą pozycję jako początkową"
 
-#: papywizard/controller/mainController.py:661
+#: papywizard/controller/mainController.py:672
 msgid "Connecting to real hardware..."
 msgstr "Nawiązuje połączenie ze sprzętem..."
 
-#: papywizard/controller/mainController.py:684
+#: papywizard/controller/mainController.py:695
 msgid "Now connected to real hardware"
 msgstr "Połączenie ze sprzętem nawiązane"
 
-#: papywizard/controller/mainController.py:688
+#: papywizard/controller/mainController.py:699
 msgid "Can't connect to hardware"
 msgstr "Nie mogę połączyć się ze sprzętem"
 
-#: papywizard/controller/mainController.py:704
+#: papywizard/controller/mainController.py:715
 msgid "Now in simulation mode"
 msgstr "Tryb symulacji"
+
+#: papywizard/controller/configController.py:159
+msgid "Wrong value for lens type"
+msgstr ""
+
+#: papywizard/controller/configController.py:161
+msgid ""
+"Can't set lens type to 'fisheye'\n"
+"while in 'mosaic' mode"
+msgstr ""
 
 #: tmp/bluetoothChooserDialog.glade.h:1
 msgid "Bluetooth"
@@ -150,11 +177,16 @@ msgstr "Bluetooth"
 msgid "Bluetooth devices list"
 msgstr "Lista urządzeń Bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:61
+#: tmp/bluetoothChooserDialog.glade.h:3
+#, fuzzy
+msgid "Refresh the bluetooth devices list"
+msgstr "Lista urządzeń Bluetooth"
+
+#: tmp/bluetoothChooserDialog.glade.h:4 tmp/configDialog.glade.h:62
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:4 tmp/configDialog.glade.h:62
+#: tmp/bluetoothChooserDialog.glade.h:5 tmp/configDialog.glade.h:63
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -369,6 +401,11 @@ msgstr ""
 
 #: tmp/configDialog.glade.h:53
 #, fuzzy
+msgid "Type of the lens"
+msgstr "Ogniskowa"
+
+#: tmp/configDialog.glade.h:54
+#, fuzzy
 msgid ""
 "bluetooth\n"
 "serial\n"
@@ -378,7 +415,7 @@ msgstr ""
 "szeregowy\n"
 "usb"
 
-#: tmp/configDialog.glade.h:56
+#: tmp/configDialog.glade.h:57
 msgid ""
 "exposure\n"
 "focus\n"
@@ -387,7 +424,7 @@ msgid ""
 "mirror lockup"
 msgstr ""
 
-#: tmp/configDialog.glade.h:63
+#: tmp/configDialog.glade.h:64
 msgid ""
 "portrait\n"
 "landscape"
@@ -395,13 +432,13 @@ msgstr ""
 "pionowy\n"
 "poziomy"
 
-#: tmp/configDialog.glade.h:65
+#: tmp/configDialog.glade.h:66
 msgid ""
 "recilinear\n"
 "fisheye"
 msgstr ""
 
-#: tmp/configDialog.glade.h:67
+#: tmp/configDialog.glade.h:68
 msgid ""
 "start\n"
 "end"
@@ -409,7 +446,7 @@ msgstr ""
 "początek\n"
 "koniec"
 
-#: tmp/configDialog.glade.h:69
+#: tmp/configDialog.glade.h:70
 msgid ""
 "trace\n"
 "debug\n"
@@ -427,7 +464,7 @@ msgstr ""
 "exception\n"
 "critical"
 
-#: tmp/configDialog.glade.h:76
+#: tmp/configDialog.glade.h:77
 msgid ""
 "yaw\n"
 "pitch"
@@ -798,6 +835,9 @@ msgstr "Zapisz plik danych"
 #: tmp/waitBanner.glade.h:1
 msgid "Please wait..."
 msgstr "Prosze poczekać..."
+
+#~ msgid "Over"
+#~ msgstr "Zakończone"
 
 #~ msgid "Number of pictures"
 #~ msgstr "Ilość zdjęć"
