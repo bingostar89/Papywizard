@@ -234,10 +234,20 @@ class Axis(AbstractAxis):
     def init(self):
         self.__driver.acquireBus()
         try:
+            
+            # Stop axis
             self._sendCmd("L")
+            
+            # Check motor
             self._sendCmd("F")
-            self._sendCmd("a")
-            self._sendCmd("D")
+            
+            # Get full circle count
+            value = self._sendCmd("a")
+            Logger().debug("Axis.init(): full circle count=%s" % hex(decodeAxisValue(value)))
+            
+            # Get
+            value = self._sendCmd("D")
+            Logger().debug("Axis.init(): sidereal rate=%s" % hex(decodeAxisValue(value)))
         finally:
             self.__driver.releaseBus()
 
