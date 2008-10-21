@@ -53,6 +53,7 @@ __revision__ = "$Id$"
 
 import time
 import thread
+import os.path
 import webbrowser
 
 import pygtk
@@ -69,7 +70,7 @@ from papywizard.common.exception import HardwareError
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.helpAboutController import HelpAboutController
-from papywizard.controller.presetTemplateInfoController import PresetTemplateInfoController
+from papywizard.controller.presetInfoController import PresetInfoController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.shootController import ShootController
 from papywizard.controller.waitController import WaitController
@@ -94,7 +95,8 @@ class MainController(AbstractController):
 
     def _init(self):
         self._gladeFile = "mainWindow.glade"
-        self._signalDict = {"on_quitMenuitem_activate": gtk.main_quit,
+        self._signalDict = {"on_fileImportPresetMenuitem_activate": self.__onFileImportPresetMenuitemActivate,
+                            "on_quitMenuitem_activate": gtk.main_quit,
                             "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuitemToggled,
                             "on_hardwareSetLimitYawMinusMenuitem_activate": self.__onHardwareSetLimitYawMinusMenuitemActivate,
                             "on_hardwareSetLimitYawPlusMenuitem_activate": self.__onHardwareSetLimitYawPlusMenuitemActivate,
@@ -118,8 +120,8 @@ class MainController(AbstractController):
                             "on_setEndTogglebutton_clicked": self.__onSetEndTogglebuttonClicked,
                             "on_setEndTogglebutton_released": self.__onSetEndTogglebuttonReleased,
 
-                            "on_presetTemplateCombobox_changed": self.__onPresetTemplateComboboxChanged,
-                            "on_presetTemplateInfoButton_clicked": self.__onPresetTemplateInfoButtonClicked,
+                            "on_presetCombobox_changed": self.__onPresetComboboxChanged,
+                            "on_presetInfoButton_clicked": self.__onPresetInfoButtonClicked,
 
                             "on_hardwareSetOriginButton_clicked": self.__onHardwareSetOriginButtonClicked,
                             "on_yawMovePlusTogglebutton_pressed": self.__onYawMovePlusTogglebuttonPressed,
@@ -196,22 +198,13 @@ class MainController(AbstractController):
         self.yawRealOverlapLabel = self.wTree.get_widget("yawRealOverlapLabel")
         self.pitchRealOverlapLabel = self.wTree.get_widget("pitchRealOverlapLabel")
         self.presetFrame = self.wTree.get_widget("presetFrame")
-        self.presetTemplateCombobox = self.wTree.get_widget("presetTemplateCombobox")
+        self.presetCombobox = self.wTree.get_widget("presetCombobox")
         listStore = gtk.ListStore(gobject.TYPE_STRING)
-        self.presetTemplateCombobox.set_model(listStore)
+        self.presetCombobox.set_model(listStore)
         cell = gtk.CellRendererText()
-        self.presetTemplateCombobox.pack_start(cell, True)
-        #self.presetTemplateCombobox.add_attribute(cell, 'text', 0)
-        presets = PresetManager().getPresets()
-        i = 0
-        while True:
-            try:
-                preset = presets.getByIndex(i)
-                name = preset.getName()
-                self.presetTemplateCombobox.append_text(name)
-                i += 1
-            except KeyError:
-                break
+        self.presetCombobox.pack_start(cell, True)
+        #self.presetCombobox.add_attribute(cell, 'text', 0)
+        self.__populatePresetCombobox()
         self.yawPosLabel = self.wTree.get_widget("yawPosLabel")
         self.pitchPosLabel = self.wTree.get_widget("pitchPosLabel")
         self.yawMovePlusTogglebutton = self.wTree.get_widget("yawMovePlusTogglebutton")
@@ -431,9 +424,34 @@ class MainController(AbstractController):
         #else:
             #self.window_in_fullscreen = False
 
+    def __onFileImportPresetMenuitemActivate(self, widget):
+        """
+        @todo: make a custom dialog
+        """
+        Logger().trace("MainController.__onFileImportPresetMenuitemActivate()")
+        fileDialog =  gtk.FileChooserDialog(title="Select Preset file", parent=self.dialog,
+                                            action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                                            buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                                                     gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+        filter = gtk.FileFilter()
+        filter.set_name("xml files")
+        filter.add_pattern("*.xml")
+        fileDialog.add_filter(filter)
+        filter = gtk.FileFilter()
+        filter.set_name("all files")
+        filter.add_pattern("*.*")
+        fileDialog.add_filter(filter)
+        #fileDialog.set_current_folder_uri(config.HOME_DIR)
+        fileDialog.set_filename(os.path.join(config.HOME_DIR, config.PRESET_FILE))
+        response = fileDialog.run()
+        if response == gtk.RESPONSE_ACCEPT:
+            presetFileName = fileDialog.get_filename()
+            self.__importPresetFile(presetFileName)
+        fileDialog.destroy()
+
     def __onHardwareConnectMenuitemToggled(self, widget):
         switch = self.hardwareConnectMenuitem.get_active()
-        Logger().trace("MainController.__onHardwareConnectMenuitemToggled(%s)" % switch)
+        Logger().debug("MainController.__onHardwareConnectMenuitemToggled(%s)" % switch)
         if switch:
             self.__connectToHardware()
         else:
@@ -561,20 +579,24 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onSetEndTogglebuttonReleased()")
         self.setEndTogglebutton.set_active(False)
 
-    def __onPresetTemplateComboboxChanged(self, widget):
+    def __onPresetComboboxChanged(self, widget):
         presets = PresetManager().getPresets()
-        preset = presets.getByIndex(self.presetTemplateCombobox.get_active())
-        self._model.preset.template = preset.getName()
-        tooltip = preset.getTooltip()
         try:
-            self.presetTemplateCombobox.set_tooltip_text(tooltip)
-        except:
-            pass # PyGTK on maemo does not have set_tooltip_text() method
-        Logger().debug("MainController.__onPresetTemplateComboboxChanged(): new preset template='%s'" % self._model.preset.template)
+            preset = presets.getByIndex(self.presetCombobox.get_active())
+            self._model.preset.template = preset.getName()
+            tooltip = preset.getTooltip()
+            try:
+                self.presetCombobox.set_tooltip_text(tooltip)
+            except:
+                pass # PyGTK on maemo does not have set_tooltip_text() method
+            Logger().debug("MainController.__onPresetComboboxChanged(): new preset template='%s'" % self._model.preset.template)
+        except ValueError:
+            #Logger().exception("MainController.__onPresetComboboxChanged()", debug=True)
+            pass
 
-    def __onPresetTemplateInfoButtonClicked(self, widget):
-        Logger().trace("MainController.__onPresetTemplateInfoButtonClicked()")
-        controller = PresetTemplateInfoController(self, self._model, self._serializer)
+    def __onPresetInfoButtonClicked(self, widget):
+        Logger().trace("MainController.__onPresetInfoButtonClicked()")
+        controller = PresetInfoController(self, self._model, self._serializer)
         controller.run()
         controller.destroyView()
 
@@ -657,6 +679,35 @@ class MainController(AbstractController):
         self.__waitController.closeBanner()
 
     # Real work
+    def __populatePresetCombobox(self):
+        """
+        """
+        Logger().trace("MainController.__populatePresetCombobox()")
+        self.presetCombobox.get_model().clear()
+        presets = PresetManager().getPresets()
+        i = 0
+        while True:
+            try:
+                preset = presets.getByIndex(i)
+                name = preset.getName()
+                self.presetCombobox.append_text(name)
+                i += 1
+            except ValueError:
+                #Logger().exception("MainController.__populatePresetCombobox()", debug=True)
+                break
+        Logger().trace("MainController.__populatePresetCombobox(): done")
+
+    def __importPresetFile(self, presetFileName):
+        """ Importe the presets from given file.
+
+        @param presetFileName: name of the preset xml file
+        @type presetFileName: str
+        """
+        Logger().debug("MainController.__importPresetFile(): preset file=%s" % presetFileName)
+        PresetManager().importPresetFile(presetFileName)
+        self.__populatePresetCombobox()
+        self.refreshView()
+
     def __connectToHardware(self):
         """ Connect to real hardware.
         """
@@ -768,10 +819,10 @@ class MainController(AbstractController):
         self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
         presets = PresetManager().getPresets()
         try:
-            self.presetTemplateCombobox.set_active(presets.nameToIndex(self._model.preset.template))
-        except KeyError:
+            self.presetCombobox.set_active(presets.nameToIndex(self._model.preset.template))
+        except ValueError:
             Logger().warning("Previously selected '%s' preset template not found" % self._model.preset.template)
-            self.presetTemplateCombobox.set_active(0)
+            self.presetCombobox.set_active(0)
 
         self.yawPosLabel.set_text("%.1f" % self.__yawPos)
         self.pitchPosLabel.set_text("%.1f" % self.__pitchPos)
