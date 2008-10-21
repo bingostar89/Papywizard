@@ -42,7 +42,7 @@ Graphical toolkit controller
 Implements
 ==========
 
-- PresetTemplateInfoController
+- PresetInfoController
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
@@ -61,38 +61,38 @@ from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractController
 
 
-class PresetTemplateInfoController(AbstractController):
+class PresetInfoController(AbstractController):
     """ Logger controller object.
     """
     def _init(self):
-        self._gladeFile = "presetTemplateInfoDialog.glade"
+        self._gladeFile = "presetInfoDialog.glade"
         self._signalDict = {"on_doneButton_clicked": self.__onDoneButtonClicked,
                         }
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
-        super(PresetTemplateInfoController, self)._retreiveWidgets()
+        super(PresetInfoController, self)._retreiveWidgets()
 
-        self.presetTemplateInfoScrolledwindow = self.wTree.get_widget("presetTemplateInfoScrolledwindow")
-        self.presetTemplateInfoTextview = self.wTree.get_widget("presetTemplateInfoTextview")
-        self.presetTemplateInfoBuffer = gtk.TextBuffer()
-        self.presetTemplateInfoBuffer.create_tag('name', foreground='red')
-        self.presetTemplateInfoBuffer.create_tag('tooltip', foreground='blue', style=pango.STYLE_OBLIQUE)
-        self.presetTemplateInfoTextview.set_buffer(self.presetTemplateInfoBuffer)
+        self.presetInfoScrolledwindow = self.wTree.get_widget("presetInfoScrolledwindow")
+        self.presetInfoTextview = self.wTree.get_widget("presetInfoTextview")
+        self.presetInfoBuffer = gtk.TextBuffer()
+        self.presetInfoBuffer.create_tag('name', foreground='red')
+        self.presetInfoBuffer.create_tag('tooltip', foreground='blue', style=pango.STYLE_OBLIQUE)
+        self.presetInfoTextview.set_buffer(self.presetInfoBuffer)
 
     # Callbacks
     def __onDoneButtonClicked(self, widget):
         """ Done button has been clicked.
         """
-        Logger().trace("PresetTemplateInfoController.__onDoneButtonClicked()")
+        Logger().trace("PresetInfoController.__onDoneButtonClicked()")
         self.dialog.response(0)
 
     # Real work
     def refreshView(self):
-        self.presetTemplateInfoBuffer.begin_user_action()
+        self.presetInfoBuffer.begin_user_action()
         try:
-            self.presetTemplateInfoBuffer.delete(*self.presetTemplateInfoBuffer.get_bounds())
+            self.presetInfoBuffer.delete(*self.presetInfoBuffer.get_bounds())
             presets = PresetManager().getPresets()
             i = 0
             while True:
@@ -100,10 +100,11 @@ class PresetTemplateInfoController(AbstractController):
                     preset = presets.getByIndex(i)
                     name = "%s\n" % preset.getName()
                     tooltip = "%s\n" % preset.getTooltip()
-                    self.presetTemplateInfoBuffer.insert_with_tags_by_name(self.presetTemplateInfoBuffer.get_end_iter(), name, 'name')
-                    self.presetTemplateInfoBuffer.insert_with_tags_by_name(self.presetTemplateInfoBuffer.get_end_iter(), tooltip, 'tooltip')
+                    self.presetInfoBuffer.insert_with_tags_by_name(self.presetInfoBuffer.get_end_iter(), name, 'name')
+                    self.presetInfoBuffer.insert_with_tags_by_name(self.presetInfoBuffer.get_end_iter(), tooltip, 'tooltip')
                     i += 1
-                except KeyError:
+                except ValueError:
+                    #Logger().exception("PresetInfoController.refreshView()", debug=True)
                     break
         finally:
-            self.presetTemplateInfoBuffer.end_user_action()
+            self.presetInfoBuffer.end_user_action()
