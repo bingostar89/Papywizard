@@ -154,8 +154,9 @@ class Presets(object):
         """
         for previousPreset in self.__presets:
             if previousPreset.getName() == preset.getName():
-                Logger().warning("Presets.add(): Preset '%s' alreay in presets table" % preset.getName())
-                return
+                Logger().warning("Presets.add(): Preset '%s' alreay in presets table. Overwriting..." % preset.getName())
+                self.__presets.remove(previousPreset)
+                break
         self.__presets.add(preset)
         self.__indexToPreset[self.__index] = preset
         self.__PresetNameToIndex[preset.getName()] = self.__index
@@ -223,22 +224,27 @@ class PresetManager(object):
             # Load default presets
             presetFile = os.path.join(path, config.PRESET_FILE)
             Logger().info("Loading default presets")
-            document = xml.dom.minidom.parse(presetFile)
-            for presetElement in document.getElementsByTagName('preset'):
-                preset = Preset(presetElement)
-                self.__presets.add(preset)
+            self.importPresetFile(presetFile)
 
             # Load user presets
             try:
-                document = xml.dom.minidom.parse(config.USER_PRESET_FILE)
                 Logger().info("Loading user presets")
-                for presetElement in document.getElementsByTagName('preset'):
-                    preset = Preset(presetElement)
-                    self.__presets.add(preset)
+                self.importPresetFile(config.USER_PRESET_FILE)
             except IOError:
                 Logger().warning("No user presets found")
 
             PresetManager.__init = False
+
+    def importPresetFile(self, presetFileName):
+        """ Importe the presets from given file.
+
+        @param presetFileName: xml file containing the presets to import
+        @type presetFileName: str
+        """
+        document = xml.dom.minidom.parse(presetFileName)
+        for presetElement in document.getElementsByTagName('preset'):
+            preset = Preset(presetElement)
+            self.__presets.add(preset)
 
     def getPresets(self):
         """ return the list of preset.
