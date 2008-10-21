@@ -54,10 +54,10 @@ __revision__ = "$Id: configManager.py 557 2008-09-18 18:51:24Z fma $"
 import copy
 import sys
 import os.path
-import sets
 import xml.dom.minidom
 
 from papywizard.common import config
+from papywizard.common.orderedDict import OrderedDict
 from papywizard.common.loggingServices import Logger
 
 if hasattr(sys, "frozen"):
@@ -141,10 +141,8 @@ class Presets(object):
         """ Init the Presets object.
         """
         super(Presets, self).__init__()
-        self.__presets = sets.Set()
-        self.__index = 0
-        self.__indexToPreset = {}
-        self.__PresetNameToIndex = {}
+        #self.__presets = sets.Set()
+        self.__presets = OrderedDict()
 
     def add(self, preset):
         """ Add a preset.
@@ -152,15 +150,9 @@ class Presets(object):
         @param preset: the preset to add
         @type preset {Preset}
         """
-        for previousPreset in self.__presets:
-            if previousPreset.getName() == preset.getName():
-                Logger().warning("Presets.add(): Preset '%s' alreay in presets table. Overwriting..." % preset.getName())
-                self.__presets.remove(previousPreset)
-                break
-        self.__presets.add(preset)
-        self.__indexToPreset[self.__index] = preset
-        self.__PresetNameToIndex[preset.getName()] = self.__index
-        self.__index += 1
+        if self.__presets.has_key(preset.getName()):
+            Logger().warning("Presets.add(): Preset '%s' alreay in presets table. Overwriting..." % preset.getName())
+        self.__presets[preset.getName()] = preset
 
     def nameToIndex(self, name):
         """ Get the index of the preset.
@@ -170,7 +162,10 @@ class Presets(object):
         @param name: name of the preset to get the index
         @type name: str
         """
-        return self.__PresetNameToIndex[name]
+        for iIndex, (iName, iPreset) in enumerate(self.__presets.iteritems()):
+            if name == iName:
+                return iIndex
+        raise ValueError("Preset '%s' not found" % name)
 
     def getByIndex(self, index):
         """ Get the index.
@@ -180,7 +175,10 @@ class Presets(object):
         @param index: index of the preset to get the name
         @type index: int
         """
-        return self.__indexToPreset[index]
+        for iIndex, (iName, iPreset) in enumerate(self.__presets.iteritems()):
+            if index == iIndex:
+                return iPreset
+        raise ValueError("No Preset at index '%d'" % index)
 
     def getByName(self, name):
         """ Return the preset from its given name.
@@ -191,9 +189,9 @@ class Presets(object):
         @return: preset
         @rtype: {Preset}
         """
-        for preset in self.__presets:
-            if preset.getName() == name:
-                return preset
+        for iName, iPreset in self.__presets.iteritems():
+            if name == iName:
+                return iPreset
         raise ValueError("Preset '%s' not found" % name)
 
     def getAll(self):
