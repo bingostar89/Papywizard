@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Fri Oct 17 13:48:26 2008 -->
+<!--Generated with glade3 3.4.5 on Wed Oct 22 22:52:17 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="border_width">5</property>
@@ -41,7 +41,6 @@
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Force overlap to get square pictures (mosaic mode)</property>
                         <property name="label" translatable="yes" context="yes">Square</property>
                         <property name="response_id">0</property>
                         <property name="draw_indicator">True</property>
@@ -57,7 +56,6 @@
                       <widget class="GtkComboBox" id="cameraOrientationCombobox">
                         <property name="visible">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Orientation of the camera</property>
                         <property name="items" translatable="yes" context="yes">portrait
 landscape</property>
                       </widget>
@@ -84,7 +82,6 @@ landscape</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Minimum wanted overlap (mosaic mode)</property>
                         <property name="max_length">5</property>
                         <property name="width_chars">5</property>
                         <property name="xalign">1</property>
@@ -120,7 +117,6 @@ landscape</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Delay to wait after each move</property>
                         <property name="max_length">5</property>
                         <property name="width_chars">5</property>
                         <property name="xalign">1</property>
@@ -136,7 +132,6 @@ landscape</property>
                       <widget class="GtkComboBox" id="initialDirectionCombobox">
                         <property name="visible">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Direction of the first move (mosaic mode)</property>
                         <property name="items" translatable="yes" context="yes">yaw
 pitch</property>
                       </widget>
@@ -173,7 +168,6 @@ pitch</property>
                       <widget class="GtkComboBox" id="startFromCombobox">
                         <property name="visible">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">From where to start shooting (mosaic mode)</property>
                         <property name="items" translatable="yes" context="yes">start
 end</property>
                       </widget>
@@ -189,7 +183,6 @@ end</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Cariage return at each end of raw/col (mosaic mode)</property>
                         <property name="label" translatable="yes" context="yes">CR</property>
                         <property name="response_id">0</property>
                         <property name="draw_indicator">True</property>
@@ -240,7 +233,6 @@ end</property>
                     <child>
                       <widget class="GtkComboBox" id="bracketingIntentCombobox">
                         <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Intent of the bracketing</property>
                         <property name="items" translatable="yes" context="yes">exposure
 focus
 white balance
@@ -258,7 +250,6 @@ mirror lockup</property>
                       <widget class="GtkComboBox" id="sensorRatioCombobox">
                         <property name="visible">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Ratio of the sensor</property>
                         <property name="items" translatable="yes" context="yes">3:2
 4:3
 5:4</property>
@@ -294,7 +285,6 @@ mirror lockup</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Time value of the camera</property>
                         <property name="max_length">6</property>
                         <property name="width_chars">6</property>
                         <property name="xalign">1</property>
@@ -322,7 +312,6 @@ mirror lockup</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Number of pictures of the bracketing</property>
                         <property name="max_length">5</property>
                         <property name="width_chars">5</property>
                         <property name="xalign">1</property>
@@ -352,7 +341,6 @@ mirror lockup</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Coef. of the sensor to 35mm size</property>
                         <property name="max_length">5</property>
                         <property name="width_chars">5</property>
                         <property name="xalign">1</property>
@@ -402,7 +390,6 @@ mirror lockup</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Focal of the lens</property>
                         <property name="max_length">6</property>
                         <property name="width_chars">6</property>
                         <property name="xalign">1</property>
@@ -430,7 +417,6 @@ mirror lockup</property>
                     <child>
                       <widget class="GtkComboBox" id="lensTypeCombobox">
                         <property name="visible">True</property>
-                        <property name="tooltip" translatable="yes">Type of the lens</property>
                         <property name="items" translatable="yes" context="yes">recilinear
 fisheye</property>
                         <signal name="changed" handler="on_lensTypeCombobox_changed"/>
@@ -513,7 +499,6 @@ fisheye</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Port of the serial converter</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -527,7 +512,6 @@ fisheye</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Address of the bluetooth converter</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -562,7 +546,6 @@ fisheye</property>
                       <widget class="GtkComboBox" id="driverCombobox">
                         <property name="visible">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Driver to use to connect to hardware</property>
                         <property name="items" translatable="yes" context="yes">bluetooth
 serial
 ethernet</property>
@@ -585,7 +568,6 @@ ethernet</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Automatically connect to hardware at startup</property>
                         <property name="label" translatable="yes" context="yes">Auto-connect</property>
                         <property name="response_id">0</property>
                         <property name="draw_indicator">True</property>
@@ -611,7 +593,6 @@ ethernet</property>
                       <widget class="GtkEntry" id="ethernetHostEntry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Host name or IP address</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -624,7 +605,6 @@ ethernet</property>
                       <widget class="GtkSpinButton" id="ethernetPortSpinbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Ethernet port</property>
                         <property name="adjustment">1024 1024 65535 1 10 10</property>
                       </widget>
                       <packing>
@@ -661,7 +641,7 @@ ethernet</property>
                 <child>
                   <widget class="GtkTable" id="table5">
                     <property name="visible">True</property>
-                    <property name="n_rows">2</property>
+                    <property name="n_rows">3</property>
                     <property name="n_columns">2</property>
                     <property name="column_spacing">5</property>
                     <property name="row_spacing">5</property>
@@ -670,7 +650,6 @@ ethernet</property>
                         <property name="width_request">250</property>
                         <property name="visible">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Level of the logger</property>
                         <property name="items" translatable="yes" context="yes">trace
 debug
 info
@@ -709,13 +688,36 @@ critical</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_tooltip">True</property>
-                        <property name="tooltip" translatable="yes" context="yes">Format of the xml data file name</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
                         <property name="right_attach">2</property>
                         <property name="top_attach">1</property>
                         <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label12">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.89999997615814209</property>
+                        <property name="label" translatable="yes" context="yes">Data storage dir.</property>
+                      </widget>
+                      <packing>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkFileChooserButton" id="dataStorageDirFilechooserbutton">
+                        <property name="visible">True</property>
+                        <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+                        <property name="title" translatable="yes" context="yes">Select the data storage directory</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
                       </packing>
                     </child>
                   </widget>
