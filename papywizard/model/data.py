@@ -69,7 +69,7 @@ from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 
-XML_VERSION = "0.9"
+XML_VERSION = "a"
 
 
 class AbstractData(object):
@@ -79,8 +79,9 @@ class AbstractData(object):
         """ Init object.
         """
         super(AbstractData, self).__init__()
-        date = time.strftime("%Y-%m-%d", time.localtime())
-        time_ = time.strftime("%Hh%Mm%Ss", time.localtime())
+        date, time_ = self._getDateTime().split('_')
+        #date = time.strftime("%Y-%m-%d", time.localtime())
+        #time_ = time.strftime("%Hh%Mm%Ss", time.localtime())
         mode = self._getMode()
         self._dataFileFormatDict = {'date': date,
                                     'time': time_,
@@ -103,6 +104,13 @@ class AbstractData(object):
         self._rootNode.appendChild(self._shootNode)
 
         self._pictId = 1
+
+    def _getDateTime(self):
+        """ Return the curent date and time.
+
+        Format as %Y-%m-%d_%Hh%Mm%Ss
+        """
+        return time.strftime("%Y-%m-%d_%Hh%Mm%Ss", time.localtime())
 
     def _getMode(self):
         """ Return the shooting mode.
@@ -167,13 +175,9 @@ class AbstractData(object):
         """ Serialize xml tree to file.
         """
         if ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE'):
-
-            # Update end shooting date
-            #self._headerShootingEnd.
-
             Logger().trace("Data.serialize()")
             dataFileFormat = "papywizard_%s.xml" % ConfigManager().get('Data', 'DATA_FILE_FORMAT')
-            fileName = os.path.join(config.HOME_DIR, dataFileFormat)
+            fileName = os.path.join(ConfigManager().get('Data', 'DATA_STORAGE_DIR'), dataFileFormat)
             xmlFile = file(fileName % self._dataFileFormatDict, 'w')
             self._doc.writexml(xmlFile, addindent="    ", newl='\n', encoding="utf-8")
             xmlFile.close()
@@ -186,13 +190,19 @@ class AbstractData(object):
         """
         Logger().debug("Data.createHeader(): values=%s" % values)
 
+        # General
+        node = self._addNode(self._headerNode, 'general')
+        self._addNode(node, 'title', values['title'])
+        self._addNode(node, 'gps', values['gps'])
+        self._addNode(node, 'comment', values['comment'])
+
         # Shooting
         node = self._addNode(self._headerNode, 'shooting', mode=self._getMode())
         self._addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
         self._addNode(node, 'cameraOrientation', values['cameraOrientation'])
-        self._addNode(node, 'start', time.ctime())
-        self._headerShootingEnd = self._addNode(node, 'end', time.ctime())
-        self._addNode(node, 'comment', values['comment'])
+        dateTime = self._getDateTime()
+        self._addNode(node, 'startTime', dateTime)
+        self._headerShootingEndTime = self._addNode(node, 'endTime', dateTime)
 
         # Camera
         node = self._addNode(self._headerNode, 'camera')
@@ -207,7 +217,7 @@ class AbstractData(object):
         if values['lensType'] == 'rectilinear':
             self._addNode(node, 'focal', values['focal'])
 
-    def addPicture(self, bracket, yaw, pitch):
+    def addPicture(self, bracket, yaw, pitch, roll):
         """ Add a new picture node to shoot node.
 
         @param bracket: num of the pict (bracketing)
@@ -218,13 +228,17 @@ class AbstractData(object):
 
         @param pitch: pitch position
         @type pitch: float
+
+        @param pitch: roll value
+        @type pitch: float
         """
-        Logger().debug("Data.addPicture(): bracket=%d, yaw=%.1f, pitch=%.1f" % (bracket, yaw, pitch))
+        Logger().debug("Data.addPicture(): bracket=%d, yaw=%.1f, pitch=%.1f, roll=%.1f" % (bracket, yaw, pitch, roll))
         node = self._addNode(self._shootNode, 'pict', id="%d" % self._pictId, bracket="%d" % bracket)
         self._pictId += 1
-        self._addNode(node, 'time', time.ctime())
-        self._addNode(node, 'position', yaw="%.1f" % yaw, pitch="%.1f" % pitch)
-        self._headerShootingEnd.firstChild.data = time.ctime()
+        dateTime = self._getDateTime()
+        self._addNode(node, 'time', dateTime)
+        self._addNode(node, 'position', yaw="%.1f" % yaw, pitch="%.1f" % pitch, roll="%.1f" % roll)
+        self._headerShootingEndTime.firstChild.data = dateTime
 
         # Serialize xml file
         self._serialize()
@@ -232,71 +246,6 @@ class AbstractData(object):
 
 class MosaicData(AbstractData):
     """ Manage the data for mosaic.
-
-    Format for mosaic data::
-
-    <?xml version="1.0" encoding="utf-8"?>
-    <papywizard version="0.9">
-        <header>
-            <shooting mode="mosaic">
-                <stabilizationDelay>0.5</stabilizationDelay>
-                <cameraOrientation>portrait</cameraOrientation>
-                <start>Mon Oct 13 10:52:33 2008</start>
-                <end>Mon Oct 13 10:52:53 2008</end>
-                <comment>Néron mountain</comment>
-            </shooting>
-            <mosaic>
-                <nbPicts pitch="1" yaw="3"/>
-                <overlap minimum="0.25" pitch="1.00" yaw="0.26"/>
-            </mosaic>
-            <camera>
-                <timeValue>0.5</timeValue>
-                <bracketing intent="focus" nbPicts="1"/>
-                <sensor coef="1.6" ratio="3:2"/>
-            </camera>
-            <lens type="rectilinear">
-                <focal>17.0</focal>
-            </lens>
-        </header>
-        <shoot>
-            <pict id="1" bracket="1">
-                <time>Mon Oct 13 10:52:39 2008</time>
-                <position pitch="0.0" yaw="-44.4"/>
-            </pict>
-            <pict id="2" bracket="2">
-                <time>Mon Oct 13 10:52:40 2008</time>
-                <position pitch="0.0" yaw="-44.4"/>
-            </pict>
-            <pict id="3" bracket="3">
-                <time>Mon Oct 13 10:52:41 2008</time>
-                <position pitch="0.0" yaw="-44.4"/>
-            </pict>
-            <pict id="4" bracket="1">
-                <time>Mon Oct 13 10:52:45 2008</time>
-                <position pitch="0.0" yaw="-9.3"/>
-            </pict>
-            <pict id="5" bracket="2">
-                <time>Mon Oct 13 10:52:46 2008</time>
-                <position pitch="0.0" yaw="-9.3"/>
-            </pict>
-            <pict id="6" bracket="3">
-                <time>Mon Oct 13 10:52:47 2008</time>
-                <position pitch="0.0" yaw="-9.3"/>
-            </pict>
-            <pict id="7" bracket="1">
-                <time>Mon Oct 13 10:52:51 2008</time>
-                <position pitch="0.0" yaw="25.7"/>
-            </pict>
-            <pict id="8" bracket="2">
-                <time>Mon Oct 13 10:52:52 2008</time>
-                <position pitch="0.0" yaw="25.7"/>
-            </pict>
-            <pict id="9" bracket="3">
-                <time>Mon Oct 13 10:52:53 2008</time>
-                <position pitch="0.0" yaw="25.7"/>
-            </pict>
-        </shoot>
-    </papywizard>
     """
     def _getMode(self):
         """ Return the shooting mode.
@@ -320,78 +269,6 @@ class MosaicData(AbstractData):
 
 class PresetData(AbstractData):
     """ Manage the data for presets.
-
-    Format for mosaic data:
-
-    <?xml version="1.0" encoding="utf-8"?>
-    <papywizard version="0.9">
-        <header>
-            <shooting mode="preset">
-                <stabilizationDelay>0.5</stabilizationDelay>
-                <cameraOrientation>portrait</cameraOrientation>
-                <start>Mon Oct 13 10:30:47 2008</start>
-                <end>Mon Oct 13 10:31:40 2008</end>
-                <comment>Inside my living room</comment>
-            </shooting>
-            <preset template="3@-15 + Z"/>
-            <camera>
-                <timeValue>0.5</timeValue>
-                <bracketing intent="focus" nbPicts="1"/>
-                <sensor coef="1.6" ratio="3:2"/>
-            </camera>
-            <lens type="fisheye"/>
-        </header>
-        <shoot>
-            <pict id="1" bracket="1">
-                <time>Mon Oct 13 10:31:04 2008</time>
-                <position pitch="-15.0" yaw="0.0"/>
-            </pict>
-            <pict id="2" bracket="2">
-                <time>Mon Oct 13 10:31:05 2008</time>
-                <position pitch="-15.0" yaw="0.0"/>
-            </pict>
-            <pict id="3" bracket="3">
-                <time>Mon Oct 13 10:31:06 2008</time>
-                <position pitch="-15.0" yaw="0.0"/>
-            </pict>
-            <pict id="4" bracket="1">
-                <time>Mon Oct 13 10:31:16 2008</time>
-                <position pitch="-15.0" yaw="120.0"/>
-            </pict>
-            <pict id="5" bracket="2">
-                <time>Mon Oct 13 10:31:17 2008</time>
-                <position pitch="-15.0" yaw="120.0"/>
-            </pict>
-            <pict id="6" bracket="3">
-                <time>Mon Oct 13 10:31:18 2008</time>
-                <position pitch="-15.0" yaw="120.0"/>
-            </pict>
-            <pict id="7" bracket="1">
-                <time>Mon Oct 13 10:31:27 2008</time>
-                <position pitch="-15.0" yaw="240.0"/>
-            </pict>
-            <pict id="8" bracket="2">
-                <time>Mon Oct 13 10:31:28 2008</time>
-                <position pitch="-15.0" yaw="240.0"/>
-            </pict>
-            <pict id="9" bracket="3">
-                <time>Mon Oct 13 10:31:29 2008</time>
-                <position pitch="-15.0" yaw="240.0"/>
-            </pict>
-            <pict id="10" bracket="1">
-                <time>Mon Oct 13 10:31:38 2008</time>
-                <position pitch="90.0" yaw="240.0"/>
-            </pict>
-            <pict id="11" bracket="2">
-                <time>Mon Oct 13 10:31:39 2008</time>
-                <position pitch="90.0" yaw="240.0"/>
-            </pict>
-            <pict id="12" bracket="3">
-                <time>Mon Oct 13 10:31:40 2008</time>
-                <position pitch="90.0" yaw="240.0"/>
-            </pict>
-        </shoot>
-    </papywizard>
     """
     def _getMode(self):
         """ Return the shooting mode.
@@ -402,8 +279,8 @@ class PresetData(AbstractData):
         super(PresetData, self).createHeader(values)
 
         # Preset
-        node = self._addNode(self._headerNode, 'preset', template=values['template'])
-        #self._addNode(node, 'template', values['template'])
+        node = self._addNode(self._headerNode, 'preset', name=values['name'])
+        #self._addNode(node, 'name', values['name'])
 
         # Serialize xml file
         self._serialize()
