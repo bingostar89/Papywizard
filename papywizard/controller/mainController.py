@@ -103,7 +103,6 @@ class MainController(AbstractController):
                             "on_hardwareSetLimitPitchPlusMenuitem_activate": self.__onHardwareSetLimitPitchPlusMenuitemActivate,
                             "on_hardwareSetLimitPitchMinusMenuitem_activate": self.__onHardwareSetLimitPitchMinusMenuitemActivate,
                             "on_hardwareClearLimitsMenuitem_activate": self.__onHardwareClearLimitsMenuitemActivate,
-                            "on_hardwareResetMenuitem_activate": self.__onHardwareResetMenuitemActivate,
                             "on_helpManualMenuitem_activate": self.__onHelpManualMenuitemActivate,
                             "on_helpWhatsThisMenuitem_activate": self.__onHelpWhatsThisMenuitemActivate,
                             "on_helpViewLogMenuitem_activate": self.__onHelpViewLogMenuitemActivate,
@@ -486,12 +485,6 @@ class MainController(AbstractController):
         self._model.hardware.clearLimits()
         self.setStatusbarMessage(_("Limits cleared"), 10)
 
-    def __onHardwareResetMenuitemActivate(self, widget):
-        Logger().trace("MainController.__onHardwareResetMenuitemActivate()")
-        Logger().info("Reseting hardware")
-        self._model.hardware.reset()
-        self.setStatusbarMessage(_("Hardware has been reseted"), 10)
-
     def __onHelpManualMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHelpManualMenuitemActivate()")
         webbrowser.open(config.USER_GUIDE_URL)
@@ -583,13 +576,7 @@ class MainController(AbstractController):
         presets = PresetManager().getPresets()
         try:
             preset = presets.getByIndex(self.presetCombobox.get_active())
-            self._model.preset.template = preset.getName()
-            tooltip = preset.getTooltip()
-            try:
-                self.presetCombobox.set_tooltip_text(tooltip)
-            except:
-                pass # PyGTK on maemo does not have set_tooltip_text() method
-            Logger().debug("MainController.__onPresetComboboxChanged(): new preset template='%s'" % self._model.preset.template)
+            self._model.preset.name = preset.getName()
         except ValueError:
             #Logger().exception("MainController.__onPresetComboboxChanged()", debug=True)
             pass
@@ -819,9 +806,9 @@ class MainController(AbstractController):
         self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
         presets = PresetManager().getPresets()
         try:
-            self.presetCombobox.set_active(presets.nameToIndex(self._model.preset.template))
+            self.presetCombobox.set_active(presets.nameToIndex(self._model.preset.name))
         except ValueError:
-            Logger().warning("Previously selected '%s' preset template not found" % self._model.preset.template)
+            Logger().warning("Previously selected '%s' preset not found" % self._model.preset.name)
             self.presetCombobox.set_active(0)
 
         self.yawPosLabel.set_text("%.1f" % self.__yawPos)
