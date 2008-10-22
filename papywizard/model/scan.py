@@ -349,22 +349,22 @@ class PresetScan(AbstractScan):
     def _getTotalNbPicts(self):
         """ Compute the total number of pictures.
         """
-        preset = self.__presets.getByName(self.template)
+        preset = self.__presets.getByName(self.name)
         return preset.getNbPicts()
 
-    def __getTemplate(self):
+    def __getName(self):
         """
         """
-        return ConfigManager().get("Preferences", "PRESET_TEMPLATE")
+        return ConfigManager().get("Preferences", "PRESET_NAME")
 
-    def __setTemplate(self, template):
+    def __setName(self, name):
         """
         """
-        ConfigManager().set("Preferences", "PRESET_TEMPLATE", template)
+        ConfigManager().set("Preferences", "PRESET_NAME", name)
 
-    template = property(__getTemplate, __setTemplate, "Preset template")
+    name = property(__getName, __setName)
 
     def iterPositions(self):
-        preset = self.__presets.getByName(self.template)
+        preset = self.__presets.getByName(self.name)
         Logger().debug("PresetScan.__init__(): preset=%s" % preset)
         return preset.iterPositions()
