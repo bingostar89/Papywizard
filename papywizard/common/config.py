@@ -49,14 +49,23 @@ __revision__ = "$Id$"
 import sys
 import os.path
 
-VERSION = "1.1"
+VERSION_MAJOR = 1
+VERSION_MINOR = 1 # Odd means dev. release
+VERSION_UPDATE = 0
+VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 PACKAGE_VERSION = 1
 
 HOME_DIR = os.path.expanduser("~")
 if sys.platform == 'win32': # and win64 ?
     USER_CONFIG_DIR = os.path.join(os.path.expandvars("$APPDATA"), "papywizard")
+    DATA_STORAGE_DIR = HOME_DIR # Find a way to retreive the "My Documents" dir in all languages
 else:
     USER_CONFIG_DIR = os.path.join(HOME_DIR, ".config", "papywizard") # OpenDesktop standard
+    try:
+        import hildon
+        DATA_STORAGE_DIR = os.path.join(HOME_DIR, "MyDocs")
+    except ImportError:
+        DATA_STORAGE_DIR = HOME_DIR
 try:
     os.makedirs(USER_CONFIG_DIR)
 except OSError, (errno, errmsg):
