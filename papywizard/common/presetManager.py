@@ -80,7 +80,7 @@ class Preset(object):
         super(Preset, self).__init__()
 
         # Parse the element and store it as python objects
-        self.__name = domElement.getAttributeNode('name').value
+        self.__name = domElement.getAttributeNode('name').value[:25]
         Logger().debug("Preset.__init__(): loading name='%s'" % self.__name)
 
         domTooltip = domElement.getElementsByTagName('tooltip')[0]
