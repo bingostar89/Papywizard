@@ -9,7 +9,7 @@ License
   - (C) 2007-2008 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
 U{http://www.cecill.info}.
@@ -18,7 +18,7 @@ As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -27,9 +27,9 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
@@ -82,72 +82,101 @@ class ConfigManager(object):
         """ Init the object.
         """
         if ConfigManager.__init:
+            action = None
 
             # Load dist config.
             distConfig = ConfigParser.SafeConfigParser()
             distConfigFile = os.path.join(path, config.CONFIG_FILE)
             if distConfig.read(distConfigFile) == []:
                 raise IOError("Can't read configuration file (%s)" % distConfigFile)
-            distConfigVersion = distConfig.getint('General', 'CONFIG_VERSION')
+            distConfig.set('General', 'CONFIG_VERSION', config.VERSION)
 
-            # Check if user config. exists
+            # Check if user config. exists, or need to be updated/overwriteed
+            #distConfigVersion = distConfig.get('General', 'CONFIG_VERSION').split('.')
+            distConfigVersion = config.VERSION.split('.')
             userConfig = ConfigParser.SafeConfigParser()
             if userConfig.read(config.USER_CONFIG_FILE) == []:
-                Logger().debug("ConfigManager.__init__(): User config. does not exist; copying from dist. config.")
+                action = 'install'
+            else:
+                userConfigVersion = userConfig.get('General', 'CONFIG_VERSION').split('.')
+                Logger().debug("ConfigManager.__init__(): versions: dist=%s, user=%s" % (distConfigVersion, userConfigVersion))
+
+                # Old versioning system
+                if len(userConfigVersion) < 2:
+                    action = 'overwrite'
+
+                # Versions differ
+                if distConfigVersion != userConfigVersion:
+
+                    # Dev. version
+                    if isOdd(int(distConfigVersion[1])):
+                        action = 'overwrite'
+
+                    # Stable version...
+                    elif not isOdd(int(distConfigVersion[1])):
+
+                        # ...over a dev. version
+                        if isOdd(int(userConfigVersion[1])):
+                            action = 'overwrite'
+
+                        # ...over stable version
+                        else:
+                            action = 'update'
+                else:
+                    action = 'none'
+
+            if action == 'install':
+                Logger().debug("ConfigManager.__init__(): install user config.")
                 distConfig.write(file(config.USER_CONFIG_FILE, 'w'))
                 userConfig.read(config.USER_CONFIG_FILE)
 
-            # Check if user config. needs to be updated / overwritten
-            else:
-                userConfigVersion = userConfig.getint('General', 'CONFIG_VERSION')
+            elif action == 'overwrite':
+                Logger().debug("ConfigManager.__init__(): overwrite user config.")
+                distConfig.write(file(config.USER_CONFIG_FILE, 'w'))
+                #userConfig = ConfigParser.SafeConfigParser()
+                userConfig.read(config.USER_CONFIG_FILE)
 
-                # Check dev. versions
-                if isOdd(distConfigVersion) or \
-                   not isOdd(distConfigVersion) and isOdd(userConfigVersion):
-                    Logger().debug("ConfigManager.__init__(): Dev. version detected; user config. overwritten with dist. config.")
-                    distConfig.write(file(config.USER_CONFIG_FILE, 'w'))
-                    userConfig = ConfigParser.SafeConfigParser()
-                    userConfig.read(config.USER_CONFIG_FILE)
+            elif action == 'update':
+                Logger().debug("ConfigManager.__init__(): update user config.")
 
-                elif distConfigVersion > userConfig.getint('General', 'CONFIG_VERSION'):
-                    Logger().debug("ConfigManager.__init__(): User config. has wrong version.; updating from dist. config.")
+                # Remove obsolete sections
+                distSections = distConfig.sections()
+                for userSection in userConfig.sections():
+                    if userSection not in distSections:
+                        userConfig.remove_section(userSection)
+                        Logger().debug("ConfigManager.__init__(): Removed [%s] section" % userSection)
 
-                    # Remove obsolete sections
-                    distSections = distConfig.sections()
-                    for userSection in userConfig.sections():
-                        if userSection not in distSections:
-                            userConfig.remove_section(userSection)
-                            Logger().debug("ConfigManager.__init__(): Removed [%s] section" % userSection)
+                # Update all sections
+                for distSection in distSections:
 
-                    # Update all sections
-                    for distSection in distSections:
+                    # Create new sections
+                    if not userConfig.has_section(distSection):
+                        userConfig.add_section(distSection)
+                        Logger().debug("ConfigManager.__init__(): Added [%s] section" % distSection)
 
-                        # Create new sections
-                        if not userConfig.has_section(distSection):
-                            userConfig.add_section(distSection)
-                            Logger().debug("ConfigManager.__init__(): Added [%s] section" % distSection)
+                    # Remove obsolete options
+                    for option in userConfig.options(distSection):
+                        if not distConfig.has_option(distSection, option):
+                            userConfig.remove_option(distSection, option)
+                            Logger().debug("ConfigManager.__init__(): Removed [%s] %s option" % (distSection, option))
 
-                        # Remove obsolete options
-                        for option in userConfig.options(distSection):
-                            if not distConfig.has_option(distSection, option):
-                                userConfig.remove_option(distSection, option)
-                                Logger().debug("ConfigManager.__init__(): Removed [%s] %s option" % (distSection, option))
+                    # Update the options
+                    for option, value in distConfig.items(distSection):
+                        if not userConfig.has_option(distSection, option) or \
+                        value != userConfig.get(distSection, option) and not distSection.endswith("Preferences"):
+                            if isinstance(value, str):
+                                value = value.replace("%", "%%")
+                            userConfig.set(distSection, option, value)
+                            Logger().debug("ConfigManager.__init__(): Updated [%s] %s option with %s" % (distSection, option, value))
 
-                        # Update the options
-                        for option, value in distConfig.items(distSection):
-                            if not userConfig.has_option(distSection, option) or \
-                            value != userConfig.get(distSection, option) and not distSection.endswith("Preferences"):
-                                if isinstance(value, str):
-                                    value = value.replace("%", "%%")
-                                userConfig.set(distSection, option, value)
-                                Logger().debug("ConfigManager.__init__(): Updated [%s] %s option with %s" % (distSection, option, value))
-
-                        # Set config. version
-                        userConfig.set('General', 'CONFIG_VERSION', "%d" % distConfigVersion)
+                    # Set config. version
+                    userConfig.set('General', 'CONFIG_VERSION', "%s" % '.'.join(distConfigVersion))
 
                 # Write user config.
-                #userConfig.write(file(config.USER_CONFIG_FILE, 'w'))
-                #Logger().debug("ConfigManager.__init__(): User config. written to file")
+                userConfig.write(file(config.USER_CONFIG_FILE, 'w'))
+
+            elif action == 'none':
+                Logger().debug("ConfigManager.__init__(): user config. is up-to-date")
 
             self.__config = userConfig
 
