@@ -50,7 +50,7 @@
             <pict yaw="None" pitch="-90." />
         </shoot>
     </preset>
-    <preset name="3 + 6 + 12 + 6 + 3 (17 mm)">
+    <preset name="3 + 6 + 12 + 6 + 3 (17mm)">
         <tooltip>
             17 mm on APS-C (x1.5)
             3  picts @ +70°
@@ -92,7 +92,7 @@
             <pict yaw="270." pitch="-70." />
         </shoot>
     </preset>
-    <preset name="3 + 6 + 12 + 6 + 3 (20 mm)">
+    <preset name="3 + 6 + 12 + 6 + 3 (20mm)">
         <tooltip>
             20 mm on APS-C (x1.5)
             3  picts @ +75°
