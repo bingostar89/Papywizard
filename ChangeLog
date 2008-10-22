@@ -5,11 +5,14 @@ ChangeLog
 x bug fix
 
 xxxx-xx-xx Version SVN
+
+2008-10-xx Version 1.2
     + open on-line manual page in a web browser
     + custom user presets support (from file)
+    + import custom presets file
     + global try/except statement with traceback in GUI
     + preset templates information window + tooltip
-    + l10n/i18n (english, french, polish)
+    + l10n/i18n (english, french, polish, german)
     x log viewer background now entire black
     - removed usb driver
     + new network (socket) driver
@@ -21,6 +24,8 @@ xxxx-xx-xx Version SVN
     + low-level hardware simulator as standalone application
     + view 3D is now a standalone application
     - remove debian setup script (need a real debian packaging)
+    + added option to set data storage dir
+    x better user config. update handling
 
 2008-09-19 Version 1.0
     + preset shooting mode for full spherical
