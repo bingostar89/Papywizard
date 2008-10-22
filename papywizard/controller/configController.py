@@ -106,6 +106,7 @@ class ConfigController(AbstractController):
         self.hardwareAutoConnectCheckbutton = self.wTree.get_widget("hardwareAutoConnectCheckbutton")
         self.loggerLevelCombobox = self.wTree.get_widget("loggerCLevelCombobox")
         self.dataFileFormatEntry = self.wTree.get_widget("dataFileFormatEntry")
+        self.dataStorageDirFilechooserbutton = self.wTree.get_widget("dataStorageDirFilechooserbutton")
 
     # Callbacks
     def __onOkButtonClicked(self, widget):
@@ -139,6 +140,8 @@ class ConfigController(AbstractController):
         ConfigManager().set('Logger', 'LOGGER_LEVEL',
                             config.LOGGER_INDEX[self.loggerLevelCombobox.get_active()])
         ConfigManager().set('Data', 'DATA_FILE_FORMAT', self.dataFileFormatEntry.get_text())
+        newDir = self.dataStorageDirFilechooserbutton.get_current_folder()
+        ConfigManager().set('Data', 'DATA_STORAGE_DIR', newDir)
 
     def __onCancelButtonClicked(self, widget):
         """ Cancel button has been clicked.
@@ -250,3 +253,7 @@ class ConfigController(AbstractController):
         self.hardwareAutoConnectCheckbutton.set_active(ConfigManager().getBoolean('Hardware', 'AUTO_CONNECT'))
         self.loggerLevelCombobox.set_active(config.LOGGER_INDEX[ConfigManager().get('Logger', 'LOGGER_LEVEL')])
         self.dataFileFormatEntry.set_text(ConfigManager().get('Data', 'DATA_FILE_FORMAT'))
+        dataStorageDir = ConfigManager().get('Data', 'DATA_STORAGE_DIR')
+        if not dataStorageDir:
+            dataStorageDir = config.DATA_STORAGE_DIR
+        self.dataStorageDirFilechooserbutton.set_current_folder(dataStorageDir)
