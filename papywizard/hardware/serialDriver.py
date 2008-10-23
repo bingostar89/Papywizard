@@ -75,10 +75,9 @@ class SerialDriver(BusDriver):
                 self._serial.baudrate = config.SERIAL_BAUDRATE
                 self._serial.read(self._serial.inWaiting()) # Empty buffer
                 self._init = True
-
-            except:
+            except Exception, msg:
                 Logger().exception("SerialDriver.init()")
-                raise HardwareError("Can't init SerialDriver object")
+                raise HardwareError(msg)
 
     def shutdown(self):
         if self._init:
@@ -95,7 +94,7 @@ class SerialDriver(BusDriver):
 
     def sendCmd(self, cmd):
         if not self._init:
-            raise HardwareError("SerialPassiveDriver not initialized")
+            raise HardwareError(_("SerialDriver not initialized"))
 
         self.acquireBus()
         try:
@@ -109,13 +108,13 @@ class SerialDriver(BusDriver):
                 c = self._serial.read()
                 #Logger().debug("SerialPassiveDriver.sendCmd(): c=%s" % repr(c))
                 if not c:
-                    raise IOError("Timeout while reading on serial bus")
+                    raise IOError(_("Timeout while reading on serial bus"))
             data = ""
             while True:
                 c = self._serial.read()
                 #Logger().debug("SerialPassiveDriver.sendCmd(): c=%s, data=%s" % (repr(c), repr(data)))
                 if not c:
-                    raise IOError("Timeout while reading on serial bus")
+                    raise IOError(_("Timeout while reading on serial bus"))
                 elif c == '\r':
                     break
                 data += c
