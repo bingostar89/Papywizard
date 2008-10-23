@@ -77,7 +77,7 @@ class Shooting(object):
         @type simulatedHardware: {HeadSimulation}
         """
         self.__shooting = False
-        self.__suspend = False
+        self.__pause = False
         self.__stop = False
         self.__setParams = None
         self.__manualShoot = False
@@ -182,7 +182,7 @@ class Shooting(object):
     def setManualShoot(self, flag):
         """ Turn on/off manual shoot.
 
-        In manual shoot mode, the head switch to suspend at each end of position.
+        In manual shoot mode, the head switch to pause at each end of position.
 
         @param flag: flag for manual shoot
         @type flag: bool
@@ -198,13 +198,13 @@ class Shooting(object):
     def start(self):
         """ Start pano shooting.
         """
-        def checkSuspendStop():
-            """ Check if suspend or stop requested.
+        def checkPauseStop():
+            """ Check if pause or stop requested.
             """
-            if self.__suspend:
-                Logger().info("Suspend")
+            if self.__pause:
+                Logger().info("Pause")
                 self.sequence = _("Idle")
-                while self.__suspend:
+                while self.__pause:
                     time.sleep(0.1)
                 Logger().info("Resume")
             if self.__stop:
@@ -265,17 +265,17 @@ class Shooting(object):
                 try:
                     self.hardware.gotoPosition(yaw, pitch)
 
-                    checkSuspendStop()
+                    checkPauseStop()
 
                     Logger().info("Stabilization")
                     self.sequence = _("Stabilizing")
                     time.sleep(self.stabilizationDelay)
 
                     if self.__manualShoot:
-                        self.__suspend = True
+                        self.__pause = True
                         Logger().info("Manual shoot")
 
-                    checkSuspendStop()
+                    checkPauseStop()
 
                     Logger().info("Shooting")
                     for bracket in xrange(self.camera.bracketingNbPicts):
@@ -286,7 +286,7 @@ class Shooting(object):
 
                         data.addPicture(bracket + 1, yaw, pitch, roll)
 
-                        checkSuspendStop()
+                        checkPauseStop()
 
                     progressFraction = float((i + 1)) / float(scan.totalNbPicts)
                     self.progress = progressFraction
@@ -324,32 +324,32 @@ class Shooting(object):
         """
         return self.__shooting
 
-    def suspend(self):
-        """ Suspend execution of pano shooting.
+    def pause(self):
+        """ Pause execution of pano shooting.
         """
-        Logger().trace("Shooting.suspend()")
-        self.__suspend = True
+        Logger().trace("Shooting.pause()")
+        self.__pause = True
 
-    def isSuspended(self):
-        """ Test if shotting is suspended.
+    def isPaused(self):
+        """ Test if shotting is paused.
 
-        @return: True if shooting is suspended, False otherwise
+        @return: True if shooting is paused, False otherwise
         @rtype: bool
         """
-        return self.__suspend
+        return self.__pause
 
     def resume(self):
         """ Resume  execution of shooting.
         """
         Logger().trace("Shooting.resume()")
-        self.__suspend = False
+        self.__pause = False
 
     def stop(self):
         """ Cancel execution of shooting.
         """
         Logger().trace("Shooting.stop()")
         self.__stop = True
-        self.__suspend = False
+        self.__pause = False
         self.hardware.stopAxis()
 
     def shutdown(self):

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Oct 22 22:53:02 2008 -->
+<!--Generated with glade3 3.4.5 on Thu Oct 23 18:56:11 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="visible">True</property>
@@ -114,12 +114,12 @@
               </widget>
             </child>
             <child>
-              <widget class="GtkButton" id="suspendResumeButton">
+              <widget class="GtkButton" id="pauseResumeButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="response_id">0</property>
-                <signal name="clicked" handler="on_suspendResumeButton_clicked"/>
+                <signal name="clicked" handler="on_pauseResumeButton_clicked"/>
                 <child>
                   <widget class="GtkHBox" id="hbox3">
                     <property name="visible">True</property>
@@ -132,10 +132,10 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="suspendResumeLabel">
+                      <widget class="GtkLabel" id="pauseResumeLabel">
                         <property name="visible">True</property>
                         <property name="xalign">0.05000000074505806</property>
-                        <property name="label" translatable="yes" context="yes">Suspend</property>
+                        <property name="label" translatable="yes" context="yes">Pause</property>
                       </widget>
                       <packing>
                         <property name="position">1</property>

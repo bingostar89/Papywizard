@@ -75,7 +75,7 @@ class ShootController(AbstractController):
         self._signalDict = {"on_manualShootCheckbutton_toggled": self.__onManualShootCheckbuttonToggled,
                             "on_dataFileEnableCheckbutton_toggled": self.__onDataFileEnableCheckbuttonToggled,
                             "on_startButton_clicked": self.__onStartButtonClicked,
-                            "on_suspendResumeButton_clicked": self.__onSuspendResumeButtonClicked,
+                            "on_pauseResumeButton_clicked": self.__onPauseResumeButtonClicked,
                             "on_stopButton_clicked": self.__onStopButtonClicked,
                             "on_doneButton_clicked": self.__onDoneButtonClicked,
                         }
@@ -116,12 +116,12 @@ class ShootController(AbstractController):
         self.manualShootCheckbutton = self.wTree.get_widget("manualShootCheckbutton")
         self.dataFileEnableCheckbutton = self.wTree.get_widget("dataFileEnableCheckbutton")
         self.startButton = self.wTree.get_widget("startButton")
-        self.suspendResumeButton = self.wTree.get_widget("suspendResumeButton")
-        self.suspendResumeLabel = self.wTree.get_widget("suspendResumeLabel")
+        self.pauseResumeButton = self.wTree.get_widget("pauseResumeButton")
+        self.pauseResumeLabel = self.wTree.get_widget("pauseResumeLabel")
         self.stopButton = self.wTree.get_widget("stopButton")
         self.doneButton = self.wTree.get_widget("doneButton")
 
-        self.suspendResumeButton.set_sensitive(False)
+        self.pauseResumeButton.set_sensitive(False)
         self.stopButton.set_sensitive(False)
 
     def _connectSignals(self):
@@ -154,12 +154,12 @@ class ShootController(AbstractController):
                 # Pressing 'Return' while shooting...
                 else:
 
-                    # ...and not suspended suspends shooting
-                    if not self._model.isSuspended():
-                        Logger().debug("shootController.__onKeyPressed(): suspend shooting")
-                        self.__suspendShooting()
+                    # ...and not paused pauses shooting
+                    if not self._model.isPaused():
+                        Logger().debug("shootController.__onKeyPressed(): pause shooting")
+                        self.__pauseShooting()
 
-                    #... and suspended resumes shooting
+                    #... and paused resumes shooting
                     else:
                         Logger().debug("shootController.__onKeyPressed(): resume shooting")
                         self.__resumeShooting()
@@ -218,11 +218,11 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__startButtonClicked()")
         self.__startShooting()
 
-    def __onSuspendResumeButtonClicked(self, widget):
-        Logger().trace("ShootController.__suspendResumeButtonClicked()")
+    def __onPauseResumeButtonClicked(self, widget):
+        Logger().trace("ShootController.__pauseResumeButtonClicked()")
         if self._model.isShooting(): # Should always be true here, but...
-            if not self._model.isSuspended():
-                self.__suspendShooting()
+            if not self._model.isPaused():
+                self.__pauseShooting()
             else:
                 self.__resumeShooting()
 
@@ -243,11 +243,11 @@ class ShootController(AbstractController):
         def monitorShooting():
             Logger().trace("ShootController.__startShooting().monitorShooting()")
 
-            # Check if model suspended (manual shoot mode)
-            if self._model.isSuspended():
-                self.suspendResumeLabel.set_text(_("Resume"))
+            # Check if model paused (manual shoot mode)
+            if self._model.isPaused():
+                self.pauseResumeLabel.set_text(_("Resume"))
             else:
-                self.suspendResumeLabel.set_text(_("Suspend"))
+                self.pauseResumeLabel.set_text(_("Pause"))
 
             # Check end of shooting
             if not self._model.isShooting():
@@ -263,8 +263,8 @@ class ShootController(AbstractController):
 
                 self.dataFileEnableCheckbutton.set_sensitive(True)
                 self.startButton.set_sensitive(True)
-                self.suspendResumeLabel.set_text(_("Suspend"))
-                self.suspendResumeButton.set_sensitive(False)
+                self.pauseResumeLabel.set_text(_("Pause"))
+                self.pauseResumeButton.set_sensitive(False)
                 self.stopButton.set_sensitive(False)
                 self.doneButton.set_sensitive(True)
                 self.refreshView()
@@ -280,7 +280,7 @@ class ShootController(AbstractController):
         self.shootingArea.clear()
         self.dataFileEnableCheckbutton.set_sensitive(False)
         self.startButton.set_sensitive(False)
-        self.suspendResumeButton.set_sensitive(True)
+        self.pauseResumeButton.set_sensitive(True)
         self.stopButton.set_sensitive(True)
         self.doneButton.set_sensitive(False)
 
@@ -292,13 +292,13 @@ class ShootController(AbstractController):
         # Monitor shooting process
         gobject.timeout_add(200, monitorShooting)
 
-    def __suspendShooting(self):
-        self._model.suspend()
-        #self.suspendResumeLabel.set_text(_("Resume"))
+    def __pauseShooting(self):
+        self._model.pause()
+        #self.pauseResumeLabel.set_text(_("Resume"))
 
     def __resumeShooting(self):
         self._model.resume()
-        #self.suspendResumeLabel.set_text(_("Suspend"))
+        #self.pauseResumeLabel.set_text(_("Pause"))
 
     def __stopShooting(self):
         self._model.stop()
