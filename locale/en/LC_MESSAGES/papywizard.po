@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-22 23:40+0200\n"
-"PO-Revision-Date: 2008-10-22 23:38+0100\n"
+"POT-Creation-Date: 2008-10-23 19:01+0200\n"
+"PO-Revision-Date: 2008-10-23 19:01+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: papywizard/model/shooting.py:98 papywizard/model/shooting.py:196
+#: papywizard/model/shooting.py:98
+#: papywizard/model/shooting.py:196
 #: papywizard/model/shooting.py:206
 msgid "Idle"
 msgstr "Idle"
@@ -52,14 +53,33 @@ msgstr "Internal error"
 msgid "Error"
 msgstr "Error"
 
+#: papywizard/hardware/bluetoothDriver.py:112
+msgid "BluetoothDriver not initialized"
+msgstr "BluetoothDriver not initialized"
+
+#: papywizard/hardware/bluetoothDriver.py:125
+#: papywizard/hardware/bluetoothDriver.py:131
+msgid "Timeout while reading on bluetooth bus"
+msgstr "Timeout while reading on bluetooth bus"
+
+#: papywizard/hardware/serialDriver.py:97
+msgid "SerialDriver not initialized"
+msgstr "SerialDriver not initialized"
+
+#: papywizard/hardware/serialDriver.py:111
+#: papywizard/hardware/serialDriver.py:117
+msgid "Timeout while reading on serial bus"
+msgstr "Timeout while reading on serial bus"
+
 #: papywizard/controller/shootController.py:248
 msgid "Resume"
 msgstr "Resume"
 
 #: papywizard/controller/shootController.py:250
-#: papywizard/controller/shootController.py:266 tmp/shootDialog.glade.h:8
-msgid "Suspend"
-msgstr "Suspend"
+#: papywizard/controller/shootController.py:266
+#: tmp/shootDialog.glade.h:3
+msgid "Pause"
+msgstr "Pause"
 
 #: papywizard/controller/bluetoothChooserController.py:176
 msgid "Can't scan bluetooth"
@@ -162,11 +182,13 @@ msgstr ""
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:2 tmp/configDialog.glade.h:42
+#: tmp/bluetoothChooserDialog.glade.h:2
+#: tmp/configDialog.glade.h:42
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:43
+#: tmp/bluetoothChooserDialog.glade.h:3
+#: tmp/configDialog.glade.h:43
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -232,7 +254,8 @@ msgstr "Ethernet host/port"
 msgid "Focal (mm)"
 msgstr "Focal (mm)"
 
-#: tmp/configDialog.glade.h:17 tmp/mainWindow.glade.h:15
+#: tmp/configDialog.glade.h:17
+#: tmp/mainWindow.glade.h:15
 msgid "Hardware"
 msgstr "Hardware"
 
@@ -272,7 +295,8 @@ msgstr "Sensor ratio"
 msgid "Serial port"
 msgstr "Serial port"
 
-#: tmp/configDialog.glade.h:28 tmp/shootDialog.glade.h:5
+#: tmp/configDialog.glade.h:28
+#: tmp/shootDialog.glade.h:6
 msgid "Shooting"
 msgstr "Shooting"
 
@@ -468,7 +492,8 @@ msgstr "Clear the log window"
 msgid "Logger"
 msgstr "Logger"
 
-#: tmp/loggerDialog.glade.h:4 tmp/presetInfoDialog.glade.h:2
+#: tmp/loggerDialog.glade.h:4
+#: tmp/presetInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:9
 msgid "gtk-close"
 msgstr "gtk-close"
@@ -637,19 +662,19 @@ msgstr "Data file enable"
 msgid "Manual shooting"
 msgstr "Manual shooting"
 
-#: tmp/shootDialog.glade.h:3
+#: tmp/shootDialog.glade.h:4
 msgid "Progression and status of the shooting"
 msgstr "Progression and status of the shooting"
 
-#: tmp/shootDialog.glade.h:4
+#: tmp/shootDialog.glade.h:5
 msgid "Progression..."
 msgstr "Progression..."
 
-#: tmp/shootDialog.glade.h:6
+#: tmp/shootDialog.glade.h:7
 msgid "Start"
 msgstr "Start"
 
-#: tmp/shootDialog.glade.h:7
+#: tmp/shootDialog.glade.h:8
 msgid "Stop"
 msgstr "Stop"
 
@@ -657,206 +682,146 @@ msgstr "Stop"
 msgid "Please wait..."
 msgstr "Please wait..."
 
+#~ msgid "Suspend"
+#~ msgstr "Suspend"
 #~ msgid "Templates"
 #~ msgstr "Templates"
-
 #~ msgid "Hardware has been reseted"
 #~ msgstr "Hardware has been reseted"
-
 #~ msgid "Bluetooth devices list"
 #~ msgstr "Bluetooth devices list"
-
 #~ msgid "Refresh the bluetooth devices list"
 #~ msgstr "Refresh the bluetooth devices list"
-
 #~ msgid "Address of the bluetooth converter"
 #~ msgstr "Address of the bluetooth converter"
-
 #~ msgid "Automatically connect to hardware at startup"
 #~ msgstr "Automatically connect to hardware at startup"
-
 #~ msgid "Cariage return at each end of raw/col (mosaic mode)"
 #~ msgstr "Cariage return at each end of raw/col (mosaic mode)"
-
 #~ msgid "Coef. of the sensor to 35mm size"
 #~ msgstr "Coef. of the sensor to 35mm size"
-
 #~ msgid "Delay to wait after each move"
 #~ msgstr "Delay to wait after each move"
-
 #~ msgid "Direction of the first move (mosaic mode)"
 #~ msgstr "Direction of the first move (mosaic mode)"
-
 #~ msgid "Driver to use to connect to hardware"
 #~ msgstr "Driver to use to connect to hardware"
-
 #~ msgid "Ethernet port"
 #~ msgstr "Ethernet port"
-
 #~ msgid "Focal of the lens"
 #~ msgstr "Focal of the lens"
-
 #~ msgid "Force overlap to get square pictures (mosaic mode)"
 #~ msgstr "Force overlap to get square pictures (mosaic mode)"
-
 #~ msgid "Format of the xml data file name"
 #~ msgstr "Format of the xml data file name"
-
 #~ msgid "From where to start shooting (mosaic mode)"
 #~ msgstr "From where to start shooting (mosaic mode)"
-
 #~ msgid "Host name or IP address"
 #~ msgstr "Host name or IP address"
-
 #~ msgid "Intent of the bracketing"
 #~ msgstr "Intent of the bracketing"
-
 #~ msgid "Level of the logger"
 #~ msgstr "Level of the logger"
-
 #~ msgid "Minimum wanted overlap (mosaic mode)"
 #~ msgstr "Minimum wanted overlap (mosaic mode)"
-
 #~ msgid "Number of pictures of the bracketing"
 #~ msgstr "Number of pictures of the bracketing"
-
 #~ msgid "Orientation of the camera"
 #~ msgstr "Orientation of the camera"
-
 #~ msgid "Port of the serial converter"
 #~ msgstr "Port of the serial converter"
-
 #~ msgid "Ratio of the sensor"
 #~ msgstr "Ratio of the sensor"
-
 #~ msgid "Time value of the camera"
 #~ msgstr "Time value of the camera"
-
 #~ msgid "Type of the lens"
 #~ msgstr "Type of the lens"
-
 #~ msgid "Move pitch +"
 #~ msgstr "Move pitch +"
-
 #~ msgid "Move pitch -"
 #~ msgstr "Move pitch -"
-
 #~ msgid "Move yaw +"
 #~ msgstr "Move yaw +"
-
 #~ msgid "Move yaw -"
 #~ msgstr "Move yaw -"
-
 #~ msgid "Open configure dialog"
 #~ msgstr "Open configure dialog"
-
 #~ msgid "Open shooting dialog"
 #~ msgstr "Open shooting dialog"
-
 #~ msgid "Reset"
 #~ msgstr "Reset"
-
 #~ msgid "Set pitch end from current position"
 #~ msgstr "Set pitch end from current position"
-
 #~ msgid "Set pitch start from current position"
 #~ msgstr "Set pitch start from current position"
-
 #~ msgid "Set yaw end from current position"
 #~ msgstr "Set yaw end from current position"
-
 #~ msgid "Set yaw start from current position"
 #~ msgstr "Set yaw start from current position"
-
 #~ msgid "Template"
 #~ msgstr "Template"
-
 #~ msgid "Template list for preset shooting"
 #~ msgstr "Template list for preset shooting"
-
 #~ msgid "Templates information"
 #~ msgstr "Templates information"
-
 #~ msgid "What's This?"
 #~ msgstr "What's This?"
-
 #~ msgid "Manual shoot at each position"
 #~ msgstr "Manual shoot at each position"
-
 #~ msgid "Start shooting"
 #~ msgstr "Start shooting"
-
 #~ msgid "Stop shooting"
 #~ msgstr "Stop shooting"
-
 #~ msgid "Suspend/resume shooting"
 #~ msgstr "Suspend/resume shooting"
-
 #~ msgid "Write data file"
 #~ msgstr "Write data file"
-
 #~ msgid "Over"
 #~ msgstr "Over"
-
 #~ msgid "Number of pictures"
 #~ msgstr "Number of pictures"
-
 #~ msgid "Starting Papywizard app..."
 #~ msgstr "Starting Papywizard app..."
-
 #~ msgid "Papywizard app stopped"
 #~ msgstr "Papywizard app stopped"
 
 #, fuzzy
 #~ msgid "Presets"
 #~ msgstr "Preset"
-
 #~ msgid "Log viewer"
 #~ msgstr "Log viewer"
-
 #~ msgid "Preset templates"
 #~ msgstr "Preset templates"
-
 #~ msgid "Shoot"
 #~ msgstr "Shoot"
-
 #~ msgid "Can't read configuration file (%s)"
 #~ msgstr "Can't read configuration file (%s)"
-
 #~ msgid ""
 #~ "ConfigManager.__init__(): User config. does not exist; copying from dist "
 #~ "config."
 #~ msgstr ""
 #~ "ConfigManager.__init__(): User config. does not exist; copying from dist "
 #~ "config."
-
 #~ msgid ""
 #~ "ConfigManager.__init__(): User config. has wrong version.; updating from "
 #~ "dist config."
 #~ msgstr ""
 #~ "ConfigManager.__init__(): User config. has wrong version.; updating from "
 #~ "dist config."
-
 #~ msgid "ConfigManager.__init__(): Removed [%s] section"
 #~ msgstr "ConfigManager.__init__(): Removed [%s] section"
-
 #~ msgid "ConfigManager.__init__(): Added [%s] section"
 #~ msgstr "ConfigManager.__init__(): Added [%s] section"
-
 #~ msgid "ConfigManager.__init__(): Removed [%s] %s option"
 #~ msgstr "ConfigManager.__init__(): Removed [%s] %s option"
-
 #~ msgid "ConfigManager.__init__(): Updated [%s] %s option with %s"
 #~ msgstr "ConfigManager.__init__(): Updated [%s] %s option with %s"
-
 #~ msgid "ConfigManager.__init__(): User config. written to file"
 #~ msgstr "ConfigManager.__init__(): User config. written to file"
-
 #~ msgid "ConfigManager.save()"
 #~ msgstr "ConfigManager.save()"
-
 #~ msgid "Configuration saved"
 #~ msgstr "Configuration saved"
-
 #~ msgid "MainController.__onKeyPressed()"
 #~ msgstr "MainController.__onKeyPressed()"
+

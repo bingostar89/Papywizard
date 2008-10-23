@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-22 23:40+0200\n"
+"POT-Creation-Date: 2008-10-23 19:01+0200\n"
 "PO-Revision-Date: 2008-10-22 23:41+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -16,8 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: papywizard/model/shooting.py:98
-#: papywizard/model/shooting.py:196
+#: papywizard/model/shooting.py:98 papywizard/model/shooting.py:196
 #: papywizard/model/shooting.py:206
 msgid "Idle"
 msgstr "Warte"
@@ -53,15 +52,32 @@ msgstr "Interner Fehler"
 msgid "Error"
 msgstr "Fehler"
 
+#: papywizard/hardware/bluetoothDriver.py:112
+msgid "BluetoothDriver not initialized"
+msgstr ""
+
+#: papywizard/hardware/bluetoothDriver.py:125
+#: papywizard/hardware/bluetoothDriver.py:131
+msgid "Timeout while reading on bluetooth bus"
+msgstr ""
+
+#: papywizard/hardware/serialDriver.py:97
+msgid "SerialDriver not initialized"
+msgstr ""
+
+#: papywizard/hardware/serialDriver.py:111
+#: papywizard/hardware/serialDriver.py:117
+msgid "Timeout while reading on serial bus"
+msgstr ""
+
 #: papywizard/controller/shootController.py:248
 msgid "Resume"
 msgstr "Fortsetzen"
 
 #: papywizard/controller/shootController.py:250
-#: papywizard/controller/shootController.py:266
-#: tmp/shootDialog.glade.h:8
-msgid "Suspend"
-msgstr "Anhalten"
+#: papywizard/controller/shootController.py:266 tmp/shootDialog.glade.h:3
+msgid "Pause"
+msgstr ""
 
 #: papywizard/controller/bluetoothChooserController.py:176
 msgid "Can't scan bluetooth"
@@ -164,13 +180,11 @@ msgstr ""
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:2
-#: tmp/configDialog.glade.h:42
+#: tmp/bluetoothChooserDialog.glade.h:2 tmp/configDialog.glade.h:42
 msgid "gtk-cancel"
 msgstr "gtk-Abbruch"
 
-#: tmp/bluetoothChooserDialog.glade.h:3
-#: tmp/configDialog.glade.h:43
+#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:43
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -236,8 +250,7 @@ msgstr "Ethernet host/port"
 msgid "Focal (mm)"
 msgstr "Brennweite (mm)"
 
-#: tmp/configDialog.glade.h:17
-#: tmp/mainWindow.glade.h:15
+#: tmp/configDialog.glade.h:17 tmp/mainWindow.glade.h:15
 msgid "Hardware"
 msgstr "Hardware"
 
@@ -277,8 +290,7 @@ msgstr "Sensorverhältnis"
 msgid "Serial port"
 msgstr "Serieller Anschluss"
 
-#: tmp/configDialog.glade.h:28
-#: tmp/shootDialog.glade.h:5
+#: tmp/configDialog.glade.h:28 tmp/shootDialog.glade.h:6
 msgid "Shooting"
 msgstr "Aufnahme"
 
@@ -474,8 +486,7 @@ msgstr "Logfenster leeren"
 msgid "Logger"
 msgstr "Logger"
 
-#: tmp/loggerDialog.glade.h:4
-#: tmp/presetInfoDialog.glade.h:2
+#: tmp/loggerDialog.glade.h:4 tmp/presetInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:9
 msgid "gtk-close"
 msgstr "gtk-Schliessen"
@@ -644,19 +655,19 @@ msgstr "Dateiausgabe"
 msgid "Manual shooting"
 msgstr "Manuelle Aufnahme"
 
-#: tmp/shootDialog.glade.h:3
+#: tmp/shootDialog.glade.h:4
 msgid "Progression and status of the shooting"
 msgstr "Fortschritt und Status der Aufnahme"
 
-#: tmp/shootDialog.glade.h:4
+#: tmp/shootDialog.glade.h:5
 msgid "Progression..."
 msgstr "Fortschritt..."
 
-#: tmp/shootDialog.glade.h:6
+#: tmp/shootDialog.glade.h:7
 msgid "Start"
 msgstr "Start"
 
-#: tmp/shootDialog.glade.h:7
+#: tmp/shootDialog.glade.h:8
 msgid "Stop"
 msgstr "Stop"
 
@@ -664,102 +675,150 @@ msgstr "Stop"
 msgid "Please wait..."
 msgstr "Bitte warten..."
 
+#~ msgid "Suspend"
+#~ msgstr "Anhalten"
+
 #~ msgid "Templates"
 #~ msgstr "Vorlagen"
+
 #~ msgid "Hardware has been reseted"
 #~ msgstr "Hardware zurückgesetzt"
+
 #~ msgid "Bluetooth devices list"
 #~ msgstr "Bluetooth Geräteliste"
+
 #~ msgid "Refresh the bluetooth devices list"
 #~ msgstr "Bluetooth-Geräteliste wird aktualisiert"
+
 #~ msgid "Address of the bluetooth converter"
 #~ msgstr "Adresss des Bluetoothkonverters"
+
 #~ msgid "Automatically connect to hardware at startup"
 #~ msgstr "Hardware bei Start automatisch verbinden"
+
 #~ msgid "Cariage return at each end of raw/col (mosaic mode)"
 #~ msgstr "Zeilenvorschub am Ende jeder Spalte/Zeile (Raster)"
+
 #~ msgid "Coef. of the sensor to 35mm size"
 #~ msgstr "Sensorfaktor zu 35mm"
+
 #~ msgid "Delay to wait after each move"
 #~ msgstr "Pause nach jeder Bewegung"
+
 #~ msgid "Direction of the first move (mosaic mode)"
 #~ msgstr "Richtung der ersten Bewegung (Raster)"
+
 #~ msgid "Driver to use to connect to hardware"
 #~ msgstr "Treiber für Hardwareverbindung"
+
 #~ msgid "Ethernet port"
 #~ msgstr "Ethernet port"
+
 #~ msgid "Focal of the lens"
 #~ msgstr "Brennweite"
+
 #~ msgid "Force overlap to get square pictures (mosaic mode)"
 #~ msgstr "Überlappung vorgeben für quadr. Bilder (Raster)"
+
 #~ msgid "Format of the xml data file name"
 #~ msgstr "Format des XML-Dateinamens"
+
 #~ msgid "From where to start shooting (mosaic mode)"
 #~ msgstr "Wo soll Aufnahme starten (Raster)"
+
 #~ msgid "Host name or IP address"
 #~ msgstr "Hostname oder IP-Addresse"
+
 #~ msgid "Intent of the bracketing"
 #~ msgstr "Art der Mehrfachbelichtung"
+
 #~ msgid "Level of the logger"
 #~ msgstr "Logger-Stufe"
+
 #~ msgid "Minimum wanted overlap (mosaic mode)"
 #~ msgstr "Minimale Überlappung (Raster)"
+
 #~ msgid "Number of pictures of the bracketing"
 #~ msgstr "Anzahl Bilder der Belichtungsreihe"
+
 #~ msgid "Orientation of the camera"
 #~ msgstr "Ausrichtung der Kamera"
+
 #~ msgid "Port of the serial converter"
 #~ msgstr "Serieller Port"
+
 #~ msgid "Ratio of the sensor"
 #~ msgstr "Sensorverhältnis"
+
 #~ msgid "Time value of the camera"
 #~ msgstr "Verschlusszeit"
 
 #, fuzzy
 #~ msgid "Type of the lens"
 #~ msgstr "Brennweite"
+
 #~ msgid "Move pitch +"
 #~ msgstr "Neigen +"
+
 #~ msgid "Move pitch -"
 #~ msgstr "Neigen -"
+
 #~ msgid "Move yaw +"
 #~ msgstr "Drehen +"
+
 #~ msgid "Move yaw -"
 #~ msgstr "Drehen -"
+
 #~ msgid "Open configure dialog"
 #~ msgstr "Einstelldialog öffnen"
+
 #~ msgid "Open shooting dialog"
 #~ msgstr "Aufnahmedialog öffnen"
+
 #~ msgid "Reset"
 #~ msgstr "Reset"
+
 #~ msgid "Set pitch end from current position"
 #~ msgstr "Aktuelle Position als Neige-Ende setzen"
+
 #~ msgid "Set pitch start from current position"
 #~ msgstr "Aktuelle Position als Neige-Start setzen"
+
 #~ msgid "Set yaw end from current position"
 #~ msgstr "Aktuelle Position als Dreh-Ende setzen"
+
 #~ msgid "Set yaw start from current position"
 #~ msgstr "Aktuelle Position als Dreh-Start setzen"
+
 #~ msgid "Template"
 #~ msgstr "Vorlage"
+
 #~ msgid "Template list for preset shooting"
 #~ msgstr "Vorlagenliste"
+
 #~ msgid "Templates information"
 #~ msgstr "Vorlageninfo"
+
 #~ msgid "What's This?"
 #~ msgstr "Was ist das?"
+
 #~ msgid "Manual shoot at each position"
 #~ msgstr "Manuelle Aufnahme bei jeder Position"
+
 #~ msgid "Start shooting"
 #~ msgstr "Start Aufnahme"
+
 #~ msgid "Stop shooting"
 #~ msgstr "Stop Aufnahme"
+
 #~ msgid "Suspend/resume shooting"
 #~ msgstr "Aufnahme anhalten/fortsetzen"
+
 #~ msgid "Write data file"
 #~ msgstr "Datenfile schreiben"
+
 #~ msgid "Over"
 #~ msgstr "zu Ende"
+
 #~ msgid "Number of pictures"
 #~ msgstr "Anzahl Aufnahmen"
-
