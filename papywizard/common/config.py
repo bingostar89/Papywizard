@@ -49,12 +49,14 @@ __revision__ = "$Id$"
 import sys
 import os.path
 
+# Version
 VERSION_MAJOR = 1
 VERSION_MINOR = 1 # Odd means dev. release
-VERSION_UPDATE = 0
+VERSION_UPDATE = 1
 VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 PACKAGE_VERSION = 1
 
+# Paths
 HOME_DIR = os.path.expanduser("~")
 if sys.platform == 'win32': # and win64 ?
     USER_CONFIG_DIR = os.path.join(os.path.expandvars("$APPDATA"), "papywizard")
@@ -79,30 +81,31 @@ PRESET_FILE = "presets.xml"
 USER_PRESET_FILE = os.path.join(USER_CONFIG_DIR, PRESET_FILE)
 USER_GUIDE_URL = "http://trac.gbiloba.org/papywizard/wiki/UserGuide"
 
-SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3.}
-SENSOR_RATIOS_INDEX = {'3:2': 0, '4:3': 1, '5:4': 5./4.,
-                       0: '3:2', 1: '4:3', 2: '5:4'}
-
+# GUI index
 SHOOTING_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1,
                               0: 'portrait', 1: 'landscape'}
-
 CAMERA_BRACKETING_INTENT_INDEX = {'exposure': 0, 'focus' : 1, 'white balance': 2, 'movement': 3, 'mirror lockup': 4,
                                   0: 'exposure', 1: 'focus', 2: 'white balance', 3: 'movement', 4: 'mirror lockup'}
-
 LENS_TYPE_INDEX = {'rectilinear': 0, 'fisheye': 1,
                    0: 'rectilinear', 1: 'fisheye'}
-
 MOSAIC_START_FROM_INDEX = {'start': 0, 'end': 1,
                            0: 'start', 1 : 'end'}
-
 MOSAIC_INITIAL_DIR_INDEX = {'yaw': 0, 'pitch': 1,
                             0: 'yaw', 1: 'pitch'}
+LOGGER_INDEX = {'trace': 0, 'debug': 1, 'info': 2, 'warning' :3, 'error': 4, 'exception': 5, 'critical': 6,
+                0: 'trace', 1: 'debug', 2: 'info', 3: 'warning', 4: 'error', 5: 'exception', 6: 'critical'}
+DRIVER_INDEX = {'bluetooth': 0, 'serial': 1, 'ethernet': 2,
+                0: 'bluetooth', 1: 'serial', 2: 'ethernet'}
+SENSOR_RATIOS_INDEX = {'3:2': 0, '4:3': 1, '5:4': 2,
+                       0: '3:2', 1: '4:3', 2: '5:4'}
+
+# Model
+SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3., '5:4': 5./4.}
 
 # Logger
 LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"
-LOGGER_INDEX = {'trace': 0, 'debug': 1, 'info': 2, 'warning' :3, 'error': 4, 'exception': 5, 'critical': 6,
-                0: 'trace', 1: 'debug', 2: 'info', 3: 'warning', 4: 'error', 5: 'exception', 6: 'critical'}
-LOGGER_MAX_COUNT_LINE = 100
+LOGGER_MAX_COUNT_LINE = 200
+LOGGER_FILENAME = "papywizard.log"
 
 # Hardware
 AXIS_NUM_YAW = 1
@@ -115,12 +118,10 @@ ENCODER_ZERO = 0x800000
 AXIS_SPEED = 15.
 SERIAL_BAUDRATE = 9600
 SERIAL_TIMEOUT = 0.2
-DRIVER_INDEX = {'bluetooth': 0, 'serial': 1, 'ethernet': 2,
-                0: 'bluetooth', 1: 'serial', 2: 'ethernet'}
 
 # Misc
 SPY_SLOW_REFRESH = 0.5
-SPY_FAST_REFRESH = 0.05
+SPY_FAST_REFRESH = 0.1
 
 # View3D
 VIEW3D_HEAD_HFOV = 30.
@@ -128,7 +129,7 @@ VIEW3D_HEAD_VFOV = 20.
 VIEW3D_HEAD_FOV_LENGTH = 1.
 VIEW3D_LOGGER_LEVEL = 'debug'
 
-# Simulator
+# Low-level simulator
 SIMUL_DEFAULT_CONNEXION = 'ethernet'
 SIMUL_SERIAL_PORT = "/dev/ttyS0"
 #SIMUL_SERIAL_PORT = "COM1"
