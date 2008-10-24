@@ -87,8 +87,8 @@ class Shooting(object):
         self.hardware = self.simulatedHardware
         self.switchToRealHardwareSignal = Signal()
         self.newPictSignal = Signal()
-        self.startEvent = threading.Event()
-        self.startEvent.clear()
+        #self.startEvent = threading.Event()
+        #self.startEvent.clear()
         self.camera = Camera()
         self.mosaic = MosaicScan(self)
         self.preset = PresetScan(self)
@@ -250,7 +250,7 @@ class Shooting(object):
         self.progress = 0.
         self.__stop = False
         self.__shooting = True
-        self.startEvent.set()
+        #self.startEvent.set()
 
         # Loop over all positions
         if self.mode == 'mosaic':
@@ -282,7 +282,7 @@ class Shooting(object):
                         Logger().debug("Shooting.start(): shooting %d/%d" % (bracket + 1, self.camera.bracketingNbPicts))
                         self.sequence = _("Shooting %d/%d") % (bracket + 1, self.camera.bracketingNbPicts)
                         self.hardware.shoot(self.camera.timeValue)
-                        time.sleep(0.5) # ensure shutter is closed()
+                        #time.sleep(0.5) # ensure shutter is closed()
 
                         data.addPicture(bracket + 1, yaw, pitch, roll)
 
