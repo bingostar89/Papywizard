@@ -73,7 +73,7 @@ class LogBuffer(gtk.TextBuffer):
         self.create_tag('WARNING', foreground='yellow', background='black', font="courrier 8")
         self.create_tag('ERROR', foreground='red', background='black', font="courrier 8")
         self.create_tag('EXCEPTION', foreground='purple', background='black', font="courrier 8")
-        self.create_tag('CRITICAL', foreground='white', background='black', font="courrier 8")
+        self.create_tag('CRITICAL', foreground='white', background='red', font="courrier 8")
 
     def write(self, logMessage):
         """ write a log message a the end of the buffer.

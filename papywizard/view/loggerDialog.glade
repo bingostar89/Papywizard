@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Sep 23 23:20:30 2008 -->
+<!--Generated with glade3 3.4.5 on Thu Oct 23 21:32:06 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="border_width">5</property>
@@ -37,18 +37,32 @@
         <child>
           <widget class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
+            <property name="spacing">5</property>
             <child>
               <widget class="GtkButton" id="clearButton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="tooltip" translatable="yes">Clear the log window</property>
-                <property name="label" translatable="yes">Clear logs</property>
+                <property name="label" translatable="yes">Clear log</property>
                 <property name="response_id">0</property>
                 <signal name="clicked" handler="on_clearButton_clicked"/>
               </widget>
               <packing>
                 <property name="expand">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkButton" id="saveButton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="label" translatable="yes">Save log...</property>
+                <property name="response_id">0</property>
+                <signal name="clicked" handler="on_saveButton_clicked"/>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="position">1</property>
               </packing>
             </child>
           </widget>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Oct 22 22:52:17 2008 -->
+<!--Generated with glade3 3.4.5 on Fri Oct 24 10:34:29 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="border_width">5</property>
@@ -40,7 +40,6 @@
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="label" translatable="yes" context="yes">Square</property>
                         <property name="response_id">0</property>
                         <property name="draw_indicator">True</property>
@@ -55,7 +54,6 @@
                     <child>
                       <widget class="GtkComboBox" id="cameraOrientationCombobox">
                         <property name="visible">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="items" translatable="yes" context="yes">portrait
 landscape</property>
                       </widget>
@@ -81,7 +79,6 @@ landscape</property>
                       <widget class="GtkSpinButton" id="overlapSpinbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="max_length">5</property>
                         <property name="width_chars">5</property>
                         <property name="xalign">1</property>
@@ -116,7 +113,6 @@ landscape</property>
                       <widget class="GtkSpinButton" id="stabilizationDelaySpinbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="max_length">5</property>
                         <property name="width_chars">5</property>
                         <property name="xalign">1</property>
@@ -131,7 +127,6 @@ landscape</property>
                     <child>
                       <widget class="GtkComboBox" id="initialDirectionCombobox">
                         <property name="visible">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="items" translatable="yes" context="yes">yaw
 pitch</property>
                       </widget>
@@ -167,7 +162,6 @@ pitch</property>
                     <child>
                       <widget class="GtkComboBox" id="startFromCombobox">
                         <property name="visible">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="items" translatable="yes" context="yes">start
 end</property>
                       </widget>
@@ -182,7 +176,6 @@ end</property>
                       <widget class="GtkCheckButton" id="crCheckbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="label" translatable="yes" context="yes">CR</property>
                         <property name="response_id">0</property>
                         <property name="draw_indicator">True</property>
@@ -249,7 +242,6 @@ mirror lockup</property>
                     <child>
                       <widget class="GtkComboBox" id="sensorRatioCombobox">
                         <property name="visible">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="items" translatable="yes" context="yes">3:2
 4:3
 5:4</property>
@@ -284,7 +276,6 @@ mirror lockup</property>
                       <widget class="GtkSpinButton" id="timeValueSpinbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="max_length">6</property>
                         <property name="width_chars">6</property>
                         <property name="xalign">1</property>
@@ -311,7 +302,6 @@ mirror lockup</property>
                       <widget class="GtkSpinButton" id="bracketingNbPictsSpinbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="max_length">5</property>
                         <property name="width_chars">5</property>
                         <property name="xalign">1</property>
@@ -340,7 +330,6 @@ mirror lockup</property>
                       <widget class="GtkSpinButton" id="sensorCoefSpinbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="max_length">5</property>
                         <property name="width_chars">5</property>
                         <property name="xalign">1</property>
@@ -389,7 +378,6 @@ mirror lockup</property>
                       <widget class="GtkSpinButton" id="focalSpinbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="max_length">6</property>
                         <property name="width_chars">6</property>
                         <property name="xalign">1</property>
@@ -481,8 +469,6 @@ fisheye</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <property name="has_tooltip">True</property>
-                        <property name="tooltip_text">choose address of the bluetooth device from list</property>
                         <property name="label" translatable="yes" context="yes">Choose...</property>
                         <property name="response_id">0</property>
                         <signal name="clicked" handler="on_bluetoothChooseButton_clicked"/>
@@ -498,7 +484,6 @@ fisheye</property>
                       <widget class="GtkEntry" id="serialPortEntry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -511,7 +496,6 @@ fisheye</property>
                       <widget class="GtkEntry" id="bluetoothDeviceAddressEntry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -545,7 +529,6 @@ fisheye</property>
                     <child>
                       <widget class="GtkComboBox" id="driverCombobox">
                         <property name="visible">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="items" translatable="yes" context="yes">bluetooth
 serial
 ethernet</property>
@@ -567,7 +550,6 @@ ethernet</property>
                       <widget class="GtkCheckButton" id="hardwareAutoConnectCheckbutton">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="label" translatable="yes" context="yes">Auto-connect</property>
                         <property name="response_id">0</property>
                         <property name="draw_indicator">True</property>
@@ -647,9 +629,7 @@ ethernet</property>
                     <property name="row_spacing">5</property>
                     <child>
                       <widget class="GtkComboBox" id="loggerCLevelCombobox">
-                        <property name="width_request">250</property>
                         <property name="visible">True</property>
-                        <property name="has_tooltip">True</property>
                         <property name="items" translatable="yes" context="yes">trace
 debug
 info
@@ -687,7 +667,6 @@ critical</property>
                         <property name="width_request">275</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="has_tooltip">True</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
@@ -711,7 +690,7 @@ critical</property>
                       <widget class="GtkFileChooserButton" id="dataStorageDirFilechooserbutton">
                         <property name="visible">True</property>
                         <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
-                        <property name="title" translatable="yes" context="yes">Select the data storage directory</property>
+                        <property name="title" translatable="yes" context="yes">Data storage directory</property>
                       </widget>
                       <packing>
                         <property name="left_attach">1</property>
