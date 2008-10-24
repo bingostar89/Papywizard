@@ -428,10 +428,10 @@ class MainController(AbstractController):
         @todo: make a custom dialog
         """
         Logger().trace("MainController.__onFileImportPresetMenuitemActivate()")
-        fileDialog =  gtk.FileChooserDialog(title="Select Preset file", parent=self.dialog,
-                                            action=gtk.FILE_CHOOSER_ACTION_OPEN,
-                                            buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                                                     gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+        fileDialog = gtk.FileChooserDialog(title="Import Preset file", parent=self.dialog,
+                                           action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                                           buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                                                    gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
         filter = gtk.FileFilter()
         filter.set_name("xml files")
         filter.add_pattern("*.xml")
