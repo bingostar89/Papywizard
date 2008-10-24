@@ -97,4 +97,4 @@ class WaitController(AbstractController):
 
     def closeBanner(self):
         gobject.source_remove(self.__eventId)
-        self._serializer.apply(self.dialog.destroy)
+        self._serializer.addWork(self.dialog.destroy)

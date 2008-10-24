@@ -764,7 +764,7 @@ class MainController(AbstractController):
         Logger().trace("MainController.__refreshPos()")
         self.__yawPos = yaw
         self.__pitchPos = pitch
-        self._serializer.apply(self.refreshView)
+        self._serializer.addWork(self.refreshView)
 
     def setStatusbarMessage(self, message=None, delay=0):
         """ Display a message on the statusbar.
