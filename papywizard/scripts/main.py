@@ -120,7 +120,7 @@ class Papywizard(object):
 
         # Create serializer, for async events
         serializer = Serializer()
-        gobject.timeout_add(50, serializer.processWork)
+        gobject.timeout_add(100, serializer.processWork)
 
         # Create main controller
         controller = MainController(self.__model, serializer, self.__gtkLogStream)
