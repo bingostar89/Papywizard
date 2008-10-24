@@ -51,12 +51,16 @@ Implements
 
 __revision__ = "$Id: configController.py 523 2008-09-16 14:03:24Z fma $"
 
+import os.path
+
 import pygtk
 pygtk.require("2.0")
 import gtk
 import gtk.gdk
 
+from papywizard.common import config
 from papywizard.common.loggingServices import Logger
+from papywizard.common.configManager import ConfigManager
 from papywizard.controller.abstractController import AbstractController
 
 
@@ -66,6 +70,7 @@ class LoggerController(AbstractController):
     def _init(self):
         self._gladeFile = "loggerDialog.glade"
         self._signalDict = {"on_clearButton_clicked": self.__onClearButtonClicked,
+                            "on_saveButton_clicked": self.__onSaveButtonClicked,
                             "on_doneButton_clicked": self.__onDoneButtonClicked,
                         }
 
@@ -97,6 +102,35 @@ class LoggerController(AbstractController):
         """
         Logger().trace("LoggerController.__onClearButtonClicked()")
         self.loggerTextview.get_buffer().clear()
+
+    def __onSaveButtonClicked(self, widget):
+        """ Save button has been clicked.
+        """
+        Logger().trace("LoggerController.__onSaveButtonClicked()")
+        fileDialog = gtk.FileChooserDialog(title="Save log", parent=self.dialog,
+                                           action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                                           buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                                                    gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+        filter = gtk.FileFilter()
+        filter.set_name("log files")
+        filter.add_pattern("*.log")
+        fileDialog.add_filter(filter)
+        filter = gtk.FileFilter()
+        filter.set_name("all files")
+        filter.add_pattern("*.*")
+        fileDialog.add_filter(filter)
+        dataStorageDir = ConfigManager().get('Data', 'DATA_STORAGE_DIR')
+        fileDialog.set_filename(os.path.join(dataStorageDir, config.LOGGER_FILENAME))
+        fileDialog.set_current_name(unicode(config.LOGGER_FILENAME).encode('utf-8'))
+        response = fileDialog.run()
+        if response == gtk.RESPONSE_ACCEPT:
+            logFileName = fileDialog.get_filename()
+            buffer_ = self.loggerTextview.get_buffer()
+            logText = buffer_.get_text(buffer.get_start_iter(), buffer.get_end_iter())
+            logFile = file(logFileName, 'w')
+            logFile.write(logText)
+            logFile.close()
+        fileDialog.destroy()
 
     def __onDoneButtonClicked(self, widget):
         """ Done button has been clicked.
