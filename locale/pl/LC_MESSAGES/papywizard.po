@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-24 10:57+0200\n"
+"POT-Creation-Date: 2008-10-25 10:17+0200\n"
 "PO-Revision-Date: 2008-10-16 14:05+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -490,7 +490,7 @@ msgstr ""
 
 #: tmp/loggerDialog.glade.h:3
 #, fuzzy
-msgid "Save log..."
+msgid "Save log"
 msgstr "Zobacz log..."
 
 #: tmp/loggerDialog.glade.h:4 tmp/presetInfoDialog.glade.h:2
