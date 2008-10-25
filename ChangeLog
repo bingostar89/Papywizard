@@ -4,27 +4,30 @@ ChangeLog
 - change
 x bug fix
 
-xxxx-xx-xx Version SVN
+0000-00-00 Version SVN
 
-2008-10-xx Version 1.2
+0000-00-00 Version 1.2.0
+
+0000-00-00 Version 1.1.1
     + open on-line manual page in a web browser
     + custom user presets support (from file)
-    + import custom presets file
+    + menu to import custom presets file
     + global try/except statement with traceback in GUI
-    + preset templates information window + tooltip
+    + preset templates information window
     + l10n/i18n (english, french, polish, german)
     x log viewer background now entire black
+    + log can be saved in a file
     - removed usb driver
     + new network (socket) driver
     - source structure revisited
-    x preset template for 28mm lens corrected
+    x preset for 20mm lens corrected
     x multi-thread bug corrrection for windows
-    + windows installer (without bluetooth support)
+    + windows installer (bluetooth support broken)
     + nice papywizard icon
     + low-level hardware simulator as standalone application
-    + view 3D is now a standalone application
-    - remove debian setup script (need a real debian packaging)
-    + added option to set data storage dir
+    + view 3D now a standalone application
+    - removed debian setup script (need a real debian packaging)
+    + option to set data storage dir
     x better user config. update handling
 
 2008-09-19 Version 1.0
