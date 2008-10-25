@@ -52,6 +52,7 @@ Implements
 __revision__ = "$Id: configController.py 523 2008-09-16 14:03:24Z fma $"
 
 import os.path
+import time
 
 import pygtk
 pygtk.require("2.0")
@@ -82,6 +83,8 @@ class LoggerController(AbstractController):
         self.loggerScrolledwindow = self.wTree.get_widget("loggerScrolledwindow")
         self.loggerTextview = self.wTree.get_widget("loggerTextview")
         self.loggerTextview.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('black'))
+        self.saveButton = self.wTree.get_widget("saveButton")
+        self.clearButton = self.wTree.get_widget("clearButton")
 
         # The following code is taken from pychess project;
         # it keeps the scroller at the bottom of the text
@@ -102,35 +105,23 @@ class LoggerController(AbstractController):
         """
         Logger().trace("LoggerController.__onClearButtonClicked()")
         self.loggerTextview.get_buffer().clear()
+        self.clearButton.set_sensitive(False)
+        self.saveButton.set_sensitive(False)
 
     def __onSaveButtonClicked(self, widget):
         """ Save button has been clicked.
         """
         Logger().trace("LoggerController.__onSaveButtonClicked()")
-        fileDialog = gtk.FileChooserDialog(title="Save log", parent=self.dialog,
-                                           action=gtk.FILE_CHOOSER_ACTION_SAVE,
-                                           buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                                                    gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
-        filter = gtk.FileFilter()
-        filter.set_name("log files")
-        filter.add_pattern("*.log")
-        fileDialog.add_filter(filter)
-        filter = gtk.FileFilter()
-        filter.set_name("all files")
-        filter.add_pattern("*.*")
-        fileDialog.add_filter(filter)
-        dataStorageDir = ConfigManager().get('Data', 'DATA_STORAGE_DIR')
-        fileDialog.set_filename(os.path.join(dataStorageDir, config.LOGGER_FILENAME))
-        fileDialog.set_current_name(unicode(config.LOGGER_FILENAME).encode('utf-8'))
-        response = fileDialog.run()
-        if response == gtk.RESPONSE_ACCEPT:
-            logFileName = fileDialog.get_filename()
-            buffer_ = self.loggerTextview.get_buffer()
-            logText = buffer_.get_text(buffer.get_start_iter(), buffer.get_end_iter())
-            logFile = file(logFileName, 'w')
-            logFile.write(logText)
-            logFile.close()
-        fileDialog.destroy()
+        dateTime = time.strftime("%Y-%m-%d_%Hh%Mm%Ss", time.localtime())
+        logFileFormat = "papywizard_%s.log" % dateTime
+        logFileName = os.path.join(ConfigManager().get('Data', 'DATA_STORAGE_DIR'), logFileFormat)
+        buffer_ = self.loggerTextview.get_buffer()
+        logText = buffer_.get_text(buffer_.get_start_iter(), buffer_.get_end_iter())
+        logFile = file(logFileName, 'w')
+        logFile.write(logText)
+        logFile.close()
+        Logger().debug("LoggerController.__onSaveButtonClicked(): log saved to '%s'" % logFileName)
+        self.saveButton.set_sensitive(False)
 
     def __onDoneButtonClicked(self, widget):
         """ Done button has been clicked.
