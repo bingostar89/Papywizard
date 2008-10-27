@@ -54,7 +54,8 @@ VERSION_MAJOR = 1
 VERSION_MINOR = 1 # Odd means dev. release
 VERSION_UPDATE = 1
 VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
-PACKAGE_VERSION = 1
+VERSION_PACKAGE = 1
+VERSION_XML = "a"
 
 # Paths
 HOME_DIR = os.path.expanduser("~")

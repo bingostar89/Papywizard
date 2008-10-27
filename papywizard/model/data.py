@@ -69,8 +69,6 @@ from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 
-XML_VERSION = "a"
-
 
 class AbstractData(object):
     """ Manage the data.
@@ -93,7 +91,7 @@ class AbstractData(object):
         self.__impl = xml.dom.minidom.getDOMImplementation()
         self._doc = self.__impl.createDocument(None, "papywizard", None)
         self._rootNode = self._doc.documentElement
-        self._rootNode.setAttribute("version", XML_VERSION)
+        self._rootNode.setAttribute("version", config.VERSION_XML)
 
         # Create 'header' node
         self._headerNode = self._doc.createElement('header')
