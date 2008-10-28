@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-25 10:17+0200\n"
+"POT-Creation-Date: 2008-10-28 16:05+0100\n"
 "PO-Revision-Date: 2008-10-16 14:05+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -22,24 +22,24 @@ msgstr ""
 msgid "Idle"
 msgstr "Bezczynny"
 
-#: papywizard/model/shooting.py:264
+#: papywizard/model/shooting.py:265
 msgid "Moving"
 msgstr "Namierzam"
 
-#: papywizard/model/shooting.py:271
+#: papywizard/model/shooting.py:272
 msgid "Stabilizing"
 msgstr "Stabilizuje"
 
-#: papywizard/model/shooting.py:283
+#: papywizard/model/shooting.py:288
 #, python-format
 msgid "Shooting %d/%d"
 msgstr "Strzelam %d/%d"
 
-#: papywizard/model/shooting.py:310
+#: papywizard/model/shooting.py:316
 msgid "Canceled"
 msgstr "Anulowano"
 
-#: papywizard/model/shooting.py:315
+#: papywizard/model/shooting.py:323
 msgid "Finished"
 msgstr ""
 
@@ -111,7 +111,7 @@ msgid "Wrong shooting mode"
 msgstr "Zatrzymaj strzelanie"
 
 #: papywizard/controller/mainController.py:515
-#: papywizard/controller/configController.py:163
+#: papywizard/controller/configController.py:165
 #, fuzzy
 msgid "Invalid configuration"
 msgstr "Konfiguracja"
@@ -173,11 +173,11 @@ msgstr "Nie mogę połączyć się ze sprzętem"
 msgid "Now in simulation mode"
 msgstr "Tryb symulacji"
 
-#: papywizard/controller/configController.py:162
+#: papywizard/controller/configController.py:164
 msgid "Wrong value for lens type"
 msgstr ""
 
-#: papywizard/controller/configController.py:164
+#: papywizard/controller/configController.py:166
 msgid ""
 "Can't set lens type to 'fisheye'\n"
 "while in 'mosaic' mode"
@@ -281,50 +281,55 @@ msgid "Logger level"
 msgstr "Poziom Loggera"
 
 #: tmp/configDialog.glade.h:22
+#, fuzzy
+msgid "Mirror lockup"
+msgstr "Błąd"
+
+#: tmp/configDialog.glade.h:23
 msgid "Misc"
 msgstr "Różne"
 
-#: tmp/configDialog.glade.h:24
+#: tmp/configDialog.glade.h:25
 msgid "Overlap (%)"
 msgstr "Zachodzenie (%)"
 
-#: tmp/configDialog.glade.h:25
+#: tmp/configDialog.glade.h:26
 msgid "Sensor coef."
 msgstr "Ekwiwalent matrycy"
 
-#: tmp/configDialog.glade.h:26
+#: tmp/configDialog.glade.h:27
 msgid "Sensor ratio"
 msgstr "Proporcja matrycy"
 
-#: tmp/configDialog.glade.h:27
+#: tmp/configDialog.glade.h:28
 msgid "Serial port"
 msgstr "Port szeregowy"
 
-#: tmp/configDialog.glade.h:28 tmp/shootDialog.glade.h:5
+#: tmp/configDialog.glade.h:29 tmp/shootDialog.glade.h:5
 msgid "Shooting"
 msgstr "Strzelam"
 
-#: tmp/configDialog.glade.h:29
+#: tmp/configDialog.glade.h:30
 msgid "Square"
 msgstr "Kwadratowe"
 
-#: tmp/configDialog.glade.h:30
+#: tmp/configDialog.glade.h:31
 msgid "Stab. delay (sec)"
 msgstr "Opóźnienie stabilizacyjne (s)"
 
-#: tmp/configDialog.glade.h:31
+#: tmp/configDialog.glade.h:32
 msgid "Start from"
 msgstr "Zacznij od"
 
-#: tmp/configDialog.glade.h:32
+#: tmp/configDialog.glade.h:33
 msgid "Time value (sec)"
 msgstr ""
 
-#: tmp/configDialog.glade.h:33
+#: tmp/configDialog.glade.h:34
 msgid "Type"
 msgstr ""
 
-#: tmp/configDialog.glade.h:34
+#: tmp/configDialog.glade.h:35
 #, fuzzy
 msgid ""
 "bluetooth\n"
@@ -335,13 +340,12 @@ msgstr ""
 "szeregowy\n"
 "usb"
 
-#: tmp/configDialog.glade.h:37
+#: tmp/configDialog.glade.h:38
 msgid ""
 "exposure\n"
 "focus\n"
 "white balance\n"
-"movement\n"
-"mirror lockup"
+"movement"
 msgstr ""
 
 #: tmp/configDialog.glade.h:44
