@@ -52,7 +52,7 @@ import os.path
 # Version
 VERSION_MAJOR = 1
 VERSION_MINOR = 1 # Odd means dev. release
-VERSION_UPDATE = 1
+VERSION_UPDATE = 2
 VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 VERSION_PACKAGE = 1
 VERSION_XML = "a"
@@ -85,8 +85,8 @@ USER_GUIDE_URL = "http://trac.gbiloba.org/papywizard/wiki/UserGuide"
 # GUI index
 SHOOTING_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1,
                               0: 'portrait', 1: 'landscape'}
-CAMERA_BRACKETING_INTENT_INDEX = {'exposure': 0, 'focus' : 1, 'white balance': 2, 'movement': 3, 'mirror lockup': 4,
-                                  0: 'exposure', 1: 'focus', 2: 'white balance', 3: 'movement', 4: 'mirror lockup'}
+CAMERA_BRACKETING_INTENT_INDEX = {'exposure': 0, 'focus' : 1, 'white balance': 2, 'movement': 3,
+                                  0: 'exposure', 1: 'focus', 2: 'white balance', 3: 'movement'}
 LENS_TYPE_INDEX = {'rectilinear': 0, 'fisheye': 1,
                    0: 'rectilinear', 1: 'fisheye'}
 MOSAIC_START_FROM_INDEX = {'start': 0, 'end': 1,
