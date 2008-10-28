@@ -258,6 +258,7 @@ class Shooting(object):
         else:
             scan = self.preset
         try:
+            Logger().info("Starting shoot process...")
             for i, (yaw, pitch) in enumerate(scan.iterPositions()):
                 Logger().debug("Shooting.start(): goto yaw=%.1f pitch=%.1f" % (yaw, pitch))
                 Logger().info("Moving")
@@ -273,9 +274,13 @@ class Shooting(object):
 
                     if self.__manualShoot:
                         self.__pause = True
-                        Logger().info("Manual shoot")
+                        Logger().info("Manual shoot: pausing...")
 
                     checkPauseStop()
+
+                    if self.camera.mirrorLockup:
+                        Logger().info("Mirror lockup")
+                        self.hardware.shoot(self.stabilizationDelay)
 
                     Logger().info("Shooting")
                     for bracket in xrange(self.camera.bracketingNbPicts):
@@ -285,6 +290,10 @@ class Shooting(object):
                         #time.sleep(0.5) # ensure shutter is closed()
 
                         data.addPicture(bracket + 1, yaw, pitch, roll)
+
+                        #if self.__manualShoot:
+                            #self.__pause = True
+                            #Logger().info("Manual shoot: pausing...")
 
                         checkPauseStop()
 
@@ -301,18 +310,18 @@ class Shooting(object):
                     progressFraction = float((i + 1)) / float(scan.totalNbPicts)
                     self.progress = progressFraction
                     self.newPictSignal.emit(yaw, pitch, status='error') # Include progress?
-                    # todo: add status of current picture (to draw it in red if failed to go)
-
-            Logger().debug("Shooting.start(): finished")
 
         except StopIteration:
             Logger().debug("Shooting.start(): stop detected")
             self.sequence = _("Canceled")
+            Logger().warning("Shoot process canceled")
         except:
             Logger().exception("Shooting.start()")
             self.error = True
+            Logger().error("Shoot process failed")
         else:
             self.sequence = _("Finished")
+            Logger().info("Shoot process finished")
 
         self.__shooting = False
 
