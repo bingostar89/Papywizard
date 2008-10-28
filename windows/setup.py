@@ -65,12 +65,8 @@ from distutils.core import setup
 
 import py2exe
 
-#path = os.path.dirname(__file__)
-#print "path=%s" % path
 sys.path.append("C:\\Documents and Settings\\fma\\Mes documents\\papywizard")
 from papywizard.common import config
-
-VERSION = "1.1"
 
 
 dlls = ["iconv.dll", "intl.dll", "libatk-1.0-0.dll", "libgdk-win32-2.0-0.dll",
