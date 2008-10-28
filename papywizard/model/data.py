@@ -196,8 +196,9 @@ class AbstractData(object):
 
         # Shooting
         node = self._addNode(self._headerNode, 'shooting', mode=self._getMode())
-        self._addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
+        self._addNode(node, 'headOrientation', values['headOrientation'])
         self._addNode(node, 'cameraOrientation', values['cameraOrientation'])
+        self._addNode(node, 'stabilizationDelay', values['stabilizationDelay'])
         dateTime = self._getDateTime()
         self._addNode(node, 'startTime', dateTime)
         self._headerShootingEndTime = self._addNode(node, 'endTime', dateTime)
