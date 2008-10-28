@@ -274,16 +274,18 @@ class Shooting(object):
 
                     if self.__manualShoot:
                         self.__pause = True
-                        Logger().info("Manual shoot: pausing...")
+                        Logger().info("Wait for manual shoot...")
 
                     checkPauseStop()
 
-                    if self.camera.mirrorLockup:
-                        Logger().info("Mirror lockup")
-                        self.hardware.shoot(self.stabilizationDelay)
-
-                    Logger().info("Shooting")
                     for bracket in xrange(self.camera.bracketingNbPicts):
+
+                        if self.camera.mirrorLockup:
+                            Logger().info("Mirror lockup")
+                            self.sequence = _("Mirror lockup")
+                            self.hardware.shoot(self.stabilizationDelay)
+
+                        Logger().info("Shooting")
                         Logger().debug("Shooting.start(): shooting %d/%d" % (bracket + 1, self.camera.bracketingNbPicts))
                         self.sequence = _("Shooting %d/%d") % (bracket + 1, self.camera.bracketingNbPicts)
                         self.hardware.shoot(self.camera.timeValue)
@@ -293,7 +295,7 @@ class Shooting(object):
 
                         #if self.__manualShoot:
                             #self.__pause = True
-                            #Logger().info("Manual shoot: pausing...")
+                            #Logger().info("Wait for manual shoot...")
 
                         checkPauseStop()
 
