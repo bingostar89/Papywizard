@@ -91,6 +91,7 @@ class ConfigController(AbstractController):
         self.bracketingIntentCombobox = self.wTree.get_widget("bracketingIntentCombobox")
         self.sensorCoefSpinbutton = self.wTree.get_widget("sensorCoefSpinbutton")
         self.sensorRatioCombobox = self.wTree.get_widget("sensorRatioCombobox")
+        self.mirrorLockupCheckbutton = self.wTree.get_widget("mirrorLockupCheckbutton")
         self.lensTypeCombobox = self.wTree.get_widget("lensTypeCombobox")
         self.focalLabel = self.wTree.get_widget("focalLabel")
         self.focalSpinbutton = self.wTree.get_widget("focalSpinbutton")
@@ -128,6 +129,7 @@ class ConfigController(AbstractController):
         self._model.camera.bracketingIntent = config.CAMERA_BRACKETING_INTENT_INDEX[self.bracketingIntentCombobox.get_active()]
         self._model.camera.sensorCoef = self.sensorCoefSpinbutton.get_value()
         self._model.camera.sensorRatio = config.SENSOR_RATIOS_INDEX[self.sensorRatioCombobox.get_active()]
+        self._model.camera.mirrorLockup = self.mirrorLockupCheckbutton.get_active()
         self._model.camera.lens.type_ = config.LENS_TYPE_INDEX[self.lensTypeCombobox.get_active()]
         self._model.camera.lens.focal = self.focalSpinbutton.get_value()
         ConfigManager().set('Hardware', 'DRIVER',
@@ -239,6 +241,7 @@ class ConfigController(AbstractController):
         self.bracketingIntentCombobox.set_active(config.CAMERA_BRACKETING_INTENT_INDEX[self._model.camera.bracketingIntent])
         self.sensorCoefSpinbutton.set_value(self._model.camera.sensorCoef)
         self.sensorRatioCombobox.set_active(config.SENSOR_RATIOS_INDEX[self._model.camera.sensorRatio])
+        self.mirrorLockupCheckbutton.set_active(self._model.camera.mirrorLockup)
         self.lensTypeCombobox.set_active(config.LENS_TYPE_INDEX[self._model.camera.lens.type_])
         self.focalSpinbutton.set_value(self._model.camera.lens.focal)
         try:
