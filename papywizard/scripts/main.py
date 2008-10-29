@@ -95,7 +95,7 @@ class Papywizard(object):
         """
         self.__gtkLogStream = LogBuffer()
         Logger().addStreamHandler(self.__gtkLogStream)
-        Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
+        #Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
 
     def init(self):
         """ Init the application.
@@ -216,6 +216,7 @@ class Papywizard(object):
         Spy().start()
         if config.PUBLISHER_ENABLE:
             self.__publisher.start()
+        Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
         gtk.main()
 
     def shutdown(self):
