@@ -669,7 +669,6 @@ class MainController(AbstractController):
     def __populatePresetCombobox(self):
         """
         """
-        Logger().trace("MainController.__populatePresetCombobox()")
         self.presetCombobox.get_model().clear()
         presets = PresetManager().getPresets()
         i = 0
@@ -682,7 +681,6 @@ class MainController(AbstractController):
             except ValueError:
                 #Logger().exception("MainController.__populatePresetCombobox()", debug=True)
                 break
-        Logger().trace("MainController.__populatePresetCombobox(): done")
 
     def __importPresetFile(self, presetFileName):
         """ Importe the presets from given file.
