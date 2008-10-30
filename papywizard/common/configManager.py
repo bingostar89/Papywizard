@@ -188,7 +188,6 @@ class ConfigManager(object):
         Config is saved in user directory. Preferences are first
         set back to config.
         """
-        Logger().trace("ConfigManager.save()")
         self.__config.write(file(config.USER_CONFIG_FILE, 'w'))
         Logger().info("Configuration saved")
 
