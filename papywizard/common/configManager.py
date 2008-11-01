@@ -106,7 +106,7 @@ class ConfigManager(object):
                     action = 'overwrite'
 
                 # Versions differ
-                if distConfigVersion != userConfigVersion:
+                elif distConfigVersion != userConfigVersion:
 
                     # Dev. version
                     if isOdd(int(distConfigVersion[1])):
