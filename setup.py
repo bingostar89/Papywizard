@@ -57,7 +57,7 @@ from papywizard.common import config
 
 
 setup(name="papywizard",
-      version="%s-%d" % (config.VERSION, config.PACKAGE_VERSION),
+      version="%s-%d" % (config.VERSION, config.VERSION_PACKAGE),
       author="Frederic Mantegazza",
       author_email="frederic.mantegazza@gbiloba.org",
       maintainer="Frederic Mantegazza",
