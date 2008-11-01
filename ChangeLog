@@ -6,9 +6,19 @@ x bug fix
 
 0000-00-00 Version SVN
 
-0000-00-00 Version 1.2.0
+2008-11-01 Version 1.2.0 (stable)
+    (include all 1.1.x entries)
 
-0000-00-00 Version 1.1.1
+2008-10-28 Version 1.1.2 (dev)
+    + added mirror lockup standalone param.
+
+2008-10-25 Version 1.1.1 (dev)
+    x preset for 20mm lens corrected
+    - removed debian setup script (need a real debian packaging)
+    + option to set data storage dir
+    x better user config. update handling
+
+2008-10-07 Version 1.1.0 (dev)
     + open on-line manual page in a web browser
     + custom user presets support (from file)
     + menu to import custom presets file
@@ -20,17 +30,14 @@ x bug fix
     - removed usb driver
     + new network (socket) driver
     - source structure revisited
-    x preset for 20mm lens corrected
     x multi-thread bug corrrection for windows
     + windows installer (bluetooth support broken)
     + nice papywizard icon
     + low-level hardware simulator as standalone application
     + view 3D now a standalone application
-    - removed debian setup script (need a real debian packaging)
-    + option to set data storage dir
-    x better user config. update handling
+    x bracketing config revisited
 
-2008-09-19 Version 1.0
+2008-09-19 Version 1.0 (stable)
     + preset shooting mode for full spherical
     + graphical progress
     - removed 360/180 buttons in mosaic mode
@@ -49,10 +56,10 @@ x bug fix
     + log viewer
     + software limits
 
-2008-07-04 Version 0.9.1
+2008-07-04 Version 0.9.1 (stable)
     x fix a bug in nbPicts and 360/180 computations
 
-2008-06-26 Version 0.9
+2008-06-26 Version 0.9 (stable)
     x bug correction when start pos > end pos
     x connect menu is greyed out if hardware is not available
     + added 'Set 360' and 'Set 180' buttons
@@ -68,7 +75,7 @@ x bug fix
     - new datafile format
     x closing shoot dialog stops shooting
 
-2008-06-06 Version 0.9beta2
+2008-06-06 Version 0.9beta2 (dev)
     - switched from Tkinter to Gtk+
     + Nokia/maemo support
     - removed windows support (may be set back in future)
@@ -82,7 +89,7 @@ x bug fix
     - config now based on ConfigParser
     - use vpython 4 (bug fix crash when hide/quit under linux)
 
-2007-12-28 Version 0.9-beta1
+2007-12-28 Version 0.9-beta1 (dev)
     + auto-connect to real hardware if possible
     + switch from simulation to real hardware
     + show/hide 3D view
@@ -91,9 +98,9 @@ x bug fix
     x prefs are now correctly saved when quit
     x several minor bugs corrections
 
-2007-12-21 Version 0.9-alpha2
+2007-12-21 Version 0.9-alpha2 (dev)
     + added 3D view
     + first windows binary release
 
-2007-05-21 Version 0.9-alpha1
+2007-05-21 Version 0.9-alpha1 (dev)
     + initial version
