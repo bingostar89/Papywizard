@@ -82,7 +82,7 @@ class ConfigManager(object):
         """ Init the object.
         """
         if ConfigManager.__init:
-            action = None
+            action = 'none'
 
             # Load dist config.
             distConfig = ConfigParser.SafeConfigParser()
@@ -106,7 +106,7 @@ class ConfigManager(object):
                     action = 'overwrite'
 
                 # Versions differ
-                if distConfigVersion != userConfigVersion:
+                elif distConfigVersion != userConfigVersion:
 
                     # Dev. version
                     if isOdd(int(distConfigVersion[1])):
@@ -122,8 +122,6 @@ class ConfigManager(object):
                         # ...over stable version
                         else:
                             action = 'update'
-                else:
-                    action = 'none'
 
             if action == 'install':
                 Logger().debug("ConfigManager.__init__(): install user config.")
