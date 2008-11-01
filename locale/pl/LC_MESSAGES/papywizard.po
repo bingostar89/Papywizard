@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-28 16:05+0100\n"
+"POT-Creation-Date: 2008-11-01 10:05+0100\n"
 "PO-Revision-Date: 2008-10-16 14:05+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -30,26 +30,31 @@ msgstr "Namierzam"
 msgid "Stabilizing"
 msgstr "Stabilizuje"
 
-#: papywizard/model/shooting.py:288
+#: papywizard/model/shooting.py:285 tmp/configDialog.glade.h:22
+#, fuzzy
+msgid "Mirror lockup"
+msgstr "Błąd"
+
+#: papywizard/model/shooting.py:290
 #, python-format
 msgid "Shooting %d/%d"
 msgstr "Strzelam %d/%d"
 
-#: papywizard/model/shooting.py:316
+#: papywizard/model/shooting.py:318
 msgid "Canceled"
 msgstr "Anulowano"
 
-#: papywizard/model/shooting.py:323
+#: papywizard/model/shooting.py:325
 msgid "Finished"
 msgstr ""
 
-#: papywizard/scripts/main.py:260
+#: papywizard/scripts/main.py:261
 msgid "Internal error"
 msgstr "Błąd wewnętrzny"
 
-#: papywizard/scripts/main.py:261
+#: papywizard/scripts/main.py:262
 #: papywizard/controller/bluetoothChooserController.py:177
-#: papywizard/controller/mainController.py:738
+#: papywizard/controller/mainController.py:736
 msgid "Error"
 msgstr "Błąd"
 
@@ -157,19 +162,19 @@ msgstr "Ustaw tą pozycję jako końcową pitch"
 msgid "Origin set at current position"
 msgstr "Ustaw tą pozycję jako początkową"
 
-#: papywizard/controller/mainController.py:710
+#: papywizard/controller/mainController.py:708
 msgid "Connecting to real hardware..."
 msgstr "Nawiązuje połączenie ze sprzętem..."
 
-#: papywizard/controller/mainController.py:733
+#: papywizard/controller/mainController.py:731
 msgid "Now connected to real hardware"
 msgstr "Połączenie ze sprzętem nawiązane"
 
-#: papywizard/controller/mainController.py:737
+#: papywizard/controller/mainController.py:735
 msgid "Can't connect to hardware"
 msgstr "Nie mogę połączyć się ze sprzętem"
 
-#: papywizard/controller/mainController.py:753
+#: papywizard/controller/mainController.py:751
 msgid "Now in simulation mode"
 msgstr "Tryb symulacji"
 
@@ -280,11 +285,6 @@ msgstr ""
 msgid "Logger level"
 msgstr "Poziom Loggera"
 
-#: tmp/configDialog.glade.h:22
-#, fuzzy
-msgid "Mirror lockup"
-msgstr "Błąd"
-
 #: tmp/configDialog.glade.h:23
 msgid "Misc"
 msgstr "Różne"
@@ -358,7 +358,7 @@ msgstr ""
 
 #: tmp/configDialog.glade.h:46
 msgid ""
-"recilinear\n"
+"rectilinear\n"
 "fisheye"
 msgstr ""
 
