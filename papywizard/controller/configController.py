@@ -59,6 +59,7 @@ from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.messageController import WarningMessageController
 from papywizard.controller.bluetoothChooserController import BluetoothChooserController
 
 
@@ -160,13 +161,8 @@ class ConfigController(AbstractController):
         Logger().trace("ConfigController.__onLensTypeComboboxChanged()")
         type_ = config.LENS_TYPE_INDEX[self.lensTypeCombobox.get_active()]
         if type_ == 'fisheye' and self._model.mode == 'mosaic':
-            messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_CLOSE,
-                                                message_format=_("Wrong value for lens type"))
-            messageDialog.set_title(_("Invalid configuration"))
-            messageDialog.format_secondary_text(_("Can't set lens type to 'fisheye'\n" \
-                                                    "while in 'mosaic' mode"))
-            messageDialog.run()
-            messageDialog.destroy()
+            WarningMessageController(_("Wrong value for lens type"), _("Can't set lens type to 'fisheye'\n" \
+                                                                       "while in 'mosaic' mode"))
             self.lensTypeCombobox.set_active(config.LENS_TYPE_INDEX['rectilinear'])
         else:
             if type_ == 'rectilinear':

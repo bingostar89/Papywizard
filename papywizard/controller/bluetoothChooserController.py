@@ -61,6 +61,7 @@ import gobject
 
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
+from papywizard.controller.messageController import ErrorMessageController
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.waitController import WaitController
 
@@ -172,12 +173,7 @@ class BluetoothChooserController(AbstractController):
             Logger().info("Bluetooth available devices: %s" % self.__bluetoothDevices)
         else:
             Logger().error("Can't scan bluetooth\n%s" % self.__refreshErrorMessage)
-            messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                              message_format=_("Can't scan bluetooth"))
-            messageDialog.set_title(_("Error"))
-            messageDialog.format_secondary_text(self.__refreshErrorMessage)
-            messageDialog.run()
-            messageDialog.destroy()
+            ErrorMessageController(_("Can't scan bluetooth"), self.__refreshErrorMessage)
 
         #self.refreshButton.set_sensitive(True)
 

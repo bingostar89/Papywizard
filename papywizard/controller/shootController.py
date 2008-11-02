@@ -62,6 +62,7 @@ import gobject
 
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
+from papywizard.controller.messageController import ErrorMessageController
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.spy import Spy
 from papywizard.view.shootingArea import MosaicArea, PresetArea
@@ -255,11 +256,7 @@ class ShootController(AbstractController):
 
                 # Check status
                 #if self._model.error:
-                    #messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                                      #message_format="Internal error while shooting")
-                    #messageDialog.format_secondary_text("Please report bug (include logs)")
-                    #messageDialog.run()
-                    #messageDialog.destroy()
+                    #ErrorMessageController(_("Internal error"), _("Please report bug (include logs)"))
 
                 self.dataFileEnableCheckbutton.set_sensitive(True)
                 self.startButton.set_sensitive(True)

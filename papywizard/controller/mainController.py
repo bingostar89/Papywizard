@@ -68,6 +68,7 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.presetManager import PresetManager
 from papywizard.common.exception import HardwareError
 from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.messageController import ErrorMessageController, WarningMessageController
 from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.helpAboutController import HelpAboutController
 from papywizard.controller.presetInfoController import PresetInfoController
@@ -510,13 +511,8 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onModeMosaicRadiobuttonToggled()")
         modeMosaic = self.modeMosaicRadiobutton.get_active()
         if modeMosaic and self._model.camera.lens.type_ == 'fisheye':
-            messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_CLOSE,
-                                              message_format=_("Wrong shooting mode"))
-            messageDialog.set_title(_("Invalid configuration"))
-            messageDialog.format_secondary_text(_("Can't set shooting mode to 'mosaic'\n" \
-                                                  "while using 'fisheye' lens type"))
-            messageDialog.run()
-            messageDialog.destroy()
+            WarningMessageController(_("Wrong shooting mode"), _("Can't set shooting mode to 'mosaic'\n" \
+                                                                 "while using 'fisheye' lens type"))
             self.modeMosaicRadiobutton.set_active(False)
             self.modePresetRadiobutton.set_active(True)
         else:
@@ -689,9 +685,13 @@ class MainController(AbstractController):
         @type presetFileName: str
         """
         Logger().debug("MainController.__importPresetFile(): preset file=%s" % presetFileName)
-        PresetManager().importPresetFile(presetFileName)
-        self.__populatePresetCombobox()
-        self.refreshView()
+        try:
+            PresetManager().importPresetFile(presetFileName)
+            self.__populatePresetCombobox()
+            self.refreshView()
+        except Exception, msg:
+            Logger().exception("MainController.__importPresetFile()")
+            ErrorMessageController(_("Can't import preset file"), str(msg))
 
     def __connectToHardware(self):
         """ Connect to real hardware.
@@ -731,12 +731,7 @@ class MainController(AbstractController):
             self.setStatusbarMessage(_("Now connected to real hardware"), 5)
         else:
             Logger().error("Can't connect to hardware\n%s" % self.__connectErrorMessage)
-            messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                              message_format=_("Can't connect to hardware"))
-            messageDialog.set_title(_("Error"))
-            messageDialog.format_secondary_text(self.__connectErrorMessage)
-            messageDialog.run()
-            messageDialog.destroy()
+            ErrorMessageController(_("Can't connect to hardware"), self.__connectErrorMessage)
             self.hardwareConnectMenuitem.set_active(False)
 
         #self.hardwareConnectMenuitem.set_sensitive(True)
