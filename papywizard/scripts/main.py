@@ -68,6 +68,7 @@ from papywizard.common.exception import HardwareError
 from papywizard.common.publisher import Publisher
 from papywizard.hardware.head import Head, HeadSimulation
 from papywizard.model.shooting import Shooting
+from papywizard.controller.messageController import ExceptionMessageController
 from papywizard.controller.mainController import MainController
 from papywizard.controller.spy import Spy
 from papywizard.view.logBuffer import LogBuffer
@@ -253,16 +254,7 @@ def main():
 
     except Exception, msg:
         Logger().exception("main()")
-        tracebackString = StringIO.StringIO()
-        traceback.print_exc(file=tracebackString)
-        message = tracebackString.getvalue().strip()
-        tracebackString.close()
-        messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                          message_format=_("Internal error"))
-        messageDialog.set_title(_("Error"))
-        messageDialog.format_secondary_text(message)
-        messageDialog.run()
-        messageDialog.destroy()
+        ExceptionMessageController("main()")
 
 
 if __name__ == "__main__":
