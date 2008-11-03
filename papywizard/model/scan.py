@@ -367,4 +367,7 @@ class PresetScan(AbstractScan):
     def iterPositions(self):
         preset = self.__presets.getByName(self.name)
         Logger().debug("PresetScan.__init__(): preset=%s" % preset)
-        return preset.iterPositions()
+        positions = preset.getPositions()
+        for yaw, pitch in positions:
+            yield yaw, pitch
+        raise StopIteration
