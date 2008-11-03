@@ -124,13 +124,6 @@ class Preset(object):
         """
         return len(self.__positions)
 
-    def iterPositions(self):
-        """ Iter over all positions.
-        """
-        for yaw, pitch in self.__positions:
-            yield yaw, pitch
-        raise StopIteration
-
 
 class Presets(object):
     """ Presets object.
@@ -141,7 +134,6 @@ class Presets(object):
         """ Init the Presets object.
         """
         super(Presets, self).__init__()
-        #self.__presets = sets.Set()
         self.__presets = OrderedDict()
 
     def add(self, preset):
