@@ -71,6 +71,8 @@ from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.messageController import ErrorMessageController, WarningMessageController
 from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.helpAboutController import HelpAboutController
+from papywizard.controller.totalFovController import TotalFovController
+from papywizard.controller.nbPictsController import NbPictsController
 from papywizard.controller.presetInfoController import PresetInfoController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.shootController import ShootController
@@ -119,6 +121,8 @@ class MainController(AbstractController):
                             "on_setStartTogglebutton_released": self.__onSetStartTogglebuttonReleased,
                             "on_setEndTogglebutton_clicked": self.__onSetEndTogglebuttonClicked,
                             "on_setEndTogglebutton_released": self.__onSetEndTogglebuttonReleased,
+                            "on_totalFovButton_clicked": self.__onTotalFovButtonClicked,
+                            "on_nbPictsButton_clicked": self.__onNbPictsButtonClicked,
 
                             "on_presetCombobox_changed": self.__onPresetComboboxChanged,
                             "on_presetInfoButton_clicked": self.__onPresetInfoButtonClicked,
@@ -191,6 +195,8 @@ class MainController(AbstractController):
         self.setPitchEndButtonLabel = self.wTree.get_widget("setPitchEndButton").child
         self.setStartTogglebutton = self.wTree.get_widget("setStartTogglebutton")
         self.setEndTogglebutton = self.wTree.get_widget("setEndTogglebutton")
+        self.totalFovButton = self.wTree.get_widget("totalFovButton")
+        self.nbPictsButton = self.wTree.get_widget("nbPictsButton")
         self.yawFovLabel = self.wTree.get_widget("yawFovLabel")
         self.pitchFovLabel = self.wTree.get_widget("pitchFovLabel")
         self.yawNbPictsLabel = self.wTree.get_widget("yawNbPictsLabel")
@@ -460,7 +466,7 @@ class MainController(AbstractController):
     def __onHardwareSetLimitYawMinusMenuitemActivate(self, widget):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('yaw', '-', yaw)
-        Logger().debug("MainController.__onHardwareSetLimitYawMinusMenuitemActivate() yaw minus limit set to %.1f" % yaw)
+        Logger().debug("MainController.__onHardwareSetLimitYawMinusMenuitemActivate(): yaw minus limit set to %.1f" % yaw)
         self.setStatusbarMessage(_("Yaw - limit set"), 10)
 
     def __onHardwareSetLimitYawPlusMenuitemActivate(self, widget):
@@ -472,13 +478,13 @@ class MainController(AbstractController):
     def __onHardwareSetLimitPitchPlusMenuitemActivate(self, widget):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('pitch', '+', pitch)
-        Logger().debug("MainController.__onHardwareSetLimitPitchPlusMenuitemActivate() pitch plus limit set to %.1f" % pitch)
+        Logger().debug("MainController.__onHardwareSetLimitPitchPlusMenuitemActivate(): pitch plus limit set to %.1f" % pitch)
         self.setStatusbarMessage(_("Pitch + limit set"), 10)
 
     def __onHardwareSetLimitPitchMinusMenuitemActivate(self, widget):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('pitch', '-', pitch)
-        Logger().debug("MainController.__onHardwareSetLimitPitchMinusMenuitemActivate() pitch minus limit set to %.1f" % pitch)
+        Logger().debug("MainController.__onHardwareSetLimitPitchMinusMenuitemActivate(): pitch minus limit set to %.1f" % pitch)
         self.setStatusbarMessage(_("Pitch - limit set"), 10)
 
     def __onHardwareClearLimitsMenuitemActivate(self, widget):
@@ -567,6 +573,42 @@ class MainController(AbstractController):
     def __onSetEndTogglebuttonReleased(self, widget):
         Logger().trace("MainController.__onSetEndTogglebuttonReleased()")
         self.setEndTogglebutton.set_active(False)
+        
+    def __onTotalFovButtonClicked(self, widget):
+        Logger().trace("MainController.__onTotalFovButtonClicked()")
+        controller = TotalFovController()
+        cameraYawFov = self._model.camera.getYawFov(self._model.cameraOrientation)
+        cameraPitchFov = self._model.camera.getPitchFov(self._model.cameraOrientation)
+        controller.setMinFov(cameraYawFov, cameraPitchFov)
+        currentYawFov = self._model.mosaic.yawFov
+        currentPitchFov = self._model.mosaic.pitchFov
+        controller.setCurrentFov(currentYawFov, currentPitchFov)
+        response = controller.run()
+        controller.destroyView()
+        if response == 0:
+            yawFov, pitchFov = controller.getFov()
+            self._model.setStartEndFromFov(yawFov, pitchFov)
+            self.refreshView()
+            Logger().debug("MainController.__onTotalFovButtonClicked(): total fov set to yaw=%.1f, pitch=%.1f" % (yawFov, pitchFov))
+            self.setStatusbarMessage(_("Total fov set to user value"), 10)
+
+    def __onNbPictsButtonClicked(self, widget):
+        Logger().trace("MainController.__onNbPictsButtonClicked()")
+        controller = NbPictsController()
+        yawNbPicts = 100 # Compute the maximum number of pictures
+        pitchNbPicts = 50
+        controller.setMaxNbPicts(yawNbPicts, pitchNbPicts)
+        currentYawNbPicts = self._model.mosaic.yawNbPicts
+        currentPitchNbPicts = self._model.mosaic.pitchNbPicts
+        controller.setCurrentNbPicts(currentYawNbPicts, currentPitchNbPicts)
+        response = controller.run()
+        controller.destroyView()
+        if response == 0:
+            yawNbPicts, pitchNbPicts = controller.getNbPicts()
+            self._model.setStartEndFromNbPicts(yawNbPicts, pitchNbPicts)
+            self.refreshView()
+            Logger().debug("MainController.__onTotalNbPictsButtonClicked(): nb picts set to yaw=%d, pitch=%d" % (yawNbPicts, pitchNbPicts))
+            self.setStatusbarMessage(_("Nb picts set to user value"), 10)
 
     def __onPresetComboboxChanged(self, widget):
         presets = PresetManager().getPresets()

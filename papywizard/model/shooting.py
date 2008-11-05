@@ -152,6 +152,44 @@ class Shooting(object):
     #cameraRoll = property(__getCameraRoll, __setCameraRoll)
     cameraRoll = 60.
 
+    def setStartEndFromFov(self, yawFov, pitchFov):
+        """ Set the start/end positions from total fov.
+        
+        @param yawFov: total yaw fov (°)
+        @type yawFov: float
+        
+        @param pitchFov: total pitch fov (°)
+        @type pitchFov: float
+        """
+        yawPos, pitchPos = self.hardware.readPosition()
+        yawDelta = yawFov - self.camera.getYawFov(self.cameraOrientation)
+        self.mosaic.yawStart = yawPos - yawDelta / 2.
+        self.mosaic.yawEnd = yawPos + yawDelta / 2.
+        pitchDelta = pitchFov - self.camera.getPitchFov(self.cameraOrientation)
+        self.mosaic.pitchStart = pitchPos - pitchDelta / 2.
+        self.mosaic.pitchEnd = pitchPos + pitchDelta / 2.
+
+    def setStartEndFromNbPicts(self, yawNbPicts, pitchNbPicts):
+        """ Set the start/end positions from nb picts.
+        
+        @param yawNbPicts: yaw nb picts
+        @type yawNbPicts: int
+        
+        @param pitchNbPicts: pitch nb picts
+        @type pitchNbPicts: int
+        """
+        yawPos, pitchPos = self.hardware.readPosition()
+        yawDelta = self.camera.getYawFov(self.cameraOrientation) * (1 - self.mosaic.overlap) * (yawNbPicts - 1)
+        if yawNbPicts > 1:
+            yawDelta -= .01
+        self.mosaic.yawStart = yawPos - yawDelta / 2.
+        self.mosaic.yawEnd = yawPos + yawDelta / 2.
+        pitchDelta = self.camera.getPitchFov(self.cameraOrientation) * (1 - self.mosaic.overlap) * (pitchNbPicts - 1)
+        if pitchNbPicts > 1:
+            pitchDelta -= .01
+        self.mosaic.pitchStart = pitchPos - pitchDelta / 2.
+        self.mosaic.pitchEnd = pitchPos + pitchDelta / 2.
+
     def switchToRealHardware(self):
         """ Use real hardware.
         """
@@ -172,7 +210,7 @@ class Shooting(object):
         """
         Logger().trace("Shooting.switchToSimulatedHardware()")
         try:
-            self.realHardware.shutdown()
+            self.realHardware.shutdown() # Test if init first
         except:
             Logger().exception("Shooting.switchToSimulatedHardware()")
         self.hardware = self.simulatedHardware
