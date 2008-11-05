@@ -51,7 +51,7 @@ import os.path
 
 # Version
 VERSION_MAJOR = 1
-VERSION_MINOR = 2 # Odd means dev. release
+VERSION_MINOR = 3 # Odd means dev. release
 VERSION_UPDATE = 0
 VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 VERSION_PACKAGE = 1
