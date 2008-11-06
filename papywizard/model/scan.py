@@ -276,8 +276,7 @@ class MosaicScan(AbstractScan):
                 pitch = self.pitchEnd - self.__pitchIndex * self.__pitchInc
             else:
                 raise ValueError("Unknown '%s' <Start from> param" % self.startFrom)
-            Logger().debug("MosaicScan.iterPositions(): __yawIndex=%d, __pitchIndex=%d" % (self.__yawIndex, self.__pitchIndex))
-            Logger().debug("MosaicScan.iterPositions(): yaw=%.1f, pitch=%.1f" % (yaw, pitch))
+            #Logger().debug("MosaicScan.iterPositions(): __yawIndex=%d, __pitchIndex=%d, yaw=%.1f, pitch=%.1f" % (self.__yawIndex, self.__pitchIndex, yaw, pitch))
             yield yaw, pitch
 
             # Compute next position
