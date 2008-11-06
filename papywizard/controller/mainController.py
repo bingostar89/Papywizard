@@ -179,7 +179,7 @@ class MainController(AbstractController):
 
         self.__mosaicInputParam = 'startEnd'
 
-        #self.window_in_fullscreen = False
+        self.window_in_fullscreen = False
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
@@ -246,7 +246,8 @@ class MainController(AbstractController):
             self.app = hildon.Program()
             window = hildon.Window()
             window.set_title(self.dialog.get_title())
-            self.window_in_fullscreen = False
+            window.fullscreen()
+            self.window_in_fullscreen = True
             self.app.add_window(window)
             self.mainVbox.reparent(window)
 
@@ -279,15 +280,17 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onKeyPressed()")
 
         # 'FullScreen' key
-        #if event.keyval == self.__key['FullScreen']:
-            #if not self.__keyPressedDict['FullScreen']:
-                #Logger().debug("MainController.__onKeyPressed(): 'FullScreen' key pressed")
-                #if self.window_in_fullscreen:
-                    #self.dialog.unfullscreen()
-                #else:
-                    #self.dialog.fullscreen()
-                #self.__keyPressedDict['FullScreen'] = True
-            #return True
+        if event.keyval == self.__key['FullScreen']:
+            if not self.__keyPressedDict['FullScreen']:
+                Logger().debug("MainController.__onKeyPressed(): 'FullScreen' key pressed")
+                if self.window_in_fullscreen:
+                    self.dialog.unfullscreen()
+                    self.window_in_fullscreen = False
+                else:
+                    self.dialog.fullscreen()
+                    self.window_in_fullscreen = True
+                self.__keyPressedDict['FullScreen'] = True
+            return True
 
         # 'Right' key
         if event.keyval == self.__key['Right']:
@@ -370,11 +373,11 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onKeyReleased()")
 
         # 'FullScreen' key
-        #if event.keyval == self.__key['FullScreen']:
-            #if self.__keyPressedDict['FullScreen']:
-                #Logger().debug("MainController.__onKeyReleased(): 'FullScreen' key released")
-                #self.__keyPressedDict['FullScreen'] = False
-            #return True
+        if event.keyval == self.__key['FullScreen']:
+            if self.__keyPressedDict['FullScreen']:
+                Logger().debug("MainController.__onKeyReleased(): 'FullScreen' key released")
+                self.__keyPressedDict['FullScreen'] = False
+            return True
 
         # 'Right' key
         if event.keyval == self.__key['Right']:
