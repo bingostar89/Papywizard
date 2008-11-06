@@ -145,6 +145,7 @@ class ConfigController(AbstractController):
         ConfigManager().set('Data', 'DATA_FILE_FORMAT', self.dataFileFormatEntry.get_text())
         newDir = self.dataStorageDirFilechooserbutton.get_current_folder()
         ConfigManager().set('Data', 'DATA_STORAGE_DIR', newDir)
+        ConfigManager().save()
 
     def __onCancelButtonClicked(self, widget):
         """ Cancel button has been clicked.
