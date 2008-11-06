@@ -79,7 +79,6 @@ class Shooting(object):
         self.__shooting = False
         self.__pause = False
         self.__stop = False
-        self.__setParams = None
         self.__manualShoot = False
 
         self.realHardware = realHardware
@@ -153,28 +152,32 @@ class Shooting(object):
     cameraRoll = 60.
 
     def setStartEndFromFov(self, yawFov, pitchFov):
-        """ Set the start/end positions from total fov.
-        
+        """ Set yaw start/end positions from total fov.
+
         @param yawFov: total yaw fov (°)
         @type yawFov: float
-        
+
         @param pitchFov: total pitch fov (°)
         @type pitchFov: float
         """
         yawPos, pitchPos = self.hardware.readPosition()
         yawDelta = yawFov - self.camera.getYawFov(self.cameraOrientation)
+        if yawDelta < 0.:
+            yawDelta = 0.
         self.mosaic.yawStart = yawPos - yawDelta / 2.
         self.mosaic.yawEnd = yawPos + yawDelta / 2.
         pitchDelta = pitchFov - self.camera.getPitchFov(self.cameraOrientation)
+        if pitchDelta < 0.:
+            pitchDelta = 0.
         self.mosaic.pitchStart = pitchPos - pitchDelta / 2.
         self.mosaic.pitchEnd = pitchPos + pitchDelta / 2.
 
     def setStartEndFromNbPicts(self, yawNbPicts, pitchNbPicts):
         """ Set the start/end positions from nb picts.
-        
+
         @param yawNbPicts: yaw nb picts
         @type yawNbPicts: int
-        
+
         @param pitchNbPicts: pitch nb picts
         @type pitchNbPicts: int
         """
