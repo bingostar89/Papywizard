@@ -117,9 +117,9 @@ class MainController(AbstractController):
                             "on_setPitchStartButton_clicked": self.__onSetPitchStartButtonClicked,
                             "on_setYawEndButton_clicked": self.__onSetYawEndButtonClicked,
                             "on_setPitchEndButton_clicked": self.__onSetPitchEndButtonClicked,
-                            "on_setStartTogglebutton_clicked": self.__onSetStartTogglebuttonClicked,
+                            "on_setStartTogglebutton_pressed": self.__onSetStartTogglebuttonPressed,
                             "on_setStartTogglebutton_released": self.__onSetStartTogglebuttonReleased,
-                            "on_setEndTogglebutton_clicked": self.__onSetEndTogglebuttonClicked,
+                            "on_setEndTogglebutton_pressed": self.__onSetEndTogglebuttonPressed,
                             "on_setEndTogglebutton_released": self.__onSetEndTogglebuttonReleased,
                             "on_totalFovButton_clicked": self.__onTotalFovButtonClicked,
                             "on_nbPictsButton_clicked": self.__onNbPictsButtonClicked,
@@ -156,6 +156,8 @@ class MainController(AbstractController):
                       'Down': gtk.keysyms.Down,
                       'Home': gtk.keysyms.Home,
                       'End': gtk.keysyms.End,
+                      'Tab': gtk.keysyms.Tab,
+                      'space': gtk.keysyms.space,
                       'Return': gtk.keysyms.Return,
                       }
 
@@ -174,6 +176,8 @@ class MainController(AbstractController):
         self.__statusbarTimeoutEventId = None
         self.__connectStatus = None
         self.__connectErrorMessage = None
+
+        self.__mosaicInputParam = 'startEnd'
 
         #self.window_in_fullscreen = False
 
@@ -329,8 +333,7 @@ class MainController(AbstractController):
                 Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; store start position")
                 self.__keyPressedDict['Home'] = True
                 self.setStartTogglebutton.set_active(True)
-                self._model.mosaic.yawStart, self._model.mosaic.pitchStart = self.__yawPos, self.__pitchPos
-                self.refreshView()
+                self.__setYawPitchStartPosition()
             return True
 
         # 'End' key
@@ -341,8 +344,17 @@ class MainController(AbstractController):
                 Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; store end position")
                 self.__keyPressedDict['End'] = True
                 self.setEndTogglebutton.set_active(True)
-                self._model.mosaic.yawEnd, self._model.mosaic.pitchEnd = self.__yawPos, self.__pitchPos
-                self.refreshView()
+                self.__setYawPitchEndPosition()
+            return True
+
+        # 'Tab' key
+        elif event.keyval == self.__key['Tab']:
+            Logger().debug("MainController.__onKeyPressed(): 'Tab' key pressed; blocked")
+            return True
+
+        # 'space' key
+        elif event.keyval == self.__key['space']:
+            Logger().debug("MainController.__onKeyPressed(): 'space' key pressed; blocked")
             return True
 
         # 'Return' key
@@ -418,6 +430,16 @@ class MainController(AbstractController):
                 Logger().debug("MainController.__onKeyReleased(): 'End' key released")
                 self.__keyPressedDict['End'] = False
                 self.setEndTogglebutton.set_active(False)
+            return True
+
+        # 'Tab' key
+        elif event.keyval == self.__key['Tab']:
+            Logger().debug("MainController.__onKeyReleased(): 'Tab' key released")
+            return True
+
+        # 'space' key
+        elif event.keyval == self.__key['space']:
+            Logger().debug("MainController.__onKeyReleased(): 'space' key released")
             return True
 
         else:
@@ -533,82 +555,56 @@ class MainController(AbstractController):
     def __onSetYawStartButtonClicked(self, widget):
         Logger().trace("MainController.__onSetYawStartButtonClicked()")
         self._model.mosaic.yawStart = self.__yawPos
+        self.__mosaicInputParam = 'startEnd'
         self.refreshView()
         self.setStatusbarMessage(_("Yaw start set from current position"), 10)
 
     def __onSetPitchStartButtonClicked(self, widget):
         Logger().trace("MainController.__onSetPitchStartButtonClicked()")
         self._model.mosaic.pitchStart = self.__pitchPos
+        self.__mosaicInputParam = 'startEnd'
         self.refreshView()
         self.setStatusbarMessage(_("Pitch start set from current position"), 10)
 
     def __onSetYawEndButtonClicked(self, widget):
         Logger().trace("MainController.__onSetYawEndButtonClicked()")
         self._model.mosaic.yawEnd = self.__yawPos
+        self.__mosaicInputParam = 'startEnd'
         self.refreshView()
         self.setStatusbarMessage(_("Yaw end set from current position"), 10)
 
     def __onSetPitchEndButtonClicked(self, widget):
         Logger().trace("MainController.__onSetEndPitchButtonClicked()")
         self._model.mosaic.pitchEnd = self.__pitchPos
+        self.__mosaicInputParam = 'startEnd'
         self.refreshView()
         self.setStatusbarMessage(_("Pitch end set from current position"), 10)
 
-    def __onSetStartTogglebuttonClicked(self, widget):
-        Logger().trace("MainController.__onSetStartTogglebuttonClicked()")
-        self._model.mosaic.yawStart, self._model.mosaic.pitchStart = self.__yawPos, self.__pitchPos
-        self.refreshView()
-        self.setStatusbarMessage(_("Yaw/pitch start set from current position"), 10)
+    def __onSetStartTogglebuttonPressed(self, widget):
+        Logger().trace("MainController.__onSetStartTogglebuttonPressed()")
+        self.setStartTogglebutton.set_active(True)
+        self.__setYawPitchStartPosition()
 
     def __onSetStartTogglebuttonReleased(self, widget):
         Logger().trace("MainController.__onSetStartTogglebuttonReleased()")
         self.setStartTogglebutton.set_active(False)
 
-    def __onSetEndTogglebuttonClicked(self, widget):
-        Logger().trace("MainController.__onSetEndTogglebuttonClicked()")
-        self._model.mosaic.yawEnd, self._model.mosaic.pitchEnd = self.__yawPos, self.__pitchPos
-        self.refreshView()
-        self.setStatusbarMessage(_("Yaw/pitch end position set from current position"), 10)
+    def __onSetEndTogglebuttonPressed(self, widget):
+        Logger().trace("MainController.__onSetEndTogglebuttonPressed()")
+        self.setEndTogglebutton.set_active(True)
+        self.__setYawPitchEndPosition()
 
     def __onSetEndTogglebuttonReleased(self, widget):
         Logger().trace("MainController.__onSetEndTogglebuttonReleased()")
         self.setEndTogglebutton.set_active(False)
-        
+
     def __onTotalFovButtonClicked(self, widget):
         Logger().trace("MainController.__onTotalFovButtonClicked()")
-        controller = TotalFovController()
-        cameraYawFov = self._model.camera.getYawFov(self._model.cameraOrientation)
-        cameraPitchFov = self._model.camera.getPitchFov(self._model.cameraOrientation)
-        controller.setMinFov(cameraYawFov, cameraPitchFov)
-        currentYawFov = self._model.mosaic.yawFov
-        currentPitchFov = self._model.mosaic.pitchFov
-        controller.setCurrentFov(currentYawFov, currentPitchFov)
-        response = controller.run()
-        controller.destroyView()
-        if response == 0:
-            yawFov, pitchFov = controller.getFov()
-            self._model.setStartEndFromFov(yawFov, pitchFov)
-            self.refreshView()
-            Logger().debug("MainController.__onTotalFovButtonClicked(): total fov set to yaw=%.1f, pitch=%.1f" % (yawFov, pitchFov))
-            self.setStatusbarMessage(_("Total fov set to user value"), 10)
+        self.__openTotalFovDialog()
 
     def __onNbPictsButtonClicked(self, widget):
         Logger().trace("MainController.__onNbPictsButtonClicked()")
-        controller = NbPictsController()
-        yawNbPicts = 100 # Compute the maximum number of pictures
-        pitchNbPicts = 50
-        controller.setMaxNbPicts(yawNbPicts, pitchNbPicts)
-        currentYawNbPicts = self._model.mosaic.yawNbPicts
-        currentPitchNbPicts = self._model.mosaic.pitchNbPicts
-        controller.setCurrentNbPicts(currentYawNbPicts, currentPitchNbPicts)
-        response = controller.run()
-        controller.destroyView()
-        if response == 0:
-            yawNbPicts, pitchNbPicts = controller.getNbPicts()
-            self._model.setStartEndFromNbPicts(yawNbPicts, pitchNbPicts)
-            self.refreshView()
-            Logger().debug("MainController.__onTotalNbPictsButtonClicked(): nb picts set to yaw=%d, pitch=%d" % (yawNbPicts, pitchNbPicts))
-            self.setStatusbarMessage(_("Nb picts set to user value"), 10)
+        self.__openNbPictsDialog()
 
     def __onPresetComboboxChanged(self, widget):
         presets = PresetManager().getPresets()
@@ -675,23 +671,9 @@ class MainController(AbstractController):
         self.yawMoveMinusTogglebutton.set_active(False)
         self.refreshView()
 
-    def __openConfigDialog(self):
-        controller = ConfigController(self, self._model, self._serializer)
-        response = controller.run()
-        controller.destroyView()
-        if response == 0:
-            Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
-            self.refreshView()
-
     def __onConfigButtonClicked(self, widget):
         Logger().trace("MainController.__onConfigButtonClicked()")
         self.__openConfigDialog()
-
-    def __openShootdialog(self):
-        self._model.initProgress()
-        controller = ShootController(self, self._model, self._serializer)
-        controller.run()
-        controller.destroyView()
 
     def __onShootButtonClicked(self, widget):
         Logger().trace("MainController.__onShootButtonClicked()")
@@ -704,6 +686,72 @@ class MainController(AbstractController):
         self.__waitController.closeBanner()
 
     # Real work
+    def __setYawPitchStartPosition(self):
+        """ Set yaw/pitch end from current position.
+        """
+        self._model.mosaic.yawStart, self._model.mosaic.pitchStart = self.__yawPos, self.__pitchPos
+        self.__mosaicInputParam = 'startEnd'
+        self.refreshView()
+        self.setStatusbarMessage(_("Yaw/pitch start set from current position"), 10)
+
+    def __setYawPitchEndPosition(self):
+        """ Set yaw/pitch start from current position.
+        """
+        self._model.mosaic.yawEnd, self._model.mosaic.pitchEnd = self.__yawPos, self.__pitchPos
+        self.__mosaicInputParam = 'startEnd'
+        self.refreshView()
+        self.setStatusbarMessage(_("Yaw/pitch end set from current position"), 10)
+
+    def __openTotalFovDialog(self):
+        """
+        """
+        controller = TotalFovController(self, self._model)
+        response = controller.run()
+        controller.destroyView()
+        if response == 0:
+            self.__mosaicInputParam = 'fov'
+            self.refreshView()
+            self.setStatusbarMessage(_("Field of view set to user value"), 10)
+
+    def __openNbPictsDialog(self):
+        """
+        """
+        controller = NbPictsController(self, self._model)
+        response = controller.run()
+        controller.destroyView()
+        if response == 0:
+            self.__mosaicInputParam = 'nbPicts'
+            self.refreshView()
+            self.setStatusbarMessage(_("Number of pictures set to user value"), 10)
+
+    def __openConfigDialog(self):
+        """
+        """
+        controller = ConfigController(self, self._model, self._serializer)
+        response = controller.run()
+        controller.destroyView()
+        if response == 0:
+            Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
+            if self.__mosaicInputParam == 'startEnd':
+                pass
+            elif self.__mosaicInputParam == 'fov':
+                yawFov = float(self.yawFovLabel.get_text())
+                pitchFov = float(self.pitchFovLabel.get_text())
+                self._model.setStartEndFromFov(yawFov, pitchFov)
+            elif self.__mosaicInputParam == 'nbPicts':
+                yawNbPicts = int(self.yawNbPictsLabel.get_text())
+                pitchNbPicts = int(self.pitchNbPictsLabel.get_text())
+                self._model.setStartEndFromNbPicts(yawNbPicts, pitchNbPicts)
+            self.refreshView()
+
+    def __openShootdialog(self):
+        """
+        """
+        self._model.initProgress()
+        controller = ShootController(self, self._model, self._serializer)
+        controller.run()
+        controller.destroyView()
+
     def __populatePresetCombobox(self):
         """
         """
