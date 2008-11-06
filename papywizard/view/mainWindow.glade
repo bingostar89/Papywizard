@@ -520,7 +520,7 @@
                                     <property name="label" translatable="yes" context="yes">Start (°)</property>
                                     <property name="xalign">0.89999997615814209</property>
                                     <property name="response_id">0</property>
-                                    <signal name="clicked" handler="on_setStartTogglebutton_clicked"/>
+                                    <signal name="pressed" handler="on_setStartTogglebutton_pressed"/>
                                     <signal name="released" handler="on_setStartTogglebutton_released"/>
                                   </widget>
                                   <packing>
@@ -536,7 +536,7 @@
                                     <property name="label" translatable="yes" context="yes">End (°)</property>
                                     <property name="xalign">0.89999997615814209</property>
                                     <property name="response_id">0</property>
-                                    <signal name="clicked" handler="on_setEndTogglebutton_clicked"/>
+                                    <signal name="pressed" handler="on_setEndTogglebutton_pressed"/>
                                     <signal name="released" handler="on_setEndTogglebutton_released"/>
                                   </widget>
                                   <packing>
