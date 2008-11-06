@@ -330,7 +330,6 @@ class Shooting(object):
                         Logger().debug("Shooting.start(): shooting %d/%d" % (bracket + 1, self.camera.bracketingNbPicts))
                         self.sequence = _("Shooting %d/%d") % (bracket + 1, self.camera.bracketingNbPicts)
                         self.hardware.shoot(self.camera.timeValue)
-                        #time.sleep(0.5) # ensure shutter is closed()
 
                         data.addPicture(bracket + 1, yaw, pitch, roll)
 
@@ -342,8 +341,7 @@ class Shooting(object):
 
                     progressFraction = float((i + 1)) / float(scan.totalNbPicts)
                     self.progress = progressFraction
-                    self.newPictSignal.emit(yaw, pitch, status='ok') # Include progress?
-                    # todo: add status of current picture (to draw it in red if failed to go)
+                    self.newPictSignal.emit(yaw, pitch, status='ok')
 
                 except HardwareError:
                     self.hardware.stopAxis()
@@ -352,7 +350,7 @@ class Shooting(object):
 
                     progressFraction = float((i + 1)) / float(scan.totalNbPicts)
                     self.progress = progressFraction
-                    self.newPictSignal.emit(yaw, pitch, status='error') # Include progress?
+                    self.newPictSignal.emit(yaw, pitch, status='error')
 
         except StopIteration:
             Logger().debug("Shooting.start(): stop detected")
