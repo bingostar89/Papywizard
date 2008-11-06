@@ -109,9 +109,13 @@ class ShootController(AbstractController):
                                    self._model.camera.getYawFov(self._model.cameraOrientation),
                                    self._model.camera.getPitchFov(self._model.cameraOrientation),
                                    self._model.mosaic.yawRealOverlap, self._model.mosaic.pitchRealOverlap)
+            for yaw, pitch in self._model.mosaic.iterPositions():
+                self.shootingArea.add_pict(yaw, pitch, 'preview')
         else:
             self.shootingArea.init(440., 220., # visible fov
                                     16.,  16.) # camera fov
+            for yaw, pitch in self._model.preset.iterPositions():
+                self.shootingArea.add_pict(yaw, pitch, 'preview')
         self.shootingArea.show()
         self.progressbar = self.wTree.get_widget("progressbar")
         self.manualShootCheckbutton = self.wTree.get_widget("manualShootCheckbutton")
@@ -270,7 +274,7 @@ class ShootController(AbstractController):
 
                 return False # Stop execution by Gtk timeout
 
-            self.refreshView() # Can conflict with Spy?
+            self.refreshView()
 
             return True
 

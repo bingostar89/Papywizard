@@ -57,6 +57,8 @@ import pygtk
 pygtk.require("2.0")
 import gtk
 
+from papywizard.common.orderedDict import OrderedDict
+
 
 class ShootingArea(gtk.DrawingArea):
     """ GTK ShootingArea widget
@@ -66,7 +68,7 @@ class ShootingArea(gtk.DrawingArea):
         """
         gtk.DrawingArea.__init__(self)
 
-        self._picts = []
+        self._picts = OrderedDict()
         self._width = 300
         self._height = 150
         self.set_size_request(self._width, self._height)
@@ -144,14 +146,14 @@ class ShootingArea(gtk.DrawingArea):
         @type status: str
         """
         #print "add_pict(yawIndex=%d, pitchIndex=%d)" % (yawIndex, pitchIndex)
-        self._picts.append((yawIndex, pitchIndex, status))
+        self._picts[(yawIndex, pitchIndex)] = status
         self.refresh()
 
     def clear(self):
         """ Clear the shooting area
         """
         #print "clear()"
-        self._picts = []
+        self._picts.clear()
         self.refresh()
 
     def _set_colors(self, colors):
@@ -249,7 +251,7 @@ class MosaicArea(ShootingArea):
         #self.window.draw_rectangle(self._fg3, False, xFull, yFull, wFull, hFull)
 
         # Draw picts
-        for i, (yaw, pitch, status) in enumerate(self._picts):
+        for i, ((yaw, pitch), status) in enumerate(self._picts.iteritems()):
             if cmp(self.__yawEnd, self.__yawStart) > 0:
                 yaw -= self.__yawStart
             else:
@@ -265,15 +267,18 @@ class MosaicArea(ShootingArea):
             y = self._height - y - h
             #print "pict=%d, yaw=%.1f, pitch=%.1f, x=%.1f, y=%.1f, w=%.1f, h=%.1f" % (i + 1, yaw, pitch, x, y, w, h)
             self.window.draw_rectangle(self._fg1, True, x, y, w, h)
-            x += 1
-            y += 1
-            w -= 2
-            h -= 2
-            if status == 'ok':
-                gc = self._fg2
-            else:
-                gc = self._fg3
-            self.window.draw_rectangle(gc, True, x, y, w, h)
+            if status != 'preview2':
+                x += 1
+                y += 1
+                w -= 2
+                h -= 2
+                if status == 'ok':
+                    gc = self._fg2
+                elif status == 'preview':
+                    gc = self._back
+                else:
+                    gc = self._fg3
+                self.window.draw_rectangle(gc, True, x, y, w, h)
 
         return False
 
@@ -321,7 +326,7 @@ class PresetArea(ShootingArea):
         self.window.draw_line(self._fg3, x1, y1, x2, y2)
 
         # Draw picts
-        for i, (yaw, pitch, status) in enumerate(self._picts):
+        for i, ((yaw, pitch), status) in enumerate(self._picts.iteritems()):
             pitch = 180 / 2. - pitch
             x = int(round(yaw * self._scale - self._yawCameraFov * self._scale / 2.)) + self.__yawMargin
             y = int(round(pitch * self._scale - self._pitchCameraFov * self._scale / 2.)) + self.__pitchMargin
@@ -330,16 +335,18 @@ class PresetArea(ShootingArea):
             #print "pict=%d, yaw=%.1f, pitch=%.1f, x=%.1f, y=%.1f, w=%.1f, h=%.1f" % (i + 1, yaw, pitch, x, y, w, h)
             #self.window.draw_rectangle(self._fg1, True, x, y, w, h)
             self.window.draw_arc(self._fg1, True, x, y, w, h, 0, 360 * 64)
-            x += 1
-            y += 1
-            w -= 2
-            h -= 2
-            if status == 'ok':
-                gc = self._fg2
-            else:
-                gc = self._fg3
-            #self.window.draw_rectangle(gc, True, x, y, w, h)
-            self.window.draw_arc(gc, True, x, y, w, h, 0, 360 * 64)
+            if status != 'preview2':
+                x += 1
+                y += 1
+                w -= 2
+                h -= 2
+                if status == 'ok':
+                    gc = self._fg2
+                elif status == 'preview':
+                    gc = self._back
+                else:
+                    gc = self._fg3
+                #self.window.draw_rectangle(gc, True, x, y, w, h)
+                self.window.draw_arc(gc, True, x, y, w, h, 0, 360 * 64)
 
         return False
-
