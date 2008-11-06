@@ -75,7 +75,7 @@ class AbstractController(object):
 
         @param model: model to use
         @type model: {Shooting}
-        
+
         @param serializer: serializer for multi-threading operations
         @type serializer: {Serializer}
         """
@@ -98,7 +98,7 @@ class AbstractController(object):
         """
         self._gladeFile = None
         self._signalDict = None
-        
+
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
@@ -115,12 +115,12 @@ class AbstractController(object):
         """ Run the dialog.
         """
         return self.dialog.run()
-        
+
     def destroyView(self):
         """ Destroy the view.
         """
         self.dialog.destroy()
-    
+
     def refreshView(self):
         """ Refresh the view widgets according to model values.
         """
