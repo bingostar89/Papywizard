@@ -51,18 +51,12 @@ Implements
 
 __revision__ = "$Id: shootController.py 333 2008-06-25 21:08:42Z fma $"
 
-import pygtk
-pygtk.require("2.0")
-import gtk
-import gobject
-
-from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractController
 
 
 class NbPictsController(AbstractController):
-    """ Bluetooth chooser controller object.
+    """ Nb picts controller object.
     """
     def _init(self):
         self._gladeFile = "nbPictsDialog.glade"
@@ -78,49 +72,31 @@ class NbPictsController(AbstractController):
         self.yawNbPictsSpinbutton = self.wTree.get_widget("yawNbPictsSpinbutton")
         self.pitchNbPictsSpinbutton = self.wTree.get_widget("pitchNbPictsSpinbutton")
 
+        # Set limits
+        maxYawNbPicts = 100 # Compute the maximum number of pictures
+        maxPitchNbPicts = 50
+        self.yawNbPictsSpinbutton.set_range(1, maxYawNbPicts)
+        self.pitchNbPictsSpinbutton.set_range(1, maxPitchNbPicts)
+        currentYawNbPicts = self._model.mosaic.yawNbPicts
+        currentPitchNbPicts = self._model.mosaic.pitchNbPicts
+        self.yawNbPictsSpinbutton.set_value(currentYawNbPicts)
+        self.pitchNbPictsSpinbutton.set_value(currentPitchNbPicts)
+
     # Callbacks
     def __onOkButtonClicked(self, widget):
         """ Ok button has been clicked.
         """
         Logger().trace("NbPictsController.__onOkButtonClicked()")
+        yawNbPicts = self.yawNbPictsSpinbutton.get_value()
+        pitchNbPicts = self.pitchNbPictsSpinbutton.get_value()
+        self._model.setStartEndFromNbPicts(yawNbPicts, pitchNbPicts)
+        Logger().debug("NbPictsController.__onOkButtonClicked(): nb picts set to yaw=%d, pitch=%d" % (yawNbPicts, pitchNbPicts))
 
     def __onCancelButtonClicked(self, widget):
         """ Cancel button has been clicked.
         """
         Logger().trace("NbPictsController.__onCancelButtonClicked()")
 
+    # Real work
     def refreshView(self):
         pass
-
-    # Real work
-    def setMaxNbPicts(self, yawNbPicts, pitchNbPicts):
-        """ Set the minium fov.
-        
-        @para yawNbPicts: yaw maximum nb pîcts
-        @type yawNbPicts: int
-        
-        @param pitchNbPicts: pitch maximum nb pîcts
-        @type pitchNbPicts: int
-        """
-        self.yawNbPictsSpinbutton.set_range(1, yawNbPicts)
-        self.pitchNbPictsSpinbutton.set_range(1, pitchNbPicts)
-    
-    def setCurrentNbPicts(self, yawNbPicts, pitchNbPicts):
-        """ Set the currentnb picts.
-        
-        @para yawNbPicts: yaw current nb pîcts
-        @type yawNbPicts: int
-        
-        @param pitchNbPicts: pitch current nb pîcts
-        @type pitchNbPicts: int
-        """
-        self.yawNbPictsSpinbutton.set_value(yawNbPicts)
-        self.pitchNbPictsSpinbutton.set_value(pitchNbPicts)
-
-    def getNbPicts(self):
-        """ Return the yaw/pitch nb picts.
-        
-        @return: yaw/pitch nb picts
-        @rtype: tuple
-        """
-        return self.yawNbPictsSpinbutton.get_value(), self.pitchNbPictsSpinbutton.get_value()
