@@ -527,10 +527,10 @@ class MainController(AbstractController):
 
     def __onHelpViewLogMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHelpViewLogMenuitemActivate()")
-        controller = LoggerController(self, self._model, self._serializer)
-        controller.setLogBuffer(self.__gtkLogStream)
-        controller.run()
-        controller.destroyView()
+        viewLogDialog = LoggerController(self, self._model, self._serializer)
+        viewLogDialog.setLogBuffer(self.__gtkLogStream)
+        viewLogDialog.run()
+        viewLogDialog.destroyView()
 
     def __onHelpAboutMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHelpAboutMenuitemActivate()")
@@ -542,8 +542,13 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onModeMosaicRadiobuttonToggled()")
         modeMosaic = self.modeMosaicRadiobutton.get_active()
         if modeMosaic and self._model.camera.lens.type_ == 'fisheye':
-            WarningMessageController(_("Wrong shooting mode"), _("Can't set shooting mode to 'mosaic'\n" \
-                                                                 "while using 'fisheye' lens type"))
+            WarningMessageController(_("Wrong shooting mode"),
+                                     _("Can't set shooting mode to 'mosaic'\nwhile using 'fisheye' lens type"))
+            self.modeMosaicRadiobutton.set_active(False)
+            self.modePresetRadiobutton.set_active(True)
+        elif modeMosaic and self._model.cameraOrientation == 'custom':
+            WarningMessageController(_("Wrong camera orientation"),
+                                     _("Can't set shooting mode to 'mosaic'\nwhile using 'custom' camera orientation"))
             self.modeMosaicRadiobutton.set_active(False)
             self.modePresetRadiobutton.set_active(True)
         else:
@@ -554,6 +559,7 @@ class MainController(AbstractController):
             else:
                 self._model.mode = 'preset'
             Logger().debug("MainController.__onModeMosaicRadiobuttonToggled(): shooting mode set to '%s'" % self._model.mode)
+        self.refreshView()
 
     def __onSetYawStartButtonClicked(self, widget):
         Logger().trace("MainController.__onSetYawStartButtonClicked()")
@@ -876,20 +882,27 @@ class MainController(AbstractController):
             flag = True
         else:
             flag = False
-        self.modeMosaicRadiobutton.set_active(flag)
-        self.modePresetRadiobutton.set_active(not flag)
-        self.mosaicFrame.set_sensitive(flag)
-        self.presetFrame.set_sensitive(not flag)
-        self.setYawStartButtonLabel.set_label("%.1f" % self._model.mosaic.yawStart)
-        self.setPitchStartButtonLabel.set_label("%.1f" % self._model.mosaic.pitchStart)
-        self.setYawEndButtonLabel.set_label("%.1f" % self._model.mosaic.yawEnd)
-        self.setPitchEndButtonLabel.set_label("%.1f" % self._model.mosaic.pitchEnd)
-        self.yawFovLabel.set_text("%.1f" % self._model.mosaic.yawFov)
-        self.pitchFovLabel.set_text("%.1f" % self._model.mosaic.pitchFov)
-        self.yawNbPictsLabel.set_text("%d" % self._model.mosaic.yawNbPicts)
-        self.pitchNbPictsLabel.set_text("%d" % self._model.mosaic.pitchNbPicts)
-        self.yawRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.yawRealOverlap)))
-        self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
+            
+        if self._model.mode == 'mosaic':
+            self.modeMosaicRadiobutton.set_active(True)
+            self.modePresetRadiobutton.set_active(False)
+            self.mosaicFrame.set_sensitive(True)
+            self.presetFrame.set_sensitive(False)
+            self.setYawStartButtonLabel.set_label("%.1f" % self._model.mosaic.yawStart)
+            self.setPitchStartButtonLabel.set_label("%.1f" % self._model.mosaic.pitchStart)
+            self.setYawEndButtonLabel.set_label("%.1f" % self._model.mosaic.yawEnd)
+            self.setPitchEndButtonLabel.set_label("%.1f" % self._model.mosaic.pitchEnd)
+            self.yawFovLabel.set_text("%.1f" % self._model.mosaic.yawFov)
+            self.pitchFovLabel.set_text("%.1f" % self._model.mosaic.pitchFov)
+            self.yawNbPictsLabel.set_text("%d" % self._model.mosaic.yawNbPicts)
+            self.pitchNbPictsLabel.set_text("%d" % self._model.mosaic.pitchNbPicts)
+            self.yawRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.yawRealOverlap)))
+            self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
+        else:
+            self.modeMosaicRadiobutton.set_active(False)
+            self.modePresetRadiobutton.set_active(True)
+            self.mosaicFrame.set_sensitive(False)
+            self.presetFrame.set_sensitive(True)
         presets = PresetManager().getPresets()
         try:
             self.presetCombobox.set_active(presets.nameToIndex(self._model.preset.name))
