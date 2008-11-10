@@ -149,7 +149,8 @@ class Camera(object):
             sensorSize = 36.
         elif cameraOrientation == 'portrait':
             sensorSize = 36. / config.SENSOR_RATIOS[self.sensorRatio]
-
+        else:
+            raise ValueError("cameraOrientation must be in ('portrait', 'landscape')")
         return self.lens.computeFov(sensorSize / self.sensorCoef)
 
     def getPitchFov(self, cameraOrientation):
@@ -162,6 +163,8 @@ class Camera(object):
             sensorSize = 36. / config.SENSOR_RATIOS[self.sensorRatio]
         elif cameraOrientation == 'portrait':
             sensorSize = 36.
+        else:
+            raise ValueError("cameraOrientation must be in ('portrait', 'landscape')")
 
         return self.lens.computeFov(sensorSize / self.sensorCoef)
 
