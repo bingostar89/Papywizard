@@ -70,6 +70,7 @@ class ConfigController(AbstractController):
         self._gladeFile = "configDialog.glade"
         self._signalDict = {"on_okButton_clicked": self.__onOkButtonClicked,
                             "on_cancelButton_clicked": self.__onCancelButtonClicked,
+                            "on_cameraOrientationCombobox_changed": self.__onCameraOrientationComboboxChanged,
                             "on_lensTypeCombobox_changed": self.__onLensTypeComboboxChanged,
                             "on_driverCombobox_changed": self.__onDriverComboboxChanged,
                             "on_bluetoothChooseButton_clicked": self.__onBluetoothChooseButtonClicked,
@@ -80,8 +81,10 @@ class ConfigController(AbstractController):
         """
         super(ConfigController, self)._retreiveWidgets()
 
-        self.stabilizationDelaySpinbutton = self.wTree.get_widget("stabilizationDelaySpinbutton")
+        self.headOrientationCombobox = self.wTree.get_widget("headOrientationCombobox")
         self.cameraOrientationCombobox = self.wTree.get_widget("cameraOrientationCombobox")
+        self.cameraRollSpinbutton = self.wTree.get_widget("cameraRollSpinbutton")
+        self.stabilizationDelaySpinbutton = self.wTree.get_widget("stabilizationDelaySpinbutton")
         self.overlapSpinbutton = self.wTree.get_widget("overlapSpinbutton")
         self.overlapSquareCheckbutton = self.wTree.get_widget("overlapSquareCheckbutton")
         self.startFromCombobox = self.wTree.get_widget("startFromCombobox")
@@ -118,8 +121,11 @@ class ConfigController(AbstractController):
         """
         Logger().trace("ConfigController.__onOkButtonClicked()")
 
+        self._model.headOrientation = config.HEAD_ORIENTATION_INDEX[self.headOrientationCombobox.get_active()]
+        self._model.cameraOrientation = config.CAMERA_ORIENTATION_INDEX[self.cameraOrientationCombobox.get_active()]
+        if self._model.cameraOrientation == 'custom':
+            self._model.cameraRoll = self.cameraRollSpinbutton.get_value()
         self._model.stabilizationDelay = self.stabilizationDelaySpinbutton.get_value()
-        self._model.cameraOrientation = config.SHOOTING_ORIENTATION_INDEX[self.cameraOrientationCombobox.get_active()]
         self._model.mosaic.overlap = self.overlapSpinbutton.get_value() / 100.
         self._model.mosaic.overlapSquare = self.overlapSquareCheckbutton.get_active()
         self._model.mosaic.startFrom = config.MOSAIC_START_FROM_INDEX[self.startFromCombobox.get_active()]
@@ -154,6 +160,26 @@ class ConfigController(AbstractController):
         """
         Logger().trace("ConfigController.__onCancelButtonClicked()")
 
+    def __onCameraOrientationComboboxChanged(self, widget):
+        """ Camera orientation changed.
+        """
+        orientation = config.CAMERA_ORIENTATION_INDEX[self.cameraOrientationCombobox.get_active()]
+        Logger().debug("ConfigController.__onCancelButtonClicked(): orientation=%s" % orientation)
+        if orientation == 'portrait':
+            self.cameraRollSpinbutton.set_sensitive(False)
+            self.cameraRollSpinbutton.set_value(90.)
+        elif orientation == 'landscape':
+            self.cameraRollSpinbutton.set_sensitive(False)
+            self.cameraRollSpinbutton.set_value(0.)
+        else:
+            if self._model.mode == 'mosaic':
+                WarningMessageController(_("Wrong value for camera orientatione"),
+                                         _("Can't set camera orientation to 'custom'\nwhile in 'mosaic' mode"))
+                self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[self._model.cameraOrientation])
+            else:
+                self.cameraRollSpinbutton.set_sensitive(True)
+                self.cameraRollSpinbutton.set_value(self._model.cameraRoll)
+
     def __onLensTypeComboboxChanged(self, widget):
         """ Lens type combobox has changed.
 
@@ -162,8 +188,8 @@ class ConfigController(AbstractController):
         Logger().trace("ConfigController.__onLensTypeComboboxChanged()")
         type_ = config.LENS_TYPE_INDEX[self.lensTypeCombobox.get_active()]
         if type_ == 'fisheye' and self._model.mode == 'mosaic':
-            WarningMessageController(_("Wrong value for lens type"), _("Can't set lens type to 'fisheye'\n" \
-                                                                       "while in 'mosaic' mode"))
+            WarningMessageController(_("Wrong value for lens type"),
+                                     _("Can't set lens type to 'fisheye'\nwhile in 'mosaic' mode"))
             self.lensTypeCombobox.set_active(config.LENS_TYPE_INDEX['rectilinear'])
         else:
             if type_ == 'rectilinear':
@@ -226,8 +252,10 @@ class ConfigController(AbstractController):
 
     # Real work
     def refreshView(self):
+        self.headOrientationCombobox.set_active(config.HEAD_ORIENTATION_INDEX[self._model.headOrientation])
+        self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[self._model.cameraOrientation])
+        #self.cameraRollSpinbutton.set_value(self._model.cameraRoll)
         self.stabilizationDelaySpinbutton.set_value(self._model.stabilizationDelay)
-        self.cameraOrientationCombobox.set_active(config.SHOOTING_ORIENTATION_INDEX[self._model.cameraOrientation])
         self.overlapSpinbutton.set_value(int(100 * self._model.mosaic.overlap))
         self.overlapSquareCheckbutton.set_active(self._model.mosaic.overlapSquare)
         self.startFromCombobox.set_active(config.MOSAIC_START_FROM_INDEX[self._model.mosaic.startFrom])
