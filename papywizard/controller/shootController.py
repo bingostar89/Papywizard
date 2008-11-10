@@ -64,6 +64,7 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 from papywizard.controller.messageController import ErrorMessageController
 from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.generalInfoController import GeneralInfoController
 from papywizard.controller.spy import Spy
 from papywizard.view.shootingArea import MosaicArea, PresetArea
 
@@ -218,6 +219,10 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__onDataFileEnableCheckbuttonToggled()")
         switch = self.dataFileEnableCheckbutton.get_active()
         ConfigManager().setBoolean('Data', 'DATA_FILE_ENABLE', self.dataFileEnableCheckbutton.get_active())
+        if switch:
+            generalInfoDialog = GeneralInfoController(self, self._model)
+            generalInfoDialog.run()
+            generalInfoDialog.destroyView()
 
     def __onStartButtonClicked(self, widget):
         Logger().trace("ShootController.__startButtonClicked()")
