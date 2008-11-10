@@ -52,7 +52,7 @@ import os.path
 # Version
 VERSION_MAJOR = 1
 VERSION_MINOR = 3 # Odd means dev. release
-VERSION_UPDATE = 0
+VERSION_UPDATE = 2
 VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 VERSION_PACKAGE = 1
 VERSION_XML = "a"
@@ -83,8 +83,10 @@ USER_PRESET_FILE = os.path.join(USER_CONFIG_DIR, PRESET_FILE)
 USER_GUIDE_URL = "http://trac.gbiloba.org/papywizard/wiki/UserGuide"
 
 # GUI index
-SHOOTING_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1,
-                              0: 'portrait', 1: 'landscape'}
+HEAD_ORIENTATION_INDEX = {'up': 0, 'left': 1, 'right': 2, 'down': 3,
+                          0: 'up', 1: 'left', 2: 'right', 3: 'down'}
+CAMERA_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1, 'custom': 2,
+                            0: 'portrait', 1: 'landscape', 2: 'custom'}
 CAMERA_BRACKETING_INTENT_INDEX = {'exposure': 0, 'focus' : 1, 'white balance': 2, 'movement': 3,
                                   0: 'exposure', 1: 'focus', 2: 'white balance', 3: 'movement'}
 LENS_TYPE_INDEX = {'rectilinear': 0, 'fisheye': 1,
