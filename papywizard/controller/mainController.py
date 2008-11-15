@@ -217,6 +217,7 @@ class MainController(AbstractController):
         self.__populatePresetCombobox()
         self.yawPosLabel = self.wTree.get_widget("yawPosLabel")
         self.pitchPosLabel = self.wTree.get_widget("pitchPosLabel")
+        self.manualSpeedImage =  self.wTree.get_widget("manualSpeedImage")
         self.yawMovePlusTogglebutton = self.wTree.get_widget("yawMovePlusTogglebutton")
         self.pitchMovePlusTogglebutton = self.wTree.get_widget("pitchMovePlusTogglebutton")
         self.yawMoveMinusTogglebutton = self.wTree.get_widget("yawMoveMinusTogglebutton")
@@ -333,10 +334,14 @@ class MainController(AbstractController):
             if not self.__keyPressedDict['Home'] and \
                not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; store start position")
+                #Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; store start position")
+                Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; select slow speed")
                 self.__keyPressedDict['Home'] = True
-                self.setStartTogglebutton.set_active(True)
-                self.__setYawPitchStartPosition()
+                #self.setStartTogglebutton.set_active(True)
+                #self.__setYawPitchStartPosition()
+                self._model.hardware.setManualSpeed('slow')
+                self.manualSpeedImage.set_from_stock(gtk.STOCK_MEDIA_PLAY, 4)
+                self.setStatusbarMessage(_("Manual speed set to slow"), 10)
             return True
 
         # 'End' key
@@ -345,9 +350,13 @@ class MainController(AbstractController):
                not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
                 Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; store end position")
+                Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select fast speed")
                 self.__keyPressedDict['End'] = True
-                self.setEndTogglebutton.set_active(True)
-                self.__setYawPitchEndPosition()
+                #self.setEndTogglebutton.set_active(True)
+                #self.__setYawPitchEndPosition()
+                self._model.hardware.setManualSpeed('fast')
+                self.manualSpeedImage.set_from_stock(gtk.STOCK_MEDIA_FORWARD, 4)
+                self.setStatusbarMessage(_("Manual speed set to fast"), 10)
             return True
 
         # 'Tab' key
@@ -424,7 +433,7 @@ class MainController(AbstractController):
             if self.__keyPressedDict['Home']:
                 Logger().debug("MainController.__onKeyReleased(): 'Home' key released")
                 self.__keyPressedDict['Home'] = False
-                self.setStartTogglebutton.set_active(False)
+                #self.setStartTogglebutton.set_active(False)
             return True
 
         # 'End' key
@@ -432,7 +441,7 @@ class MainController(AbstractController):
             if self.__keyPressedDict['End']:
                 Logger().debug("MainController.__onKeyReleased(): 'End' key released")
                 self.__keyPressedDict['End'] = False
-                self.setEndTogglebutton.set_active(False)
+                #self.setEndTogglebutton.set_active(False)
             return True
 
         # 'Tab' key
@@ -882,7 +891,7 @@ class MainController(AbstractController):
             flag = True
         else:
             flag = False
-            
+
         if self._model.mode == 'mosaic':
             self.modeMosaicRadiobutton.set_active(True)
             self.modePresetRadiobutton.set_active(False)
