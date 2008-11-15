@@ -76,6 +76,7 @@ class AbstractAxis(object):
         self._num = num
         self._plusLimit = 9999.9
         self._minusLimit = -9999.9
+        self._manualSpeed = None
 
     def _checkLimits(self, pos):
         """ Check if position is in axis limits.
@@ -196,6 +197,14 @@ class AbstractAxis(object):
         """
         raise NotImplementedError
 
+    def setManualSpeed(self, speed):
+        """ Set manual speed.
+        
+        @param speed: new speed, in ('slow', 'fast')
+        @type speed: str
+        """
+        raise NotImplementedError
+
 
 class Axis(AbstractAxis):
     """ Hardware axis.
@@ -203,6 +212,7 @@ class Axis(AbstractAxis):
     def __init__(self, num, driver):
         super(Axis, self).__init__(num)
 
+        self._manualSpeed = 34 # "220000"
         self.__driver = driver
         self.__offset = 0
 
@@ -377,7 +387,7 @@ class Axis(AbstractAxis):
             else:
                 raise ValueError("Axis %d dir. must be in ('+', '-')" % self._num)
 
-            self._sendCmd("I", "220000")
+            self._sendCmd("I", encodeAxisValue(self._manualSpeed))
             self._sendCmd("J")
         finally:
             self.__driver.releaseBus()
@@ -411,6 +421,12 @@ class Axis(AbstractAxis):
         finally:
             self.__driver.releaseBus()
 
+    def setManualSpeed(self, speed):
+        if speed == 'slow':
+            self._manualSpeed = 170 # "aa0000"
+        elif speed == 'fast':
+            self._manualSpeed = 34 # "220000"
+
 
 class AxisSimulation(AbstractAxis, threading.Thread):
     """ Simulated hardware axis.
@@ -421,6 +437,7 @@ class AxisSimulation(AbstractAxis, threading.Thread):
         self.setDaemon(1)
         self.setName("Axis #%d" % num)
 
+        self._manualSpeed = 1.
         self.__pos = 0.
         self.__jog = False
         self.__drive = False
@@ -440,7 +457,10 @@ class AxisSimulation(AbstractAxis, threading.Thread):
                 if self.__time == None:
                     self.__time = time.time()
                 else:
-                    inc = (time.time() - self.__time) * config.AXIS_SPEED
+                    if self.__drive:
+                        inc = (time.time() - self.__time) * config.AXIS_SPEED
+                    else:
+                        inc = (time.time() - self.__time) * config.AXIS_SPEED * self._manualSpeed
                     self.__time = time.time()
                     if self.__dir == '+':
                         self.__pos += inc
@@ -536,3 +556,8 @@ class AxisSimulation(AbstractAxis, threading.Thread):
     def setOutput(self, level):
         Logger().debug("AxisSimulation.setOutput(): axis %d level=%d" % (self._num, level))
 
+    def setManualSpeed(self, speed):
+        if speed == 'slow':
+            self._manualSpeed = .2
+        elif speed == 'fast':
+            self._manualSpeed = 1.

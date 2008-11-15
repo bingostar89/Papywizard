@@ -218,13 +218,23 @@ class Head(object):
             time.sleep(config.SHOOT_PULSE)
         self.yawAxis.setOutput(0)
 
+    def setManualSpeed(self, speed):
+        """ Set manual speed.
+        
+        @param speed: new speed, in ('slow', 'fast')
+        @type speed: str
+        """
+        if speed not in ('slow', 'fast'):
+            raise ValueError("speed value must be in ('slow', 'fast'")
+        self.yawAxis.setManualSpeed(speed)
+        self.pitchAxis.setManualSpeed(speed)
+
     def panic(self):
         """ Stop all.
         """
         self.yawAxis.setOutput(0)
         self.yawAxis.stop()
         self.pitchAxis.stop()
-
 
 class HeadSimulation(Head):
     """ Class for simulated panohead hardware.
