@@ -162,7 +162,8 @@ class Shooting(object):
         @param pitchFov: total pitch fov (°)
         @type pitchFov: float
         """
-        yawPos, pitchPos = self.hardware.readPosition()
+        #yawPos, pitchPos = self.hardware.readPosition()
+        yawPos, pitchPos = 0., 0.
         yawDelta = yawFov - self.camera.getYawFov(self.cameraOrientation)
         if yawDelta < 0.:
             yawDelta = 0.
@@ -183,7 +184,8 @@ class Shooting(object):
         @param pitchNbPicts: pitch nb picts
         @type pitchNbPicts: int
         """
-        yawPos, pitchPos = self.hardware.readPosition()
+        #yawPos, pitchPos = self.hardware.readPosition()
+        yawPos, pitchPos = 0., 0.
         yawDelta = self.camera.getYawFov(self.cameraOrientation) * (1 - self.mosaic.overlap) * (yawNbPicts - 1)
         if yawNbPicts > 1:
             yawDelta -= .01
