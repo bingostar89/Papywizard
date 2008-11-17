@@ -86,8 +86,8 @@ class Shooting(object):
         self.hardware = self.simulatedHardware
         self.switchToRealHardwareSignal = Signal()
         self.newPictSignal = Signal()
-        #self.startEvent = threading.Event()
-        #self.startEvent.clear()
+        #self.startEvent = threading.Event() # Does not work under maemo
+        #self.startEvent.clear() # Does not work under maemo
         self.camera = Camera()
         self.mosaic = MosaicScan(self)
         self.preset = PresetScan(self)
@@ -295,7 +295,7 @@ class Shooting(object):
         self.progress = 0.
         self.__stop = False
         self.__shooting = True
-        #self.startEvent.set()
+        #self.startEvent.set() # does not work under maemo
 
         # Loop over all positions
         if self.mode == 'mosaic':
