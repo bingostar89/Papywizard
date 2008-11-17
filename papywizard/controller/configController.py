@@ -86,7 +86,6 @@ class ConfigController(AbstractController):
         self.cameraRollSpinbutton = self.wTree.get_widget("cameraRollSpinbutton")
         self.stabilizationDelaySpinbutton = self.wTree.get_widget("stabilizationDelaySpinbutton")
         self.overlapSpinbutton = self.wTree.get_widget("overlapSpinbutton")
-        self.overlapSquareCheckbutton = self.wTree.get_widget("overlapSquareCheckbutton")
         self.startFromCombobox = self.wTree.get_widget("startFromCombobox")
         self.initialDirectionCombobox = self.wTree.get_widget("initialDirectionCombobox")
         self.crCheckbutton = self.wTree.get_widget("crCheckbutton")
@@ -127,7 +126,6 @@ class ConfigController(AbstractController):
             self._model.cameraRoll = self.cameraRollSpinbutton.get_value()
         self._model.stabilizationDelay = self.stabilizationDelaySpinbutton.get_value()
         self._model.mosaic.overlap = self.overlapSpinbutton.get_value() / 100.
-        self._model.mosaic.overlapSquare = self.overlapSquareCheckbutton.get_active()
         self._model.mosaic.startFrom = config.MOSAIC_START_FROM_INDEX[self.startFromCombobox.get_active()]
         self._model.mosaic.initialDirection = config.MOSAIC_INITIAL_DIR_INDEX[self.initialDirectionCombobox.get_active()]
         self._model.mosaic.cr = self.crCheckbutton.get_active()
@@ -257,7 +255,6 @@ class ConfigController(AbstractController):
         #self.cameraRollSpinbutton.set_value(self._model.cameraRoll)
         self.stabilizationDelaySpinbutton.set_value(self._model.stabilizationDelay)
         self.overlapSpinbutton.set_value(int(100 * self._model.mosaic.overlap))
-        self.overlapSquareCheckbutton.set_active(self._model.mosaic.overlapSquare)
         self.startFromCombobox.set_active(config.MOSAIC_START_FROM_INDEX[self._model.mosaic.startFrom])
         self.initialDirectionCombobox.set_active(config.MOSAIC_INITIAL_DIR_INDEX[self._model.mosaic.initialDirection])
         self.crCheckbutton.set_active(self._model.mosaic.cr)
