@@ -50,6 +50,23 @@
             <pict yaw="None" pitch="-90." />
         </shoot>
     </preset>
+    <preset name="4@30 + 4@-30">
+        <tooltip>
+            Tokina 10-17 @ 10 mm on APS-C (x1.6)
+            4 picts @ +30°
+            4 picts @ -30°
+        </tooltip>
+        <shoot>
+            <pict yaw="0." pitch="30." />
+            <pict yaw="45." pitch="-30." />
+            <pict yaw="90." pitch="30." />
+            <pict yaw="135." pitch="-30." />
+            <pict yaw="180." pitch="30." />
+            <pict yaw="225." pitch="-30." />
+            <pict yaw="270." pitch="30." />
+            <pict yaw="315." pitch="-30." />
+        </shoot>
+    </preset>
     <preset name="3 + 6 + 12 + 6 + 3 (28mm)">
         <tooltip>
             17 mm on APS-C (x1.6)
