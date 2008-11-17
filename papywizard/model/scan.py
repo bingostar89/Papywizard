@@ -165,18 +165,6 @@ class MosaicScan(AbstractScan):
 
     overlap = property(__getOverlap, __setOverlap)
 
-    def __getOverlapSquare(self):
-        """
-        """
-        return ConfigManager().getBoolean('Preferences', 'MOSAIC_OVERLAP_SQUARE')
-
-    def __setOverlapSquare(self, overlapSquare):
-        """
-        """
-        ConfigManager().setBoolean('Preferences', 'MOSAIC_OVERLAP_SQUARE', overlapSquare)
-
-    overlapSquare = property(__getOverlapSquare, __setOverlapSquare)
-
     def __getYawFov(self):
         """
         """
