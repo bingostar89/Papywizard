@@ -292,8 +292,8 @@ class ShootController(AbstractController):
 
         thread = threading.Thread(target=self._model.start, name="Shooting")
         thread.start()
-        #self._model.startEvent.wait() # Does not work under Nokia
-        time.sleep(0.2)
+        #self._model.startEvent.wait() # Does not work under maemo
+        time.sleep(1)
 
         # Monitor shooting process
         gobject.timeout_add(200, monitorShooting)
