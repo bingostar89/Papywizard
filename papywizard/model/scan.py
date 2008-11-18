@@ -62,10 +62,6 @@ class AbstractScan(object):
     """ AbstractScan object.
 
     Scan is the base object for shooting object.
-
-    >>> scan = Scan()
-    >>> for yaw, pitch in scan.iterPositions():
-    ...     print yaw, pitch
     """
     def __init__(self, model):
         """ Init the Scan object.
@@ -91,9 +87,26 @@ class AbstractScan(object):
 
     totalNbPicts = property(__getTotalNbPicts)
 
+    # Helpers
+    def _iterPositions(self):
+        """ Real iteration over all shooting positions.
+        """
+        self._index = 0
+        while True:
+            try:
+                yield self._index + 1, self._positions[self._index]
+            except IndexError:
+                raise StopIteration
+            self._index += 1
+
+
     # Interface
     def iterPositions(self):
         """ Iterate over all (yaw, pitch) positions.
+
+        We first generate all positions, and then iterate over that list.
+        This way, it is possible to change the current index, to change
+        the sequence.
         """
         raise NotImplementedError
 
@@ -247,12 +260,6 @@ class MosaicScan(AbstractScan):
 
     #Interface
     def iterPositions(self):
-        """ Iterate over all (yaw, pitch) positions.
-
-        We first generate all positions, and then iterate over that list.
-        This way, it is possible to change the current index, to change
-        the sequence.
-        """
 
         # Generate all positions
         self._positions = []
@@ -347,13 +354,7 @@ class MosaicScan(AbstractScan):
                 break
 
         # Iterate over positions
-        self._index = 0
-        while True:
-            try:
-                yield self._index + 1, self._positions[self._index]
-            except IndexError:
-                raise StopIteration
-            self._index += 1
+        return self._iterPositions()
 
 
 class PresetScan(AbstractScan):
@@ -386,9 +387,12 @@ class PresetScan(AbstractScan):
 
     # Interface
     def iterPositions(self):
+
+        # Generate positions
+        self._positions = []
         preset = self.__presets.getByName(self.name)
         Logger().debug("PresetScan.__init__(): preset=%s" % preset)
-        positions = preset.getPositions()
-        for yaw, pitch in positions:
-            yield yaw, pitch
-        raise StopIteration
+        self._positions = preset.getPositions()
+
+        # Iterate over positions
+        return self._iterPositions()
