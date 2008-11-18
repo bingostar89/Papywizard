@@ -75,11 +75,8 @@ class AbstractScan(object):
         """
         super(AbstractScan, self).__init__()
         self._model = model
-
-    def iterPositions(self):
-        """ Iterate over all (yaw, pitch) positions.
-        """
-        raise NotImplementedError
+        self._positions = None
+        self._index = None
 
     # Properties
     def _getTotalNbPicts(self):
@@ -93,6 +90,20 @@ class AbstractScan(object):
         return self._getTotalNbPicts()
 
     totalNbPicts = property(__getTotalNbPicts)
+
+    # Interface
+    def iterPositions(self):
+        """ Iterate over all (yaw, pitch) positions.
+        """
+        raise NotImplementedError
+
+    def setPositionIndex(self, index):
+        """ Set the next position to index.
+
+        @param index: index of the next position
+        @type index: int
+        """
+        self._index = index - 2
 
 
 class MosaicScan(AbstractScan):
@@ -234,9 +245,17 @@ class MosaicScan(AbstractScan):
 
     pitchRealOverlap = property(__getPitchRealOverlap, "Pitch real overlap")
 
+    #Interface
     def iterPositions(self):
         """ Iterate over all (yaw, pitch) positions.
+
+        We first generate all positions, and then iterate over that list.
+        This way, it is possible to change the current index, to change
+        the sequence.
         """
+
+        # Generate all positions
+        self._positions = []
         yawCameraFov = self._model.camera.getYawFov(self._model.cameraOrientation)
         pitchCameraFov = self._model.camera.getPitchFov(self._model.cameraOrientation)
         try:
@@ -255,7 +274,8 @@ class MosaicScan(AbstractScan):
         self.__yawSens = 1
         self.__pitchSens = 1
 
-        while True:
+        generate = True
+        while generate:
             if self.startFrom == "start":
                 yaw = self.yawStart + self.__yawIndex * self.__yawInc
                 pitch = self.pitchStart + self.__pitchIndex * self.__pitchInc
@@ -265,7 +285,8 @@ class MosaicScan(AbstractScan):
             else:
                 raise ValueError("Unknown '%s' <Start from> param" % self.startFrom)
             #Logger().debug("MosaicScan.iterPositions(): __yawIndex=%d, __pitchIndex=%d, yaw=%.1f, pitch=%.1f" % (self.__yawIndex, self.__pitchIndex, yaw, pitch))
-            yield yaw, pitch
+            #yield yaw, pitch
+            self._positions.append((yaw, pitch))
 
             # Compute next position
             if self.initialDirection == "yaw":
@@ -276,7 +297,8 @@ class MosaicScan(AbstractScan):
             for i in xrange(2):
                 if self.__yawIndex == self.yawNbPicts: # __yawSens was 1
                     if self.initialDirection == "pitch":
-                        raise StopIteration
+                        #raise StopIteration
+                        generate = False
                     if self.cr:
                         self.__yawIndex = 0
                         self.__yawSens = 1
@@ -287,7 +309,8 @@ class MosaicScan(AbstractScan):
                     continue
                 elif self.__yawIndex == -1:            # __yawSens was -1
                     if self.initialDirection == "pitch":
-                        raise StopIteration
+                        #raise StopIteration
+                        generate = False
                     if self.cr:
                         self.__yawIndex = self.yawNbPicts - 1
                         self.__yawSens = -1
@@ -299,7 +322,8 @@ class MosaicScan(AbstractScan):
 
                 if self.__pitchIndex == self.pitchNbPicts: # __pitchSens was 1
                     if self.initialDirection == "yaw":
-                        raise StopIteration
+                        #raise StopIteration
+                        generate = False
                     if self.cr:
                         self.__pitchIndex = 0
                         self.__pitchSens = 1
@@ -310,7 +334,8 @@ class MosaicScan(AbstractScan):
                     continue
                 elif self.__pitchIndex == -1:              # __pitchSens was -1
                     if self.initialDirection == "yaw":
-                        raise StopIteration
+                        #raise StopIteration
+                        generate = False
                     if self.cr:
                         self.__pitchIndex = self.pitchNbPicts - 1
                         self.__pitchSens = -1
@@ -321,6 +346,14 @@ class MosaicScan(AbstractScan):
                     continue
                 break
 
+        # Iterate over positions
+        self._index = 0
+        while True:
+            try:
+                yield self._index + 1, self._positions[self._index]
+            except IndexError:
+                raise StopIteration
+            self._index += 1
 
 
 class PresetScan(AbstractScan):
@@ -351,6 +384,7 @@ class PresetScan(AbstractScan):
 
     name = property(__getName, __setName)
 
+    # Interface
     def iterPositions(self):
         preset = self.__presets.getByName(self.name)
         Logger().debug("PresetScan.__init__(): preset=%s" % preset)

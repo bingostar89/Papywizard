@@ -58,6 +58,7 @@ import threading
 import pygtk
 pygtk.require("2.0")
 import gtk
+import gtk.gdk
 import gobject
 
 from papywizard.common.loggingServices import Logger
@@ -110,12 +111,12 @@ class ShootController(AbstractController):
                                    self._model.camera.getYawFov(self._model.cameraOrientation),
                                    self._model.camera.getPitchFov(self._model.cameraOrientation),
                                    self._model.mosaic.yawRealOverlap, self._model.mosaic.pitchRealOverlap)
-            for yaw, pitch in self._model.mosaic.iterPositions():
+            for index, (yaw, pitch) in self._model.mosaic.iterPositions():
                 self.shootingArea.add_pict(yaw, pitch, 'preview')
         else:
             self.shootingArea.init(440., 220., # visible fov
                                     16.,  16.) # camera fov
-            for yaw, pitch in self._model.preset.iterPositions():
+            for index, (yaw, pitch) in self._model.preset.iterPositions():
                 self.shootingArea.add_pict(yaw, pitch, 'preview')
         self.shootingArea.show()
         self.progressbar = self.wTree.get_widget("progressbar")
@@ -137,9 +138,19 @@ class ShootController(AbstractController):
         self.dialog.connect("key-release-event", self.__onKeyReleased)
         self.dialog.connect("delete-event", self.__onDelete)
 
+        self.shootingArea.connect("button-press-event", self.__onButtonPressed)
+
         self._model.newPictSignal.connect(self.__addPicture)
 
     # Callbacks
+    def __onButtonPressed(self, widget, event):
+        Logger().trace("ShootController.__onButtonPressed()")
+        if self._model.isPaused():
+            if event.button == 1:
+                Logger().debug("ShootController.__onButtonPressed(): x=%d, y=%d" % (event.x, event.y))
+                index = self.shootingArea.get_selected_image_index(event.x, event.y)
+                self._model.setShootingIndex(index)
+
     def __onDelete(self, widget, event):
         Logger().trace("ShootController.__onDelete()")
         self.__stopShooting()
@@ -220,9 +231,9 @@ class ShootController(AbstractController):
         switch = self.dataFileEnableCheckbutton.get_active()
         ConfigManager().setBoolean('Data', 'DATA_FILE_ENABLE', self.dataFileEnableCheckbutton.get_active())
         if switch:
-            generalInfoDialog = GeneralInfoController(self, self._model)
-            generalInfoDialog.run()
-            generalInfoDialog.destroyView()
+            controller = GeneralInfoController(self, self._model)
+            controller.run()
+            controller.shutdown()
 
     def __onStartButtonClicked(self, widget):
         Logger().trace("ShootController.__startButtonClicked()")
@@ -242,13 +253,13 @@ class ShootController(AbstractController):
 
     def __onDoneButtonClicked(self, widget):
         Logger().trace("ShootController.__onDoneButtonClicked()")
-        self.dialog.response(0)
+        #self.dialog.response(0)
 
     def __addPicture(self, yaw, pitch, status):
         Logger().trace("ShootController.__addPicture()")
         self.shootingArea.add_pict(yaw, pitch, status)
 
-    # Real work
+    # Helpers
     def __startShooting(self):
         def monitorShooting():
             Logger().trace("ShootController.__startShooting().monitorShooting()")
@@ -293,10 +304,11 @@ class ShootController(AbstractController):
         thread = threading.Thread(target=self._model.start, name="Shooting")
         thread.start()
         #self._model.startEvent.wait() # Does not work under maemo
-        time.sleep(1)
+        while not self._model.isShooting():
+            time.sleep(.1)
 
         # Monitor shooting process
-        gobject.timeout_add(200, monitorShooting)
+        gobject.timeout_add(100, monitorShooting)
 
     def __pauseShooting(self):
         self._model.pause()
@@ -313,6 +325,10 @@ class ShootController(AbstractController):
         # todo: use condition
         while self._model.isShooting():
             time.sleep(0.1)
+
+    def shutdown(self):
+        super(ShootController, self).shutdown()
+        self._model.newPictSignal.disconnect(self.__addPicture)
 
     def refreshView(self):
         self.progressbar.set_fraction(self._model.progress)
