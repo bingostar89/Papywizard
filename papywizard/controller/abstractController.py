@@ -116,8 +116,10 @@ class AbstractController(object):
         """
         return self.dialog.run()
 
-    def destroyView(self):
-        """ Destroy the view.
+    def shutdown(self):
+        """ Shutdown the controller.
+
+        mainly destroy the view.
         """
         self.dialog.destroy()
 
