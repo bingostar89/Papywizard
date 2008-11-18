@@ -241,7 +241,7 @@ class ConfigController(AbstractController):
         Logger().trace("ConfigController.__onBluetoothChooseButtonClicked()")
         controller = BluetoothChooserController(self, self._model, self._serializer)
         response = controller.run()
-        controller.destroyView()
+        controller.shutdown()
         if response == 0:
             address, name = controller.getSelectedBluetoothAddress()
             Logger().debug("ConfigController.__onChooseBluetoothButtonClicked(): address=%s, name=%s" % \
