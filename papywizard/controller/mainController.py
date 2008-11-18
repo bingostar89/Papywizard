@@ -536,16 +536,16 @@ class MainController(AbstractController):
 
     def __onHelpViewLogMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHelpViewLogMenuitemActivate()")
-        viewLogDialog = LoggerController(self, self._model, self._serializer)
-        viewLogDialog.setLogBuffer(self.__gtkLogStream)
-        viewLogDialog.run()
-        viewLogDialog.destroyView()
+        controller = LoggerController(self, self._model, self._serializer)
+        controller.setLogBuffer(self.__gtkLogStream)
+        controller.run()
+        controller.shutdown()
 
     def __onHelpAboutMenuitemActivate(self, widget):
         Logger().trace("MainController.__onHelpAboutMenuitemActivate()")
-        helpAboutDialog = HelpAboutController(self, self._model, self._serializer)
-        helpAboutDialog.run()
-        helpAboutDialog.destroyView()
+        controller = HelpAboutController(self, self._model, self._serializer)
+        controller.run()
+        controller.shutdown()
 
     def __onModeMosaicRadiobuttonToggled(self, widget):
         Logger().trace("MainController.__onModeMosaicRadiobuttonToggled()")
@@ -637,7 +637,7 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onPresetInfoButtonClicked()")
         controller = PresetInfoController(self, self._model, self._serializer)
         controller.run()
-        controller.destroyView()
+        controller.shutdown()
 
     def __onHardwareSetOriginButtonClicked(self, widget):
         Logger().trace("MainController.onHardwareSetOriginButtonClicked()")
@@ -703,7 +703,7 @@ class MainController(AbstractController):
         self.__connectErrorMessage = message
         self.__waitController.closeBanner()
 
-    # Real work
+    # Helpers
     def __setYawPitchStartPosition(self):
         """ Set yaw/pitch end from current position.
         """
@@ -725,7 +725,7 @@ class MainController(AbstractController):
         """
         controller = TotalFovController(self, self._model)
         response = controller.run()
-        controller.destroyView()
+        controller.shutdown()
         if response == 0:
             self.__mosaicInputParam = 'fov'
             self.refreshView()
@@ -736,7 +736,7 @@ class MainController(AbstractController):
         """
         controller = NbPictsController(self, self._model)
         response = controller.run()
-        controller.destroyView()
+        controller.shutdown()
         if response == 0:
             self.__mosaicInputParam = 'nbPicts'
             self.refreshView()
@@ -747,7 +747,7 @@ class MainController(AbstractController):
         """
         controller = ConfigController(self, self._model, self._serializer)
         response = controller.run()
-        controller.destroyView()
+        controller.shutdown()
         if response == 0:
             Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
             if self.__mosaicInputParam == 'startEnd':
@@ -768,7 +768,7 @@ class MainController(AbstractController):
         self._model.initProgress()
         controller = ShootController(self, self._model, self._serializer)
         controller.run()
-        controller.destroyView()
+        controller.shutdown()
 
     def __populatePresetCombobox(self):
         """
@@ -867,6 +867,7 @@ class MainController(AbstractController):
         self.__pitchPos = pitch
         self._serializer.addWork(self.refreshView)
 
+    # Interface
     def setStatusbarMessage(self, message=None, delay=0):
         """ Display a message on the statusbar.
 
