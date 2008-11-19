@@ -147,8 +147,8 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__onButtonPressed()")
         if self._model.isPaused():
             if event.button == 1:
-                Logger().debug("ShootController.__onButtonPressed(): x=%d, y=%d" % (event.x, event.y))
                 index = self.shootingArea.get_selected_image_index(event.x, event.y)
+                Logger().debug("ShootController.__onButtonPressed(): x=%d, y=%d, index=%d" % (event.x, event.y, index))
                 if index is not None:
                     self._model.setShootingIndex(index)
 
