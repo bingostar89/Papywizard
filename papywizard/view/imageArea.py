@@ -224,6 +224,9 @@ class PresetImageArea(ImageArea):
         drawable.draw_arc(gc, True, x + 1, y + 1, w - 2, h - 2, 0, 360 * 64)
 
     def isCoordsIn(self, x, y):
+        """
+        @todo: make circle detection instead of square
+        """
         _x, _y, _w, _h = self._computeCoords()
         if _x <= x <= (_x + _w) and \
            _y <= y <= (_y + _h):
