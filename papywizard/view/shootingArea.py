@@ -187,37 +187,27 @@ class ShootingArea(gtk.DrawingArea):
         for i, key in enumerate(keys):
             index = len(self._picts) - i
             image = self._picts[key]
+
+            # Click in image
             if image.isCoordsIn(x, y):
                 #print "ShootingArea.get_selected_image(): index=%d, status=%s" % (index , image.status)
 
-                # Click in a shot image
-                if image.status != 'sdfpreview':
-
-                    # Change status of images
-                    for i, image in enumerate(self._picts.itervalues()):
-                        if i + 1 < index:
-                            if image.status == 'okReshoot':
-                                image.status = 'ok'
-                            elif image.status == 'errorReshoot':
-                                image.status = 'error'
-                            elif image.status == 'preview':
-                                image.status = 'skip'
-                        else:
-                            if image.status == 'ok':
-                                image.status = 'okReshoot'
-                            elif image.status == 'error':
-                                image.status = 'errorReshoot'
-                            elif image.status == 'skip':
-                                image.status = 'preview'
-
-                else:
-
-                    # Change status of images
-                    for i, image in enumerate(self._picts.itervalues()):
+                # Change status of images
+                for i, image in enumerate(self._picts.itervalues()):
+                    if i + 1 < index:
                         if image.status == 'okReshoot':
                             image.status = 'ok'
                         elif image.status == 'errorReshoot':
                             image.status = 'error'
+                        elif image.status == 'preview':
+                            image.status = 'skip'
+                    else:
+                        if image.status == 'ok':
+                            image.status = 'okReshoot'
+                        elif image.status == 'error':
+                            image.status = 'errorReshoot'
+                        elif image.status == 'skip':
+                            image.status = 'preview'
 
                 self.refresh()
 
