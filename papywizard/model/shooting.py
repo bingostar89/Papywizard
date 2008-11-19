@@ -80,7 +80,7 @@ class Shooting(object):
         self.__pause = False
         self.__stop = False
         self.__manualShoot = False
-        self.__newShootingIndex = False
+        self.__forceNewShootingIndex = False
 
         self.realHardware = realHardware
         self.simulatedHardware = simulatedHardware
@@ -240,7 +240,7 @@ class Shooting(object):
         """ Set a new shooting sequence index.
         """
         self.__scan.setPositionIndex(index)
-        self.__newShootingIndex = True
+        self.__forceNewShootingIndex = True
 
     def initProgress(self):
         """ Init progress value.
@@ -303,7 +303,6 @@ class Shooting(object):
         self.progress = 0.
         self.__stop = False
         self.__pause = False
-        self.__newShootingIndex = False
         self.__shooting = True
         #self.startEvent.set() # does not work under maemo
 
@@ -316,6 +315,7 @@ class Shooting(object):
             Logger().info("Starting shoot process...")
             for index, (yaw, pitch) in self.__scan.iterPositions():
                 Logger().debug("Shooting.start(): goto index=%d, yaw=%.1f pitch=%.1f" % (index, yaw, pitch))
+                self.__forceNewShootingIndex = False
                 try:
                     Logger().info("Moving")
                     self.sequence = _("Moving")
@@ -325,38 +325,48 @@ class Shooting(object):
                     self.sequence = _("Stabilizing")
                     time.sleep(self.stabilizationDelay)
 
+                    # Test manual shooting flag
                     if self.__manualShoot:
                         self.__pause = True
                         Logger().info("Wait for manual shooting trigger...")
 
+                    # Check pause or cancel
                     checkPauseStop()
 
-                    if self.__newShootingIndex:
-                        self.__newShootingIndex = False
+                    # If a new shooting position has been requested (from the view),
+                    # we force a new iteration
+                    if self.__forceNewShootingIndex:
                         continue
 
+                    # Camera shutter cycle
                     for bracket in xrange(self.camera.bracketingNbPicts):
 
+                        # Mirror lockup sequence?
                         if self.camera.mirrorLockup:
                             Logger().info("Mirror lockup")
                             self.sequence = _("Mirror lockup")
                             self.hardware.shoot(self.stabilizationDelay)
 
+                        # Really shoot
                         Logger().info("Shooting")
                         Logger().debug("Shooting.start(): shooting %d/%d" % (bracket + 1, self.camera.bracketingNbPicts))
                         self.sequence = _("Shooting %d/%d") % (bracket + 1, self.camera.bracketingNbPicts)
                         self.hardware.shoot(self.camera.timeValue)
 
+                        # Add image to the xml data file
                         data.addPicture(bracket + 1, yaw, pitch, roll)
 
+                    # Update global shooting progression
                     progressFraction = float(index) / float(self.__scan.totalNbPicts)
                     self.progress = progressFraction
                     self.newPictSignal.emit(yaw, pitch, status='ok')
 
+                    # Test manual shooting flag
                     #if self.__manualShoot:
                         #self.__pause = True
                         #Logger().info("Wait for manual shooting trigger...")
 
+                    # Check pause or cancel
                     checkPauseStop()
 
                 except HardwareError:
