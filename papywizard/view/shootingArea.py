@@ -58,7 +58,7 @@ pygtk.require("2.0")
 import gtk
 
 from papywizard.common.orderedDict import OrderedDict
-from papywizard.view.imageArea import ImageArea
+from papywizard.view.imageArea import MosaicImageArea, PresetImageArea
 
 
 class ShootingArea(gtk.DrawingArea):
