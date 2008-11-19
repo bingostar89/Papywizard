@@ -149,7 +149,8 @@ class ShootController(AbstractController):
             if event.button == 1:
                 Logger().debug("ShootController.__onButtonPressed(): x=%d, y=%d" % (event.x, event.y))
                 index = self.shootingArea.get_selected_image_index(event.x, event.y)
-                self._model.setShootingIndex(index)
+                if index is not None:
+                    self._model.setShootingIndex(index)
 
     def __onDelete(self, widget, event):
         Logger().trace("ShootController.__onDelete()")
