@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Nov 20 13:11:10 2008 -->
+<!--Generated with glade3 3.4.5 on Fri Nov 21 20:02:25 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="visible">True</property>
@@ -196,12 +196,12 @@
               </widget>
             </child>
             <child>
-              <widget class="GtkButton" id="pauseResumeButton">
+              <widget class="GtkToggleButton" id="pauseTogglebutton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="response_id">0</property>
-                <signal name="clicked" handler="on_pauseResumeButton_clicked"/>
+                <signal name="clicked" handler="on_pauseTogglebutton_clicked"/>
                 <child>
                   <widget class="GtkHBox" id="hbox3">
                     <property name="visible">True</property>
@@ -245,7 +245,7 @@
                       <widget class="GtkImage" id="image3">
                         <property name="visible">True</property>
                         <property name="xalign">0.94999998807907104</property>
-                        <property name="stock">gtk-stop</property>
+                        <property name="stock">gtk-media-stop</property>
                       </widget>
                     </child>
                     <child>
