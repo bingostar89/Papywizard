@@ -306,18 +306,14 @@
                                 <property name="column_spacing">5</property>
                                 <property name="row_spacing">5</property>
                                 <child>
-                                  <placeholder/>
-                                </child>
-                                <child>
-                                  <widget class="GtkToggleButton" id="setEndTogglebutton">
+                                  <widget class="GtkButton" id="setEndButton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
-                                    <property name="label" translatable="yes" context="yes">End (°)</property>
+                                    <property name="label" translatable="yes">End (°)</property>
                                     <property name="xalign">0.89999997615814209</property>
                                     <property name="response_id">0</property>
-                                    <signal name="pressed" handler="on_setEndTogglebutton_pressed"/>
-                                    <signal name="released" handler="on_setEndTogglebutton_released"/>
+                                    <signal name="clicked" handler="on_setEndButton_clicked"/>
                                   </widget>
                                   <packing>
                                     <property name="top_attach">2</property>
@@ -325,15 +321,17 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <widget class="GtkToggleButton" id="setStartTogglebutton">
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <widget class="GtkButton" id="setStartButton">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">True</property>
-                                    <property name="label" translatable="yes" context="yes">Start (°)</property>
+                                    <property name="label" translatable="yes">Start (°)</property>
                                     <property name="xalign">0.89999997615814209</property>
                                     <property name="response_id">0</property>
-                                    <signal name="pressed" handler="on_setStartTogglebutton_pressed"/>
-                                    <signal name="released" handler="on_setStartTogglebutton_released"/>
+                                    <signal name="clicked" handler="on_setStartButton_clicked"/>
                                   </widget>
                                   <packing>
                                     <property name="top_attach">1</property>
