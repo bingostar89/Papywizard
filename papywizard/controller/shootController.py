@@ -80,15 +80,23 @@ class ShootController(AbstractController):
                             "on_manualShootCheckbutton_toggled": self.__onManualShootCheckbuttonToggled,
                             "on_dataFileEnableCheckbutton_toggled": self.__onDataFileEnableCheckbuttonToggled,
                             "on_startButton_clicked": self.__onStartButtonClicked,
-                            "on_pauseResumeButton_clicked": self.__onPauseResumeButtonClicked,
+                            "on_pauseResumeTogglebutton_clicked": self.__onPauseResumeTogglebuttonClicked,
                             "on_stopButton_clicked": self.__onStopButtonClicked,
                             "on_doneButton_clicked": self.__onDoneButtonClicked,
                         }
 
-        self.__keyPressedDict = {'Return': False,
+        self.__keyPressedDict = {'Right': False,
+                                 'Left': False,
+                                 'Up': False,
+                                 'Down': False,
+                                 'Return': False,
                                  'Escape': False
                              }
-        self.__key = {'Return': gtk.keysyms.Return,
+        self.__key = {'Right': gtk.keysyms.Right,
+                      'Left': gtk.keysyms.Left,
+                      'Up': gtk.keysyms.Up,
+                      'Down': gtk.keysyms.Down,
+                      'Return': gtk.keysyms.Return,
                       'Escape': gtk.keysyms.Escape
                       }
 
@@ -128,12 +136,13 @@ class ShootController(AbstractController):
         self.manualShootCheckbutton = self.wTree.get_widget("manualShootCheckbutton")
         self.dataFileEnableCheckbutton = self.wTree.get_widget("dataFileEnableCheckbutton")
         self.startButton = self.wTree.get_widget("startButton")
-        self.pauseResumeButton = self.wTree.get_widget("pauseResumeButton")
+        self.pauseResumeTogglebutton = self.wTree.get_widget("pauseResumeTogglebutton")
         self.pauseResumeLabel = self.wTree.get_widget("pauseResumeLabel")
+        self.pauseResumeImage = self.wTree.get_widget("pauseResumeImage")
         self.stopButton = self.wTree.get_widget("stopButton")
         self.doneButton = self.wTree.get_widget("doneButton")
 
-        self.pauseResumeButton.set_sensitive(False)
+        self.pauseResumeTogglebutton.set_sensitive(False)
         self.stopButton.set_sensitive(False)
 
     def _connectSignals(self):
@@ -144,11 +153,44 @@ class ShootController(AbstractController):
         self.dialog.connect("delete-event", self.__onDelete)
 
         self.shootingArea.connect("button-press-event", self.__onButtonPressed)
+        #self.shootingArea.connect("motion-notify-event", self.__onMotionNotify)
 
         self._model.newPictSignal.connect(self.__addPicture)
 
     # Callbacks
     def __onKeyPressed(self, widget, event, *args):
+
+        # 'Right' key
+        if event.keyval == self.__key['Right']:
+            if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
+                Logger().debug("MainController.__onKeyPressed(): 'Right' key pressed; forward shooting position")
+                self.__keyPressedDict['Right'] = True
+                self.__forwardShootingPosition()
+            return True
+
+        # 'Left' key
+        elif event.keyval == self.__key['Left']:
+            if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
+                Logger().debug("MainController.__onKeyPressed(): 'Left' key pressed; rewind shooting position")
+                self.__keyPressedDict['Left'] = True
+                self.__rewindShootingPosition()
+            return True
+
+        # 'Up' key
+        elif event.keyval == self.__key['Up']:
+            if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
+                Logger().debug("MainController.__onKeyPressed(): 'Up' key pressed; rewind shooting position")
+                self.__keyPressedDict['Up'] = True
+                self.__rewindShootingPosition()
+            return True
+
+        # 'Down' key
+        elif event.keyval == self.__key['Down']:
+            if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
+                Logger().debug("MainController.__onKeyPressed(): 'Down' key pressed; forward shooting position")
+                self.__keyPressedDict['Down'] = True
+                self.__forwardShootingPosition()
+            return True
 
         # 'Return' key
         if event.keyval == self.__key['Return']:
@@ -167,11 +209,13 @@ class ShootController(AbstractController):
                     # ...and not paused pauses shooting
                     if not self._model.isPaused():
                         Logger().debug("shootController.__onKeyPressed(): pause shooting")
+                        self.pauseResumeTogglebutton.set_active(True)
                         self.__pauseShooting()
 
                     #... and paused resumes shooting
                     else:
                         Logger().debug("shootController.__onKeyPressed(): resume shooting")
+                        self.pauseResumeTogglebutton.set_active(False)
                         self.__resumeShooting()
                 return True
 
@@ -189,6 +233,7 @@ class ShootController(AbstractController):
                # Pressing 'Escape' while shooting stops shooting
                else:
                    Logger().debug("shootController.__onKeyPressed(): stop shooting")
+                   self.pauseResumeTogglebutton.set_active(False)
                    self.__stopShooting()
                return True
 
@@ -196,6 +241,34 @@ class ShootController(AbstractController):
             Logger().warning("MainController.__onKeyPressed(): unbind '%s' key" % event.keyval)
 
     def __onKeyReleased(self, widget, event, *args):
+
+        # 'Right' key
+        if event.keyval == self.__key['Right']:
+            if self.__keyPressedDict['Right']:
+                Logger().debug("MainController.__onKeyReleased(): 'Right' key released")
+                self.__keyPressedDict['Right'] = False
+            return True
+
+        # 'Left' key
+        if event.keyval == self.__key['Left']:
+            if self.__keyPressedDict['Left']:
+                Logger().debug("MainController.__onKeyReleased(): 'Left' key released")
+                self.__keyPressedDict['Left'] = False
+            return True
+
+        # 'Up' key
+        if event.keyval == self.__key['Up']:
+            if self.__keyPressedDict['Up']:
+                Logger().debug("MainController.__onKeyReleased(): 'Up' key released;")
+                self.__keyPressedDict['Up'] = False
+            return True
+
+        # 'Down' key
+        if event.keyval == self.__key['Down']:
+            if self.__keyPressedDict['Down']:
+                Logger().debug("MainController.__onKeyReleased(): 'Down' key released;")
+                self.__keyPressedDict['Down'] = False
+            return True
 
         # 'Return' key
         if event.keyval == self.__key['Return']:
@@ -227,25 +300,27 @@ class ShootController(AbstractController):
                     Logger().debug("ShootController.__onButtonPressed(): x=%d, y=%d, index=%d" % (event.x, event.y, index))
                     self._model.setShootingIndex(index)
 
+    def __onMotionNotify(self, widget, event):
+        #Logger().trace("ShootController.__onMotionNotify()")
+        if self._model.isPaused():
+            if event.is_hint:
+                Logger().trace("ShootController.__onMotionNotify(): is_hint")
+                x, y, state = event.window.get_pointer()
+            else:
+                x = event.x
+                y = event.y
+                state = event.state
+
+            if state & gtk.gdk.BUTTON1_MASK:
+                Logger().debug("ShootController.__onMotionNotify(): drag x=%d, y=%d" % (x, y))
+
     def __onRewindButtonclicked(self, widget):
         Logger().trace("ShootController.__onRewindButtonclicked()")
-        index = self._model.getShootingIndex()
-        Logger().debug("ShootController.__onRewindButtonclicked(): old index=%d" % index)
-        try:
-            self._model.setShootingIndex(index - 1)
-            self.shootingArea.set_selected_image_index(index - 1)
-        except IndexError:
-            Logger().exception("ShootController.__onRewindButtonclicked()")
+        self.__rewindShootingPosition()
 
     def __onForwardButtonclicked(self, widget):
         Logger().trace("ShootController.__onForwardButtonclicked()")
-        index = self._model.getShootingIndex()
-        Logger().debug("ShootController.__onForwardButtonclicked(): old index=%d" % index)
-        try:
-            self._model.setShootingIndex(index + 1)
-            self.shootingArea.set_selected_image_index(index + 1)
-        except IndexError:
-            Logger().exception("ShootController.__onForwardButtonclicked()")
+        self.__forwardShootingPosition()
 
     def __onManualShootCheckbuttonToggled(self, widget):
         Logger().trace("ShootController.____onManualShootCheckbuttonToggled()")
@@ -265,16 +340,17 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__startButtonClicked()")
         self.__startShooting()
 
-    def __onPauseResumeButtonClicked(self, widget):
-        Logger().trace("ShootController.__pauseResumeButtonClicked()")
+    def __onPauseResumeTogglebuttonClicked(self, widget):
+        Logger().trace("ShootController.__onPauseResumeTogglebuttonClicked()")
         if self._model.isShooting(): # Should always be true here, but...
             if not self._model.isPaused():
-                self.__pauseShooting()
+                self.__pauseShooting() # Not used
             else:
                 self.__resumeShooting()
 
     def __onStopButtonClicked(self, widget):
         Logger().trace("ShootController.__stopButtonClicked()")
+        self.pauseResumeTogglebutton.set_active(False)
         self.__stopShooting()
 
     def __onDoneButtonClicked(self, widget):
@@ -287,6 +363,30 @@ class ShootController(AbstractController):
         self.shootingArea.refresh()
 
     # Helpers
+    def __rewindShootingPosition(self):
+        """
+        """
+        index = self._model.getShootingIndex()
+        Logger().debug("ShootController.__rewindShootingPosition(): old index=%d" % index)
+        try:
+            self._model.setShootingIndex(index - 1)
+            self.shootingArea.set_selected_image_index(index - 1)
+            Logger().debug("ShootController.__rewindShootingPosition():new index=%d" % (index - 1))
+        except IndexError:
+            Logger().exception("ShootController.__rewindShootingPosition()", debug=True)
+        
+    def __forwardShootingPosition(self):
+        """
+        """
+        index = self._model.getShootingIndex()
+        Logger().debug("ShootController.__forwardShootingPosition(): old index=%d" % index)
+        try:
+            self._model.setShootingIndex(index + 1)
+            self.shootingArea.set_selected_image_index(index + 1)
+            Logger().debug("ShootController.__forwardShootingPosition(): new index=%d" % (index + 1))
+        except IndexError:
+            Logger().exception("ShootController.__forwardShootingPosition()", debug=True)
+        
     def __startShooting(self):
         def monitorShooting():
             Logger().trace("ShootController.__startShooting().monitorShooting()")
@@ -312,7 +412,7 @@ class ShootController(AbstractController):
                 self.dataFileEnableCheckbutton.set_sensitive(True)
                 self.startButton.set_sensitive(True)
                 self.pauseResumeLabel.set_text(_("Pause"))
-                self.pauseResumeButton.set_sensitive(False)
+                self.pauseResumeTogglebutton.set_sensitive(False)
                 self.stopButton.set_sensitive(False)
                 self.doneButton.set_sensitive(True)
                 self.refreshView()
@@ -328,7 +428,7 @@ class ShootController(AbstractController):
         self.shootingArea.clear()
         self.dataFileEnableCheckbutton.set_sensitive(False)
         self.startButton.set_sensitive(False)
-        self.pauseResumeButton.set_sensitive(True)
+        self.pauseResumeTogglebutton.set_sensitive(True)
         self.stopButton.set_sensitive(True)
         self.doneButton.set_sensitive(False)
 
