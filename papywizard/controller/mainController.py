@@ -166,20 +166,18 @@ class MainController(AbstractController):
             import hildon
             self.__key['Home'] = gtk.keysyms.F8
             self.__key['End'] = gtk.keysyms.F7
-            #self.window_in_fullscreen = False
+            #self.__fullScreen = False
         except ImportError:
             pass
 
         self.__yawPos = 0
         self.__pitchPos = 0
-
         self.__statusbarTimeoutEventId = None
         self.__connectStatus = None
         self.__connectErrorMessage = None
-
         self.__mosaicInputParam = 'startEnd'
-
-        self.window_in_fullscreen = False
+        self.__manualSpeed = 'normal'
+        self.__fullScreen = False
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
@@ -248,7 +246,7 @@ class MainController(AbstractController):
             window = hildon.Window()
             window.set_title(self.dialog.get_title())
             window.fullscreen()
-            self.window_in_fullscreen = True
+            self.__fullScreen = True
             self.app.add_window(window)
             self.mainVbox.reparent(window)
 
@@ -284,12 +282,12 @@ class MainController(AbstractController):
         if event.keyval == self.__key['FullScreen']:
             if not self.__keyPressedDict['FullScreen']:
                 Logger().debug("MainController.__onKeyPressed(): 'FullScreen' key pressed")
-                if self.window_in_fullscreen:
+                if self.__fullScreen:
                     self.dialog.unfullscreen()
-                    self.window_in_fullscreen = False
+                    self.__fullScreen = False
                 else:
                     self.dialog.fullscreen()
-                    self.window_in_fullscreen = True
+                    self.__fullScreen = True
                 self.__keyPressedDict['FullScreen'] = True
             return True
 
@@ -334,14 +332,19 @@ class MainController(AbstractController):
             if not self.__keyPressedDict['Home'] and \
                not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                #Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; store start position")
-                Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; select slow speed")
                 self.__keyPressedDict['Home'] = True
-                #self.setStartTogglebutton.set_active(True)
-                #self.__setYawPitchStartPosition()
-                self._model.hardware.setManualSpeed('slow')
-                self.manualSpeedImage.set_from_stock(gtk.STOCK_MEDIA_PLAY, 4)
-                self.setStatusbarMessage(_("Manual speed set to slow"), 10)
+                if self.__manualSpeed == 'normal':
+                    self.__manualSpeed = 'slow'
+                    Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; select slow speed")
+                    self._model.hardware.setManualSpeed('slow')
+                    self.manualSpeedImage.set_from_stock(gtk.STOCK_MEDIA_PLAY, 4)
+                    self.setStatusbarMessage(_("Manual speed set to slow"), 10)
+                elif self.__manualSpeed == 'fast':
+                    self.__manualSpeed = 'normal'
+                    Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; select normal speed")
+                    self._model.hardware.setManualSpeed('normal')
+                    self.manualSpeedImage.set_from_stock(gtk.STOCK_MEDIA_PLAY, 4)
+                    self.setStatusbarMessage(_("Manual speed set to normal"), 10)
             return True
 
         # 'End' key
@@ -349,14 +352,22 @@ class MainController(AbstractController):
             if not self.__keyPressedDict['End'] and not self.__keyPressedDict['Home'] and \
                not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
                not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; store end position")
-                Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select fast speed")
                 self.__keyPressedDict['End'] = True
-                #self.setEndTogglebutton.set_active(True)
-                #self.__setYawPitchEndPosition()
-                self._model.hardware.setManualSpeed('fast')
-                self.manualSpeedImage.set_from_stock(gtk.STOCK_MEDIA_FORWARD, 4)
-                self.setStatusbarMessage(_("Manual speed set to fast"), 10)
+                if self.__manualSpeed == 'slow':
+                    self.__manualSpeed = 'normal'
+                    Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select normal speed")
+                    self._model.hardware.setManualSpeed('normal')
+                    self.manualSpeedImage.set_from_stock(gtk.STOCK_MEDIA_FORWARD, 4)
+                    self.setStatusbarMessage(_("Manual speed set to normal"), 10)
+                elif self.__manualSpeed == 'normal':
+                    controller = WarningMessageController(_("Fast manual speed"),
+                                                          _("Manual speed set to 'fast'\nThis can be dangerous for the hardware!"))
+                    self.__manualSpeed = 'fast'
+                    Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select fast speed")
+                    self._model.hardware.setManualSpeed('fast')
+                    self.manualSpeedImage.set_from_stock(gtk.STOCK_MEDIA_FORWARD, 4)
+                    self.setStatusbarMessage(_("Manual speed set to fast"), 10)
+
             return True
 
         # 'Tab' key
@@ -460,9 +471,9 @@ class MainController(AbstractController):
     #def __onWindowStateChanged(self, widget, event, *args):
         #Logger().debug("MainController.__onWindowStateChanged()")
         #if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
-            #self.window_in_fullscreen = True
+            #self.__fullScreen = True
         #else:
-            #self.window_in_fullscreen = False
+            #self.__fullScreen = False
 
     def __onFileImportPresetMenuitemActivate(self, widget):
         """
