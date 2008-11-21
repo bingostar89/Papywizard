@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Fri Nov 21 20:02:25 2008 -->
+<!--Generated with glade3 3.4.5 on Fri Nov 21 20:30:42 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="visible">True</property>
@@ -196,12 +196,12 @@
               </widget>
             </child>
             <child>
-              <widget class="GtkToggleButton" id="pauseTogglebutton">
+              <widget class="GtkToggleButton" id="pauseResumeTogglebutton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="response_id">0</property>
-                <signal name="clicked" handler="on_pauseTogglebutton_clicked"/>
+                <signal name="clicked" handler="on_pauseResumeTogglebutton_clicked"/>
                 <child>
                   <widget class="GtkHBox" id="hbox3">
                     <property name="visible">True</property>
