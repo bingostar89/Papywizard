@@ -221,11 +221,11 @@ class Head(object):
     def setManualSpeed(self, speed):
         """ Set manual speed.
         
-        @param speed: new speed, in ('slow', 'fast')
+        @param speed: new speed, in ('slow', 'normal', 'fast')
         @type speed: str
         """
-        if speed not in ('slow', 'fast'):
-            raise ValueError("speed value must be in ('slow', 'fast'")
+        if speed not in ('slow', 'normal', 'fast'):
+            raise ValueError("speed value must be in ('slow', 'normal', 'fast'")
         self.yawAxis.setManualSpeed(speed)
         self.pitchAxis.setManualSpeed(speed)
 

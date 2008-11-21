@@ -200,7 +200,7 @@ class AbstractAxis(object):
     def setManualSpeed(self, speed):
         """ Set manual speed.
         
-        @param speed: new speed, in ('slow', 'fast')
+        @param speed: new speed, in ('slow', 'normal', 'fast')
         @type speed: str
         """
         raise NotImplementedError
@@ -212,7 +212,7 @@ class Axis(AbstractAxis):
     def __init__(self, num, driver):
         super(Axis, self).__init__(num)
 
-        self._manualSpeed = 34 # "220000"
+        self._manualSpeed = config.MANUAL_SPEED['normal']
         self.__driver = driver
         self.__offset = 0
 
@@ -422,10 +422,7 @@ class Axis(AbstractAxis):
             self.__driver.releaseBus()
 
     def setManualSpeed(self, speed):
-        if speed == 'slow':
-            self._manualSpeed = 170 # "aa0000"
-        elif speed == 'fast':
-            self._manualSpeed = 34 # "220000"
+        self._manualSpeed = config.MANUAL_SPEED[speed]
 
 
 class AxisSimulation(AbstractAxis, threading.Thread):
@@ -559,5 +556,7 @@ class AxisSimulation(AbstractAxis, threading.Thread):
     def setManualSpeed(self, speed):
         if speed == 'slow':
             self._manualSpeed = .2
-        elif speed == 'fast':
+        elif speed == 'normal':
             self._manualSpeed = 1.
+        elif speed == 'fast':
+            self._manualSpeed = 2.
