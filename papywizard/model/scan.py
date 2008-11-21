@@ -91,10 +91,10 @@ class AbstractScan(object):
     def _iterPositions(self):
         """ Real iteration over all shooting positions.
         """
-        self._index = 0
+        self._index = 1
         while True:
             try:
-                yield self._index + 1, self._positions[self._index]
+                yield self._index, self._positions[self._index - 1]
             except IndexError:
                 raise StopIteration
             self._index += 1
@@ -110,13 +110,24 @@ class AbstractScan(object):
         """
         raise NotImplementedError
 
+    def getPositionIndex(self):
+        """ Get the index of the current position position.
+
+        @return: index of the current position
+        @rtype: int
+        """
+        return self._index
+
     def setPositionIndex(self, index):
         """ Set the next position to index.
 
         @param index: index of the next position
         @type index: int
         """
-        self._index = index - 2
+        if 1 <= index <= len(self._positions):
+            self._index = index - 1 # Next iteration will increase index by 1
+        else:
+            raise IndexError("index out of range")
 
 
 class MosaicScan(AbstractScan):
@@ -391,7 +402,7 @@ class PresetScan(AbstractScan):
         # Generate positions
         self._positions = []
         preset = self.__presets.getByName(self.name)
-        Logger().debug("PresetScan.__init__(): preset=%s" % preset)
+        Logger().debug("PresetScan.iterPositions(): preset=%s" % preset)
         self._positions = preset.getPositions()
 
         # Iterate over positions

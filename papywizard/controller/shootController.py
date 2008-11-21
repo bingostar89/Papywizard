@@ -75,7 +75,9 @@ class ShootController(AbstractController):
     """
     def _init(self):
         self._gladeFile = "shootDialog.glade"
-        self._signalDict = {"on_manualShootCheckbutton_toggled": self.__onManualShootCheckbuttonToggled,
+        self._signalDict = {"on_rewindButton_clicked": self.__onRewindButtonclicked,
+                            "on_forwardButton_clicked": self.__onForwardButtonclicked,
+                            "on_manualShootCheckbutton_toggled": self.__onManualShootCheckbuttonToggled,
                             "on_dataFileEnableCheckbutton_toggled": self.__onDataFileEnableCheckbuttonToggled,
                             "on_startButton_clicked": self.__onStartButtonClicked,
                             "on_pauseResumeButton_clicked": self.__onPauseResumeButtonClicked,
@@ -93,15 +95,15 @@ class ShootController(AbstractController):
     def _retreiveWidgets(self):
         super(ShootController, self)._retreiveWidgets()
 
-        vbox = self.wTree.get_widget("vbox")
+        hbox = self.wTree.get_widget("hbox")
         drawingarea = self.wTree.get_widget("drawingarea")
         drawingarea.destroy()
         if self._model.mode == 'mosaic':
             self.shootingArea = MosaicArea()
         else:
             self.shootingArea = PresetArea()
-        vbox.pack_start(self.shootingArea)
-        vbox.reorder_child(self.shootingArea, 0)
+        hbox.pack_start(self.shootingArea)
+        hbox.reorder_child(self.shootingArea, 1)
         if self._model.mode == 'mosaic':
 
             # todo: give args in shootingArea.__init__()
@@ -112,13 +114,16 @@ class ShootController(AbstractController):
                                    self._model.camera.getPitchFov(self._model.cameraOrientation),
                                    self._model.mosaic.yawRealOverlap, self._model.mosaic.pitchRealOverlap)
             for index, (yaw, pitch) in self._model.mosaic.iterPositions():
-                self.shootingArea.add_pict(yaw, pitch, 'preview')
+                self.shootingArea.add_pict(yaw, pitch, status='preview')
         else:
             self.shootingArea.init(440., 220., # visible fov
                                     16.,  16.) # camera fov
             for index, (yaw, pitch) in self._model.preset.iterPositions():
-                self.shootingArea.add_pict(yaw, pitch, 'preview')
+                self.shootingArea.add_pict(yaw, pitch, status='preview')
         self.shootingArea.show()
+
+        self.rewindButton = self.wTree.get_widget("rewindButton")
+        self.forwardButton = self.wTree.get_widget("forwardButton")
         self.progressbar = self.wTree.get_widget("progressbar")
         self.manualShootCheckbutton = self.wTree.get_widget("manualShootCheckbutton")
         self.dataFileEnableCheckbutton = self.wTree.get_widget("dataFileEnableCheckbutton")
@@ -143,19 +148,6 @@ class ShootController(AbstractController):
         self._model.newPictSignal.connect(self.__addPicture)
 
     # Callbacks
-    def __onButtonPressed(self, widget, event):
-        Logger().trace("ShootController.__onButtonPressed()")
-        if self._model.isPaused():
-            if event.button == 1:
-                index = self.shootingArea.get_selected_image_index(event.x, event.y)
-                Logger().debug("ShootController.__onButtonPressed(): x=%d, y=%d, index=%d" % (event.x, event.y, index))
-                if index is not None:
-                    self._model.setShootingIndex(index)
-
-    def __onDelete(self, widget, event):
-        Logger().trace("ShootController.__onDelete()")
-        self.__stopShooting()
-
     def __onKeyPressed(self, widget, event, *args):
 
         # 'Return' key
@@ -222,6 +214,39 @@ class ShootController(AbstractController):
         else:
             Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
 
+    def __onDelete(self, widget, event):
+        Logger().trace("ShootController.__onDelete()")
+        self.__stopShooting()
+
+    def __onButtonPressed(self, widget, event):
+        Logger().trace("ShootController.__onButtonPressed()")
+        if self._model.isPaused():
+            if event.button == 1:
+                index = self.shootingArea.get_selected_image_index(event.x, event.y)
+                if index is not None:
+                    Logger().debug("ShootController.__onButtonPressed(): x=%d, y=%d, index=%d" % (event.x, event.y, index))
+                    self._model.setShootingIndex(index)
+
+    def __onRewindButtonclicked(self, widget):
+        Logger().trace("ShootController.__onRewindButtonclicked()")
+        index = self._model.getShootingIndex()
+        Logger().debug("ShootController.__onRewindButtonclicked(): old index=%d" % index)
+        try:
+            self._model.setShootingIndex(index - 1)
+            self.shootingArea.set_selected_image_index(index - 1)
+        except IndexError:
+            Logger().exception("ShootController.__onRewindButtonclicked()")
+
+    def __onForwardButtonclicked(self, widget):
+        Logger().trace("ShootController.__onForwardButtonclicked()")
+        index = self._model.getShootingIndex()
+        Logger().debug("ShootController.__onForwardButtonclicked(): old index=%d" % index)
+        try:
+            self._model.setShootingIndex(index + 1)
+            self.shootingArea.set_selected_image_index(index + 1)
+        except IndexError:
+            Logger().exception("ShootController.__onForwardButtonclicked()")
+
     def __onManualShootCheckbuttonToggled(self, widget):
         Logger().trace("ShootController.____onManualShootCheckbuttonToggled()")
         switch = self.manualShootCheckbutton.get_active()
@@ -256,9 +281,10 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__onDoneButtonClicked()")
         #self.dialog.response(0)
 
-    def __addPicture(self, yaw, pitch, status):
+    def __addPicture(self, yaw, pitch, status=None, next=False):
         Logger().trace("ShootController.__addPicture()")
-        self.shootingArea.add_pict(yaw, pitch, status)
+        self.shootingArea.add_pict(yaw, pitch, status, next)
+        self.shootingArea.refresh()
 
     # Helpers
     def __startShooting(self):
@@ -268,8 +294,12 @@ class ShootController(AbstractController):
             # Check if model paused (manual shoot mode)
             if self._model.isPaused():
                 self.pauseResumeLabel.set_text(_("Resume"))
+                self.rewindButton.set_sensitive(True)
+                self.forwardButton.set_sensitive(True)
             else:
                 self.pauseResumeLabel.set_text(_("Pause"))
+                self.rewindButton.set_sensitive(False)
+                self.forwardButton.set_sensitive(False)
 
             # Check end of shooting
             if not self._model.isShooting():
@@ -307,6 +337,8 @@ class ShootController(AbstractController):
         #self._model.startEvent.wait() # Does not work under maemo
         while not self._model.isShooting():
             time.sleep(.1)
+            if self._model.error:
+                break
 
         # Monitor shooting process
         gobject.timeout_add(100, monitorShooting)
@@ -327,6 +359,7 @@ class ShootController(AbstractController):
         while self._model.isShooting():
             time.sleep(0.1)
 
+    # Interface
     def shutdown(self):
         super(ShootController, self).shutdown()
         self._model.newPictSignal.disconnect(self.__addPicture)
