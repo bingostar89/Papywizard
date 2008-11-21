@@ -117,10 +117,8 @@ class MainController(AbstractController):
                             "on_setPitchStartButton_clicked": self.__onSetPitchStartButtonClicked,
                             "on_setYawEndButton_clicked": self.__onSetYawEndButtonClicked,
                             "on_setPitchEndButton_clicked": self.__onSetPitchEndButtonClicked,
-                            "on_setStartTogglebutton_pressed": self.__onSetStartTogglebuttonPressed,
-                            "on_setStartTogglebutton_released": self.__onSetStartTogglebuttonReleased,
-                            "on_setEndTogglebutton_pressed": self.__onSetEndTogglebuttonPressed,
-                            "on_setEndTogglebutton_released": self.__onSetEndTogglebuttonReleased,
+                            "on_setStartButton_clicked": self.__onSetStartButtonClicked,
+                            "on_setEndButton_clicked": self.__onSetEndButtonClicked,
                             "on_totalFovButton_clicked": self.__onTotalFovButtonClicked,
                             "on_nbPictsButton_clicked": self.__onNbPictsButtonClicked,
 
@@ -343,7 +341,7 @@ class MainController(AbstractController):
                     self.__manualSpeed = 'normal'
                     Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; select normal speed")
                     self._model.hardware.setManualSpeed('normal')
-                    self.manualSpeedImage.set_from_stock(gtk.STOCK_MEDIA_PLAY, 4)
+                    self.manualSpeedImage.set_from_stock(gtk.STOCK_MEDIA_FORWARD, 4)
                     self.setStatusbarMessage(_("Manual speed set to normal"), 10)
             return True
 
@@ -365,7 +363,7 @@ class MainController(AbstractController):
                     self.__manualSpeed = 'fast'
                     Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select fast speed")
                     self._model.hardware.setManualSpeed('fast')
-                    self.manualSpeedImage.set_from_stock(gtk.STOCK_MEDIA_FORWARD, 4)
+                    self.manualSpeedImage.set_from_stock(gtk.STOCK_DIALOG_WARNING, 4)
                     self.setStatusbarMessage(_("Manual speed set to fast"), 10)
 
             return True
@@ -444,7 +442,6 @@ class MainController(AbstractController):
             if self.__keyPressedDict['Home']:
                 Logger().debug("MainController.__onKeyReleased(): 'Home' key released")
                 self.__keyPressedDict['Home'] = False
-                #self.setStartTogglebutton.set_active(False)
             return True
 
         # 'End' key
@@ -452,7 +449,6 @@ class MainController(AbstractController):
             if self.__keyPressedDict['End']:
                 Logger().debug("MainController.__onKeyReleased(): 'End' key released")
                 self.__keyPressedDict['End'] = False
-                #self.setEndTogglebutton.set_active(False)
             return True
 
         # 'Tab' key
@@ -609,23 +605,13 @@ class MainController(AbstractController):
         self.refreshView()
         self.setStatusbarMessage(_("Pitch end set from current position"), 10)
 
-    def __onSetStartTogglebuttonPressed(self, widget):
-        Logger().trace("MainController.__onSetStartTogglebuttonPressed()")
-        self.setStartTogglebutton.set_active(True)
+    def __onSetStartButtonClicked(self, widget):
+        Logger().trace("MainController.__onSetStartButtonClicked()")
         self.__setYawPitchStartPosition()
 
-    def __onSetStartTogglebuttonReleased(self, widget):
-        Logger().trace("MainController.__onSetStartTogglebuttonReleased()")
-        self.setStartTogglebutton.set_active(False)
-
-    def __onSetEndTogglebuttonPressed(self, widget):
-        Logger().trace("MainController.__onSetEndTogglebuttonPressed()")
-        self.setEndTogglebutton.set_active(True)
+    def __onSetEndButtonClicked(self, widget):
+        Logger().trace("MainController.__onSetEndButtonClicked()")
         self.__setYawPitchEndPosition()
-
-    def __onSetEndTogglebuttonReleased(self, widget):
-        Logger().trace("MainController.__onSetEndTogglebuttonReleased()")
-        self.setEndTogglebutton.set_active(False)
 
     def __onTotalFovButtonClicked(self, widget):
         Logger().trace("MainController.__onTotalFovButtonClicked()")
@@ -777,6 +763,7 @@ class MainController(AbstractController):
         """
         """
         self._model.initProgress()
+        self._model.setManualShoot(False)
         controller = ShootController(self, self._model, self._serializer)
         controller.run()
         controller.shutdown()
