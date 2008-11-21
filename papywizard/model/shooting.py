@@ -383,6 +383,9 @@ class Shooting(object):
 
                     # Check pause or cancel
                     checkPauseStop()
+                    
+                    if not self.__forceNewShootingIndex:
+                        self.newPictSignal.emit(yaw, pitch, status='ok', next=False)
 
                 except HardwareError:
                     self.hardware.stopAxis()
@@ -400,6 +403,9 @@ class Shooting(object):
 
                     # Check pause or cancel
                     checkPauseStop()
+                    
+                    if not self.__forceNewShootingIndex:
+                        self.newPictSignal.emit(yaw, pitch, status='error', next=False)
 
         except StopIteration:
             Logger().debug("Shooting.start(): stop detected")
