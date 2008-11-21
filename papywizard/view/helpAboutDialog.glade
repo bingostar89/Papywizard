@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Oct 13 19:48:12 2008 -->
+<!--Generated with glade3 3.4.5 on Fri Nov 21 20:27:22 2008 -->
 <glade-interface>
   <widget class="GtkAboutDialog" id="dialog">
     <property name="border_width">5</property>
@@ -44,8 +44,8 @@ knowledge of the CeCILL license and that you accept its terms.
 CeCILL</property>
     <property name="authors">Frédéric Mantegazza</property>
     <property name="translator_credits" translatable="yes">Frédéric Mantegazza (fr)
-Maciej Dworak (pl)
-Jo Lutum (de)</property>
+Jo Lutum (de)
+Maciej Dworak (pl)</property>
     <property name="artists">Hubert Pawlowski
 Frédéric Mantegazza</property>
     <property name="logo">papywizard.png</property>
