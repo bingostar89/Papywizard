@@ -171,7 +171,7 @@ class ConfigController(AbstractController):
             self.cameraRollSpinbutton.set_value(0.)
         else:
             if self._model.mode == 'mosaic':
-                WarningMessageController(_("Wrong value for camera orientatione"),
+                WarningMessageController(_("Wrong value for camera orientation"),
                                          _("Can't set camera orientation to 'custom'\nwhile in 'mosaic' mode"))
                 self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[self._model.cameraOrientation])
             else:
