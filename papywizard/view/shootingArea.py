@@ -71,7 +71,9 @@ class ShootingArea(gtk.DrawingArea):
         gtk.DrawingArea.__init__(self)
 
         # Enable low-level signals
-        self.set_events(gtk.gdk.BUTTON_PRESS_MASK)
+        self.set_events(gtk.gdk.BUTTON_PRESS_MASK |
+                        gtk.gdk.POINTER_MOTION_MASK |
+                        gtk.gdk.POINTER_MOTION_HINT_MASK)
 
         self._picts = OrderedDict()
         self._width = 300
@@ -290,11 +292,12 @@ class MosaicArea(ShootingArea):
         #print "MosaicArea._expose_cb()"
 
         # Draw background
-        xBack = int(round(self.__yawOffset))
-        yBack = int(round(self.__pitchOffset))
-        wBack = self._width - int(round(2 * self.__yawOffset))
-        hBack = self._height - int(round(2 * self.__pitchOffset))
-        self.window.draw_rectangle(self._gcBackground, True, xBack, yBack, wBack, hBack)
+        self.window.draw_rectangle(self._gcBackground, True, 0, 0, self._width, self._height)
+        #xBack = int(round(self.__yawOffset))
+        #yBack = int(round(self.__pitchOffset))
+        #wBack = self._width - int(round(2 * self.__yawOffset))
+        #hBack = self._height - int(round(2 * self.__pitchOffset))
+        #self.window.draw_rectangle(self._gcBackground, True, xBack, yBack, wBack, hBack)
         #print "xBack=%d, yBack=%d, wBack=%d, hBack=%d" % (xBack, yBack, wBack, hBack)
 
         # Draw picts
