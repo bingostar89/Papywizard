@@ -285,9 +285,7 @@ class MosaicScan(AbstractScan):
             elif self.startFrom == "end":
                 yaw = self.yawEnd - yawIndex * yawInc
                 pitch = self.pitchEnd - pitchIndex * pitchInc
-            else:
-                raise ValueError("Unknown '%s' <Start from> param" % self.startFrom)
-            #Logger().debug("MosaicScan.generatePositions(): __yawIndex=%d, __pitchIndex=%d, yaw=%.1f, pitch=%.1f" % (yawIndex, pitchIndex, yaw, pitch))
+            #Logger().debug("MosaicScan.generatePositions(): yawIndex=%d, pitchIndex=%d, yaw=%.1f, pitch=%.1f" % (yawIndex, pitchIndex, yaw, pitch))
             self._positions.append((yaw, pitch))
 
             # Compute next position
@@ -297,7 +295,7 @@ class MosaicScan(AbstractScan):
                 pitchIndex += pitchSens
 
             for i in xrange(2):
-                if yawIndex == self.yawNbPicts: # __yawSens was 1
+                if yawIndex == self.yawNbPicts: # yawSens was 1
                     if self.initialDirection == "pitch":
                         generate = False
                     if self.cr:
@@ -308,7 +306,7 @@ class MosaicScan(AbstractScan):
                         yawSens = -1
                     pitchIndex += pitchSens
                     continue
-                elif yawIndex == -1:            # __yawSens was -1
+                elif yawIndex == -1:            # yawSens was -1
                     if self.initialDirection == "pitch":
                         generate = False
                     if self.cr:
@@ -320,7 +318,7 @@ class MosaicScan(AbstractScan):
                     pitchIndex += pitchSens
                     continue
 
-                if pitchIndex == self.pitchNbPicts: # __pitchSens was 1
+                if pitchIndex == self.pitchNbPicts: # pitchSens was 1
                     if self.initialDirection == "yaw":
                         generate = False
                     if self.cr:
@@ -331,7 +329,7 @@ class MosaicScan(AbstractScan):
                         pitchSens = -1
                     yawIndex += yawSens
                     continue
-                elif pitchIndex == -1:              # __pitchSens was -1
+                elif pitchIndex == -1:              # pitchSens was -1
                     if self.initialDirection == "yaw":
                         generate = False
                     if self.cr:
