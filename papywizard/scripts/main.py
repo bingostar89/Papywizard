@@ -120,11 +120,10 @@ class Papywizard(object):
         self.__publisher = Publisher()
 
         # Create serializer, for async events
-        serializer = Serializer()
-        gobject.timeout_add(100, serializer.processWork)
+        self.__serializer = Serializer()
 
         # Create main controller
-        controller = MainController(self.__model, serializer, self.__gtkLogStream)
+        controller = MainController(self.__model, self.__serializer, self.__gtkLogStream)
 
     def weave(str):
         """ Weave stuffs.
@@ -214,6 +213,7 @@ class Papywizard(object):
     def run(self):
         """ Run the appliction.
         """
+        gobject.timeout_add(config.SERIALIZER_REFRESH , self.__serializer.processWork)
         Spy().start()
         if config.PUBLISHER_ENABLE:
             self.__publisher.start()
