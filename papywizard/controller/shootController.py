@@ -68,6 +68,7 @@ from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.generalInfoController import GeneralInfoController
 from papywizard.controller.spy import Spy
 from papywizard.view.shootingArea import MosaicArea, PresetArea
+from papywizard.controller.spy import Spy
 
 
 class ShootController(AbstractController):
@@ -80,7 +81,7 @@ class ShootController(AbstractController):
                             "on_manualShootCheckbutton_toggled": self.__onManualShootCheckbuttonToggled,
                             "on_dataFileEnableCheckbutton_toggled": self.__onDataFileEnableCheckbuttonToggled,
                             "on_startButton_clicked": self.__onStartButtonClicked,
-                            "on_pauseResumeTogglebutton_clicked": self.__onPauseResumeTogglebuttonClicked,
+                            "on_pauseResumeButton_clicked": self.__onPauseResumeButtonClicked,
                             "on_stopButton_clicked": self.__onStopButtonClicked,
                             "on_doneButton_clicked": self.__onDoneButtonClicked,
                         }
@@ -99,6 +100,8 @@ class ShootController(AbstractController):
                       'Return': gtk.keysyms.Return,
                       'Escape': gtk.keysyms.Escape
                       }
+        
+        self.__thread = None
 
     def _retreiveWidgets(self):
         super(ShootController, self)._retreiveWidgets()
@@ -112,6 +115,7 @@ class ShootController(AbstractController):
             self.shootingArea = PresetArea()
         hbox.pack_start(self.shootingArea)
         hbox.reorder_child(self.shootingArea, 1)
+        self.shootingArea.set_size_request(450, 150)
         if self._model.mode == 'mosaic':
 
             # todo: give args in shootingArea.__init__()
@@ -121,13 +125,17 @@ class ShootController(AbstractController):
                                    self._model.camera.getYawFov(self._model.cameraOrientation),
                                    self._model.camera.getPitchFov(self._model.cameraOrientation),
                                    self._model.mosaic.yawRealOverlap, self._model.mosaic.pitchRealOverlap)
+            self._model.mosaic.generatePositions()
             for index, (yaw, pitch) in self._model.mosaic.iterPositions():
                 self.shootingArea.add_pict(yaw, pitch, status='preview')
         else:
             self.shootingArea.init(440., 220., # visible fov
                                     16.,  16.) # camera fov
+            self._model.preset.generatePositions()
             for index, (yaw, pitch) in self._model.preset.iterPositions():
                 self.shootingArea.add_pict(yaw, pitch, status='preview')
+        yaw, pitch = self._model.hardware.readPosition()
+        self.shootingArea.set_current_position(yaw, pitch)
         self.shootingArea.show()
 
         self.rewindButton = self.wTree.get_widget("rewindButton")
@@ -136,14 +144,11 @@ class ShootController(AbstractController):
         self.manualShootCheckbutton = self.wTree.get_widget("manualShootCheckbutton")
         self.dataFileEnableCheckbutton = self.wTree.get_widget("dataFileEnableCheckbutton")
         self.startButton = self.wTree.get_widget("startButton")
-        self.pauseResumeTogglebutton = self.wTree.get_widget("pauseResumeTogglebutton")
+        self.pauseResumeButton = self.wTree.get_widget("pauseResumeButton")
         self.pauseResumeLabel = self.wTree.get_widget("pauseResumeLabel")
         self.pauseResumeImage = self.wTree.get_widget("pauseResumeImage")
         self.stopButton = self.wTree.get_widget("stopButton")
         self.doneButton = self.wTree.get_widget("doneButton")
-
-        self.pauseResumeTogglebutton.set_sensitive(False)
-        self.stopButton.set_sensitive(False)
 
     def _connectSignals(self):
         super(ShootController, self)._connectSignals()
@@ -155,9 +160,15 @@ class ShootController(AbstractController):
         self.shootingArea.connect("button-press-event", self.__onButtonPressed)
         #self.shootingArea.connect("motion-notify-event", self.__onMotionNotify)
 
-        self._model.newPictSignal.connect(self.__addPicture)
+        Spy().newPosSignal.connect(self.__refreshPos)
+        self._model.newPictSignal.connect(self.__shootingAddPicture)
+        self._model.startedSignal.connect(self.__shootingStarted)
+        self._model.pausedSignal.connect(self.__shootingPaused)
+        self._model.resumedSignal.connect(self.__shootingResumed)
+        self._model.stoppedSignal.connect(self.__shootingStopped)
+        self._model.updateInfoSignal.connect(self.__shootingUpdateInfo)
 
-    # Callbacks
+    # Callbacks GTK
     def __onKeyPressed(self, widget, event, *args):
 
         # 'Right' key
@@ -209,13 +220,11 @@ class ShootController(AbstractController):
                     # ...and not paused pauses shooting
                     if not self._model.isPaused():
                         Logger().debug("shootController.__onKeyPressed(): pause shooting")
-                        self.pauseResumeTogglebutton.set_active(True)
                         self.__pauseShooting()
 
                     #... and paused resumes shooting
                     else:
                         Logger().debug("shootController.__onKeyPressed(): resume shooting")
-                        self.pauseResumeTogglebutton.set_active(False)
                         self.__resumeShooting()
                 return True
 
@@ -233,7 +242,6 @@ class ShootController(AbstractController):
                # Pressing 'Escape' while shooting stops shooting
                else:
                    Logger().debug("shootController.__onKeyPressed(): stop shooting")
-                   self.pauseResumeTogglebutton.set_active(False)
                    self.__stopShooting()
                return True
 
@@ -340,8 +348,8 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__startButtonClicked()")
         self.__startShooting()
 
-    def __onPauseResumeTogglebuttonClicked(self, widget):
-        Logger().trace("ShootController.__onPauseResumeTogglebuttonClicked()")
+    def __onPauseResumeButtonClicked(self, widget):
+        Logger().trace("ShootController.__onPauseResumeButtonClicked()")
         if self._model.isShooting(): # Should always be true here, but...
             if not self._model.isPaused():
                 self.__pauseShooting() # Not used
@@ -350,17 +358,78 @@ class ShootController(AbstractController):
 
     def __onStopButtonClicked(self, widget):
         Logger().trace("ShootController.__stopButtonClicked()")
-        self.pauseResumeTogglebutton.set_active(False)
         self.__stopShooting()
 
     def __onDoneButtonClicked(self, widget):
         Logger().trace("ShootController.__onDoneButtonClicked()")
-        #self.dialog.response(0)
 
-    def __addPicture(self, yaw, pitch, status=None, next=False):
-        Logger().trace("ShootController.__addPicture()")
+    # Callback model (all GUI calls must be done via the serializer)
+    def __shootingAddPicture(self, yaw, pitch, status=None, next=False):
+        Logger().trace("ShootController.__shootingAddPicture()")
         self.shootingArea.add_pict(yaw, pitch, status, next)
-        self.shootingArea.refresh()
+        self._serializer.addWork(self.shootingArea.refresh)
+
+    def __shootingStarted(self):
+        Logger().trace("ShootController.__shootingStarted()")
+        self._serializer.addWork(self.shootingArea.clear)
+        self._serializer.addWork(self.dataFileEnableCheckbutton.set_sensitive, False)
+        self._serializer.addWork(self.startButton.set_sensitive, False)
+        self._serializer.addWork(self.pauseResumeButton.set_sensitive, True)
+        self._serializer.addWork(self.stopButton.set_sensitive, True)
+        self._serializer.addWork(self.doneButton.set_sensitive, False)
+        self._serializer.addWork(self.rewindButton.set_sensitive, False)
+        self._serializer.addWork(self.forwardButton.set_sensitive, False)
+
+    def __shootingPaused(self):
+        Logger().trace("ShootController.__shootingPaused()")
+        self.pauseResumeButton.set_sensitive(True)
+        self._serializer.addWork(self.pauseResumeLabel.set_text, _("Resume"))
+        self._serializer.addWork(self.rewindButton.set_sensitive, True)
+        self._serializer.addWork(self.forwardButton.set_sensitive, True)
+        self._serializer.addWork(self.progressbar.set_text, _("Idle"))
+
+    def __shootingResumed(self):
+        Logger().trace("ShootController.__shootingResumed()")
+        self._serializer.addWork(self.pauseResumeLabel.set_text, _("Pause"))
+        self._serializer.addWork(self.rewindButton.set_sensitive, False)
+        self._serializer.addWork(self.forwardButton.set_sensitive, False)
+
+    def __shootingStopped(self, status):
+        Logger().debug("ShootController.__shootingStopped(): status=%s" % status)
+        if status == 'ok':
+            self._serializer.addWork(self.progressbar.set_text, _("Finished"))
+        elif status == 'cancel':
+            self._serializer.addWork(self.progressbar.set_text, _("Canceled"))
+        elif status == 'fail':
+            self._serializer.addWork(self.progressbar.set_text, _("Failed"))
+        self._serializer.addWork(self.dataFileEnableCheckbutton.set_sensitive, True)
+        self._serializer.addWork(self.startButton.set_sensitive, True)
+        #self._serializer.addWork(self.pauseResumeLabel.set_text, _("Pause"))
+        self._serializer.addWork(self.pauseResumeButton.set_sensitive, False)
+        self._serializer.addWork(self.stopButton.set_sensitive, False)
+        self._serializer.addWork(self.doneButton.set_sensitive, True)
+        #self._serializer.addWork(self.rewindButton.set_sensitive, False)
+        #self._serializer.addWork(self.forwardButton.set_sensitive, False)
+
+    def __shootingUpdateInfo(self, info):
+        Logger().debug("ShootController.__shootingUpdateInfo(): info=%s" % info)
+        if info.has_key('sequence'):
+            self._serializer.addWork(self.progressbar.set_text, info['sequence'])
+        elif info.has_key('progress'):
+            self._serializer.addWork(self.progressbar.set_fraction, info['progress'])
+
+    def __refreshPos(self, yaw, pitch):
+        """ Refresh position according to new pos.
+
+        @param yaw: yaw axis value
+        @type yaw: float
+
+        @param pitch: pitch axix value
+        @type pitch: float
+        """
+        Logger().trace("ShootController.__refreshPos()")
+        self.shootingArea.set_current_position(yaw, pitch)
+        self._serializer.addWork(self.shootingArea.refresh)
 
     # Helpers
     def __rewindShootingPosition(self):
@@ -386,85 +455,38 @@ class ShootController(AbstractController):
             Logger().debug("ShootController.__forwardShootingPosition(): new index=%d" % (index + 1))
         except IndexError:
             Logger().exception("ShootController.__forwardShootingPosition()", debug=True)
-        
+
     def __startShooting(self):
-        def monitorShooting():
-            Logger().trace("ShootController.__startShooting().monitorShooting()")
-
-            # Check if model paused (manual shoot mode)
-            if self._model.isPaused():
-                self.pauseResumeLabel.set_text(_("Resume"))
-                self.rewindButton.set_sensitive(True)
-                self.forwardButton.set_sensitive(True)
-            else:
-                self.pauseResumeLabel.set_text(_("Pause"))
-                self.rewindButton.set_sensitive(False)
-                self.forwardButton.set_sensitive(False)
-
-            # Check end of shooting
-            if not self._model.isShooting():
-                Logger().debug("monitorShooting(): model not shooting anymore")
-
-                # Check status
-                #if self._model.error:
-                    #ErrorMessageController(_("Internal error"), _("Please report bug (include logs)"))
-
-                self.dataFileEnableCheckbutton.set_sensitive(True)
-                self.startButton.set_sensitive(True)
-                self.pauseResumeLabel.set_text(_("Pause"))
-                self.pauseResumeTogglebutton.set_sensitive(False)
-                self.stopButton.set_sensitive(False)
-                self.doneButton.set_sensitive(True)
-                self.refreshView()
-                thread.join()
-                Logger().debug("ShootController.__startShooting().monitorShooting(): model thread over")
-
-                return False # Stop execution by Gtk timeout
-
-            self.refreshView()
-
-            return True
-
-        self.shootingArea.clear()
-        self.dataFileEnableCheckbutton.set_sensitive(False)
-        self.startButton.set_sensitive(False)
-        self.pauseResumeTogglebutton.set_sensitive(True)
-        self.stopButton.set_sensitive(True)
-        self.doneButton.set_sensitive(False)
-
-        thread = threading.Thread(target=self._model.start, name="Shooting")
-        thread.start()
-        #self._model.startEvent.wait() # Does not work under maemo
-        while not self._model.isShooting():
-            time.sleep(.1)
-            if self._model.error:
-                break
-
-        # Monitor shooting process
-        gobject.timeout_add(100, monitorShooting)
+        
+        # Join previous thread, if any
+        if self.__thread is not None:
+            self.__thread.join()
+            
+        # Start new shooting thread
+        self.__thread = threading.Thread(target=self._model.start, name="Shooting")
+        self.__thread.start()
 
     def __pauseShooting(self):
         self._model.pause()
-        #self.pauseResumeLabel.set_text(_("Resume"))
+        self.pauseResumeButton.set_sensitive(False)
 
     def __resumeShooting(self):
         self._model.resume()
-        #self.pauseResumeLabel.set_text(_("Pause"))
 
     def __stopShooting(self):
         self._model.stop()
 
-        # Wait for shooting really stops
-        # todo: use condition
-        while self._model.isShooting():
-            time.sleep(0.1)
-
     # Interface
     def shutdown(self):
         super(ShootController, self).shutdown()
-        self._model.newPictSignal.disconnect(self.__addPicture)
+        if self.__thread is not None:
+            self.__thread.join()
+        self._model.newPictSignal.disconnect(self.__shootingAddPicture)
+        self._model.startedSignal.disconnect(self.__shootingStarted)
+        self._model.pausedSignal.disconnect(self.__shootingPaused)
+        self._model.resumedSignal.disconnect(self.__shootingResumed)
+        self._model.stoppedSignal.disconnect(self.__shootingStopped)
+        self._model.updateInfoSignal.disconnect(self.__shootingUpdateInfo)
 
     def refreshView(self):
-        self.progressbar.set_fraction(self._model.progress)
-        self.progressbar.set_text(self._model.sequence)
         self.dataFileEnableCheckbutton.set_active(ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE'))
