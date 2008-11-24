@@ -51,8 +51,8 @@ import os.path
 
 # Version
 VERSION_MAJOR = 1
-VERSION_MINOR = 3 # Odd means dev. release
-VERSION_UPDATE = 5
+VERSION_MINOR = 4 # Odd means dev. release
+VERSION_UPDATE = 0
 VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 VERSION_PACKAGE = 1
 VERSION_XML = "a"
@@ -118,17 +118,18 @@ SHOOT_PULSE = 0.2
 BLUETOOTH_DRIVER_CONNECT_DELAY = 8.
 ENCODER_360 = 0x0E6600
 ENCODER_ZERO = 0x800000
-MANUAL_SPEED = {'slow': 170, # "aa0000"
+MANUAL_SPEED = {'slow': 170,  # "aa0000"  / 5
                 'normal': 34, # "220000"
-                'fast':17} # "110000"
+                'fast':17}    # "110000"  * 2
 
 AXIS_SPEED = 15.
 SERIAL_BAUDRATE = 9600
 SERIAL_TIMEOUT = 0.2
 
 # Misc
-SPY_SLOW_REFRESH = 0.5
-SPY_FAST_REFRESH = 0.1
+SERIALIZER_REFRESH = 10 # ms
+SPY_SLOW_REFRESH = 0.5  # s
+SPY_FAST_REFRESH = 0.1  # s
 
 # View3D
 VIEW3D_HEAD_HFOV = 30.
