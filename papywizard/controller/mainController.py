@@ -218,6 +218,8 @@ class MainController(AbstractController):
         self.pitchMovePlusTogglebutton = self.wTree.get_widget("pitchMovePlusTogglebutton")
         self.yawMoveMinusTogglebutton = self.wTree.get_widget("yawMoveMinusTogglebutton")
         self.pitchMoveMinusTogglebutton = self.wTree.get_widget("pitchMoveMinusTogglebutton")
+        self.configButton = self.wTree.get_widget("configButton")
+        self.shootButton = self.wTree.get_widget("shootButton")
         self.statusbar = self.wTree.get_widget("statusbar")
         self.statusbarContextId = self.statusbar.get_context_id("default")
         self.connectImage = self.wTree.get_widget("connectImage")
@@ -269,6 +271,7 @@ class MainController(AbstractController):
         self.dialog.connect("key-press-event", self.__onKeyPressed)
         self.dialog.connect("key-release-event", self.__onKeyReleased)
         #self.dialog.connect("window-state-event", self.__onWindowStateChanged)
+
         Spy().newPosSignal.connect(self.__refreshPos)
         self._model.switchToRealHardwareSignal.connect(self.__switchToRealHardwareCallback)
 
@@ -742,7 +745,11 @@ class MainController(AbstractController):
     def __openConfigDialog(self):
         """
         """
+        self.setStatusbarMessage(_("Opening configuration dialog. Please wait..."))
+        while gtk.events_pending():
+            gtk.main_iteration()
         controller = ConfigController(self, self._model, self._serializer)
+        self.setStatusbarMessage()
         response = controller.run()
         controller.shutdown()
         if response == 0:
@@ -762,11 +769,18 @@ class MainController(AbstractController):
     def __openShootdialog(self):
         """
         """
-        self._model.initProgress()
         self._model.setManualShoot(False)
+        self.shootButton.set_sensitive(False)
+        self.setStatusbarMessage(_("Opening shoot dialog. Please wait..."))
+        while gtk.events_pending():
+            gtk.main_iteration()
+        #Spy().newPosSignal.disconnect(self.__refreshPos)
         controller = ShootController(self, self._model, self._serializer)
+        self.shootButton.set_sensitive(True)
+        self.setStatusbarMessage()
         controller.run()
         controller.shutdown()
+        #Spy().newPosSignal.connect(self.__refreshPos)
 
     def __populatePresetCombobox(self):
         """
