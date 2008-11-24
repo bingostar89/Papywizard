@@ -61,11 +61,11 @@ import gtk
 class ImageArea(object):
     """ ImageArea area object for mosaic.
     """
-    def __init__(self, drawable, yaw, pitch, x, y, w, h, status, next=False):
+    def __init__(self, drawingArea, yaw, pitch, x, y, w, h, status, next=False):
         """  Init the ImageArea object.
 
-        @param drawable: associated drawable
-        @type drawable: {gtk.Window}
+        @param drawingArea: associated drawing area
+        @type drawingArea: {DrawingArea}
 
         @param yaw: yaw of the image (°)
         @type yaw: float
@@ -93,7 +93,7 @@ class ImageArea(object):
         @type next: bool
         """
         #print "ImageArea.__init__()"
-        self._drawable = drawable
+        self._drawingArea = drawingArea
         self.yaw = yaw
         self.pitch = pitch
         self.x = x
@@ -103,39 +103,17 @@ class ImageArea(object):
         self.status = status
         self.next = next
 
-        # Create the GCs
-        self._gcBorder = gtk.gdk.GC(drawable)
-        self._gcBorder.set_rgb_fg_color(gtk.gdk.color_parse("#000000"))
-        self._gcBorderNext = gtk.gdk.GC(drawable)
-        self._gcBorderNext.set_rgb_fg_color(gtk.gdk.color_parse("#ffffff"))
-        self._gcPreview = gtk.gdk.GC(drawable)
-        self._gcPreview.set_rgb_fg_color(gtk.gdk.color_parse("#c0c0c0"))
-        self._gcPreviewNoshoot = gtk.gdk.GC(drawable)
-        self._gcPreviewNoshoot.set_rgb_fg_color(gtk.gdk.color_parse("#a0a0a0"))
-        self._gcOk = gtk.gdk.GC(drawable)
-        self._gcOk.set_rgb_fg_color(gtk.gdk.color_parse("#00ff00"))
-        self._gcOkReshoot = gtk.gdk.GC(drawable)
-        self._gcOkReshoot.set_rgb_fg_color(gtk.gdk.color_parse("#c0ffc0"))
-        self._gcError = gtk.gdk.GC(drawable)
-        self._gcError.set_rgb_fg_color(gtk.gdk.color_parse("#ff0000"))
-        self._gcErrorReshoot = gtk.gdk.GC(drawable)
-        self._gcErrorReshoot.set_rgb_fg_color(gtk.gdk.color_parse("#ffc0c0"))
-        #self._gcBackground = gtk.gdk.GC(drawable)
-        #self._gcBackground.set_rgb_fg_color(gtk.gdk.color_parse("#d0d0d0"))
-
     # Helpers
 
     # Interface
     def draw(self):
         """ Draw itself on the drawable.
         """
-        #print "ImageArea.draw()"
         raise NotImplementedError
 
     def isCoordsIn(self, x, y):
         """ Check if given coords are in the pict. area.
         """
-        #print "ImageArea.isInPict()"
         raise NotImplementedError
 
 
@@ -147,25 +125,13 @@ class MosaicImageArea(ImageArea):
 
         # Border
         if self.next:
-            gc = self._gcBorderNext
+            gc = self._drawingArea.gc['border-next']
         else:
-            gc = self._gcBorder
-        self._drawable.draw_rectangle(gc, True, self.x, self.y, self.w, self.h)
+            gc = self._drawingArea.gc['border']
+        self._drawingArea.window.draw_rectangle(gc, True, self.x, self.y, self.w, self.h)
 
         # Inside
-        if self.status == 'preview':
-            gc = self._gcPreview
-        elif self.status == 'skip':
-            gc = self._gcPreviewNoshoot
-        elif self.status == 'ok':
-            gc = self._gcOk
-        elif self.status == 'okReshoot':
-            gc = self._gcOkReshoot
-        elif self.status == 'error':
-            gc = self._gcError
-        elif self.status == 'errorReshoot':
-            gc = self._gcErrorReshoot
-        self._drawable.draw_rectangle(gc, True, self.x + 1, self.y + 1, self.w - 2, self.h - 2)
+        self._drawingArea.window.draw_rectangle(self._drawingArea.gc[self.status], True, self.x + 1, self.y + 1, self.w - 2, self.h - 2)
 
     def isCoordsIn(self, x, y):
         if self.x <= x <= (self.x + self.w) and \
@@ -183,25 +149,13 @@ class PresetImageArea(ImageArea):
 
         # Border
         if self.next:
-            gc = self._gcBorderNext
+            gc = self._drawingArea.gc['border-next']
         else:
-            gc = self._gcBorder
-        self._drawable.draw_arc(gc, True, self.x, self.y, self.w, self.h, 0, 360 * 64)
+            gc = self._drawingArea.gc['border']
+        self._drawingArea.window.draw_arc(gc, True, self.x, self.y, self.w, self.h, 0, 360 * 64)
 
         # Inside
-        if self.status == 'preview':
-            gc = self._gcPreview
-        elif self.status == 'skip':
-            gc = self._gcPreviewNoshoot
-        elif self.status == 'ok':
-            gc = self._gcOk
-        elif self.status == 'okReshoot':
-            gc = self._gcOkReshoot
-        elif self.status == 'error':
-            gc = self._gcError
-        elif self.status == 'errorReshoot':
-            gc = self._gcErrorReshoot
-        self._drawable.draw_arc(gc, True, self.x + 1, self.y + 1, self.w - 2, self.h - 2, 0, 360 * 64)
+        self._drawingArea.window.draw_arc(self._drawingArea.gc[self.status], True, self.x + 1, self.y + 1, self.w - 2, self.h - 2, 0, 360 * 64)
 
     def isCoordsIn(self, x, y):
         """

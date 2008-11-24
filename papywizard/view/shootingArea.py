@@ -85,6 +85,10 @@ class ShootingArea(gtk.DrawingArea):
         self._yawCameraFov = None
         self._pitchCameraFov = None
         self._scale = None
+        self._yawHead = None
+        self._pitchHead = None
+
+        self.gc = {}
 
     # Callbacks
     def _configure_cb(self, widget, event):
@@ -93,10 +97,33 @@ class ShootingArea(gtk.DrawingArea):
         This callback is also the first called when creating the widget.
         """
         #print "ShootingArea._configure_cb()"
+
+        # Shooting area GC
         self._gcBackground = gtk.gdk.GC(self.window)
         self._gcBackground.set_rgb_fg_color(gtk.gdk.color_parse("#d0d0d0"))
         self._gcAxis = gtk.gdk.GC(self.window)
         self._gcAxis.set_rgb_fg_color(gtk.gdk.color_parse("#ff8080"))
+        self._gcPosition = gtk.gdk.GC(self.window)
+        self._gcPosition.set_rgb_fg_color(gtk.gdk.color_parse("#0000ff"))
+
+        # ImageArea GC
+        self.gc['border'] = gtk.gdk.GC(self.window)
+        self.gc['border'].set_rgb_fg_color(gtk.gdk.color_parse("#000000"))
+        self.gc['border-next'] = gtk.gdk.GC(self.window)
+        self.gc['border-next'].set_rgb_fg_color(gtk.gdk.color_parse("#ffffff"))
+        self.gc['preview'] = gtk.gdk.GC(self.window)
+        self.gc['preview'].set_rgb_fg_color(gtk.gdk.color_parse("#c0c0c0"))
+        self.gc['skip'] = gtk.gdk.GC(self.window)
+        self.gc['skip'].set_rgb_fg_color(gtk.gdk.color_parse("#a0a0a0"))
+        self.gc['ok'] = gtk.gdk.GC(self.window)
+        self.gc['ok'].set_rgb_fg_color(gtk.gdk.color_parse("#00ff00"))
+        self.gc['ok-reshoot'] = gtk.gdk.GC(self.window)
+        self.gc['ok-reshoot'].set_rgb_fg_color(gtk.gdk.color_parse("#c0ffc0"))
+        self.gc['error'] = gtk.gdk.GC(self.window)
+        self.gc['error'].set_rgb_fg_color(gtk.gdk.color_parse("#ff0000"))
+        self.gc['error-reshoot'] = gtk.gdk.GC(self.window)
+        self.gc['error-reshoot'].set_rgb_fg_color(gtk.gdk.color_parse("#ffc0c0"))
+
         x, y, self._width, self._height = widget.get_allocation()
         self._compute_scale()
         #print "ShootingArea._configure_cb(): _width=%.1f, _height=%.1f" % (self._width, self._height)
@@ -108,14 +135,12 @@ class ShootingArea(gtk.DrawingArea):
 
         This is where to implement all drawing stuff.
         """
-        #print "ShootingArea._expose_cb()"
         raise NotImplementedError
 
     # Helpers
     def _compute_scale(self):
         """ Compute drawing scale
         """
-        #print "ShootingArea._compute_scale()"
         yawScale = self._width / self._yawFov
         pitchScale = self._height / self._pitchFov
         self._scale = min(yawScale, pitchScale)
@@ -123,23 +148,13 @@ class ShootingArea(gtk.DrawingArea):
 
     def _compute_image_coordinates(self, yaw, pitch):
         """
-        @todo: move to ImageArea
         """
-        if cmp(self._yawEnd, self._yawStart) > 0:
-            yaw -= self._shootingArea.yawStart
-        else:
-            yaw -= self._yawEnd
-        if cmp(self._pitchEnd, self._pitchStart) > 0:
-            pitch -= self._pitchStart
-        else:
-            pitch -= self._pitchEnd
-        x = int(round(yaw * self._scale + self.__yawOffset))
-        y = int(round(pitch * self._scale + self.__pitchOffset))
-        w = int(round(self._yawCameraFov * self._scale))
-        h = int(round(self._pitchCameraFov * self._scale))
-        y = self._height - y - h
+        raise NotImplementedError
 
-        return x, y, w, h
+    def _compute_head_coordinates(self, yaw, pitch):
+        """
+        """
+        raise NotImplementedError
 
     def _change_image_status(self, index):
         """ Set the status of image.
@@ -153,17 +168,17 @@ class ShootingArea(gtk.DrawingArea):
             else:
                 image.next = False
             if i + 1 < index:
-                if image.status == 'okReshoot':
+                if image.status == 'ok-reshoot':
                     image.status = 'ok'
-                elif image.status == 'errorReshoot':
+                elif image.status == 'error-reshoot':
                     image.status = 'error'
                 elif image.status == 'preview':
                     image.status = 'skip'
             else:
                 if image.status == 'ok':
-                    image.status = 'okReshoot'
+                    image.status = 'ok-reshoot'
                 elif image.status == 'error':
-                    image.status = 'errorReshoot'
+                    image.status = 'error-reshoot'
                 elif image.status == 'skip':
                     image.status = 'preview'
 
@@ -185,14 +200,12 @@ class ShootingArea(gtk.DrawingArea):
         @param pitchCameraFov: pict pitch fov (°)
         @type pitchCameraFov: float
         """
-        #print "ShootingArea.init()"
         self._picts.clear()
         self._yawFov = yawFov
         self._pitchFov = pitchFov
         self._yawCameraFov = yawCameraFov
         self._pitchCameraFov = pitchCameraFov
         #print "ShootingArea.init(): yawFov=%.1f, pitchFov=%.1f, yawCameraFov=%.1f, pitchCameraFov=%.1f" % (yawFov, pitchFov, yawCameraFov, pitchCameraFov)
-        self._compute_scale()
 
         self.connect("configure-event", self._configure_cb)
         self.connect("expose-event", self._expose_cb)
@@ -251,6 +264,12 @@ class ShootingArea(gtk.DrawingArea):
         """
         self._change_image_status(index)
 
+    def set_current_position(self, yaw, pitch):
+        """ Set the current position.
+        """
+        self._yawHead = yaw
+        self._pitchHead = pitch
+
 
 class MosaicArea(ShootingArea):
     """ GTK MosaicArea widget
@@ -293,16 +312,15 @@ class MosaicArea(ShootingArea):
 
         # Draw background
         self.window.draw_rectangle(self._gcBackground, True, 0, 0, self._width, self._height)
-        #xBack = int(round(self.__yawOffset))
-        #yBack = int(round(self.__pitchOffset))
-        #wBack = self._width - int(round(2 * self.__yawOffset))
-        #hBack = self._height - int(round(2 * self.__pitchOffset))
-        #self.window.draw_rectangle(self._gcBackground, True, xBack, yBack, wBack, hBack)
-        #print "xBack=%d, yBack=%d, wBack=%d, hBack=%d" % (xBack, yBack, wBack, hBack)
 
         # Draw picts
         for image in self._picts.itervalues():
             image.draw()
+
+        # Draw head position
+        x, y, w, h = self._compute_head_coordinates(self._yawHead, self._pitchHead)
+        self.window.draw_line(self._gcPosition, 0, y, self._width, y)
+        self.window.draw_line(self._gcPosition, x, 0, x, self._height)
 
         return False
 
@@ -310,7 +328,6 @@ class MosaicArea(ShootingArea):
     def _compute_offsets(self):
         """ Recompute drawing offset.
         """
-        #print "ShootingArea._compute_offsets()"
         self.__yawOffset = (self._width - self._yawFov * self._scale) / 2.
         self.__pitchOffset = (self._height - self._pitchFov * self._scale) / 2.
         #print "MosaicArea._compute_offsets(): yawOffset=%f, pitchOffset=%f" % (self.__yawOffset, self.__pitchOffset)
@@ -330,6 +347,24 @@ class MosaicArea(ShootingArea):
         h = int(round(self._pitchCameraFov * self._scale))
         y = self._height - y - h
         #print "MosaicImageArea._compute_image_coordinates(): x=%.1f, y=%.1f, w=%.1f, h=%.1f" % (x, y, w, h)
+
+        return x, y, w, h
+
+    def _compute_head_coordinates(self, yaw, pitch):
+        if cmp(self.__yawEnd, self.__yawStart) > 0:
+            yaw = self._yawHead - self.__yawStart
+        else:
+            yaw = self._yawHead - self.__yawEnd
+        if cmp(self.__pitchEnd, self.__pitchStart) > 0:
+            pitch = self._pitchHead - self.__pitchStart
+        else:
+            pitch = self._pitchHead - self.__pitchEnd
+        x = int(round((yaw + self._yawCameraFov / 2.) * self._scale + self.__yawOffset))
+        y = int(round((pitch + self._pitchCameraFov / 2.) * self._scale + self.__pitchOffset))
+        w = 2
+        h = 2
+        y = self._height - y - h
+        #print "MosaicImageArea._compute_head_coordinates(): x=%.1f, y=%.1f, w=%.1f, h=%.1f" % (x, y, w, h)
 
         return x, y, w, h
 
@@ -375,7 +410,6 @@ class MosaicArea(ShootingArea):
         self.__pitchEnd = pitchEnd
         self.__yawOverlap = yawOverlap
         self.__pitchOverlap = pitchOverlap
-        self._compute_offsets()
 
     def add_pict(self, yaw, pitch, status=None, next=False):
         #print "MosaicArea.add_pict(%.1f, %.1f, status=%s, next=%s)" % (yaw, pitch, status, next)
@@ -388,11 +422,9 @@ class MosaicArea(ShootingArea):
             image.next = next
 
         except KeyError:
-            x, y, w, h = self._compute_image_coordinates(yaw, pitch)
-            image = MosaicImageArea(self.window, yaw, pitch, x, y, w, h, status)
+            x, y, h, w = None, None, None, None
+            image = MosaicImageArea(self, yaw, pitch, x, y, w, h, status)
             self._picts["%.1f, %.1f" % (yaw, pitch)] = image
-
-        #self.refresh()
 
 
 class PresetArea(ShootingArea):
@@ -449,13 +481,17 @@ class PresetArea(ShootingArea):
         for image in self._picts.itervalues():
             image.draw()
 
+        # Draw head position
+        x, y, w, h = self._compute_head_coordinates(self._yawHead, self._pitchHead)
+        self.window.draw_line(self._gcPosition, 0, y, self._width, y)
+        self.window.draw_line(self._gcPosition, x, 0, x, self._height)
+
         return False
 
     # Helpers
     def _compute_margins(self):
         """ Recompute drawing margins.
         """
-        #print "PresetArea._compute_margins()"
         self.__yawMargin = int(round((self._width - 360. * self._scale) / 2.))
         self.__pitchMargin = int(round((self._height - 180. * self._scale) / 2.))
         #print "PresetArea._compute_margins(): yawMargin=%d, pitchMargin=%d" % (self.__yawMargin, self.__pitchMargin)
@@ -473,10 +509,19 @@ class PresetArea(ShootingArea):
 
         return x, y, w, h
 
+    def _compute_head_coordinates(self, yaw, pitch):
+        pitch = 180 / 2. - pitch
+        x = int(round(yaw * self._scale)) + self.__yawMargin
+        y = int(round(pitch * self._scale)) + self.__pitchMargin
+        w = 2
+        h = 2
+        #print "PresetImageArea._compute_head_coordinates(): x=%.1f, y=%.1f, w=%.1f, h=%.1f" % (x, y, w, h)
+
+        return x, y, w, h
+
     # Interface
     def init(self, yawFov, pitchFov, yawCameraFov, pitchCameraFov):
         ShootingArea.init(self, yawFov, pitchFov, yawCameraFov, pitchCameraFov)
-        self._compute_margins()
 
     def add_pict(self, yaw, pitch, status=None, next=False):
         #print "PresetArea.add_pict(%.1f, %.1f, status=%s, next=%s)" % (yaw, pitch, status, next)
@@ -489,8 +534,8 @@ class PresetArea(ShootingArea):
             image.next = next
 
         except KeyError:
-            x, y, w, h = self._compute_image_coordinates(yaw, pitch)
-            image = PresetImageArea(self.window, yaw, pitch, x, y, w, h, status)
+            x, y, w, h = None, None, None, None
+            image = PresetImageArea(self, yaw, pitch, x, y, w, h, status)
             self._picts["%.1f, %.1f" % (yaw, pitch)] = image
 
         self.refresh()
