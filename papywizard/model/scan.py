@@ -133,15 +133,6 @@ class MosaicScan(AbstractScan):
         """ Init the MosaicScan object.
         """
         super(MosaicScan, self).__init__(*args, **kwargs)
-        self.__yawIndex = None
-        self.__pitchIndex = None
-        self.__yawInc = None
-        self.__pitchInc = None
-        self.__yawIndex = None
-        self.__pitchIndex = None
-        self.__yawSens = None
-        self.__pitchSens = None
-
         self.yawStart = 0.
         self.pitchStart = 0.
         self.yawEnd = 0.
@@ -271,85 +262,85 @@ class MosaicScan(AbstractScan):
         yawCameraFov = self._model.camera.getYawFov(self._model.cameraOrientation)
         pitchCameraFov = self._model.camera.getPitchFov(self._model.cameraOrientation)
         try:
-            self.__yawInc = (self.yawFov - yawCameraFov) / (self.yawNbPicts - 1)
+            yawInc = (self.yawFov - yawCameraFov) / (self.yawNbPicts - 1)
         except ZeroDivisionError:
-            self.__yawInc = self.yawFov - yawCameraFov
+            yawInc = self.yawFov - yawCameraFov
         try:
-            self.__pitchInc = (self.pitchFov - pitchCameraFov) / (self.pitchNbPicts - 1)
+            pitchInc = (self.pitchFov - pitchCameraFov) / (self.pitchNbPicts - 1)
         except ZeroDivisionError:
-            self.__pitchInc = self.pitchFov - pitchCameraFov
-        self.__yawInc *= cmp(self.yawEnd, self.yawStart)
-        self.__pitchInc *= cmp(self.pitchEnd, self.pitchStart)
+            pitchInc = self.pitchFov - pitchCameraFov
+        yawInc *= cmp(self.yawEnd, self.yawStart)
+        pitchInc *= cmp(self.pitchEnd, self.pitchStart)
 
-        self.__yawIndex = 0
-        self.__pitchIndex = 0
-        self.__yawSens = 1
-        self.__pitchSens = 1
+        yawIndex = 0
+        pitchIndex = 0
+        yawSens = 1
+        pitchSens = 1
 
         generate = True
         while generate:
             if self.startFrom == "start":
-                yaw = self.yawStart + self.__yawIndex * self.__yawInc
-                pitch = self.pitchStart + self.__pitchIndex * self.__pitchInc
+                yaw = self.yawStart + yawIndex * yawInc
+                pitch = self.pitchStart + pitchIndex * pitchInc
             elif self.startFrom == "end":
-                yaw = self.yawEnd - self.__yawIndex * self.__yawInc
-                pitch = self.pitchEnd - self.__pitchIndex * self.__pitchInc
+                yaw = self.yawEnd - yawIndex * yawInc
+                pitch = self.pitchEnd - pitchIndex * pitchInc
             else:
                 raise ValueError("Unknown '%s' <Start from> param" % self.startFrom)
-            #Logger().debug("MosaicScan.generatePositions(): __yawIndex=%d, __pitchIndex=%d, yaw=%.1f, pitch=%.1f" % (self.__yawIndex, self.__pitchIndex, yaw, pitch))
+            #Logger().debug("MosaicScan.generatePositions(): __yawIndex=%d, __pitchIndex=%d, yaw=%.1f, pitch=%.1f" % (yawIndex, pitchIndex, yaw, pitch))
             self._positions.append((yaw, pitch))
 
             # Compute next position
             if self.initialDirection == "yaw":
-                self.__yawIndex += self.__yawSens
+                yawIndex += yawSens
             elif self.initialDirection == "pitch":
-                self.__pitchIndex += self.__pitchSens
+                pitchIndex += pitchSens
 
             for i in xrange(2):
-                if self.__yawIndex == self.yawNbPicts: # __yawSens was 1
+                if yawIndex == self.yawNbPicts: # __yawSens was 1
                     if self.initialDirection == "pitch":
                         generate = False
                     if self.cr:
-                        self.__yawIndex = 0
-                        self.__yawSens = 1
+                        yawIndex = 0
+                        yawSens = 1
                     else:
-                        self.__yawIndex = self.yawNbPicts - 1
-                        self.__yawSens = -1
-                    self.__pitchIndex += self.__pitchSens
+                        yawIndex = self.yawNbPicts - 1
+                        yawSens = -1
+                    pitchIndex += pitchSens
                     continue
-                elif self.__yawIndex == -1:            # __yawSens was -1
+                elif yawIndex == -1:            # __yawSens was -1
                     if self.initialDirection == "pitch":
                         generate = False
                     if self.cr:
-                        self.__yawIndex = self.yawNbPicts - 1
-                        self.__yawSens = -1
+                        yawIndex = self.yawNbPicts - 1
+                        yawSens = -1
                     else:
-                        self.__yawIndex = 0
-                        self.__yawSens = 1
-                    self.__pitchIndex += self.__pitchSens
+                        yawIndex = 0
+                        yawSens = 1
+                    pitchIndex += pitchSens
                     continue
 
-                if self.__pitchIndex == self.pitchNbPicts: # __pitchSens was 1
+                if pitchIndex == self.pitchNbPicts: # __pitchSens was 1
                     if self.initialDirection == "yaw":
                         generate = False
                     if self.cr:
-                        self.__pitchIndex = 0
-                        self.__pitchSens = 1
+                        pitchIndex = 0
+                        pitchSens = 1
                     else:
-                        self.__pitchIndex = self.pitchNbPicts - 1
-                        self.__pitchSens = -1
-                    self.__yawIndex += self.__yawSens
+                        pitchIndex = self.pitchNbPicts - 1
+                        pitchSens = -1
+                    yawIndex += yawSens
                     continue
-                elif self.__pitchIndex == -1:              # __pitchSens was -1
+                elif pitchIndex == -1:              # __pitchSens was -1
                     if self.initialDirection == "yaw":
                         generate = False
                     if self.cr:
-                        self.__pitchIndex = self.pitchNbPicts - 1
-                        self.__pitchSens = -1
+                        pitchIndex = self.pitchNbPicts - 1
+                        pitchSens = -1
                     else:
-                        self.__pitchIndex = 0
-                        self.__pitchSens = 1
-                    self.__yawIndex += self.__yawSens
+                        pitchIndex = 0
+                        pitchSens = 1
+                    yawIndex += yawSens
                     continue
                 break
 
