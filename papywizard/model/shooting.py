@@ -81,22 +81,21 @@ class Shooting(object):
         self.__stop = False
         self.__manualShoot = False
         self.__forceNewShootingIndex = False
+        self.__scan = None
 
         self.realHardware = realHardware
         self.simulatedHardware = simulatedHardware
         self.hardware = self.simulatedHardware
         self.switchToRealHardwareSignal = Signal()
         self.newPictSignal = Signal()
-        #self.startEvent = threading.Event() # Does not work under maemo
-        #self.startEvent.clear() # Does not work under maemo
+        self.startedSignal = Signal()
+        self.resumedSignal = Signal()
+        self.pausedSignal = Signal()
+        self.stoppedSignal = Signal()
+        self.updateInfoSignal = Signal()
         self.camera = Camera()
         self.mosaic = MosaicScan(self)
         self.preset = PresetScan(self)
-        self.__scan = None
-
-        self.position = self.hardware.readPosition()
-        self.progress = 0.
-        self.sequence = _("Idle")
 
         self.title = "Here goes the title"
         self.gps ="Here goes the location"
@@ -164,7 +163,6 @@ class Shooting(object):
         @param pitchFov: total pitch fov (°)
         @type pitchFov: float
         """
-        #yawPos, pitchPos = self.hardware.readPosition()
         yawPos, pitchPos = 0., 0.
         yawDelta = yawFov - self.camera.getYawFov(self.cameraOrientation)
         if yawDelta < 0.:
@@ -186,7 +184,6 @@ class Shooting(object):
         @param pitchNbPicts: pitch nb picts
         @type pitchNbPicts: int
         """
-        #yawPos, pitchPos = self.hardware.readPosition()
         yawPos, pitchPos = 0., 0.
         yawDelta = self.camera.getYawFov(self.cameraOrientation) * (1 - self.mosaic.overlap) * (yawNbPicts - 1)
         if yawNbPicts > 1:
@@ -207,7 +204,6 @@ class Shooting(object):
             #self.simulatedHardware.shutdown()
             self.realHardware.init()
             Logger().debug("Shooting.switchToRealHardware(): realHardware initialized")
-            self.position = self.realHardware.readPosition()
             self.hardware = self.realHardware
             self.switchToRealHardwareSignal.emit(True)
         except HardwareError, message:
@@ -224,7 +220,6 @@ class Shooting(object):
             Logger().exception("Shooting.switchToSimulatedHardware()")
         self.hardware = self.simulatedHardware
         self.hardware.init()
-        self.position = self.hardware.readPosition()
 
     def setManualShoot(self, flag):
         """ Turn on/off manual shoot.
@@ -254,12 +249,6 @@ class Shooting(object):
         self.__scan.setPositionIndex(index)
         self.__forceNewShootingIndex = True
 
-    def initProgress(self):
-        """ Init progress value.
-        """
-        self.progress = 0.
-        self.sequence = _("Idle") # find better
-
     def start(self):
         """ Start pano shooting.
         """
@@ -268,9 +257,10 @@ class Shooting(object):
             """
             if self.__pause:
                 Logger().info("Pause")
-                self.sequence = _("Idle")
+                self.pausedSignal.emit()
                 while self.__pause:
                     time.sleep(0.1)
+                self.resumedSignal.emit()
                 Logger().info("Resume")
             if self.__stop:
                 Logger().info("Stop")
@@ -316,7 +306,8 @@ class Shooting(object):
         self.__stop = False
         self.__pause = False
         self.__shooting = True
-        #self.startEvent.set() # does not work under maemo
+        self.updateInfoSignal.emit({'progress': 0.})
+        self.startedSignal.emit()
 
         # Loop over all positions
         if self.mode == 'mosaic':
@@ -333,10 +324,12 @@ class Shooting(object):
 
                     Logger().info("Moving")
                     self.sequence = _("Moving")
+                    self.updateInfoSignal.emit({'sequence': self.sequence})
                     self.hardware.gotoPosition(yaw, pitch)
 
                     Logger().info("Stabilization")
                     self.sequence = _("Stabilizing")
+                    self.updateInfoSignal.emit({'sequence': self.sequence})
                     time.sleep(self.stabilizationDelay)
 
                     # Test manual shooting flag
@@ -350,7 +343,6 @@ class Shooting(object):
                     # If a new shooting position has been requested (from the view),
                     # we force a new iteration to get the new position
                     if self.__forceNewShootingIndex:
-                        self.__forceNewShootingIndex = False
                         continue
 
                     # Camera shutter cycle
@@ -359,13 +351,15 @@ class Shooting(object):
                         # Mirror lockup sequence
                         if self.camera.mirrorLockup:
                             Logger().info("Mirror lockup")
-                            self.sequence = _("Mirror lockup")
+                            sequence = _("Mirror lockup")
+                            self.updateInfoSignal.emit({'sequence': sequence})
                             self.hardware.shoot(self.stabilizationDelay)
 
                         # Shoot
                         Logger().info("Shooting")
                         Logger().debug("Shooting.start(): shooting %d/%d" % (bracket + 1, self.camera.bracketingNbPicts))
-                        self.sequence = _("Shooting %d/%d") % (bracket + 1, self.camera.bracketingNbPicts)
+                        sequence = _("Shooting %d/%d") % (bracket + 1, self.camera.bracketingNbPicts)
+                        self.updateInfoSignal.emit({'sequence': sequence})
                         self.hardware.shoot(self.camera.timeValue)
 
                         # Add image to the xml data file
@@ -373,7 +367,7 @@ class Shooting(object):
 
                     # Update global shooting progression
                     progressFraction = float(index) / float(self.__scan.totalNbPicts)
-                    self.progress = progressFraction
+                    self.updateInfoSignal.emit({'progress': progressFraction})
                     self.newPictSignal.emit(yaw, pitch, status='ok', next=True)
 
                     # Test manual shooting flag
@@ -393,7 +387,7 @@ class Shooting(object):
                     Logger().warning("Shooting.start(): position (yaw=%.1f, pitch=%.1f) out of limits" % (yaw, pitch))
 
                     progressFraction = float(index) / float(self.__scan.totalNbPicts)
-                    self.progress = progressFraction
+                    self.updateInfoSignal.emit({'progress': progressFraction})
                     self.newPictSignal.emit(yaw, pitch, status='error', next=True)
 
                     # Test manual shooting flag
@@ -409,17 +403,18 @@ class Shooting(object):
 
         except StopIteration:
             Logger().debug("Shooting.start(): stop detected")
-            self.sequence = _("Canceled")
+            status = 'cancel'
             Logger().warning("Shoot process canceled")
         except:
             Logger().exception("Shooting.start()")
-            self.error = True
+            status = 'fail'
             Logger().error("Shoot process failed")
         else:
-            self.sequence = _("Finished")
+            status = 'ok'
             Logger().info("Shoot process finished")
 
         self.__shooting = False
+        self.stoppedSignal.emit(status)
 
     def isShooting(self):
         """ Test if shooting is running.
@@ -463,8 +458,6 @@ class Shooting(object):
         Save values to preferences.
         """
         Logger().trace("Shooting.shutdown()")
-        #self.realHardware.shutdown()
-        #self.simulatedHardware.shutdown()
         self.hardware.shutdown()
         self.camera.shutdown()
         ConfigManager().save()
