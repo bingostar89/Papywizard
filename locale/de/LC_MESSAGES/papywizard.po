@@ -7,46 +7,32 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-06 19:31+0100\n"
-"PO-Revision-Date: 2008-11-06 19:32+0100\n"
-"Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
+"POT-Creation-Date: 2008-11-23 20:42+0100\n"
+"PO-Revision-Date: 2008-11-24 22:40+0100\n"
+"Last-Translator: Jo Lutum <jo.lutum@lycos.de>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: papywizard/model/shooting.py:97
-#: papywizard/model/shooting.py:237
-#: papywizard/model/shooting.py:247
-msgid "Idle"
-msgstr "Warte"
-
-#: papywizard/model/shooting.py:306
+#: papywizard/model/shooting.py:326
 msgid "Moving"
 msgstr "Kopf fährt"
 
-#: papywizard/model/shooting.py:313
+#: papywizard/model/shooting.py:331
 msgid "Stabilizing"
 msgstr "Stabilizing"
 
-#: papywizard/model/shooting.py:326
-#: tmp/configDialog.glade.h:22
+#: papywizard/model/shooting.py:354
+#: tmp/configDialog.glade.h:23
 msgid "Mirror lockup"
 msgstr "Spiegelverriegelung"
 
-#: papywizard/model/shooting.py:331
+#: papywizard/model/shooting.py:361
 #, python-format
 msgid "Shooting %d/%d"
 msgstr "Aufnahme %d/%d"
-
-#: papywizard/model/shooting.py:359
-msgid "Canceled"
-msgstr "Abgebrochen"
-
-#: papywizard/model/shooting.py:366
-msgid "Finished"
-msgstr "Beendet"
 
 #: papywizard/hardware/bluetoothDriver.py:112
 msgid "BluetoothDriver not initialized"
@@ -66,45 +52,86 @@ msgstr "Serieller Treiber nicht initialisiert"
 msgid "Timeout while reading on serial bus"
 msgstr "Timeout bei seriellem Lesevorgang"
 
-#: papywizard/controller/shootController.py:249
+#: papywizard/controller/shootController.py:386
 msgid "Resume"
 msgstr "Fortsetzen"
 
-#: papywizard/controller/shootController.py:251
-#: papywizard/controller/shootController.py:263
-#: tmp/shootDialog.glade.h:3
+#: papywizard/controller/shootController.py:389
+#: tmp/shootDialog.glade.h:2
+msgid "Idle"
+msgstr "Warte"
+
+#: papywizard/controller/shootController.py:393
+#: tmp/shootDialog.glade.h:4
 msgid "Pause"
 msgstr "Pause"
+
+#: papywizard/controller/shootController.py:400
+msgid "Finished"
+msgstr "Beendet"
+
+#: papywizard/controller/shootController.py:402
+msgid "Canceled"
+msgstr "Abgebrochen"
+
+#: papywizard/controller/shootController.py:404
+msgid "Failed"
+msgstr "Fehlgeschlagen"
 
 #: papywizard/controller/bluetoothChooserController.py:176
 msgid "Can't scan bluetooth"
 msgstr "Bluetooth nicht erkannt"
 
-#: papywizard/controller/mainController.py:492
+#: papywizard/controller/mainController.py:342
+msgid "Manual speed set to slow"
+msgstr "Geschwindigkeit langsam"
+
+#: papywizard/controller/mainController.py:348
+#: papywizard/controller/mainController.py:362
+msgid "Manual speed set to normal"
+msgstr "Geschwindigkeit normal"
+
+#: papywizard/controller/mainController.py:364
+msgid "Fast manual speed"
+msgstr "Geschwindigkeit schnell"
+
+#: papywizard/controller/mainController.py:365
+msgid ""
+"Manual speed set to 'fast'\n"
+"This can be dangerous for the hardware!"
+msgstr ""
+"Geschwindigkeit schnell\n"
+"evtl. gefährlich für Hardware"
+
+#: papywizard/controller/mainController.py:370
+msgid "Manual speed set to fast"
+msgstr "Geschwindigkeit auf schnell gesetzt"
+
+#: papywizard/controller/mainController.py:514
 msgid "Yaw - limit set"
 msgstr "Drehung - Limit setzen"
 
-#: papywizard/controller/mainController.py:498
+#: papywizard/controller/mainController.py:520
 msgid "Yaw + limit set"
 msgstr "Drehung + Limit setzen"
 
-#: papywizard/controller/mainController.py:504
+#: papywizard/controller/mainController.py:526
 msgid "Pitch + limit set"
 msgstr "Neigung + Limit setzen"
 
-#: papywizard/controller/mainController.py:510
+#: papywizard/controller/mainController.py:532
 msgid "Pitch - limit set"
 msgstr "Neigung - Limit setzen"
 
-#: papywizard/controller/mainController.py:515
+#: papywizard/controller/mainController.py:537
 msgid "Limits cleared"
 msgstr "Limits gelöscht"
 
-#: papywizard/controller/mainController.py:542
+#: papywizard/controller/mainController.py:564
 msgid "Wrong shooting mode"
 msgstr "Falscher Aufnahmemodus"
 
-#: papywizard/controller/mainController.py:542
+#: papywizard/controller/mainController.py:565
 msgid ""
 "Can't set shooting mode to 'mosaic'\n"
 "while using 'fisheye' lens type"
@@ -112,67 +139,99 @@ msgstr ""
 "Rastermodus nicht möglich\n"
 "mit Fischaugen-Objektiv"
 
-#: papywizard/controller/mainController.py:560
+#: papywizard/controller/mainController.py:569
+msgid "Wrong camera orientation"
+msgstr "Falsche Ausrichtung der Kamera"
+
+#: papywizard/controller/mainController.py:570
+msgid ""
+"Can't set shooting mode to 'mosaic'\n"
+"while using 'custom' camera orientation"
+msgstr ""
+"Rastermodus nicht möglich\n"
+"mit 'Eigener'-Objektiv-Ausrichtung"
+
+#: papywizard/controller/mainController.py:588
 msgid "Yaw start set from current position"
 msgstr "Aktuelle Position als Dreh-Start gesetzt"
 
-#: papywizard/controller/mainController.py:567
+#: papywizard/controller/mainController.py:595
 msgid "Pitch start set from current position"
 msgstr "Aktuelle Position als Neige-Start gesetzt"
 
-#: papywizard/controller/mainController.py:574
+#: papywizard/controller/mainController.py:602
 msgid "Yaw end set from current position"
 msgstr "Aktuelle Position als Dreh-Ende gesetzt"
 
-#: papywizard/controller/mainController.py:581
+#: papywizard/controller/mainController.py:609
 msgid "Pitch end set from current position"
 msgstr "Aktuelle Position als Neige-Ende gesetzt"
 
-#: papywizard/controller/mainController.py:628
+#: papywizard/controller/mainController.py:646
 msgid "Origin set at current position"
 msgstr "Aktuelle Position als Nullpunkt gesetzt"
 
-#: papywizard/controller/mainController.py:695
+#: papywizard/controller/mainController.py:713
 msgid "Yaw/pitch start set from current position"
 msgstr "Aktuelle Position als Dreh-Neige-Start gesetzt"
 
-#: papywizard/controller/mainController.py:703
+#: papywizard/controller/mainController.py:721
 msgid "Yaw/pitch end set from current position"
 msgstr "Aktuelle Position als Dreh-Neige-Ende gesetzt"
 
-#: papywizard/controller/mainController.py:714
+#: papywizard/controller/mainController.py:732
 msgid "Field of view set to user value"
-msgstr ""
+msgstr "FOV auf Benutzerwert gesetzt"
 
-#: papywizard/controller/mainController.py:725
+#: papywizard/controller/mainController.py:743
 msgid "Number of pictures set to user value"
-msgstr ""
+msgstr "Anzahl Aufnahmen auf Benutzerwert gesetzt"
 
-#: papywizard/controller/mainController.py:784
+#: papywizard/controller/mainController.py:748
+msgid "Opening configuration dialog. Please wait..."
+msgstr "Einstelldialog öffnen. Bitte warten..."
+
+#: papywizard/controller/mainController.py:774
+msgid "Opening shoot dialog. Please wait..."
+msgstr "Aufnahmedialog öffnen. Bitte warten..."
+
+#: papywizard/controller/mainController.py:814
 msgid "Can't import preset file"
-msgstr ""
+msgstr "Datei mit Voreinstellungen kann nicht importiert werden"
 
-#: papywizard/controller/mainController.py:798
+#: papywizard/controller/mainController.py:828
 msgid "Connecting to real hardware..."
 msgstr "Mit Hardware verbinden..."
 
-#: papywizard/controller/mainController.py:821
+#: papywizard/controller/mainController.py:851
 msgid "Now connected to real hardware"
 msgstr "Mit Hardware verbunden"
 
-#: papywizard/controller/mainController.py:824
+#: papywizard/controller/mainController.py:854
 msgid "Can't connect to hardware"
 msgstr "Kann Hardware nicht verbinden"
 
-#: papywizard/controller/mainController.py:836
+#: papywizard/controller/mainController.py:866
 msgid "Now in simulation mode"
 msgstr "Simulationsmodus"
 
-#: papywizard/controller/configController.py:165
+#: papywizard/controller/configController.py:174
+msgid "Wrong value for camera orientation"
+msgstr "Falscher Wert für Kameraausrichtung"
+
+#: papywizard/controller/configController.py:175
+msgid ""
+"Can't set camera orientation to 'custom'\n"
+"while in 'mosaic' mode"
+msgstr ""
+"Kamaraausrichtung 'Eigene' nicht wählbar\n"
+"im Rastermodus"
+
+#: papywizard/controller/configController.py:189
 msgid "Wrong value for lens type"
 msgstr "Falscher Wert für Objektiv-Typ"
 
-#: papywizard/controller/configController.py:165
+#: papywizard/controller/configController.py:190
 msgid ""
 "Can't set lens type to 'fisheye'\n"
 "while in 'mosaic' mode"
@@ -186,25 +245,28 @@ msgstr "Fehler"
 
 #: papywizard/controller/messageController.py:89
 msgid "Warning"
-msgstr ""
+msgstr "Warnung"
 
 #: papywizard/controller/messageController.py:92
+#: tmp/generalInfoDialog.glade.h:3
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 #: tmp/bluetoothChooserDialog.glade.h:1
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: tmp/bluetoothChooserDialog.glade.h:2
-#: tmp/configDialog.glade.h:42
+#: tmp/configDialog.glade.h:43
+#: tmp/generalInfoDialog.glade.h:5
 #: tmp/nbPictsDialog.glade.h:4
 #: tmp/totalFovDialog.glade.h:4
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
 #: tmp/bluetoothChooserDialog.glade.h:3
-#: tmp/configDialog.glade.h:43
+#: tmp/configDialog.glade.h:44
+#: tmp/generalInfoDialog.glade.h:6
 #: tmp/nbPictsDialog.glade.h:5
 #: tmp/totalFovDialog.glade.h:5
 msgid "gtk-ok"
@@ -283,63 +345,69 @@ msgid "Hardware"
 msgstr "Hardware"
 
 #: tmp/configDialog.glade.h:19
+msgid "Head Orientation"
+msgstr "Geräte-Ausrichtung"
+
+#: tmp/configDialog.glade.h:20
 msgid "Inital direction"
 msgstr "Anfangsrichtung"
 
-#: tmp/configDialog.glade.h:20
+#: tmp/configDialog.glade.h:21
 msgid "Lens"
 msgstr "Objektiv"
 
-#: tmp/configDialog.glade.h:21
+#: tmp/configDialog.glade.h:22
 msgid "Logger level"
 msgstr "Logger level"
 
-#: tmp/configDialog.glade.h:23
+#: tmp/configDialog.glade.h:24
 msgid "Misc"
 msgstr "Verschiedenes"
 
 #: tmp/configDialog.glade.h:25
+#: tmp/mainWindow2.glade.h:15
+#: tmp/mainWindow.glade.h:15
+msgid "Mosaic"
+msgstr "Raster"
+
+#: tmp/configDialog.glade.h:27
 msgid "Overlap (%)"
 msgstr "Überlappung (%)"
 
-#: tmp/configDialog.glade.h:26
+#: tmp/configDialog.glade.h:28
 msgid "Sensor coef."
 msgstr "Sensorfaktor"
 
-#: tmp/configDialog.glade.h:27
+#: tmp/configDialog.glade.h:29
 msgid "Sensor ratio"
 msgstr "Sensorverhältnis"
 
-#: tmp/configDialog.glade.h:28
+#: tmp/configDialog.glade.h:30
 msgid "Serial port"
 msgstr "Serieller Anschluss"
 
-#: tmp/configDialog.glade.h:29
+#: tmp/configDialog.glade.h:31
 #: tmp/shootDialog.glade.h:5
 msgid "Shooting"
 msgstr "Aufnahme"
 
-#: tmp/configDialog.glade.h:30
-msgid "Square"
-msgstr "Quadrat"
-
-#: tmp/configDialog.glade.h:31
+#: tmp/configDialog.glade.h:32
 msgid "Stab. delay (sec)"
 msgstr "Stab. Pause (sec)"
 
-#: tmp/configDialog.glade.h:32
+#: tmp/configDialog.glade.h:33
 msgid "Start from"
 msgstr "Start bei"
 
-#: tmp/configDialog.glade.h:33
+#: tmp/configDialog.glade.h:34
 msgid "Time value (sec)"
 msgstr "Zeitwert (sec)"
 
-#: tmp/configDialog.glade.h:34
+#: tmp/configDialog.glade.h:35
 msgid "Type"
 msgstr "Art"
 
-#: tmp/configDialog.glade.h:35
+#: tmp/configDialog.glade.h:36
 msgid ""
 "bluetooth\n"
 "serial\n"
@@ -349,7 +417,7 @@ msgstr ""
 "serial\n"
 "ethernet"
 
-#: tmp/configDialog.glade.h:38
+#: tmp/configDialog.glade.h:39
 msgid ""
 "exposure\n"
 "focus\n"
@@ -361,15 +429,17 @@ msgstr ""
 "Weißabgleich\n"
 "Bewegung"
 
-#: tmp/configDialog.glade.h:44
+#: tmp/configDialog.glade.h:45
 msgid ""
 "portrait\n"
-"landscape"
+"landscape\n"
+"custom"
 msgstr ""
 "Hoch\n"
-"Quer"
+"Quer\n"
+"Eigene"
 
-#: tmp/configDialog.glade.h:46
+#: tmp/configDialog.glade.h:48
 msgid ""
 "rectilinear\n"
 "fisheye"
@@ -377,7 +447,7 @@ msgstr ""
 "Rechtwinklig\n"
 "Fischauge"
 
-#: tmp/configDialog.glade.h:48
+#: tmp/configDialog.glade.h:50
 msgid ""
 "start\n"
 "end"
@@ -385,7 +455,7 @@ msgstr ""
 "Start\n"
 "Ende"
 
-#: tmp/configDialog.glade.h:50
+#: tmp/configDialog.glade.h:52
 msgid ""
 "trace\n"
 "debug\n"
@@ -403,13 +473,37 @@ msgstr ""
 "exception\n"
 "critical"
 
-#: tmp/configDialog.glade.h:57
+#: tmp/configDialog.glade.h:59
+msgid ""
+"up\n"
+"left\n"
+"right\n"
+"down"
+msgstr ""
+"hoch\n"
+"links\n"
+"rechts\n"
+"runter"
+
+#: tmp/configDialog.glade.h:63
 msgid ""
 "yaw\n"
 "pitch"
 msgstr ""
 "Drehung\n"
 "Neigung"
+
+#: tmp/generalInfoDialog.glade.h:1
+msgid "Comment"
+msgstr "Bemerkung"
+
+#: tmp/generalInfoDialog.glade.h:2
+msgid "GPS data"
+msgstr "GPS Daten"
+
+#: tmp/generalInfoDialog.glade.h:4
+msgid "Title"
+msgstr "Titel"
 
 #: tmp/helpAboutDialog.glade.h:1
 msgid "(C) 2007-2008 Frédéric Mantegazza"
@@ -418,8 +512,8 @@ msgstr "(C) 2007-2008 Frédéric Mantegazza"
 #: tmp/helpAboutDialog.glade.h:2
 msgid ""
 "Frédéric Mantegazza (fr)\n"
-"Maciej Dworak (pl)\n"
-"Jo Lutum (de)"
+"Jo Lutum (de)\n"
+"Maciej Dworak (pl)"
 msgstr ""
 "Frédéric Mantegazza (fr)\n"
 "Maciej Dworak (pl)\n"
@@ -580,11 +674,6 @@ msgstr "Import Datei Voreinstellungen"
 msgid "Manual"
 msgstr "Anleitung"
 
-#: tmp/mainWindow2.glade.h:15
-#: tmp/mainWindow.glade.h:15
-msgid "Mosaic"
-msgstr "Raster"
-
 #: tmp/mainWindow2.glade.h:16
 #: tmp/mainWindow.glade.h:16
 msgid "Name"
@@ -652,7 +741,7 @@ msgstr "Start (°)"
 #: tmp/mainWindow.glade.h:29
 #: tmp/totalFovDialog.glade.h:2
 msgid "Total fov (°)"
-msgstr "Gesamt- fov (°)"
+msgstr "Gesamt- FOV (°)"
 
 #: tmp/mainWindow2.glade.h:30
 #: tmp/mainWindow.glade.h:30
@@ -684,13 +773,9 @@ msgstr "Info Voreinstellungen"
 msgid "Data file enable"
 msgstr "Dateiausgabe"
 
-#: tmp/shootDialog.glade.h:2
+#: tmp/shootDialog.glade.h:3
 msgid "Manual shooting"
 msgstr "Manuelle Aufnahme"
-
-#: tmp/shootDialog.glade.h:4
-msgid "Progression..."
-msgstr "Fortschritt..."
 
 #: tmp/shootDialog.glade.h:6
 msgid "Start"
@@ -703,6 +788,11 @@ msgstr "Stop"
 #: tmp/waitBanner.glade.h:1
 msgid "Please wait..."
 msgstr "Bitte warten..."
+
+#~ msgid "Progression..."
+#~ msgstr "Fortschritt..."
+#~ msgid "Square"
+#~ msgstr "Quadrat"
 
 #, fuzzy
 #~ msgid "Yaw number of pictures set to user value"
@@ -805,10 +895,6 @@ msgstr "Bitte warten..."
 #~ msgstr "Drehen +"
 #~ msgid "Move yaw -"
 #~ msgstr "Drehen -"
-#~ msgid "Open configure dialog"
-#~ msgstr "Einstelldialog öffnen"
-#~ msgid "Open shooting dialog"
-#~ msgstr "Aufnahmedialog öffnen"
 #~ msgid "Reset"
 #~ msgstr "Reset"
 #~ msgid "Set pitch end from current position"
