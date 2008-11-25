@@ -82,7 +82,7 @@ PRESET_FILE = "presets.xml"
 USER_PRESET_FILE = os.path.join(USER_CONFIG_DIR, PRESET_FILE)
 USER_GUIDE_URL = "http://trac.gbiloba.org/papywizard/wiki/UserGuide"
 
-# GUI index
+# GUI index for controller
 HEAD_ORIENTATION_INDEX = {'up': 0, 'left': 1, 'right': 2, 'down': 3,
                           0: 'up', 1: 'left', 2: 'right', 3: 'down'}
 CAMERA_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1, 'custom': 2,
@@ -104,6 +104,21 @@ SENSOR_RATIOS_INDEX = {'3:2': 0, '4:3': 1, '5:4': 2,
 
 # Model
 SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3., '5:4': 5./4.}
+
+# View
+SHOOTING_COLOR_SCHEME = {'default': {'background': "#d0d0d0",
+                                     'axis': "#ff8080",
+                                     'head': "#0000ff",
+                                     'border': "#000000",
+                                     'border-next': "#ffffff",
+                                     'preview': "#c0c0c0",
+                                     'skip': "#a0a0a0",
+                                     'ok': "#00ff00",
+                                     'ok-reshoot': "#c0ffc0",
+                                     'error': "#ff0000",
+                                     'error-reshoot': "#ffc0c0"
+                                    }
+                        }
 
 # Logger
 LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"

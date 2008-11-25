@@ -57,6 +57,8 @@ import pygtk
 pygtk.require("2.0")
 import gtk
 
+from papywizard.common import config
+from papywizard.common.configManager import ConfigManager
 from papywizard.common.orderedDict import OrderedDict
 from papywizard.view.imageArea import MosaicImageArea, PresetImageArea
 
@@ -97,32 +99,15 @@ class ShootingArea(gtk.DrawingArea):
         This callback is also the first called when creating the widget.
         """
         #print "ShootingArea._configure_cb()"
+        if not self.gc:
 
-        # Shooting area GC
-        self._gcBackground = gtk.gdk.GC(self.window)
-        self._gcBackground.set_rgb_fg_color(gtk.gdk.color_parse("#d0d0d0"))
-        self._gcAxis = gtk.gdk.GC(self.window)
-        self._gcAxis.set_rgb_fg_color(gtk.gdk.color_parse("#ff8080"))
-        self._gcPosition = gtk.gdk.GC(self.window)
-        self._gcPosition.set_rgb_fg_color(gtk.gdk.color_parse("#0000ff"))
-
-        # ImageArea GC
-        self.gc['border'] = gtk.gdk.GC(self.window)
-        self.gc['border'].set_rgb_fg_color(gtk.gdk.color_parse("#000000"))
-        self.gc['border-next'] = gtk.gdk.GC(self.window)
-        self.gc['border-next'].set_rgb_fg_color(gtk.gdk.color_parse("#ffffff"))
-        self.gc['preview'] = gtk.gdk.GC(self.window)
-        self.gc['preview'].set_rgb_fg_color(gtk.gdk.color_parse("#c0c0c0"))
-        self.gc['skip'] = gtk.gdk.GC(self.window)
-        self.gc['skip'].set_rgb_fg_color(gtk.gdk.color_parse("#a0a0a0"))
-        self.gc['ok'] = gtk.gdk.GC(self.window)
-        self.gc['ok'].set_rgb_fg_color(gtk.gdk.color_parse("#00ff00"))
-        self.gc['ok-reshoot'] = gtk.gdk.GC(self.window)
-        self.gc['ok-reshoot'].set_rgb_fg_color(gtk.gdk.color_parse("#c0ffc0"))
-        self.gc['error'] = gtk.gdk.GC(self.window)
-        self.gc['error'].set_rgb_fg_color(gtk.gdk.color_parse("#ff0000"))
-        self.gc['error-reshoot'] = gtk.gdk.GC(self.window)
-        self.gc['error-reshoot'].set_rgb_fg_color(gtk.gdk.color_parse("#ffc0c0"))
+            # Shooting area GC
+            for key in ('background', 'axis', 'head', 'border', 'border-next', 'preview',
+                        'skip', 'ok', 'ok-reshoot', 'error', 'error-reshoot'):
+                self.gc[key] = gtk.gdk.GC(self.window)
+                schemeName = ConfigManager().get('Preferences', 'SHOOTING_AREA_COLOR_SCHEME')
+                colorStr = config.SHOOTING_COLOR_SCHEME[schemeName][key]
+                self.gc[key].set_rgb_fg_color(gtk.gdk.color_parse(colorStr))
 
         x, y, self._width, self._height = widget.get_allocation()
         self._compute_scale()
@@ -311,7 +296,7 @@ class MosaicArea(ShootingArea):
         #print "MosaicArea._expose_cb()"
 
         # Draw background
-        self.window.draw_rectangle(self._gcBackground, True, 0, 0, self._width, self._height)
+        self.window.draw_rectangle(self.gc['background'], True, 0, 0, self._width, self._height)
 
         # Draw picts
         for image in self._picts.itervalues():
@@ -319,8 +304,8 @@ class MosaicArea(ShootingArea):
 
         # Draw head position
         x, y, w, h = self._compute_head_coordinates(self._yawHead, self._pitchHead)
-        self.window.draw_line(self._gcPosition, 0, y, self._width, y)
-        self.window.draw_line(self._gcPosition, x, 0, x, self._height)
+        self.window.draw_line(self.gc['head'], 0, y, self._width, y)
+        self.window.draw_line(self.gc['head'], x, 0, x, self._height)
 
         return False
 
@@ -457,7 +442,7 @@ class PresetArea(ShootingArea):
     def _expose_cb(self, widget, event):
 
         # Draw background
-        self.window.draw_rectangle(self._gcBackground, True, 0, 0, self._width, self._height)
+        self.window.draw_rectangle(self.gc['background'], True, 0, 0, self._width, self._height)
 
         # Draw 360°x180° area and axis
         xFull = int(round(self._width / 2. - 180 * self._scale))
@@ -465,17 +450,17 @@ class PresetArea(ShootingArea):
         wFull = int(round(360 * self._scale)) - 1
         hFull = int(round(180 * self._scale)) - 1
         ##print "xFull=%.1f, yFull=%.1f, wFull=%.1f, hFull=%.1f" % (xFull, yFull, wFull, hFull)
-        self.window.draw_rectangle(self._gcAxis, False, xFull, yFull, wFull, hFull)
+        self.window.draw_rectangle(self.gc['axis'], False, xFull, yFull, wFull, hFull)
         x1 = 0
         y1 = int(round(self._height / 2.)) + 1
         x2 = self._width
         y2 = y1
-        self.window.draw_line(self._gcAxis, x1, y1, x2, y2)
+        self.window.draw_line(self.gc['axis'], x1, y1, x2, y2)
         x1 = self.__yawMargin
         y1 = 0
         x2 = x1
         y2 = self._height
-        self.window.draw_line(self._gcAxis, x1, y1, x2, y2)
+        self.window.draw_line(self.gc['axis'], x1, y1, x2, y2)
 
         # Draw picts
         for image in self._picts.itervalues():
@@ -483,8 +468,8 @@ class PresetArea(ShootingArea):
 
         # Draw head position
         x, y, w, h = self._compute_head_coordinates(self._yawHead, self._pitchHead)
-        self.window.draw_line(self._gcPosition, 0, y, self._width, y)
-        self.window.draw_line(self._gcPosition, x, 0, x, self._height)
+        self.window.draw_line(self.gc['head'], 0, y, self._width, y)
+        self.window.draw_line(self.gc['head'], x, 0, x, self._height)
 
         return False
 
