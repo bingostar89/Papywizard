@@ -91,7 +91,7 @@ setup(name="papywizard",
       # Debian package for maemo
       section="user/graphics",
       depends="python2.5, python2.5-hildon, python2.5-gtk2",
-      icon="papywizard.png",
+      icon="maemo/papywizard.png",
       cmdclass={'bdist_debian': bdist_debian},
   )
 
