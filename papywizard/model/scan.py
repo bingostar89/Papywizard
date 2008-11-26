@@ -259,88 +259,62 @@ class MosaicScan(AbstractScan):
     #Interface
     def generatePositions(self):
         self._positions = []
-        yawCameraFov = self._model.camera.getYawFov(self._model.cameraOrientation)
-        pitchCameraFov = self._model.camera.getPitchFov(self._model.cameraOrientation)
+        if self.startFrom == 'start':
+            yawStart = self.yawStart
+            pitchStart = self.pitchStart
+            yawEnd = self.yawEnd
+            pitchEnd = self.pitchEnd
+        else:
+            yawStart = self.yawEnd
+            pitchStart = self.pitchEnd
+            yawEnd = self.yawStart
+            pitchEnd = self.pitchStart
         try:
-            yawInc = (self.yawFov - yawCameraFov) / (self.yawNbPicts - 1)
+            yawInc = (yawEnd - yawStart) / (self.yawNbPicts - 1)
         except ZeroDivisionError:
-            yawInc = self.yawFov - yawCameraFov
+            yawInc = yawEnd - yawStart
         try:
-            pitchInc = (self.pitchFov - pitchCameraFov) / (self.pitchNbPicts - 1)
+            pitchInc = (pitchEnd - pitchStart) / (self.pitchNbPicts - 1)
         except ZeroDivisionError:
-            pitchInc = self.pitchFov - pitchCameraFov
-        yawInc *= cmp(self.yawEnd, self.yawStart)
-        pitchInc *= cmp(self.pitchEnd, self.pitchStart)
+            pitchInc = pitchEnd - pitchStart
 
-        yawIndex = 0
-        pitchIndex = 0
-        yawSens = 1
-        pitchSens = 1
+        yaw = yawStart
+        pitch = pitchStart
+        yawIndex = 1
+        pitchIndex = 1
+        yawIndexInc = 1
+        pitchIndexInc = 1
 
-        generate = True
-        while generate:
-            if self.startFrom == "start":
-                yaw = self.yawStart + yawIndex * yawInc
-                pitch = self.pitchStart + pitchIndex * pitchInc
-            elif self.startFrom == "end":
-                yaw = self.yawEnd - yawIndex * yawInc
-                pitch = self.pitchEnd - pitchIndex * pitchInc
-            #Logger().debug("MosaicScan.generatePositions(): yawIndex=%d, pitchIndex=%d, yaw=%.1f, pitch=%.1f" % (yawIndex, pitchIndex, yaw, pitch))
-            self._positions.append((yaw, pitch))
-
-            # Compute next position
-            if self.initialDirection == "yaw":
-                yawIndex += yawSens
-            elif self.initialDirection == "pitch":
-                pitchIndex += pitchSens
-
-            for i in xrange(2):
-                if yawIndex == self.yawNbPicts: # yawSens was 1
-                    if self.initialDirection == "pitch":
-                        generate = False
-                    if self.cr:
-                        yawIndex = 0
-                        yawSens = 1
-                    else:
-                        yawIndex = self.yawNbPicts - 1
-                        yawSens = -1
-                    pitchIndex += pitchSens
-                    continue
-                elif yawIndex == -1:            # yawSens was -1
-                    if self.initialDirection == "pitch":
-                        generate = False
-                    if self.cr:
-                        yawIndex = self.yawNbPicts - 1
-                        yawSens = -1
-                    else:
-                        yawIndex = 0
-                        yawSens = 1
-                    pitchIndex += pitchSens
-                    continue
-
-                if pitchIndex == self.pitchNbPicts: # pitchSens was 1
-                    if self.initialDirection == "yaw":
-                        generate = False
-                    if self.cr:
-                        pitchIndex = 0
-                        pitchSens = 1
-                    else:
-                        pitchIndex = self.pitchNbPicts - 1
-                        pitchSens = -1
-                    yawIndex += yawSens
-                    continue
-                elif pitchIndex == -1:              # pitchSens was -1
-                    if self.initialDirection == "yaw":
-                        generate = False
-                    if self.cr:
-                        pitchIndex = self.pitchNbPicts - 1
-                        pitchSens = -1
-                    else:
-                        pitchIndex = 0
-                        pitchSens = 1
-                    yawIndex += yawSens
-                    continue
-                break
+        if self.initialDirection == 'yaw':
+            for i in xrange(self.pitchNbPicts):
+                for j in xrange(self.yawNbPicts):
+                    self._positions.append((yaw, pitch)) # Add index
+                    yaw += yawInc
+                    yawIndex += yawIndexInc
+                pitch += pitchInc
+                pitchIndex += pitchIndexInc
+                if self.cr:
+                    yaw = yawStart
+                    yawIndex = 1
+                else:
+                    yaw -= yawInc
+                    yawInc *= -1
+                    yawIndexInc *= 1
+        else:
+            for i in xrange(self.yawNbPicts):
+                for j in xrange(self.pitchNbPicts):
+                    self._positions.append((yaw, pitch)) # Add index
+                    pitch += pitchInc
+                    pitchIndex += pitchIndexInc
+                yaw += yawInc
+                yawIndex += yawIndexInc
+                if self.cr:
+                    pitch = pitchStart
+                    pitchIndex = 1
+                else:
+                    pitch -= pitchInc
+                    pitchInc *= -1
+                    pitchIndexInc *= 1
 
 
 class PresetScan(AbstractScan):
