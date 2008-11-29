@@ -325,7 +325,7 @@ class Shooting(object):
 
                     Logger().info("Moving")
                     try:
-                        Logger().debug("Shooting.start(): moving to yaw=%d/%d) pitch=%d/%d" % \
+                        Logger().debug("Shooting.start(): moving to yaw=%d/%d pitch=%d/%d" % \
                                           (yawIndex, self.__scan.yawNbPicts, pitchIndex, self.__scan.pitchNbPicts))
                         self.sequence = _("Moving to yaw=%d/%d pitch=%d/%d" % \
                                           (yawIndex, self.__scan.yawNbPicts, pitchIndex, self.__scan.pitchNbPicts))
