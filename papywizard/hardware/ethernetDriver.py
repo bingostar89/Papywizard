@@ -64,8 +64,8 @@ class EthernetDriver(BusDriver):
     """
     def init(self):
         if not self._init:
-            host = ConfigManager().get('Hardware', 'ETHERNET_HOST')
-            port = ConfigManager().getInt('Hardware', 'ETHERNET_PORT')
+            host = ConfigManager().get('Preferences', 'HARDWARE_ETHERNET_HOST')
+            port = ConfigManager().getInt('Preferences', 'HARDWARE_ETHERNET_PORT')
             Logger().debug("EthernetDriver.init(): trying to connect to %s:%d..." % (host, port))
             try:
                 #import time

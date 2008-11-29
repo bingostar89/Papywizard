@@ -66,7 +66,7 @@ class BluetoothDriver(BusDriver):
     """
     def init(self):
         if not self._init:
-            address = ConfigManager().get('Hardware', 'BLUETOOTH_DEVICE_ADDRESS')
+            address = ConfigManager().get('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS')
             Logger().debug("BluetoothDriver.init(): trying to connect to %s..." % address)
             try:
                 #import time

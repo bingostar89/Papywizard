@@ -114,7 +114,7 @@ class LoggerController(AbstractController):
         Logger().trace("LoggerController.__onSaveButtonClicked()")
         dateTime = time.strftime("%Y-%m-%d_%Hh%Mm%Ss", time.localtime())
         logFileFormat = "papywizard_%s.log" % dateTime
-        logFileName = os.path.join(ConfigManager().get('Data', 'DATA_STORAGE_DIR'), logFileFormat)
+        logFileName = os.path.join(ConfigManager().get('Preferences', 'DATA_STORAGE_DIR'), logFileFormat)
         buffer_ = self.loggerTextview.get_buffer()
         logText = buffer_.get_text(buffer_.get_start_iter(), buffer_.get_end_iter())
         logFile = file(logFileName, 'w')
