@@ -60,15 +60,16 @@ pygtk.require("2.0")
 import gtk
 import gtk.gdk
 import gobject
+import pango
 
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 from papywizard.controller.messageController import ErrorMessageController
 from papywizard.controller.abstractController import AbstractController
-from papywizard.controller.generalInfoController import GeneralInfoController
+#from papywizard.controller.generalInfoController import GeneralInfoController
+from papywizard.controller.configController import ConfigController
 from papywizard.controller.spy import Spy
 from papywizard.view.shootingArea import MosaicArea, PresetArea
-from papywizard.controller.spy import Spy
 
 
 class ShootController(AbstractController):
@@ -78,8 +79,9 @@ class ShootController(AbstractController):
         self._gladeFile = "shootDialog.glade"
         self._signalDict = {"on_rewindButton_clicked": self.__onRewindButtonclicked,
                             "on_forwardButton_clicked": self.__onForwardButtonclicked,
-                            "on_manualShootCheckbutton_toggled": self.__onManualShootCheckbuttonToggled,
-                            "on_dataFileEnableCheckbutton_toggled": self.__onDataFileEnableCheckbuttonToggled,
+                            "on_stepByStepCheckbutton_toggled": self.__onStepByStepCheckbuttonToggled,
+                            "on_dataFileButton_clicked": self.__onDataFileButtonclicked,
+                            "on_timerButton_clicked": self.__onTimerButtonClicked,
                             "on_startButton_clicked": self.__onStartButtonClicked,
                             "on_pauseResumeButton_clicked": self.__onPauseResumeButtonClicked,
                             "on_stopButton_clicked": self.__onStopButtonClicked,
@@ -100,22 +102,37 @@ class ShootController(AbstractController):
                       'Return': gtk.keysyms.Return,
                       'Escape': gtk.keysyms.Escape
                       }
-        
+
         self.__thread = None
 
     def _retreiveWidgets(self):
         super(ShootController, self)._retreiveWidgets()
 
-        hbox = self.wTree.get_widget("hbox")
-        drawingarea = self.wTree.get_widget("drawingarea")
-        drawingarea.destroy()
+        # Load graphical shooting area
+        self.viewport = self.wTree.get_widget("viewport")
         if self._model.mode == 'mosaic':
             self.shootingArea = MosaicArea()
         else:
             self.shootingArea = PresetArea()
-        hbox.pack_start(self.shootingArea)
-        hbox.reorder_child(self.shootingArea, 1)
-        self.shootingArea.set_size_request(450, 150)
+        self.viewport.add(self.shootingArea)
+        self.shootingArea.show()
+
+        self.rewindButton = self.wTree.get_widget("rewindButton")
+        self.forwardButton = self.wTree.get_widget("forwardButton")
+        self.progressbar = self.wTree.get_widget("progressbar")
+        self.stepByStepCheckbutton = self.wTree.get_widget("stepByStepCheckbutton")
+        self.dataFileButton = self.wTree.get_widget("dataFileButton")
+        self.dataFileButtonImage = self.wTree.get_widget("dataFileButtonImage")
+        self.timerButton = self.wTree.get_widget("timerButton")
+        self.timerButtonImage = self.wTree.get_widget("timerButtonImage")
+        self.startButton = self.wTree.get_widget("startButton")
+        self.pauseResumeButton = self.wTree.get_widget("pauseResumeButton")
+        self.pauseResumeLabel = self.wTree.get_widget("pauseResumeLabel")
+        self.pauseResumeImage = self.wTree.get_widget("pauseResumeImage")
+        self.stopButton = self.wTree.get_widget("stopButton")
+        self.doneButton = self.wTree.get_widget("doneButton")
+
+        # Populate shooting area with preview positions
         if self._model.mode == 'mosaic':
 
             # todo: give args in shootingArea.__init__()
@@ -126,7 +143,7 @@ class ShootController(AbstractController):
                                    self._model.camera.getPitchFov(self._model.cameraOrientation),
                                    self._model.mosaic.yawRealOverlap, self._model.mosaic.pitchRealOverlap)
             self._model.mosaic.generatePositions()
-            for index, (yaw, pitch) in self._model.mosaic.iterPositions():
+            for (index, yawIndex, pitchIndex), (yaw, pitch) in self._model.mosaic.iterPositions():
                 self.shootingArea.add_pict(yaw, pitch, status='preview')
         else:
             self.shootingArea.init(440., 220., # visible fov
@@ -135,20 +152,7 @@ class ShootController(AbstractController):
             for index, (yaw, pitch) in self._model.preset.iterPositions():
                 self.shootingArea.add_pict(yaw, pitch, status='preview')
         yaw, pitch = self._model.hardware.readPosition()
-        self.shootingArea.set_current_position(yaw, pitch)
-        self.shootingArea.show()
-
-        self.rewindButton = self.wTree.get_widget("rewindButton")
-        self.forwardButton = self.wTree.get_widget("forwardButton")
-        self.progressbar = self.wTree.get_widget("progressbar")
-        self.manualShootCheckbutton = self.wTree.get_widget("manualShootCheckbutton")
-        self.dataFileEnableCheckbutton = self.wTree.get_widget("dataFileEnableCheckbutton")
-        self.startButton = self.wTree.get_widget("startButton")
-        self.pauseResumeButton = self.wTree.get_widget("pauseResumeButton")
-        self.pauseResumeLabel = self.wTree.get_widget("pauseResumeLabel")
-        self.pauseResumeImage = self.wTree.get_widget("pauseResumeImage")
-        self.stopButton = self.wTree.get_widget("stopButton")
-        self.doneButton = self.wTree.get_widget("doneButton")
+        self.shootingArea.set_current_head_position(yaw, pitch)
 
     def _connectSignals(self):
         super(ShootController, self)._connectSignals()
@@ -157,11 +161,11 @@ class ShootController(AbstractController):
         self.dialog.connect("key-release-event", self.__onKeyReleased)
         self.dialog.connect("delete-event", self.__onDelete)
 
-        self.shootingArea.connect("button-press-event", self.__onButtonPressed)
+        self.shootingArea.connect("button-press-event", self.__onMouseButtonPressed)
         #self.shootingArea.connect("motion-notify-event", self.__onMotionNotify)
 
         Spy().newPosSignal.connect(self.__refreshPos)
-        self._model.newPictSignal.connect(self.__shootingAddPicture)
+        self._model.newPositionSignal.connect(self.__shootingNewPosition)
         self._model.startedSignal.connect(self.__shootingStarted)
         self._model.pausedSignal.connect(self.__shootingPaused)
         self._model.resumedSignal.connect(self.__shootingResumed)
@@ -297,15 +301,15 @@ class ShootController(AbstractController):
 
     def __onDelete(self, widget, event):
         Logger().trace("ShootController.__onDelete()")
-        self.__stopShooting()
+        self.__stopShooting() # Freeze if shooting!
 
-    def __onButtonPressed(self, widget, event):
-        Logger().trace("ShootController.__onButtonPressed()")
+    def __onMouseButtonPressed(self, widget, event):
+        Logger().trace("ShootController.__onMouseButtonPressed()")
         if self._model.isPaused():
             if event.button == 1:
                 index = self.shootingArea.get_selected_image_index(event.x, event.y)
                 if index is not None:
-                    Logger().debug("ShootController.__onButtonPressed(): x=%d, y=%d, index=%d" % (event.x, event.y, index))
+                    Logger().debug("ShootController.__onMouseButtonPressed(): x=%d, y=%d, index=%d" % (event.x, event.y, index))
                     self._model.setShootingIndex(index)
 
     def __onMotionNotify(self, widget, event):
@@ -330,19 +334,25 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__onForwardButtonclicked()")
         self.__forwardShootingPosition()
 
-    def __onManualShootCheckbuttonToggled(self, widget):
-        Logger().trace("ShootController.____onManualShootCheckbuttonToggled()")
-        switch = self.manualShootCheckbutton.get_active()
+    def __onStepByStepCheckbuttonToggled(self, widget):
+        Logger().trace("ShootController.____onStepByStepCheckbuttonToggled()")
+        switch = self.stepByStepCheckbutton.get_active()
         self._model.setManualShoot(switch)
 
-    def __onDataFileEnableCheckbuttonToggled(self, widget):
-        Logger().trace("ShootController.__onDataFileEnableCheckbuttonToggled()")
-        switch = self.dataFileEnableCheckbutton.get_active()
-        ConfigManager().setBoolean('Data', 'DATA_FILE_ENABLE', self.dataFileEnableCheckbutton.get_active())
-        if switch:
-            controller = GeneralInfoController(self, self._model)
-            controller.run()
-            controller.shutdown()
+    def __onDataFileButtonclicked(self, widget):
+        Logger().trace("ShootController.__onDataFileButtonclicked()")
+        controller = ConfigController(self, self._model, self._serializer)
+        controller.notebook.set_current_page(5)
+        response = controller.run()
+        controller.shutdown()
+        self.refreshView()
+
+    def __onTimerButtonClicked(self, widget):
+        controller = ConfigController(self, self._model, self._serializer)
+        controller.notebook.set_current_page(6)
+        response = controller.run()
+        controller.shutdown()
+        self.refreshView()
 
     def __onStartButtonClicked(self, widget):
         Logger().trace("ShootController.__startButtonClicked()")
@@ -364,15 +374,16 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__onDoneButtonClicked()")
 
     # Callback model (all GUI calls must be done via the serializer)
-    def __shootingAddPicture(self, yaw, pitch, status=None, next=False):
-        Logger().trace("ShootController.__shootingAddPicture()")
+    def __shootingNewPosition(self, yaw, pitch, status=None, next=False):
+        Logger().trace("ShootController.__shootingNewPosition()")
         self.shootingArea.add_pict(yaw, pitch, status, next)
         self._serializer.addWork(self.shootingArea.refresh)
 
     def __shootingStarted(self):
         Logger().trace("ShootController.__shootingStarted()")
         self._serializer.addWork(self.shootingArea.clear)
-        self._serializer.addWork(self.dataFileEnableCheckbutton.set_sensitive, False)
+        self._serializer.addWork(self.dataFileButton.set_sensitive, False)
+        self._serializer.addWork(self.timerButton.set_sensitive, False)
         self._serializer.addWork(self.startButton.set_sensitive, False)
         self._serializer.addWork(self.pauseResumeButton.set_sensitive, True)
         self._serializer.addWork(self.stopButton.set_sensitive, True)
@@ -402,7 +413,8 @@ class ShootController(AbstractController):
             self._serializer.addWork(self.progressbar.set_text, _("Canceled"))
         elif status == 'fail':
             self._serializer.addWork(self.progressbar.set_text, _("Failed"))
-        self._serializer.addWork(self.dataFileEnableCheckbutton.set_sensitive, True)
+        self._serializer.addWork(self.dataFileButton.set_sensitive, True)
+        self._serializer.addWork(self.timerButton.set_sensitive, True)
         self._serializer.addWork(self.startButton.set_sensitive, True)
         #self._serializer.addWork(self.pauseResumeLabel.set_text, _("Pause"))
         self._serializer.addWork(self.pauseResumeButton.set_sensitive, False)
@@ -428,7 +440,7 @@ class ShootController(AbstractController):
         @type pitch: float
         """
         Logger().trace("ShootController.__refreshPos()")
-        self.shootingArea.set_current_position(yaw, pitch)
+        self.shootingArea.set_current_head_position(yaw, pitch)
         self._serializer.addWork(self.shootingArea.refresh)
 
     # Helpers
@@ -443,7 +455,7 @@ class ShootController(AbstractController):
             Logger().debug("ShootController.__rewindShootingPosition():new index=%d" % (index - 1))
         except IndexError:
             Logger().exception("ShootController.__rewindShootingPosition()", debug=True)
-        
+
     def __forwardShootingPosition(self):
         """
         """
@@ -457,11 +469,11 @@ class ShootController(AbstractController):
             Logger().exception("ShootController.__forwardShootingPosition()", debug=True)
 
     def __startShooting(self):
-        
+
         # Join previous thread, if any
         if self.__thread is not None:
             self.__thread.join()
-            
+
         # Start new shooting thread
         self.__thread = threading.Thread(target=self._model.start, name="Shooting")
         self.__thread.start()
@@ -481,12 +493,14 @@ class ShootController(AbstractController):
         super(ShootController, self).shutdown()
         if self.__thread is not None:
             self.__thread.join()
-        self._model.newPictSignal.disconnect(self.__shootingAddPicture)
+        self._model.newPositionSignal.disconnect(self.__shootingNewPosition)
         self._model.startedSignal.disconnect(self.__shootingStarted)
         self._model.pausedSignal.disconnect(self.__shootingPaused)
         self._model.resumedSignal.disconnect(self.__shootingResumed)
         self._model.stoppedSignal.disconnect(self.__shootingStopped)
         self._model.updateInfoSignal.disconnect(self.__shootingUpdateInfo)
+        Spy().newPosSignal.disconnect(self.__refreshPos)
 
     def refreshView(self):
-        self.dataFileEnableCheckbutton.set_active(ConfigManager().getBoolean('Data', 'DATA_FILE_ENABLE'))
+        self.dataFileButtonImage.set_sensitive(ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE'))
+        self.timerButtonImage.set_sensitive(ConfigManager().getBoolean('Preferences', 'TIMER_EVERY_ENABLE'))
