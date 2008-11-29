@@ -87,7 +87,7 @@ class Shooting(object):
         self.simulatedHardware = simulatedHardware
         self.hardware = self.simulatedHardware
         self.switchToRealHardwareSignal = Signal()
-        self.newPictSignal = Signal()
+        self.newPositionSignal = Signal()
         self.startedSignal = Signal()
         self.resumedSignal = Signal()
         self.pausedSignal = Signal()
@@ -103,10 +103,10 @@ class Shooting(object):
 
     # Properties
     def __getMode(self):
-        return ConfigManager().get('Preferences', 'SHOOTING_MODE')
+        return ConfigManager().get('Main', 'SHOOTING_MODE')
 
     def __setMode(self, mode):
-        ConfigManager().set('Preferences', 'SHOOTING_MODE', mode)
+        ConfigManager().set('Main', 'SHOOTING_MODE', mode)
 
     mode = property(__getMode, __setMode)
 
@@ -316,14 +316,22 @@ class Shooting(object):
             self.__scan = self.preset
         try:
             Logger().info("Starting shoot process...")
-            for index, (yaw, pitch) in self.__scan.iterPositions():
+            for index, (yaw, pitch) in self.__scan.iterPositions(): # Use while True + getCurrentPosition()?
                 try:
-                    Logger().debug("Shooting.start(): goto index=%d, yaw=%.1f pitch=%.1f" % (index, yaw, pitch))
+                    if isinstance(index, tuple):
+                        index, yawIndex, pitchIndex = index
                     self.__forceNewShootingIndex = False
-                    self.newPictSignal.emit(yaw, pitch, next=True)
+                    self.newPositionSignal.emit(yaw, pitch, next=True) # Add index(es)
 
                     Logger().info("Moving")
-                    self.sequence = _("Moving")
+                    try:
+                        Logger().debug("Shooting.start(): moving to yaw=%d/%d) pitch=%d/%d" % \
+                                          (yawIndex, self.__scan.yawNbPicts, pitchIndex, self.__scan.pitchNbPicts))
+                        self.sequence = _("Moving to yaw=%d/%d pitch=%d/%d" % \
+                                          (yawIndex, self.__scan.yawNbPicts, pitchIndex, self.__scan.pitchNbPicts))
+                    except NameError:
+                        Logger().debug("Shooting.start(): moving to %d/%d" % (index, self.__scan.totalNbPicts))
+                        self.sequence = _("Moving to %d/%d" % (index, self.__scan.totalNbPicts))
                     self.updateInfoSignal.emit({'sequence': self.sequence})
                     self.hardware.gotoPosition(yaw, pitch)
 
@@ -357,8 +365,18 @@ class Shooting(object):
 
                         # Shoot
                         Logger().info("Shooting")
-                        Logger().debug("Shooting.start(): shooting %d/%d" % (bracket + 1, self.camera.bracketingNbPicts))
-                        sequence = _("Shooting %d/%d") % (bracket + 1, self.camera.bracketingNbPicts)
+                        try:
+                            Logger().debug("Shooting.start(): shooting at yaw=%d/%d pitch=%d/%d bkt=%d/%d" % \
+                                     (yawIndex, self.__scan.yawNbPicts, pitchIndex, self.__scan.pitchNbPicts,
+                                      bracket + 1, self.camera.bracketingNbPicts))
+                            sequence = _("Shooting at yaw=%d/%d pitch=%d/%d bkt=%d/%d") % \
+                                     (yawIndex, self.__scan.yawNbPicts, pitchIndex, self.__scan.pitchNbPicts,
+                                      bracket + 1, self.camera.bracketingNbPicts)
+                        except NameError:
+                            Logger().debug("Shooting.start(): shooting at %d/%d bkt=%d/%d" % \
+                                           (index, self.__scan.totalNbPicts, bracket + 1, self.camera.bracketingNbPicts))
+                            sequence = _("Shooting at %d/%d bkt=%d/%d") % \
+                                     (index, self.__scan.totalNbPicts, bracket + 1, self.camera.bracketingNbPicts)
                         self.updateInfoSignal.emit({'sequence': sequence})
                         self.hardware.shoot(self.camera.timeValue)
 
@@ -368,7 +386,7 @@ class Shooting(object):
                     # Update global shooting progression
                     progressFraction = float(index) / float(self.__scan.totalNbPicts)
                     self.updateInfoSignal.emit({'progress': progressFraction})
-                    self.newPictSignal.emit(yaw, pitch, status='ok', next=True)
+                    self.newPositionSignal.emit(yaw, pitch, status='ok', next=True)
 
                     # Test manual shooting flag
                     if self.__manualShoot and not self.__stop:
@@ -379,7 +397,7 @@ class Shooting(object):
                     checkPauseStop()
                     
                     if not self.__forceNewShootingIndex:
-                        self.newPictSignal.emit(yaw, pitch, status='ok', next=False)
+                        self.newPositionSignal.emit(yaw, pitch, status='ok', next=False)
 
                 except HardwareError:
                     self.hardware.stopAxis()
@@ -388,7 +406,7 @@ class Shooting(object):
 
                     progressFraction = float(index) / float(self.__scan.totalNbPicts)
                     self.updateInfoSignal.emit({'progress': progressFraction})
-                    self.newPictSignal.emit(yaw, pitch, status='error', next=True)
+                    self.newPositionSignal.emit(yaw, pitch, status='error', next=True)
 
                     # Test manual shooting flag
                     if self.__manualShoot and not self.__stop:
@@ -399,7 +417,7 @@ class Shooting(object):
                     checkPauseStop()
                     
                     if not self.__forceNewShootingIndex:
-                        self.newPictSignal.emit(yaw, pitch, status='error', next=False)
+                        self.newPositionSignal.emit(yaw, pitch, status='error', next=False)
 
         except StopIteration:
             Logger().debug("Shooting.start(): stop detected")
