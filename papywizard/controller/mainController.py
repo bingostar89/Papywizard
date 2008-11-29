@@ -93,7 +93,7 @@ class MainController(AbstractController):
         self.__gtkLogStream = gtkLogStream
 
         # Try to autoconnect to real hardware
-        if ConfigManager().getBoolean('Hardware', 'AUTO_CONNECT'):
+        if ConfigManager().getBoolean('Preferences', 'HARDWARE_AUTO_CONNECT'):
             self.hardwareConnectMenuitem.set_active(True)
 
     def _init(self):
@@ -211,8 +211,8 @@ class MainController(AbstractController):
         self.presetCombobox.pack_start(cell, True)
         #self.presetCombobox.add_attribute(cell, 'text', 0)
         self.__populatePresetCombobox()
-        self.yawPosLabel = self.wTree.get_widget("yawPosLabel")
-        self.pitchPosLabel = self.wTree.get_widget("pitchPosLabel")
+        self.yawHeadPosLabel = self.wTree.get_widget("yawHeadPosLabel")
+        self.pitchHeadPosLabel = self.wTree.get_widget("pitchHeadPosLabel")
         self.manualSpeedImage =  self.wTree.get_widget("manualSpeedImage")
         self.yawMovePlusTogglebutton = self.wTree.get_widget("yawMovePlusTogglebutton")
         self.pitchMovePlusTogglebutton = self.wTree.get_widget("pitchMovePlusTogglebutton")
@@ -225,8 +225,8 @@ class MainController(AbstractController):
         self.connectImage = self.wTree.get_widget("connectImage")
 
         # Font
-        self.yawPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.yawHeadPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self.pitchHeadPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
         self.setYawStartButtonLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
         self.setPitchStartButtonLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
         self.setYawEndButtonLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
@@ -753,7 +753,7 @@ class MainController(AbstractController):
         response = controller.run()
         controller.shutdown()
         if response == 0:
-            Logger().setLevel(ConfigManager().get('Logger', 'LOGGER_LEVEL'))
+            Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
             if self.__mosaicInputParam == 'startEnd':
                 pass
             elif self.__mosaicInputParam == 'fov':
@@ -932,5 +932,5 @@ class MainController(AbstractController):
             Logger().warning("Previously selected '%s' preset not found" % self._model.preset.name)
             self.presetCombobox.set_active(0)
 
-        self.yawPosLabel.set_text("%.1f" % self.__yawPos)
-        self.pitchPosLabel.set_text("%.1f" % self.__pitchPos)
+        self.yawHeadPosLabel.set_text("%.1f" % self.__yawPos)
+        self.pitchHeadPosLabel.set_text("%.1f" % self.__pitchPos)
