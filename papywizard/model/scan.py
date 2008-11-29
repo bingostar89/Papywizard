@@ -98,13 +98,7 @@ class AbstractScan(object):
     def iterPositions(self):
         """ Iteration over all shooting positions.
         """
-        self._index = 1
-        while True:
-            try:
-                yield self._index, self._positions[self._index - 1]
-            except IndexError:
-                raise StopIteration
-            self._index += 1
+        raise NotImplementedError
 
     def getPositionIndex(self):
         """ Get the index of the current position position.
@@ -124,6 +118,14 @@ class AbstractScan(object):
             self._index = index - 1 # Next iteration will increase index by 1
         else:
             raise IndexError("index out of range")
+
+    def getPositionAtIndex(self, index):
+        """ Get complete position of the specified index.
+        
+        @param index: index of the next position
+        @type index: int
+        """
+        raise NotImplementedError
 
 
 class MosaicScan(AbstractScan):
@@ -288,7 +290,7 @@ class MosaicScan(AbstractScan):
         if self.initialDirection == 'yaw':
             for i in xrange(self.pitchNbPicts):
                 for j in xrange(self.yawNbPicts):
-                    self._positions.append((yaw, pitch)) # Add index
+                    self._positions.append((yawIndex, pitchIndex, yaw, pitch))
                     yaw += yawInc
                     yawIndex += yawIndexInc
                 pitch += pitchInc
@@ -303,7 +305,7 @@ class MosaicScan(AbstractScan):
         else:
             for i in xrange(self.yawNbPicts):
                 for j in xrange(self.pitchNbPicts):
-                    self._positions.append((yaw, pitch)) # Add index
+                    self._positions.append((yawIndex, pitchIndex, yaw, pitch))
                     pitch += pitchInc
                     pitchIndex += pitchIndexInc
                 yaw += yawInc
@@ -315,6 +317,24 @@ class MosaicScan(AbstractScan):
                     pitch -= pitchInc
                     pitchInc *= -1
                     pitchIndexInc *= 1
+
+    def iterPositions(self):
+        """ Iterate of all positions.
+        
+        yield (index, yawIndex, pitchIndex), (yaw, pitch)
+        """
+        self._index = 1
+        while True:
+            try:
+                yawIndex, pitchIndex, yaw, pitch = self._positions[self._index - 1]
+                yield (self._index, yawIndex, pitchIndex), (yaw, pitch)
+            except IndexError:
+                raise StopIteration
+            self._index += 1
+
+    def getPositionAtIndex(self, index):
+        yawIndex, pitchIndex, yaw, pitch = self._positions[index]
+        return (yawIndex, pitchIndex), (yaw, pitch)
 
 
 class PresetScan(AbstractScan):
@@ -351,3 +371,21 @@ class PresetScan(AbstractScan):
         preset = self.__presets.getByName(self.name)
         Logger().debug("PresetScan.generatePositions(): preset=%s" % preset)
         self._positions = preset.getPositions()
+
+    def iterPositions(self):
+        """ Iteration over all shooting positions.
+        
+        yield index, (yaw, pitch)
+        """
+        self._index = 1
+        while True:
+            try:
+                yaw, pitch = self._positions[self._index - 1]
+                yield self._index, (yaw, pitch)
+            except IndexError:
+                raise StopIteration
+            self._index += 1
+
+    def getPositionAtIndex(self, index):
+        yaw, pitch = self._positions[index]
+        return yaw, pitch
