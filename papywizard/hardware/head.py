@@ -80,11 +80,11 @@ class Head(object):
         the head is switched on.
         Also note that it does not set axis to zero.
         """
-        self.driver = DriverFactory().create(ConfigManager().get('Hardware', 'DRIVER'))
+        self.driver = DriverFactory().create(ConfigManager().get('Preferences', 'HARDWARE_DRIVER'))
         Logger().debug("Head.init(): initializing driver...")
         self.driver.init()
         Logger().debug("Head.init(): driver initialized")
-        if ConfigManager().get('Hardware', 'DRIVER') == 'bluetooth':
+        if ConfigManager().get('Preferences', 'HARDWARE_DRIVER') == 'bluetooth':
             Logger().debug("Head.init(): waiting for bluetooth connection...")
             time.sleep(config.BLUETOOTH_DRIVER_CONNECT_DELAY)
         Logger().debug("Head.init(): initializing axis...")
