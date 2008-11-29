@@ -356,12 +356,12 @@ class PresetScan(AbstractScan):
     def __getName(self):
         """
         """
-        return ConfigManager().get("Preferences", "PRESET_NAME")
+        return ConfigManager().get("Main", "PRESET_NAME")
 
     def __setName(self, name):
         """
         """
-        ConfigManager().set("Preferences", "PRESET_NAME", name)
+        ConfigManager().set("Main", "PRESET_NAME", name)
 
     name = property(__getName, __setName)
 
