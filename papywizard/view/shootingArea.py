@@ -77,7 +77,7 @@ class ShootingArea(gtk.DrawingArea):
                         gtk.gdk.POINTER_MOTION_MASK |
                         gtk.gdk.POINTER_MOTION_HINT_MASK)
 
-        self._picts = OrderedDict()
+        self._pictures = OrderedDict()
         self._width = 300
         self._height = 150
         self.set_size_request(self._width, self._height)
@@ -141,13 +141,13 @@ class ShootingArea(gtk.DrawingArea):
         """
         raise NotImplementedError
 
-    def _change_image_status(self, index):
+    def _change_images_status(self, index):
         """ Set the status of image.
 
         @param index: index of next image to shoot
         @type index: int
         """
-        for i, image in enumerate(self._picts.itervalues()):
+        for i, image in enumerate(self._pictures.itervalues()):
             if i + 1 == index:
                 image.next = True
             else:
@@ -185,7 +185,7 @@ class ShootingArea(gtk.DrawingArea):
         @param pitchCameraFov: pict pitch fov (°)
         @type pitchCameraFov: float
         """
-        self._picts.clear()
+        self._pictures.clear()
         self._yawFov = yawFov
         self._pitchFov = pitchFov
         self._yawCameraFov = yawCameraFov
@@ -204,10 +204,10 @@ class ShootingArea(gtk.DrawingArea):
     def add_pict(self, yaw, pitch, status=None, next=False):
         """ Add a pict at yaw/pitch coordinates.
 
-        @param yaw: pict yaw position (°)
+        @param yaw: yaw pict position (°)
         @type yaw: float
 
-        @param pitch: pict pitch position (°)
+        @param pitch: pitch pict position (°)
         @type pitch: float
 
         @param status: status of the shooting at this position
@@ -223,7 +223,7 @@ class ShootingArea(gtk.DrawingArea):
         """ Clear the shooting area
         """
         #print "ShootingArea.clear()"
-        for image in self._picts.itervalues():
+        for image in self._pictures.itervalues():
             image.status = 'preview'
             image.next = False
         self.refresh()
@@ -231,26 +231,26 @@ class ShootingArea(gtk.DrawingArea):
     def get_selected_image_index(self, x, y):
         """
         """
-        keys = self._picts.keys()
+        keys = self._pictures.keys()
         keys.reverse()
         for i, key in enumerate(keys):
-            index = len(self._picts) - i
-            image = self._picts[key]
+            index = len(self._pictures) - i
+            image = self._pictures[key]
 
             # Click in image
             if image.isCoordsIn(x, y):
                 #print "ShootingArea.get_selected_image(): index=%d, status=%s" % (index , image.status)
-                self._change_image_status(index)
+                self._change_images_status(index)
 
                 return index
 
     def set_selected_image_index(self, index):
         """
         """
-        self._change_image_status(index)
+        self._change_images_status(index)
 
-    def set_current_position(self, yaw, pitch):
-        """ Set the current position.
+    def set_current_head_position(self, yaw, pitch):
+        """ Set the current head position.
         """
         self._yawHead = yaw
         self._pitchHead = pitch
@@ -281,7 +281,7 @@ class MosaicArea(ShootingArea):
         pitchOffset = self.__pitchOffset
         self._compute_offsets()
         if self.__yawOffset != yawOffset or self.__pitchOffset != pitchOffset:
-            for image in self._picts.itervalues():
+            for image in self._pictures.itervalues():
                 yaw = image.yaw
                 pitch = image.pitch
                 x, y, w, h = self._compute_image_coordinates(yaw, pitch)
@@ -299,7 +299,7 @@ class MosaicArea(ShootingArea):
         self.window.draw_rectangle(self.gc['background'], True, 0, 0, self._width, self._height)
 
         # Draw picts
-        for image in self._picts.itervalues():
+        for image in self._pictures.itervalues():
             image.draw()
 
         # Draw head position
@@ -401,7 +401,7 @@ class MosaicArea(ShootingArea):
 
         # Check if image already in list
         try:
-            image = self._picts["%.1f, %.1f" % (yaw, pitch)]
+            image = self._pictures["%.1f, %.1f" % (yaw, pitch)]
             if status is not None:
                 image.status = status
             image.next = next
@@ -409,7 +409,7 @@ class MosaicArea(ShootingArea):
         except KeyError:
             x, y, h, w = None, None, None, None
             image = MosaicImageArea(self, yaw, pitch, x, y, w, h, status)
-            self._picts["%.1f, %.1f" % (yaw, pitch)] = image
+            self._pictures["%.1f, %.1f" % (yaw, pitch)] = image
 
 
 class PresetArea(ShootingArea):
@@ -428,7 +428,7 @@ class PresetArea(ShootingArea):
         pitchMargin = self.__pitchMargin
         self._compute_margins()
         if self.__yawMargin != yawMargin or self.__pitchMargin != pitchMargin:
-            for image in self._picts.itervalues():
+            for image in self._pictures.itervalues():
                 yaw = image.yaw
                 pitch = image.pitch
                 x, y, w, h = self._compute_image_coordinates(yaw, pitch)
@@ -463,7 +463,7 @@ class PresetArea(ShootingArea):
         self.window.draw_line(self.gc['axis'], x1, y1, x2, y2)
 
         # Draw picts
-        for image in self._picts.itervalues():
+        for image in self._pictures.itervalues():
             image.draw()
 
         # Draw head position
@@ -513,7 +513,7 @@ class PresetArea(ShootingArea):
 
         # Check if image already in list
         try:
-            image = self._picts["%.1f, %.1f" % (yaw, pitch)]
+            image = self._pictures["%.1f, %.1f" % (yaw, pitch)]
             if status is not None:
                 image.status = status
             image.next = next
@@ -521,6 +521,6 @@ class PresetArea(ShootingArea):
         except KeyError:
             x, y, w, h = None, None, None, None
             image = PresetImageArea(self, yaw, pitch, x, y, w, h, status)
-            self._picts["%.1f, %.1f" % (yaw, pitch)] = image
+            self._pictures["%.1f, %.1f" % (yaw, pitch)] = image
 
         self.refresh()
