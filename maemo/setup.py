@@ -62,9 +62,11 @@ path = os.path.dirname(__file__)
 sys.path.append(os.path.join(path, os.pardir))
 from papywizard.common import config
 
+VERSION_PACKAGE = 1
+
 
 setup(name="papywizard",
-      version="%s-%d" % (config.VERSION, config.VERSION_PACKAGE),
+      version="%s-%d" % (config.VERSION, VERSION_PACKAGE),
       author="Frederic Mantegazza",
       author_email="frederic.mantegazza@gbiloba.org",
       maintainer="Frederic Mantegazza",

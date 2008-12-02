@@ -68,20 +68,22 @@ import py2exe
 sys.path.append("C:\\Documents and Settings\\fma\\Mes documents\\develop\\papywizard\\trunk")
 from papywizard.common import config
 
+VERSION_PACKAGE = 1
 
-dlls = ["iconv.dll", "intl.dll", "libatk-1.0-0.dll", "libgdk-win32-2.0-0.dll",
-        "libgdk_pixbuf-2.0-0.dll", "libglib-2.0-0.dll", "libgmodule-2.0-0.dll",
-        "libgobject-2.0-0.dll", "libgthread-2.0-0.dll", "libgtk-win32-2.0-0.dll",
-        "libpangocairo-1.0-0.dll", "libcairo-2.dll", "libpango-1.0-0.dll",
-        "libpangowin32-1.0-0.dll"]
+
+dlls_excludes = ["iconv.dll", "intl.dll", "libatk-1.0-0.dll", "libgdk-win32-2.0-0.dll",
+                 "libgdk_pixbuf-2.0-0.dll", "libglib-2.0-0.dll", "libgmodule-2.0-0.dll",
+                 "libgobject-2.0-0.dll", "libgthread-2.0-0.dll", "libgtk-win32-2.0-0.dll",
+                 "libpangocairo-1.0-0.dll", "libcairo-2.dll", "libpango-1.0-0.dll",
+                 "libpangowin32-1.0-0.dll"]
 
 
 class Target:
     def __init__(self, **kw):
         self.__dict__.update(kw)
-        self.version = config.VERSION
+        self.version = "%s-%d" % (config.VERSION, VERSION_PACKAGE)
         self.company_name = ""
-        self.copyright = "(C) 2007-2008 Frédéric Mantegazza"
+        self.copyright = "(c) 2007-2008 Frédéric Mantegazza"
         self.name = ""
 
 
@@ -89,7 +91,7 @@ setup(options={"py2exe": {'compressed': 1,
                           'optimize': 2,
                           'includes': ["atk", "cairo", "pango", "pangocairo", "gobject", "gtk.keysyms"],
                           'excludes': [],
-                          'dll_excludes': dlls,
+                          'dll_excludes': dlls_excludes,
                           'dist_dir': "./dist",
                           'bundle_files': 1}},
       #zipfile = None,
@@ -124,4 +126,3 @@ setup(options={"py2exe": {'compressed': 1,
                   ("share/locale/pl/LC_MESSAGES", ["../locale/pl/LC_MESSAGES/papywizard.mo"]),
                   ("share/locale/de/LC_MESSAGES", ["../locale/de/LC_MESSAGES/papywizard.mo"])]
      )
-
