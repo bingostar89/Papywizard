@@ -211,3 +211,59 @@ def deg2cod(pos):
     """
     return int(pos * config.ENCODER_360 / 360. + config.ENCODER_ZERO)
 
+def hmsToS(h, m, s):
+    """ Convert hours, minutes, seconds to seconds.
+
+    @param h: hours
+    @type h: int
+
+    @param m: minutes
+    @type m: int
+
+    @param s: seconds
+    @type s: int
+
+    @return: seconds
+    @rtype: int
+    """
+    return (h * 60 + m) * 60 + s
+
+def hmsAsStrToS(hhmmss):
+    """ Convert hh:mm:ss to seconds.
+
+    @param hhmmss: hours, minutes and seconds
+    @type hhmmss: str
+
+    @return: seconds
+    @rtype: int
+    """
+    hhmmss = hhmmss.split(':')
+    h = int(hhmmss[0])
+    m = int(hhmmss[1])
+    s = int(hhmmss[2])
+    return hmsToS(h, m, s)
+
+def sToHms(s):
+    """ Convert seconds to hours, minutes, seconds.
+
+    @pram s: seconds
+    @type s: int
+
+    @return: hours, minutes, seconds
+    @rtype: tuple of int
+    """
+    h = int(s / 3600)
+    m = int((s - h * 3600) / 60)
+    s -= (h * 3600 + m * 60)
+    return h, m, s
+
+def sToHmsAsStr(s):
+    """ Convert seconds to hh:mm:ss.
+
+    @pram s: seconds
+    @type s: int
+
+    @return: hours, minutes, seconds
+    @rtype: str
+    """
+    return "%02d:%02d:%02d" % sToHms(s)
