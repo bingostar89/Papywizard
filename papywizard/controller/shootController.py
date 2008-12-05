@@ -117,20 +117,20 @@ class ShootController(AbstractController):
             self.shootingArea = PresetArea()
         self.viewport.add(self.shootingArea)
         self.shootingArea.show()
-        
+
         # Create text shooting area
         self.textShootingArea = gtk.VBox()
         self.position1Label = gtk.Label()
         self.position1Label.modify_font(pango.FontDescription("Arial 18"))
         self.textShootingArea.pack_start(self.position1Label)
-        self.position1Label.set_text("--")
+        #self.position1Label.set_text("")
         self.position2Label = gtk.Label()
         self.position2Label.modify_font(pango.FontDescription("Arial 18"))
         self.textShootingArea.pack_start(self.position2Label)
-        self.position2Label.set_text("")
+        #self.position2Label.set_text("")
         self.repeatLabel = gtk.Label()
         self.repeatLabel.modify_font(pango.FontDescription("Arial 18"))
-        self.repeatLabel.set_text("--")
+        #self.repeatLabel.set_text("")
         self.textShootingArea.pack_start(self.repeatLabel)
         self.textShootingArea.show_all()
 
@@ -410,9 +410,9 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__shootingStarted()")
         self._serializer.addWork(self.shootingArea.clear)
         self._serializer.addWork(self.progressbar.set_fraction, 0.)
-        self._serializer.addWork(self.position1Label.set_text, "--")
+        self._serializer.addWork(self.position1Label.set_text, "")
         self._serializer.addWork(self.position2Label.set_text, "")
-        self._serializer.addWork(self.repeatLabel.set_text, "--")
+        self._serializer.addWork(self.repeatLabel.set_text, "")
         self._serializer.addWork(self.dataFileButton.set_sensitive, False)
         self._serializer.addWork(self.timerButton.set_sensitive, False)
         self._serializer.addWork(self.startButton.set_sensitive, False)
@@ -466,9 +466,10 @@ class ShootController(AbstractController):
 
     def __shootingRepeat(self, repeat):
         Logger().trace("ShootController.__shootingRepeat()")
-        sequenceMessage = _("Repeat #%d of %d") % (repeat, self._model.timerEveryRepeat)
-        #self._serializer.addWork(self.progressbar.set_text, sequenceMessage)
-        self.repeatLabel.set_text(sequenceMessage)
+        if self._model.timerEveryEnable:
+            sequenceMessage = _("Repeat #%d of %d") % (repeat, self._model.timerEveryRepeat)
+            #self._serializer.addWork(self.progressbar.set_text, sequenceMessage)
+            self.repeatLabel.set_text(sequenceMessage)
 
     def __shootingNewPosition(self, index, yaw, pitch, status=None, next=False):
         Logger().trace("ShootController.__shootingNewPosition()")
