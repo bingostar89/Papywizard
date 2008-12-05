@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sat Nov 29 23:51:56 2008 -->
+<!--Generated with glade3 3.4.5 on Thu Dec  4 18:01:23 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="visible">True</property>
@@ -29,6 +29,25 @@
                     <property name="visible">True</property>
                     <property name="spacing">5</property>
                     <child>
+                      <widget class="GtkToggleButton" id="textViewTogglebutton">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="response_id">0</property>
+                        <signal name="toggled" handler="on_textViewTogglebutton_toggled"/>
+                        <child>
+                          <widget class="GtkImage" id="image7">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-justify-fill</property>
+                          </widget>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
                       <widget class="GtkButton" id="rewindButton">
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
@@ -44,7 +63,7 @@
                         </child>
                       </widget>
                       <packing>
-                        <property name="pack_type">GTK_PACK_END</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                   </widget>
@@ -72,6 +91,24 @@
                     <property name="visible">True</property>
                     <property name="spacing">5</property>
                     <child>
+                      <widget class="GtkToggleButton" id="togglebutton1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="response_id">0</property>
+                        <child>
+                          <widget class="GtkImage" id="image8">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-missing-image</property>
+                          </widget>
+                        </child>
+                      </widget>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
                       <widget class="GtkButton" id="forwardButton">
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
@@ -87,7 +124,7 @@
                         </child>
                       </widget>
                       <packing>
-                        <property name="pack_type">GTK_PACK_END</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                   </widget>
