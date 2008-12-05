@@ -63,10 +63,10 @@ import gobject
 import pango
 
 from papywizard.common.loggingServices import Logger
+from papywizard.common.helpers import sToHmsAsStr
 from papywizard.common.configManager import ConfigManager
 from papywizard.controller.messageController import ErrorMessageController
 from papywizard.controller.abstractController import AbstractController
-#from papywizard.controller.generalInfoController import GeneralInfoController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.spy import Spy
 from papywizard.view.shootingArea import MosaicArea, PresetArea
@@ -77,7 +77,8 @@ class ShootController(AbstractController):
     """
     def _init(self):
         self._gladeFile = "shootDialog.glade"
-        self._signalDict = {"on_rewindButton_clicked": self.__onRewindButtonclicked,
+        self._signalDict = {"on_textViewTogglebutton_toggled": self.__onTextViewTogglebuttonToggled,
+                            "on_rewindButton_clicked": self.__onRewindButtonclicked,
                             "on_forwardButton_clicked": self.__onForwardButtonclicked,
                             "on_stepByStepCheckbutton_toggled": self.__onStepByStepCheckbuttonToggled,
                             "on_dataFileButton_clicked": self.__onDataFileButtonclicked,
@@ -116,6 +117,22 @@ class ShootController(AbstractController):
             self.shootingArea = PresetArea()
         self.viewport.add(self.shootingArea)
         self.shootingArea.show()
+        
+        # Create text shooting area
+        self.textShootingArea = gtk.VBox()
+        self.position1Label = gtk.Label()
+        self.position1Label.modify_font(pango.FontDescription("Arial 18"))
+        self.textShootingArea.pack_start(self.position1Label)
+        self.position1Label.set_text("--")
+        self.position2Label = gtk.Label()
+        self.position2Label.modify_font(pango.FontDescription("Arial 18"))
+        self.textShootingArea.pack_start(self.position2Label)
+        self.position2Label.set_text("")
+        self.repeatLabel = gtk.Label()
+        self.repeatLabel.modify_font(pango.FontDescription("Arial 18"))
+        self.repeatLabel.set_text("--")
+        self.textShootingArea.pack_start(self.repeatLabel)
+        self.textShootingArea.show_all()
 
         self.rewindButton = self.wTree.get_widget("rewindButton")
         self.forwardButton = self.wTree.get_widget("forwardButton")
@@ -165,12 +182,17 @@ class ShootController(AbstractController):
         #self.shootingArea.connect("motion-notify-event", self.__onMotionNotify)
 
         Spy().newPosSignal.connect(self.__refreshPos)
-        self._model.newPositionSignal.connect(self.__shootingNewPosition)
         self._model.startedSignal.connect(self.__shootingStarted)
         self._model.pausedSignal.connect(self.__shootingPaused)
         self._model.resumedSignal.connect(self.__shootingResumed)
         self._model.stoppedSignal.connect(self.__shootingStopped)
-        self._model.updateInfoSignal.connect(self.__shootingUpdateInfo)
+        self._model.waitingSignal.connect(self.__shootingWaiting)
+        self._model.beginShootSignal.connect(self.__shootingBeginShoot)
+        self._model.progressSignal.connect(self.__shootingProgress)
+        self._model.repeatSignal.connect(self.__shootingRepeat)
+        self._model.newPositionSignal.connect(self.__shootingNewPosition)
+        self._model.sequenceSignal.connect(self.__shootingSequence)
+        self._model.bracketSignal.connect(self.__shootingBracket)
 
     # Callbacks GTK
     def __onKeyPressed(self, widget, event, *args):
@@ -326,6 +348,15 @@ class ShootController(AbstractController):
             if state & gtk.gdk.BUTTON1_MASK:
                 Logger().debug("ShootController.__onMotionNotify(): drag x=%d, y=%d" % (x, y))
 
+    def __onTextViewTogglebuttonToggled(self, widget):
+        Logger().trace("ShootController.__onTextViewTogglebuttonToggled()")
+        if widget.get_active():
+            self.viewport.remove(self.shootingArea)
+            self.viewport.add(self.textShootingArea)
+        else:
+            self.viewport.remove(self.textShootingArea)
+            self.viewport.add(self.shootingArea)
+
     def __onRewindButtonclicked(self, widget):
         Logger().trace("ShootController.__onRewindButtonclicked()")
         self.__rewindShootingPosition()
@@ -342,14 +373,15 @@ class ShootController(AbstractController):
     def __onDataFileButtonclicked(self, widget):
         Logger().trace("ShootController.__onDataFileButtonclicked()")
         controller = ConfigController(self, self._model, self._serializer)
-        controller.notebook.set_current_page(5)
+        controller.selectPage(5, disable=True)
         response = controller.run()
         controller.shutdown()
         self.refreshView()
 
     def __onTimerButtonClicked(self, widget):
+        Logger().trace("ShootController.__onTimerButtonClicked()")
         controller = ConfigController(self, self._model, self._serializer)
-        controller.notebook.set_current_page(6)
+        controller.selectPage(6, disable=True)
         response = controller.run()
         controller.shutdown()
         self.refreshView()
@@ -374,14 +406,13 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__onDoneButtonClicked()")
 
     # Callback model (all GUI calls must be done via the serializer)
-    def __shootingNewPosition(self, yaw, pitch, status=None, next=False):
-        Logger().trace("ShootController.__shootingNewPosition()")
-        self.shootingArea.add_pict(yaw, pitch, status, next)
-        self._serializer.addWork(self.shootingArea.refresh)
-
     def __shootingStarted(self):
         Logger().trace("ShootController.__shootingStarted()")
         self._serializer.addWork(self.shootingArea.clear)
+        self._serializer.addWork(self.progressbar.set_fraction, 0.)
+        self._serializer.addWork(self.position1Label.set_text, "--")
+        self._serializer.addWork(self.position2Label.set_text, "")
+        self._serializer.addWork(self.repeatLabel.set_text, "--")
         self._serializer.addWork(self.dataFileButton.set_sensitive, False)
         self._serializer.addWork(self.timerButton.set_sensitive, False)
         self._serializer.addWork(self.startButton.set_sensitive, False)
@@ -416,29 +447,69 @@ class ShootController(AbstractController):
         self._serializer.addWork(self.dataFileButton.set_sensitive, True)
         self._serializer.addWork(self.timerButton.set_sensitive, True)
         self._serializer.addWork(self.startButton.set_sensitive, True)
-        #self._serializer.addWork(self.pauseResumeLabel.set_text, _("Pause"))
         self._serializer.addWork(self.pauseResumeButton.set_sensitive, False)
         self._serializer.addWork(self.stopButton.set_sensitive, False)
         self._serializer.addWork(self.doneButton.set_sensitive, True)
-        #self._serializer.addWork(self.rewindButton.set_sensitive, False)
-        #self._serializer.addWork(self.forwardButton.set_sensitive, False)
 
-    def __shootingUpdateInfo(self, info):
-        Logger().debug("ShootController.__shootingUpdateInfo(): info=%s" % info)
-        if info.has_key('sequence'):
-            self._serializer.addWork(self.progressbar.set_text, info['sequence'])
-        elif info.has_key('progress'):
-            self._serializer.addWork(self.progressbar.set_fraction, info['progress'])
+    def __shootingWaiting(self, wait):
+        Logger().trace("ShootController.__shootingRepeat()")
+        sequenceMessage = _("Waiting %s") % sToHmsAsStr(wait)
+        self._serializer.addWork(self.progressbar.set_text, sequenceMessage)
+
+    def __shootingBeginShoot(self):
+        Logger().trace("ShootController.__shootingBeginShoot()")
+        self._serializer.addWork(self.shootingArea.clear)
+
+    def __shootingProgress(self, progress):
+        Logger().trace("ShootController.__shootingProgress()")
+        self._serializer.addWork(self.progressbar.set_fraction, progress)
+
+    def __shootingRepeat(self, repeat):
+        Logger().trace("ShootController.__shootingRepeat()")
+        sequenceMessage = _("Repeat #%d of %d") % (repeat, self._model.timerEveryRepeat)
+        #self._serializer.addWork(self.progressbar.set_text, sequenceMessage)
+        self.repeatLabel.set_text(sequenceMessage)
+
+    def __shootingNewPosition(self, index, yaw, pitch, status=None, next=False):
+        Logger().trace("ShootController.__shootingNewPosition()")
+        if isinstance(index, tuple):
+            index, yawIndex, pitchIndex = index
+            position2 = _("(yaw #%(yawIndex)d of %(yawNbPicts)d, pitch #%(pitchIndex)d of %(pitchNbPicts)d)")
+            positionData = {'totalNbPicts': self._model.mosaic.totalNbPicts,
+                            'yawNbPicts': self._model.mosaic.yawNbPicts,
+                            'pitchNbPicts' : self._model.mosaic.pitchNbPicts}
+            positionData.update({'index': index, 'yawIndex': yawIndex, 'pitchIndex': pitchIndex})
+            self._serializer.addWork(self.position2Label.set_text, "%s" % position2 % positionData)
+        else:
+            positionData = {'totalNbPicts': self._model.preset.totalNbPicts}
+            positionData.update({'index': index})
+        #Logger().debug("ShootController.__shootingNewPosition(): %s" % sequence % sequenceData)
+        position1 = _("Position #%(index)d of %(totalNbPicts)d")
+        self._serializer.addWork(self.position1Label.set_text, "%s" % position1 % positionData)
+        self.shootingArea.add_pict(yaw, pitch, status, next)
+        self._serializer.addWork(self.shootingArea.refresh)
+
+    def __shootingSequence(self, sequence, **kwargs):
+        Logger().trace("ShootController.__shootingSequence()")
+        if sequence == 'moving':
+            self._serializer.addWork(self.progressbar.set_text, _("Moving"))
+        elif sequence == 'stabilization':
+            self._serializer.addWork(self.progressbar.set_text, _("Stabilization"))
+        elif sequence == 'mirror':
+            self._serializer.addWork(self.progressbar.set_text, _("Mirror lockup"))
+        elif sequence == 'shutter':
+            bracket = kwargs['bracket']
+            totalNbPicts = self._model.camera.bracketingNbPicts
+            self._serializer.addWork(self.progressbar.set_text, _("Shutter cycle - Pict #%d of %d") % (bracket, totalNbPicts))
+
+    def __shootingBracket(self, bracket):
+        Logger().trace("ShootController.__shootingBracket()")
+        sequenceData = {'bracket': bracket,
+                        'bracketingNbPicts': self._model.camera.bracketingNbPicts}
+        Logger().debug("ShootController.__shootingBracket(): bracket=%(bracket)d of %(bracketingNbPicts)d" % sequenceData)
+        #self._serializer.addWork(self.textShootingArea.set_text, "%s" % sequence % sequenceData)
 
     def __refreshPos(self, yaw, pitch):
-        """ Refresh position according to new pos.
-
-        @param yaw: yaw axis value
-        @type yaw: float
-
-        @param pitch: pitch axix value
-        @type pitch: float
-        """
         Logger().trace("ShootController.__refreshPos()")
         self.shootingArea.set_current_head_position(yaw, pitch)
         self._serializer.addWork(self.shootingArea.refresh)
@@ -493,14 +564,21 @@ class ShootController(AbstractController):
         super(ShootController, self).shutdown()
         if self.__thread is not None:
             self.__thread.join()
-        self._model.newPositionSignal.disconnect(self.__shootingNewPosition)
+        Spy().newPosSignal.disconnect(self.__refreshPos)
         self._model.startedSignal.disconnect(self.__shootingStarted)
         self._model.pausedSignal.disconnect(self.__shootingPaused)
         self._model.resumedSignal.disconnect(self.__shootingResumed)
         self._model.stoppedSignal.disconnect(self.__shootingStopped)
-        self._model.updateInfoSignal.disconnect(self.__shootingUpdateInfo)
-        Spy().newPosSignal.disconnect(self.__refreshPos)
+        self._model.waitingSignal.disconnect(self.__shootingWaiting)
+        self._model.beginShootSignal.disconnect(self.__shootingBeginShoot)
+        self._model.progressSignal.disconnect(self.__shootingProgress)
+        self._model.repeatSignal.connect(self.__shootingRepeat)
+        self._model.newPositionSignal.disconnect(self.__shootingNewPosition)
+        self._model.sequenceSignal.disconnect(self.__shootingSequence)
+        self._model.bracketSignal.disconnect(self.__shootingBracket)
 
     def refreshView(self):
-        self.dataFileButtonImage.set_sensitive(ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE'))
-        self.timerButtonImage.set_sensitive(ConfigManager().getBoolean('Preferences', 'TIMER_EVERY_ENABLE'))
+        dataFileFlag = ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE')
+        self.dataFileButtonImage.set_sensitive(dataFileFlag)
+        timerFlag = ConfigManager().getBoolean('Preferences', 'TIMER_AFTER_ENABLE') or ConfigManager().getBoolean('Preferences', 'TIMER_EVERY_ENABLE')
+        self.timerButtonImage.set_sensitive(timerFlag)
