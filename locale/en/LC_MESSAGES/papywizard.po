@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-05 11:09+0100\n"
-"PO-Revision-Date: 2008-12-05 11:09+0100\n"
+"POT-Creation-Date: 2008-12-05 13:30+0100\n"
+"PO-Revision-Date: 2008-12-05 13:30+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -34,66 +34,66 @@ msgstr "SerialDriver not initialized"
 msgid "Timeout while reading on serial bus"
 msgstr "Timeout while reading on serial bus"
 
-#: papywizard/controller/shootController.py:428
+#: papywizard/controller/shootController.py:424
 msgid "Resume"
 msgstr "Resume"
 
-#: papywizard/controller/shootController.py:431
+#: papywizard/controller/shootController.py:427
 #: tmp/shootDialog.glade.h:2
 msgid "Idle"
 msgstr "Idle"
 
-#: papywizard/controller/shootController.py:435
+#: papywizard/controller/shootController.py:431
 #: tmp/shootDialog.glade.h:3
 msgid "Pause"
 msgstr "Pause"
 
-#: papywizard/controller/shootController.py:442
+#: papywizard/controller/shootController.py:438
 msgid "Finished"
 msgstr "Finished"
 
-#: papywizard/controller/shootController.py:444
+#: papywizard/controller/shootController.py:440
 msgid "Canceled"
 msgstr "Canceled"
 
-#: papywizard/controller/shootController.py:446
+#: papywizard/controller/shootController.py:442
 msgid "Failed"
 msgstr "Failed"
 
-#: papywizard/controller/shootController.py:456
+#: papywizard/controller/shootController.py:452
 #, python-format
 msgid "Waiting %s"
 msgstr "Waiting %s"
 
-#: papywizard/controller/shootController.py:470
+#: papywizard/controller/shootController.py:466
 #, python-format
 msgid "Repeat %d of %d"
 msgstr "Repeat %d of %d"
 
-#: papywizard/controller/shootController.py:478
+#: papywizard/controller/shootController.py:475
 #, python-format
-msgid "(yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)d)"
-msgstr "(yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)d)"
+msgid "yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)d"
+msgstr "yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)d"
 
-#: papywizard/controller/shootController.py:488
+#: papywizard/controller/shootController.py:484
 #, python-format
 msgid "Position %(index)d of %(totalNbPicts)d"
 msgstr "Position %(index)d of %(totalNbPicts)d"
 
-#: papywizard/controller/shootController.py:496
+#: papywizard/controller/shootController.py:494
 msgid "Moving"
 msgstr "Moving"
 
-#: papywizard/controller/shootController.py:498
+#: papywizard/controller/shootController.py:496
 msgid "Stabilization"
 msgstr "Stabilization"
 
-#: papywizard/controller/shootController.py:500
+#: papywizard/controller/shootController.py:498
 #: tmp/configDialog.glade.h:28
 msgid "Mirror lockup"
 msgstr "Mirror lockup"
 
-#: papywizard/controller/shootController.py:504
+#: papywizard/controller/shootController.py:502
 #, python-format
 msgid "Shutter - Picture %d of %d"
 msgstr "Shutter - Picture %d of %d"

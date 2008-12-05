@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-05 11:09+0100\n"
+"POT-Creation-Date: 2008-12-05 13:30+0100\n"
 "PO-Revision-Date: 2008-11-05 16:33+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -35,68 +35,67 @@ msgstr ""
 msgid "Timeout while reading on serial bus"
 msgstr ""
 
-#: papywizard/controller/shootController.py:428
+#: papywizard/controller/shootController.py:424
 #, fuzzy
 msgid "Resume"
 msgstr "Zresetuj"
 
-#: papywizard/controller/shootController.py:431 tmp/shootDialog.glade.h:2
+#: papywizard/controller/shootController.py:427 tmp/shootDialog.glade.h:2
 msgid "Idle"
 msgstr "Bezczynny"
 
-#: papywizard/controller/shootController.py:435 tmp/shootDialog.glade.h:3
+#: papywizard/controller/shootController.py:431 tmp/shootDialog.glade.h:3
 msgid "Pause"
 msgstr ""
 
-#: papywizard/controller/shootController.py:442
+#: papywizard/controller/shootController.py:438
 msgid "Finished"
 msgstr ""
 
-#: papywizard/controller/shootController.py:444
+#: papywizard/controller/shootController.py:440
 msgid "Canceled"
 msgstr "Anulowano"
 
-#: papywizard/controller/shootController.py:446
+#: papywizard/controller/shootController.py:442
 #, fuzzy
 msgid "Failed"
 msgstr "Plik"
 
-#: papywizard/controller/shootController.py:456
+#: papywizard/controller/shootController.py:452
 #, fuzzy, python-format
 msgid "Waiting %s"
 msgstr "Zacznij od"
 
-#: papywizard/controller/shootController.py:470
+#: papywizard/controller/shootController.py:466
 #, fuzzy, python-format
 msgid "Repeat %d of %d"
 msgstr "Zresetuj"
 
-#: papywizard/controller/shootController.py:478
+#: papywizard/controller/shootController.py:475
 #, python-format
 msgid ""
-"(yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)"
-"d)"
+"yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)d"
 msgstr ""
 
-#: papywizard/controller/shootController.py:488
+#: papywizard/controller/shootController.py:484
 #, python-format
 msgid "Position %(index)d of %(totalNbPicts)d"
 msgstr ""
 
-#: papywizard/controller/shootController.py:496
+#: papywizard/controller/shootController.py:494
 msgid "Moving"
 msgstr "Namierzam"
 
-#: papywizard/controller/shootController.py:498
+#: papywizard/controller/shootController.py:496
 msgid "Stabilization"
 msgstr ""
 
-#: papywizard/controller/shootController.py:500 tmp/configDialog.glade.h:28
+#: papywizard/controller/shootController.py:498 tmp/configDialog.glade.h:28
 #, fuzzy
 msgid "Mirror lockup"
 msgstr "Błąd"
 
-#: papywizard/controller/shootController.py:504
+#: papywizard/controller/shootController.py:502
 #, python-format
 msgid "Shutter - Picture %d of %d"
 msgstr ""
