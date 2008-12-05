@@ -301,7 +301,8 @@ class MosaicScan(AbstractScan):
                 else:
                     yaw -= yawInc
                     yawInc *= -1
-                    yawIndexInc *= 1
+                    yawIndexInc *= -1
+                    yawIndex += yawIndexInc
         else:
             for i in xrange(self.yawNbPicts):
                 for j in xrange(self.pitchNbPicts):
@@ -316,11 +317,12 @@ class MosaicScan(AbstractScan):
                 else:
                     pitch -= pitchInc
                     pitchInc *= -1
-                    pitchIndexInc *= 1
+                    pitchIndexInc *= -1
+                    pitchIndex += pitchIndexInc
 
     def iterPositions(self):
         """ Iterate of all positions.
-        
+
         yield (index, yawIndex, pitchIndex), (yaw, pitch)
         """
         self._index = 1
