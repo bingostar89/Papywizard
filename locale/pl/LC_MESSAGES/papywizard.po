@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-04 22:15+0100\n"
+"POT-Creation-Date: 2008-12-05 11:09+0100\n"
 "PO-Revision-Date: 2008-11-05 16:33+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -66,39 +66,39 @@ msgstr "Plik"
 msgid "Waiting %s"
 msgstr "Zacznij od"
 
-#: papywizard/controller/shootController.py:469
+#: papywizard/controller/shootController.py:470
 #, fuzzy, python-format
-msgid "Repeat #%d of %d"
+msgid "Repeat %d of %d"
 msgstr "Zresetuj"
 
-#: papywizard/controller/shootController.py:477
+#: papywizard/controller/shootController.py:478
 #, python-format
 msgid ""
-"(yaw #%(yawIndex)d of %(yawNbPicts)d, pitch #%(pitchIndex)d of %"
-"(pitchNbPicts)d)"
+"(yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)"
+"d)"
 msgstr ""
 
-#: papywizard/controller/shootController.py:487
+#: papywizard/controller/shootController.py:488
 #, python-format
-msgid "Position #%(index)d of %(totalNbPicts)d"
+msgid "Position %(index)d of %(totalNbPicts)d"
 msgstr ""
 
-#: papywizard/controller/shootController.py:495
+#: papywizard/controller/shootController.py:496
 msgid "Moving"
 msgstr "Namierzam"
 
-#: papywizard/controller/shootController.py:497
+#: papywizard/controller/shootController.py:498
 msgid "Stabilization"
 msgstr ""
 
-#: papywizard/controller/shootController.py:499 tmp/configDialog.glade.h:28
+#: papywizard/controller/shootController.py:500 tmp/configDialog.glade.h:28
 #, fuzzy
 msgid "Mirror lockup"
 msgstr "Błąd"
 
-#: papywizard/controller/shootController.py:503
+#: papywizard/controller/shootController.py:504
 #, python-format
-msgid "Shutter cycle - Pict #%d of %d"
+msgid "Shutter - Picture %d of %d"
 msgstr ""
 
 #: papywizard/controller/bluetoothChooserController.py:176
