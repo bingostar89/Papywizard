@@ -8,7 +8,7 @@ x bug fix
 
 2008-12-04 Version 1.5.1 (dev)
     - improvement of the timer/intervalometer
-    x generate a new data file at each time repeat
+    x generate a new data file at each timer repeat
     + text view for shooting informations
 
 2008-12-01 Version 1.5.0 (dev)
