@@ -7,32 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-23 20:42+0100\n"
-"PO-Revision-Date: 2008-11-23 20:43+0100\n"
+"POT-Creation-Date: 2008-12-04 22:15+0100\n"
+"PO-Revision-Date: 2008-12-04 22:16+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-
-#: papywizard/model/shooting.py:326
-msgid "Moving"
-msgstr "Déplacement"
-
-#: papywizard/model/shooting.py:331
-msgid "Stabilizing"
-msgstr "Stabilisation"
-
-#: papywizard/model/shooting.py:354
-#: tmp/configDialog.glade.h:23
-msgid "Mirror lockup"
-msgstr "Verrouillage miroir"
-
-#: papywizard/model/shooting.py:361
-#, python-format
-msgid "Shooting %d/%d"
-msgstr "Prise de vue %d/%d"
 
 #: papywizard/hardware/bluetoothDriver.py:112
 msgid "BluetoothDriver not initialized"
@@ -52,31 +34,69 @@ msgstr "Driver série non initialisé"
 msgid "Timeout while reading on serial bus"
 msgstr "Timeout de lecture sur bus série"
 
-#: papywizard/controller/shootController.py:386
+#: papywizard/controller/shootController.py:428
 msgid "Resume"
 msgstr "Reprendre"
 
-#: papywizard/controller/shootController.py:389
+#: papywizard/controller/shootController.py:431
 #: tmp/shootDialog.glade.h:2
 msgid "Idle"
 msgstr "Repos"
 
-#: papywizard/controller/shootController.py:393
-#: tmp/shootDialog.glade.h:4
+#: papywizard/controller/shootController.py:435
+#: tmp/shootDialog.glade.h:3
 msgid "Pause"
 msgstr "Suspendre"
 
-#: papywizard/controller/shootController.py:400
+#: papywizard/controller/shootController.py:442
 msgid "Finished"
 msgstr "Terminé"
 
-#: papywizard/controller/shootController.py:402
+#: papywizard/controller/shootController.py:444
 msgid "Canceled"
 msgstr "Annulé"
 
-#: papywizard/controller/shootController.py:404
+#: papywizard/controller/shootController.py:446
 msgid "Failed"
 msgstr "Échoué"
+
+#: papywizard/controller/shootController.py:456
+#, python-format
+msgid "Waiting %s"
+msgstr "Attente %s"
+
+#: papywizard/controller/shootController.py:469
+#, python-format
+msgid "Repeat #%d of %d"
+msgstr "Répétition #%d of %d"
+
+#: papywizard/controller/shootController.py:477
+#, python-format
+msgid "(yaw #%(yawIndex)d of %(yawNbPicts)d, pitch #%(pitchIndex)d of %(pitchNbPicts)d)"
+msgstr "(lacet #%(yawIndex)d of %(yawNbPicts)d, tangage #%(pitchIndex)d of %(pitchNbPicts)d)"
+
+#: papywizard/controller/shootController.py:487
+#, python-format
+msgid "Position #%(index)d of %(totalNbPicts)d"
+msgstr "Position #%(index)d of %(totalNbPicts)d"
+
+#: papywizard/controller/shootController.py:495
+msgid "Moving"
+msgstr "Déplacement"
+
+#: papywizard/controller/shootController.py:497
+msgid "Stabilization"
+msgstr "Stabilisation"
+
+#: papywizard/controller/shootController.py:499
+#: tmp/configDialog.glade.h:28
+msgid "Mirror lockup"
+msgstr "Verrouillage miroir"
+
+#: papywizard/controller/shootController.py:503
+#, python-format
+msgid "Shutter cycle - Pict #%d of %d"
+msgstr "Cycle d'obturation - Image #%d of %d"
 
 #: papywizard/controller/bluetoothChooserController.py:176
 msgid "Can't scan bluetooth"
@@ -215,11 +235,11 @@ msgstr "Impossible de se connecter au matériel"
 msgid "Now in simulation mode"
 msgstr "Maintenant en mode simulation"
 
-#: papywizard/controller/configController.py:174
+#: papywizard/controller/configController.py:236
 msgid "Wrong value for camera orientation"
 msgstr "Mauvaise valeur pour l'orientation de l'appareil"
 
-#: papywizard/controller/configController.py:175
+#: papywizard/controller/configController.py:237
 msgid ""
 "Can't set camera orientation to 'custom'\n"
 "while in 'mosaic' mode"
@@ -227,11 +247,11 @@ msgstr ""
 "Impossible de fixer l'orientation de l'appareil sur 'autre'\n"
 "avec le mode 'mosaïque'"
 
-#: papywizard/controller/configController.py:189
+#: papywizard/controller/configController.py:251
 msgid "Wrong value for lens type"
 msgstr "Mauvais type d'objectif"
 
-#: papywizard/controller/configController.py:190
+#: papywizard/controller/configController.py:252
 msgid ""
 "Can't set lens type to 'fisheye'\n"
 "while in 'mosaic' mode"
@@ -257,7 +277,7 @@ msgid "Bluetooth"
 msgstr "Bluetooth"
 
 #: tmp/bluetoothChooserDialog.glade.h:2
-#: tmp/configDialog.glade.h:43
+#: tmp/configDialog.glade.h:53
 #: tmp/generalInfoDialog.glade.h:5
 #: tmp/nbPictsDialog.glade.h:4
 #: tmp/totalFovDialog.glade.h:4
@@ -265,7 +285,7 @@ msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
 #: tmp/bluetoothChooserDialog.glade.h:3
-#: tmp/configDialog.glade.h:44
+#: tmp/configDialog.glade.h:54
 #: tmp/generalInfoDialog.glade.h:6
 #: tmp/nbPictsDialog.glade.h:5
 #: tmp/totalFovDialog.glade.h:5
@@ -283,131 +303,175 @@ msgstr ""
 "5:4"
 
 #: tmp/configDialog.glade.h:4
+msgid ":"
+msgstr ":"
+
+#: tmp/configDialog.glade.h:5
 msgid "Auto-connect"
 msgstr "Connection automatique"
 
-#: tmp/configDialog.glade.h:5
+#: tmp/configDialog.glade.h:6
 msgid "BT device address"
 msgstr "Adresse interface BT"
 
-#: tmp/configDialog.glade.h:6
+#: tmp/configDialog.glade.h:7
 msgid "Bracketing"
 msgstr "Multi-exposition"
 
-#: tmp/configDialog.glade.h:7
+#: tmp/configDialog.glade.h:8
 msgid "CR"
 msgstr "CR"
 
-#: tmp/configDialog.glade.h:8
+#: tmp/configDialog.glade.h:9
 msgid "Camera"
 msgstr "Appareil"
 
-#: tmp/configDialog.glade.h:9
+#: tmp/configDialog.glade.h:10
 msgid "Camera orientation"
 msgstr "Orientation appareil"
 
-#: tmp/configDialog.glade.h:10
+#: tmp/configDialog.glade.h:11
 msgid "Choose..."
 msgstr "Choisir..."
 
-#: tmp/configDialog.glade.h:11
+#: tmp/configDialog.glade.h:12
+#: tmp/generalInfoDialog.glade.h:1
+msgid "Comment"
+msgstr "Commentaire"
+
+#: tmp/configDialog.glade.h:13
 msgid "Configuration"
 msgstr "Configuration"
 
-#: tmp/configDialog.glade.h:12
-msgid "Data file format"
-msgstr "Format fichier de données"
-
-#: tmp/configDialog.glade.h:13
-msgid "Data storage dir."
-msgstr "Répertoire des données"
-
 #: tmp/configDialog.glade.h:14
+msgid "Data"
+msgstr "Données"
+
+#: tmp/configDialog.glade.h:15
+msgid "Data directory"
+msgstr "Répertoire données"
+
+#: tmp/configDialog.glade.h:16
+#: tmp/shootDialog.glade.h:1
+msgid "Data file"
+msgstr "Fichier données"
+
+#: tmp/configDialog.glade.h:17
 msgid "Data storage directory"
 msgstr "Répertoire des données"
 
-#: tmp/configDialog.glade.h:15
+#: tmp/configDialog.glade.h:18
 msgid "Driver"
 msgstr "Pilote"
 
-#: tmp/configDialog.glade.h:16
+#: tmp/configDialog.glade.h:19
+msgid "Enable"
+msgstr "Actif"
+
+#: tmp/configDialog.glade.h:20
 msgid "Ethernet host/port"
 msgstr "Hôte/IP ethernet"
 
-#: tmp/configDialog.glade.h:17
+#: tmp/configDialog.glade.h:21
 msgid "Focal (mm)"
 msgstr "Focale (mm)"
 
-#: tmp/configDialog.glade.h:18
+#: tmp/configDialog.glade.h:22
+msgid "GPS"
+msgstr "GPS"
+
+#: tmp/configDialog.glade.h:23
 #: tmp/mainWindow2.glade.h:11
 #: tmp/mainWindow.glade.h:11
 msgid "Hardware"
 msgstr "Matériel"
 
-#: tmp/configDialog.glade.h:19
+#: tmp/configDialog.glade.h:24
 msgid "Head Orientation"
 msgstr "Orientation tête"
 
-#: tmp/configDialog.glade.h:20
+#: tmp/configDialog.glade.h:25
 msgid "Inital direction"
 msgstr "Direction initiale"
 
-#: tmp/configDialog.glade.h:21
+#: tmp/configDialog.glade.h:26
 msgid "Lens"
 msgstr "Objectif"
 
-#: tmp/configDialog.glade.h:22
+#: tmp/configDialog.glade.h:27
 msgid "Logger level"
 msgstr "Niveau de log"
 
-#: tmp/configDialog.glade.h:24
+#: tmp/configDialog.glade.h:29
 msgid "Misc"
 msgstr "Divers"
 
-#: tmp/configDialog.glade.h:25
+#: tmp/configDialog.glade.h:30
 #: tmp/mainWindow2.glade.h:15
 #: tmp/mainWindow.glade.h:15
 msgid "Mosaic"
 msgstr "Mosaïque"
 
-#: tmp/configDialog.glade.h:27
+#: tmp/configDialog.glade.h:32
 msgid "Overlap (%)"
 msgstr "Recouvrement (%)"
 
-#: tmp/configDialog.glade.h:28
+#: tmp/configDialog.glade.h:33
+msgid "Repeat"
+msgstr "Répétition"
+
+#: tmp/configDialog.glade.h:34
+msgid "Repeat every"
+msgstr "Répète chaque"
+
+#: tmp/configDialog.glade.h:35
 msgid "Sensor coef."
 msgstr "Coef. capteur"
 
-#: tmp/configDialog.glade.h:29
+#: tmp/configDialog.glade.h:36
 msgid "Sensor ratio"
 msgstr "Ratio capteur"
 
-#: tmp/configDialog.glade.h:30
+#: tmp/configDialog.glade.h:37
 msgid "Serial port"
 msgstr "Port série"
 
-#: tmp/configDialog.glade.h:31
-#: tmp/shootDialog.glade.h:5
+#: tmp/configDialog.glade.h:38
+#: tmp/shootDialog.glade.h:4
 msgid "Shooting"
 msgstr "Prise de vue"
 
-#: tmp/configDialog.glade.h:32
+#: tmp/configDialog.glade.h:39
 msgid "Stab. delay (sec)"
 msgstr "Délai de stab. (s)"
 
-#: tmp/configDialog.glade.h:33
+#: tmp/configDialog.glade.h:40
+msgid "Start after"
+msgstr "Commence après"
+
+#: tmp/configDialog.glade.h:41
 msgid "Start from"
 msgstr "Commence depuis"
 
-#: tmp/configDialog.glade.h:34
+#: tmp/configDialog.glade.h:42
 msgid "Time value (sec)"
 msgstr "Durée d'exposition"
 
-#: tmp/configDialog.glade.h:35
+#: tmp/configDialog.glade.h:43
+#: tmp/shootDialog.glade.h:8
+msgid "Timer"
+msgstr "Timer"
+
+#: tmp/configDialog.glade.h:44
+#: tmp/generalInfoDialog.glade.h:4
+msgid "Title"
+msgstr "Titre"
+
+#: tmp/configDialog.glade.h:45
 msgid "Type"
 msgstr "Type"
 
-#: tmp/configDialog.glade.h:36
+#: tmp/configDialog.glade.h:46
 msgid ""
 "bluetooth\n"
 "serial\n"
@@ -417,7 +481,7 @@ msgstr ""
 "serial\n"
 "ethernet"
 
-#: tmp/configDialog.glade.h:39
+#: tmp/configDialog.glade.h:49
 msgid ""
 "exposure\n"
 "focus\n"
@@ -429,7 +493,7 @@ msgstr ""
 "balance des blancs\n"
 "mouvement"
 
-#: tmp/configDialog.glade.h:45
+#: tmp/configDialog.glade.h:55
 msgid ""
 "portrait\n"
 "landscape\n"
@@ -439,7 +503,7 @@ msgstr ""
 "paysage\n"
 "autre"
 
-#: tmp/configDialog.glade.h:48
+#: tmp/configDialog.glade.h:58
 msgid ""
 "rectilinear\n"
 "fisheye"
@@ -447,7 +511,7 @@ msgstr ""
 "rectilinéaire\n"
 "fisheye"
 
-#: tmp/configDialog.glade.h:50
+#: tmp/configDialog.glade.h:60
 msgid ""
 "start\n"
 "end"
@@ -455,7 +519,7 @@ msgstr ""
 "début\n"
 "fin"
 
-#: tmp/configDialog.glade.h:52
+#: tmp/configDialog.glade.h:62
 msgid ""
 "trace\n"
 "debug\n"
@@ -473,7 +537,7 @@ msgstr ""
 "exception\n"
 "critical"
 
-#: tmp/configDialog.glade.h:59
+#: tmp/configDialog.glade.h:69
 msgid ""
 "up\n"
 "left\n"
@@ -485,7 +549,7 @@ msgstr ""
 "droite\n"
 "bas"
 
-#: tmp/configDialog.glade.h:63
+#: tmp/configDialog.glade.h:73
 msgid ""
 "yaw\n"
 "pitch"
@@ -493,17 +557,9 @@ msgstr ""
 "lacet\n"
 "tanguage"
 
-#: tmp/generalInfoDialog.glade.h:1
-msgid "Comment"
-msgstr "Commentaire"
-
 #: tmp/generalInfoDialog.glade.h:2
 msgid "GPS data"
 msgstr "Données GPS"
-
-#: tmp/generalInfoDialog.glade.h:4
-msgid "Title"
-msgstr "Titre"
 
 #: tmp/helpAboutDialog.glade.h:1
 msgid "(C) 2007-2008 Frédéric Mantegazza"
@@ -606,7 +662,7 @@ msgstr "Enregistrer log"
 
 #: tmp/loggerDialog.glade.h:4
 #: tmp/presetInfoDialog.glade.h:2
-#: tmp/shootDialog.glade.h:8
+#: tmp/shootDialog.glade.h:9
 msgid "gtk-close"
 msgstr "gtk-close"
 
@@ -770,17 +826,13 @@ msgstr "Lacet -"
 msgid "Preset Info"
 msgstr "Information Présélection"
 
-#: tmp/shootDialog.glade.h:1
-msgid "Data file enable"
-msgstr "Fichier données"
-
-#: tmp/shootDialog.glade.h:3
-msgid "Manual shooting"
-msgstr "Déclench. manuel"
-
-#: tmp/shootDialog.glade.h:6
+#: tmp/shootDialog.glade.h:5
 msgid "Start"
 msgstr "Démarrer"
+
+#: tmp/shootDialog.glade.h:6
+msgid "Step-by-step"
+msgstr "Pas-à-pas"
 
 #: tmp/shootDialog.glade.h:7
 msgid "Stop"
@@ -790,6 +842,52 @@ msgstr "Arrêter"
 msgid "Please wait..."
 msgstr "Patienter..."
 
+#~ msgid "Psoition #%(index)d of %(totalNbPicts)d"
+#~ msgstr "Psoition #%(index)d of %(totalNbPicts)d"
+#~ msgid "Position %s - Moving"
+#~ msgstr "Position %s - Déplacement"
+#~ msgid "Position %s - Stabilizing"
+#~ msgstr "Position %s - Stabilisation"
+#~ msgid "Position %s - Mirror lockup"
+#~ msgstr "Position %s - Verrouillage miroir"
+#~ msgid "Position %s"
+#~ msgstr "Position %s"
+#~ msgid "Shooting bkt %(bracket)d/%(bracketingNbPicts)d"
+#~ msgstr "Prise de vue bkt %(bracket)d/%(bracketingNbPicts)d"
+#~ msgid "Restart in %s"
+#~ msgstr "Redémarre dans %s"
+#~ msgid "Start in %02d:%02d:%02d"
+#~ msgstr "Démarre dans %02d:%02d:%02d"
+#~ msgid "Moving to %d/%d (yaw %d/%d, pitch %d/%d)"
+#~ msgstr "Déplacement vers %d/%d (yaw %d/%d, pitch %d/%d)"
+#~ msgid "Moving to %d/%d"
+#~ msgstr "Déplacement vers %d/%d"
+#~ msgid "Shooting at %d/%d (yaw %d/%d, pitch %d/%, bkt %d/%d"
+#~ msgstr "Prise de vue à %d/%d (yaw %d/%d, pitch %d/%d), bkt=%d/%d"
+#~ msgid "Shooting at %d/%d, bkt %d/%d"
+#~ msgstr "Prise de vue à %d/%d, bkt %d/%d"
+#~ msgid "Repeat in %02d:%02d:%02d"
+#~ msgstr "Répète dans %02d:%02d:%02d"
+#~ msgid "Date"
+#~ msgstr "Date"
+#~ msgid "Every"
+#~ msgstr "Répétition"
+#~ msgid "Select time"
+#~ msgstr "Choisir heure"
+#~ msgid "h"
+#~ msgstr "h"
+#~ msgid "m"
+#~ msgstr "m"
+#~ msgid "s"
+#~ msgstr "s"
+#~ msgid "Data file enable"
+#~ msgstr "Fichier données"
+#~ msgid "Intervalometer"
+#~ msgstr "Intervalomètre"
+#~ msgid "Manual shooting"
+#~ msgstr "Déclench. manuel"
+#~ msgid "Data storage dir."
+#~ msgstr "Répertoire des données"
 #~ msgid "Progression..."
 #~ msgstr "Progression..."
 #~ msgid "Square"
@@ -820,8 +918,6 @@ msgstr "Patienter..."
 #~ msgstr "Adc total (°)"
 #~ msgid "    Yaw    "
 #~ msgstr "Lacet"
-#~ msgid "Internal error"
-#~ msgstr "Erreur interne"
 #~ msgid "Invalid configuration"
 #~ msgstr "Configuration invalide"
 #~ msgid "Connection status"
@@ -909,8 +1005,6 @@ msgstr "Patienter..."
 #~ msgstr "Déplacement lacet +"
 #~ msgid "Move yaw -"
 #~ msgstr "Déplacement lacet -"
-#~ msgid "Reset"
-#~ msgstr "Réinitialiser"
 #~ msgid "Set pitch end from current position"
 #~ msgstr "Fixe position fin de tangage depuis position courante"
 #~ msgid "Set pitch start from current position"
@@ -937,8 +1031,6 @@ msgstr "Patienter..."
 #~ msgstr "Suspendre/reprendre la prise de vue"
 #~ msgid "Write data file"
 #~ msgstr "Écrit le fichier de données"
-#~ msgid "Over"
-#~ msgstr "Terminé"
 #~ msgid "Number of pictures"
 #~ msgstr "Nombre de d'images"
 #~ msgid "Not implemented"
