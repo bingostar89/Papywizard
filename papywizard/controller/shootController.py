@@ -121,16 +121,13 @@ class ShootController(AbstractController):
         # Create text shooting area
         self.textShootingArea = gtk.VBox()
         self.position1Label = gtk.Label()
-        self.position1Label.modify_font(pango.FontDescription("Arial 18"))
+        self.position1Label.modify_font(pango.FontDescription("Arial 16"))
         self.textShootingArea.pack_start(self.position1Label)
-        #self.position1Label.set_text("")
         self.position2Label = gtk.Label()
-        self.position2Label.modify_font(pango.FontDescription("Arial 18"))
+        self.position2Label.modify_font(pango.FontDescription("Arial 16"))
         self.textShootingArea.pack_start(self.position2Label)
-        #self.position2Label.set_text("")
         self.repeatLabel = gtk.Label()
-        self.repeatLabel.modify_font(pango.FontDescription("Arial 18"))
-        #self.repeatLabel.set_text("")
+        self.repeatLabel.modify_font(pango.FontDescription("Arial 16"))
         self.textShootingArea.pack_start(self.repeatLabel)
         self.textShootingArea.show_all()
 
@@ -192,7 +189,6 @@ class ShootController(AbstractController):
         self._model.repeatSignal.connect(self.__shootingRepeat)
         self._model.newPositionSignal.connect(self.__shootingNewPosition)
         self._model.sequenceSignal.connect(self.__shootingSequence)
-        self._model.bracketSignal.connect(self.__shootingBracket)
 
     # Callbacks GTK
     def __onKeyPressed(self, widget, event, *args):
@@ -468,14 +464,15 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__shootingRepeat()")
         if self._model.timerRepeatEnable:
             sequenceMessage = _("Repeat %d of %d") % (repeat, self._model.timerRepeat)
-            #self._serializer.addWork(self.progressbar.set_text, sequenceMessage)
-            self.repeatLabel.set_text(sequenceMessage)
+            self._serializer.addWork(self.repeatLabel.set_text, sequenceMessage)
 
     def __shootingNewPosition(self, index, yaw, pitch, status=None, next=False):
         Logger().trace("ShootController.__shootingNewPosition()")
+
+        # Refresh text area
         if isinstance(index, tuple):
             index, yawIndex, pitchIndex = index
-            position2 = _("(yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)d)")
+            position2 = _("yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)d")
             positionData = {'totalNbPicts': self._model.mosaic.totalNbPicts,
                             'yawNbPicts': self._model.mosaic.yawNbPicts,
                             'pitchNbPicts' : self._model.mosaic.pitchNbPicts}
@@ -484,9 +481,10 @@ class ShootController(AbstractController):
         else:
             positionData = {'totalNbPicts': self._model.preset.totalNbPicts}
             positionData.update({'index': index})
-        #Logger().debug("ShootController.__shootingNewPosition(): %s" % sequence % sequenceData)
         position1 = _("Position %(index)d of %(totalNbPicts)d")
         self._serializer.addWork(self.position1Label.set_text, "%s" % position1 % positionData)
+
+        # Refresh graphical area
         self.shootingArea.add_pict(yaw, pitch, status, next)
         self._serializer.addWork(self.shootingArea.refresh)
 
@@ -502,13 +500,6 @@ class ShootController(AbstractController):
             bracket = kwargs['bracket']
             totalNbPicts = self._model.camera.bracketingNbPicts
             self._serializer.addWork(self.progressbar.set_text, _("Shutter - Picture %d of %d") % (bracket, totalNbPicts))
-
-    def __shootingBracket(self, bracket):
-        Logger().trace("ShootController.__shootingBracket()")
-        sequenceData = {'bracket': bracket,
-                        'bracketingNbPicts': self._model.camera.bracketingNbPicts}
-        Logger().debug("ShootController.__shootingBracket(): bracket=%(bracket)d of %(bracketingNbPicts)d" % sequenceData)
-        #self._serializer.addWork(self.textShootingArea.set_text, "%s" % sequence % sequenceData)
 
     def __refreshPos(self, yaw, pitch):
         Logger().trace("ShootController.__refreshPos()")
@@ -576,7 +567,6 @@ class ShootController(AbstractController):
         self._model.repeatSignal.connect(self.__shootingRepeat)
         self._model.newPositionSignal.disconnect(self.__shootingNewPosition)
         self._model.sequenceSignal.disconnect(self.__shootingSequence)
-        self._model.bracketSignal.disconnect(self.__shootingBracket)
 
     def refreshView(self):
         dataFileFlag = ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE')

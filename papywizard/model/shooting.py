@@ -97,12 +97,10 @@ class Shooting(object):
         self.stoppedSignal = Signal()
         self.waitingSignal = Signal()
         self.beginShootSignal = Signal()
-        self.remainingSignal = Signal()
         self.progressSignal = Signal()
         self.repeatSignal = Signal()
         self.newPositionSignal = Signal()
         self.sequenceSignal = Signal()
-        self.bracketSignal = Signal()
 
         # Model
         self.camera = Camera()
