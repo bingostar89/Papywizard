@@ -134,11 +134,11 @@ class ConfigController(AbstractController):
         self.timerAfterMinuteSpinbutton = self.wTree.get_widget("timerAfterMinuteSpinbutton")
         self.timerAfterSecondSpinbutton = self.wTree.get_widget("timerAfterSecondSpinbutton")
         self.timerAfterEnableCheckbutton = self.wTree.get_widget("timerAfterEnableCheckbutton")
+        self.timerRepeatSpinbutton = self.wTree.get_widget("timerRepeatSpinbutton")
+        self.timerRepeatEnableCheckbutton = self.wTree.get_widget("timerRepeatEnableCheckbutton")
         self.timerEveryHourSpinbutton = self.wTree.get_widget("timerEveryHourSpinbutton")
         self.timerEveryMinuteSpinbutton = self.wTree.get_widget("timerEveryMinuteSpinbutton")
         self.timerEverySecondSpinbutton = self.wTree.get_widget("timerEverySecondSpinbutton")
-        self.timerEveryEnableCheckbutton = self.wTree.get_widget("timerEveryEnableCheckbutton")
-        self.timerEveryRepeatSpinbutton = self.wTree.get_widget("timerEveryRepeatSpinbutton")
 
         # Misc page
         self.loggerLevelCombobox = self.wTree.get_widget("loggerLevelCombobox")
@@ -200,12 +200,12 @@ class ConfigController(AbstractController):
         s = self.timerAfterSecondSpinbutton.get_value()
         self._model.timerAfter = hmsToS(h, m, s)
         self._model.timerAfterEnable = self.timerAfterEnableCheckbutton.get_active()
+        self._model.timerRepeat = self.timerRepeatSpinbutton.get_value()
+        self._model.timerRepeatEnable = self.timerRepeatEnableCheckbutton.get_active()
         h = self.timerEveryHourSpinbutton.get_value()
         m = self.timerEveryMinuteSpinbutton.get_value()
         s = self.timerEverySecondSpinbutton.get_value()
         self._model.timerEvery = hmsToS(h, m, s)
-        self._model.timerEveryEnable = self.timerEveryEnableCheckbutton.get_active()
-        self._model.timerEveryRepeat = self.timerEveryRepeatSpinbutton.get_value()
 
         # Misc page
         ConfigManager().set('Preferences', 'LOGGER_LEVEL',
@@ -383,12 +383,12 @@ class ConfigController(AbstractController):
         self.timerAfterMinuteSpinbutton.set_value(m)
         self.timerAfterSecondSpinbutton.set_value(s)
         self.timerAfterEnableCheckbutton.set_active(self._model.timerAfterEnable)
+        self.timerRepeatSpinbutton.set_value(self._model.timerRepeat)
+        self.timerRepeatEnableCheckbutton.set_active(self._model.timerRepeatEnable)
         h, m, s = sToHms(self._model.timerEvery)
         self.timerEveryHourSpinbutton.set_value(h)
         self.timerEveryMinuteSpinbutton.set_value(m)
         self.timerEverySecondSpinbutton.set_value(s)
-        self.timerEveryEnableCheckbutton.set_active(self._model.timerEveryEnable)
-        self.timerEveryRepeatSpinbutton.set_value(self._model.timerEveryRepeat)
 
         # Misc page
         self.loggerLevelCombobox.set_active(config.LOGGER_INDEX[ConfigManager().get('Preferences', 'LOGGER_LEVEL')])

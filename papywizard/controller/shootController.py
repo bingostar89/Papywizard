@@ -466,8 +466,8 @@ class ShootController(AbstractController):
 
     def __shootingRepeat(self, repeat):
         Logger().trace("ShootController.__shootingRepeat()")
-        if self._model.timerEveryEnable:
-            sequenceMessage = _("Repeat #%d of %d") % (repeat, self._model.timerEveryRepeat)
+        if self._model.timerRepeatEnable:
+            sequenceMessage = _("Repeat %d of %d") % (repeat, self._model.timerRepeat)
             #self._serializer.addWork(self.progressbar.set_text, sequenceMessage)
             self.repeatLabel.set_text(sequenceMessage)
 
@@ -475,7 +475,7 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__shootingNewPosition()")
         if isinstance(index, tuple):
             index, yawIndex, pitchIndex = index
-            position2 = _("(yaw #%(yawIndex)d of %(yawNbPicts)d, pitch #%(pitchIndex)d of %(pitchNbPicts)d)")
+            position2 = _("(yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)d)")
             positionData = {'totalNbPicts': self._model.mosaic.totalNbPicts,
                             'yawNbPicts': self._model.mosaic.yawNbPicts,
                             'pitchNbPicts' : self._model.mosaic.pitchNbPicts}
@@ -485,7 +485,7 @@ class ShootController(AbstractController):
             positionData = {'totalNbPicts': self._model.preset.totalNbPicts}
             positionData.update({'index': index})
         #Logger().debug("ShootController.__shootingNewPosition(): %s" % sequence % sequenceData)
-        position1 = _("Position #%(index)d of %(totalNbPicts)d")
+        position1 = _("Position %(index)d of %(totalNbPicts)d")
         self._serializer.addWork(self.position1Label.set_text, "%s" % position1 % positionData)
         self.shootingArea.add_pict(yaw, pitch, status, next)
         self._serializer.addWork(self.shootingArea.refresh)
@@ -501,7 +501,7 @@ class ShootController(AbstractController):
         elif sequence == 'shutter':
             bracket = kwargs['bracket']
             totalNbPicts = self._model.camera.bracketingNbPicts
-            self._serializer.addWork(self.progressbar.set_text, _("Shutter cycle - Pict #%d of %d") % (bracket, totalNbPicts))
+            self._serializer.addWork(self.progressbar.set_text, _("Shutter - Picture %d of %d") % (bracket, totalNbPicts))
 
     def __shootingBracket(self, bracket):
         Logger().trace("ShootController.__shootingBracket()")
@@ -581,5 +581,5 @@ class ShootController(AbstractController):
     def refreshView(self):
         dataFileFlag = ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE')
         self.dataFileButtonImage.set_sensitive(dataFileFlag)
-        timerFlag = ConfigManager().getBoolean('Preferences', 'TIMER_AFTER_ENABLE') or ConfigManager().getBoolean('Preferences', 'TIMER_EVERY_ENABLE')
+        timerFlag = self._model.timerAfterEnable or self._model.timerRepeatEnable
         self.timerButtonImage.set_sensitive(timerFlag)

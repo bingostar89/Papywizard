@@ -186,6 +186,30 @@ class Shooting(object):
 
     timerAfterEnable = property(__getTimerAfterEnable, __setTimerAfterEnable)
 
+    def __getTimerRepeat(self):
+        """
+        """
+        return ConfigManager().getInt('Preferences', 'TIMER_REPEAT')
+
+    def __setTimerRepeat(self, repeat):
+        """
+        """
+        ConfigManager().setInt('Preferences', 'TIMER_REPEAT', repeat)
+
+    timerRepeat = property(__getTimerRepeat, __setTimerRepeat)
+
+    def __getTimerRepeatEnable(self):
+        """
+        """
+        return ConfigManager().getBoolean('Preferences', 'TIMER_REPEAT_ENABLE')
+
+    def __setTimerRepeatEnable(self, flag):
+        """
+        """
+        ConfigManager().setBoolean('Preferences', 'TIMER_REPEAT_ENABLE', flag)
+
+    timerRepeatEnable = property(__getTimerRepeatEnable, __setTimerRepeatEnable)
+
     def __getTimerEvery(self):
         """
         """
@@ -197,30 +221,6 @@ class Shooting(object):
         ConfigManager().set('Preferences', 'TIMER_EVERY', sToHmsAsStr(s))
 
     timerEvery = property(__getTimerEvery, __setTimerEvery)
-
-    def __getTimerEveryEnable(self):
-        """
-        """
-        return ConfigManager().getBoolean('Preferences', 'TIMER_EVERY_ENABLE')
-
-    def __setTimerEveryEnable(self, flag):
-        """
-        """
-        ConfigManager().setBoolean('Preferences', 'TIMER_EVERY_ENABLE', flag)
-
-    timerEveryEnable = property(__getTimerEveryEnable, __setTimerEveryEnable)
-
-    def __getTimerEveryRepeat(self):
-        """
-        """
-        return ConfigManager().getInt('Preferences', 'TIMER_EVERY_REPEAT')
-
-    def __setTimerEveryRepeat(self, repeat):
-        """
-        """
-        ConfigManager().setInt('Preferences', 'TIMER_EVERY_REPEAT', repeat)
-
-    timerEveryRepeat = property(__getTimerEveryRepeat, __setTimerEveryRepeat)
 
     def setStartEndFromFov(self, yawFov, pitchFov):
         """ Set yaw start/end positions from total fov.
@@ -386,8 +386,8 @@ class Shooting(object):
                     remainingTime = self.timerAfter - (time.time() - initialTime)
 
             # Timer repeat
-            if self.timerEveryEnable:
-                numRepeat =  self.timerEveryRepeat
+            if self.timerRepeatEnable:
+                numRepeat =  self.timerRepeat
             else:
                 numRepeat = 1
             for repeat in xrange(1, numRepeat + 1):
