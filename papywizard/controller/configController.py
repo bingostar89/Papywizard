@@ -57,6 +57,7 @@ import gtk
 
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
+from papywizard.common.helpers import hmsAsStrToS, hmsToS, sToHms, sToHmsAsStr
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.messageController import WarningMessageController
@@ -129,10 +130,15 @@ class ConfigController(AbstractController):
         self.dataCommentEntry = self.wTree.get_widget("dataCommentEntry")
 
         # Timer page
+        self.timerAfterHourSpinbutton = self.wTree.get_widget("timerAfterHourSpinbutton")
+        self.timerAfterMinuteSpinbutton = self.wTree.get_widget("timerAfterMinuteSpinbutton")
+        self.timerAfterSecondSpinbutton = self.wTree.get_widget("timerAfterSecondSpinbutton")
+        self.timerAfterEnableCheckbutton = self.wTree.get_widget("timerAfterEnableCheckbutton")
         self.timerEveryHourSpinbutton = self.wTree.get_widget("timerEveryHourSpinbutton")
         self.timerEveryMinuteSpinbutton = self.wTree.get_widget("timerEveryMinuteSpinbutton")
         self.timerEverySecondSpinbutton = self.wTree.get_widget("timerEverySecondSpinbutton")
         self.timerEveryEnableCheckbutton = self.wTree.get_widget("timerEveryEnableCheckbutton")
+        self.timerEveryRepeatSpinbutton = self.wTree.get_widget("timerEveryRepeatSpinbutton")
 
         # Misc page
         self.loggerLevelCombobox = self.wTree.get_widget("loggerLevelCombobox")
@@ -184,15 +190,22 @@ class ConfigController(AbstractController):
         ConfigManager().set('Preferences', 'DATA_STORAGE_DIR', newDir)
         ConfigManager().set('Preferences', 'DATA_FILE_FORMAT', self.dataFileFormatEntry.get_text())
         ConfigManager().setBoolean('Preferences', 'DATA_FILE_ENABLE', bool(self.dataFileEnableCheckbutton.get_active()))
-        self._model.title = self.dataTitleEntry.get_text()
-        self._model.gps = self.dataGpsEntry.get_text()
-        self._model.comment = self.dataCommentEntry.get_text()
+        ConfigManager().set('Preferences', 'DATA_TITLE', self.dataTitleEntry.get_text())
+        ConfigManager().set('Preferences', 'DATA_GPS', self.dataGpsEntry.get_text())
+        ConfigManager().set('Preferences', 'DATA_COMMENT', self.dataCommentEntry.get_text())
 
         # Timer page
-        ConfigManager().setInt('Preferences', 'TIMER_EVERY_HOUR', self.timerEveryHourSpinbutton.get_value())
-        ConfigManager().setInt('Preferences', 'TIMER_EVERY_MINUTE', self.timerEveryMinuteSpinbutton.get_value())
-        ConfigManager().setInt('Preferences', 'TIMER_EVERY_SECOND', self.timerEverySecondSpinbutton.get_value())
-        ConfigManager().setBoolean('Preferences', 'TIMER_EVERY_ENABLE', self.timerEveryEnableCheckbutton.get_active())
+        h = self.timerAfterHourSpinbutton.get_value()
+        m = self.timerAfterMinuteSpinbutton.get_value()
+        s = self.timerAfterSecondSpinbutton.get_value()
+        self._model.timerAfter = hmsToS(h, m, s)
+        self._model.timerAfterEnable = self.timerAfterEnableCheckbutton.get_active()
+        h = self.timerEveryHourSpinbutton.get_value()
+        m = self.timerEveryMinuteSpinbutton.get_value()
+        s = self.timerEverySecondSpinbutton.get_value()
+        self._model.timerEvery = hmsToS(h, m, s)
+        self._model.timerEveryEnable = self.timerEveryEnableCheckbutton.get_active()
+        self._model.timerEveryRepeat = self.timerEveryRepeatSpinbutton.get_value()
 
         # Misc page
         ConfigManager().set('Preferences', 'LOGGER_LEVEL',
@@ -297,13 +310,30 @@ class ConfigController(AbstractController):
                             (address, name))
             self.bluetoothDeviceAddressEntry.set_text(address)
 
-    # Real work
+    # Interface
+    def selectPage(self, pageNum, disable=False):
+        """ Select the specified page.
+
+        @param pageNum: page num
+        @type pageNum: int
+
+        @param disable: if True, disable all other pages
+        @type disable: bool
+        """
+        self.notebook.set_current_page(pageNum)
+        #self.notebook.set_show_tabs(False)
+        for iPage in xrange(self.notebook.get_n_pages()):
+            if pageNum != iPage:
+                page = self.notebook.get_nth_page(iPage)
+                page.set_sensitive(False)
+                label = self.notebook.get_tab_label(page)
+                label.set_sensitive(False)
+
     def refreshView(self):
 
         # Shooting page
         self.headOrientationCombobox.set_active(config.HEAD_ORIENTATION_INDEX[self._model.headOrientation])
         self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[self._model.cameraOrientation])
-        #self.cameraRollSpinbutton.set_value(self._model.cameraRoll)
         self.stabilizationDelaySpinbutton.set_value(self._model.stabilizationDelay)
 
         # Mosaic page
@@ -343,15 +373,22 @@ class ConfigController(AbstractController):
             dataStorageDir = config.DATA_STORAGE_DIR
         self.dataStorageDirFilechooserbutton.set_current_folder(dataStorageDir)
         self.dataFileEnableCheckbutton.set_active(ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE'))
-        self.dataTitleEntry.set_text(self._model.title)
-        self.dataGpsEntry.set_text(self._model.gps)
-        self.dataCommentEntry.set_text(self._model.comment)
+        self.dataTitleEntry.set_text(ConfigManager().get('Preferences', 'DATA_TITLE'))
+        self.dataGpsEntry.set_text(ConfigManager().get('Preferences', 'DATA_GPS'))
+        self.dataCommentEntry.set_text(ConfigManager().get('Preferences', 'DATA_COMMENT'))
 
         # Timer page
-        self.timerEveryHourSpinbutton.set_value(ConfigManager().getInt('Preferences', 'TIMER_EVERY_HOUR'))
-        self.timerEveryMinuteSpinbutton.set_value(ConfigManager().getInt('Preferences', 'TIMER_EVERY_MINUTE'))
-        self.timerEverySecondSpinbutton.set_value(ConfigManager().getInt('Preferences', 'TIMER_EVERY_SECOND'))
-        self.timerEveryEnableCheckbutton.set_active(ConfigManager().getBoolean('Preferences', 'TIMER_EVERY_ENABLE'))
+        h, m, s = sToHms(self._model.timerAfter)
+        self.timerAfterHourSpinbutton.set_value(h)
+        self.timerAfterMinuteSpinbutton.set_value(m)
+        self.timerAfterSecondSpinbutton.set_value(s)
+        self.timerAfterEnableCheckbutton.set_active(self._model.timerAfterEnable)
+        h, m, s = sToHms(self._model.timerEvery)
+        self.timerEveryHourSpinbutton.set_value(h)
+        self.timerEveryMinuteSpinbutton.set_value(m)
+        self.timerEverySecondSpinbutton.set_value(s)
+        self.timerEveryEnableCheckbutton.set_active(self._model.timerEveryEnable)
+        self.timerEveryRepeatSpinbutton.set_value(self._model.timerEveryRepeat)
 
         # Misc page
         self.loggerLevelCombobox.set_active(config.LOGGER_INDEX[ConfigManager().get('Preferences', 'LOGGER_LEVEL')])
