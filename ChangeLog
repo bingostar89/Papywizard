@@ -6,6 +6,11 @@ x bug fix
 
 0000-00-00 Version SVN
 
+2008-12-10 Version 1.5.2 (dev)
+    x fixed bug in yaw/pitch index and repeat
+    - improved shooting text view
+    + add support for user gtkrc style file
+
 2008-12-04 Version 1.5.1 (dev)
     - improvement of the timer/intervalometer
     x generate a new data file at each timer repeat
