@@ -111,6 +111,26 @@ class AbstractController(object):
         """
         self.wTree.signal_autoconnect(self._signalDict)
 
+    def _setFontParams(self, widget, scale=None, weight=None):
+        """ Change the widget font size.
+
+         @param widget: widget to change the font
+         @type widget: {gtk.Widget}
+
+         @param scale: scale for the new font size
+         @type scale: int
+
+         @param weight: new weight
+         @type weight: PangoWeight
+        """
+        context = widget.get_pango_context()
+        font = context.get_font_description()
+        if scale is not None:
+            font.set_size(int(font.get_size() * scale))
+        if weight is not None:
+            font.set_weight(weight)
+        widget.modify_font(font)
+
     def run(self):
         """ Run the dialog.
         """
