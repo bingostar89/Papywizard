@@ -82,7 +82,7 @@ class Shooting(object):
         self.__stop = False
         self.__stepByStep = False
         self.__forceNewShootingIndex = False
-        self.__scan = None
+        #self.__scan = None
 
         # Hardware
         self.realHardware = realHardware
@@ -220,6 +220,16 @@ class Shooting(object):
 
     timerEvery = property(__getTimerEvery, __setTimerEvery)
 
+    def __getScan(self):
+        """
+        """
+        if self.mode == 'mosaic':
+            return self.mosaic
+        else:
+            return self.preset
+
+    scan = property(__getScan)
+
     def setStartEndFromFov(self, yawFov, pitchFov):
         """ Set yaw start/end positions from total fov.
 
@@ -303,16 +313,16 @@ class Shooting(object):
         @return: index of the current shooting position
         @rtype: int
         """
-        index = self.__scan.getPositionIndex()
+        index = self.scan.getPositionIndex()
         if self.__forceNewShootingIndex:
             return index + 1
         else:
             return index
 
-    def setShootingIndex(self, index):
-        """ Set a new shooting sequence index.
+    def setNextPositionIndex(self, index):
+        """ Set the next position index.
         """
-        self.__scan.setPositionIndex(index)
+        self.scan.setNextPositionIndex(index)
         self.__forceNewShootingIndex = True
 
     def start(self):
@@ -361,10 +371,10 @@ class Shooting(object):
                   'sensorRatio': "%s" % self.camera.sensorRatio,
                   'lensType': "%s" % self.camera.lens.type_,
                   'focal': "%.1f" % self.camera.lens.focal}
-        if self.mode == 'mosaic':
-            self.__scan = self.mosaic
-        else:
-            self.__scan = self.preset
+        #if self.mode == 'mosaic':
+            #self.__scan = self.mosaic
+        #else:
+            #self.__scan = self.preset
 
         Logger().info("Starting shoot process...")
         try:
@@ -413,7 +423,7 @@ class Shooting(object):
                 self.repeatSignal.emit(repeat)
 
                 # Loop over all positions
-                for index, (yaw, pitch) in self.__scan.iterPositions(): # Use while True + getCurrentPosition()?
+                for index, (yaw, pitch) in self.scan.iterPositions(): # Use while True + getCurrentPosition()?
                     try:
 
                         Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
@@ -452,7 +462,7 @@ class Shooting(object):
 
                             # Take pictures
                             Logger().info("Shutter cycle")
-                            Logger().debug("Shooting.start(): pict #%d of %d" % (bracket, self.__scan.totalNbPicts))
+                            Logger().debug("Shooting.start(): pict #%d of %d" % (bracket, self.scan.totalNbPicts))
                             #self.bracketSignal.emit(bracket)
                             self.sequenceSignal.emit('shutter', bracket=bracket)
                             self.hardware.shoot(self.camera.timeValue)
@@ -468,7 +478,7 @@ class Shooting(object):
                             index2, yawIndex, pitchIndex = index
                         else:
                             index2 = index
-                        progressFraction = float(index2) / float(self.__scan.totalNbPicts)
+                        progressFraction = float(index2) / float(self.scan.totalNbPicts)
                         self.progressSignal.emit(progressFraction)
                         self.newPositionSignal.emit(index, yaw, pitch, status='ok', next=True)
 
@@ -492,7 +502,7 @@ class Shooting(object):
                             index2, yawIndex, pitchIndex = index
                         else:
                             index2 = index
-                        progressFraction = float(index2) / float(self.__scan.totalNbPicts)
+                        progressFraction = float(index2) / float(self.scan.totalNbPicts)
                         self.newPositionSignal.emit(index, yaw, pitch, status='error', next=True)
 
                         # Test manual shooting flag

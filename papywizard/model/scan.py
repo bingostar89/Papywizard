@@ -108,7 +108,7 @@ class AbstractScan(object):
         """
         return self._index
 
-    def setPositionIndex(self, index):
+    def setNextPositionIndex(self, index):
         """ Set the next position to index.
 
         @param index: index of the next position
@@ -121,11 +121,18 @@ class AbstractScan(object):
 
     def getPositionAtIndex(self, index):
         """ Get complete position of the specified index.
-        
+
         @param index: index of the next position
         @type index: int
         """
         raise NotImplementedError
+
+    #def getCurrentPosition(self):
+        #if self.__forceNewShootingIndex:
+            #index = self._index + 1
+        #else:
+            #index = self._index
+        #return self.getPositionAtIndex(index)
 
 
 class MosaicScan(AbstractScan):
@@ -335,8 +342,8 @@ class MosaicScan(AbstractScan):
             self._index += 1
 
     def getPositionAtIndex(self, index):
-        yawIndex, pitchIndex, yaw, pitch = self._positions[index]
-        return (yawIndex, pitchIndex), (yaw, pitch)
+        yawIndex, pitchIndex, yaw, pitch = self._positions[index - 1]
+        return (index, yawIndex, pitchIndex), (yaw, pitch)
 
 
 class PresetScan(AbstractScan):
@@ -376,7 +383,7 @@ class PresetScan(AbstractScan):
 
     def iterPositions(self):
         """ Iteration over all shooting positions.
-        
+
         yield index, (yaw, pitch)
         """
         self._index = 1
@@ -389,5 +396,5 @@ class PresetScan(AbstractScan):
             self._index += 1
 
     def getPositionAtIndex(self, index):
-        yaw, pitch = self._positions[index]
-        return yaw, pitch
+        yaw, pitch = self._positions[index - 1]
+        return index, (yaw, pitch)

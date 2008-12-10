@@ -121,13 +121,19 @@ class ShootController(AbstractController):
         # Create text shooting area
         self.textShootingArea = gtk.VBox()
         self.position1Label = gtk.Label()
-        self.position1Label.modify_font(pango.FontDescription("Arial 16"))
+        self._setFontParams(self.position1Label, scale=1.2, weight=pango.WEIGHT_BOLD)
         self.textShootingArea.pack_start(self.position1Label)
         self.position2Label = gtk.Label()
-        self.position2Label.modify_font(pango.FontDescription("Arial 16"))
+        self._setFontParams(self.position2Label, 1.2, weight=pango.WEIGHT_BOLD)
         self.textShootingArea.pack_start(self.position2Label)
+        self.next1Label = gtk.Label()
+        self._setFontParams(self.next1Label, 1.2, weight=pango.WEIGHT_BOLD)
+        self.textShootingArea.pack_start(self.next1Label)
+        self.next2Label = gtk.Label()
+        self._setFontParams(self.next2Label, 1.2, weight=pango.WEIGHT_BOLD)
+        self.textShootingArea.pack_start(self.next2Label)
         self.repeatLabel = gtk.Label()
-        self.repeatLabel.modify_font(pango.FontDescription("Arial 16"))
+        self._setFontParams(self.repeatLabel, 1.2, weight=pango.WEIGHT_BOLD)
         self.textShootingArea.pack_start(self.repeatLabel)
         self.textShootingArea.show_all()
 
@@ -196,33 +202,37 @@ class ShootController(AbstractController):
         # 'Right' key
         if event.keyval == self.__key['Right']:
             if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
-                Logger().debug("MainController.__onKeyPressed(): 'Right' key pressed; forward shooting position")
-                self.__keyPressedDict['Right'] = True
-                self.__forwardShootingPosition()
+                if self._model.isPaused():
+                    Logger().debug("MainController.__onKeyPressed(): 'Right' key pressed; forward shooting position")
+                    self.__keyPressedDict['Right'] = True
+                    self.__forwardShootingPosition()
             return True
 
         # 'Left' key
         elif event.keyval == self.__key['Left']:
             if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
-                Logger().debug("MainController.__onKeyPressed(): 'Left' key pressed; rewind shooting position")
-                self.__keyPressedDict['Left'] = True
-                self.__rewindShootingPosition()
+                if self._model.isPaused():
+                    Logger().debug("MainController.__onKeyPressed(): 'Left' key pressed; rewind shooting position")
+                    self.__keyPressedDict['Left'] = True
+                    self.__rewindShootingPosition()
             return True
 
         # 'Up' key
         elif event.keyval == self.__key['Up']:
             if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                Logger().debug("MainController.__onKeyPressed(): 'Up' key pressed; rewind shooting position")
-                self.__keyPressedDict['Up'] = True
-                self.__rewindShootingPosition()
+                if self._model.isPaused():
+                    Logger().debug("MainController.__onKeyPressed(): 'Up' key pressed; rewind shooting position")
+                    self.__keyPressedDict['Up'] = True
+                    self.__rewindShootingPosition()
             return True
 
         # 'Down' key
         elif event.keyval == self.__key['Down']:
             if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
-                Logger().debug("MainController.__onKeyPressed(): 'Down' key pressed; forward shooting position")
-                self.__keyPressedDict['Down'] = True
-                self.__forwardShootingPosition()
+                if self._model.isPaused():
+                    Logger().debug("MainController.__onKeyPressed(): 'Down' key pressed; forward shooting position")
+                    self.__keyPressedDict['Down'] = True
+                    self.__forwardShootingPosition()
             return True
 
         # 'Return' key
@@ -320,6 +330,7 @@ class ShootController(AbstractController):
     def __onDelete(self, widget, event):
         Logger().trace("ShootController.__onDelete()")
         self.__stopShooting() # Freeze if shooting!
+        return True
 
     def __onMouseButtonPressed(self, widget, event):
         Logger().trace("ShootController.__onMouseButtonPressed()")
@@ -328,7 +339,8 @@ class ShootController(AbstractController):
                 index = self.shootingArea.get_selected_image_index(event.x, event.y)
                 if index is not None:
                     Logger().debug("ShootController.__onMouseButtonPressed(): x=%d, y=%d, index=%d" % (event.x, event.y, index))
-                    self._model.setShootingIndex(index)
+                    self._model.setNextPositionIndex(index)
+                    self.__refreshNextPosition()
 
     def __onMotionNotify(self, widget, event):
         #Logger().trace("ShootController.__onMotionNotify()")
@@ -469,22 +481,25 @@ class ShootController(AbstractController):
     def __shootingNewPosition(self, index, yaw, pitch, status=None, next=False):
         Logger().trace("ShootController.__shootingNewPosition()")
 
-        # Refresh text area
+        # Update text area
         if isinstance(index, tuple):
             index, yawIndex, pitchIndex = index
-            position2 = _("yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)d")
+            template2 = _("yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)d")
             positionData = {'totalNbPicts': self._model.mosaic.totalNbPicts,
                             'yawNbPicts': self._model.mosaic.yawNbPicts,
                             'pitchNbPicts' : self._model.mosaic.pitchNbPicts}
             positionData.update({'index': index, 'yawIndex': yawIndex, 'pitchIndex': pitchIndex})
-            self._serializer.addWork(self.position2Label.set_text, "%s" % position2 % positionData)
+            self._serializer.addWork(self.position2Label.set_text, "%s" % template2 % positionData)
+            self._serializer.addWork(self.next2Label.set_text, "%s" % template2 % positionData)
         else:
             positionData = {'totalNbPicts': self._model.preset.totalNbPicts}
             positionData.update({'index': index})
-        position1 = _("Position %(index)d of %(totalNbPicts)d")
-        self._serializer.addWork(self.position1Label.set_text, "%s" % position1 % positionData)
+        positionTemplate1 = _("Position %(index)d of %(totalNbPicts)d")
+        nextTemplate1 = _("Next %(index)d of %(totalNbPicts)d")
+        self._serializer.addWork(self.position1Label.set_text, "%s" % positionTemplate1 % positionData)
+        self._serializer.addWork(self.next1Label.set_text, "%s" % nextTemplate1 % positionData)
 
-        # Refresh graphical area
+        # Update graphical area
         self.shootingArea.add_pict(yaw, pitch, status, next)
         self._serializer.addWork(self.shootingArea.refresh)
 
@@ -507,14 +522,37 @@ class ShootController(AbstractController):
         self._serializer.addWork(self.shootingArea.refresh)
 
     # Helpers
+    def __refreshNextPosition(self):
+        index = self._model.getShootingIndex() # getNexPositionIndex()
+        index, (yaw, pitch) = self._model.scan.getPositionAtIndex(index)
+
+        # Update text area
+        if isinstance(index, tuple):
+            index, yawIndex, pitchIndex = index
+            template2 = _("yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)d")
+            positionData = {'totalNbPicts': self._model.mosaic.totalNbPicts,
+                            'yawNbPicts': self._model.mosaic.yawNbPicts,
+                            'pitchNbPicts' : self._model.mosaic.pitchNbPicts}
+            positionData.update({'index': index, 'yawIndex': yawIndex, 'pitchIndex': pitchIndex})
+            self.next2Label.set_text("%s" % template2 % positionData)
+        else:
+            positionData = {'totalNbPicts': self._model.preset.totalNbPicts}
+            positionData.update({'index': index})
+        nextTemplate1 = _("Next %(index)d of %(totalNbPicts)d")
+        self.next1Label.set_text("%s" % nextTemplate1 % positionData)
+
+        # Update graphical area
+        self.shootingArea.set_selected_image_index(index)
+
     def __rewindShootingPosition(self):
         """
         """
         index = self._model.getShootingIndex()
         Logger().debug("ShootController.__rewindShootingPosition(): old index=%d" % index)
         try:
-            self._model.setShootingIndex(index - 1)
-            self.shootingArea.set_selected_image_index(index - 1)
+            self._model.setNextPositionIndex(index - 1)
+            self.__refreshNextPosition()
+            #self.shootingArea.set_selected_image_index(index - 1)
             Logger().debug("ShootController.__rewindShootingPosition():new index=%d" % (index - 1))
         except IndexError:
             Logger().exception("ShootController.__rewindShootingPosition()", debug=True)
@@ -525,8 +563,9 @@ class ShootController(AbstractController):
         index = self._model.getShootingIndex()
         Logger().debug("ShootController.__forwardShootingPosition(): old index=%d" % index)
         try:
-            self._model.setShootingIndex(index + 1)
-            self.shootingArea.set_selected_image_index(index + 1)
+            self._model.setNextPositionIndex(index + 1)
+            self.__refreshNextPosition()
+            #self.shootingArea.set_selected_image_index(index + 1)
             Logger().debug("ShootController.__forwardShootingPosition(): new index=%d" % (index + 1))
         except IndexError:
             Logger().exception("ShootController.__forwardShootingPosition()", debug=True)
