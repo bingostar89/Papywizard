@@ -225,18 +225,18 @@ class MainController(AbstractController):
         self.connectImage = self.wTree.get_widget("connectImage")
 
         # Font
-        self.yawHeadPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchHeadPosLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.setYawStartButtonLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.setPitchStartButtonLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.setYawEndButtonLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.setPitchEndButtonLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.yawFovLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchFovLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.yawNbPictsLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchNbPictsLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.yawRealOverlapLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
-        self.pitchRealOverlapLabel.modify_font(pango.FontDescription("Arial 10 Bold"))
+        self._setFontParams(self.yawHeadPosLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.pitchHeadPosLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.setYawStartButtonLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.setPitchStartButtonLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.setYawEndButtonLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.setPitchEndButtonLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.yawFovLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.pitchFovLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.yawNbPictsLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.pitchNbPictsLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.yawRealOverlapLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.pitchRealOverlapLabel, weight=pango.WEIGHT_BOLD)
 
         # Nokia plateform stuff
         try:
