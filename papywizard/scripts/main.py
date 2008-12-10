@@ -108,7 +108,7 @@ class Papywizard(object):
         gtk.gdk.threads_enter()
 
         # Gtk style
-        gtk.rc_parse(config.USER_GTKRC)
+        gtk.rc_parse(config.USER_GTKRC_FILE)
 
         # Create hardware and model
         head = Head()
