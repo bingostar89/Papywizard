@@ -80,6 +80,8 @@ USER_CONFIG_FILE = os.path.join(USER_CONFIG_DIR, CONFIG_FILE)
 PRESET_FILE = "presets.xml"
 USER_PRESET_FILE = os.path.join(USER_CONFIG_DIR, PRESET_FILE)
 USER_GUIDE_URL = "http://trac.gbiloba.org/papywizard/wiki/UserGuide"
+GTKRC = "gtkrc"
+USER_GTKRC = os.path.join(USER_CONFIG_DIR, GTKRC)
 
 # GUI index for controller
 HEAD_ORIENTATION_INDEX = {'up': 0, 'left': 1, 'right': 2, 'down': 3,
