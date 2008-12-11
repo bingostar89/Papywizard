@@ -51,6 +51,7 @@ Implements
 
 __revision__ = "$Id$"
 
+import sys
 import os.path
 import time
 import threading
@@ -70,6 +71,11 @@ from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.spy import Spy
 from papywizard.view.shootingArea import MosaicArea, PresetArea
+
+if hasattr(sys, "frozen"):
+    path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "common")
+else:
+    path = os.path.dirname(__file__)
 
 
 class ShootController(AbstractController):
@@ -119,23 +125,25 @@ class ShootController(AbstractController):
         self.shootingArea.show()
 
         # Create text shooting area
-        self.textShootingArea = gtk.VBox()
-        self.position1Label = gtk.Label()
-        self._setFontParams(self.position1Label, scale=1.2, weight=pango.WEIGHT_BOLD)
-        self.textShootingArea.pack_start(self.position1Label)
-        self.position2Label = gtk.Label()
-        self._setFontParams(self.position2Label, 1.2, weight=pango.WEIGHT_BOLD)
-        self.textShootingArea.pack_start(self.position2Label)
-        self.next1Label = gtk.Label()
-        self._setFontParams(self.next1Label, 1.2, weight=pango.WEIGHT_BOLD)
-        self.textShootingArea.pack_start(self.next1Label)
-        self.next2Label = gtk.Label()
-        self._setFontParams(self.next2Label, 1.2, weight=pango.WEIGHT_BOLD)
-        self.textShootingArea.pack_start(self.next2Label)
-        self.repeatLabel = gtk.Label()
-        self._setFontParams(self.repeatLabel, 1.2, weight=pango.WEIGHT_BOLD)
-        self.textShootingArea.pack_start(self.repeatLabel)
-        self.textShootingArea.show_all()
+        gladeFile = os.path.join(path, os.path.pardir, "view", "textShootingArea.glade")
+        wTree = gtk.glade.XML(gladeFile)
+        window = wTree.get_widget("window")
+        self.textShootingArea = wTree.get_widget("hbox")
+        window.remove(self.textShootingArea)
+        self.indexLabel = wTree.get_widget("indexLabel")
+        self.repeatLabel = wTree.get_widget("repeatLabel")
+        self.yawCurrentIndexLabel = wTree.get_widget("yawCurrentIndexLabel")
+        self.pitchCurrentIndexLabel = wTree.get_widget("pitchCurrentIndexLabel")
+        self.yawNextIndexLabel = wTree.get_widget("yawNextIndexLabel")
+        self.pitchNextIndexLabel = wTree.get_widget("pitchNextIndexLabel")
+        
+        # Font
+        self._setFontParams(self.indexLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.repeatLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.yawCurrentIndexLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.pitchCurrentIndexLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.yawNextIndexLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.pitchNextIndexLabel, weight=pango.WEIGHT_BOLD)
 
         self.rewindButton = self.wTree.get_widget("rewindButton")
         self.forwardButton = self.wTree.get_widget("forwardButton")
@@ -418,9 +426,12 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__shootingStarted()")
         self._serializer.addWork(self.shootingArea.clear)
         self._serializer.addWork(self.progressbar.set_fraction, 0.)
-        self._serializer.addWork(self.position1Label.set_text, "")
-        self._serializer.addWork(self.position2Label.set_text, "")
-        self._serializer.addWork(self.repeatLabel.set_text, "")
+        self._serializer.addWork(self.indexLabel.set_text, "-- of --")
+        self._serializer.addWork(self.repeatLabel.set_text, "-- of --")
+        self._serializer.addWork(self.yawCurrentIndexLabel.set_text, "-- of --")
+        self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, "-- of --")
+        self._serializer.addWork(self.yawNextIndexLabel.set_text, "-- of --")
+        self._serializer.addWork(self.pitchNextIndexLabel.set_text, "-- of --")
         self._serializer.addWork(self.dataFileButton.set_sensitive, False)
         self._serializer.addWork(self.timerButton.set_sensitive, False)
         self._serializer.addWork(self.startButton.set_sensitive, False)
@@ -475,8 +486,7 @@ class ShootController(AbstractController):
     def __shootingRepeat(self, repeat):
         Logger().trace("ShootController.__shootingRepeat()")
         if self._model.timerRepeatEnable:
-            sequenceMessage = _("Repeat %d of %d") % (repeat, self._model.timerRepeat)
-            self._serializer.addWork(self.repeatLabel.set_text, sequenceMessage)
+            self._serializer.addWork(self.repeatLabel.set_text, _("%d of %d") % (repeat, self._model.timerRepeat))
 
     def __shootingNewPosition(self, index, yaw, pitch, status=None, next=False):
         Logger().trace("ShootController.__shootingNewPosition()")
@@ -484,20 +494,11 @@ class ShootController(AbstractController):
         # Update text area
         if isinstance(index, tuple):
             index, yawIndex, pitchIndex = index
-            template2 = _("yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)d")
-            positionData = {'totalNbPicts': self._model.mosaic.totalNbPicts,
-                            'yawNbPicts': self._model.mosaic.yawNbPicts,
-                            'pitchNbPicts' : self._model.mosaic.pitchNbPicts}
-            positionData.update({'index': index, 'yawIndex': yawIndex, 'pitchIndex': pitchIndex})
-            self._serializer.addWork(self.position2Label.set_text, "%s" % template2 % positionData)
-            self._serializer.addWork(self.next2Label.set_text, "%s" % template2 % positionData)
-        else:
-            positionData = {'totalNbPicts': self._model.preset.totalNbPicts}
-            positionData.update({'index': index})
-        positionTemplate1 = _("Position %(index)d of %(totalNbPicts)d")
-        nextTemplate1 = _("Next %(index)d of %(totalNbPicts)d")
-        self._serializer.addWork(self.position1Label.set_text, "%s" % positionTemplate1 % positionData)
-        self._serializer.addWork(self.next1Label.set_text, "%s" % nextTemplate1 % positionData)
+            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, _("%d of %d") % (yawIndex, self._model.mosaic.yawNbPicts))
+            self._serializer.addWork(self.yawNextIndexLabel.set_text, _("%d of %d") % (yawIndex, self._model.mosaic.yawNbPicts))
+            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, _("%d of %d") % (pitchIndex, self._model.mosaic.pitchNbPicts))
+            self._serializer.addWork(self.pitchNextIndexLabel.set_text, _("%d of %d") % (pitchIndex, self._model.mosaic.pitchNbPicts))
+        self._serializer.addWork(self.indexLabel.set_text, _("%d of %d") % (index, self._model.scan.totalNbPicts))
 
         # Update graphical area
         self.shootingArea.add_pict(yaw, pitch, status, next)
@@ -529,17 +530,8 @@ class ShootController(AbstractController):
         # Update text area
         if isinstance(index, tuple):
             index, yawIndex, pitchIndex = index
-            template2 = _("yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %(pitchNbPicts)d")
-            positionData = {'totalNbPicts': self._model.mosaic.totalNbPicts,
-                            'yawNbPicts': self._model.mosaic.yawNbPicts,
-                            'pitchNbPicts' : self._model.mosaic.pitchNbPicts}
-            positionData.update({'index': index, 'yawIndex': yawIndex, 'pitchIndex': pitchIndex})
-            self.next2Label.set_text("%s" % template2 % positionData)
-        else:
-            positionData = {'totalNbPicts': self._model.preset.totalNbPicts}
-            positionData.update({'index': index})
-        nextTemplate1 = _("Next %(index)d of %(totalNbPicts)d")
-        self.next1Label.set_text("%s" % nextTemplate1 % positionData)
+            self.yawNextIndexLabel.set_text(_("%d of %d") % (yawIndex, self._model.mosaic.yawNbPicts))
+            self.pitchNextIndexLabel.set_text(_("%d of %d") % (pitchIndex, self._model.mosaic.pitchNbPicts))
 
         # Update graphical area
         self.shootingArea.set_selected_image_index(index)
@@ -552,7 +544,6 @@ class ShootController(AbstractController):
         try:
             self._model.setNextPositionIndex(index - 1)
             self.__refreshNextPosition()
-            #self.shootingArea.set_selected_image_index(index - 1)
             Logger().debug("ShootController.__rewindShootingPosition():new index=%d" % (index - 1))
         except IndexError:
             Logger().exception("ShootController.__rewindShootingPosition()", debug=True)
@@ -565,7 +556,6 @@ class ShootController(AbstractController):
         try:
             self._model.setNextPositionIndex(index + 1)
             self.__refreshNextPosition()
-            #self.shootingArea.set_selected_image_index(index + 1)
             Logger().debug("ShootController.__forwardShootingPosition(): new index=%d" % (index + 1))
         except IndexError:
             Logger().exception("ShootController.__forwardShootingPosition()", debug=True)
