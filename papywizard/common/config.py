@@ -100,11 +100,11 @@ LOGGER_INDEX = {'trace': 0, 'debug': 1, 'info': 2, 'warning' :3, 'error': 4, 'ex
                 0: 'trace', 1: 'debug', 2: 'info', 3: 'warning', 4: 'error', 5: 'exception', 6: 'critical'}
 DRIVER_INDEX = {'bluetooth': 0, 'serial': 1, 'ethernet': 2,
                 0: 'bluetooth', 1: 'serial', 2: 'ethernet'}
-SENSOR_RATIOS_INDEX = {'3:2': 0, '4:3': 1, '5:4': 2,
-                       0: '3:2', 1: '4:3', 2: '5:4'}
+SENSOR_RATIOS_INDEX = {'3:2': 0, '4:3': 1, '5:4': 2, '16:9': 3,
+                       0: '3:2', 1: '4:3', 2: '5:4', 3: '16:9'}
 
 # Model
-SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3., '5:4': 5./4.}
+SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3., '5:4': 5./4., '16:9': 16./9.}
 
 # View
 SHOOTING_COLOR_SCHEME = {'default': {'background': "#d0d0d0",
