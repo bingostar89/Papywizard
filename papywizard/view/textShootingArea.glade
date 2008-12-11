@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Dec 10 17:51:00 2008 -->
+<!--Generated with glade3 3.4.5 on Wed Dec 10 20:01:58 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="window">
     <property name="width_request">450</property>
@@ -20,7 +20,7 @@
             <child>
               <widget class="GtkLabel" id="indexLabel">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">--</property>
+                <property name="label" translatable="yes">-- of --</property>
               </widget>
               <packing>
                 <property name="position">1</property>
@@ -38,7 +38,7 @@
             <child>
               <widget class="GtkLabel" id="repeatLabel">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">--</property>
+                <property name="label" translatable="yes">-- of --</property>
               </widget>
               <packing>
                 <property name="position">3</property>
@@ -63,7 +63,7 @@
             <child>
               <widget class="GtkLabel" id="pitchNextIndexLabel">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">--</property>
+                <property name="label" translatable="yes">-- of --</property>
               </widget>
               <packing>
                 <property name="left_attach">2</property>
@@ -75,7 +75,7 @@
             <child>
               <widget class="GtkLabel" id="yawNextIndexLabel">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">--</property>
+                <property name="label" translatable="yes">-- of --</property>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
@@ -87,7 +87,7 @@
             <child>
               <widget class="GtkLabel" id="pitchCurrentIndexLabel">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">--</property>
+                <property name="label" translatable="yes">-- of --</property>
               </widget>
               <packing>
                 <property name="left_attach">2</property>
@@ -99,7 +99,7 @@
             <child>
               <widget class="GtkLabel" id="yawCurrentIndexLabel">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">--</property>
+                <property name="label" translatable="yes">-- of --</property>
               </widget>
               <packing>
                 <property name="left_attach">1</property>
