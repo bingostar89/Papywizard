@@ -82,6 +82,9 @@ class NbPictsController(AbstractController):
         self.yawNbPictsSpinbutton.set_value(currentYawNbPicts)
         self.pitchNbPictsSpinbutton.set_value(currentPitchNbPicts)
 
+    def _initWidgets(self):
+        pass
+
     # Callbacks
     def __onOkButtonClicked(self, widget):
         """ Ok button has been clicked.

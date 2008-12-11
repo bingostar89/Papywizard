@@ -205,12 +205,6 @@ class MainController(AbstractController):
         self.pitchRealOverlapLabel = self.wTree.get_widget("pitchRealOverlapLabel")
         self.presetFrame = self.wTree.get_widget("presetFrame")
         self.presetCombobox = self.wTree.get_widget("presetCombobox")
-        listStore = gtk.ListStore(gobject.TYPE_STRING)
-        self.presetCombobox.set_model(listStore)
-        cell = gtk.CellRendererText()
-        self.presetCombobox.pack_start(cell, True)
-        #self.presetCombobox.add_attribute(cell, 'text', 0)
-        self.__populatePresetCombobox()
         self.yawHeadPosLabel = self.wTree.get_widget("yawHeadPosLabel")
         self.pitchHeadPosLabel = self.wTree.get_widget("pitchHeadPosLabel")
         self.manualSpeedImage =  self.wTree.get_widget("manualSpeedImage")
@@ -223,6 +217,14 @@ class MainController(AbstractController):
         self.statusbar = self.wTree.get_widget("statusbar")
         self.statusbarContextId = self.statusbar.get_context_id("default")
         self.connectImage = self.wTree.get_widget("connectImage")
+
+    def _initWidgets(self):
+        listStore = gtk.ListStore(gobject.TYPE_STRING)
+        self.presetCombobox.set_model(listStore)
+        cell = gtk.CellRendererText()
+        self.presetCombobox.pack_start(cell, True)
+        #self.presetCombobox.add_attribute(cell, 'text', 0)
+        self.__populatePresetCombobox()
 
         # Font
         self._setFontParams(self.yawHeadPosLabel, weight=pango.WEIGHT_BOLD)

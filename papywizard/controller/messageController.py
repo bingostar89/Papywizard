@@ -71,13 +71,13 @@ class BaseMessageController(object):
     """
     def __init__(self, subTitle, message, type_):
         """ Init the base message controller.
-        
+
         @param subTitle: dialog subTitle
         @type subTitle: str
-        
+
         @param message: dialog message
         @type message: str
-        
+
         @param type_: type of message, in ('error', 'warning', 'info')
         @type type_: str
         """
@@ -122,7 +122,7 @@ class ExceptionMessageController(BaseMessageController):
     """
     def __init__(self, from_):
         """ Init the exception message controller.
-        
+
         @param from_: function/method name where the exception occured
         @type from_: str
         """

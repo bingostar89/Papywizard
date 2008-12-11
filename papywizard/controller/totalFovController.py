@@ -82,6 +82,9 @@ class TotalFovController(AbstractController):
         self.yawFovSpinbutton.set_value(currentYawFov)
         self.pitchFovSpinbutton.set_value(currentPitchFov)
 
+    def _initWidgets(self):
+        pass
+
     # Callbacks
     def __onOkButtonClicked(self, widget):
         """ Ok button has been clicked.

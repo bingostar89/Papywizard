@@ -78,6 +78,9 @@ class WaitController(AbstractController):
         except ImportError:
             pass
 
+    def _initWidgets(self):
+        pass
+
     def _connectSignals(self):
         super(WaitController, self)._connectSignals()
         self.__eventId = gobject.timeout_add(100, self.__refreshProgressbar)

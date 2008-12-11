@@ -86,6 +86,9 @@ class BluetoothChooserController(AbstractController):
         super(BluetoothChooserController, self)._retreiveWidgets()
 
         self.bluetoothAddressCombobox = self.wTree.get_widget("bluetoothAddressCombobox")
+        self.refreshButton = self.wTree.get_widget("refreshButton")
+
+    def _initWidgets(self):
         self.__bluetoothListStore = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
         self.bluetoothAddressCombobox.set_model(self.__bluetoothListStore)
         cell = gtk.CellRendererText()
@@ -94,7 +97,6 @@ class BluetoothChooserController(AbstractController):
         cell = gtk.CellRendererText()
         self.bluetoothAddressCombobox.pack_start(cell, True)
         self.bluetoothAddressCombobox.add_attribute(cell, 'text', 1)
-        self.refreshButton = self.wTree.get_widget("refreshButton")
 
     # Callbacks
     def __onOkButtonClicked(self, widget):

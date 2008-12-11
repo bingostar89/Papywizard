@@ -69,8 +69,11 @@ class HelpAboutController(AbstractController):
         """ Get widgets from widget tree.
         """
         super(HelpAboutController, self)._retreiveWidgets()
-        
+
         self.dialog.set_version(config.VERSION)
+
+    def _initWidgets(self):
+        pass
 
     def refreshView(self):
         pass

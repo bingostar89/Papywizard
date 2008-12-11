@@ -81,6 +81,9 @@ class PresetInfoController(AbstractController):
         self.presetInfoBuffer.create_tag('tooltip', foreground='blue', style=pango.STYLE_OBLIQUE)
         self.presetInfoTextview.set_buffer(self.presetInfoBuffer)
 
+    def _initWidgets(self):
+        pass
+
     # Callbacks
     def __onDoneButtonClicked(self, widget):
         """ Done button has been clicked.

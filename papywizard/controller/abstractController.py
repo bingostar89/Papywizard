@@ -90,6 +90,7 @@ class AbstractController(object):
         self.wTree = gtk.glade.XML(gladeFile)
 
         self._retreiveWidgets()
+        self._initWidgets()
         self._connectSignals()
         self.refreshView()
 
@@ -105,6 +106,11 @@ class AbstractController(object):
         self.dialog = self.wTree.get_widget("dialog")
         if self.dialog is None:
             raise ValueError("Can't retreive main dialog widget")
+
+    def _initWidgets(self):
+        """ Init widgets.
+        """
+        raise NotImplementedError
 
     def _connectSignals(self):
         """ Connect widgets signals.

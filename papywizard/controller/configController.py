@@ -143,6 +143,9 @@ class ConfigController(AbstractController):
         # Misc page
         self.loggerLevelCombobox = self.wTree.get_widget("loggerLevelCombobox")
 
+    def _initWidgets(self):
+        pass
+
     # Callbacks
     def __onOkButtonClicked(self, widget):
         """ Ok button has been clicked.

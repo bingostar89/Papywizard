@@ -118,7 +118,7 @@ class ShootController(AbstractController):
         # Load graphical shooting area
         self.viewport = self.wTree.get_widget("viewport")
         if self._model.mode == 'mosaic':
-            self.shootingArea = MosaicArea()
+            self.shootingArea = MosaicArea() # Use a factory
         else:
             self.shootingArea = PresetArea()
         self.viewport.add(self.shootingArea)
@@ -136,7 +136,9 @@ class ShootController(AbstractController):
         self.pitchCurrentIndexLabel = wTree.get_widget("pitchCurrentIndexLabel")
         self.yawNextIndexLabel = wTree.get_widget("yawNextIndexLabel")
         self.pitchNextIndexLabel = wTree.get_widget("pitchNextIndexLabel")
-        
+
+    def _initWidgets(self):
+
         # Font
         self._setFontParams(self.indexLabel, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.repeatLabel, weight=pango.WEIGHT_BOLD)
