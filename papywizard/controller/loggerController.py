@@ -86,6 +86,8 @@ class LoggerController(AbstractController):
         self.saveButton = self.wTree.get_widget("saveButton")
         self.clearButton = self.wTree.get_widget("clearButton")
 
+    def _initWidgets(self):
+
         # The following code is taken from pychess project;
         # it keeps the scroller at the bottom of the text
         # Thanks to Thomas Dybdahl Ahle who sent it to me
