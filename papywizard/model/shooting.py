@@ -482,10 +482,11 @@ class Shooting(object):
                         self.progressSignal.emit(progressFraction)
                         self.newPositionSignal.emit(index, yaw, pitch, status='ok', next=True)
 
-                        # Test manual shooting flag
-                        if self.__stepByStep and not self.__stop:
-                            self.__pause = True
-                            Logger().info("Wait for manual shooting trigger...")
+                        # Test manual shooting flag (skipped if timeValue is 0.)
+                        if self.camera.timeValue:
+                            if self.__stepByStep and not self.__stop:
+                                self.__pause = True
+                                Logger().info("Wait for manual shooting trigger...")
 
                         # Check pause or stop
                         checkPauseStop()
