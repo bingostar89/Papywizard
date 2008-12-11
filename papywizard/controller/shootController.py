@@ -115,38 +115,14 @@ class ShootController(AbstractController):
     def _retreiveWidgets(self):
         super(ShootController, self)._retreiveWidgets()
 
-        # Load graphical shooting area
         self.viewport = self.wTree.get_widget("viewport")
-        if self._model.mode == 'mosaic':
-            self.shootingArea = MosaicArea() # Use a factory
-        else:
-            self.shootingArea = PresetArea()
-        self.viewport.add(self.shootingArea)
-        self.shootingArea.show()
-
-        # Create text shooting area
-        gladeFile = os.path.join(path, os.path.pardir, "view", "textShootingArea.glade")
-        wTree = gtk.glade.XML(gladeFile)
-        window = wTree.get_widget("window")
-        self.textShootingArea = wTree.get_widget("hbox")
-        window.remove(self.textShootingArea)
-        self.indexLabel = wTree.get_widget("indexLabel")
-        self.repeatLabel = wTree.get_widget("repeatLabel")
-        self.yawCurrentIndexLabel = wTree.get_widget("yawCurrentIndexLabel")
-        self.pitchCurrentIndexLabel = wTree.get_widget("pitchCurrentIndexLabel")
-        self.yawNextIndexLabel = wTree.get_widget("yawNextIndexLabel")
-        self.pitchNextIndexLabel = wTree.get_widget("pitchNextIndexLabel")
-
-    def _initWidgets(self):
-
-        # Font
-        self._setFontParams(self.indexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.repeatLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.yawCurrentIndexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.pitchCurrentIndexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.yawNextIndexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.pitchNextIndexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
-
+        self.textShootingArea = self.wTree.get_widget("hbox")
+        self.indexLabel = self.wTree.get_widget("indexLabel")
+        self.repeatLabel = self.wTree.get_widget("repeatLabel")
+        self.yawCurrentIndexLabel = self.wTree.get_widget("yawCurrentIndexLabel")
+        self.pitchCurrentIndexLabel = self.wTree.get_widget("pitchCurrentIndexLabel")
+        self.yawNextIndexLabel = self.wTree.get_widget("yawNextIndexLabel")
+        self.pitchNextIndexLabel = self.wTree.get_widget("pitchNextIndexLabel")
         self.rewindButton = self.wTree.get_widget("rewindButton")
         self.forwardButton = self.wTree.get_widget("forwardButton")
         self.progressbar = self.wTree.get_widget("progressbar")
@@ -158,9 +134,28 @@ class ShootController(AbstractController):
         self.startButton = self.wTree.get_widget("startButton")
         self.pauseResumeButton = self.wTree.get_widget("pauseResumeButton")
         self.pauseResumeLabel = self.wTree.get_widget("pauseResumeLabel")
-        self.pauseResumeImage = self.wTree.get_widget("pauseResumeImage")
+        #self.pauseResumeImage = self.wTree.get_widget("pauseResumeImage")
         self.stopButton = self.wTree.get_widget("stopButton")
         self.doneButton = self.wTree.get_widget("doneButton")
+
+    def _initWidgets(self):
+
+        # Font
+        self._setFontParams(self.indexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.repeatLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.yawCurrentIndexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.pitchCurrentIndexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.yawNextIndexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.pitchNextIndexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
+
+        # Load graphical shooting area and replace the text view
+        if self._model.mode == 'mosaic':
+            self.shootingArea = MosaicArea() # Use a factory
+        else:
+            self.shootingArea = PresetArea() # Use a factory
+        self.viewport.remove(self.textShootingArea)
+        self.viewport.add(self.shootingArea)
+        self.shootingArea.show()
 
         # Populate shooting area with preview positions
         if self._model.mode == 'mosaic':
