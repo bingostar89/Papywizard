@@ -116,13 +116,14 @@ class ShootController(AbstractController):
         super(ShootController, self)._retreiveWidgets()
 
         self.viewport = self.wTree.get_widget("viewport")
-        self.textShootingArea = self.wTree.get_widget("hbox")
-        self.indexLabel = self.wTree.get_widget("indexLabel")
-        self.repeatLabel = self.wTree.get_widget("repeatLabel")
+        self.textShootingArea = self.wTree.get_widget("table")
+        self.currentIndexLabel = self.wTree.get_widget("currentIndexLabel")
+        self.nextIndexLabel = self.wTree.get_widget("nextIndexLabel")
         self.yawCurrentIndexLabel = self.wTree.get_widget("yawCurrentIndexLabel")
         self.pitchCurrentIndexLabel = self.wTree.get_widget("pitchCurrentIndexLabel")
         self.yawNextIndexLabel = self.wTree.get_widget("yawNextIndexLabel")
         self.pitchNextIndexLabel = self.wTree.get_widget("pitchNextIndexLabel")
+        self.repeatLabel = self.wTree.get_widget("repeatLabel")
         self.rewindButton = self.wTree.get_widget("rewindButton")
         self.forwardButton = self.wTree.get_widget("forwardButton")
         self.progressbar = self.wTree.get_widget("progressbar")
@@ -141,12 +142,35 @@ class ShootController(AbstractController):
     def _initWidgets(self):
 
         # Font
-        self._setFontParams(self.indexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.repeatLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.yawCurrentIndexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.pitchCurrentIndexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.yawNextIndexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.pitchNextIndexLabel, scale=1.2, weight=pango.WEIGHT_BOLD)
+        #for i in xrange(1, 7):
+            #label = self.wTree.get_widget("textLabel%d" % i)
+            #self._setFontParams(label, scale=0.8)
+        scale = 1.4
+        self._setFontParams(self.currentIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.nextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.repeatLabel, scale=scale, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.yawCurrentIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.pitchCurrentIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.yawNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.pitchNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
+
+        # Init text view
+        self.currentIndexLabel.set_text(_("--/%d") % self._model.scan.totalNbPicts)
+        self.nextIndexLabel.set_text(_("--/%d") % self._model.scan.totalNbPicts)
+        if self._model.timerRepeatEnable:
+            self.repeatLabel.set_text(_("--/%d") % self._model.timerRepeat)
+        else:
+            self.repeatLabel.set_text("")
+        if self._model.mode == 'mosaic':
+            self.yawCurrentIndexLabel.set_text(_("--/%d") % self._model.mosaic.yawNbPicts)
+            self.pitchCurrentIndexLabel.set_text(_("--/%d") % self._model.mosaic.pitchNbPicts)
+            self.yawNextIndexLabel.set_text(_("--/%d") % self._model.mosaic.yawNbPicts)
+            self.pitchNextIndexLabel.set_text(_("--/%d") % self._model.mosaic.pitchNbPicts)
+        else:
+            self.yawCurrentIndexLabel.set_text("")
+            self.pitchCurrentIndexLabel.set_text("")
+            self.yawNextIndexLabel.set_text("")
+            self.pitchNextIndexLabel.set_text("")
 
         # Load graphical shooting area and replace the text view
         if self._model.mode == 'mosaic':
@@ -397,6 +421,10 @@ class ShootController(AbstractController):
         controller.selectPage(6, disable=True)
         response = controller.run()
         controller.shutdown()
+        #if self._model.timerRepeatEnable:
+            #self.repeatLabel.set_text(_("--/%d") % self._model.timerRepeat)
+        #else:
+            #self.repeatLabel.set_text("")
         self.refreshView()
 
     def __onStartButtonClicked(self, widget):
@@ -423,12 +451,22 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__shootingStarted()")
         self._serializer.addWork(self.shootingArea.clear)
         self._serializer.addWork(self.progressbar.set_fraction, 0.)
-        self._serializer.addWork(self.indexLabel.set_text, _("-- of --"))
-        self._serializer.addWork(self.repeatLabel.set_text, _("-- of --"))
-        self._serializer.addWork(self.yawCurrentIndexLabel.set_text, _("-- of --"))
-        self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, _("-- of --"))
-        self._serializer.addWork(self.yawNextIndexLabel.set_text, _("-- of --"))
-        self._serializer.addWork(self.pitchNextIndexLabel.set_text, _("-- of --"))
+        self._serializer.addWork(self.currentIndexLabel.set_text, _("--/%d") % self._model.scan.totalNbPicts)
+        self._serializer.addWork(self.nextIndexLabel.set_text, _("--/%d") % self._model.scan.totalNbPicts)
+        if self._model.timerRepeatEnable:
+            self._serializer.addWork(self.repeatLabel.set_text, _("--/%d") % self._model.timerRepeat)
+        else:
+            self._serializer.addWork(self.repeatLabel.set_text, "")
+        if self._model.mode == 'mosaic':
+            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, _("--/%d") % self._model.mosaic.yawNbPicts)
+            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, _("--/%d") % self._model.mosaic.pitchNbPicts)
+            self._serializer.addWork(self.yawNextIndexLabel.set_text, _("--/%d") % self._model.mosaic.yawNbPicts)
+            self._serializer.addWork(self.pitchNextIndexLabel.set_text, _("--/%d") % self._model.mosaic.pitchNbPicts)
+        else:
+            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, "")
+            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, "")
+            self._serializer.addWork(self.yawNextIndexLabel.set_text, "")
+            self._serializer.addWork(self.pitchNextIndexLabel.set_text, "")
         self._serializer.addWork(self.dataFileButton.set_sensitive, False)
         self._serializer.addWork(self.timerButton.set_sensitive, False)
         self._serializer.addWork(self.startButton.set_sensitive, False)
@@ -483,7 +521,7 @@ class ShootController(AbstractController):
     def __shootingRepeat(self, repeat):
         Logger().trace("ShootController.__shootingRepeat()")
         if self._model.timerRepeatEnable:
-            self._serializer.addWork(self.repeatLabel.set_text, _("%d of %d") % (repeat, self._model.timerRepeat))
+            self._serializer.addWork(self.repeatLabel.set_text, _("%d/%d") % (repeat, self._model.timerRepeat))
 
     def __shootingNewPosition(self, index, yaw, pitch, status=None, next=False):
         Logger().trace("ShootController.__shootingNewPosition()")
@@ -491,11 +529,12 @@ class ShootController(AbstractController):
         # Update text area
         if isinstance(index, tuple):
             index, yawIndex, pitchIndex = index
-            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, _("%d of %d") % (yawIndex, self._model.mosaic.yawNbPicts))
-            self._serializer.addWork(self.yawNextIndexLabel.set_text, _("%d of %d") % (yawIndex, self._model.mosaic.yawNbPicts))
-            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, _("%d of %d") % (pitchIndex, self._model.mosaic.pitchNbPicts))
-            self._serializer.addWork(self.pitchNextIndexLabel.set_text, _("%d of %d") % (pitchIndex, self._model.mosaic.pitchNbPicts))
-        self._serializer.addWork(self.indexLabel.set_text, _("%d of %d") % (index, self._model.scan.totalNbPicts))
+            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, _("%d/%d") % (yawIndex, self._model.mosaic.yawNbPicts))
+            self._serializer.addWork(self.yawNextIndexLabel.set_text, _("%d/%d") % (yawIndex, self._model.mosaic.yawNbPicts))
+            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, _("%d/%d") % (pitchIndex, self._model.mosaic.pitchNbPicts))
+            self._serializer.addWork(self.pitchNextIndexLabel.set_text, _("%d/%d") % (pitchIndex, self._model.mosaic.pitchNbPicts))
+        self._serializer.addWork(self.currentIndexLabel.set_text, _("%d/%d") % (index, self._model.scan.totalNbPicts))
+        self._serializer.addWork(self.nextIndexLabel.set_text, _("%d/%d") % (index, self._model.scan.totalNbPicts))
 
         # Update graphical area
         self.shootingArea.add_pict(yaw, pitch, status, next)
@@ -512,7 +551,7 @@ class ShootController(AbstractController):
         elif sequence == 'shutter':
             bracket = kwargs['bracket']
             totalNbPicts = self._model.camera.bracketingNbPicts
-            self._serializer.addWork(self.progressbar.set_text, _("Shutter - Picture %d of %d") % (bracket, totalNbPicts))
+            self._serializer.addWork(self.progressbar.set_text, _("Shutter - Picture %d/%d") % (bracket, totalNbPicts))
 
     def __refreshPos(self, yaw, pitch):
         Logger().trace("ShootController.__refreshPos()")
@@ -527,8 +566,9 @@ class ShootController(AbstractController):
         # Update text area
         if isinstance(index, tuple):
             index, yawIndex, pitchIndex = index
-            self.yawNextIndexLabel.set_text(_("%d of %d") % (yawIndex, self._model.mosaic.yawNbPicts))
-            self.pitchNextIndexLabel.set_text(_("%d of %d") % (pitchIndex, self._model.mosaic.pitchNbPicts))
+            self.yawNextIndexLabel.set_text(_("%d/%d") % (yawIndex, self._model.mosaic.yawNbPicts))
+            self.pitchNextIndexLabel.set_text(_("%d/%d") % (pitchIndex, self._model.mosaic.pitchNbPicts))
+        self.nextIndexLabel.set_text(_("%d/%d") % (index, self._model.scan.totalNbPicts))
 
         # Update graphical area
         self.shootingArea.set_selected_image_index(index)
