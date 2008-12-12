@@ -331,14 +331,14 @@ class Shooting(object):
         def checkPauseStop(pause=True, stop=True):
             """ Check if pause or stop requested.
             """
-            if self.__pause:
+            if pause and self.__pause:
                 Logger().info("Pause")
                 self.pausedSignal.emit()
                 while self.__pause:
                     time.sleep(0.1)
                 self.resumedSignal.emit()
                 Logger().info("Resume")
-            if self.__stop:
+            if stop and self.__stop:
                 Logger().info("Stop")
                 raise StopIteration
 
@@ -470,8 +470,8 @@ class Shooting(object):
                             # Add image to the xml data file
                             data.addPicture(bracket, yaw, pitch, roll)
 
-                            # Check pause or stop
-                            checkPauseStop()
+                            # Check only stop
+                            checkPauseStop(pause=False)
 
                         # Update global shooting progression
                         if isinstance(index, tuple):
@@ -482,7 +482,7 @@ class Shooting(object):
                         self.progressSignal.emit(progressFraction)
                         self.newPositionSignal.emit(index, yaw, pitch, status='ok', next=True)
 
-                        # Test manual shooting flag (skipped if timeValue is 0.)
+                        # Test manual shooting flag (skipped if timeValue was 0.)
                         if self.camera.timeValue:
                             if self.__stepByStep and not self.__stop:
                                 self.__pause = True
