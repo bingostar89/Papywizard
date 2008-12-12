@@ -155,22 +155,22 @@ class ShootController(AbstractController):
         self._setFontParams(self.pitchNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
 
         # Init text view
-        self.currentIndexLabel.set_text(_("--/%d") % self._model.scan.totalNbPicts)
-        self.nextIndexLabel.set_text(_("--/%d") % self._model.scan.totalNbPicts)
+        self.currentIndexLabel.set_text("--/%d" % self._model.scan.totalNbPicts)
+        self.nextIndexLabel.set_text("--/%d" % self._model.scan.totalNbPicts)
         if self._model.timerRepeatEnable:
-            self.repeatLabel.set_text(_("--/%d") % self._model.timerRepeat)
+            self.repeatLabel.set_text("--/%d" % self._model.timerRepeat)
         else:
             self.repeatLabel.set_text("")
         if self._model.mode == 'mosaic':
-            self.yawCurrentIndexLabel.set_text(_("--/%d") % self._model.mosaic.yawNbPicts)
-            self.pitchCurrentIndexLabel.set_text(_("--/%d") % self._model.mosaic.pitchNbPicts)
-            self.yawNextIndexLabel.set_text(_("--/%d") % self._model.mosaic.yawNbPicts)
-            self.pitchNextIndexLabel.set_text(_("--/%d") % self._model.mosaic.pitchNbPicts)
+            self.yawCurrentIndexLabel.set_text("--/%d" % self._model.mosaic.yawNbPicts)
+            self.pitchCurrentIndexLabel.set_text("--/%d" % self._model.mosaic.pitchNbPicts)
+            self.yawNextIndexLabel.set_text("--/%d" % self._model.mosaic.yawNbPicts)
+            self.pitchNextIndexLabel.set_text("--/%d" % self._model.mosaic.pitchNbPicts)
         else:
-            self.yawCurrentIndexLabel.set_text("")
-            self.pitchCurrentIndexLabel.set_text("")
-            self.yawNextIndexLabel.set_text("")
-            self.pitchNextIndexLabel.set_text("")
+            self.yawCurrentIndexLabel.set_text("--")
+            self.pitchCurrentIndexLabel.set_text("--")
+            self.yawNextIndexLabel.set_text("--")
+            self.pitchNextIndexLabel.set_text("--")
 
         # Load graphical shooting area and replace the text view
         if self._model.mode == 'mosaic':
@@ -422,7 +422,7 @@ class ShootController(AbstractController):
         response = controller.run()
         controller.shutdown()
         #if self._model.timerRepeatEnable:
-            #self.repeatLabel.set_text(_("--/%d") % self._model.timerRepeat)
+            #self.repeatLabel.set_text("--/%d" % self._model.timerRepeat)
         #else:
             #self.repeatLabel.set_text("")
         self.refreshView()
@@ -451,22 +451,22 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__shootingStarted()")
         self._serializer.addWork(self.shootingArea.clear)
         self._serializer.addWork(self.progressbar.set_fraction, 0.)
-        self._serializer.addWork(self.currentIndexLabel.set_text, _("--/%d") % self._model.scan.totalNbPicts)
-        self._serializer.addWork(self.nextIndexLabel.set_text, _("--/%d") % self._model.scan.totalNbPicts)
+        self._serializer.addWork(self.currentIndexLabel.set_text, "--/%d" % self._model.scan.totalNbPicts)
+        self._serializer.addWork(self.nextIndexLabel.set_text, "--/%d" % self._model.scan.totalNbPicts)
         if self._model.timerRepeatEnable:
-            self._serializer.addWork(self.repeatLabel.set_text, _("--/%d") % self._model.timerRepeat)
+            self._serializer.addWork(self.repeatLabel.set_text, "--/%d" % self._model.timerRepeat)
         else:
             self._serializer.addWork(self.repeatLabel.set_text, "")
         if self._model.mode == 'mosaic':
-            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, _("--/%d") % self._model.mosaic.yawNbPicts)
-            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, _("--/%d") % self._model.mosaic.pitchNbPicts)
-            self._serializer.addWork(self.yawNextIndexLabel.set_text, _("--/%d") % self._model.mosaic.yawNbPicts)
-            self._serializer.addWork(self.pitchNextIndexLabel.set_text, _("--/%d") % self._model.mosaic.pitchNbPicts)
+            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, "--/%d" % self._model.mosaic.yawNbPicts)
+            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, "--/%d" % self._model.mosaic.pitchNbPicts)
+            self._serializer.addWork(self.yawNextIndexLabel.set_text, "--/%d" % self._model.mosaic.yawNbPicts)
+            self._serializer.addWork(self.pitchNextIndexLabel.set_text, "--/%d" % self._model.mosaic.pitchNbPicts)
         else:
-            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, "")
-            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, "")
-            self._serializer.addWork(self.yawNextIndexLabel.set_text, "")
-            self._serializer.addWork(self.pitchNextIndexLabel.set_text, "")
+            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, "--")
+            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, "--")
+            self._serializer.addWork(self.yawNextIndexLabel.set_text, "--")
+            self._serializer.addWork(self.pitchNextIndexLabel.set_text, "--")
         self._serializer.addWork(self.dataFileButton.set_sensitive, False)
         self._serializer.addWork(self.timerButton.set_sensitive, False)
         self._serializer.addWork(self.startButton.set_sensitive, False)
@@ -521,7 +521,7 @@ class ShootController(AbstractController):
     def __shootingRepeat(self, repeat):
         Logger().trace("ShootController.__shootingRepeat()")
         if self._model.timerRepeatEnable:
-            self._serializer.addWork(self.repeatLabel.set_text, _("%d/%d") % (repeat, self._model.timerRepeat))
+            self._serializer.addWork(self.repeatLabel.set_text, "%d/%d" % (repeat, self._model.timerRepeat))
 
     def __shootingNewPosition(self, index, yaw, pitch, status=None, next=False):
         Logger().trace("ShootController.__shootingNewPosition()")
@@ -529,12 +529,17 @@ class ShootController(AbstractController):
         # Update text area
         if isinstance(index, tuple):
             index, yawIndex, pitchIndex = index
-            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, _("%d/%d") % (yawIndex, self._model.mosaic.yawNbPicts))
-            self._serializer.addWork(self.yawNextIndexLabel.set_text, _("%d/%d") % (yawIndex, self._model.mosaic.yawNbPicts))
-            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, _("%d/%d") % (pitchIndex, self._model.mosaic.pitchNbPicts))
-            self._serializer.addWork(self.pitchNextIndexLabel.set_text, _("%d/%d") % (pitchIndex, self._model.mosaic.pitchNbPicts))
-        self._serializer.addWork(self.currentIndexLabel.set_text, _("%d/%d") % (index, self._model.scan.totalNbPicts))
-        self._serializer.addWork(self.nextIndexLabel.set_text, _("%d/%d") % (index, self._model.scan.totalNbPicts))
+            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, "%d/%d" % (yawIndex, self._model.mosaic.yawNbPicts))
+            self._serializer.addWork(self.yawNextIndexLabel.set_text, "%d/%d" % (yawIndex, self._model.mosaic.yawNbPicts))
+            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, "%d/%d" % (pitchIndex, self._model.mosaic.pitchNbPicts))
+            self._serializer.addWork(self.pitchNextIndexLabel.set_text, "%d/%d" % (pitchIndex, self._model.mosaic.pitchNbPicts))
+        else:
+            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, "%.1f" % yaw)
+            self._serializer.addWork(self.yawNextIndexLabel.set_text, "%.1f" % yaw)
+            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, "%.1f" % pitch)
+            self._serializer.addWork(self.pitchNextIndexLabel.set_text, "%.1f" % pitch)
+        self._serializer.addWork(self.currentIndexLabel.set_text, "%d/%d" % (index, self._model.scan.totalNbPicts))
+        self._serializer.addWork(self.nextIndexLabel.set_text, "%d/%d" % (index, self._model.scan.totalNbPicts))
 
         # Update graphical area
         self.shootingArea.add_pict(yaw, pitch, status, next)
@@ -566,9 +571,12 @@ class ShootController(AbstractController):
         # Update text area
         if isinstance(index, tuple):
             index, yawIndex, pitchIndex = index
-            self.yawNextIndexLabel.set_text(_("%d/%d") % (yawIndex, self._model.mosaic.yawNbPicts))
-            self.pitchNextIndexLabel.set_text(_("%d/%d") % (pitchIndex, self._model.mosaic.pitchNbPicts))
-        self.nextIndexLabel.set_text(_("%d/%d") % (index, self._model.scan.totalNbPicts))
+            self.yawNextIndexLabel.set_text("%d/%d" % (yawIndex, self._model.mosaic.yawNbPicts))
+            self.pitchNextIndexLabel.set_text("%d/%d" % (pitchIndex, self._model.mosaic.pitchNbPicts))
+        else:
+            self.yawNextIndexLabel.set_text("%.1f" % yaw)
+            self.pitchNextIndexLabel.set_text("%.1f" % pitch)
+        self.nextIndexLabel.set_text("%d/%d" % (index, self._model.scan.totalNbPicts))
 
         # Update graphical area
         self.shootingArea.set_selected_image_index(index)
