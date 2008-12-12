@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Thu Dec 11 23:52:19 2008 -->
+<!--Generated with glade3 3.4.5 on Fri Dec 12 13:30:46 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="visible">True</property>
@@ -78,163 +78,176 @@
                     <property name="visible">True</property>
                     <property name="resize_mode">GTK_RESIZE_QUEUE</property>
                     <child>
-                      <widget class="GtkHBox" id="hbox">
+                      <widget class="GtkTable" id="table">
                         <property name="visible">True</property>
+                        <property name="n_rows">4</property>
+                        <property name="n_columns">4</property>
                         <child>
-                          <widget class="GtkVBox" id="vbox3">
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <widget class="GtkHBox" id="hbox10">
                             <property name="visible">True</property>
                             <child>
-                              <widget class="GtkLabel" id="label3">
+                              <widget class="GtkLabel" id="textLabel2">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">Pano</property>
+                                <property name="label" translatable="yes">Repeat</property>
                               </widget>
                             </child>
                             <child>
-                              <widget class="GtkLabel" id="indexLabel">
+                              <widget class="GtkLabel" id="repeatLabel">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">-- of --</property>
+                                <property name="label" translatable="yes">--/--</property>
                                 <property name="justify">GTK_JUSTIFY_CENTER</property>
+                                <property name="width_chars">10</property>
                               </widget>
                               <packing>
                                 <property name="position">1</property>
                               </packing>
                             </child>
-                            <child>
-                              <widget class="GtkLabel" id="label4">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Repeat</property>
-                              </widget>
-                              <packing>
-                                <property name="position">2</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="repeatLabel">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">-- of --</property>
-                                <property name="justify">GTK_JUSTIFY_CENTER</property>
-                              </widget>
-                              <packing>
-                                <property name="position">3</property>
-                              </packing>
-                            </child>
-                          </widget>
-                        </child>
-                        <child>
-                          <widget class="GtkVSeparator" id="vseparator1">
-                            <property name="visible">True</property>
                           </widget>
                           <packing>
-                            <property name="expand">False</property>
-                            <property name="position">1</property>
+                            <property name="right_attach">4</property>
+                            <property name="top_attach">3</property>
+                            <property name="bottom_attach">4</property>
+                            <property name="x_options">GTK_EXPAND</property>
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkTable" id="table1">
+                          <widget class="GtkLabel" id="textLabel3">
                             <property name="visible">True</property>
-                            <property name="n_rows">3</property>
-                            <property name="n_columns">3</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="pitchNextIndexLabel">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">-- of --</property>
-                                <property name="justify">GTK_JUSTIFY_CENTER</property>
-                              </widget>
-                              <packing>
-                                <property name="left_attach">2</property>
-                                <property name="right_attach">3</property>
-                                <property name="top_attach">2</property>
-                                <property name="bottom_attach">3</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="yawNextIndexLabel">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">-- of --</property>
-                                <property name="justify">GTK_JUSTIFY_CENTER</property>
-                              </widget>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
-                                <property name="top_attach">2</property>
-                                <property name="bottom_attach">3</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="pitchCurrentIndexLabel">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">-- of --</property>
-                                <property name="justify">GTK_JUSTIFY_CENTER</property>
-                              </widget>
-                              <packing>
-                                <property name="left_attach">2</property>
-                                <property name="right_attach">3</property>
-                                <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="yawCurrentIndexLabel">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">-- of --</property>
-                                <property name="justify">GTK_JUSTIFY_CENTER</property>
-                                <property name="max_width_chars">10</property>
-                              </widget>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
-                                <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label6">
-                                <property name="visible">True</property>
-                                <property name="xalign">0.89999997615814209</property>
-                                <property name="label" translatable="yes">Next</property>
-                              </widget>
-                              <packing>
-                                <property name="top_attach">2</property>
-                                <property name="bottom_attach">3</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label5">
-                                <property name="visible">True</property>
-                                <property name="xalign">0.89999997615814209</property>
-                                <property name="label" translatable="yes">Current</property>
-                              </widget>
-                              <packing>
-                                <property name="top_attach">1</property>
-                                <property name="bottom_attach">2</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label7">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Pitch</property>
-                              </widget>
-                              <packing>
-                                <property name="left_attach">2</property>
-                                <property name="right_attach">3</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="label8">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes">Yaw</property>
-                              </widget>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
-                              </packing>
-                            </child>
+                            <property name="xalign">0.89999997615814209</property>
+                            <property name="label" translatable="yes">Current</property>
                           </widget>
                           <packing>
-                            <property name="position">2</property>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="textLabel4">
+                            <property name="visible">True</property>
+                            <property name="xalign">0.89999997615814209</property>
+                            <property name="label" translatable="yes">Next</property>
+                          </widget>
+                          <packing>
+                            <property name="top_attach">2</property>
+                            <property name="bottom_attach">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="textLabel6">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Pitch</property>
+                          </widget>
+                          <packing>
+                            <property name="left_attach">3</property>
+                            <property name="right_attach">4</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="pitchCurrentIndexLabel">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">--/--</property>
+                            <property name="justify">GTK_JUSTIFY_CENTER</property>
+                            <property name="width_chars">10</property>
+                          </widget>
+                          <packing>
+                            <property name="left_attach">3</property>
+                            <property name="right_attach">4</property>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="pitchNextIndexLabel">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">--/--</property>
+                            <property name="justify">GTK_JUSTIFY_CENTER</property>
+                            <property name="width_chars">10</property>
+                          </widget>
+                          <packing>
+                            <property name="left_attach">3</property>
+                            <property name="right_attach">4</property>
+                            <property name="top_attach">2</property>
+                            <property name="bottom_attach">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="yawCurrentIndexLabel">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">--/--</property>
+                            <property name="justify">GTK_JUSTIFY_CENTER</property>
+                            <property name="width_chars">10</property>
+                            <property name="max_width_chars">10</property>
+                          </widget>
+                          <packing>
+                            <property name="left_attach">2</property>
+                            <property name="right_attach">3</property>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="yawNextIndexLabel">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">--/--</property>
+                            <property name="justify">GTK_JUSTIFY_CENTER</property>
+                            <property name="width_chars">10</property>
+                          </widget>
+                          <packing>
+                            <property name="left_attach">2</property>
+                            <property name="right_attach">3</property>
+                            <property name="top_attach">2</property>
+                            <property name="bottom_attach">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="textLabel5">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Yaw</property>
+                          </widget>
+                          <packing>
+                            <property name="left_attach">2</property>
+                            <property name="right_attach">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="textLabel1">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Total</property>
+                          </widget>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="currentIndexLabel">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">--/--</property>
+                            <property name="justify">GTK_JUSTIFY_CENTER</property>
+                            <property name="width_chars">10</property>
+                          </widget>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                            <property name="top_attach">1</property>
+                            <property name="bottom_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="nextIndexLabel">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">--/--</property>
+                            <property name="justify">GTK_JUSTIFY_CENTER</property>
+                            <property name="width_chars">10</property>
+                          </widget>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="right_attach">2</property>
+                            <property name="top_attach">2</property>
+                            <property name="bottom_attach">3</property>
                           </packing>
                         </child>
                       </widget>
