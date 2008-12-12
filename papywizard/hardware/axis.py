@@ -49,6 +49,8 @@ Implements
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2008 Frédéric Mantegazza
 @license: CeCILL
+
+@todo: use threads in any case
 """
 
 __revision__ = "$Id$"
@@ -199,7 +201,7 @@ class AbstractAxis(object):
 
     def setManualSpeed(self, speed):
         """ Set manual speed.
-        
+
         @param speed: new speed, in ('slow', 'normal', 'fast')
         @type speed: str
         """
@@ -244,17 +246,17 @@ class Axis(AbstractAxis):
     def init(self):
         self.__driver.acquireBus()
         try:
-            
+
             # Stop axis
             self._sendCmd("L")
-            
+
             # Check motor
             self._sendCmd("F")
-            
+
             # Get full circle count
             value = self._sendCmd("a")
             Logger().debug("Axis.init(): full circle count=%s" % hex(decodeAxisValue(value)))
-            
+
             # Get
             value = self._sendCmd("D")
             Logger().debug("Axis.init(): sidereal rate=%s" % hex(decodeAxisValue(value)))
@@ -324,7 +326,7 @@ class Axis(AbstractAxis):
         It is faster for angles < 6-7°, because in this case, the
         head does not accelerate to full speed, but rather stays at
         very low speed.
-        
+
         Problem: this drive can't be stopped, neither run concurrently
         on both axis without big modifications in multi-threading stuff.
 
