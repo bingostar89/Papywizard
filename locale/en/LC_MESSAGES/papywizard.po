@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-11 12:31+0100\n"
-"PO-Revision-Date: 2008-12-11 12:29+0100\n"
+"POT-Creation-Date: 2008-12-12 15:05+0100\n"
+"PO-Revision-Date: 2008-12-12 12:17+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -34,72 +34,83 @@ msgstr "SerialDriver not initialized"
 msgid "Timeout while reading on serial bus"
 msgstr "Timeout while reading on serial bus"
 
-#: papywizard/controller/shootController.py:431
-#: papywizard/controller/shootController.py:432
-#: papywizard/controller/shootController.py:433
-#: papywizard/controller/shootController.py:434
-#: papywizard/controller/shootController.py:435
-#: papywizard/controller/shootController.py:436 tmp/textShootingArea.glade.h:1
-msgid "-- of --"
-msgstr "-- of --"
+#: papywizard/controller/shootController.py:158
+#: papywizard/controller/shootController.py:159
+#: papywizard/controller/shootController.py:161
+#: papywizard/controller/shootController.py:165
+#: papywizard/controller/shootController.py:166
+#: papywizard/controller/shootController.py:167
+#: papywizard/controller/shootController.py:168
+#: papywizard/controller/shootController.py:454
+#: papywizard/controller/shootController.py:455
+#: papywizard/controller/shootController.py:457
+#: papywizard/controller/shootController.py:461
+#: papywizard/controller/shootController.py:462
+#: papywizard/controller/shootController.py:463
+#: papywizard/controller/shootController.py:464
+#, python-format
+msgid "--/%d"
+msgstr "--/%d"
 
-#: papywizard/controller/shootController.py:449
+#: papywizard/controller/shootController.py:482
 msgid "Resume"
 msgstr "Resume"
 
-#: papywizard/controller/shootController.py:452 tmp/shootDialog.glade.h:2
+#: papywizard/controller/shootController.py:485 tmp/shootDialog.glade.h:4
 msgid "Idle"
 msgstr "Idle"
 
-#: papywizard/controller/shootController.py:456 tmp/shootDialog.glade.h:3
+#: papywizard/controller/shootController.py:489 tmp/shootDialog.glade.h:6
 msgid "Pause"
 msgstr "Pause"
 
-#: papywizard/controller/shootController.py:463
+#: papywizard/controller/shootController.py:496
 msgid "Finished"
 msgstr "Finished"
 
-#: papywizard/controller/shootController.py:465
+#: papywizard/controller/shootController.py:498
 msgid "Canceled"
 msgstr "Canceled"
 
-#: papywizard/controller/shootController.py:467
+#: papywizard/controller/shootController.py:500
 msgid "Failed"
 msgstr "Failed"
 
-#: papywizard/controller/shootController.py:477
+#: papywizard/controller/shootController.py:510
 #, python-format
 msgid "Waiting %s"
 msgstr "Waiting %s"
 
-#: papywizard/controller/shootController.py:491
-#: papywizard/controller/shootController.py:499
-#: papywizard/controller/shootController.py:500
-#: papywizard/controller/shootController.py:501
-#: papywizard/controller/shootController.py:502
-#: papywizard/controller/shootController.py:503
+#: papywizard/controller/shootController.py:524
+#: papywizard/controller/shootController.py:532
+#: papywizard/controller/shootController.py:533
+#: papywizard/controller/shootController.py:534
 #: papywizard/controller/shootController.py:535
 #: papywizard/controller/shootController.py:536
+#: papywizard/controller/shootController.py:537
+#: papywizard/controller/shootController.py:569
+#: papywizard/controller/shootController.py:570
+#: papywizard/controller/shootController.py:571
 #, python-format
-msgid "%d of %d"
-msgstr "%d of %d"
+msgid "%d/%d"
+msgstr "%d/%d"
 
-#: papywizard/controller/shootController.py:512
+#: papywizard/controller/shootController.py:546
 msgid "Moving"
 msgstr "Moving"
 
-#: papywizard/controller/shootController.py:514
+#: papywizard/controller/shootController.py:548
 msgid "Stabilization"
 msgstr "Stabilization"
 
-#: papywizard/controller/shootController.py:516 tmp/configDialog.glade.h:29
+#: papywizard/controller/shootController.py:550 tmp/configDialog.glade.h:29
 msgid "Mirror lockup"
 msgstr "Mirror lockup"
 
-#: papywizard/controller/shootController.py:520
+#: papywizard/controller/shootController.py:554
 #, python-format
-msgid "Shutter - Picture %d of %d"
-msgstr "Shutter - Picture %d of %d"
+msgid "Shutter - Picture %d/%d"
+msgstr "Shutter - Picture %d/%d"
 
 #: papywizard/controller/bluetoothChooserController.py:178
 msgid "Can't scan bluetooth"
@@ -351,7 +362,7 @@ msgstr "Data"
 msgid "Data directory"
 msgstr "Data directory"
 
-#: tmp/configDialog.glade.h:17 tmp/shootDialog.glade.h:1
+#: tmp/configDialog.glade.h:17 tmp/shootDialog.glade.h:3
 msgid "Data file"
 msgstr "Data file"
 
@@ -413,7 +424,8 @@ msgstr "Mosaic"
 msgid "Overlap (%)"
 msgstr "Overlap (%)"
 
-#: tmp/configDialog.glade.h:34 tmp/textShootingArea.glade.h:6
+#: tmp/configDialog.glade.h:34 tmp/shootDialog.glade.h:8
+#: tmp/textShootingArea.glade.h:6
 msgid "Repeat"
 msgstr "Repeat"
 
@@ -433,7 +445,7 @@ msgstr "Sensor ratio"
 msgid "Serial port"
 msgstr "Serial port"
 
-#: tmp/configDialog.glade.h:39 tmp/shootDialog.glade.h:4
+#: tmp/configDialog.glade.h:39 tmp/shootDialog.glade.h:9
 msgid "Shooting"
 msgstr "Shooting"
 
@@ -453,7 +465,7 @@ msgstr "Start from"
 msgid "Time value (sec)"
 msgstr "Time value (sec)"
 
-#: tmp/configDialog.glade.h:44 tmp/shootDialog.glade.h:8
+#: tmp/configDialog.glade.h:44 tmp/shootDialog.glade.h:13
 msgid "Timer"
 msgstr "Timer"
 
@@ -654,7 +666,7 @@ msgid "Save log"
 msgstr "Save log"
 
 #: tmp/loggerDialog.glade.h:4 tmp/presetInfoDialog.glade.h:2
-#: tmp/shootDialog.glade.h:9
+#: tmp/shootDialog.glade.h:16
 msgid "gtk-close"
 msgstr "gtk-close"
 
@@ -724,8 +736,8 @@ msgid "Papywizard"
 msgstr "Papywizard"
 
 #: tmp/mainWindow2.glade.h:19 tmp/mainWindow.glade.h:19
-#: tmp/nbPictsDialog.glade.h:2 tmp/textShootingArea.glade.h:5
-#: tmp/totalFovDialog.glade.h:1
+#: tmp/nbPictsDialog.glade.h:2 tmp/shootDialog.glade.h:7
+#: tmp/textShootingArea.glade.h:5 tmp/totalFovDialog.glade.h:1
 msgid "Pitch"
 msgstr "Pitch"
 
@@ -771,8 +783,8 @@ msgid "View Log..."
 msgstr "View Log..."
 
 #: tmp/mainWindow2.glade.h:31 tmp/mainWindow.glade.h:31
-#: tmp/nbPictsDialog.glade.h:3 tmp/textShootingArea.glade.h:7
-#: tmp/totalFovDialog.glade.h:3
+#: tmp/nbPictsDialog.glade.h:3 tmp/shootDialog.glade.h:15
+#: tmp/textShootingArea.glade.h:7 tmp/totalFovDialog.glade.h:3
 msgid "Yaw"
 msgstr "Yaw"
 
@@ -788,25 +800,37 @@ msgstr "Yaw -"
 msgid "Preset Info"
 msgstr "Preset Info"
 
-#: tmp/shootDialog.glade.h:5
-msgid "Start"
-msgstr "Start"
+#: tmp/shootDialog.glade.h:1
+msgid "--/--"
+msgstr "--/--"
 
-#: tmp/shootDialog.glade.h:6
-msgid "Step-by-step"
-msgstr "Step-by-step"
-
-#: tmp/shootDialog.glade.h:7
-msgid "Stop"
-msgstr "Stop"
-
-#: tmp/textShootingArea.glade.h:2
+#: tmp/shootDialog.glade.h:2 tmp/textShootingArea.glade.h:2
 msgid "Current"
 msgstr "Current"
 
-#: tmp/textShootingArea.glade.h:3
+#: tmp/shootDialog.glade.h:5 tmp/textShootingArea.glade.h:3
 msgid "Next"
 msgstr "Next"
+
+#: tmp/shootDialog.glade.h:10
+msgid "Start"
+msgstr "Start"
+
+#: tmp/shootDialog.glade.h:11
+msgid "Step-by-step"
+msgstr "Step-by-step"
+
+#: tmp/shootDialog.glade.h:12
+msgid "Stop"
+msgstr "Stop"
+
+#: tmp/shootDialog.glade.h:14
+msgid "Total"
+msgstr "Total"
+
+#: tmp/textShootingArea.glade.h:1
+msgid "-- of --"
+msgstr "-- of --"
 
 #: tmp/textShootingArea.glade.h:4
 msgid "Pano"
@@ -921,9 +945,6 @@ msgstr "Please wait..."
 
 #~ msgid "   Yaw   "
 #~ msgstr "Yaw"
-
-#~ msgid "Total fov"
-#~ msgstr "Total fov"
 
 #~ msgid "    Yaw    "
 #~ msgstr "Yaw"
