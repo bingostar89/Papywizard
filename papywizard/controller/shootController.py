@@ -77,7 +77,6 @@ if hasattr(sys, "frozen"):
 else:
     path = os.path.dirname(__file__)
 
-
 class ShootController(AbstractController):
     """ Shoot controller object.
     """
@@ -87,7 +86,7 @@ class ShootController(AbstractController):
                             "on_rewindButton_clicked": self.__onRewindButtonclicked,
                             "on_forwardButton_clicked": self.__onForwardButtonclicked,
                             "on_stepByStepCheckbutton_toggled": self.__onStepByStepCheckbuttonToggled,
-                            "on_dataFileButton_clicked": self.__onDataFileButtonclicked,
+                            "on_dataButton_clicked": self.__onDataButtonclicked,
                             "on_timerButton_clicked": self.__onTimerButtonClicked,
                             "on_startButton_clicked": self.__onStartButtonClicked,
                             "on_pauseResumeButton_clicked": self.__onPauseResumeButtonClicked,
@@ -123,36 +122,34 @@ class ShootController(AbstractController):
         self.pitchCurrentIndexLabel = self.wTree.get_widget("pitchCurrentIndexLabel")
         self.yawNextIndexLabel = self.wTree.get_widget("yawNextIndexLabel")
         self.pitchNextIndexLabel = self.wTree.get_widget("pitchNextIndexLabel")
-        self.repeatLabel = self.wTree.get_widget("repeatLabel")
         self.rewindButton = self.wTree.get_widget("rewindButton")
         self.forwardButton = self.wTree.get_widget("forwardButton")
         self.progressbar = self.wTree.get_widget("progressbar")
-        self.stepByStepCheckbutton = self.wTree.get_widget("stepByStepCheckbutton")
-        self.dataFileButton = self.wTree.get_widget("dataFileButton")
-        self.dataFileButtonImage = self.wTree.get_widget("dataFileButtonImage")
+        self.timeLabel = self.wTree.get_widget("timeLabel")
+        self.repeatLabel = self.wTree.get_widget("repeatLabel")
+        self.dataButton = self.wTree.get_widget("dataButton")
+        self.dataButtonImage = self.wTree.get_widget("dataButtonImage")
         self.timerButton = self.wTree.get_widget("timerButton")
         self.timerButtonImage = self.wTree.get_widget("timerButtonImage")
+        self.stepByStepCheckbutton = self.wTree.get_widget("stepByStepCheckbutton")
         self.startButton = self.wTree.get_widget("startButton")
         self.pauseResumeButton = self.wTree.get_widget("pauseResumeButton")
         self.pauseResumeLabel = self.wTree.get_widget("pauseResumeLabel")
-        #self.pauseResumeImage = self.wTree.get_widget("pauseResumeImage")
         self.stopButton = self.wTree.get_widget("stopButton")
         self.doneButton = self.wTree.get_widget("doneButton")
 
     def _initWidgets(self):
 
         # Font
-        #for i in xrange(1, 7):
-            #label = self.wTree.get_widget("textLabel%d" % i)
-            #self._setFontParams(label, scale=0.8)
-        scale = 1.4
+        scale = 1.3
         self._setFontParams(self.currentIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.nextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.repeatLabel, scale=scale, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.yawCurrentIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.pitchCurrentIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.yawNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.pitchNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.timeLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.repeatLabel, weight=pango.WEIGHT_BOLD)
 
         # Init text view
         self.currentIndexLabel.set_text("--/%d" % self._model.scan.totalNbPicts)
@@ -202,6 +199,14 @@ class ShootController(AbstractController):
                 self.shootingArea.add_pict(yaw, pitch, status='preview')
         yaw, pitch = self._model.hardware.readPosition()
         self.shootingArea.set_current_head_position(yaw, pitch)
+        
+        # Set the shooting area size
+        width1, heigh1 = self.shootingArea.size_request()
+        width2, heigh2 = self.textShootingArea.size_request()
+        width = max(width1, width2)
+        heigh = max(heigh1, heigh2)
+        self.shootingArea.set_size_request(width, heigh)
+        self.textShootingArea.set_size_request(width, heigh)
 
     def _connectSignals(self):
         super(ShootController, self)._connectSignals()
@@ -405,10 +410,10 @@ class ShootController(AbstractController):
     def __onStepByStepCheckbuttonToggled(self, widget):
         Logger().trace("ShootController.____onStepByStepCheckbuttonToggled()")
         switch = self.stepByStepCheckbutton.get_active()
-        self._model.setManualShoot(switch)
+        self._model.setStepByStep(switch)
 
-    def __onDataFileButtonclicked(self, widget):
-        Logger().trace("ShootController.__onDataFileButtonclicked()")
+    def __onDataButtonclicked(self, widget):
+        Logger().trace("ShootController.__onDataButtonclicked()")
         controller = ConfigController(self, self._model, self._serializer)
         controller.selectPage(5, disable=True)
         response = controller.run()
@@ -421,10 +426,10 @@ class ShootController(AbstractController):
         controller.selectPage(6, disable=True)
         response = controller.run()
         controller.shutdown()
-        #if self._model.timerRepeatEnable:
-            #self.repeatLabel.set_text("--/%d" % self._model.timerRepeat)
-        #else:
-            #self.repeatLabel.set_text("")
+        if self._model.timerRepeatEnable:
+            self.repeatLabel.set_text("--/%d" % self._model.timerRepeat)
+        else:
+            self.repeatLabel.set_text("")
         self.refreshView()
 
     def __onStartButtonClicked(self, widget):
@@ -446,11 +451,20 @@ class ShootController(AbstractController):
     def __onDoneButtonClicked(self, widget):
         Logger().trace("ShootController.__onDoneButtonClicked()")
 
+    def __updateShootingTime(self):
+        Logger().trace("ShootController.__updateShootingTime()")
+        if self._model.isShooting():
+            self.timeLabel.set_text("%s" % sToHmsAsStr(self._model.getShootingTime()))
+            return True # Relaunch the gobject timer
+        else:
+            return False # Stop the gobject timer
+
     # Callback model (all GUI calls must be done via the serializer)
     def __shootingStarted(self):
         Logger().trace("ShootController.__shootingStarted()")
         self._serializer.addWork(self.shootingArea.clear)
         self._serializer.addWork(self.progressbar.set_fraction, 0.)
+        self._serializer.addWork(self.timeLabel.set_text, "%s" % sToHmsAsStr(self._model.getShootingTime()))
         self._serializer.addWork(self.currentIndexLabel.set_text, "--/%d" % self._model.scan.totalNbPicts)
         self._serializer.addWork(self.nextIndexLabel.set_text, "--/%d" % self._model.scan.totalNbPicts)
         if self._model.timerRepeatEnable:
@@ -467,7 +481,7 @@ class ShootController(AbstractController):
             self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, "--")
             self._serializer.addWork(self.yawNextIndexLabel.set_text, "--")
             self._serializer.addWork(self.pitchNextIndexLabel.set_text, "--")
-        self._serializer.addWork(self.dataFileButton.set_sensitive, False)
+        self._serializer.addWork(self.dataButton.set_sensitive, False)
         self._serializer.addWork(self.timerButton.set_sensitive, False)
         self._serializer.addWork(self.startButton.set_sensitive, False)
         self._serializer.addWork(self.pauseResumeButton.set_sensitive, True)
@@ -475,6 +489,7 @@ class ShootController(AbstractController):
         self._serializer.addWork(self.doneButton.set_sensitive, False)
         self._serializer.addWork(self.rewindButton.set_sensitive, False)
         self._serializer.addWork(self.forwardButton.set_sensitive, False)
+        gobject.timeout_add(1000, self.__updateShootingTime)
 
     def __shootingPaused(self):
         Logger().trace("ShootController.__shootingPaused()")
@@ -498,7 +513,7 @@ class ShootController(AbstractController):
             self._serializer.addWork(self.progressbar.set_text, _("Canceled"))
         elif status == 'fail':
             self._serializer.addWork(self.progressbar.set_text, _("Failed"))
-        self._serializer.addWork(self.dataFileButton.set_sensitive, True)
+        self._serializer.addWork(self.dataButton.set_sensitive, True)
         self._serializer.addWork(self.timerButton.set_sensitive, True)
         self._serializer.addWork(self.startButton.set_sensitive, True)
         self._serializer.addWork(self.pauseResumeButton.set_sensitive, False)
@@ -513,6 +528,7 @@ class ShootController(AbstractController):
     def __shootingBeginShoot(self):
         Logger().trace("ShootController.__shootingBeginShoot()")
         self._serializer.addWork(self.shootingArea.clear)
+        #self.__beginTime = time.time()
 
     def __shootingProgress(self, progress):
         Logger().trace("ShootController.__shootingProgress()")
@@ -643,7 +659,13 @@ class ShootController(AbstractController):
         self._model.sequenceSignal.disconnect(self.__shootingSequence)
 
     def refreshView(self):
-        dataFileFlag = ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE')
-        self.dataFileButtonImage.set_sensitive(dataFileFlag)
+        dataFlag = ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE')
+        if dataFlag:
+            self.dataButtonImage.set_from_stock(gtk.STOCK_YES, 4)
+        else:
+            self.dataButtonImage.set_from_stock(gtk.STOCK_NO, 4)
         timerFlag = self._model.timerAfterEnable or self._model.timerRepeatEnable
-        self.timerButtonImage.set_sensitive(timerFlag)
+        if timerFlag:
+            self.timerButtonImage.set_from_stock(gtk.STOCK_YES, 4)
+        else:
+            self.timerButtonImage.set_from_stock(gtk.STOCK_NO, 4)
