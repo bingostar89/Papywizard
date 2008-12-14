@@ -82,7 +82,7 @@ class Shooting(object):
         self.__stop = False
         self.__stepByStep = False
         self.__forceNewShootingIndex = False
-        #self.__scan = None
+        self.__startTime = None
 
         # Hardware
         self.realHardware = realHardware
@@ -230,6 +230,7 @@ class Shooting(object):
 
     scan = property(__getScan)
 
+    # Interface
     def setStartEndFromFov(self, yawFov, pitchFov):
         """ Set yaw start/end positions from total fov.
 
@@ -297,12 +298,12 @@ class Shooting(object):
         self.hardware = self.simulatedHardware
         self.hardware.init()
 
-    def setManualShoot(self, flag):
-        """ Turn on/off manual shoot.
+    def setStepByStep(self, flag):
+        """ Turn on/off step-by-step shooting.
 
-        In manual shoot mode, the head switch to pause at each end of position.
+        If active, the head switch to pause at each end of position.
 
-        @param flag: flag for manual shoot
+        @param flag: flag for step-by-step shooting
         @type flag: bool
         """
         self.__stepByStep = flag
@@ -325,6 +326,14 @@ class Shooting(object):
         self.scan.setNextPositionIndex(index)
         self.__forceNewShootingIndex = True
 
+    def getShootingTime(self):
+        """ Get the shooting time.
+        
+        @return elapse ans ETA time (s)
+        @rtype: tuple of int
+        """
+        return time.time() - self.__startTime
+
     def start(self):
         """ Start pano shooting.
         """
@@ -343,11 +352,13 @@ class Shooting(object):
                 raise StopIteration
 
         Logger().trace("Shooting.start()")
+        self.__startTime = time.time()
         self.startedSignal.emit()
 
         self.__stop = False
         self.__pause = False
         self.__shooting = True
+        self.progressSignal.emit(0.)
 
         if self.cameraOrientation == 'portrait':
             roll = 90.
@@ -371,10 +382,6 @@ class Shooting(object):
                   'sensorRatio': "%s" % self.camera.sensorRatio,
                   'lensType': "%s" % self.camera.lens.type_,
                   'focal': "%.1f" % self.camera.lens.focal}
-        #if self.mode == 'mosaic':
-            #self.__scan = self.mosaic
-        #else:
-            #self.__scan = self.preset
 
         Logger().info("Starting shoot process...")
         try:
@@ -416,8 +423,6 @@ class Shooting(object):
                 data.createHeader(values)
 
                 self.beginShootSignal.emit()
-                self.progress = 0.
-                self.progressSignal.emit(self.progress)
                 startTime = time.time()
                 Logger().debug("Shooting.start(): repeat %d/%d" % (repeat, numRepeat))
                 self.repeatSignal.emit(repeat)
@@ -463,7 +468,6 @@ class Shooting(object):
                             # Take pictures
                             Logger().info("Shutter cycle")
                             Logger().debug("Shooting.start(): pict #%d of %d" % (bracket, self.scan.totalNbPicts))
-                            #self.bracketSignal.emit(bracket)
                             self.sequenceSignal.emit('shutter', bracket=bracket)
                             self.hardware.shoot(self.camera.timeValue)
 
@@ -478,8 +482,9 @@ class Shooting(object):
                             index2, yawIndex, pitchIndex = index
                         else:
                             index2 = index
-                        progressFraction = float(index2) / float(self.scan.totalNbPicts)
-                        self.progressSignal.emit(progressFraction)
+                        progress = float(index2) / float(self.scan.totalNbPicts)
+                        progress *=  float(repeat) / float(numRepeat)
+                        self.progressSignal.emit(progress)
                         self.newPositionSignal.emit(index, yaw, pitch, status='ok', next=True)
 
                         # Test manual shooting flag (skipped if timeValue was 0.)
@@ -503,7 +508,9 @@ class Shooting(object):
                             index2, yawIndex, pitchIndex = index
                         else:
                             index2 = index
-                        progressFraction = float(index2) / float(self.scan.totalNbPicts)
+                        progress = float(index2) / float(self.scan.totalNbPicts)
+                        progress *=  float(repeat) / float(numRepeat)
+                        self.progressSignal.emit(progress)
                         self.newPositionSignal.emit(index, yaw, pitch, status='error', next=True)
 
                         # Test manual shooting flag
