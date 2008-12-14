@@ -203,6 +203,8 @@ class MainController(AbstractController):
         self.pitchNbPictsLabel = self.wTree.get_widget("pitchNbPictsLabel")
         self.yawRealOverlapLabel = self.wTree.get_widget("yawRealOverlapLabel")
         self.pitchRealOverlapLabel = self.wTree.get_widget("pitchRealOverlapLabel")
+        self.yawResolutionLabel = self.wTree.get_widget("yawResolutionLabel")
+        self.pitchResolutionLabel = self.wTree.get_widget("pitchResolutionLabel")
         self.presetFrame = self.wTree.get_widget("presetFrame")
         self.presetCombobox = self.wTree.get_widget("presetCombobox")
         self.yawHeadPosLabel = self.wTree.get_widget("yawHeadPosLabel")
@@ -239,6 +241,8 @@ class MainController(AbstractController):
         self._setFontParams(self.pitchNbPictsLabel, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.yawRealOverlapLabel, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.pitchRealOverlapLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.yawResolutionLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.pitchResolutionLabel, weight=pango.WEIGHT_BOLD)
 
         # Nokia plateform stuff
         try:
@@ -771,7 +775,7 @@ class MainController(AbstractController):
     def __openShootdialog(self):
         """
         """
-        self._model.setManualShoot(False)
+        self._model.setStepByStep(False)
         self.shootButton.set_sensitive(False)
         self.setStatusbarMessage(_("Opening shoot dialog. Please wait..."))
         while gtk.events_pending():
@@ -922,6 +926,8 @@ class MainController(AbstractController):
             self.pitchNbPictsLabel.set_text("%d" % self._model.mosaic.pitchNbPicts)
             self.yawRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.yawRealOverlap)))
             self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
+            self.yawResolutionLabel.set_text("%d" % round(self._model.mosaic.getYawResolution()))
+            self.pitchResolutionLabel.set_text("%d" % round(self._model.mosaic.getPitchResolution()))
         else:
             self.modeMosaicRadiobutton.set_active(False)
             self.modePresetRadiobutton.set_active(True)
