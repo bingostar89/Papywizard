@@ -196,6 +196,7 @@ class MosaicScan(AbstractScan):
 
     overlap = property(__getOverlap, __setOverlap)
 
+    # Move to normal interface
     def __getYawFov(self):
         """
         """
@@ -344,6 +345,24 @@ class MosaicScan(AbstractScan):
     def getPositionAtIndex(self, index):
         yawIndex, pitchIndex, yaw, pitch = self._positions[index - 1]
         return (index, yawIndex, pitchIndex), (yaw, pitch)
+
+    def getYawResolution(self):
+        """ Compute the total pano yaw resolution
+        
+        @return: pano yaw resolution (Mpx)
+        @rtype: float
+        """
+        yawCameraFov = self._model.camera.getYawFov(self._model.cameraOrientation)
+        return self.yawFov / yawCameraFov * self._model.camera.getYawSensorResolution(self._model.cameraOrientation)
+        
+    def getPitchResolution(self):
+        """ Compute the total pano pitch resolution
+        
+        @return: pano pitch resolution (Mpx)
+        @rtype: float
+        """
+        pitchCameraFov = self._model.camera.getPitchFov(self._model.cameraOrientation)
+        return self.pitchFov / pitchCameraFov * self._model.camera.getPitchSensorResolution(self._model.cameraOrientation)
 
 
 class PresetScan(AbstractScan):
