@@ -51,6 +51,8 @@ Implements
 
 __revision__ = "$Id$"
 
+import math
+
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
@@ -90,6 +92,18 @@ class Camera(object):
         ConfigManager().setFloat('Preferences', 'CAMERA_SENSOR_COEF', sensorCoef, 1)
 
     sensorCoef = property(__getSensorCoef, __setSensorCoef)
+
+    def __getSensorResolution(self):
+        """
+        """
+        return ConfigManager().getFloat('Preferences', 'CAMERA_SENSOR_RESOLUTION')
+        
+    def __setSensorResolution(self, resolution):
+        """
+        """
+        ConfigManager().setFloat('Preferences', 'CAMERA_SENSOR_RESOLUTION', resolution, 1)
+
+    sensorResolution = property(__getSensorResolution, __setSensorResolution)
 
     def __getTimeValue(self):
         """
@@ -167,6 +181,36 @@ class Camera(object):
             raise ValueError("cameraOrientation must be in ('portrait', 'landscape')")
 
         return self.lens.computeFov(sensorSize / self.sensorCoef)
+
+    def getYawSensorResolution(self, cameraOrientation):
+        """ Compute the yaw sensor resolution
+        
+        @return: yaw sensor resolution (px)
+        @rtype: int
+        """
+        if cameraOrientation == 'landscape':
+            sensorResolution = round(math.sqrt(self.sensorResolution * 1e6 * config.SENSOR_RATIOS[self.sensorRatio]))
+        elif cameraOrientation == 'portrait':
+            sensorResolution = round(math.sqrt(self.sensorResolution * 1e6 / config.SENSOR_RATIOS[self.sensorRatio]))
+        else:
+            raise ValueError("cameraOrientation must be in ('portrait', 'landscape')")
+
+        return sensorResolution
+
+    def getPitchSensorResolution(self, cameraOrientation):
+        """ Compute the pitch sensor resolution
+        
+        @return: pitch sensor resolution (px)
+        @rtype: int
+        """
+        if cameraOrientation == 'landscape':
+            sensorResolution = round(math.sqrt(self.sensorResolution * 1e6 / config.SENSOR_RATIOS[self.sensorRatio]))
+        elif cameraOrientation == 'portrait':
+            sensorResolution = round(math.sqrt(self.sensorResolution * 1e6 * config.SENSOR_RATIOS[self.sensorRatio]))
+        else:
+            raise ValueError("cameraOrientation must be in ('portrait', 'landscape')")
+
+        return sensorResolution
 
     def shutdown(self):
         """ Cleanly terminate the camera.
