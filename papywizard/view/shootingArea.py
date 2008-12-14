@@ -78,8 +78,8 @@ class ShootingArea(gtk.DrawingArea):
                         gtk.gdk.POINTER_MOTION_HINT_MASK)
 
         self._pictures = OrderedDict()
-        self._width = 300
-        self._height = 150
+        self._width = 450
+        self._height = 200
         self.set_size_request(self._width, self._height)
 
         self._yawFov = None
