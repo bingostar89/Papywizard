@@ -98,11 +98,12 @@ class ConfigController(AbstractController):
 
         # Camera page
         self.timeValueSpinbutton = self.wTree.get_widget("timeValueSpinbutton")
+        self.mirrorLockupCheckbutton = self.wTree.get_widget("mirrorLockupCheckbutton")
         self.bracketingNbPictsSpinbutton = self.wTree.get_widget("bracketingNbPictsSpinbutton")
         self.bracketingIntentCombobox = self.wTree.get_widget("bracketingIntentCombobox")
         self.sensorCoefSpinbutton = self.wTree.get_widget("sensorCoefSpinbutton")
         self.sensorRatioCombobox = self.wTree.get_widget("sensorRatioCombobox")
-        self.mirrorLockupCheckbutton = self.wTree.get_widget("mirrorLockupCheckbutton")
+        self.sensorResolutionSpinbutton = self.wTree.get_widget("sensorResolutionSpinbutton")
 
         # Lens page
         self.lensTypeCombobox = self.wTree.get_widget("lensTypeCombobox")
@@ -169,11 +170,12 @@ class ConfigController(AbstractController):
 
         # Camera page
         self._model.camera.timeValue = self.timeValueSpinbutton.get_value()
+        self._model.camera.mirrorLockup = self.mirrorLockupCheckbutton.get_active()
         self._model.camera.bracketingNbPicts = int(self.bracketingNbPictsSpinbutton.get_value())
         self._model.camera.bracketingIntent = config.CAMERA_BRACKETING_INTENT_INDEX[self.bracketingIntentCombobox.get_active()]
         self._model.camera.sensorCoef = self.sensorCoefSpinbutton.get_value()
         self._model.camera.sensorRatio = config.SENSOR_RATIOS_INDEX[self.sensorRatioCombobox.get_active()]
-        self._model.camera.mirrorLockup = self.mirrorLockupCheckbutton.get_active()
+        self._model.camera.sensorResolution = self.sensorResolutionSpinbutton.get_value()
 
         # Lens page
         self._model.camera.lens.type_ = config.LENS_TYPE_INDEX[self.lensTypeCombobox.get_active()]
@@ -347,11 +349,12 @@ class ConfigController(AbstractController):
 
         # Camera page
         self.timeValueSpinbutton.set_value(self._model.camera.timeValue)
+        self.mirrorLockupCheckbutton.set_active(self._model.camera.mirrorLockup)
         self.bracketingNbPictsSpinbutton.set_value(self._model.camera.bracketingNbPicts)
         self.bracketingIntentCombobox.set_active(config.CAMERA_BRACKETING_INTENT_INDEX[self._model.camera.bracketingIntent])
         self.sensorCoefSpinbutton.set_value(self._model.camera.sensorCoef)
         self.sensorRatioCombobox.set_active(config.SENSOR_RATIOS_INDEX[self._model.camera.sensorRatio])
-        self.mirrorLockupCheckbutton.set_active(self._model.camera.mirrorLockup)
+        self.sensorResolutionSpinbutton.set_value(self._model.camera.sensorResolution)
 
         # Lens page
         self.lensTypeCombobox.set_active(config.LENS_TYPE_INDEX[self._model.camera.lens.type_])
