@@ -252,6 +252,8 @@ def sToHms(s):
     @return: hours, minutes, seconds
     @rtype: tuple of int
     """
+    if s < 0:
+        s = 0
     h = int(s / 3600)
     m = int((s - h * 3600) / 60)
     s -= (h * 3600 + m * 60)
