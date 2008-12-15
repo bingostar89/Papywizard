@@ -99,6 +99,7 @@ class MainController(AbstractController):
     def _init(self):
         self._gladeFile = "mainWindow.glade"
         self._signalDict = {"on_fileImportPresetMenuitem_activate": self.__onFileImportPresetMenuitemActivate,
+                            "on_fileLoadGtkrcMenuitem_activate": self.__onFileLoadGtkrcMenuitemActivate,
                             "on_quitMenuitem_activate": gtk.main_quit,
                             "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuitemToggled,
                             "on_hardwareSetLimitYawMinusMenuitem_activate": self.__onHardwareSetLimitYawMinusMenuitemActivate,
@@ -495,7 +496,7 @@ class MainController(AbstractController):
         fileDialog.add_filter(filter)
         filter = gtk.FileFilter()
         filter.set_name("all files")
-        filter.add_pattern("*.*")
+        filter.add_pattern("*")
         fileDialog.add_filter(filter)
         #fileDialog.set_current_folder_uri(config.HOME_DIR)
         fileDialog.set_filename(os.path.join(config.HOME_DIR, config.PRESET_FILE))
@@ -503,6 +504,26 @@ class MainController(AbstractController):
         if response == gtk.RESPONSE_ACCEPT:
             presetFileName = fileDialog.get_filename()
             self.__importPresetFile(presetFileName)
+        fileDialog.destroy()
+
+    def __onFileLoadGtkrcMenuitemActivate(self, widget):
+        Logger().trace("MainController.__onFileLoadGtkrcMenuitemActivate()")
+        fileDialog = gtk.FileChooserDialog(title="Load Gtkrc file", parent=self.dialog,
+                                           action=gtk.FILE_CHOOSER_ACTION_OPEN,
+                                           buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                                                    gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
+        filter = gtk.FileFilter()
+        filter.set_name("all files")
+        filter.add_pattern("*")
+        fileDialog.add_filter(filter)
+        #fileDialog.set_current_folder_uri(config.HOME_DIR)
+        fileDialog.set_filename(os.path.join(config.HOME_DIR, config.GTKRC_FILE))
+        response = fileDialog.run()
+        if response == gtk.RESPONSE_ACCEPT:
+            gtkrcFileName = fileDialog.get_filename()
+            Logger().debug("MainController.__onFileLoadGtkrcMenuitemActivate(): resources file=%s" % gtkrcFileName)
+            gtk.rc_parse(gtkrcFileName)
+            gtk.rc_reparse_all()
         fileDialog.destroy()
 
     def __onHardwareConnectMenuitemToggled(self, widget):

@@ -6,6 +6,13 @@ x bug fix
 
 0000-00-00 Version SVN
 
+2008-12-00 Version 1.5.3 (dev)
+    - shooting text view init with max values
+    x skip step-by-step test after shooting if timeValue is 0
+    - shooting dialog revisited
+    + elapse time
+    + total mosaic resolution
+
 2008-12-10 Version 1.5.2 (dev)
     x fixed bug in yaw/pitch index and repeat
     - improved shooting text view
