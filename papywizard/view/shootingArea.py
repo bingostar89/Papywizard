@@ -51,7 +51,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: shooting.py 327 2008-06-25 14:29:36Z fma $"
+__revision__ = "$Id$"
 
 import pygtk
 pygtk.require("2.0")
@@ -296,7 +296,7 @@ class MosaicArea(ShootingArea):
         #print "MosaicArea._expose_cb()"
 
         # Draw background
-        self.window.draw_rectangle(self.gc['background'], True, 0, 0, self._width, self._height)
+        #self.window.draw_rectangle(self.gc['background'], True, 0, 0, self._width, self._height)
 
         # Draw picts
         for image in self._pictures.itervalues():
@@ -442,7 +442,7 @@ class PresetArea(ShootingArea):
     def _expose_cb(self, widget, event):
 
         # Draw background
-        self.window.draw_rectangle(self.gc['background'], True, 0, 0, self._width, self._height)
+        #self.window.draw_rectangle(self.gc['background'], True, 0, 0, self._width, self._height)
 
         # Draw 360°x180° area and axis
         xFull = int(round(self._width / 2. - 180 * self._scale))
