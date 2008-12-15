@@ -54,7 +54,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: main.py 839 2008-10-10 07:33:26Z fma $"
+__revision__ = "$Id$"
 
 import time
 import threading

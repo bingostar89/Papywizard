@@ -54,7 +54,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: shooting.py 984 2008-10-28 19:37:55Z fma $"
+__revision__ = "$Id$"
 
 import traceback
 import StringIO

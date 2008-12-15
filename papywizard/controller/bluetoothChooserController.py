@@ -49,7 +49,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: shootController.py 333 2008-06-25 21:08:42Z fma $"
+__revision__ = "$Id$"
 
 import time
 import thread

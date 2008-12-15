@@ -49,7 +49,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: bluetoothDriver.py 600 2008-09-21 21:02:48Z fma $"
+__revision__ = "$Id$"
 
 import socket
 

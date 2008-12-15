@@ -51,7 +51,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: shooting.py 327 2008-06-25 14:29:36Z fma $"
+__revision__ = "$Id$"
 
 import pygtk
 pygtk.require("2.0")

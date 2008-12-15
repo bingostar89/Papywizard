@@ -44,7 +44,7 @@ View.
 @license: CeCILL
 """
 
-__revision__ = "$Id: config.py 527 2008-09-16 14:10:08Z fma $"
+__revision__ = "$Id$"
 
 import pygtk
 pygtk.require("2.0")

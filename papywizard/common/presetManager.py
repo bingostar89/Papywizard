@@ -49,7 +49,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: configManager.py 557 2008-09-18 18:51:24Z fma $"
+__revision__ = "$Id$"
 
 import copy
 import sys

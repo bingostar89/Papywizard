@@ -49,7 +49,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: configController.py 523 2008-09-16 14:03:24Z fma $"
+__revision__ = "$Id$"
 
 import StringIO
 import traceback

@@ -56,7 +56,7 @@ Implements
 @todo: l10n and i18n
 """
 
-__revision__ = "$Id: setup.py 471 2008-09-05 07:47:31Z fma $"
+__revision__ = "$Id$"
 
 import sys
 import os

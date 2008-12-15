@@ -51,7 +51,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: configManager.py 612 2008-09-22 07:23:43Z fma $"
+__revision__ = "$Id$"
 
 import unittest
 import sys
