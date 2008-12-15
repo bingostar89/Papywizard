@@ -523,6 +523,9 @@ class MainController(AbstractController):
             gtkrcFileName = fileDialog.get_filename()
             Logger().debug("MainController.__onFileLoadGtkrcMenuitemActivate(): resources file=%s" % gtkrcFileName)
             gtk.rc_parse(gtkrcFileName)
+            screen = self.dialog.get_screen()
+            settings = gtk.settings_get_for_screen(screen)
+            gtk.rc_reset_styles(settings)
         fileDialog.destroy()
 
     def __onHardwareConnectMenuitemToggled(self, widget):
