@@ -326,11 +326,11 @@ class Shooting(object):
         self.scan.setNextPositionIndex(index)
         self.__forceNewShootingIndex = True
 
-    def getShootingTime(self):
-        """ Get the shooting time.
-        
-        @return elapse ans ETA time (s)
-        @rtype: tuple of int
+    def getElapsedTime(self):
+        """ Get the shooting elapsed time.
+
+        @return elapsed time (s)
+        @rtype: int
         """
         return time.time() - self.__startTime
 
@@ -479,11 +479,11 @@ class Shooting(object):
 
                         # Update global shooting progression
                         if isinstance(index, tuple):
-                            index2, yawIndex, pitchIndex = index
+                            index_, yawIndex, pitchIndex = index
                         else:
-                            index2 = index
-                        progress = float(index2) / float(self.scan.totalNbPicts)
-                        progress *=  float(repeat) / float(numRepeat)
+                            index_ = index
+                        progress = (repeat - 1) * self.scan.totalNbPicts + index_
+                        progress /= float(numRepeat * self.scan.totalNbPicts)
                         self.progressSignal.emit(progress)
                         self.newPositionSignal.emit(index, yaw, pitch, status='ok', next=True)
 
@@ -505,11 +505,11 @@ class Shooting(object):
                         Logger().warning("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f out of limits" % (yaw, pitch))
 
                         if isinstance(index, tuple):
-                            index2, yawIndex, pitchIndex = index
+                            index_, yawIndex, pitchIndex = index
                         else:
-                            index2 = index
-                        progress = float(index2) / float(self.scan.totalNbPicts)
-                        progress *=  float(repeat) / float(numRepeat)
+                            index_ = index
+                        progress = (repeat - 1) * self.scan.totalNbPicts + index_
+                        progress /= float(numRepeat * self.scan.totalNbPicts)
                         self.progressSignal.emit(progress)
                         self.newPositionSignal.emit(index, yaw, pitch, status='error', next=True)
 
