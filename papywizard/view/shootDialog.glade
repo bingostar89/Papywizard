@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Dec 15 14:37:16 2008 -->
+<!--Generated with glade3 3.4.5 on Mon Dec 15 15:45:12 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="visible">True</property>
@@ -84,29 +84,7 @@
                         <property name="column_spacing">5</property>
                         <property name="row_spacing">5</property>
                         <child>
-                          <widget class="GtkHBox" id="hbox12">
-                            <property name="visible">True</property>
-                            <property name="spacing">5</property>
-                            <child>
-                              <widget class="GtkLabel" id="label1">
-                                <property name="visible">True</property>
-                                <property name="xalign">0.89999997615814209</property>
-                                <property name="label" translatable="yes" context="yes">Repeat</property>
-                              </widget>
-                            </child>
-                            <child>
-                              <widget class="GtkLabel" id="repeatLabel">
-                                <property name="visible">True</property>
-                                <property name="label" translatable="yes" context="yes">--/--</property>
-                                <property name="justify">GTK_JUSTIFY_CENTER</property>
-                                <property name="max_width_chars">5</property>
-                              </widget>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </widget>
+                          <placeholder/>
                         </child>
                         <child>
                           <widget class="GtkLabel" id="textLabel3">
@@ -316,32 +294,6 @@
                 <property name="visible">True</property>
                 <property name="spacing">5</property>
                 <child>
-                  <widget class="GtkHBox" id="hbox13">
-                    <property name="visible">True</property>
-                    <property name="spacing">5</property>
-                    <child>
-                      <widget class="GtkLabel" id="label3">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes" context="yes">Sequence</property>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sequenceLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes" context="yes">Idle</property>
-                        <property name="width_chars">22</property>
-                      </widget>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </widget>
-                  <packing>
-                    <property name="fill">False</property>
-                  </packing>
-                </child>
-                <child>
                   <widget class="GtkHBox" id="hbox11">
                     <property name="visible">True</property>
                     <property name="spacing">5</property>
@@ -358,6 +310,30 @@
                         <property name="xalign">0</property>
                         <property name="label" translatable="yes" context="yes">00:00:00</property>
                         <property name="justify">GTK_JUSTIFY_CENTER</property>
+                        <property name="width_chars">10</property>
+                      </widget>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="GtkHBox" id="hbox13">
+                    <property name="visible">True</property>
+                    <property name="spacing">5</property>
+                    <child>
+                      <widget class="GtkLabel" id="label3">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes" context="yes">Sequence</property>
+                      </widget>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="sequenceLabel">
+                        <property name="visible">True</property>
+                        <property name="xalign">0</property>
+                        <property name="label" translatable="yes" context="yes">Idle</property>
+                        <property name="width_chars">22</property>
                       </widget>
                       <packing>
                         <property name="position">1</property>
