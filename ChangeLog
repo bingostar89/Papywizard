@@ -7,43 +7,45 @@ x bug fix
 0000-00-00 Version SVN
 
 2008-12-00 Version 1.5.3 (dev)
+    + show elapsed time
+    + show mosaic total resolution
+    + menu to load a specific gtkrc file
     - shooting text view init with max values
-    x skip step-by-step test after shooting if timeValue is 0
+    - skip step-by-step test after shooting if timeValue is 0
     - shooting dialog revisited
-    + elapse time
-    + total mosaic resolution
+    x progressbar value
 
 2008-12-10 Version 1.5.2 (dev)
-    x fixed bug in yaw/pitch index and repeat
-    - improved shooting text view
     + add support for user gtkrc style file
+    - improved shooting text view
+    x fixed bug in yaw/pitch index and repeat
 
 2008-12-04 Version 1.5.1 (dev)
+    + text view for shooting informations
     - improvement of the timer/intervalometer
     x generate a new data file at each timer repeat
-    + text view for shooting informations
 
 2008-12-01 Version 1.5.0 (dev)
     + simple timer/intervalometer
 
 2008-11-27 Version 1.4.0 (stable)
     (include all 1.3.x entries)
-    - compute positions only once, and 100 times faster
     + shooting area color scheme (internal design only)
-    x icon size corrected for maemo plateform
+    - compute positions only once, and 100 times faster
     - shooting dialog can be resized (not on maemo)
     - pause button no more a toggle button
+    x icon size corrected for maemo plateform
 
 2008-11-23 Version 1.3.6 (dev)
-    x correct use of serializer for async pygtk calls
-    - shoot dialog no more polls model -> use signals
     + crosshair cursor for head position (refreshed in real time)
+    - shoot dialog no more polls model -> use signals
+    x correct use of serializer for async pygtk calls
 
 2008-11-21 Version 1.3.5 (dev)
-    x reset manual shoot flag when opening shoot dialog
-    x clear border of previous shooting position when selecting next
     + left/right and up/down keys binded to rewind/forward shooting positions
     - pause button is now a toggle button
+    x reset manual shoot flag when opening shoot dialog
+    x clear border of previous shooting position when selecting next
 
 2008-11-21 Version 1.3.4 (dev)
     + 'fast' manual speed (x2) - can be dangerous for hardware!
@@ -77,9 +79,9 @@ x bug fix
     + added mirror lockup standalone param.
 
 2008-10-25 Version 1.1.1 (dev)
-    x preset for 20mm lens corrected
-    - removed debian setup script (need a real debian packaging)
     + option to set data storage dir
+    - removed debian setup script (need a real debian packaging)
+    x preset for 20mm lens corrected
     x better user config. update handling
 
 2008-10-07 Version 1.1.0 (dev)
@@ -89,62 +91,58 @@ x bug fix
     + global try/except statement with traceback in GUI
     + preset templates information window
     + l10n/i18n (english, french, polish, german)
-    x log viewer background now entire black
     + log can be saved in a file
-    - removed usb driver
     + new network (socket) driver
-    - source structure revisited
-    x multi-thread bug corrrection for windows
     + windows installer (bluetooth support broken)
     + nice papywizard icon
     + low-level hardware simulator as standalone application
     + view 3D now a standalone application
+    - removed usb driver
+    - source structure revisited
+    x log viewer background now entire black
+    x multi-thread bug corrrection for windows
     x bracketing config revisited
 
 2008-09-19 Version 1.0 (stable)
     + preset shooting mode for full spherical
     + graphical progress
-    - removed 360/180 buttons in mosaic mode
-    x bug correction in number of pictures
     + nice icons for buttons and menus
     + key shortcuts dynamically activate buttons
     + version in Help > About dialog
-    - removed view python modules
     + added hardware auto-connect config option
     + custom data file name format
-    - user config dir path is now ~/.config/papywizard/
-    x better hardware error handling
     + scan bluetooth devices
-    x corrected data file format config path
     + custom xml data file format
     + log viewer
     + software limits
+    - removed 360/180 buttons in mosaic mode
+    - removed view python modules
+    - user config dir path is now ~/.config/papywizard/
+    x bug correction in number of pictures
+    x better hardware error handling
+    x corrected data file format config path
 
 2008-07-04 Version 0.9.1 (stable)
     x fix a bug in nbPicts and 360/180 computations
 
 2008-06-26 Version 0.9 (stable)
-    x bug correction when start pos > end pos
-    x connect menu is greyed out if hardware is not available
     + added 'Set 360' and 'Set 180' buttons
     + all preferences are editable
-    - splitted preferences in tabs
-    - turned Entry widgets to Label widgets
     + added 'set origin' button
     + statusbar messages
     + added hardware connection graphical feedback
-    x better hardware connection error handling
-    - removed default preferences
     + wiki documentation
+    - removed default preferences
+    - splitted preferences in tabs
+    - turned Entry widgets to Label widgets
     - new datafile format
+    x bug correction when start pos > end pos
+    x connect menu is greyed out if hardware is not available
+    x better hardware connection error handling
     x closing shoot dialog stops shooting
 
 2008-06-06 Version 0.9beta2 (dev)
-    - switched from Tkinter to Gtk+
     + Nokia/maemo support
-    - removed windows support (may be set back in future)
-    x added test for several optional import modules
-    x axis are now driven concurrently
     + generate xml file with shooting params (optional)
     + new menu entry to set axis origin (needed for future full spherical implementation)
     + added progressbar during shooting
@@ -152,13 +150,17 @@ x bug fix
     + added hardware driver to config.
     - config now based on ConfigParser
     - use vpython 4 (bug fix crash when hide/quit under linux)
+    - switched from Tkinter to Gtk+
+    - removed windows support (may be set back in future)
+    x added test for several optional import modules
+    x axis are now driven concurrently
 
 2007-12-28 Version 0.9-beta1 (dev)
     + auto-connect to real hardware if possible
     + switch from simulation to real hardware
     + show/hide 3D view
-    - removed home button in manual move dialog
     + position refreshed in real time in all dialogs
+    - removed home button in manual move dialog
     x prefs are now correctly saved when quit
     x several minor bugs corrections
 
