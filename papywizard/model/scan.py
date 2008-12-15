@@ -51,7 +51,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: scan.py 307 2008-06-24 06:02:36Z fma $"
+__revision__ = "$Id$"
 
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
