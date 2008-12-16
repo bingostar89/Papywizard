@@ -79,10 +79,13 @@ class Shooting(object):
         """
         self.__shooting = False
         self.__pause = False
+        self.__paused = False
         self.__stop = False
         self.__stepByStep = False
         self.__forceNewShootingIndex = False
         self.__startTime = None
+        self.__pauseTime = None
+        self.__totalPausedTime = 0.
 
         # Hardware
         self.realHardware = realHardware
@@ -332,7 +335,10 @@ class Shooting(object):
         @return elapsed time (s)
         @rtype: int
         """
-        return time.time() - self.__startTime
+        elapseTime = time.time() - self.__startTime - self.__totalPausedTime
+        if self.__pause and self.__pauseTime is not None:
+            elapseTime -= time.time() - self.__pauseTime
+        return elapseTime
 
     def start(self):
         """ Start pano shooting.
@@ -342,10 +348,14 @@ class Shooting(object):
             """
             if pause and self.__pause:
                 Logger().info("Pause")
+                self.__pauseTime = time.time()
+                self.__paused = True
                 self.pausedSignal.emit()
                 while self.__pause:
                     time.sleep(0.1)
+                self.__paused = False
                 self.resumedSignal.emit()
+                self.__totalPausedTime += time.time() - self.__pauseTime
                 Logger().info("Resume")
             if stop and self.__stop:
                 Logger().info("Stop")
@@ -357,6 +367,7 @@ class Shooting(object):
 
         self.__stop = False
         self.__pause = False
+        self.__paused = False
         self.__shooting = True
         self.progressSignal.emit(0.)
 
@@ -571,7 +582,7 @@ class Shooting(object):
         @return: True if shooting is paused, False otherwise
         @rtype: bool
         """
-        return self.__pause
+        return self.__paused
 
     def resume(self):
         """ Resume  execution of shooting.
