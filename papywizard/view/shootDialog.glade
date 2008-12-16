@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Dec 16 12:38:35 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Dec 16 13:42:47 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="visible">True</property>
@@ -39,7 +39,7 @@
                         <child>
                           <widget class="GtkImage" id="image7">
                             <property name="visible">True</property>
-                            <property name="stock">gtk-justify-fill</property>
+                            <property name="stock">gtk-select-font</property>
                           </widget>
                         </child>
                       </widget>
