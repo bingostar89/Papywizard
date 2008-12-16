@@ -127,7 +127,7 @@ class AbstractController(object):
          @type scale: int
 
          @param weight: new weight
-         @type weight: PangoWeight
+         @type weight: PangoWeight enum
         """
         context = widget.get_pango_context()
         font = context.get_font_description()
