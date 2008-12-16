@@ -329,16 +329,17 @@ class Shooting(object):
         self.scan.setNextPositionIndex(index)
         self.__forceNewShootingIndex = True
 
-    def getElapsedTime(self):
+    def getShootingElapsedTime(self):
         """ Get the shooting elapsed time.
 
         @return elapsed time (s)
         @rtype: int
         """
-        elapseTime = time.time() - self.__startTime - self.__totalPausedTime
-        if self.__pause and self.__pauseTime is not None:
-            elapseTime -= time.time() - self.__pauseTime
-        return elapseTime
+        shootingTime = time.time() - self.__startTime - self.__totalPausedTime
+        if self.__paused and self.__pauseTime is not None:
+            shootingTime -= time.time() - self.__pauseTime
+        elapsedTime = time.time() - self.__startTime
+        return shootingTime, elapsedTime
 
     def start(self):
         """ Start pano shooting.
@@ -363,6 +364,7 @@ class Shooting(object):
 
         Logger().trace("Shooting.start()")
         self.__startTime = time.time()
+        self.__totalPausedTime = 0.
         self.startedSignal.emit()
 
         self.__stop = False
