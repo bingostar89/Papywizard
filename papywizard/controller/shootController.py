@@ -85,10 +85,10 @@ class ShootController(AbstractController):
         self._signalDict = {"on_textViewTogglebutton_toggled": self.__onTextViewTogglebuttonToggled,
                             "on_rewindButton_clicked": self.__onRewindButtonclicked,
                             "on_forwardButton_clicked": self.__onForwardButtonclicked,
-                            "on_stepByStepCheckbutton_toggled": self.__onStepByStepCheckbuttonToggled,
                             "on_dataButton_clicked": self.__onDataButtonclicked,
                             "on_timerButton_clicked": self.__onTimerButtonClicked,
                             "on_startButton_clicked": self.__onStartButtonClicked,
+                            "on_stepByStepTogglebutton_toggled": self.__onStepByStepTogglebuttonToggled,
                             "on_pauseResumeButton_clicked": self.__onPauseResumeButtonClicked,
                             "on_stopButton_clicked": self.__onStopButtonClicked,
                             "on_doneButton_clicked": self.__onDoneButtonClicked,
@@ -126,13 +126,15 @@ class ShootController(AbstractController):
         self.rewindButton = self.wTree.get_widget("rewindButton")
         self.forwardButton = self.wTree.get_widget("forwardButton")
         self.progressbar = self.wTree.get_widget("progressbar")
+        self.shootingTimeLabel = self.wTree.get_widget("shootingTimeLabel")
         self.elapsedTimeLabel = self.wTree.get_widget("elapsedTimeLabel")
         self.sequenceLabel = self.wTree.get_widget("sequenceLabel")
         self.dataButton = self.wTree.get_widget("dataButton")
         self.dataButtonImage = self.wTree.get_widget("dataButtonImage")
         self.timerButton = self.wTree.get_widget("timerButton")
         self.timerButtonImage = self.wTree.get_widget("timerButtonImage")
-        self.stepByStepCheckbutton = self.wTree.get_widget("stepByStepCheckbutton")
+        self.stepByStepTogglebutton = self.wTree.get_widget("stepByStepTogglebutton")
+        self.stepByStepTogglebuttonImage = self.wTree.get_widget("stepByStepTogglebuttonImage")
         self.startButton = self.wTree.get_widget("startButton")
         self.pauseResumeButton = self.wTree.get_widget("pauseResumeButton")
         self.pauseResumeLabel = self.wTree.get_widget("pauseResumeLabel")
@@ -149,6 +151,7 @@ class ShootController(AbstractController):
         self._setFontParams(self.pitchCurrentIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.yawNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.pitchNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.shootingTimeLabel, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.elapsedTimeLabel, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.sequenceLabel, weight=pango.WEIGHT_BOLD)
 
@@ -408,11 +411,6 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__onForwardButtonclicked()")
         self.__forwardShootingPosition()
 
-    def __onStepByStepCheckbuttonToggled(self, widget):
-        Logger().trace("ShootController.____onStepByStepCheckbuttonToggled()")
-        switch = self.stepByStepCheckbutton.get_active()
-        self._model.setStepByStep(switch)
-
     def __onDataButtonclicked(self, widget):
         Logger().trace("ShootController.__onDataButtonclicked()")
         controller = ConfigController(self, self._model, self._serializer)
@@ -433,6 +431,15 @@ class ShootController(AbstractController):
             self.progressbar.set_text("")
         self.refreshView()
 
+    def __onStepByStepTogglebuttonToggled(self, widget):
+        Logger().trace("ShootController.__onStepByStepTogglebuttonToggled()")
+        switch = self.stepByStepTogglebutton.get_active()
+        self._model.setStepByStep(switch)
+        if switch:
+            self.stepByStepTogglebuttonImage.set_from_stock(gtk.STOCK_YES, 4)
+        else:
+            self.stepByStepTogglebuttonImage.set_from_stock(gtk.STOCK_NO, 4)
+
     def __onStartButtonClicked(self, widget):
         Logger().trace("ShootController.__startButtonClicked()")
         self.__startShooting()
@@ -452,10 +459,12 @@ class ShootController(AbstractController):
     def __onDoneButtonClicked(self, widget):
         Logger().trace("ShootController.__onDoneButtonClicked()")
 
-    def __updateElapsedTime(self):
+    def __updateShootingElapsedTime(self):
         Logger().trace("ShootController.__updateElapsedTime()")
         if self._model.isShooting():
-            self.elapsedTimeLabel.set_text("%s" % sToHmsAsStr(self._model.getElapsedTime()))
+            shootingTime, elapsedTime = self._model.getShootingElapsedTime()
+            self.shootingTimeLabel.set_text("%s" % sToHmsAsStr(shootingTime))
+            self.elapsedTimeLabel.set_text("%s" % sToHmsAsStr(elapsedTime))
             return True # Relaunch the gobject timer
         else:
             return False # Stop the gobject timer
@@ -465,7 +474,8 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__shootingStarted()")
         self._serializer.addWork(self.shootingArea.clear)
         self._serializer.addWork(self.progressbar.set_fraction, 0.)
-        self._serializer.addWork(self.elapsedTimeLabel.set_text, "%s" % sToHmsAsStr(self._model.getElapsedTime()))
+        self._serializer.addWork(self.shootingTimeLabel.set_text, "00:00:00")
+        self._serializer.addWork(self.elapsedTimeLabel.set_text,  "00:00:00")
         self._serializer.addWork(self.currentIndexLabel.set_text, "--/%d" % self._model.scan.totalNbPicts)
         self._serializer.addWork(self.nextIndexLabel.set_text, "--/%d" % self._model.scan.totalNbPicts)
         if self._model.timerRepeatEnable:
@@ -490,7 +500,7 @@ class ShootController(AbstractController):
         self._serializer.addWork(self.doneButton.set_sensitive, False)
         self._serializer.addWork(self.rewindButton.set_sensitive, False)
         self._serializer.addWork(self.forwardButton.set_sensitive, False)
-        gobject.timeout_add(1000, self.__updateElapsedTime)
+        gobject.timeout_add(1000, self.__updateShootingElapsedTime)
 
     def __shootingPaused(self):
         Logger().trace("ShootController.__shootingPaused()")

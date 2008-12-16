@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Dec 16 08:52:43 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Dec 16 12:38:35 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="visible">True</property>
@@ -296,6 +296,7 @@
             <child>
               <widget class="GtkHBox" id="hbox12">
                 <property name="visible">True</property>
+                <property name="spacing">5</property>
                 <child>
                   <widget class="GtkLabel" id="sequenceLabel">
                     <property name="visible">True</property>
@@ -304,7 +305,7 @@
                   </widget>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="elapsedTimeLabel">
+                  <widget class="GtkLabel" id="shootingTimeLabel">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes" context="yes">00:00:00</property>
                     <property name="justify">GTK_JUSTIFY_CENTER</property>
@@ -313,6 +314,16 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="elapsedTimeLabel">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">00:00:00</property>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </widget>
@@ -406,13 +417,33 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="stepByStepCheckbutton">
+                  <widget class="GtkToggleButton" id="stepByStepTogglebutton">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="label" translatable="yes" context="yes">Step-by-step</property>
+                    <property name="receives_default">True</property>
                     <property name="response_id">0</property>
-                    <property name="draw_indicator">True</property>
-                    <signal name="toggled" handler="on_stepByStepCheckbutton_toggled"/>
+                    <signal name="toggled" handler="on_stepByStepTogglebutton_toggled"/>
+                    <child>
+                      <widget class="GtkHBox" id="hbox10">
+                        <property name="visible">True</property>
+                        <property name="spacing">5</property>
+                        <child>
+                          <widget class="GtkImage" id="stepByStepTogglebuttonImage">
+                            <property name="visible">True</property>
+                            <property name="stock">gtk-no</property>
+                          </widget>
+                        </child>
+                        <child>
+                          <widget class="GtkLabel" id="label1">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Step-by-step</property>
+                          </widget>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </widget>
+                    </child>
                   </widget>
                   <packing>
                     <property name="expand">False</property>
