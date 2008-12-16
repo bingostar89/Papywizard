@@ -125,10 +125,12 @@ class ShootController(AbstractController):
         self.pitchNextIndexLabel = self.wTree.get_widget("pitchNextIndexLabel")
         self.rewindButton = self.wTree.get_widget("rewindButton")
         self.forwardButton = self.wTree.get_widget("forwardButton")
-        self.progressbar = self.wTree.get_widget("progressbar")
+        self.shootingProgressbar = self.wTree.get_widget("shootingProgressbar")
+        self.totalProgressbar = self.wTree.get_widget("totalProgressbar")
+        self.sequenceLabel = self.wTree.get_widget("sequenceLabel")
+        self.repeatLabel = self.wTree.get_widget("repeatLabel")
         self.shootingTimeLabel = self.wTree.get_widget("shootingTimeLabel")
         self.elapsedTimeLabel = self.wTree.get_widget("elapsedTimeLabel")
-        self.sequenceLabel = self.wTree.get_widget("sequenceLabel")
         self.dataButton = self.wTree.get_widget("dataButton")
         self.dataButtonImage = self.wTree.get_widget("dataButtonImage")
         self.timerButton = self.wTree.get_widget("timerButton")
@@ -142,6 +144,10 @@ class ShootController(AbstractController):
         self.doneButton = self.wTree.get_widget("doneButton")
 
     def _initWidgets(self):
+        if self._model.timerRepeatEnable:
+            self.repeatLabel.set_text("--/%d" % self._model.timerRepeat)
+        else:
+            self.repeatLabel.set_text("")
 
         # Font
         scale = 1.3
@@ -151,17 +157,14 @@ class ShootController(AbstractController):
         self._setFontParams(self.pitchCurrentIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.yawNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.pitchNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.sequenceLabel, weight=pango.WEIGHT_BOLD)
+        self._setFontParams(self.repeatLabel, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.shootingTimeLabel, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.elapsedTimeLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.sequenceLabel, weight=pango.WEIGHT_BOLD)
 
         # Init text view
         self.currentIndexLabel.set_text("--/%d" % self._model.scan.totalNbPicts)
         self.nextIndexLabel.set_text("--/%d" % self._model.scan.totalNbPicts)
-        if self._model.timerRepeatEnable:
-            self.progressbar.set_text(_("Repeat") + " -/%d" % self._model.timerRepeat)
-        else:
-            self.progressbar.set_text("")
         if self._model.mode == 'mosaic':
             self.yawCurrentIndexLabel.set_text("--/%d" % self._model.mosaic.yawNbPicts)
             self.pitchCurrentIndexLabel.set_text("--/%d" % self._model.mosaic.pitchNbPicts)
@@ -426,9 +429,9 @@ class ShootController(AbstractController):
         response = controller.run()
         controller.shutdown()
         if self._model.timerRepeatEnable:
-            self.progressbar.set_text(_("Repeat") + " -/%d" % self._model.timerRepeat)
+            self.repeatLabel.set_text("--/%d" % self._model.timerRepeat)
         else:
-            self.progressbar.set_text("")
+            self.repeatLabel.set_text("")
         self.refreshView()
 
     def __onStepByStepTogglebuttonToggled(self, widget):
@@ -473,15 +476,16 @@ class ShootController(AbstractController):
     def __shootingStarted(self):
         Logger().trace("ShootController.__shootingStarted()")
         self._serializer.addWork(self.shootingArea.clear)
-        self._serializer.addWork(self.progressbar.set_fraction, 0.)
+        self._serializer.addWork(self.shootingProgressbar.set_fraction, 0.)
+        self._serializer.addWork(self.totalProgressbar.set_fraction, 0.)
+        if self._model.timerRepeatEnable:
+            self._serializer.addWork(self.repeatLabel.set_text,"--/%d" % self._model.timerRepeat)
+        else:
+            self._serializer.addWork(self.repeatLabel.set_text, "")
         self._serializer.addWork(self.shootingTimeLabel.set_text, "00:00:00")
         self._serializer.addWork(self.elapsedTimeLabel.set_text,  "00:00:00")
         self._serializer.addWork(self.currentIndexLabel.set_text, "--/%d" % self._model.scan.totalNbPicts)
         self._serializer.addWork(self.nextIndexLabel.set_text, "--/%d" % self._model.scan.totalNbPicts)
-        if self._model.timerRepeatEnable:
-            self._serializer.addWork(self.progressbar.set_text, _("Repeat") + " -/%d" % self._model.timerRepeat)
-        else:
-            self._serializer.addWork(self.progressbar.set_text, "")
         if self._model.mode == 'mosaic':
             self._serializer.addWork(self.yawCurrentIndexLabel.set_text, "--/%d" % self._model.mosaic.yawNbPicts)
             self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, "--/%d" % self._model.mosaic.pitchNbPicts)
@@ -547,16 +551,19 @@ class ShootController(AbstractController):
     def __shootingBeginShoot(self):
         Logger().trace("ShootController.__shootingBeginShoot()")
         self._serializer.addWork(self.shootingArea.clear)
-        #self.__beginTime = time.time()
 
-    def __shootingProgress(self, progress):
+    def __shootingProgress(self, shootingProgress=None, totalProgress=None):
         Logger().trace("ShootController.__shootingProgress()")
-        self._serializer.addWork(self.progressbar.set_fraction, progress)
+        if shootingProgress is not None:
+            self._serializer.addWork(self.shootingProgressbar.set_fraction, shootingProgress)
+        if totalProgress is not None:
+            self._serializer.addWork(self.totalProgressbar.set_fraction, totalProgress)
 
     def __shootingRepeat(self, repeat):
         Logger().trace("ShootController.__shootingRepeat()")
+        self._serializer.addWork(self.shootingArea.clear)
         if self._model.timerRepeatEnable:
-            self._serializer.addWork(self.progressbar.set_text, _("Repeat") + " %d/%d" % (repeat, self._model.timerRepeat))
+            self._serializer.addWork(self.repeatLabel.set_text,"%d/%d" % (repeat, self._model.timerRepeat))
 
     def __shootingNewPosition(self, index, yaw, pitch, status=None, next=False):
         Logger().trace("ShootController.__shootingNewPosition()")

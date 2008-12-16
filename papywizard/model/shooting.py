@@ -371,7 +371,7 @@ class Shooting(object):
         self.__pause = False
         self.__paused = False
         self.__shooting = True
-        self.progressSignal.emit(0.)
+        self.progressSignal.emit(0., 0.)
 
         if self.cameraOrientation == 'portrait':
             roll = 90.
@@ -435,10 +435,11 @@ class Shooting(object):
                     values.update({'name': "%s" % self.preset.name})
                 data.createHeader(values)
 
-                self.beginShootSignal.emit()
+                #self.beginShootSignal.emit()
                 startTime = time.time()
                 Logger().debug("Shooting.start(): repeat %d/%d" % (repeat, numRepeat))
                 self.repeatSignal.emit(repeat)
+                self.progressSignal.emit(0.)
 
                 # Loop over all positions
                 for index, (yaw, pitch) in self.scan.iterPositions(): # Use while True + getCurrentPosition()?
@@ -495,9 +496,10 @@ class Shooting(object):
                             index_, yawIndex, pitchIndex = index
                         else:
                             index_ = index
-                        progress = (repeat - 1) * self.scan.totalNbPicts + index_
-                        progress /= float(numRepeat * self.scan.totalNbPicts)
-                        self.progressSignal.emit(progress)
+                        shootingProgress = float(index_) / float(self.scan.totalNbPicts)
+                        totalProgress = (repeat - 1) * self.scan.totalNbPicts + index_
+                        totalProgress /= float(numRepeat * self.scan.totalNbPicts)
+                        self.progressSignal.emit(shootingProgress, totalProgress)
                         self.newPositionSignal.emit(index, yaw, pitch, status='ok', next=True)
 
                         # Test manual shooting flag (skipped if timeValue was 0.)
@@ -521,9 +523,10 @@ class Shooting(object):
                             index_, yawIndex, pitchIndex = index
                         else:
                             index_ = index
-                        progress = (repeat - 1) * self.scan.totalNbPicts + index_
-                        progress /= float(numRepeat * self.scan.totalNbPicts)
-                        self.progressSignal.emit(progress)
+                        shootingProgress = float(index_) / float(self.scan.totalNbPicts)
+                        totalProgress = (repeat - 1) * self.scan.totalNbPicts + index_
+                        totalProgress /= float(numRepeat * self.scan.totalNbPicts)
+                        self.progressSignal.emit(shootingProgress, totalProgress)
                         self.newPositionSignal.emit(index, yaw, pitch, status='error', next=True)
 
                         # Test manual shooting flag
