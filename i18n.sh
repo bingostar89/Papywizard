@@ -25,7 +25,7 @@ done
 xgettext --language=Python --from-code=utf-8 --default-domain=$APP_NAME --keyword=_ --keyword=N_ --no-wrap --output=$TMP_DIR/$POT_FILE $python_files $TMP_DIR/*.h
 
 # Generate PO and MO files
-for lang in 'en' 'fr' 'pl' 'de'; do
+for lang in 'en' 'fr' 'pl' 'de' 'es' 'nl' 'it'; do
     mkdir -p $LOCALE_DIR/$lang/LC_MESSAGES
     if ! [ -e $LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE ]; then
         echo msginit --input=$TMP_DIR/$POT_FILE --locale=$lang --no-translator --no-wrap --output=$LOCALE_DIR/$lang/LC_MESSAGES/$PO_FILE
