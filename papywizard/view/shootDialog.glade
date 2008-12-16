@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Dec 15 15:45:12 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Dec 16 08:52:43 2008 -->
 <glade-interface>
   <widget class="GtkDialog" id="dialog">
     <property name="visible">True</property>
@@ -87,7 +87,7 @@
                           <placeholder/>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="textLabel3">
+                          <widget class="GtkLabel" id="textCurrentLabel">
                             <property name="visible">True</property>
                             <property name="xalign">0.89999997615814209</property>
                             <property name="label" translatable="yes" context="yes">Current</property>
@@ -98,8 +98,9 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="textLabel4">
+                          <widget class="GtkLabel" id="textNextLabel">
                             <property name="visible">True</property>
+                            <property name="sensitive">False</property>
                             <property name="xalign">0.89999997615814209</property>
                             <property name="label" translatable="yes" context="yes">Next</property>
                           </widget>
@@ -109,7 +110,7 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="textLabel6">
+                          <widget class="GtkLabel" id="textPitchLabel">
                             <property name="visible">True</property>
                             <property name="label" translatable="yes" context="yes">Pitch</property>
                             <property name="justify">GTK_JUSTIFY_CENTER</property>
@@ -135,6 +136,7 @@
                         <child>
                           <widget class="GtkLabel" id="pitchNextIndexLabel">
                             <property name="visible">True</property>
+                            <property name="sensitive">False</property>
                             <property name="label" translatable="yes" context="yes">--/--</property>
                             <property name="justify">GTK_JUSTIFY_CENTER</property>
                           </widget>
@@ -161,6 +163,7 @@
                         <child>
                           <widget class="GtkLabel" id="yawNextIndexLabel">
                             <property name="visible">True</property>
+                            <property name="sensitive">False</property>
                             <property name="label" translatable="yes" context="yes">--/--</property>
                             <property name="justify">GTK_JUSTIFY_CENTER</property>
                           </widget>
@@ -172,7 +175,7 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="textLabel5">
+                          <widget class="GtkLabel" id="textYawLabel">
                             <property name="visible">True</property>
                             <property name="label" translatable="yes" context="yes">Yaw</property>
                             <property name="justify">GTK_JUSTIFY_CENTER</property>
@@ -183,7 +186,7 @@
                           </packing>
                         </child>
                         <child>
-                          <widget class="GtkLabel" id="textLabel1">
+                          <widget class="GtkLabel" id="textTotalLabel">
                             <property name="visible">True</property>
                             <property name="label" translatable="yes" context="yes">Total</property>
                             <property name="justify">GTK_JUSTIFY_CENTER</property>
@@ -210,6 +213,7 @@
                         <child>
                           <widget class="GtkLabel" id="nextIndexLabel">
                             <property name="visible">True</property>
+                            <property name="sensitive">False</property>
                             <property name="label" translatable="yes" context="yes">--/--</property>
                             <property name="justify">GTK_JUSTIFY_CENTER</property>
                           </widget>
@@ -290,65 +294,28 @@
             <property name="visible">True</property>
             <property name="spacing">5</property>
             <child>
-              <widget class="GtkHBox" id="hbox10">
+              <widget class="GtkHBox" id="hbox12">
                 <property name="visible">True</property>
-                <property name="spacing">5</property>
                 <child>
-                  <widget class="GtkHBox" id="hbox11">
+                  <widget class="GtkLabel" id="sequenceLabel">
                     <property name="visible">True</property>
-                    <property name="spacing">5</property>
-                    <child>
-                      <widget class="GtkLabel" id="label2">
-                        <property name="visible">True</property>
-                        <property name="xalign">0.89999997615814209</property>
-                        <property name="label" translatable="yes" context="yes">Elapsed time</property>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="elapsedTimeLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes" context="yes">00:00:00</property>
-                        <property name="justify">GTK_JUSTIFY_CENTER</property>
-                        <property name="width_chars">10</property>
-                      </widget>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
+                    <property name="label" translatable="yes" context="yes">Idle</property>
+                    <property name="width_chars">22</property>
                   </widget>
                 </child>
                 <child>
-                  <widget class="GtkHBox" id="hbox13">
+                  <widget class="GtkLabel" id="elapsedTimeLabel">
                     <property name="visible">True</property>
-                    <property name="spacing">5</property>
-                    <child>
-                      <widget class="GtkLabel" id="label3">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes" context="yes">Sequence</property>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="sequenceLabel">
-                        <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="label" translatable="yes" context="yes">Idle</property>
-                        <property name="width_chars">22</property>
-                      </widget>
-                      <packing>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
+                    <property name="label" translatable="yes" context="yes">00:00:00</property>
+                    <property name="justify">GTK_JUSTIFY_CENTER</property>
+                    <property name="width_chars">10</property>
                   </widget>
                   <packing>
-                    <property name="fill">False</property>
+                    <property name="expand">False</property>
                     <property name="position">1</property>
                   </packing>
                 </child>
               </widget>
-              <packing>
-                <property name="expand">False</property>
-              </packing>
             </child>
             <child>
               <widget class="GtkHBox" id="hbox9">
@@ -438,6 +405,20 @@
                     <property name="position">1</property>
                   </packing>
                 </child>
+                <child>
+                  <widget class="GtkCheckButton" id="stepByStepCheckbutton">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="label" translatable="yes" context="yes">Step-by-step</property>
+                    <property name="response_id">0</property>
+                    <property name="draw_indicator">True</property>
+                    <signal name="toggled" handler="on_stepByStepCheckbutton_toggled"/>
+                  </widget>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
               </widget>
               <packing>
                 <property name="expand">False</property>
@@ -482,20 +463,6 @@
                   </widget>
                 </child>
                 <child>
-                  <widget class="GtkCheckButton" id="stepByStepCheckbutton">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="label" translatable="yes" context="yes">Step-by-step</property>
-                    <property name="response_id">0</property>
-                    <property name="draw_indicator">True</property>
-                    <signal name="toggled" handler="on_stepByStepCheckbutton_toggled"/>
-                  </widget>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
                   <widget class="GtkButton" id="pauseResumeButton">
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
@@ -528,7 +495,7 @@
                     </child>
                   </widget>
                   <packing>
-                    <property name="position">2</property>
+                    <property name="position">1</property>
                   </packing>
                 </child>
                 <child>
@@ -564,7 +531,7 @@
                     </child>
                   </widget>
                   <packing>
-                    <property name="position">3</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </widget>
