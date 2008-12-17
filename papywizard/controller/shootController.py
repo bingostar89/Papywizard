@@ -157,10 +157,10 @@ class ShootController(AbstractController):
         self._setFontParams(self.pitchCurrentIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.yawNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.pitchNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.sequenceLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.repeatLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.shootingTimeLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.elapsedTimeLabel, weight=pango.WEIGHT_BOLD)
+        #self._setFontParams(self.sequenceLabel, weight=pango.WEIGHT_BOLD)
+        #self._setFontParams(self.repeatLabel, weight=pango.WEIGHT_BOLD)
+        #self._setFontParams(self.shootingTimeLabel, weight=pango.WEIGHT_BOLD)
+        #self._setFontParams(self.elapsedTimeLabel, weight=pango.WEIGHT_BOLD)
 
         # Init text view
         self.currentIndexLabel.set_text("--/%d" % self._model.scan.totalNbPicts)
