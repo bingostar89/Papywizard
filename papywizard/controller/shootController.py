@@ -200,7 +200,7 @@ class ShootController(AbstractController):
                 self.shootingArea.add_pict(yaw, pitch, status='preview')
         else:
             self.shootingArea.init(440., 220., # visible fov
-                                    16.,  16.) # camera fov
+                                    30.,  30.) # camera fov
             self._model.preset.generatePositions()
             for index, (yaw, pitch) in self._model.preset.iterPositions():
                 self.shootingArea.add_pict(yaw, pitch, status='preview')

@@ -131,7 +131,7 @@ class MosaicImageArea(ImageArea):
         self._drawingArea.window.draw_rectangle(gc, True, self.x, self.y, self.w, self.h)
 
         # Inside
-        self._drawingArea.window.draw_rectangle(self._drawingArea.gc[self.status], True, self.x + 1, self.y + 1, self.w - 2, self.h - 2)
+        self._drawingArea.window.draw_rectangle(self._drawingArea.gc[self.status], True, self.x + 2, self.y + 2, self.w - 4, self.h - 4)
 
     def isCoordsIn(self, x, y):
         if self.x <= x <= (self.x + self.w) and \
@@ -155,7 +155,7 @@ class PresetImageArea(ImageArea):
         self._drawingArea.window.draw_arc(gc, True, self.x, self.y, self.w, self.h, 0, 360 * 64)
 
         # Inside
-        self._drawingArea.window.draw_arc(self._drawingArea.gc[self.status], True, self.x + 1, self.y + 1, self.w - 2, self.h - 2, 0, 360 * 64)
+        self._drawingArea.window.draw_arc(self._drawingArea.gc[self.status], True, self.x + 2, self.y + 2, self.w - 4, self.h - 4, 0, 360 * 64)
 
     def isCoordsIn(self, x, y):
         """
