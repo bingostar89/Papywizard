@@ -805,8 +805,8 @@ class MainController(AbstractController):
             gtk.main_iteration()
         #Spy().newPosSignal.disconnect(self.__refreshPos)
         controller = ShootController(self, self._model, self._serializer)
-        if self.__fullscreen:
-            controller.dialog.fullScreen()
+        if self.__fullScreen:
+            controller.dialog.fullscreen()
         self.shootButton.set_sensitive(True)
         self.setStatusbarMessage()
         controller.run()
