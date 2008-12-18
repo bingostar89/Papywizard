@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-16 08:59+0100\n"
+"POT-Creation-Date: 2008-12-18 09:18+0100\n"
 "PO-Revision-Date: 2008-11-24 22:40+0100\n"
 "Last-Translator: Jo Lutum <jo.lutum@lycos.de>\n"
 "Language-Team: none\n"
@@ -34,58 +34,49 @@ msgstr "Serieller Treiber nicht initialisiert"
 msgid "Timeout while reading on serial bus"
 msgstr "Timeout bei seriellem Lesevorgang"
 
-#: papywizard/controller/shootController.py:159
-#: papywizard/controller/shootController.py:431
-#: papywizard/controller/shootController.py:472
-#: papywizard/controller/shootController.py:549 tmp/configDialog.glade.h:34
-#: tmp/shootDialog.glade.h:9
-#, fuzzy
-msgid "Repeat"
-msgstr "Reset"
-
-#: papywizard/controller/shootController.py:498
+#: papywizard/controller/shootController.py:512
 msgid "Resume"
 msgstr "Fortsetzen"
 
-#: papywizard/controller/shootController.py:501
+#: papywizard/controller/shootController.py:515
 #, fuzzy
 msgid "Paused"
 msgstr "Pause"
 
-#: papywizard/controller/shootController.py:509 tmp/shootDialog.glade.h:7
+#: papywizard/controller/shootController.py:523 tmp/shootDialog.glade.h:7
 msgid "Pause"
 msgstr "Pause"
 
-#: papywizard/controller/shootController.py:520
+#: papywizard/controller/shootController.py:534
 msgid "Finished"
 msgstr "Beendet"
 
-#: papywizard/controller/shootController.py:522
+#: papywizard/controller/shootController.py:536
 msgid "Canceled"
 msgstr "Abgebrochen"
 
-#: papywizard/controller/shootController.py:524
+#: papywizard/controller/shootController.py:538
 msgid "Failed"
 msgstr "Fehlgeschlagen"
 
-#: papywizard/controller/shootController.py:534
+#: papywizard/controller/shootController.py:548
 #, fuzzy
 msgid "Waiting"
 msgstr "Start bei"
 
-#: papywizard/controller/shootController.py:576
+#: papywizard/controller/shootController.py:593
 msgid "Moving"
 msgstr "Kopf fährt"
 
-#: papywizard/controller/shootController.py:578
+#: papywizard/controller/shootController.py:595
 msgid "Stabilization"
 msgstr ""
 
-#: papywizard/controller/shootController.py:580 tmp/configDialog.glade.h:29
+#: papywizard/controller/shootController.py:597 tmp/configDialog.glade.h:29
 msgid "Mirror lockup"
 msgstr "Spiegelverriegelung"
 
-#: papywizard/controller/shootController.py:584
+#: papywizard/controller/shootController.py:601
 #, fuzzy
 msgid "Shutter - Picture"
 msgstr "Anzahl Aufnahmen"
@@ -94,20 +85,20 @@ msgstr "Anzahl Aufnahmen"
 msgid "Can't scan bluetooth"
 msgstr "Bluetooth nicht erkannt"
 
-#: papywizard/controller/mainController.py:336
+#: papywizard/controller/mainController.py:349
 msgid "Manual speed set to slow"
 msgstr "Geschwindigkeit langsam"
 
-#: papywizard/controller/mainController.py:342
-#: papywizard/controller/mainController.py:356
+#: papywizard/controller/mainController.py:355
+#: papywizard/controller/mainController.py:369
 msgid "Manual speed set to normal"
 msgstr "Geschwindigkeit normal"
 
-#: papywizard/controller/mainController.py:358
+#: papywizard/controller/mainController.py:371
 msgid "Fast manual speed"
 msgstr "Geschwindigkeit schnell"
 
-#: papywizard/controller/mainController.py:359
+#: papywizard/controller/mainController.py:372
 msgid ""
 "Manual speed set to 'fast'\n"
 "This can be dangerous for the hardware!"
@@ -115,35 +106,35 @@ msgstr ""
 "Geschwindigkeit schnell\n"
 "evtl. gefährlich für Hardware"
 
-#: papywizard/controller/mainController.py:364
+#: papywizard/controller/mainController.py:377
 msgid "Manual speed set to fast"
 msgstr "Geschwindigkeit auf schnell gesetzt"
 
-#: papywizard/controller/mainController.py:531
+#: papywizard/controller/mainController.py:543
 msgid "Yaw - limit set"
 msgstr "Drehung - Limit setzen"
 
-#: papywizard/controller/mainController.py:537
+#: papywizard/controller/mainController.py:549
 msgid "Yaw + limit set"
 msgstr "Drehung + Limit setzen"
 
-#: papywizard/controller/mainController.py:543
+#: papywizard/controller/mainController.py:555
 msgid "Pitch + limit set"
 msgstr "Neigung + Limit setzen"
 
-#: papywizard/controller/mainController.py:549
+#: papywizard/controller/mainController.py:561
 msgid "Pitch - limit set"
 msgstr "Neigung - Limit setzen"
 
-#: papywizard/controller/mainController.py:554
+#: papywizard/controller/mainController.py:566
 msgid "Limits cleared"
 msgstr "Limits gelöscht"
 
-#: papywizard/controller/mainController.py:581
+#: papywizard/controller/mainController.py:593
 msgid "Wrong shooting mode"
 msgstr "Falscher Aufnahmemodus"
 
-#: papywizard/controller/mainController.py:582
+#: papywizard/controller/mainController.py:594
 msgid ""
 "Can't set shooting mode to 'mosaic'\n"
 "while using 'fisheye' lens type"
@@ -151,11 +142,11 @@ msgstr ""
 "Rastermodus nicht möglich\n"
 "mit Fischaugen-Objektiv"
 
-#: papywizard/controller/mainController.py:586
+#: papywizard/controller/mainController.py:598
 msgid "Wrong camera orientation"
 msgstr "Falsche Ausrichtung der Kamera"
 
-#: papywizard/controller/mainController.py:587
+#: papywizard/controller/mainController.py:599
 msgid ""
 "Can't set shooting mode to 'mosaic'\n"
 "while using 'custom' camera orientation"
@@ -163,67 +154,67 @@ msgstr ""
 "Rastermodus nicht möglich\n"
 "mit 'Eigener'-Objektiv-Ausrichtung"
 
-#: papywizard/controller/mainController.py:605
+#: papywizard/controller/mainController.py:617
 msgid "Yaw start set from current position"
 msgstr "Aktuelle Position als Dreh-Start gesetzt"
 
-#: papywizard/controller/mainController.py:612
+#: papywizard/controller/mainController.py:624
 msgid "Pitch start set from current position"
 msgstr "Aktuelle Position als Neige-Start gesetzt"
 
-#: papywizard/controller/mainController.py:619
+#: papywizard/controller/mainController.py:631
 msgid "Yaw end set from current position"
 msgstr "Aktuelle Position als Dreh-Ende gesetzt"
 
-#: papywizard/controller/mainController.py:626
+#: papywizard/controller/mainController.py:638
 msgid "Pitch end set from current position"
 msgstr "Aktuelle Position als Neige-Ende gesetzt"
 
-#: papywizard/controller/mainController.py:663
+#: papywizard/controller/mainController.py:675
 msgid "Origin set at current position"
 msgstr "Aktuelle Position als Nullpunkt gesetzt"
 
-#: papywizard/controller/mainController.py:748
+#: papywizard/controller/mainController.py:742
 msgid "Yaw/pitch start set from current position"
 msgstr "Aktuelle Position als Dreh-Neige-Start gesetzt"
 
-#: papywizard/controller/mainController.py:756
+#: papywizard/controller/mainController.py:750
 msgid "Yaw/pitch end set from current position"
 msgstr "Aktuelle Position als Dreh-Neige-Ende gesetzt"
 
-#: papywizard/controller/mainController.py:767
+#: papywizard/controller/mainController.py:761
 msgid "Field of view set to user value"
 msgstr "FOV auf Benutzerwert gesetzt"
 
-#: papywizard/controller/mainController.py:778
+#: papywizard/controller/mainController.py:772
 msgid "Number of pictures set to user value"
 msgstr "Anzahl Aufnahmen auf Benutzerwert gesetzt"
 
-#: papywizard/controller/mainController.py:783
+#: papywizard/controller/mainController.py:777
 msgid "Opening configuration dialog. Please wait..."
 msgstr "Einstelldialog öffnen. Bitte warten..."
 
-#: papywizard/controller/mainController.py:809
+#: papywizard/controller/mainController.py:803
 msgid "Opening shoot dialog. Please wait..."
 msgstr "Aufnahmedialog öffnen. Bitte warten..."
 
-#: papywizard/controller/mainController.py:849
+#: papywizard/controller/mainController.py:845
 msgid "Can't import preset file"
 msgstr "Datei mit Voreinstellungen kann nicht importiert werden"
 
-#: papywizard/controller/mainController.py:863
+#: papywizard/controller/mainController.py:859
 msgid "Connecting to real hardware..."
 msgstr "Mit Hardware verbinden..."
 
-#: papywizard/controller/mainController.py:886
+#: papywizard/controller/mainController.py:882
 msgid "Now connected to real hardware"
 msgstr "Mit Hardware verbunden"
 
-#: papywizard/controller/mainController.py:889
+#: papywizard/controller/mainController.py:885
 msgid "Can't connect to hardware"
 msgstr "Kann Hardware nicht verbinden"
 
-#: papywizard/controller/mainController.py:901
+#: papywizard/controller/mainController.py:897
 msgid "Now in simulation mode"
 msgstr "Simulationsmodus"
 
@@ -399,6 +390,11 @@ msgstr "Raster"
 msgid "Overlap (%)"
 msgstr "Überlappung (%)"
 
+#: tmp/configDialog.glade.h:34
+#, fuzzy
+msgid "Repeat"
+msgstr "Reset"
+
 #: tmp/configDialog.glade.h:35
 msgid "Repeat every"
 msgstr ""
@@ -420,7 +416,7 @@ msgstr "Sensorverhältnis"
 msgid "Serial port"
 msgstr "Serieller Anschluss"
 
-#: tmp/configDialog.glade.h:40 tmp/shootDialog.glade.h:10
+#: tmp/configDialog.glade.h:40 tmp/shootDialog.glade.h:9
 msgid "Shooting"
 msgstr "Aufnahme"
 
@@ -441,7 +437,7 @@ msgstr "Start bei"
 msgid "Time value (sec)"
 msgstr "Zeitwert (sec)"
 
-#: tmp/configDialog.glade.h:45 tmp/shootDialog.glade.h:14
+#: tmp/configDialog.glade.h:45 tmp/shootDialog.glade.h:13
 #, fuzzy
 msgid "Timer"
 msgstr "Titel"
@@ -639,7 +635,7 @@ msgid "Save log"
 msgstr "Log anzeigen"
 
 #: tmp/loggerDialog.glade.h:4 tmp/presetInfoDialog.glade.h:2
-#: tmp/shootDialog.glade.h:17
+#: tmp/shootDialog.glade.h:16
 msgid "gtk-close"
 msgstr "gtk-close"
 
@@ -761,7 +757,7 @@ msgid "View Log..."
 msgstr "Log anzeigen..."
 
 #: tmp/mainWindow.glade.h:33 tmp/nbPictsDialog.glade.h:3
-#: tmp/shootDialog.glade.h:16 tmp/totalFovDialog.glade.h:3
+#: tmp/shootDialog.glade.h:15 tmp/totalFovDialog.glade.h:3
 msgid "Yaw"
 msgstr "Drehung"
 
@@ -797,19 +793,19 @@ msgstr "Warte"
 msgid "Next"
 msgstr ""
 
-#: tmp/shootDialog.glade.h:11
+#: tmp/shootDialog.glade.h:10
 msgid "Start"
 msgstr "Start"
 
-#: tmp/shootDialog.glade.h:12
+#: tmp/shootDialog.glade.h:11
 msgid "Step-by-step"
 msgstr ""
 
-#: tmp/shootDialog.glade.h:13
+#: tmp/shootDialog.glade.h:12
 msgid "Stop"
 msgstr "Stop"
 
-#: tmp/shootDialog.glade.h:15
+#: tmp/shootDialog.glade.h:14
 #, fuzzy
 msgid "Total"
 msgstr "Gesamt- Fov (°)"
