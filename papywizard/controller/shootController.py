@@ -221,7 +221,6 @@ class ShootController(AbstractController):
         self.dialog.connect("key-press-event", self.__onKeyPressed)
         self.dialog.connect("key-release-event", self.__onKeyReleased)
         self.dialog.connect("delete-event", self.__onDelete)
-        self.dialog.connect("destroy", self.__onDestroy)
 
         self.shootingArea.connect("button-press-event", self.__onMouseButtonPressed)
         #self.shootingArea.connect("motion-notify-event", self.__onMotionNotify)
@@ -374,10 +373,6 @@ class ShootController(AbstractController):
         self.__disconnectSignals()
         if self._model.isShooting():
             self.__stopShooting()
-        return False
-
-    def __onDestroy(self, widget):
-        Logger().trace("ShootController.__onDestroy()")
         return False
 
     def __onMouseButtonPressed(self, widget, event):
