@@ -276,7 +276,7 @@ class MainController(AbstractController):
     def _connectSignals(self):
         super(MainController, self)._connectSignals()
 
-        self.dialog.connect("destroy", self.__onDestroy)
+        self.dialog.connect("destroy", gtk.main_quit)
         self.dialog.connect("key-press-event", self.__onKeyPressed)
         self.dialog.connect("key-release-event", self.__onKeyReleased)
         #self.dialog.connect("window-state-event", self.__onWindowStateChanged)
