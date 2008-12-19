@@ -165,7 +165,6 @@ class MainController(AbstractController):
             import hildon
             self.__key['Home'] = gtk.keysyms.F8
             self.__key['End'] = gtk.keysyms.F7
-            #self.__fullScreen = False
         except ImportError:
             pass
 
