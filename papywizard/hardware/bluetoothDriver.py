@@ -109,7 +109,7 @@ class BluetoothDriver(BusDriver):
         """
         #Logger().debug("BluetoothDriver.sendCmd(): cmd=%s" % cmd)
         if not self._init:
-            raise HardwareError(_("BluetoothDriver not initialized"))
+            raise HardwareError(_("Bluetooth driver not initialized"))
 
         self.acquireBus()
         try:
