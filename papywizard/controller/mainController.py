@@ -175,7 +175,7 @@ class MainController(AbstractController):
         self.__connectErrorMessage = None
         self.__mosaicInputParam = 'startEnd'
         self.__manualSpeed = 'normal'
-        self.__fullScreen = False
+        #self.__fullScreen = False
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
