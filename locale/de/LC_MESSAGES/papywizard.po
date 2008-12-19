@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-19 09:57+0100\n"
+"POT-Creation-Date: 2008-12-19 13:33+0100\n"
 "PO-Revision-Date: 2008-11-24 22:40+0100\n"
 "Last-Translator: Jo Lutum <jo.lutum@lycos.de>\n"
 "Language-Team: none\n"
@@ -17,7 +17,8 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: papywizard/hardware/bluetoothDriver.py:112
-msgid "BluetoothDriver not initialized"
+#, fuzzy
+msgid "Bluetooth driver not initialized"
 msgstr "Bluetooth Treiber nicht initialisiert"
 
 #: papywizard/hardware/bluetoothDriver.py:125
@@ -85,20 +86,20 @@ msgstr "Anzahl Aufnahmen"
 msgid "Can't scan bluetooth"
 msgstr "Bluetooth nicht erkannt"
 
-#: papywizard/controller/mainController.py:349
+#: papywizard/controller/mainController.py:348
 msgid "Manual speed set to slow"
 msgstr "Geschwindigkeit langsam"
 
-#: papywizard/controller/mainController.py:355
-#: papywizard/controller/mainController.py:369
+#: papywizard/controller/mainController.py:354
+#: papywizard/controller/mainController.py:368
 msgid "Manual speed set to normal"
 msgstr "Geschwindigkeit normal"
 
-#: papywizard/controller/mainController.py:371
+#: papywizard/controller/mainController.py:370
 msgid "Fast manual speed"
 msgstr "Geschwindigkeit schnell"
 
-#: papywizard/controller/mainController.py:372
+#: papywizard/controller/mainController.py:371
 msgid ""
 "Manual speed set to 'fast'\n"
 "This can be dangerous for the hardware!"
@@ -106,35 +107,35 @@ msgstr ""
 "Geschwindigkeit schnell\n"
 "evtl. gefährlich für Hardware"
 
-#: papywizard/controller/mainController.py:377
+#: papywizard/controller/mainController.py:376
 msgid "Manual speed set to fast"
 msgstr "Geschwindigkeit auf schnell gesetzt"
 
-#: papywizard/controller/mainController.py:543
+#: papywizard/controller/mainController.py:542
 msgid "Yaw - limit set"
 msgstr "Drehung - Limit setzen"
 
-#: papywizard/controller/mainController.py:549
+#: papywizard/controller/mainController.py:548
 msgid "Yaw + limit set"
 msgstr "Drehung + Limit setzen"
 
-#: papywizard/controller/mainController.py:555
+#: papywizard/controller/mainController.py:554
 msgid "Pitch + limit set"
 msgstr "Neigung + Limit setzen"
 
-#: papywizard/controller/mainController.py:561
+#: papywizard/controller/mainController.py:560
 msgid "Pitch - limit set"
 msgstr "Neigung - Limit setzen"
 
-#: papywizard/controller/mainController.py:566
+#: papywizard/controller/mainController.py:565
 msgid "Limits cleared"
 msgstr "Limits gelöscht"
 
-#: papywizard/controller/mainController.py:593
+#: papywizard/controller/mainController.py:592
 msgid "Wrong shooting mode"
 msgstr "Falscher Aufnahmemodus"
 
-#: papywizard/controller/mainController.py:594
+#: papywizard/controller/mainController.py:593
 msgid ""
 "Can't set shooting mode to 'mosaic'\n"
 "while using 'fisheye' lens type"
@@ -142,11 +143,11 @@ msgstr ""
 "Rastermodus nicht möglich\n"
 "mit Fischaugen-Objektiv"
 
-#: papywizard/controller/mainController.py:598
+#: papywizard/controller/mainController.py:597
 msgid "Wrong camera orientation"
 msgstr "Falsche Ausrichtung der Kamera"
 
-#: papywizard/controller/mainController.py:599
+#: papywizard/controller/mainController.py:598
 msgid ""
 "Can't set shooting mode to 'mosaic'\n"
 "while using 'custom' camera orientation"
@@ -154,67 +155,67 @@ msgstr ""
 "Rastermodus nicht möglich\n"
 "mit 'Eigener'-Objektiv-Ausrichtung"
 
-#: papywizard/controller/mainController.py:617
+#: papywizard/controller/mainController.py:616
 msgid "Yaw start set from current position"
 msgstr "Aktuelle Position als Dreh-Start gesetzt"
 
-#: papywizard/controller/mainController.py:624
+#: papywizard/controller/mainController.py:623
 msgid "Pitch start set from current position"
 msgstr "Aktuelle Position als Neige-Start gesetzt"
 
-#: papywizard/controller/mainController.py:631
+#: papywizard/controller/mainController.py:630
 msgid "Yaw end set from current position"
 msgstr "Aktuelle Position als Dreh-Ende gesetzt"
 
-#: papywizard/controller/mainController.py:638
+#: papywizard/controller/mainController.py:637
 msgid "Pitch end set from current position"
 msgstr "Aktuelle Position als Neige-Ende gesetzt"
 
-#: papywizard/controller/mainController.py:675
+#: papywizard/controller/mainController.py:674
 msgid "Origin set at current position"
 msgstr "Aktuelle Position als Nullpunkt gesetzt"
 
-#: papywizard/controller/mainController.py:742
+#: papywizard/controller/mainController.py:741
 msgid "Yaw/pitch start set from current position"
 msgstr "Aktuelle Position als Dreh-Neige-Start gesetzt"
 
-#: papywizard/controller/mainController.py:750
+#: papywizard/controller/mainController.py:749
 msgid "Yaw/pitch end set from current position"
 msgstr "Aktuelle Position als Dreh-Neige-Ende gesetzt"
 
-#: papywizard/controller/mainController.py:761
+#: papywizard/controller/mainController.py:760
 msgid "Field of view set to user value"
 msgstr "FOV auf Benutzerwert gesetzt"
 
-#: papywizard/controller/mainController.py:772
+#: papywizard/controller/mainController.py:771
 msgid "Number of pictures set to user value"
 msgstr "Anzahl Aufnahmen auf Benutzerwert gesetzt"
 
-#: papywizard/controller/mainController.py:777
+#: papywizard/controller/mainController.py:776
 msgid "Opening configuration dialog. Please wait..."
 msgstr "Einstelldialog öffnen. Bitte warten..."
 
-#: papywizard/controller/mainController.py:803
+#: papywizard/controller/mainController.py:802
 msgid "Opening shoot dialog. Please wait..."
 msgstr "Aufnahmedialog öffnen. Bitte warten..."
 
-#: papywizard/controller/mainController.py:845
+#: papywizard/controller/mainController.py:844
 msgid "Can't import preset file"
 msgstr "Datei mit Voreinstellungen kann nicht importiert werden"
 
-#: papywizard/controller/mainController.py:859
+#: papywizard/controller/mainController.py:858
 msgid "Connecting to real hardware..."
 msgstr "Mit Hardware verbinden..."
 
-#: papywizard/controller/mainController.py:882
+#: papywizard/controller/mainController.py:881
 msgid "Now connected to real hardware"
 msgstr "Mit Hardware verbunden"
 
-#: papywizard/controller/mainController.py:885
+#: papywizard/controller/mainController.py:884
 msgid "Can't connect to hardware"
 msgstr "Kann Hardware nicht verbinden"
 
-#: papywizard/controller/mainController.py:897
+#: papywizard/controller/mainController.py:896
 msgid "Now in simulation mode"
 msgstr "Simulationsmodus"
 
