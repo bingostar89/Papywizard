@@ -251,8 +251,8 @@ class MainController(AbstractController):
             self.app = hildon.Program()
             window = hildon.Window()
             window.set_title(self.dialog.get_title())
-            window.fullscreen()
-            self.__fullScreen = True
+            #window.fullscreen()
+            #self.__fullScreen = True
             self.app.add_window(window)
             self.mainVbox.reparent(window)
 
@@ -270,16 +270,32 @@ class MainController(AbstractController):
         except ImportError:
             pass
 
+        if self.__fullScreen:
+            window.fullscreen()
+
     def _connectSignals(self):
         super(MainController, self)._connectSignals()
 
-        self.dialog.connect("destroy", gtk.main_quit)
+        self.dialog.connect("destroy", self.__onDestroy)
         self.dialog.connect("key-press-event", self.__onKeyPressed)
         self.dialog.connect("key-release-event", self.__onKeyReleased)
         #self.dialog.connect("window-state-event", self.__onWindowStateChanged)
 
         Spy().newPosSignal.connect(self.__refreshPos)
         self._model.switchToRealHardwareSignal.connect(self.__switchToRealHardwareCallback)
+
+    # Properties
+    def __getFullScreenFlag(self):
+        """
+        """
+        return ConfigManager().getBoolean('General', 'FULLSCREEN_FLAG')
+
+    def __setFullScreenFlag(self, flag):
+        """
+        """
+        ConfigManager().setBoolean('General', 'FULLSCREEN_FLAG', flag)
+
+    __fullScreen = property(__getFullScreenFlag, __setFullScreenFlag)
 
     # Callbacks
     def __onKeyPressed(self, widget, event, *args):
