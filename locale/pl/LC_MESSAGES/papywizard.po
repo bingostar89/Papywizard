@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-19 13:33+0100\n"
+"POT-Creation-Date: 2008-12-19 19:21+0100\n"
 "PO-Revision-Date: 2008-12-16 17:56+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -35,52 +35,52 @@ msgstr ""
 msgid "Timeout while reading on serial bus"
 msgstr ""
 
-#: papywizard/controller/shootController.py:519
+#: papywizard/controller/shootController.py:523
 #, fuzzy
 msgid "Resume"
 msgstr "Zresetuj"
 
-#: papywizard/controller/shootController.py:522
+#: papywizard/controller/shootController.py:526
 #, fuzzy
 msgid "Paused"
 msgstr "Zawieś"
 
-#: papywizard/controller/shootController.py:530 tmp/shootDialog.glade.h:7
+#: papywizard/controller/shootController.py:534 tmp/shootDialog.glade.h:7
 msgid "Pause"
 msgstr ""
 
-#: papywizard/controller/shootController.py:541
+#: papywizard/controller/shootController.py:545
 msgid "Finished"
 msgstr ""
 
-#: papywizard/controller/shootController.py:543
+#: papywizard/controller/shootController.py:547
 msgid "Canceled"
 msgstr "Anulowano"
 
-#: papywizard/controller/shootController.py:545
+#: papywizard/controller/shootController.py:549
 #, fuzzy
 msgid "Failed"
 msgstr "Plik"
 
-#: papywizard/controller/shootController.py:555
+#: papywizard/controller/shootController.py:559
 #, fuzzy
 msgid "Waiting"
 msgstr "Zacznij od"
 
-#: papywizard/controller/shootController.py:600
+#: papywizard/controller/shootController.py:604
 msgid "Moving"
 msgstr "Namierzam"
 
-#: papywizard/controller/shootController.py:602
+#: papywizard/controller/shootController.py:606
 msgid "Stabilization"
 msgstr ""
 
-#: papywizard/controller/shootController.py:604 tmp/configDialog.glade.h:29
+#: papywizard/controller/shootController.py:608 tmp/configDialog.glade.h:29
 #, fuzzy
 msgid "Mirror lockup"
 msgstr "Błąd"
 
-#: papywizard/controller/shootController.py:608
+#: papywizard/controller/shootController.py:612
 #, fuzzy
 msgid "Shutter - Picture"
 msgstr "Ilość zdjęć"
@@ -89,135 +89,135 @@ msgstr "Ilość zdjęć"
 msgid "Can't scan bluetooth"
 msgstr "Nie mogę skanować Bluetooth"
 
-#: papywizard/controller/mainController.py:348
+#: papywizard/controller/mainController.py:368
 msgid "Manual speed set to slow"
 msgstr ""
 
-#: papywizard/controller/mainController.py:354
-#: papywizard/controller/mainController.py:368
+#: papywizard/controller/mainController.py:374
+#: papywizard/controller/mainController.py:388
 msgid "Manual speed set to normal"
 msgstr ""
 
-#: papywizard/controller/mainController.py:370
+#: papywizard/controller/mainController.py:390
 msgid "Fast manual speed"
 msgstr ""
 
-#: papywizard/controller/mainController.py:371
+#: papywizard/controller/mainController.py:391
 msgid ""
 "Manual speed set to 'fast'\n"
 "This can be dangerous for the hardware!"
 msgstr ""
 
-#: papywizard/controller/mainController.py:376
+#: papywizard/controller/mainController.py:396
 msgid "Manual speed set to fast"
 msgstr ""
 
-#: papywizard/controller/mainController.py:542
+#: papywizard/controller/mainController.py:562
 msgid "Yaw - limit set"
 msgstr "Yaw - limit"
 
-#: papywizard/controller/mainController.py:548
+#: papywizard/controller/mainController.py:568
 msgid "Yaw + limit set"
 msgstr "Yaw + limit"
 
-#: papywizard/controller/mainController.py:554
+#: papywizard/controller/mainController.py:574
 msgid "Pitch + limit set"
 msgstr "Pitch + limit"
 
-#: papywizard/controller/mainController.py:560
+#: papywizard/controller/mainController.py:580
 msgid "Pitch - limit set"
 msgstr "Pitch - limit"
 
-#: papywizard/controller/mainController.py:565
+#: papywizard/controller/mainController.py:585
 msgid "Limits cleared"
 msgstr "Limity usunięto"
 
-#: papywizard/controller/mainController.py:592
+#: papywizard/controller/mainController.py:612
 #, fuzzy
 msgid "Wrong shooting mode"
 msgstr "Zatrzymaj strzelanie"
 
-#: papywizard/controller/mainController.py:593
+#: papywizard/controller/mainController.py:613
 msgid ""
 "Can't set shooting mode to 'mosaic'\n"
 "while using 'fisheye' lens type"
 msgstr ""
 
-#: papywizard/controller/mainController.py:597
+#: papywizard/controller/mainController.py:617
 msgid "Wrong camera orientation"
 msgstr ""
 
-#: papywizard/controller/mainController.py:598
+#: papywizard/controller/mainController.py:618
 msgid ""
 "Can't set shooting mode to 'mosaic'\n"
 "while using 'custom' camera orientation"
 msgstr ""
 
-#: papywizard/controller/mainController.py:616
+#: papywizard/controller/mainController.py:636
 msgid "Yaw start set from current position"
 msgstr "Ustaw tą pozycję jako początkową yaw"
 
-#: papywizard/controller/mainController.py:623
+#: papywizard/controller/mainController.py:643
 msgid "Pitch start set from current position"
 msgstr "Ustaw tą pozycję jako początkową pitch"
 
-#: papywizard/controller/mainController.py:630
+#: papywizard/controller/mainController.py:650
 msgid "Yaw end set from current position"
 msgstr "Ustaw tą pozycję jako końcową yaw"
 
-#: papywizard/controller/mainController.py:637
+#: papywizard/controller/mainController.py:657
 msgid "Pitch end set from current position"
 msgstr "Ustaw tą pozycję jako końcową pitch"
 
-#: papywizard/controller/mainController.py:674
+#: papywizard/controller/mainController.py:694
 msgid "Origin set at current position"
 msgstr ""
 
-#: papywizard/controller/mainController.py:741
+#: papywizard/controller/mainController.py:761
 msgid "Yaw/pitch start set from current position"
 msgstr "Ustaw tą pozycję jako początkową yaw/pitch"
 
-#: papywizard/controller/mainController.py:749
+#: papywizard/controller/mainController.py:769
 msgid "Yaw/pitch end set from current position"
 msgstr "Ustaw tą pozycję jako końcową yaw/pitch"
 
-#: papywizard/controller/mainController.py:760
+#: papywizard/controller/mainController.py:780
 #, fuzzy
 msgid "Field of view set to user value"
 msgstr "Ile zdjęć strzelać przy każdej pozycji"
 
-#: papywizard/controller/mainController.py:771
+#: papywizard/controller/mainController.py:791
 #, fuzzy
 msgid "Number of pictures set to user value"
 msgstr "Ile zdjęć strzelać przy każdej pozycji"
 
-#: papywizard/controller/mainController.py:776
+#: papywizard/controller/mainController.py:796
 #, fuzzy
 msgid "Opening configuration dialog. Please wait..."
 msgstr "Otwórz okno konfiguracji"
 
-#: papywizard/controller/mainController.py:802
+#: papywizard/controller/mainController.py:822
 #, fuzzy
 msgid "Opening shoot dialog. Please wait..."
 msgstr "Otwórz okno strzelania"
 
-#: papywizard/controller/mainController.py:844
+#: papywizard/controller/mainController.py:861
 msgid "Can't import preset file"
 msgstr ""
 
-#: papywizard/controller/mainController.py:858
+#: papywizard/controller/mainController.py:875
 msgid "Connecting to real hardware..."
 msgstr "Nawiązuje połączenie ze sprzętem..."
 
-#: papywizard/controller/mainController.py:881
+#: papywizard/controller/mainController.py:898
 msgid "Now connected to real hardware"
 msgstr "Połączenie ze sprzętem nawiązane"
 
-#: papywizard/controller/mainController.py:884
+#: papywizard/controller/mainController.py:901
 msgid "Can't connect to hardware"
 msgstr "Nie mogę połączyć się ze sprzętem"
 
-#: papywizard/controller/mainController.py:896
+#: papywizard/controller/mainController.py:913
 msgid "Now in simulation mode"
 msgstr "Tryb symulacji"
 
@@ -535,13 +535,14 @@ msgstr "(C) 2007-2008 Frédéric Mantegazza"
 msgid ""
 "Frédéric Mantegazza (fr)\n"
 "Jo Lutum (de)\n"
-"Maciej Dworak (pl)"
+"Maciej Dworak (pl)\n"
+"Antonio Bruno (it)"
 msgstr ""
 "Frédéric Mantegazza (fr)\n"
 "Maciej Dworak (pl)\n"
 "Jo Lutum (de)"
 
-#: tmp/helpAboutDialog.glade.h:5
+#: tmp/helpAboutDialog.glade.h:6
 msgid ""
 "Papywizard is a panohead\n"
 "control software, mainly developped\n"
@@ -554,7 +555,7 @@ msgstr ""
 "Merlin/Orion ale współpracuje również\n"
 "z innymi głowicami astronomicznymi."
 
-#: tmp/helpAboutDialog.glade.h:9
+#: tmp/helpAboutDialog.glade.h:10
 msgid ""
 "This software is governed by the CeCILL license under French law and\n"
 "abiding by the rules of distribution of free software.  You can  use, \n"
@@ -610,7 +611,7 @@ msgstr ""
 "knowledge of the CeCILL license and that you accept its terms.\n"
 "CeCILL"
 
-#: tmp/helpAboutDialog.glade.h:35
+#: tmp/helpAboutDialog.glade.h:36
 msgid "À propos de Papywizard"
 msgstr "O programie"
 

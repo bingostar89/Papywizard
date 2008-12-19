@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-19 15:38+0100\n"
-"PO-Revision-Date: 2008-12-19 15:41+0100\n"
-"Last-Translator: Frédéric Mantegazza <mantegazza@ill.fr>\n"
+"POT-Creation-Date: 2008-12-19 19:21+0100\n"
+"PO-Revision-Date: 2008-12-19 19:23+0100\n"
+"Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,49 +34,49 @@ msgstr "Driver Seriale non inizializzato"
 msgid "Timeout while reading on serial bus"
 msgstr "Timeout durante la lettura del bus seriale"
 
-#: papywizard/controller/shootController.py:519
+#: papywizard/controller/shootController.py:523
 msgid "Resume"
 msgstr "Ripristina"
 
-#: papywizard/controller/shootController.py:522
+#: papywizard/controller/shootController.py:526
 msgid "Paused"
 msgstr "In pausa"
 
-#: papywizard/controller/shootController.py:530
+#: papywizard/controller/shootController.py:534
 #: tmp/shootDialog.glade.h:7
 msgid "Pause"
 msgstr "Pausa"
 
-#: papywizard/controller/shootController.py:541
+#: papywizard/controller/shootController.py:545
 msgid "Finished"
 msgstr "Finito"
 
-#: papywizard/controller/shootController.py:543
+#: papywizard/controller/shootController.py:547
 msgid "Canceled"
 msgstr "Cancellato"
 
-#: papywizard/controller/shootController.py:545
+#: papywizard/controller/shootController.py:549
 msgid "Failed"
 msgstr "Fallito , non riuscito"
 
-#: papywizard/controller/shootController.py:555
+#: papywizard/controller/shootController.py:559
 msgid "Waiting"
 msgstr "In attesa"
 
-#: papywizard/controller/shootController.py:600
+#: papywizard/controller/shootController.py:604
 msgid "Moving"
 msgstr "In movimento"
 
-#: papywizard/controller/shootController.py:602
+#: papywizard/controller/shootController.py:606
 msgid "Stabilization"
 msgstr "Stabilizzazione"
 
-#: papywizard/controller/shootController.py:604
+#: papywizard/controller/shootController.py:608
 #: tmp/configDialog.glade.h:29
 msgid "Mirror lockup"
 msgstr "Blocco dello specchio "
 
-#: papywizard/controller/shootController.py:608
+#: papywizard/controller/shootController.py:612
 msgid "Shutter - Picture"
 msgstr "Scatto - Immagine"
 
@@ -84,20 +84,20 @@ msgstr "Scatto - Immagine"
 msgid "Can't scan bluetooth"
 msgstr "Bluetooth non rilevato"
 
-#: papywizard/controller/mainController.py:364
+#: papywizard/controller/mainController.py:368
 msgid "Manual speed set to slow"
 msgstr "Velocità manuale settata lenta"
 
-#: papywizard/controller/mainController.py:370
-#: papywizard/controller/mainController.py:384
+#: papywizard/controller/mainController.py:374
+#: papywizard/controller/mainController.py:388
 msgid "Manual speed set to normal"
 msgstr "Velocità manuale settata normale"
 
-#: papywizard/controller/mainController.py:386
+#: papywizard/controller/mainController.py:390
 msgid "Fast manual speed"
 msgstr "Velocità manuale rapida"
 
-#: papywizard/controller/mainController.py:387
+#: papywizard/controller/mainController.py:391
 msgid ""
 "Manual speed set to 'fast'\n"
 "This can be dangerous for the hardware!"
@@ -105,35 +105,35 @@ msgstr ""
 "La velocità manuale settata 'rapida'\n"
 "può danneggiare l'hardware"
 
-#: papywizard/controller/mainController.py:392
+#: papywizard/controller/mainController.py:396
 msgid "Manual speed set to fast"
 msgstr "Velocità manuale settata rapida"
 
-#: papywizard/controller/mainController.py:558
+#: papywizard/controller/mainController.py:562
 msgid "Yaw - limit set"
 msgstr "Limite fissato Yaw -"
 
-#: papywizard/controller/mainController.py:564
+#: papywizard/controller/mainController.py:568
 msgid "Yaw + limit set"
 msgstr "Limite fissato Yaw +"
 
-#: papywizard/controller/mainController.py:570
+#: papywizard/controller/mainController.py:574
 msgid "Pitch + limit set"
 msgstr "Limite fissato Pitch +"
 
-#: papywizard/controller/mainController.py:576
+#: papywizard/controller/mainController.py:580
 msgid "Pitch - limit set"
 msgstr "Limite fissato Pitch -"
 
-#: papywizard/controller/mainController.py:581
+#: papywizard/controller/mainController.py:585
 msgid "Limits cleared"
 msgstr "Limiti azzerati"
 
-#: papywizard/controller/mainController.py:608
+#: papywizard/controller/mainController.py:612
 msgid "Wrong shooting mode"
 msgstr "Modalità di ripresa errata"
 
-#: papywizard/controller/mainController.py:609
+#: papywizard/controller/mainController.py:613
 msgid ""
 "Can't set shooting mode to 'mosaic'\n"
 "while using 'fisheye' lens type"
@@ -141,11 +141,11 @@ msgstr ""
 "Non posso abilitare la modalità di scatto a 'mosaico' \n"
 "utilizzando obbiettivo 'fisheye'"
 
-#: papywizard/controller/mainController.py:613
+#: papywizard/controller/mainController.py:617
 msgid "Wrong camera orientation"
 msgstr "Orientamento della camera errato"
 
-#: papywizard/controller/mainController.py:614
+#: papywizard/controller/mainController.py:618
 msgid ""
 "Can't set shooting mode to 'mosaic'\n"
 "while using 'custom' camera orientation"
@@ -153,67 +153,67 @@ msgstr ""
 "Non posso abilitare la modalità di scatto 'mosaico'\n"
 "utilizzando la camera con orientamento personalizzato"
 
-#: papywizard/controller/mainController.py:632
+#: papywizard/controller/mainController.py:636
 msgid "Yaw start set from current position"
 msgstr "Inizio Yaw da posizione corrente"
 
-#: papywizard/controller/mainController.py:639
+#: papywizard/controller/mainController.py:643
 msgid "Pitch start set from current position"
 msgstr "Inizio Pitch da posizione corrente"
 
-#: papywizard/controller/mainController.py:646
+#: papywizard/controller/mainController.py:650
 msgid "Yaw end set from current position"
 msgstr "Fine Yaw da posizione corrente"
 
-#: papywizard/controller/mainController.py:653
+#: papywizard/controller/mainController.py:657
 msgid "Pitch end set from current position"
 msgstr "Fine Pitch da posizione corrente"
 
-#: papywizard/controller/mainController.py:690
+#: papywizard/controller/mainController.py:694
 msgid "Origin set at current position"
 msgstr "Origine fissata a posizione attuale"
 
-#: papywizard/controller/mainController.py:757
+#: papywizard/controller/mainController.py:761
 msgid "Yaw/pitch start set from current position"
 msgstr "Inizio Yaw/pitch fissato da posizione attuale"
 
-#: papywizard/controller/mainController.py:765
+#: papywizard/controller/mainController.py:769
 msgid "Yaw/pitch end set from current position"
 msgstr "Fine Yaw/pitch fissata da posizione attuale"
 
-#: papywizard/controller/mainController.py:776
+#: papywizard/controller/mainController.py:780
 msgid "Field of view set to user value"
 msgstr "Ampiezza campo visivo impostata dall'utente"
 
-#: papywizard/controller/mainController.py:787
+#: papywizard/controller/mainController.py:791
 msgid "Number of pictures set to user value"
 msgstr "Numero di immagini impostato dall'utente"
 
-#: papywizard/controller/mainController.py:792
+#: papywizard/controller/mainController.py:796
 msgid "Opening configuration dialog. Please wait..."
 msgstr "Sto aprendo il menu di configurazione. Attendere prego..."
 
-#: papywizard/controller/mainController.py:818
+#: papywizard/controller/mainController.py:822
 msgid "Opening shoot dialog. Please wait..."
 msgstr "Sto preparandomi a scattare. Attendere prego..."
 
-#: papywizard/controller/mainController.py:860
+#: papywizard/controller/mainController.py:861
 msgid "Can't import preset file"
 msgstr "Impossibile importare il file di preset"
 
-#: papywizard/controller/mainController.py:874
+#: papywizard/controller/mainController.py:875
 msgid "Connecting to real hardware..."
 msgstr "Sto connettendomi all'hardware..."
 
-#: papywizard/controller/mainController.py:897
+#: papywizard/controller/mainController.py:898
 msgid "Now connected to real hardware"
 msgstr "Ora connesso all'hardware"
 
-#: papywizard/controller/mainController.py:900
+#: papywizard/controller/mainController.py:901
 msgid "Can't connect to hardware"
 msgstr "Non riesco a connettere l'hardware"
 
-#: papywizard/controller/mainController.py:912
+#: papywizard/controller/mainController.py:913
 msgid "Now in simulation mode"
 msgstr "Ora sei in modo simulazione"
 
@@ -226,8 +226,8 @@ msgid ""
 "Can't set camera orientation to 'custom'\n"
 "while in 'mosaic' mode"
 msgstr ""
-"Impossibile impostare l'orientamento della fotocamera a 'personalizzato'\n"
-" mentre sei in modo 'mosaico'"
+"Impossibile impostare l'orientamento della fotocamera\n"
+"a 'personalizzato' mentre sei in modo 'mosaico'"
 
 #: papywizard/controller/configController.py:256
 msgid "Wrong value for lens type"
@@ -546,21 +546,28 @@ msgstr "(C) 2007-2008 Frédéric Mantegazza"
 msgid ""
 "Frédéric Mantegazza (fr)\n"
 "Jo Lutum (de)\n"
-"Maciej Dworak (pl)"
+"Maciej Dworak (pl)\n"
+"Antonio Bruno (it)"
 msgstr ""
 "Frédéric Mantegazza (fr)\n"
 "Jo Lutum (de)\n"
-"Maciej Dworak (pl)"
+"Maciej Dworak (pl)\n"
+"Antonio Bruno (it)"
 
-#: tmp/helpAboutDialog.glade.h:5
+#: tmp/helpAboutDialog.glade.h:6
 msgid ""
 "Papywizard is a panohead\n"
 "control software, mainly developped\n"
 "for the Merlin/Orion astronomic mount\n"
 "but usable for other panoheads."
-msgstr "Papywizard è un software per gestire una testa panoramica, principalmente sviluppato per la testa astronomica Merlin/Orion, ma utilizzabile anche con altre teste panoramiche"
+msgstr ""
+"Papywizard è un software per gestire\n"
+"una testa panoramica, principalmente\n"
+"sviluppato per la testa astronomica\n"
+"Merlin/Orion, ma utilizzabile anche con\n"
+"altre teste panoramiche"
 
-#: tmp/helpAboutDialog.glade.h:9
+#: tmp/helpAboutDialog.glade.h:10
 msgid ""
 "This software is governed by the CeCILL license under French law and\n"
 "abiding by the rules of distribution of free software.  You can  use, \n"
@@ -616,7 +623,7 @@ msgstr ""
 "knowledge of the CeCILL license and that you accept its terms.\n"
 "CeCILL"
 
-#: tmp/helpAboutDialog.glade.h:35
+#: tmp/helpAboutDialog.glade.h:36
 msgid "À propos de Papywizard"
 msgstr "A proposito di Papywizard"
 
