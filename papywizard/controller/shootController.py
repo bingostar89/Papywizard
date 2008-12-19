@@ -221,6 +221,7 @@ class ShootController(AbstractController):
         self.dialog.connect("key-press-event", self.__onKeyPressed)
         self.dialog.connect("key-release-event", self.__onKeyReleased)
         self.dialog.connect("delete-event", self.__onDelete)
+        self.dialog.connect("destroy", self.__onDestroy)
 
         self.shootingArea.connect("button-press-event", self.__onMouseButtonPressed)
         #self.shootingArea.connect("motion-notify-event", self.__onMotionNotify)
@@ -370,8 +371,14 @@ class ShootController(AbstractController):
 
     def __onDelete(self, widget, event):
         Logger().trace("ShootController.__onDelete()")
-        self.__stopShooting() # Freeze if shooting!
-        return True
+        self.__disconnectSignals()
+        if self._model.isShooting():
+            self.__stopShooting()
+        return False
+
+    def __onDestroy(self, widget):
+        Logger().trace("ShootController.__onDestroy()")
+        return False
 
     def __onMouseButtonPressed(self, widget, event):
         Logger().trace("ShootController.__onMouseButtonPressed()")
@@ -463,7 +470,7 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__onDoneButtonClicked()")
 
     def __updateShootingElapsedTime(self):
-        Logger().trace("ShootController.__updateElapsedTime()")
+        Logger().trace("ShootController.__updateShootingElapsedTime()")
         if self._model.isShooting():
             shootingTime, elapsedTime = self._model.getShootingElapsedTime()
             self.shootingTimeLabel.set_text("%s" % sToHmsAsStr(shootingTime))
@@ -667,11 +674,7 @@ class ShootController(AbstractController):
     def __stopShooting(self):
         self._model.stop()
 
-    # Interface
-    def shutdown(self):
-        super(ShootController, self).shutdown()
-        if self.__thread is not None:
-            self.__thread.join()
+    def __disconnectSignals(self):
         Spy().newPosSignal.disconnect(self.__refreshPos)
         self._model.startedSignal.disconnect(self.__shootingStarted)
         self._model.pausedSignal.disconnect(self.__shootingPaused)
@@ -683,6 +686,13 @@ class ShootController(AbstractController):
         self._model.repeatSignal.connect(self.__shootingRepeat)
         self._model.newPositionSignal.disconnect(self.__shootingNewPosition)
         self._model.sequenceSignal.disconnect(self.__shootingSequence)
+
+    # Interface
+    def shutdown(self):
+        super(ShootController, self).shutdown()
+        if self.__thread is not None:
+            self.__thread.join()
+        self.__disconnectSignals()
 
     def refreshView(self):
         dataFlag = ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE')
