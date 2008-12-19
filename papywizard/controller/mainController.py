@@ -98,7 +98,7 @@ class MainController(AbstractController):
 
     def _init(self):
         self._gladeFile = "mainWindow.glade"
-        self._signalDict = {"on_fileImportPresetMenuitem_activate": self.__onFileImportPresetMenuitemActivate,
+        self._signalDict = {"on_fileLoadPresetMenuitem_activate": self.__onFileLoadPresetMenuitemActivate,
                             "on_fileLoadGtkrcMenuitem_activate": self.__onFileLoadGtkrcMenuitemActivate,
                             "on_quitMenuitem_activate": gtk.main_quit,
                             "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuitemToggled,
@@ -481,11 +481,11 @@ class MainController(AbstractController):
         #else:
             #self.__fullScreen = False
 
-    def __onFileImportPresetMenuitemActivate(self, widget):
+    def __onFileLoadPresetMenuitemActivate(self, widget):
         """
         @todo: make a custom dialog
         """
-        Logger().trace("MainController.__onFileImportPresetMenuitemActivate()")
+        Logger().trace("MainController.__onFileLoadPresetMenuitemActivate()")
         fileDialog = gtk.FileChooserDialog(title="Import Preset file", parent=self.dialog,
                                            action=gtk.FILE_CHOOSER_ACTION_OPEN,
                                            buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
