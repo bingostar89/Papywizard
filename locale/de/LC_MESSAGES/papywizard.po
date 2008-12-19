@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-18 09:18+0100\n"
+"POT-Creation-Date: 2008-12-19 09:57+0100\n"
 "PO-Revision-Date: 2008-11-24 22:40+0100\n"
 "Last-Translator: Jo Lutum <jo.lutum@lycos.de>\n"
 "Language-Team: none\n"
@@ -34,49 +34,49 @@ msgstr "Serieller Treiber nicht initialisiert"
 msgid "Timeout while reading on serial bus"
 msgstr "Timeout bei seriellem Lesevorgang"
 
-#: papywizard/controller/shootController.py:512
+#: papywizard/controller/shootController.py:519
 msgid "Resume"
 msgstr "Fortsetzen"
 
-#: papywizard/controller/shootController.py:515
+#: papywizard/controller/shootController.py:522
 #, fuzzy
 msgid "Paused"
 msgstr "Pause"
 
-#: papywizard/controller/shootController.py:523 tmp/shootDialog.glade.h:7
+#: papywizard/controller/shootController.py:530 tmp/shootDialog.glade.h:7
 msgid "Pause"
 msgstr "Pause"
 
-#: papywizard/controller/shootController.py:534
+#: papywizard/controller/shootController.py:541
 msgid "Finished"
 msgstr "Beendet"
 
-#: papywizard/controller/shootController.py:536
+#: papywizard/controller/shootController.py:543
 msgid "Canceled"
 msgstr "Abgebrochen"
 
-#: papywizard/controller/shootController.py:538
+#: papywizard/controller/shootController.py:545
 msgid "Failed"
 msgstr "Fehlgeschlagen"
 
-#: papywizard/controller/shootController.py:548
+#: papywizard/controller/shootController.py:555
 #, fuzzy
 msgid "Waiting"
 msgstr "Start bei"
 
-#: papywizard/controller/shootController.py:593
+#: papywizard/controller/shootController.py:600
 msgid "Moving"
 msgstr "Kopf fährt"
 
-#: papywizard/controller/shootController.py:595
+#: papywizard/controller/shootController.py:602
 msgid "Stabilization"
 msgstr ""
 
-#: papywizard/controller/shootController.py:597 tmp/configDialog.glade.h:29
+#: papywizard/controller/shootController.py:604 tmp/configDialog.glade.h:29
 msgid "Mirror lockup"
 msgstr "Spiegelverriegelung"
 
-#: papywizard/controller/shootController.py:601
+#: papywizard/controller/shootController.py:608
 #, fuzzy
 msgid "Shutter - Picture"
 msgstr "Anzahl Aufnahmen"
@@ -684,12 +684,13 @@ msgid "Help"
 msgstr "Hilfe"
 
 #: tmp/mainWindow.glade.h:13
-msgid "Import Preset File..."
-msgstr "Import Datei Voreinstellungen"
-
-#: tmp/mainWindow.glade.h:14
 msgid "Load Gtkrc File..."
 msgstr ""
+
+#: tmp/mainWindow.glade.h:14
+#, fuzzy
+msgid "Load Preset File..."
+msgstr "Import Datei Voreinstellungen"
 
 #: tmp/mainWindow.glade.h:15
 msgid "Manual"

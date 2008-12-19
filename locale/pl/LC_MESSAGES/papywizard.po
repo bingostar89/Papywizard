@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-18 09:18+0100\n"
+"POT-Creation-Date: 2008-12-19 09:57+0100\n"
 "PO-Revision-Date: 2008-12-16 17:56+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -35,52 +35,52 @@ msgstr ""
 msgid "Timeout while reading on serial bus"
 msgstr ""
 
-#: papywizard/controller/shootController.py:512
+#: papywizard/controller/shootController.py:519
 #, fuzzy
 msgid "Resume"
 msgstr "Zresetuj"
 
-#: papywizard/controller/shootController.py:515
+#: papywizard/controller/shootController.py:522
 #, fuzzy
 msgid "Paused"
 msgstr "Zawieś"
 
-#: papywizard/controller/shootController.py:523 tmp/shootDialog.glade.h:7
+#: papywizard/controller/shootController.py:530 tmp/shootDialog.glade.h:7
 msgid "Pause"
 msgstr ""
 
-#: papywizard/controller/shootController.py:534
+#: papywizard/controller/shootController.py:541
 msgid "Finished"
 msgstr ""
 
-#: papywizard/controller/shootController.py:536
+#: papywizard/controller/shootController.py:543
 msgid "Canceled"
 msgstr "Anulowano"
 
-#: papywizard/controller/shootController.py:538
+#: papywizard/controller/shootController.py:545
 #, fuzzy
 msgid "Failed"
 msgstr "Plik"
 
-#: papywizard/controller/shootController.py:548
+#: papywizard/controller/shootController.py:555
 #, fuzzy
 msgid "Waiting"
 msgstr "Zacznij od"
 
-#: papywizard/controller/shootController.py:593
+#: papywizard/controller/shootController.py:600
 msgid "Moving"
 msgstr "Namierzam"
 
-#: papywizard/controller/shootController.py:595
+#: papywizard/controller/shootController.py:602
 msgid "Stabilization"
 msgstr ""
 
-#: papywizard/controller/shootController.py:597 tmp/configDialog.glade.h:29
+#: papywizard/controller/shootController.py:604 tmp/configDialog.glade.h:29
 #, fuzzy
 msgid "Mirror lockup"
 msgstr "Błąd"
 
-#: papywizard/controller/shootController.py:601
+#: papywizard/controller/shootController.py:608
 #, fuzzy
 msgid "Shutter - Picture"
 msgstr "Ilość zdjęć"
@@ -677,11 +677,11 @@ msgid "Help"
 msgstr "Pomoc"
 
 #: tmp/mainWindow.glade.h:13
-msgid "Import Preset File..."
+msgid "Load Gtkrc File..."
 msgstr ""
 
 #: tmp/mainWindow.glade.h:14
-msgid "Load Gtkrc File..."
+msgid "Load Preset File..."
 msgstr ""
 
 #: tmp/mainWindow.glade.h:15
