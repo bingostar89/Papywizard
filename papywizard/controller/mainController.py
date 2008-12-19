@@ -271,7 +271,7 @@ class MainController(AbstractController):
             pass
 
         if self.__fullScreen:
-            window.fullscreen()
+            self.dialog.fullscreen()
 
     def _connectSignals(self):
         super(MainController, self)._connectSignals()
