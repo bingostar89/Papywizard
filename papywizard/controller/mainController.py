@@ -284,6 +284,10 @@ class MainController(AbstractController):
         Spy().newPosSignal.connect(self.__refreshPos)
         self._model.switchToRealHardwareSignal.connect(self.__switchToRealHardwareCallback)
 
+    def _disconnectSignals(self):
+        Spy().newPosSignal.disconnect(self.__refreshPos)
+        self._model.switchToRealHardwareSignal.disconnect(self.__switchToRealHardwareCallback)
+
     # Properties
     def __getFullScreenFlag(self):
         """
@@ -818,15 +822,12 @@ class MainController(AbstractController):
         self.setStatusbarMessage(_("Opening shoot dialog. Please wait..."))
         while gtk.events_pending():
             gtk.main_iteration()
-        #Spy().newPosSignal.disconnect(self.__refreshPos)
         controller = ShootController(self, self._model, self._serializer)
         if self.__fullScreen:
             controller.dialog.fullscreen()
         self.shootButton.set_sensitive(True)
         self.setStatusbarMessage()
         controller.run()
-        controller.shutdown()
-        #Spy().newPosSignal.connect(self.__refreshPos)
 
     def __populatePresetCombobox(self):
         """

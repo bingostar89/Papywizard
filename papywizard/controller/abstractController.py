@@ -58,6 +58,8 @@ import pygtk
 pygtk.require("2.0")
 import gtk.glade
 
+from papywizard.common.loggingServices import Logger
+
 if hasattr(sys, "frozen"):
     path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "common")
 else:
@@ -116,6 +118,12 @@ class AbstractController(object):
         """ Connect widgets signals.
         """
         self.wTree.signal_autoconnect(self._signalDict)
+        self.dialog.connect("delete-event", self._onDelete)
+
+    def _disconnectSignals(self):
+        """ Disconnect widgets signals.
+        """
+        pass
 
     def _setFontParams(self, widget, scale=None, weight=None):
         """ Change the widget font size.
@@ -137,6 +145,13 @@ class AbstractController(object):
             font.set_weight(weight)
         widget.modify_font(font)
 
+    # Cllbacks GTK
+    def _onDelete(self, widget, event):
+        """ 'delete-event' signal callback.
+        """
+        Logger().trace("AbstractController._onDelete()")
+
+    # Interface
     def run(self):
         """ Run the dialog.
         """
@@ -148,6 +163,7 @@ class AbstractController(object):
         mainly destroy the view.
         """
         self.dialog.destroy()
+        self._disconnectSignals()
 
     def refreshView(self):
         """ Refresh the view widgets according to model values.

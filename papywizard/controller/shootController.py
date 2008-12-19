@@ -157,10 +157,6 @@ class ShootController(AbstractController):
         self._setFontParams(self.pitchCurrentIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.yawNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
         self._setFontParams(self.pitchNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
-        #self._setFontParams(self.sequenceLabel, weight=pango.WEIGHT_BOLD)
-        #self._setFontParams(self.repeatLabel, weight=pango.WEIGHT_BOLD)
-        #self._setFontParams(self.shootingTimeLabel, weight=pango.WEIGHT_BOLD)
-        #self._setFontParams(self.elapsedTimeLabel, weight=pango.WEIGHT_BOLD)
 
         # Init text view
         self.currentIndexLabel.set_text("--/%d" % self._model.scan.totalNbPicts)
@@ -220,7 +216,6 @@ class ShootController(AbstractController):
 
         self.dialog.connect("key-press-event", self.__onKeyPressed)
         self.dialog.connect("key-release-event", self.__onKeyReleased)
-        self.dialog.connect("delete-event", self.__onDelete)
 
         self.shootingArea.connect("button-press-event", self.__onMouseButtonPressed)
         #self.shootingArea.connect("motion-notify-event", self.__onMotionNotify)
@@ -236,6 +231,26 @@ class ShootController(AbstractController):
         self._model.repeatSignal.connect(self.__shootingRepeat)
         self._model.newPositionSignal.connect(self.__shootingNewPosition)
         self._model.sequenceSignal.connect(self.__shootingSequence)
+
+    def _disconnectSignals(self):
+        Spy().newPosSignal.disconnect(self.__refreshPos)
+        self._model.startedSignal.disconnect(self.__shootingStarted)
+        self._model.pausedSignal.disconnect(self.__shootingPaused)
+        self._model.resumedSignal.disconnect(self.__shootingResumed)
+        self._model.stoppedSignal.disconnect(self.__shootingStopped)
+        self._model.waitingSignal.disconnect(self.__shootingWaiting)
+        self._model.beginShootSignal.disconnect(self.__shootingBeginShoot)
+        self._model.progressSignal.disconnect(self.__shootingProgress)
+        self._model.repeatSignal.connect(self.__shootingRepeat)
+        self._model.newPositionSignal.disconnect(self.__shootingNewPosition)
+        self._model.sequenceSignal.disconnect(self.__shootingSequence)
+
+    def _onDelete(self, widget, event):
+        Logger().trace("ShootController.__onDelete()")
+        if not self._model.isShooting():
+            self.shutdown()
+            return False
+        return True
 
     # Callbacks GTK
     def __onKeyPressed(self, widget, event, *args):
@@ -368,13 +383,6 @@ class ShootController(AbstractController):
         else:
             Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
 
-    def __onDelete(self, widget, event):
-        Logger().trace("ShootController.__onDelete()")
-        self.__disconnectSignals()
-        if self._model.isShooting():
-            self.__stopShooting()
-        return False
-
     def __onMouseButtonPressed(self, widget, event):
         Logger().trace("ShootController.__onMouseButtonPressed()")
         if self._model.isPaused():
@@ -463,6 +471,7 @@ class ShootController(AbstractController):
 
     def __onDoneButtonClicked(self, widget):
         Logger().trace("ShootController.__onDoneButtonClicked()")
+        self.shutdown()
 
     def __updateShootingElapsedTime(self):
         Logger().trace("ShootController.__updateShootingElapsedTime()")
@@ -669,25 +678,14 @@ class ShootController(AbstractController):
     def __stopShooting(self):
         self._model.stop()
 
-    def __disconnectSignals(self):
-        Spy().newPosSignal.disconnect(self.__refreshPos)
-        self._model.startedSignal.disconnect(self.__shootingStarted)
-        self._model.pausedSignal.disconnect(self.__shootingPaused)
-        self._model.resumedSignal.disconnect(self.__shootingResumed)
-        self._model.stoppedSignal.disconnect(self.__shootingStopped)
-        self._model.waitingSignal.disconnect(self.__shootingWaiting)
-        self._model.beginShootSignal.disconnect(self.__shootingBeginShoot)
-        self._model.progressSignal.disconnect(self.__shootingProgress)
-        self._model.repeatSignal.connect(self.__shootingRepeat)
-        self._model.newPositionSignal.disconnect(self.__shootingNewPosition)
-        self._model.sequenceSignal.disconnect(self.__shootingSequence)
-
     # Interface
+    def run(self):
+        self.dialog.show()
+
     def shutdown(self):
         super(ShootController, self).shutdown()
         if self.__thread is not None:
             self.__thread.join()
-        self.__disconnectSignals()
 
     def refreshView(self):
         dataFlag = ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE')
