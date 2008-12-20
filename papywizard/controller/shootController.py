@@ -325,7 +325,7 @@ class ShootController(AbstractController):
                # Pressing 'Escape' while not shooting exit shoot dialog
                if not self._model.isShooting():
                    Logger().debug("shootController.__onKeyPressed(): close shooting dialog")
-                   self.dialog.response(0)
+                   self.shutdown()
 
                # Pressing 'Escape' while shooting stops shooting
                else:
