@@ -409,7 +409,7 @@ class Shooting(object):
                     time.sleep(1)
 
                     # Check pause or stop
-                    checkPauseStop()
+                    checkPauseStop(pause=False)
 
                     remainingTime = self.timerAfter - (time.time() - initialTime)
 
@@ -548,7 +548,7 @@ class Shooting(object):
                         time.sleep(1)
 
                         # Check pause or stop
-                        checkPauseStop()
+                        checkPauseStop(pause=False)
 
                         remainingTime = self.timerEvery - (time.time() - startTime)
 
