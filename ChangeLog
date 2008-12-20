@@ -8,7 +8,17 @@ x bug fix
 
 0000-00-00 Version SVN
 
-2008-12-00 Version 1.5.3 (dev)
+2008-12-00 Version 1.5.4 (dev)
+    + show shooting time in addition to total elapsed time
+    + fullscreen state saved in preferences
+    + new i18n languages (italian, spanish, dutch)
+    - picture drawing revisited
+    - splited progressbar
+    - shoot dialog starts fullscreen if main window is fullscreen
+    - config dialog Notebook tabs now scrollable
+    x window X buton disabled while shooting
+
+2008-12-15 Version 1.5.3 (dev)
     + show elapsed time
     + show mosaic total resolution
     + menu to load a specific gtkrc file
