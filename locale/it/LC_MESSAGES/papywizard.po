@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-19 19:21+0100\n"
+"POT-Creation-Date: 2008-12-21 23:17+0100\n"
 "PO-Revision-Date: 2008-12-19 19:23+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -16,12 +16,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: papywizard/hardware/bluetoothDriver.py:112
+#: papywizard/hardware/bluetoothDriver.py:116
 msgid "Bluetooth driver not initialized"
 msgstr "Driver Bluetooth non inizializzato"
 
-#: papywizard/hardware/bluetoothDriver.py:125
-#: papywizard/hardware/bluetoothDriver.py:131
+#: papywizard/hardware/bluetoothDriver.py:129
+#: papywizard/hardware/bluetoothDriver.py:135
 msgid "Timeout while reading on bluetooth bus"
 msgstr "Timeout durante la lettura del bus bluetooth"
 
@@ -42,8 +42,7 @@ msgstr "Ripristina"
 msgid "Paused"
 msgstr "In pausa"
 
-#: papywizard/controller/shootController.py:534
-#: tmp/shootDialog.glade.h:7
+#: papywizard/controller/shootController.py:534 tmp/shootDialog.glade.h:7
 msgid "Pause"
 msgstr "Pausa"
 
@@ -71,8 +70,7 @@ msgstr "In movimento"
 msgid "Stabilization"
 msgstr "Stabilizzazione"
 
-#: papywizard/controller/shootController.py:608
-#: tmp/configDialog.glade.h:29
+#: papywizard/controller/shootController.py:608 tmp/configDialog.glade.h:29
 msgid "Mirror lockup"
 msgstr "Blocco dello specchio "
 
@@ -257,17 +255,13 @@ msgstr "Informazione"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:2
-#: tmp/configDialog.glade.h:55
-#: tmp/nbPictsDialog.glade.h:4
-#: tmp/totalFovDialog.glade.h:4
+#: tmp/bluetoothChooserDialog.glade.h:2 tmp/configDialog.glade.h:55
+#: tmp/nbPictsDialog.glade.h:4 tmp/totalFovDialog.glade.h:4
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:3
-#: tmp/configDialog.glade.h:56
-#: tmp/nbPictsDialog.glade.h:5
-#: tmp/totalFovDialog.glade.h:5
+#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:56
+#: tmp/nbPictsDialog.glade.h:5 tmp/totalFovDialog.glade.h:5
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -323,8 +317,7 @@ msgstr "Commento"
 msgid "Configuration"
 msgstr "Configuazione"
 
-#: tmp/configDialog.glade.h:15
-#: tmp/shootDialog.glade.h:4
+#: tmp/configDialog.glade.h:15 tmp/shootDialog.glade.h:4
 msgid "Data"
 msgstr "Dati"
 
@@ -360,8 +353,7 @@ msgstr "Lunghezza focale (mm)"
 msgid "GPS"
 msgstr "GPS"
 
-#: tmp/configDialog.glade.h:24
-#: tmp/mainWindow.glade.h:11
+#: tmp/configDialog.glade.h:24 tmp/mainWindow.glade.h:11
 msgid "Hardware"
 msgstr "Hardware"
 
@@ -385,8 +377,7 @@ msgstr "Logger level"
 msgid "Misc"
 msgstr "Misc"
 
-#: tmp/configDialog.glade.h:31
-#: tmp/mainWindow.glade.h:16
+#: tmp/configDialog.glade.h:31 tmp/mainWindow.glade.h:16
 msgid "Mosaic"
 msgstr "Mosaico"
 
@@ -418,8 +409,7 @@ msgstr "Risoluzione sensore"
 msgid "Serial port"
 msgstr "Porta seriale"
 
-#: tmp/configDialog.glade.h:40
-#: tmp/shootDialog.glade.h:9
+#: tmp/configDialog.glade.h:40 tmp/shootDialog.glade.h:9
 msgid "Shooting"
 msgstr "Scatto"
 
@@ -439,8 +429,7 @@ msgstr "Parti da"
 msgid "Time value (sec)"
 msgstr "Tempo (sec)"
 
-#: tmp/configDialog.glade.h:45
-#: tmp/shootDialog.glade.h:13
+#: tmp/configDialog.glade.h:45 tmp/shootDialog.glade.h:13
 msgid "Timer"
 msgstr "Timer"
 
@@ -639,8 +628,7 @@ msgstr "Logger"
 msgid "Save log"
 msgstr "Salva log"
 
-#: tmp/loggerDialog.glade.h:4
-#: tmp/presetInfoDialog.glade.h:2
+#: tmp/loggerDialog.glade.h:4 tmp/presetInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:16
 msgid "gtk-close"
 msgstr "gtk-close"
@@ -705,8 +693,7 @@ msgstr "Manuale"
 msgid "Name"
 msgstr "Nome"
 
-#: tmp/mainWindow.glade.h:18
-#: tmp/nbPictsDialog.glade.h:1
+#: tmp/mainWindow.glade.h:18 tmp/nbPictsDialog.glade.h:1
 msgid "Nb picts"
 msgstr "N° immagini"
 
@@ -714,10 +701,8 @@ msgstr "N° immagini"
 msgid "Papywizard"
 msgstr "Papywizard"
 
-#: tmp/mainWindow.glade.h:20
-#: tmp/nbPictsDialog.glade.h:2
-#: tmp/shootDialog.glade.h:8
-#: tmp/totalFovDialog.glade.h:1
+#: tmp/mainWindow.glade.h:20 tmp/nbPictsDialog.glade.h:2
+#: tmp/shootDialog.glade.h:8 tmp/totalFovDialog.glade.h:1
 msgid "Pitch"
 msgstr "Pitch"
 
@@ -757,8 +742,7 @@ msgstr "Scatto"
 msgid "Start (°)"
 msgstr "Posizione iniziale (°)"
 
-#: tmp/mainWindow.glade.h:31
-#: tmp/totalFovDialog.glade.h:2
+#: tmp/mainWindow.glade.h:31 tmp/totalFovDialog.glade.h:2
 msgid "Total fov (°)"
 msgstr "Fov totale (°)"
 
@@ -766,10 +750,8 @@ msgstr "Fov totale (°)"
 msgid "View Log..."
 msgstr "Guarda log"
 
-#: tmp/mainWindow.glade.h:33
-#: tmp/nbPictsDialog.glade.h:3
-#: tmp/shootDialog.glade.h:15
-#: tmp/totalFovDialog.glade.h:3
+#: tmp/mainWindow.glade.h:33 tmp/nbPictsDialog.glade.h:3
+#: tmp/shootDialog.glade.h:15 tmp/totalFovDialog.glade.h:3
 msgid "Yaw"
 msgstr "Yaw"
 
@@ -824,4 +806,3 @@ msgstr "Totale"
 #: tmp/waitBanner.glade.h:1
 msgid "Please wait..."
 msgstr "Attendere prego..."
-

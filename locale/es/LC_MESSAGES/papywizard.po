@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-19 19:21+0100\n"
+"POT-Creation-Date: 2008-12-21 23:17+0100\n"
 "PO-Revision-Date: 2008-12-16 18:03+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -16,12 +16,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: papywizard/hardware/bluetoothDriver.py:112
+#: papywizard/hardware/bluetoothDriver.py:116
 msgid "Bluetooth driver not initialized"
 msgstr ""
 
-#: papywizard/hardware/bluetoothDriver.py:125
-#: papywizard/hardware/bluetoothDriver.py:131
+#: papywizard/hardware/bluetoothDriver.py:129
+#: papywizard/hardware/bluetoothDriver.py:135
 msgid "Timeout while reading on bluetooth bus"
 msgstr ""
 

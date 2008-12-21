@@ -7,22 +7,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-19 19:21+0100\n"
-"PO-Revision-Date: 2008-11-24 22:40+0100\n"
-"Last-Translator: Jo Lutum <jo.lutum@lycos.de>\n"
+"POT-Creation-Date: 2008-12-21 23:17+0100\n"
+"PO-Revision-Date: 2008-12-21 23:18+0100\n"
+"Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: papywizard/hardware/bluetoothDriver.py:112
-#, fuzzy
+#: papywizard/hardware/bluetoothDriver.py:116
 msgid "Bluetooth driver not initialized"
 msgstr "Bluetooth Treiber nicht initialisiert"
 
-#: papywizard/hardware/bluetoothDriver.py:125
-#: papywizard/hardware/bluetoothDriver.py:131
+#: papywizard/hardware/bluetoothDriver.py:129
+#: papywizard/hardware/bluetoothDriver.py:135
 msgid "Timeout while reading on bluetooth bus"
 msgstr "Timeout bei Blutooth-Lesevorgang"
 
@@ -40,11 +39,11 @@ msgid "Resume"
 msgstr "Fortsetzen"
 
 #: papywizard/controller/shootController.py:526
-#, fuzzy
 msgid "Paused"
-msgstr "Pause"
+msgstr "pausiert"
 
-#: papywizard/controller/shootController.py:534 tmp/shootDialog.glade.h:7
+#: papywizard/controller/shootController.py:534
+#: tmp/shootDialog.glade.h:7
 msgid "Pause"
 msgstr "Pause"
 
@@ -61,9 +60,8 @@ msgid "Failed"
 msgstr "Fehlgeschlagen"
 
 #: papywizard/controller/shootController.py:559
-#, fuzzy
 msgid "Waiting"
-msgstr "Start bei"
+msgstr "Warte"
 
 #: papywizard/controller/shootController.py:604
 msgid "Moving"
@@ -71,16 +69,16 @@ msgstr "Kopf fährt"
 
 #: papywizard/controller/shootController.py:606
 msgid "Stabilization"
-msgstr ""
+msgstr "Stabilisierung"
 
-#: papywizard/controller/shootController.py:608 tmp/configDialog.glade.h:29
+#: papywizard/controller/shootController.py:608
+#: tmp/configDialog.glade.h:29
 msgid "Mirror lockup"
 msgstr "Spiegelverriegelung"
 
 #: papywizard/controller/shootController.py:612
-#, fuzzy
 msgid "Shutter - Picture"
-msgstr "Anzahl Aufnahmen"
+msgstr "Auslöser - Bild"
 
 #: papywizard/controller/bluetoothChooserController.py:178
 msgid "Can't scan bluetooth"
@@ -259,18 +257,21 @@ msgstr "Info"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:2 tmp/configDialog.glade.h:55
-#: tmp/nbPictsDialog.glade.h:4 tmp/totalFovDialog.glade.h:4
+#: tmp/bluetoothChooserDialog.glade.h:2
+#: tmp/configDialog.glade.h:55
+#: tmp/nbPictsDialog.glade.h:4
+#: tmp/totalFovDialog.glade.h:4
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:56
-#: tmp/nbPictsDialog.glade.h:5 tmp/totalFovDialog.glade.h:5
+#: tmp/bluetoothChooserDialog.glade.h:3
+#: tmp/configDialog.glade.h:56
+#: tmp/nbPictsDialog.glade.h:5
+#: tmp/totalFovDialog.glade.h:5
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
 #: tmp/configDialog.glade.h:1
-#, fuzzy
 msgid ""
 "3:2\n"
 "4:3\n"
@@ -279,11 +280,12 @@ msgid ""
 msgstr ""
 "3:2\n"
 "4:3\n"
-"5:4"
+"5:4\n"
+"16:9"
 
 #: tmp/configDialog.glade.h:5
 msgid ":"
-msgstr ""
+msgstr ":"
 
 #: tmp/configDialog.glade.h:6
 msgid "Auto-connect"
@@ -321,19 +323,18 @@ msgstr "Bemerkung"
 msgid "Configuration"
 msgstr "Konfiguration"
 
-#: tmp/configDialog.glade.h:15 tmp/shootDialog.glade.h:4
+#: tmp/configDialog.glade.h:15
+#: tmp/shootDialog.glade.h:4
 msgid "Data"
-msgstr ""
+msgstr "Daten"
 
 #: tmp/configDialog.glade.h:16
-#, fuzzy
 msgid "Data directory"
-msgstr "Verzeichnis Datenspeicherung"
+msgstr "Daten-Verzeichnis"
 
 #: tmp/configDialog.glade.h:17
-#, fuzzy
 msgid "Data file"
-msgstr "Dateiname"
+msgstr "Datei"
 
 #: tmp/configDialog.glade.h:18
 msgid "Data storage directory"
@@ -345,7 +346,7 @@ msgstr "Treiber"
 
 #: tmp/configDialog.glade.h:20
 msgid "Enable"
-msgstr ""
+msgstr "Aktivieren"
 
 #: tmp/configDialog.glade.h:21
 msgid "Ethernet host/port"
@@ -357,9 +358,10 @@ msgstr "Brennweite (mm)"
 
 #: tmp/configDialog.glade.h:23
 msgid "GPS"
-msgstr ""
+msgstr "GPS"
 
-#: tmp/configDialog.glade.h:24 tmp/mainWindow.glade.h:11
+#: tmp/configDialog.glade.h:24
+#: tmp/mainWindow.glade.h:11
 msgid "Hardware"
 msgstr "Hardware"
 
@@ -383,7 +385,8 @@ msgstr "Logger level"
 msgid "Misc"
 msgstr "Verschiedenes"
 
-#: tmp/configDialog.glade.h:31 tmp/mainWindow.glade.h:16
+#: tmp/configDialog.glade.h:31
+#: tmp/mainWindow.glade.h:16
 msgid "Mosaic"
 msgstr "Raster"
 
@@ -392,13 +395,12 @@ msgid "Overlap (%)"
 msgstr "Überlappung (%)"
 
 #: tmp/configDialog.glade.h:34
-#, fuzzy
 msgid "Repeat"
-msgstr "Reset"
+msgstr "Wiederhole"
 
 #: tmp/configDialog.glade.h:35
 msgid "Repeat every"
-msgstr ""
+msgstr "Wiederhole alle"
 
 #: tmp/configDialog.glade.h:36
 msgid "Sensor coef."
@@ -409,7 +411,6 @@ msgid "Sensor ratio"
 msgstr "Sensorverhältnis"
 
 #: tmp/configDialog.glade.h:38
-#, fuzzy
 msgid "Sensor resolution"
 msgstr "Sensorverhältnis"
 
@@ -417,7 +418,8 @@ msgstr "Sensorverhältnis"
 msgid "Serial port"
 msgstr "Serieller Anschluss"
 
-#: tmp/configDialog.glade.h:40 tmp/shootDialog.glade.h:9
+#: tmp/configDialog.glade.h:40
+#: tmp/shootDialog.glade.h:9
 msgid "Shooting"
 msgstr "Aufnahme"
 
@@ -426,9 +428,8 @@ msgid "Stab. delay (sec)"
 msgstr "Stab. Pause (sec)"
 
 #: tmp/configDialog.glade.h:42
-#, fuzzy
 msgid "Start after"
-msgstr "Start bei"
+msgstr "Start nach"
 
 #: tmp/configDialog.glade.h:43
 msgid "Start from"
@@ -438,10 +439,10 @@ msgstr "Start bei"
 msgid "Time value (sec)"
 msgstr "Zeitwert (sec)"
 
-#: tmp/configDialog.glade.h:45 tmp/shootDialog.glade.h:13
-#, fuzzy
+#: tmp/configDialog.glade.h:45
+#: tmp/shootDialog.glade.h:13
 msgid "Timer"
-msgstr "Titel"
+msgstr "Timer"
 
 #: tmp/configDialog.glade.h:46
 msgid "Title"
@@ -542,7 +543,6 @@ msgid "(C) 2007-2008 Frédéric Mantegazza"
 msgstr "(C) 2007-2008 Frédéric Mantegazza"
 
 #: tmp/helpAboutDialog.glade.h:2
-#, fuzzy
 msgid ""
 "Frédéric Mantegazza (fr)\n"
 "Jo Lutum (de)\n"
@@ -550,8 +550,9 @@ msgid ""
 "Antonio Bruno (it)"
 msgstr ""
 "Frédéric Mantegazza (fr)\n"
+"Jo Lutum (de)\n"
 "Maciej Dworak (pl)\n"
-"Jo Lutum (de)"
+"Antonio Bruno (it)"
 
 #: tmp/helpAboutDialog.glade.h:6
 msgid ""
@@ -637,7 +638,8 @@ msgstr "Logger"
 msgid "Save log"
 msgstr "Log anzeigen"
 
-#: tmp/loggerDialog.glade.h:4 tmp/presetInfoDialog.glade.h:2
+#: tmp/loggerDialog.glade.h:4
+#: tmp/presetInfoDialog.glade.h:2
 #: tmp/shootDialog.glade.h:16
 msgid "gtk-close"
 msgstr "gtk-close"
@@ -688,10 +690,9 @@ msgstr "Hilfe"
 
 #: tmp/mainWindow.glade.h:13
 msgid "Load Gtkrc File..."
-msgstr ""
+msgstr "Lade Gtkrc Datei..."
 
 #: tmp/mainWindow.glade.h:14
-#, fuzzy
 msgid "Load Preset File..."
 msgstr "Import Datei Voreinstellungen"
 
@@ -703,7 +704,8 @@ msgstr "Anleitung"
 msgid "Name"
 msgstr "Name"
 
-#: tmp/mainWindow.glade.h:18 tmp/nbPictsDialog.glade.h:1
+#: tmp/mainWindow.glade.h:18
+#: tmp/nbPictsDialog.glade.h:1
 msgid "Nb picts"
 msgstr "Anz. Aufnahmen"
 
@@ -711,8 +713,10 @@ msgstr "Anz. Aufnahmen"
 msgid "Papywizard"
 msgstr "Papywizard"
 
-#: tmp/mainWindow.glade.h:20 tmp/nbPictsDialog.glade.h:2
-#: tmp/shootDialog.glade.h:8 tmp/totalFovDialog.glade.h:1
+#: tmp/mainWindow.glade.h:20
+#: tmp/nbPictsDialog.glade.h:2
+#: tmp/shootDialog.glade.h:8
+#: tmp/totalFovDialog.glade.h:1
 msgid "Pitch"
 msgstr "Neigung"
 
@@ -738,7 +742,7 @@ msgstr "Überlappung (%)"
 
 #: tmp/mainWindow.glade.h:27
 msgid "Resolution (px)"
-msgstr ""
+msgstr "Auflösung (pixel)"
 
 #: tmp/mainWindow.glade.h:28
 msgid "Set limit"
@@ -752,7 +756,8 @@ msgstr "Aufnahme..."
 msgid "Start (°)"
 msgstr "Start (°)"
 
-#: tmp/mainWindow.glade.h:31 tmp/totalFovDialog.glade.h:2
+#: tmp/mainWindow.glade.h:31
+#: tmp/totalFovDialog.glade.h:2
 msgid "Total fov (°)"
 msgstr "Gesamt- FOV (°)"
 
@@ -760,8 +765,10 @@ msgstr "Gesamt- FOV (°)"
 msgid "View Log..."
 msgstr "Log anzeigen..."
 
-#: tmp/mainWindow.glade.h:33 tmp/nbPictsDialog.glade.h:3
-#: tmp/shootDialog.glade.h:15 tmp/totalFovDialog.glade.h:3
+#: tmp/mainWindow.glade.h:33
+#: tmp/nbPictsDialog.glade.h:3
+#: tmp/shootDialog.glade.h:15
+#: tmp/totalFovDialog.glade.h:3
 msgid "Yaw"
 msgstr "Drehung"
 
@@ -779,15 +786,15 @@ msgstr "Info Voreinstellungen"
 
 #: tmp/shootDialog.glade.h:1
 msgid "--/--"
-msgstr ""
+msgstr "--/--"
 
 #: tmp/shootDialog.glade.h:2
 msgid "00:00:00"
-msgstr ""
+msgstr "00:00:00"
 
 #: tmp/shootDialog.glade.h:3
 msgid "Current"
-msgstr ""
+msgstr "aktuell"
 
 #: tmp/shootDialog.glade.h:5
 msgid "Idle"
@@ -795,7 +802,7 @@ msgstr "Warte"
 
 #: tmp/shootDialog.glade.h:6
 msgid "Next"
-msgstr ""
+msgstr "nächste"
 
 #: tmp/shootDialog.glade.h:10
 msgid "Start"
@@ -803,16 +810,15 @@ msgstr "Start"
 
 #: tmp/shootDialog.glade.h:11
 msgid "Step-by-step"
-msgstr ""
+msgstr "Einzelschritt"
 
 #: tmp/shootDialog.glade.h:12
 msgid "Stop"
 msgstr "Stop"
 
 #: tmp/shootDialog.glade.h:14
-#, fuzzy
 msgid "Total"
-msgstr "Gesamt- Fov (°)"
+msgstr "Gesamt"
 
 #: tmp/waitBanner.glade.h:1
 msgid "Please wait..."
@@ -829,7 +835,6 @@ msgstr "Bitte warten..."
 #, fuzzy
 #~ msgid "Repeat %d/%d"
 #~ msgstr "Reset"
-
 #~ msgid "GPS data"
 #~ msgstr "GPS Daten"
 
@@ -872,23 +877,18 @@ msgstr "Bitte warten..."
 #, fuzzy
 #~ msgid "Every"
 #~ msgstr "zu Ende"
-
 #~ msgid "Data file enable"
 #~ msgstr "Dateiausgabe"
 
 #, fuzzy
 #~ msgid "Intervalometer"
 #~ msgstr "Interner Fehler"
-
 #~ msgid "Manual shooting"
 #~ msgstr "Manuelle Aufnahme"
-
 #~ msgid "Data storage dir."
 #~ msgstr "Verz. Datenspeicherung"
-
 #~ msgid "Progression..."
 #~ msgstr "Fortschritt..."
-
 #~ msgid "Square"
 #~ msgstr "Quadrat"
 
@@ -899,172 +899,118 @@ msgstr "Bitte warten..."
 #, fuzzy
 #~ msgid "Pitch number of pictures set to user value"
 #~ msgstr "Anzahl Bilder der Belichtungsreihe"
-
 #~ msgid "Yaw/pitch end position set from current position"
 #~ msgstr "Aktuelle Position als Dreh-Neige-Ende gesetzt"
-
 #~ msgid "    Pitch    "
 #~ msgstr "Neigung    "
-
 #~ msgid "   Yaw   "
 #~ msgstr "Drehung   "
-
 #~ msgid "    Yaw    "
 #~ msgstr "Drehung    "
-
 #~ msgid "Invalid configuration"
 #~ msgstr "Ungültige Konfiguration"
-
 #~ msgid "Connection status"
 #~ msgstr "Verbindungsstatus"
-
 #~ msgid "Pitch current position"
 #~ msgstr "Neigung aktuelle Position"
-
 #~ msgid "Set end from current position"
 #~ msgstr "Aktuelle Position als Ende setzen"
-
 #~ msgid "Set origin from current position"
 #~ msgstr "Aktuelle Position als Nullpunkt setzen"
-
 #~ msgid "Set start from current position"
 #~ msgstr "Aktuelle Postion als Start setzen"
-
 #~ msgid "Yaw current position"
 #~ msgstr "Drehung aktuelle Position"
-
 #~ msgid "Progression and status of the shooting"
 #~ msgstr "Fortschritt und Status der Aufnahme"
-
 #~ msgid "Clear the log window"
 #~ msgstr "Logfenster leeren"
-
 #~ msgid "Suspend"
 #~ msgstr "Anhalten"
-
 #~ msgid "Templates"
 #~ msgstr "Vorlagen"
-
 #~ msgid "Hardware has been reseted"
 #~ msgstr "Hardware zurückgesetzt"
-
 #~ msgid "Bluetooth devices list"
 #~ msgstr "Bluetooth Geräteliste"
-
 #~ msgid "Refresh the bluetooth devices list"
 #~ msgstr "Bluetooth-Geräteliste wird aktualisiert"
-
 #~ msgid "Address of the bluetooth converter"
 #~ msgstr "Adresss des Bluetoothkonverters"
-
 #~ msgid "Automatically connect to hardware at startup"
 #~ msgstr "Hardware bei Start automatisch verbinden"
-
 #~ msgid "Cariage return at each end of raw/col (mosaic mode)"
 #~ msgstr "Zeilenvorschub am Ende jeder Spalte/Zeile (Raster)"
-
 #~ msgid "Coef. of the sensor to 35mm size"
 #~ msgstr "Sensorfaktor zu 35mm"
-
 #~ msgid "Delay to wait after each move"
 #~ msgstr "Pause nach jeder Bewegung"
-
 #~ msgid "Direction of the first move (mosaic mode)"
 #~ msgstr "Richtung der ersten Bewegung (Raster)"
-
 #~ msgid "Driver to use to connect to hardware"
 #~ msgstr "Treiber für Hardwareverbindung"
-
 #~ msgid "Ethernet port"
 #~ msgstr "Ethernet port"
-
 #~ msgid "Focal of the lens"
 #~ msgstr "Brennweite"
-
 #~ msgid "Force overlap to get square pictures (mosaic mode)"
 #~ msgstr "Überlappung vorgeben für quadr. Bilder (Raster)"
-
 #~ msgid "Format of the xml data file name"
 #~ msgstr "Format des XML-Dateinamens"
-
 #~ msgid "From where to start shooting (mosaic mode)"
 #~ msgstr "Wo soll Aufnahme starten (Raster)"
-
 #~ msgid "Host name or IP address"
 #~ msgstr "Hostname oder IP-Addresse"
-
 #~ msgid "Intent of the bracketing"
 #~ msgstr "Art der Mehrfachbelichtung"
-
 #~ msgid "Level of the logger"
 #~ msgstr "Logger-Stufe"
-
 #~ msgid "Minimum wanted overlap (mosaic mode)"
 #~ msgstr "Minimale Überlappung (Raster)"
-
 #~ msgid "Orientation of the camera"
 #~ msgstr "Ausrichtung der Kamera"
-
 #~ msgid "Port of the serial converter"
 #~ msgstr "Serieller Port"
-
 #~ msgid "Ratio of the sensor"
 #~ msgstr "Sensorverhältnis"
-
 #~ msgid "Time value of the camera"
 #~ msgstr "Verschlusszeit"
 
 #, fuzzy
 #~ msgid "Type of the lens"
 #~ msgstr "Brennweite"
-
 #~ msgid "Move pitch +"
 #~ msgstr "Neigen +"
-
 #~ msgid "Move pitch -"
 #~ msgstr "Neigen -"
-
 #~ msgid "Move yaw +"
 #~ msgstr "Drehen +"
-
 #~ msgid "Move yaw -"
 #~ msgstr "Drehen -"
-
 #~ msgid "Set pitch end from current position"
 #~ msgstr "Aktuelle Position als Neige-Ende setzen"
-
 #~ msgid "Set pitch start from current position"
 #~ msgstr "Aktuelle Position als Neige-Start setzen"
-
 #~ msgid "Set yaw end from current position"
 #~ msgstr "Aktuelle Position als Dreh-Ende setzen"
-
 #~ msgid "Set yaw start from current position"
 #~ msgstr "Aktuelle Position als Dreh-Start setzen"
-
 #~ msgid "Template"
 #~ msgstr "Vorlage"
-
 #~ msgid "Template list for preset shooting"
 #~ msgstr "Vorlagenliste"
-
 #~ msgid "Templates information"
 #~ msgstr "Vorlageninfo"
-
 #~ msgid "What's This?"
 #~ msgstr "Was ist das?"
-
 #~ msgid "Manual shoot at each position"
 #~ msgstr "Manuelle Aufnahme bei jeder Position"
-
 #~ msgid "Start shooting"
 #~ msgstr "Start Aufnahme"
-
 #~ msgid "Stop shooting"
 #~ msgstr "Stop Aufnahme"
-
 #~ msgid "Suspend/resume shooting"
 #~ msgstr "Aufnahme anhalten/fortsetzen"
-
 #~ msgid "Write data file"
 #~ msgstr "Datenfile schreiben"
+
