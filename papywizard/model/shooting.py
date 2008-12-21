@@ -99,7 +99,6 @@ class Shooting(object):
         self.pausedSignal = Signal()
         self.stoppedSignal = Signal()
         self.waitingSignal = Signal()
-        self.beginShootSignal = Signal()
         self.progressSignal = Signal()
         self.repeatSignal = Signal()
         self.newPositionSignal = Signal()
@@ -435,7 +434,6 @@ class Shooting(object):
                     values.update({'name': "%s" % self.preset.name})
                 data.createHeader(values)
 
-                #self.beginShootSignal.emit()
                 startTime = time.time()
                 Logger().debug("Shooting.start(): repeat %d/%d" % (repeat, numRepeat))
                 self.repeatSignal.emit(repeat)

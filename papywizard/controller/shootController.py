@@ -226,7 +226,6 @@ class ShootController(AbstractController):
         self._model.resumedSignal.connect(self.__shootingResumed)
         self._model.stoppedSignal.connect(self.__shootingStopped)
         self._model.waitingSignal.connect(self.__shootingWaiting)
-        self._model.beginShootSignal.connect(self.__shootingBeginShoot)
         self._model.progressSignal.connect(self.__shootingProgress)
         self._model.repeatSignal.connect(self.__shootingRepeat)
         self._model.newPositionSignal.connect(self.__shootingNewPosition)
@@ -239,7 +238,6 @@ class ShootController(AbstractController):
         self._model.resumedSignal.disconnect(self.__shootingResumed)
         self._model.stoppedSignal.disconnect(self.__shootingStopped)
         self._model.waitingSignal.disconnect(self.__shootingWaiting)
-        self._model.beginShootSignal.disconnect(self.__shootingBeginShoot)
         self._model.progressSignal.disconnect(self.__shootingProgress)
         self._model.repeatSignal.connect(self.__shootingRepeat)
         self._model.newPositionSignal.disconnect(self.__shootingNewPosition)
@@ -558,10 +556,6 @@ class ShootController(AbstractController):
         Logger().trace("ShootController.__shootingRepeat()")
         sequenceMessage = _("Waiting") + " %s" % sToHmsAsStr(wait)
         self._serializer.addWork(self.sequenceLabel.set_text, sequenceMessage)
-
-    def __shootingBeginShoot(self):
-        Logger().trace("ShootController.__shootingBeginShoot()")
-        self._serializer.addWork(self.shootingArea.clear)
 
     def __shootingProgress(self, shootingProgress=None, totalProgress=None):
         Logger().trace("ShootController.__shootingProgress()")
