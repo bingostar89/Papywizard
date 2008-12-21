@@ -76,9 +76,13 @@ class BluetoothDriver(BusDriver):
                 self._sock.connect((self.__deviceAddress, 1))
                 self._sock.settimeout(1.)
                 self._init = True
+            except bluetooth.BluetoothError, error:
+                Logger().exception("BluetoothDriver.init()")
+                err, msg = eval(error.message)
+                raise HardwareError(str(msg))
             except Exception, msg:
                 Logger().exception("BluetoothDriver.init()")
-                raise HardwareError(msg)
+                raise HardwareError(str(msg))
             else:
                 Logger().debug("BluetoothDriver.init(): successfully connected to %s" % address)
 
