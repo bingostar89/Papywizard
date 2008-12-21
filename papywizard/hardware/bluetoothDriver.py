@@ -79,7 +79,7 @@ class BluetoothDriver(BusDriver):
             except bluetooth.BluetoothError, error:
                 Logger().exception("BluetoothDriver.init()")
                 err, msg = eval(error.message)
-                raise HardwareError(str(msg))
+                raise HardwareError(msg)
             except Exception, msg:
                 Logger().exception("BluetoothDriver.init()")
                 raise HardwareError(str(msg))
