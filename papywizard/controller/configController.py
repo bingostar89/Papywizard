@@ -238,8 +238,9 @@ class ConfigController(AbstractController):
             self.cameraRollSpinbutton.set_value(0.)
         else:
             if self._model.mode == 'mosaic':
-                WarningMessageController(_("Wrong value for camera orientation"),
-                                         _("Can't set camera orientation to 'custom'\nwhile in 'mosaic' mode"))
+                controller = WarningMessageController(_("Wrong value for camera orientation"),
+                                                      _("Can't set camera orientation to 'custom'\nwhile in 'mosaic' mode"))
+                controller.run()
                 self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[self._model.cameraOrientation])
             else:
                 self.cameraRollSpinbutton.set_sensitive(True)
@@ -253,8 +254,9 @@ class ConfigController(AbstractController):
         Logger().trace("ConfigController.__onLensTypeComboboxChanged()")
         type_ = config.LENS_TYPE_INDEX[self.lensTypeCombobox.get_active()]
         if type_ == 'fisheye' and self._model.mode == 'mosaic':
-            WarningMessageController(_("Wrong value for lens type"),
-                                     _("Can't set lens type to 'fisheye'\nwhile in 'mosaic' mode"))
+            controller = WarningMessageController(_("Wrong value for lens type"),
+                                                  _("Can't set lens type to 'fisheye'\nwhile in 'mosaic' mode"))
+            controller.run()
             self.lensTypeCombobox.set_active(config.LENS_TYPE_INDEX['rectilinear'])
         else:
             if type_ == 'rectilinear':
