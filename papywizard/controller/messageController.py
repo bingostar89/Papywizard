@@ -69,7 +69,7 @@ _ = lambda a: a
 class BaseMessageController(object):
     """ Abstract message controller.
     """
-    def __init__(self, subTitle, message, type_):
+    def __init__(self, subTitle, message):
         """ Init the base message controller.
 
         @param subTitle: dialog subTitle
@@ -77,45 +77,57 @@ class BaseMessageController(object):
 
         @param message: dialog message
         @type message: str
-
-        @param type_: type of message, in ('error', 'warning', 'info')
-        @type type_: str
         """
-        if type_ == 'error':
-            type_ = gtk.MESSAGE_ERROR
-            title = _("Error")
-        elif type_ == 'warning':
-            type_ = gtk.MESSAGE_WARNING
-            title = _("Warning")
-        elif type_ == 'info':
-            type_ = gtk.MESSAGE_INFO
-            title = _("Info")
-        else:
-            raise ValueError("Message type must be in ('error', 'warning', 'info')")
-        messageDialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=type_, buttons=gtk.BUTTONS_CLOSE,
-                                          message_format=subTitle)
-        messageDialog.set_title(title)
-        messageDialog.format_secondary_text(message)
-        messageDialog.run()
-        messageDialog.destroy()
+        self.__dialog = self._createMessageDialog(subTitle)
+        self.__dialog.format_secondary_text(message)
+
+    def run(self):
+        """ Run the dialog.
+        
+        @return: response
+        @rtype: int
+        """
+        response = self.__dialog.run()
+        self.__dialog.destroy()
+        return response
+
+    def _createMessageDialog(self, subTitle, message):
+        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=type_, buttons=gtk.BUTTONS_CLOSE,
+                                   message_format=subTitle)
+        dialog.set_title(title)
+        dialog.format_secondary_text(message)
+        return dialog
+
 
 class InfoMessageController(BaseMessageController):
     """ Info message controller.
     """
-    def __init__(self, subTitle, message):
-        super(InfoMessageController, self).__init__(subTitle, message, type_='info')
+    def _createMessageDialog(self, subTitle):
+        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_INFO, buttons=gtk.BUTTONS_CLOSE,
+                                   message_format=subTitle)
+        dialog.set_title("Info")
+        return dialog
+
 
 class WarningMessageController(BaseMessageController):
     """ Warning message controller.
     """
-    def __init__(self, subTitle, message):
-        super(WarningMessageController, self).__init__(subTitle, message, type_='warning')
+    def _createMessageDialog(self, subTitle):
+        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_CLOSE,
+                                   message_format=subTitle)
+        dialog.set_title("Warning")
+        return dialog
+
 
 class ErrorMessageController(BaseMessageController):
     """ Error message controller.
     """
-    def __init__(self, subTitle, message):
-        super(ErrorMessageController, self).__init__(subTitle, message, type_='error')
+    def _createMessageDialog(self, subTitle):
+        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
+                                   message_format=subTitle)
+        dialog.set_title("Error")
+        return dialog
+
 
 class ExceptionMessageController(BaseMessageController):
     """ Exception message controller.
@@ -130,4 +142,22 @@ class ExceptionMessageController(BaseMessageController):
         traceback.print_exc(file=tracebackString)
         message = tracebackString.getvalue().strip()
         tracebackString.close()
-        super(ExceptionMessageController, self).__init__(from_, message, type_='error')
+        return super(ExceptionMessageController, self).__init__(from_, message)
+
+    def _createMessageDialog(self, subTitle):
+        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
+                                   message_format=subTitle)
+        dialog.set_title("Exception")
+        return dialog
+
+
+class YesNoMessageController(BaseMessageController):
+    """ Yes/No question message controller.
+    """
+    def _createMessageDialog(self, subTitle):
+        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_QUESTION,
+                                   buttons=gtk.BUTTONS_YES_NO,
+                                   message_format=subTitle)
+        dialog.set_title("Question")
+        dialog.set_default_response(gtk.RESPONSE_YES)
+        return dialog
