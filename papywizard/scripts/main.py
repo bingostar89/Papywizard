@@ -257,7 +257,8 @@ def main():
 
     except Exception, msg:
         Logger().exception("main()")
-        ExceptionMessageController("main()")
+        controller = ExceptionMessageController("main()")
+        controller.run()
 
 
 if __name__ == "__main__":
