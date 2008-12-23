@@ -82,15 +82,20 @@ class ShootController(AbstractController):
     """
     def _init(self):
         self._gladeFile = "shootDialog.glade"
-        self._signalDict = {"on_textViewTogglebutton_toggled": self.__onTextViewTogglebuttonToggled,
+        self._signalDict = {"on_dialog_key_press_event": self.__onKeyPressed,
+                            "on_dialog_key_release_event": self.__onKeyReleased,
+
+                            "on_textViewTogglebutton_toggled": self.__onTextViewTogglebuttonToggled,
                             "on_rewindButton_clicked": self.__onRewindButtonclicked,
                             "on_forwardButton_clicked": self.__onForwardButtonclicked,
                             "on_dataButton_clicked": self.__onDataButtonclicked,
                             "on_timerButton_clicked": self.__onTimerButtonClicked,
-                            "on_startButton_clicked": self.__onStartButtonClicked,
                             "on_stepByStepTogglebutton_toggled": self.__onStepByStepTogglebuttonToggled,
+
+                            "on_startButton_clicked": self.__onStartButtonClicked,
                             "on_pauseResumeButton_clicked": self.__onPauseResumeButtonClicked,
                             "on_stopButton_clicked": self.__onStopButtonClicked,
+
                             "on_doneButton_clicked": self.__onDoneButtonClicked,
                         }
 
@@ -213,10 +218,6 @@ class ShootController(AbstractController):
 
     def _connectSignals(self):
         super(ShootController, self)._connectSignals()
-
-        self.dialog.connect("key-press-event", self.__onKeyPressed)
-        self.dialog.connect("key-release-event", self.__onKeyReleased)
-
         self.shootingArea.connect("button-press-event", self.__onMouseButtonPressed)
         #self.shootingArea.connect("motion-notify-event", self.__onMotionNotify)
 
