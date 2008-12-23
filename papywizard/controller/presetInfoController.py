@@ -76,13 +76,12 @@ class PresetInfoController(AbstractController):
 
         self.presetInfoScrolledwindow = self.wTree.get_widget("presetInfoScrolledwindow")
         self.presetInfoTextview = self.wTree.get_widget("presetInfoTextview")
+
+    def _initWidgets(self):
         self.presetInfoBuffer = gtk.TextBuffer()
         self.presetInfoBuffer.create_tag('name', foreground='red')
         self.presetInfoBuffer.create_tag('tooltip', foreground='blue', style=pango.STYLE_OBLIQUE)
         self.presetInfoTextview.set_buffer(self.presetInfoBuffer)
-
-    def _initWidgets(self):
-        pass
 
     # Callbacks
     def __onDoneButtonClicked(self, widget):
