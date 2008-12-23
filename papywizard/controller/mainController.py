@@ -68,7 +68,7 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.presetManager import PresetManager
 from papywizard.common.exception import HardwareError
 from papywizard.controller.abstractController import AbstractController
-from papywizard.controller.messageController import ErrorMessageController, WarningMessageController
+from papywizard.controller.messageController import ErrorMessageController, WarningMessageController, YesNoMessageController
 from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.helpAboutController import HelpAboutController
 from papywizard.controller.totalFovController import TotalFovController
@@ -98,7 +98,12 @@ class MainController(AbstractController):
 
     def _init(self):
         self._gladeFile = "mainWindow.glade"
-        self._signalDict = {"on_fileLoadPresetMenuitem_activate": self.__onFileLoadPresetMenuitemActivate,
+        self._signalDict = {"on_dialog_destroy":  gtk.main_quit,
+                            #"on_dialog_window_state_event": self.__onWindowStateChanged,
+                            "on_dialog_key_press_event": self.__onKeyPressed,
+                            "on_dialog_key_release_event": self.__onKeyReleased,
+
+                            "on_fileLoadPresetMenuitem_activate": self.__onFileLoadPresetMenuitemActivate,
                             "on_fileLoadGtkrcMenuitem_activate": self.__onFileLoadGtkrcMenuitemActivate,
                             "on_quitMenuitem_activate": gtk.main_quit,
                             "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuitemToggled,
@@ -112,7 +117,7 @@ class MainController(AbstractController):
                             "on_helpViewLogMenuitem_activate": self.__onHelpViewLogMenuitemActivate,
                             "on_helpAboutMenuitem_activate": self.__onHelpAboutMenuitemActivate,
 
-                            "on_modeMosaicRadiobutton_toggled": self.__onModeMosaicRadiobuttonToggled,
+                            "on_notebook_switch_page": self.__onNoteBookSwitchedPage,
 
                             "on_setYawStartButton_clicked": self.__onSetYawStartButtonClicked,
                             "on_setPitchStartButton_clicked": self.__onSetPitchStartButtonClicked,
@@ -124,7 +129,6 @@ class MainController(AbstractController):
                             "on_nbPictsButton_clicked": self.__onNbPictsButtonClicked,
 
                             "on_presetCombobox_changed": self.__onPresetComboboxChanged,
-                            "on_presetInfoButton_clicked": self.__onPresetInfoButtonClicked,
 
                             "on_hardwareSetOriginButton_clicked": self.__onHardwareSetOriginButtonClicked,
                             "on_yawMovePlusTogglebutton_pressed": self.__onYawMovePlusTogglebuttonPressed,
@@ -146,7 +150,11 @@ class MainController(AbstractController):
                                  'Up': False,
                                  'Down': False,
                                  'Home': False,
-                                 'End': False
+                                 'End': False,
+                                 'Tab': False,
+                                 'space': False,
+                                 'Return': False,
+                                 'Escape': False,
                              }
         self.__key = {'FullScreen': gtk.keysyms.F6,
                       'Right': gtk.keysyms.Right,
@@ -158,6 +166,7 @@ class MainController(AbstractController):
                       'Tab': gtk.keysyms.Tab,
                       'space': gtk.keysyms.space,
                       'Return': gtk.keysyms.Return,
+                      'Escape': gtk.keysyms.Escape
                       }
 
         # Nokia plateform stuff
@@ -186,9 +195,7 @@ class MainController(AbstractController):
         self.menubar = self.wTree.get_widget("menubar")
         self.hardwareConnectMenuitem = self.wTree.get_widget("hardwareConnectMenuitem")
         self.hardwareResetMenuitem = self.wTree.get_widget("hardwareResetMenuitem")
-        self.modeMosaicRadiobutton = self.wTree.get_widget("modeMosaicRadiobutton")
-        self.modePresetRadiobutton = self.wTree.get_widget("modePresetRadiobutton")
-        self.mosaicFrame = self.wTree.get_widget("mosaicFrame")
+        self.notebook = self.wTree.get_widget("notebook")
         self.setYawStartButtonLabel = self.wTree.get_widget("setYawStartButton").child
         self.setPitchStartButtonLabel = self.wTree.get_widget("setPitchStartButton").child
         self.setYawEndButtonLabel = self.wTree.get_widget("setYawEndButton").child
@@ -205,8 +212,8 @@ class MainController(AbstractController):
         self.pitchRealOverlapLabel = self.wTree.get_widget("pitchRealOverlapLabel")
         self.yawResolutionLabel = self.wTree.get_widget("yawResolutionLabel")
         self.pitchResolutionLabel = self.wTree.get_widget("pitchResolutionLabel")
-        self.presetFrame = self.wTree.get_widget("presetFrame")
         self.presetCombobox = self.wTree.get_widget("presetCombobox")
+        self.presetInfoTextview = self.wTree.get_widget("presetInfoTextview")
         self.yawHeadPosLabel = self.wTree.get_widget("yawHeadPosLabel")
         self.pitchHeadPosLabel = self.wTree.get_widget("pitchHeadPosLabel")
         self.manualSpeedImage =  self.wTree.get_widget("manualSpeedImage")
@@ -221,12 +228,19 @@ class MainController(AbstractController):
         self.connectImage = self.wTree.get_widget("connectImage")
 
     def _initWidgets(self):
+        
+        # Presets
         listStore = gtk.ListStore(gobject.TYPE_STRING)
         self.presetCombobox.set_model(listStore)
         cell = gtk.CellRendererText()
         self.presetCombobox.pack_start(cell, True)
         #self.presetCombobox.add_attribute(cell, 'text', 0)
         self.__populatePresetCombobox()
+        
+        self.presetInfoBuffer = gtk.TextBuffer()
+        self.presetInfoBuffer.create_tag('name', foreground='red')
+        self.presetInfoBuffer.create_tag('tooltip', foreground='blue', style=pango.STYLE_OBLIQUE)
+        self.presetInfoTextview.set_buffer(self.presetInfoBuffer)
 
         # Font
         self._setFontParams(self.yawHeadPosLabel, weight=pango.WEIGHT_BOLD)
@@ -275,12 +289,6 @@ class MainController(AbstractController):
 
     def _connectSignals(self):
         super(MainController, self)._connectSignals()
-
-        self.dialog.connect("destroy", gtk.main_quit)
-        self.dialog.connect("key-press-event", self.__onKeyPressed)
-        self.dialog.connect("key-release-event", self.__onKeyReleased)
-        #self.dialog.connect("window-state-event", self.__onWindowStateChanged)
-
         Spy().newPosSignal.connect(self.__refreshPos)
         self._model.switchToRealHardwareSignal.connect(self.__switchToRealHardwareCallback)
 
@@ -389,28 +397,46 @@ class MainController(AbstractController):
                 elif self.__manualSpeed == 'normal':
                     controller = WarningMessageController(_("Fast manual speed"),
                                                           _("Manual speed set to 'fast'\nThis can be dangerous for the hardware!"))
+                    controller.run()
                     self.__manualSpeed = 'fast'
                     Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select fast speed")
                     self._model.hardware.setManualSpeed('fast')
                     self.manualSpeedImage.set_from_stock(gtk.STOCK_DIALOG_WARNING, 4)
                     self.setStatusbarMessage(_("Manual speed set to fast"), 10)
-
             return True
 
         # 'Tab' key
         elif event.keyval == self.__key['Tab']:
-            Logger().debug("MainController.__onKeyPressed(): 'Tab' key pressed; blocked")
+            if not self.__keyPressedDict['Tab']:
+                Logger().debug("MainController.__onKeyPressed(): 'Tab' key pressed; blocked")
+                self.__keyPressedDict['Tab'] = True
             return True
 
         # 'space' key
         elif event.keyval == self.__key['space']:
-            Logger().debug("MainController.__onKeyPressed(): 'space' key pressed; blocked")
+            if not self.__keyPressedDict['space']:
+                Logger().debug("MainController.__onKeyPressed(): 'space' key pressed; blocked")
+                self.__keyPressedDict['space'] = True
             return True
 
         # 'Return' key
         elif event.keyval == self.__key['Return']:
-            Logger().debug("MainController.__onKeyPressed(): 'Return' key pressed; open shoot dialog")
+            if not self.__keyPressedDict['Return']:
+                Logger().debug("MainController.__onKeyPressed(): 'Return' key pressed; open shoot dialog")
+                self.__keyPressedDict['Return'] = True
             self.__openShootdialog()
+            return True
+
+        # 'Escape' key
+        elif event.keyval == self.__key['Escape']:
+            if not self.__keyPressedDict['Escape']:
+                Logger().debug("MainController.__onKeyPressed(): 'Escape' key pressed")
+                self.__keyPressedDict['Escape'] = True
+            controller = YesNoMessageController(_("About to Quit"),
+                                                _("Are you sure you want to quit Papywizard?"))
+            response = controller.run()
+            if response == gtk.RESPONSE_YES:
+                gtk.main_quit()
             return True
 
         else:
@@ -482,12 +508,23 @@ class MainController(AbstractController):
 
         # 'Tab' key
         elif event.keyval == self.__key['Tab']:
-            Logger().debug("MainController.__onKeyReleased(): 'Tab' key released")
+            if self.__keyPressedDict['Tab']:
+                Logger().debug("MainController.__onKeyReleased(): 'Tab' key released")
+                self.__keyPressedDict['Tab'] = False
             return True
 
         # 'space' key
         elif event.keyval == self.__key['space']:
-            Logger().debug("MainController.__onKeyReleased(): 'space' key released")
+            if self.__keyPressedDict['space']:
+                Logger().debug("MainController.__onKeyReleased(): 'space' key released")
+                self.__keyPressedDict['space'] = False
+            return True
+
+        # 'Escape' key
+        if event.keyval == self.__key['Escape']:
+            if self.__keyPressedDict['Escape']:
+                Logger().debug("MainController.__onKeyReleased(): 'Escape' key released")
+                self.__keyPressedDict['Escape'] = False
             return True
 
         else:
@@ -605,28 +642,27 @@ class MainController(AbstractController):
         controller.run()
         controller.shutdown()
 
-    def __onModeMosaicRadiobuttonToggled(self, widget):
-        Logger().trace("MainController.__onModeMosaicRadiobuttonToggled()")
-        modeMosaic = self.modeMosaicRadiobutton.get_active()
-        if modeMosaic and self._model.camera.lens.type_ == 'fisheye':
-            WarningMessageController(_("Wrong shooting mode"),
-                                     _("Can't set shooting mode to 'mosaic'\nwhile using 'fisheye' lens type"))
-            self.modeMosaicRadiobutton.set_active(False)
-            self.modePresetRadiobutton.set_active(True)
-        elif modeMosaic and self._model.cameraOrientation == 'custom':
-            WarningMessageController(_("Wrong camera orientation"),
-                                     _("Can't set shooting mode to 'mosaic'\nwhile using 'custom' camera orientation"))
-            self.modeMosaicRadiobutton.set_active(False)
-            self.modePresetRadiobutton.set_active(True)
+    def __onNoteBookSwitchedPage(self, widget, page, page_num):
+        Logger().trace("MainController.__onNoteBookSwitchedPage()")
+        if page_num == 0 and self._model.camera.lens.type_ == 'fisheye':
+            controller = WarningMessageController(_("Incompatible shooting mode"),
+                                                  _("Can't set shooting mode to 'mosaic'\nwhile using 'fisheye' lens type"))
+            controller.run()
+            self.notebook.set_current_page(1) # Does not work!!!
+            while gtk.events_pending():
+                gtk.main_iteration()
+            return True
+        elif page_num == 0 and self._model.cameraOrientation == 'custom':
+            controller = WarningMessageController(_("Incompatible shooting mode"),
+                                                  _("Can't set shooting mode to 'mosaic'\nwhile using 'custom' camera orientation"))
+            controller.run()
+            self.notebook.set_current_page(1) # Does not work!!!
         else:
-            self.mosaicFrame.set_sensitive(modeMosaic)
-            self.presetFrame.set_sensitive(not modeMosaic)
-            if modeMosaic:
+            if page_num == 0:
                 self._model.mode = 'mosaic'
             else:
                 self._model.mode = 'preset'
-            Logger().debug("MainController.__onModeMosaicRadiobuttonToggled(): shooting mode set to '%s'" % self._model.mode)
-        self.refreshView()
+            Logger().debug("MainController.__onNoteBookSwitchedPage(): shooting mode set to '%s'" % self._model.mode)
 
     def __onSetYawStartButtonClicked(self, widget):
         Logger().trace("MainController.__onSetYawStartButtonClicked()")
@@ -677,15 +713,10 @@ class MainController(AbstractController):
         try:
             preset = presets.getByIndex(self.presetCombobox.get_active())
             self._model.preset.name = preset.getName()
+            self.refreshView()
         except ValueError:
             #Logger().exception("MainController.__onPresetComboboxChanged()", debug=True)
             pass
-
-    def __onPresetInfoButtonClicked(self, widget):
-        Logger().trace("MainController.__onPresetInfoButtonClicked()")
-        controller = PresetInfoController(self, self._model, self._serializer)
-        controller.run()
-        controller.shutdown()
 
     def __onHardwareSetOriginButtonClicked(self, widget):
         Logger().trace("MainController.onHardwareSetOriginButtonClicked()")
@@ -858,7 +889,8 @@ class MainController(AbstractController):
             self.refreshView()
         except Exception, msg:
             Logger().exception("MainController.__importPresetFile()")
-            ErrorMessageController(_("Can't import preset file"), str(msg))
+            controller = ErrorMessageController(_("Can't import preset file"), str(msg))
+            controller.run()
 
     def __connectToHardware(self):
         """ Connect to real hardware.
@@ -873,7 +905,6 @@ class MainController(AbstractController):
 
         Logger().info("Connecting to real hardware...")
         self.setStatusbarMessage(_("Connecting to real hardware..."))
-        #self.hardwareConnectMenuitem.set_sensitive(False)
 
         # Open connection banner (todo: use real banner on Nokia). Make a special object
         self.__connectStatus = None
@@ -898,7 +929,8 @@ class MainController(AbstractController):
             self.setStatusbarMessage(_("Now connected to real hardware"), 5)
         else:
             Logger().error("Can't connect to hardware\n%s" % self.__connectErrorMessage)
-            ErrorMessageController(_("Can't connect to hardware"), self.__connectErrorMessage)
+            controller = ErrorMessageController(_("Can't connect to hardware"), self.__connectErrorMessage)
+            controller.run()
             self.hardwareConnectMenuitem.set_active(False)
 
         #self.hardwareConnectMenuitem.set_sensitive(True)
@@ -948,38 +980,41 @@ class MainController(AbstractController):
 
     def refreshView(self):
         if self._model.mode == 'mosaic':
-            flag = True
+            self.notebook.set_current_page(0)
         else:
-            flag = False
+            self.notebook.set_current_page(1)
+            if self._model.camera.lens.type_ == 'fisheye':
+                self.notebook.get_nth_page(0).hide()
+            else:
+                self.notebook.get_nth_page(0).show()
 
-        if self._model.mode == 'mosaic':
-            self.modeMosaicRadiobutton.set_active(True)
-            self.modePresetRadiobutton.set_active(False)
-            self.mosaicFrame.set_sensitive(True)
-            self.presetFrame.set_sensitive(False)
-            self.setYawStartButtonLabel.set_label("%.1f" % self._model.mosaic.yawStart)
-            self.setPitchStartButtonLabel.set_label("%.1f" % self._model.mosaic.pitchStart)
-            self.setYawEndButtonLabel.set_label("%.1f" % self._model.mosaic.yawEnd)
-            self.setPitchEndButtonLabel.set_label("%.1f" % self._model.mosaic.pitchEnd)
-            self.yawFovLabel.set_text("%.1f" % self._model.mosaic.yawFov)
-            self.pitchFovLabel.set_text("%.1f" % self._model.mosaic.pitchFov)
-            self.yawNbPictsLabel.set_text("%d" % self._model.mosaic.yawNbPicts)
-            self.pitchNbPictsLabel.set_text("%d" % self._model.mosaic.pitchNbPicts)
-            self.yawRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.yawRealOverlap)))
-            self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
-            self.yawResolutionLabel.set_text("%d" % round(self._model.mosaic.getYawResolution()))
-            self.pitchResolutionLabel.set_text("%d" % round(self._model.mosaic.getPitchResolution()))
-        else:
-            self.modeMosaicRadiobutton.set_active(False)
-            self.modePresetRadiobutton.set_active(True)
-            self.mosaicFrame.set_sensitive(False)
-            self.presetFrame.set_sensitive(True)
+        self.setYawStartButtonLabel.set_label("%.1f" % self._model.mosaic.yawStart)
+        self.setPitchStartButtonLabel.set_label("%.1f" % self._model.mosaic.pitchStart)
+        self.setYawEndButtonLabel.set_label("%.1f" % self._model.mosaic.yawEnd)
+        self.setPitchEndButtonLabel.set_label("%.1f" % self._model.mosaic.pitchEnd)
+        self.yawFovLabel.set_text("%.1f" % self._model.mosaic.yawFov)
+        self.pitchFovLabel.set_text("%.1f" % self._model.mosaic.pitchFov)
+        self.yawNbPictsLabel.set_text("%d" % self._model.mosaic.yawNbPicts)
+        self.pitchNbPictsLabel.set_text("%d" % self._model.mosaic.pitchNbPicts)
+        self.yawRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.yawRealOverlap)))
+        self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
+        self.yawResolutionLabel.set_text("%d" % round(self._model.mosaic.getYawResolution()))
+        self.pitchResolutionLabel.set_text("%d" % round(self._model.mosaic.getPitchResolution()))
+
         presets = PresetManager().getPresets()
         try:
             self.presetCombobox.set_active(presets.nameToIndex(self._model.preset.name))
         except ValueError:
             Logger().warning("Previously selected '%s' preset not found" % self._model.preset.name)
             self.presetCombobox.set_active(0)
+        self.presetInfoBuffer.begin_user_action()
+        try:
+            self.presetInfoBuffer.delete(*self.presetInfoBuffer.get_bounds())
+            preset = presets.getByName(self._model.preset.name)
+            tooltip = preset.getTooltip()
+            self.presetInfoBuffer.insert_with_tags_by_name(self.presetInfoBuffer.get_end_iter(), tooltip, 'tooltip')
+        finally:
+            self.presetInfoBuffer.end_user_action()
 
         self.yawHeadPosLabel.set_text("%.1f" % self.__yawPos)
         self.pitchHeadPosLabel.set_text("%.1f" % self.__pitchPos)
