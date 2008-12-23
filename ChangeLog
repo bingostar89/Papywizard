@@ -7,6 +7,8 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+
+2008-12-23 Version 1.5.4 (dev)
     - Mosaic/Preset now in a Notebook
 
 2008-12-21 Version 1.5.4 (dev)
