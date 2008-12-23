@@ -7,11 +7,12 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    - Mosaic/Preset now in a Notebook
 
-2008-12-00 Version 1.5.4 (dev)
+2008-12-21 Version 1.5.4 (dev)
     + show shooting time in addition to total elapsed time
     + fullscreen state saved in preferences
-    + new i18n languages (italian, spanish, dutch)
+    + new i18n language (italian)
     - picture drawing revisited
     - splited progressbar
     - shoot dialog starts fullscreen if main window is fullscreen
