@@ -648,14 +648,13 @@ class MainController(AbstractController):
             controller = WarningMessageController(_("Incompatible shooting mode"),
                                                   _("Can't set shooting mode to 'mosaic'\nwhile using 'fisheye' lens type"))
             controller.run()
+            self.notebook.stop_emission('switch-page')
             self.notebook.set_current_page(1) # Does not work!!!
-            while gtk.events_pending():
-                gtk.main_iteration()
-            return True
         elif page_num == 0 and self._model.cameraOrientation == 'custom':
             controller = WarningMessageController(_("Incompatible shooting mode"),
                                                   _("Can't set shooting mode to 'mosaic'\nwhile using 'custom' camera orientation"))
             controller.run()
+            self.notebook.stop_emission('switch-page')
             self.notebook.set_current_page(1) # Does not work!!!
         else:
             if page_num == 0:
@@ -983,10 +982,6 @@ class MainController(AbstractController):
             self.notebook.set_current_page(0)
         else:
             self.notebook.set_current_page(1)
-            if self._model.camera.lens.type_ == 'fisheye':
-                self.notebook.get_nth_page(0).hide()
-            else:
-                self.notebook.get_nth_page(0).show()
 
         self.setYawStartButtonLabel.set_label("%.1f" % self._model.mosaic.yawStart)
         self.setPitchStartButtonLabel.set_label("%.1f" % self._model.mosaic.pitchStart)
@@ -1015,6 +1010,5 @@ class MainController(AbstractController):
             self.presetInfoBuffer.insert_with_tags_by_name(self.presetInfoBuffer.get_end_iter(), tooltip, 'tooltip')
         finally:
             self.presetInfoBuffer.end_user_action()
-
         self.yawHeadPosLabel.set_text("%.1f" % self.__yawPos)
         self.pitchHeadPosLabel.set_text("%.1f" % self.__pitchPos)
