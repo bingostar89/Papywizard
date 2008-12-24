@@ -68,7 +68,7 @@ from papywizard.common.exception import HardwareError
 from papywizard.common.publisher import Publisher
 from papywizard.hardware.head import Head, HeadSimulation
 from papywizard.model.shooting import Shooting
-from papywizard.controller.messageController import ExceptionMessageController
+from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.mainController import MainController
 from papywizard.controller.spy import Spy
 from papywizard.view.logBuffer import LogBuffer
@@ -94,8 +94,8 @@ class Papywizard(object):
     def __init__(self):
         """ Init the application.
         """
-        self.__gtkLogStream = LogBuffer()
-        Logger().addStreamHandler(self.__gtkLogStream)
+        self.gtkLogStream = LogBuffer()
+        Logger().addStreamHandler(self.gtkLogStream)
         #Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
 
     def init(self):
@@ -126,7 +126,7 @@ class Papywizard(object):
         self.__serializer = Serializer()
 
         # Create main controller
-        controller = MainController(self.__model, self.__serializer, self.__gtkLogStream)
+        controller = MainController(self.__model, self.__serializer, self.gtkLogStream)
 
     def weave(str):
         """ Weave stuffs.
@@ -257,8 +257,10 @@ def main():
 
     except Exception, msg:
         Logger().exception("main()")
-        controller = ExceptionMessageController("main()")
+        controller = LoggerController(None, None, None)
+        controller.setLogBuffer(app.gtkLogStream)
         controller.run()
+        controller.shutdown()
 
 
 if __name__ == "__main__":
