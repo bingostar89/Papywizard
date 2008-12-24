@@ -129,7 +129,19 @@ class ErrorMessageController(BaseMessageController):
         return dialog
 
 
-class ExceptionMessageController(BaseMessageController):
+class YesNoMessageController(BaseMessageController):
+    """ Yes/No question message controller.
+    """
+    def _createMessageDialog(self, subTitle):
+        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_QUESTION,
+                                   buttons=gtk.BUTTONS_YES_NO,
+                                   message_format=subTitle)
+        dialog.set_title("Question")
+        dialog.set_default_response(gtk.RESPONSE_YES)
+        return dialog
+
+
+class ExceptionMessageController(object):
     """ Exception message controller.
     """
     def __init__(self, from_):
@@ -142,22 +154,28 @@ class ExceptionMessageController(BaseMessageController):
         traceback.print_exc(file=tracebackString)
         message = tracebackString.getvalue().strip()
         tracebackString.close()
-        return super(ExceptionMessageController, self).__init__(from_, message)
+        self.__dialog = gtk.Dialog(flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   buttons=(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
+        self.__dialog.set_title("Exception")
+        label = gtk.Label("An exception occured in '%s'" % from_)
+        self.__dialog.vbox.pack_start(label, expand=False)
+        scolledWindow = gtk.ScrolledWindow()
+        textView = gtk.TextView()
+        textBuffer = gtk.TextBuffer()
+        textBuffer.set_text(message)
+        textView.set_buffer(textBuffer)
+        scolledWindow.add_with_viewport(textView)
+        self.__dialog.vbox.pack_start(scolledWindow)
+        self.__dialog.vbox.set_spacing(5)
+        self.__dialog.set_size_request(500, 300)
+        self.__dialog.vbox.show_all()
 
-    def _createMessageDialog(self, subTitle):
-        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                   message_format=subTitle)
-        dialog.set_title("Exception")
-        return dialog
-
-
-class YesNoMessageController(BaseMessageController):
-    """ Yes/No question message controller.
-    """
-    def _createMessageDialog(self, subTitle):
-        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_QUESTION,
-                                   buttons=gtk.BUTTONS_YES_NO,
-                                   message_format=subTitle)
-        dialog.set_title("Question")
-        dialog.set_default_response(gtk.RESPONSE_YES)
-        return dialog
+    def run(self):
+        """ Run the dialog.
+        
+        @return: response
+        @rtype: int
+        """
+        response = self.__dialog.run()
+        self.__dialog.destroy()
+        return response
