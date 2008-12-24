@@ -56,9 +56,6 @@ Implements
 
 __revision__ = "$Id$"
 
-import traceback
-import StringIO
-
 import pygtk
 pygtk.require("2.0")
 import gtk
@@ -78,8 +75,8 @@ class BaseMessageController(object):
         @param message: dialog message
         @type message: str
         """
-        self.__dialog = self._createMessageDialog(subTitle)
-        self.__dialog.format_secondary_text(message)
+        self._dialog = self._createMessageDialog(subTitle)
+        self._dialog.format_secondary_text(message)
 
     def run(self):
         """ Run the dialog.
@@ -87,9 +84,14 @@ class BaseMessageController(object):
         @return: response
         @rtype: int
         """
-        response = self.__dialog.run()
-        self.__dialog.destroy()
+        response = self._dialog.run()
+        self._dialog.destroy()
         return response
+
+    def shutdown(self):
+        """ Shutdown the dialog.
+        """
+        self._dialog.destroy()
 
     def _createMessageDialog(self, subTitle, message):
         dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=type_, buttons=gtk.BUTTONS_CLOSE,
@@ -105,7 +107,7 @@ class InfoMessageController(BaseMessageController):
     def _createMessageDialog(self, subTitle):
         dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_INFO, buttons=gtk.BUTTONS_CLOSE,
                                    message_format=subTitle)
-        dialog.set_title("Info")
+        dialog.set_title(_("Info"))
         return dialog
 
 
@@ -115,7 +117,7 @@ class WarningMessageController(BaseMessageController):
     def _createMessageDialog(self, subTitle):
         dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_CLOSE,
                                    message_format=subTitle)
-        dialog.set_title("Warning")
+        dialog.set_title(_("Warning"))
         return dialog
 
 
@@ -125,7 +127,18 @@ class ErrorMessageController(BaseMessageController):
     def _createMessageDialog(self, subTitle):
         dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
                                    message_format=subTitle)
-        dialog.set_title("Error")
+        dialog.set_title(_("Error"))
+        return dialog
+
+
+class ExceptionMessageController(BaseMessageController):
+    """ Exception message controller.
+    """
+    def _createMessageDialog(self, subTitle):
+        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
+                                   message_format=subTitle)
+        dialog.set_title(_("Exception"))
+        dialog.set_default_response(gtk.RESPONSE_YES)
         return dialog
 
 
@@ -136,46 +149,6 @@ class YesNoMessageController(BaseMessageController):
         dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_QUESTION,
                                    buttons=gtk.BUTTONS_YES_NO,
                                    message_format=subTitle)
-        dialog.set_title("Question")
+        dialog.set_title(_("Question"))
         dialog.set_default_response(gtk.RESPONSE_YES)
         return dialog
-
-
-class ExceptionMessageController(object):
-    """ Exception message controller.
-    """
-    def __init__(self, from_):
-        """ Init the exception message controller.
-
-        @param from_: function/method name where the exception occured
-        @type from_: str
-        """
-        tracebackString = StringIO.StringIO()
-        traceback.print_exc(file=tracebackString)
-        message = tracebackString.getvalue().strip()
-        tracebackString.close()
-        self.__dialog = gtk.Dialog(flags=gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   buttons=(gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
-        self.__dialog.set_title("Exception")
-        label = gtk.Label("An exception occured in '%s'" % from_)
-        self.__dialog.vbox.pack_start(label, expand=False)
-        scolledWindow = gtk.ScrolledWindow()
-        textView = gtk.TextView()
-        textBuffer = gtk.TextBuffer()
-        textBuffer.set_text(message)
-        textView.set_buffer(textBuffer)
-        scolledWindow.add_with_viewport(textView)
-        self.__dialog.vbox.pack_start(scolledWindow)
-        self.__dialog.vbox.set_spacing(5)
-        self.__dialog.set_size_request(500, 300)
-        self.__dialog.vbox.show_all()
-
-    def run(self):
-        """ Run the dialog.
-        
-        @return: response
-        @rtype: int
-        """
-        response = self.__dialog.run()
-        self.__dialog.destroy()
-        return response
