@@ -448,9 +448,9 @@ class ShootController(AbstractController):
         switch = self.stepByStepTogglebutton.get_active()
         self._model.setStepByStep(switch)
         if switch:
-            self.stepByStepTogglebuttonImage.set_from_stock(gtk.STOCK_YES, 4)
+            self.stepByStepTogglebuttonImage.set_from_stock(gtk.STOCK_APPLY, 4)
         else:
-            self.stepByStepTogglebuttonImage.set_from_stock(gtk.STOCK_NO, 4)
+            self.stepByStepTogglebuttonImage.set_from_stock(gtk.STOCK_CANCEL, 4)
 
     def __onStartButtonClicked(self, widget):
         Logger().trace("ShootController.__startButtonClicked()")
@@ -685,11 +685,11 @@ class ShootController(AbstractController):
     def refreshView(self):
         dataFlag = ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE')
         if dataFlag:
-            self.dataButtonImage.set_from_stock(gtk.STOCK_YES, 4)
+            self.dataButtonImage.set_from_stock(gtk.STOCK_APPLY, 4)
         else:
-            self.dataButtonImage.set_from_stock(gtk.STOCK_NO, 4)
+            self.dataButtonImage.set_from_stock(gtk.STOCK_CANCEL, 4)
         timerFlag = self._model.timerAfterEnable or self._model.timerRepeatEnable
         if timerFlag:
-            self.timerButtonImage.set_from_stock(gtk.STOCK_YES, 4)
+            self.timerButtonImage.set_from_stock(gtk.STOCK_APPLY, 4)
         else:
-            self.timerButtonImage.set_from_stock(gtk.STOCK_NO, 4)
+            self.timerButtonImage.set_from_stock(gtk.STOCK_CANCEL, 4)
