@@ -73,7 +73,6 @@ from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.helpAboutController import HelpAboutController
 from papywizard.controller.totalFovController import TotalFovController
 from papywizard.controller.nbPictsController import NbPictsController
-from papywizard.controller.presetInfoController import PresetInfoController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.shootController import ShootController
 from papywizard.controller.waitController import WaitController
