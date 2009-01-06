@@ -74,7 +74,10 @@ class BluetoothDriver(BusDriver):
                 self.setDeviceAddress(address)
                 self._sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
                 self._sock.connect((self.__deviceAddress, 1))
-                self._sock.settimeout(1.)
+                try:
+                    self._sock.settimeout(1.)
+                except NotImplementedError:
+                    Logger().warning("BluetoothDriver.init(): bluetooth stack does not implment settimeout()")
                 self._init = True
             except bluetooth.BluetoothError, error:
                 Logger().exception("BluetoothDriver.init()")
