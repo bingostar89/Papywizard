@@ -107,7 +107,12 @@ class Publisher(threading.Thread):
         threading.Thread.__init__(self)
         self.setDaemon(1)
         self.setName("Publisher")
-        self.__server = PublisherServer((config.PUBLISHER_HOST, config.PUBLISHER_PORT), PublisherHandler)
+        try:
+            self.__server = PublisherServer((config.PUBLISHER_HOST, config.PUBLISHER_PORT), PublisherHandler)
+        except socket.error, error:
+            Logger().exception("Publisher.__init__()")
+            err, msg = tuple(error)
+            raise socket.error(msg)
 
     def run(self):
         """ Main entry of the thread.
