@@ -101,6 +101,9 @@ class LoggerController(AbstractController):
             vadjust.need_scroll = abs(vadjust.value + vadjust.page_size - vadjust.upper) < vadjust.step_increment
         self.loggerScrolledwindow.get_vadjustment().connect("value-changed", value_changed)
 
+    def _disconnectSignals(self):
+        pass
+
     # Callbacks
     def __onClearButtonClicked(self, widget):
         """ Clear button has been clicked.

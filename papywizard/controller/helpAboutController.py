@@ -75,5 +75,8 @@ class HelpAboutController(AbstractController):
     def _initWidgets(self):
         pass
 
+    def _disconnectSignals(self):
+        pass
+
     def refreshView(self):
         pass

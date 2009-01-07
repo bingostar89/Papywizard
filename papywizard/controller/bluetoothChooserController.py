@@ -98,6 +98,9 @@ class BluetoothChooserController(AbstractController):
         self.bluetoothAddressCombobox.pack_start(cell, True)
         self.bluetoothAddressCombobox.add_attribute(cell, 'text', 1)
 
+    def _disconnectSignals(self):
+        pass
+
     # Callbacks
     def __onOkButtonClicked(self, widget):
         """ Ok button has been clicked.

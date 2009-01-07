@@ -85,6 +85,9 @@ class NbPictsController(AbstractController):
     def _initWidgets(self):
         pass
 
+    def _disconnectSignals(self):
+        pass
+
     # Callbacks
     def __onOkButtonClicked(self, widget):
         """ Ok button has been clicked.

@@ -123,7 +123,7 @@ class AbstractController(object):
     def _disconnectSignals(self):
         """ Disconnect widgets signals.
         """
-        pass
+        raise NotImplementedError
 
     def _setFontParams(self, widget, scale=None, weight=None):
         """ Change the widget font size.
@@ -145,7 +145,7 @@ class AbstractController(object):
             font.set_weight(weight)
         widget.modify_font(font)
 
-    # Cllbacks GTK
+    # Callbacks GTK
     def _onDelete(self, widget, event):
         """ 'delete-event' signal callback.
         """

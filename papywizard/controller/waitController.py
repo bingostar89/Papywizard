@@ -86,6 +86,9 @@ class WaitController(AbstractController):
         self.__eventId = gobject.timeout_add(100, self.__refreshProgressbar)
         self.dialog.connect("delete-event", self.__onDelete)
 
+    def _disconnectSignals(self):
+        pass
+
     # Callbacks
     def __onDelete(self, widget, event):
         Logger().trace("WaitController.__onDelete()")
