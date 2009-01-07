@@ -1,4 +1,5 @@
 #/bin/sh
+# $Id$
 
 APP_NAME="papywizard"
 TMP_DIR="tmp"
