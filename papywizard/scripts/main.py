@@ -137,7 +137,7 @@ class Papywizard(object):
             logMethods(HeadSimulation)
             logMethods(MainController)
         except ImportError:
-            Logger().warning("Lobilab aspects module must be installed to use logging aspects")
+            Logger().warning("Logilab aspects module must be installed to use logging aspects")
 
     def l10n(self):
         """ i10n stuff.
@@ -217,9 +217,9 @@ class Papywizard(object):
         """ Run the appliction.
         """
         gobject.timeout_add(config.SERIALIZER_REFRESH , self.__serializer.processWork)
-        Spy().start()
         if config.PUBLISHER_ENABLE:
             self.__publisher.start()
+        Spy().start()
         Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
         gtk.main()
 
