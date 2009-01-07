@@ -15,6 +15,7 @@
             <pict yaw="None" pitch="-90." />
         </shoot>
     </preset>
+
     <preset name="3@-15 + Z">
         <tooltip>
             Nikkor 10.5mm
@@ -28,6 +29,7 @@
             <pict yaw="None" pitch="90." />
         </shoot>
     </preset>
+
     <preset name="6@30 + 6@-15 + N">
         <tooltip>
             6 picts @ +30°
@@ -50,6 +52,7 @@
             <pict yaw="None" pitch="-90." />
         </shoot>
     </preset>
+
     <preset name="4@30 + 4@-30">
         <tooltip>
             Tokina 10-17 @ 10 mm on APS-C (x1.6)
@@ -67,6 +70,7 @@
             <pict yaw="315." pitch="-30." />
         </shoot>
     </preset>
+
     <preset name="3 + 6 + 12 + 6 + 3 (28mm)">
         <tooltip>
             17 mm on APS-C (x1.6)
@@ -109,46 +113,66 @@
             <pict yaw="270." pitch="-70." />
         </shoot>
     </preset>
-    <!--<preset name="4 + 8 + 15 + 8 + 4 (30mm)">-->
-        <!--<tooltip>-->
-            <!--20 mm on APS-C (x1.5)-->
-            <!--4  picts @ +75°-->
-            <!--8  picts @ +39°-->
-            <!--15 picts @ -16°/+16°-->
-            <!--8  picts @ -39°-->
-            <!--4  picts @ -75°-->
-        <!--</tooltip>-->
-        <!--<shoot>-->
-            <!--<pict yaw="90." pitch="75." />-->
-            <!--<pict yaw="210." pitch="75." />-->
-            <!--<pict yaw="330." pitch="75." />-->
-            <!--<pict yaw="300." pitch="39." />-->
-            <!--<pict yaw="240." pitch="39." />-->
-            <!--<pict yaw="180." pitch="39." />-->
-            <!--<pict yaw="120." pitch="39." />-->
-            <!--<pict yaw="60." pitch="39." />-->
-            <!--<pict yaw="0." pitch="39." />-->
-            <!--<pict yaw="0." pitch="-16." />-->
-            <!--<pict yaw="30." pitch="16." />-->
-            <!--<pict yaw="60." pitch="-16." />-->
-            <!--<pict yaw="90." pitch="16." />-->
-            <!--<pict yaw="120." pitch="-16." />-->
-            <!--<pict yaw="150." pitch="16." />-->
-            <!--<pict yaw="180." pitch="-16." />-->
-            <!--<pict yaw="210." pitch="16." />-->
-            <!--<pict yaw="240." pitch="-16." />-->
-            <!--<pict yaw="270." pitch="16." />-->
-            <!--<pict yaw="300." pitch="-16." />-->
-            <!--<pict yaw="330." pitch="16." />-->
-            <!--<pict yaw="330." pitch="-39." />-->
-            <!--<pict yaw="270." pitch="-39." />-->
-            <!--<pict yaw="210." pitch="-39." />-->
-            <!--<pict yaw="150." pitch="-39." />-->
-            <!--<pict yaw="90." pitch="-39." />-->
-            <!--<pict yaw="30." pitch="-39." />-->
-            <!--<pict yaw="0." pitch="-75." />-->
-            <!--<pict yaw="120." pitch="-75." />-->
-            <!--<pict yaw="240." pitch="-75." />-->
-        <!--</shoot>-->
-    <!--</preset>-->
+
+    <preset name="4 + 12 + 12 + 12 + 4 (32mm)">
+        <tooltip>
+            20 mm on APS-C (x1.6)
+            4  picts @ +80°
+            12 picts @ +40°
+            12 picts @   0°
+            12 picts @ -40°
+            4  picts @ -80°
+        </tooltip>
+        <shoot>
+            <!-- First row 4-around Yaw separation 90°, Pitch +80° -->
+            <pict yaw="0." pitch="80."/>
+            <pict yaw="90." pitch="80."/>
+            <pict yaw="180." pitch="80."/>
+            <pict yaw="270." pitch="80."/>
+            <!-- Second row 12-around Yaw separation 30°, Pitch +40° -->
+            <pict yaw="330." pitch="40."/>
+            <pict yaw="300." pitch="40."/>
+            <pict yaw="270." pitch="40."/>
+            <pict yaw="240." pitch="40."/>
+            <pict yaw="210." pitch="40."/>
+            <pict yaw="180." pitch="40."/>
+            <pict yaw="150." pitch="40."/>
+            <pict yaw="120." pitch="40."/>
+            <pict yaw="90." pitch="40."/>
+            <pict yaw="60." pitch="40."/>
+            <pict yaw="30." pitch="40."/>
+            <pict yaw="0." pitch="40."/>
+            <!-- Third row 12-around Yaw separation 30°, Pitch 0° -->
+            <pict yaw="0." pitch="0."/>
+            <pict yaw="30." pitch="0."/>
+            <pict yaw="60." pitch="0."/>
+            <pict yaw="90." pitch="0."/>
+            <pict yaw="120." pitch="0."/>
+            <pict yaw="150." pitch="0."/>
+            <pict yaw="180." pitch="0."/>
+            <pict yaw="210." pitch="0."/>
+            <pict yaw="240." pitch="0."/>
+            <pict yaw="270." pitch="0."/>
+            <pict yaw="300." pitch="0."/>
+            <pict yaw="330." pitch="0."/>
+            <!-- Fourth row 12-around Yaw separation 30°, Pitch -40° -->
+            <pict yaw="330." pitch="-40."/>
+            <pict yaw="300." pitch="-40."/>
+            <pict yaw="270." pitch="-40."/>
+            <pict yaw="240." pitch="-40."/>
+            <pict yaw="210." pitch="-40."/>
+            <pict yaw="180." pitch="-40."/>
+            <pict yaw="150." pitch="-40."/>
+            <pict yaw="120." pitch="-40."/>
+            <pict yaw="90." pitch="-40."/>
+            <pict yaw="60." pitch="-40."/>
+            <pict yaw="30." pitch="-40."/>
+            <pict yaw="0." pitch="-40."/>
+            <!-- Fifth row 4-around Yaw separation 90°, Pitch -80° -->
+            <pict yaw="0." pitch="-80."/>
+            <pict yaw="90." pitch="-80."/>
+            <pict yaw="180." pitch="-80."/>
+            <pict yaw="270." pitch="-80."/>
+        </shoot>
+    </preset>
 </papywizard>
