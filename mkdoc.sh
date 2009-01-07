@@ -1,4 +1,5 @@
 #!/bin/sh
+# $Id$
 
 modules="papywizard.common papywizard.controller papywizard.hardware \
          papywizard.model papywizard.view papywizard.view3D"
