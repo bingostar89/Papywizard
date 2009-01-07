@@ -331,7 +331,7 @@ class Shooting(object):
     def getShootingElapsedTime(self):
         """ Get the shooting elapsed time.
 
-        @return elapsed time (s)
+        @return: elapsed time (s)
         @rtype: int
         """
         shootingTime = time.time() - self.__startTime - self.__totalPausedTime

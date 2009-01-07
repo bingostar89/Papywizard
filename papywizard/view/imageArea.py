@@ -71,7 +71,7 @@ class ImageArea(object):
         @type yaw: float
 
         @param pitch: pitch of the image (°)
-        @type pich: float
+        @type pitch: float
 
         @param x: x coordinate of the image
         @type x: int

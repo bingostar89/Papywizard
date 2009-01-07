@@ -246,7 +246,7 @@ def hmsAsStrToS(hhmmss):
 def sToHms(s):
     """ Convert seconds to hours, minutes, seconds.
 
-    @pram s: seconds
+    @param s: seconds
     @type s: int
 
     @return: hours, minutes, seconds
@@ -262,7 +262,7 @@ def sToHms(s):
 def sToHmsAsStr(s):
     """ Convert seconds to hh:mm:ss.
 
-    @pram s: seconds
+    @param s: seconds
     @type s: int
 
     @return: hours, minutes, seconds

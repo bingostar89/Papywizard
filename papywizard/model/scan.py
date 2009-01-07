@@ -66,8 +66,8 @@ class AbstractScan(object):
     def __init__(self, model):
         """ Init the Scan object.
 
-        @param camera: model
-        @type camera: {Shooting}
+        @param model: model
+        @type model: {Shooting}
         """
         super(AbstractScan, self).__init__()
         self._model = model
@@ -348,16 +348,16 @@ class MosaicScan(AbstractScan):
 
     def getYawResolution(self):
         """ Compute the total pano yaw resolution
-        
+
         @return: pano yaw resolution (Mpx)
         @rtype: float
         """
         yawCameraFov = self._model.camera.getYawFov(self._model.cameraOrientation)
         return self.yawFov / yawCameraFov * self._model.camera.getYawSensorResolution(self._model.cameraOrientation)
-        
+
     def getPitchResolution(self):
         """ Compute the total pano pitch resolution
-        
+
         @return: pano pitch resolution (Mpx)
         @rtype: float
         """

@@ -228,8 +228,8 @@ class AbstractData(object):
         @param pitch: pitch position
         @type pitch: float
 
-        @param pitch: roll value
-        @type pitch: float
+        @param roll: roll value
+        @type roll: float
         """
         Logger().debug("Data.addPicture(): bracket=%d, yaw=%.1f, pitch=%.1f, roll=%.1f" % (bracket, yaw, pitch, roll))
         node = self._addNode(self._shootNode, 'pict', id="%d" % self._pictId, bracket="%d" % bracket)
