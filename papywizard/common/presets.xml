@@ -115,34 +115,34 @@
         </shoot>
     </preset>
 
-    <preset name="4 + 12 + 12 + 12 + 4 (32mm)">
+    <preset name="4 + 12 + 12 + 12 + 8 (32mm)">
         <tooltip>
             20 mm on APS-C (x1.6)
             4  picts @ +80°
             12 picts @ +40°
             12 picts @   0°
             12 picts @ -40°
-            4  picts @ -80°
+            8  picts @ -80°
         </tooltip>
         <shoot>
             <!-- First row 4-around Yaw separation 90°, Pitch +80° -->
-            <pict yaw="0." pitch="80."/>
-            <pict yaw="90." pitch="80."/>
-            <pict yaw="180." pitch="80."/>
-            <pict yaw="270." pitch="80."/>
+            <pict yaw="30." pitch="80."/>
+            <pict yaw="120." pitch="80."/>
+            <pict yaw="210." pitch="80."/>
+            <pict yaw="300." pitch="80."/>
             <!-- Second row 12-around Yaw separation 30°, Pitch +40° -->
-            <pict yaw="330." pitch="40."/>
-            <pict yaw="300." pitch="40."/>
-            <pict yaw="270." pitch="40."/>
-            <pict yaw="240." pitch="40."/>
-            <pict yaw="210." pitch="40."/>
-            <pict yaw="180." pitch="40."/>
-            <pict yaw="150." pitch="40."/>
-            <pict yaw="120." pitch="40."/>
-            <pict yaw="90." pitch="40."/>
-            <pict yaw="60." pitch="40."/>
-            <pict yaw="30." pitch="40."/>
-            <pict yaw="0." pitch="40."/>
+            <pict yaw="345." pitch="40."/>
+            <pict yaw="315." pitch="40."/>
+            <pict yaw="285." pitch="40."/>
+            <pict yaw="255." pitch="40."/>
+            <pict yaw="225." pitch="40."/>
+            <pict yaw="195." pitch="40."/>
+            <pict yaw="165." pitch="40."/>
+            <pict yaw="135." pitch="40."/>
+            <pict yaw="105." pitch="40."/>
+            <pict yaw="75." pitch="40."/>
+            <pict yaw="45." pitch="40."/>
+            <pict yaw="15." pitch="40."/>
             <!-- Third row 12-around Yaw separation 30°, Pitch 0° -->
             <pict yaw="0." pitch="0."/>
             <pict yaw="30." pitch="0."/>
@@ -157,23 +157,27 @@
             <pict yaw="300." pitch="0."/>
             <pict yaw="330." pitch="0."/>
             <!-- Fourth row 12-around Yaw separation 30°, Pitch -40° -->
-            <pict yaw="330." pitch="-40."/>
-            <pict yaw="300." pitch="-40."/>
-            <pict yaw="270." pitch="-40."/>
-            <pict yaw="240." pitch="-40."/>
-            <pict yaw="210." pitch="-40."/>
-            <pict yaw="180." pitch="-40."/>
-            <pict yaw="150." pitch="-40."/>
-            <pict yaw="120." pitch="-40."/>
-            <pict yaw="90." pitch="-40."/>
-            <pict yaw="60." pitch="-40."/>
-            <pict yaw="30." pitch="-40."/>
-            <pict yaw="0." pitch="-40."/>
-            <!-- Fifth row 4-around Yaw separation 90°, Pitch -80° -->
-            <pict yaw="0." pitch="-80."/>
-            <pict yaw="90." pitch="-80."/>
-            <pict yaw="180." pitch="-80."/>
-            <pict yaw="270." pitch="-80."/>
+            <pict yaw="345." pitch="-40."/>
+            <pict yaw="315." pitch="-40."/>
+            <pict yaw="285." pitch="-40."/>
+            <pict yaw="255." pitch="-40."/>
+            <pict yaw="225." pitch="-40."/>
+            <pict yaw="195." pitch="-40."/>
+            <pict yaw="165." pitch="-40."/>
+            <pict yaw="135." pitch="-40."/>
+            <pict yaw="105." pitch="-40."/>
+            <pict yaw="75." pitch="-40."/>
+            <pict yaw="45." pitch="-40."/>
+            <pict yaw="15." pitch="-40."/>
+            <!-- Fifth row 8-around Yaw separation 45°, Pitch -80° -->
+            <pict yaw="30." pitch="-80."/>
+            <pict yaw="75." pitch="-80."/>
+            <pict yaw="120." pitch="-80."/>
+            <pict yaw="165." pitch="-80."/>
+            <pict yaw="210." pitch="-80."/>
+            <pict yaw="255." pitch="-80."/>
+            <pict yaw="300." pitch="-80."/>
+            <pict yaw="345." pitch="-80."/>
         </shoot>
     </preset>
 </papywizard>
