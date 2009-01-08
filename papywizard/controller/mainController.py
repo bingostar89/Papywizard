@@ -97,10 +97,9 @@ class MainController(AbstractController):
 
     def _init(self):
         self._gladeFile = "mainWindow.glade"
-        self._signalDict = {"on_dialog_destroy":  gtk.main_quit,
-                            #"on_dialog_window_state_event": self.__onWindowStateChanged,
-                            "on_dialog_key_press_event": self.__onKeyPressed,
-                            "on_dialog_key_release_event": self.__onKeyReleased,
+        self._signalDict = {#"on_dialog_window_state_event": self.__onWindowStateChanged,
+                            #"on_dialog_key_press_event": self.__onKeyPressed,
+                            #"on_dialog_key_release_event": self.__onKeyReleased,
 
                             "on_fileLoadPresetMenuitem_activate": self.__onFileLoadPresetMenuitemActivate,
                             "on_fileLoadGtkrcMenuitem_activate": self.__onFileLoadGtkrcMenuitemActivate,
@@ -112,11 +111,10 @@ class MainController(AbstractController):
                             "on_hardwareSetLimitPitchMinusMenuitem_activate": self.__onHardwareSetLimitPitchMinusMenuitemActivate,
                             "on_hardwareClearLimitsMenuitem_activate": self.__onHardwareClearLimitsMenuitemActivate,
                             "on_helpManualMenuitem_activate": self.__onHelpManualMenuitemActivate,
-                            "on_helpWhatsThisMenuitem_activate": self.__onHelpWhatsThisMenuitemActivate,
                             "on_helpViewLogMenuitem_activate": self.__onHelpViewLogMenuitemActivate,
                             "on_helpAboutMenuitem_activate": self.__onHelpAboutMenuitemActivate,
 
-                            "on_notebook_switch_page": self.__onNoteBookSwitchedPage,
+                            "on_notebook_switch_page": self.__onNoteBookSwitchPage,
 
                             "on_setYawStartButton_clicked": self.__onSetYawStartButtonClicked,
                             "on_setPitchStartButton_clicked": self.__onSetPitchStartButtonClicked,
@@ -227,7 +225,7 @@ class MainController(AbstractController):
         self.connectImage = self.wTree.get_widget("connectImage")
 
     def _initWidgets(self):
-        
+
         # Presets
         listStore = gtk.ListStore(gobject.TYPE_STRING)
         self.presetCombobox.set_model(listStore)
@@ -235,7 +233,7 @@ class MainController(AbstractController):
         self.presetCombobox.pack_start(cell, True)
         #self.presetCombobox.add_attribute(cell, 'text', 0)
         self.__populatePresetCombobox()
-        
+
         self.presetInfoBuffer = gtk.TextBuffer()
         self.presetInfoBuffer.create_tag('name', foreground='red')
         self.presetInfoBuffer.create_tag('tooltip', foreground='blue', style=pango.STYLE_OBLIQUE)
@@ -288,10 +286,14 @@ class MainController(AbstractController):
 
     def _connectSignals(self):
         super(MainController, self)._connectSignals()
+        self.dialog.connect("key-press-event", self.__onKeyPressed)
+        self.dialog.connect("key-release-event", self.__onKeyReleased)
         Spy().newPosSignal.connect(self.__refreshPos)
         self._model.switchToRealHardwareSignal.connect(self.__switchToRealHardwareCallback)
 
     def _disconnectSignals(self):
+        self.dialog.disconnect("key-press-event", self.__onKeyPressed)
+        self.dialog.disconnect("key-release-event", self.__onKeyReleased)
         Spy().newPosSignal.disconnect(self.__refreshPos)
         self._model.switchToRealHardwareSignal.disconnect(self.__switchToRealHardwareCallback)
 
@@ -309,6 +311,10 @@ class MainController(AbstractController):
     __fullScreen = property(__getFullScreenFlag, __setFullScreenFlag)
 
     # Callbacks
+    def _onDelete(self, widget, event):
+        Logger().trace("MainController._onDelete()")
+        gtk.main_quit()
+
     def __onKeyPressed(self, widget, event, *args):
         Logger().trace("MainController.__onKeyPressed()")
 
@@ -641,8 +647,8 @@ class MainController(AbstractController):
         controller.run()
         controller.shutdown()
 
-    def __onNoteBookSwitchedPage(self, widget, page, page_num):
-        Logger().trace("MainController.__onNoteBookSwitchedPage()")
+    def __onNoteBookSwitchPage(self, widget, page, page_num):
+        Logger().trace("MainController.__onNoteBookSwitchPage()")
         if page_num == 0 and self._model.camera.lens.type_ == 'fisheye':
             controller = WarningMessageController(_("Incompatible shooting mode"),
                                                   _("Can't set shooting mode to 'mosaic'\nwhile using 'fisheye' lens type"))
@@ -660,7 +666,7 @@ class MainController(AbstractController):
                 self._model.mode = 'mosaic'
             else:
                 self._model.mode = 'preset'
-            Logger().debug("MainController.__onNoteBookSwitchedPage(): shooting mode set to '%s'" % self._model.mode)
+            Logger().debug("MainController.__onNoteBookSwitchPage(): shooting mode set to '%s'" % self._model.mode)
 
     def __onSetYawStartButtonClicked(self, widget):
         Logger().trace("MainController.__onSetYawStartButtonClicked()")
