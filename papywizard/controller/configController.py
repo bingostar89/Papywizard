@@ -232,7 +232,7 @@ class ConfigController(AbstractController):
         """ Camera orientation changed.
         """
         orientation = config.CAMERA_ORIENTATION_INDEX[self.cameraOrientationCombobox.get_active()]
-        Logger().debug("ConfigController.__onCancelButtonClicked(): orientation=%s" % orientation)
+        Logger().debug("ConfigController.__onCameraOrientationComboboxChanged(): orientation=%s" % orientation)
         if orientation == 'portrait':
             self.cameraRollSpinbutton.set_sensitive(False)
             self.cameraRollSpinbutton.set_value(90.)
