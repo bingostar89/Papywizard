@@ -66,7 +66,7 @@ else:
     path = os.path.dirname(__file__)
 
 
-class AbstractController(object):
+class AbstractGladeController(object):
     """ Base class for controllers.
     """
     def __init__(self, parent=None, model=None, serializer=None):
@@ -169,3 +169,119 @@ class AbstractController(object):
         """ Refresh the view widgets according to model values.
         """
         raise NotImplementedError
+
+
+class AbstractBuidlerController(object):
+    """ Base class for controllers.
+    """
+    def __init__(self, parent=None, model=None, serializer=None):
+        """ Init the controller.
+
+        @param parent: parent controller
+        @type parent: {Controller}
+
+        @param model: model to use
+        @type model: {Shooting}
+
+        @param serializer: serializer for multi-threading operations
+        @type serializer: {Serializer}
+        """
+        self._parent = parent
+        self._model = model
+        self._serializer = serializer
+
+        self._init()
+
+        # Set the xml file
+        _xmlFile = "%s.xml" % self._gladeFile.split('.')[0]
+        xmlFile = os.path.join(path, os.path.pardir, "view", _xmlFile)
+        self.builder = gtk.Builder()
+        self.builder.set_translation_domain("papywizard")
+        self.builder.add_from_file(xmlFile)
+        
+        # Compatibility with glade
+        self.wTree = self.builder
+        self.builder.get_widget = self.wTree.get_object
+
+        self._retreiveWidgets()
+        self._initWidgets()
+        self._connectSignals()
+        self.refreshView()
+
+    def _init(self):
+        """ Misc. init.
+        """
+        self._gladeFile = None
+        self._signalDict = None
+
+    def _retreiveWidgets(self):
+        """ Get widgets from widget tree.
+        """
+        self.dialog = self.builder.get_widget("dialog")
+        if self.dialog is None:
+            raise ValueError("Can't retreive main dialog widget")
+
+    def _initWidgets(self):
+        """ Init widgets.
+        """
+        raise NotImplementedError
+
+    def _connectSignals(self):
+        """ Connect widgets signals.
+        """
+        self.builder.connect_signals(self._signalDict)
+        self.dialog.connect("delete-event", self._onDelete)
+
+    def _disconnectSignals(self):
+        """ Disconnect widgets signals.
+        """
+        raise NotImplementedError
+
+    def _setFontParams(self, widget, scale=None, weight=None):
+        """ Change the widget font size.
+
+         @param widget: widget to change the font
+         @type widget: {gtk.Widget}
+
+         @param scale: scale for the new font size
+         @type scale: int
+
+         @param weight: new weight
+         @type weight: PangoWeight enum
+        """
+        context = widget.get_pango_context()
+        font = context.get_font_description()
+        if scale is not None:
+            font.set_size(int(font.get_size() * scale))
+        if weight is not None:
+            font.set_weight(weight)
+        widget.modify_font(font)
+
+    # Callbacks GTK
+    def _onDelete(self, widget, event):
+        """ 'delete-event' signal callback.
+        """
+        Logger().trace("AbstractController._onDelete()")
+
+    # Interface
+    def run(self):
+        """ Run the dialog.
+        """
+        return self.dialog.run()
+
+    def shutdown(self):
+        """ Shutdown the controller.
+
+        mainly destroy the view.
+        """
+        self.dialog.destroy()
+        self._disconnectSignals()
+
+    def refreshView(self):
+        """ Refresh the view widgets according to model values.
+        """
+        raise NotImplementedError
+
+
+AbstractController = AbstractGladeController
+#AbstractController = AbstractBuidlerController
