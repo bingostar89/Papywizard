@@ -97,11 +97,7 @@ class MainController(AbstractController):
 
     def _init(self):
         self._gladeFile = "mainWindow.glade"
-        self._signalDict = {#"on_dialog_window_state_event": self.__onWindowStateChanged,
-                            #"on_dialog_key_press_event": self.__onKeyPressed,
-                            #"on_dialog_key_release_event": self.__onKeyReleased,
-
-                            "on_fileLoadPresetMenuitem_activate": self.__onFileLoadPresetMenuitemActivate,
+        self._signalDict = {"on_fileLoadPresetMenuitem_activate": self.__onFileLoadPresetMenuitemActivate,
                             "on_fileLoadGtkrcMenuitem_activate": self.__onFileLoadGtkrcMenuitemActivate,
                             "on_quitMenuitem_activate": gtk.main_quit,
                             "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuitemToggled,
@@ -286,14 +282,21 @@ class MainController(AbstractController):
 
     def _connectSignals(self):
         super(MainController, self)._connectSignals()
+
+        # Because of the hildonization (and reparenting the GUI), the dialog defined in glade
+        # does not exists anymore when _connectSignals() is called. So, the autoconnect
+        # feature can't be used for dialog signals. That's why they are defined here.
+        # Note there is no problem for other modal dialogs...
         self.dialog.connect("key-press-event", self.__onKeyPressed)
         self.dialog.connect("key-release-event", self.__onKeyReleased)
+        #self.dialog.connect("window-state-event", self.__onWindowStateChanged)
         Spy().newPosSignal.connect(self.__refreshPos)
         self._model.switchToRealHardwareSignal.connect(self.__switchToRealHardwareCallback)
 
     def _disconnectSignals(self):
         self.dialog.disconnect("key-press-event", self.__onKeyPressed)
         self.dialog.disconnect("key-release-event", self.__onKeyReleased)
+        #self.dialog.disconnect("window-state-event", self.__onWindowStateChanged)
         Spy().newPosSignal.disconnect(self.__refreshPos)
         self._model.switchToRealHardwareSignal.disconnect(self.__switchToRealHardwareCallback)
 
