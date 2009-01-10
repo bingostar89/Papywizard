@@ -52,8 +52,8 @@ import os.path
 # Version
 VERSION_MAJOR = 1
 VERSION_MINOR = 5 # Odd means dev. release
-VERSION_UPDATE = 5
-VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
+VERSION_UPDATE = 6
+VERSION = "%d.%d.%df" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 VERSION_XML = "a"
 
 # Paths
@@ -124,7 +124,7 @@ SHOOTING_COLOR_SCHEME = {'default': {'background': "#d0d0d0",
 # Logger
 LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"
 LOGGER_MAX_COUNT_LINE = 200
-LOGGER_FILENAME = "papywizard.log"
+#LOGGER_FILENAME = "papywizard.log"
 
 # Hardware
 AXIS_NUM_YAW = 1
