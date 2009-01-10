@@ -2,13 +2,13 @@
 # Copyright (C) 2008 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Automatically generated, 2008.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-10 11:17+0100\n"
-"PO-Revision-Date: 2009-01-05 12:37+0100\n"
+"POT-Creation-Date: 2009-01-10 14:51+0100\n"
+"PO-Revision-Date: 2009-01-10 14:51+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
@@ -109,11 +109,11 @@ msgstr "Velocità manuale settata rapida"
 
 #: papywizard/controller/mainController.py:443
 msgid "About to Quit"
-msgstr ""
+msgstr "In chiusura"
 
 #: papywizard/controller/mainController.py:444
 msgid "Are you sure you want to quit Papywizard?"
-msgstr ""
+msgstr "Sei sicuro di volere chiudere Papywizard?"
 
 #: papywizard/controller/mainController.py:607
 msgid "Yaw - limit set"
@@ -138,14 +138,14 @@ msgstr "Limiti azzerati"
 #: papywizard/controller/mainController.py:656
 #: papywizard/controller/mainController.py:662
 msgid "Incompatible shooting mode"
-msgstr ""
+msgstr "Modalità di scatto non compatibile"
 
 #: papywizard/controller/mainController.py:657
 msgid ""
 "Can't set shooting mode to 'mosaic'\n"
 "while using 'fisheye' lens type"
 msgstr ""
-"Non posso abilitare la modalità di scatto a 'mosaico' \n"
+"Non posso abilitare la modalità di scatto 'mosaico' \n"
 "utilizzando obbiettivo 'fisheye'"
 
 #: papywizard/controller/mainController.py:663
@@ -258,11 +258,11 @@ msgstr "Errore"
 
 #: papywizard/controller/messageController.py:140
 msgid "Exception"
-msgstr ""
+msgstr "Eccezione"
 
 #: papywizard/controller/messageController.py:152
 msgid "Question"
-msgstr ""
+msgstr "Domanda"
 
 #: tmp/bluetoothChooserDialog.glade.h:1
 msgid "Bluetooth"
@@ -662,6 +662,8 @@ msgid ""
 "Be sure that the preset used is compatible\n"
 "with your camera and lens size (collision)."
 msgstr ""
+"Assicurati che il preset selezionato sia compatibile\n"
+"con la tua camera e focale dell'obiettivo (Errore) "
 
 #: tmp/mainWindow.glade.h:6
 msgid "Clear Limits"
