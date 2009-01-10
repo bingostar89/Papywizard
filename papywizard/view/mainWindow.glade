@@ -5,9 +5,6 @@
   <widget class="GtkWindow" id="dialog">
     <property name="visible">True</property>
     <property name="title" translatable="yes" context="yes">Papywizard</property>
-    <signal name="key_press_event" handler="on_dialog_key_press_event"/>
-    <signal name="key_release_event" handler="on_dialog_key_release_event"/>
-    <signal name="window_state_event" handler="on_dialog_window_state_event"/>
     <child>
       <widget class="GtkVBox" id="mainVbox">
         <property name="visible">True</property>
@@ -624,6 +621,27 @@
                           </widget>
                           <packing>
                             <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <widget class="GtkViewport" id="viewport2">
+                            <property name="visible">True</property>
+                            <property name="resize_mode">GTK_RESIZE_QUEUE</property>
+                            <child>
+                              <widget class="GtkLabel" id="label3">
+                                <property name="visible">True</property>
+                                <property name="xalign">0</property>
+                                <property name="yalign">0</property>
+                                <property name="xpad">5</property>
+                                <property name="ypad">5</property>
+                                <property name="label" translatable="yes" context="yes">Be sure that the preset used is compatible
+with your camera and lens size (collision).</property>
+                              </widget>
+                            </child>
+                          </widget>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                       </widget>
