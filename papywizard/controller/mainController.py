@@ -148,6 +148,8 @@ class MainController(AbstractController):
                                  'space': False,
                                  'Return': False,
                                  'Escape': False,
+                                 'Control': False,
+                                 'q': False,
                              }
         self.__key = {'FullScreen': gtk.keysyms.F6,
                       'Right': gtk.keysyms.Right,
@@ -159,7 +161,10 @@ class MainController(AbstractController):
                       'Tab': gtk.keysyms.Tab,
                       'space': gtk.keysyms.space,
                       'Return': gtk.keysyms.Return,
-                      'Escape': gtk.keysyms.Escape
+                      'Escape': gtk.keysyms.Escape,
+                      'Control_L': gtk.keysyms.Control_L,
+                      'Control_R': gtk.keysyms.Control_R,
+                      'q': gtk.keysyms.q,
                       }
 
         # Nokia plateform stuff
@@ -447,8 +452,25 @@ class MainController(AbstractController):
                 gtk.main_quit()
             return True
 
+        # 'Control' key
+        elif event.keyval == self.__key['Control_L'] or event.keyval == self.__key['Control_R']:
+            if not self.__keyPressedDict['Control']:
+                Logger().debug("MainController.__onKeyPressed(): 'Control' key pressed")
+                self.__keyPressedDict['Control'] = True
+
+        # 'q' key
+        elif event.keyval == self.__key['q']:
+            if not self.__keyPressedDict['q']:
+                Logger().debug("MainController.__onKeyPressed(): 'q' key pressed")
+                self.__keyPressedDict['q'] = True
+                if self.__keyPressedDict['Control']:
+                    Logger().debug("MainController.__onKeyPressed(): 'Control-q' key pressed")
+                    gtk.main_quit()
+            return True
+
         else:
             Logger().warning("MainController.__onKeyPressed(): unbind '%s' key" % event.keyval)
+            return True
 
     def __onKeyReleased(self, widget, event, *args):
         Logger().trace("MainController.__onKeyReleased()")
@@ -529,10 +551,24 @@ class MainController(AbstractController):
             return True
 
         # 'Escape' key
-        if event.keyval == self.__key['Escape']:
+        elif event.keyval == self.__key['Escape']:
             if self.__keyPressedDict['Escape']:
                 Logger().debug("MainController.__onKeyReleased(): 'Escape' key released")
                 self.__keyPressedDict['Escape'] = False
+            return True
+
+        # 'Control' key
+        elif event.keyval == self.__key['Control_L'] or event.keyval == self.__key['Control_R']:
+            if self.__keyPressedDict['Control']:
+                Logger().debug("MainController.__onKeyPressed(): 'Control' key released")
+                self.__keyPressedDict['Control'] = False
+            return True
+
+        # 'q' key
+        elif event.keyval == self.__key['q']:
+            if self.__keyPressedDict['q']:
+                Logger().debug("MainController.__onKeyPressed(): 'q' key released")
+                self.__keyPressedDict['q'] = False
             return True
 
         else:
