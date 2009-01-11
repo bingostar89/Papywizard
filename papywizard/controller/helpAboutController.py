@@ -65,15 +65,8 @@ class HelpAboutController(AbstractController):
         self._gladeFile = "helpAboutDialog.glade"
         self._signalDict = {}
 
-    def _retreiveWidgets(self):
-        """ Get widgets from widget tree.
-        """
-        super(HelpAboutController, self)._retreiveWidgets()
-
-        self.dialog.set_version(config.VERSION)
-
     def _initWidgets(self):
-        pass
+        self.dialog.set_version(config.VERSION)
 
     def _disconnectSignals(self):
         pass
