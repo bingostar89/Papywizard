@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Fri Dec 19 18:12:39 2008 -->
+<!--Generated with glade3 3.4.5 on Sun Jan 11 12:31:15 2009 -->
 <glade-interface>
   <widget class="GtkAboutDialog" id="dialog">
     <property name="border_width">5</property>
-    <property name="title" translatable="yes">À propos de Papywizard</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
     <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
-    <property name="program_name">Papywizard</property>
     <property name="copyright" translatable="yes">(C) 2007-2008 Frédéric Mantegazza</property>
     <property name="comments" translatable="yes">Papywizard is a panohead
 control software, mainly developped
