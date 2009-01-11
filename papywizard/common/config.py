@@ -40,7 +40,7 @@ Module purpose
 Configurations.
 
 @author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@copyright: (C) 2007-2009 Frédéric Mantegazza
 @license: CeCILL
 """
 
@@ -51,9 +51,9 @@ import os.path
 
 # Version
 VERSION_MAJOR = 1
-VERSION_MINOR = 5 # Odd means dev. release
-VERSION_UPDATE = 6
-VERSION = "%d.%d.%df" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
+VERSION_MINOR = 6 # Odd means dev. release
+VERSION_UPDATE = 0
+VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 VERSION_XML = "a"
 
 # Paths
