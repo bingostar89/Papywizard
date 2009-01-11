@@ -72,10 +72,6 @@ from papywizard.controller.configController import ConfigController
 from papywizard.controller.spy import Spy
 from papywizard.view.shootingArea import MosaicArea, PresetArea
 
-if hasattr(sys, "frozen"):
-    path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "common")
-else:
-    path = os.path.dirname(__file__)
 
 class ShootController(AbstractController):
     """ Shoot controller object.
@@ -674,8 +670,8 @@ class ShootController(AbstractController):
         self._model.stop()
 
     # Interface
-    def run(self):
-        self.dialog.show()
+    #def run(self):
+        #self.dialog.show() # ???!!!???
 
     def shutdown(self):
         super(ShootController, self).shutdown()
