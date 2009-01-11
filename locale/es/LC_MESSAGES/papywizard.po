@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-10 11:17+0100\n"
+"POT-Creation-Date: 2009-01-11 12:31+0100\n"
 "PO-Revision-Date: 2009-01-10 11:20+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -42,8 +42,7 @@ msgstr ""
 msgid "Paused"
 msgstr ""
 
-#: papywizard/controller/shootController.py:533
-#: tmp/shootDialog.glade.h:7
+#: papywizard/controller/shootController.py:533 tmp/shootDialog.glade.h:7
 msgid "Pause"
 msgstr ""
 
@@ -71,8 +70,7 @@ msgstr ""
 msgid "Stabilization"
 msgstr ""
 
-#: papywizard/controller/shootController.py:603
-#: tmp/configDialog.glade.h:29
+#: papywizard/controller/shootController.py:603 tmp/configDialog.glade.h:29
 msgid "Mirror lockup"
 msgstr ""
 
@@ -260,17 +258,13 @@ msgstr ""
 msgid "Bluetooth"
 msgstr ""
 
-#: tmp/bluetoothChooserDialog.glade.h:2
-#: tmp/configDialog.glade.h:55
-#: tmp/nbPictsDialog.glade.h:4
-#: tmp/totalFovDialog.glade.h:4
+#: tmp/bluetoothChooserDialog.glade.h:2 tmp/configDialog.glade.h:55
+#: tmp/nbPictsDialog.glade.h:4 tmp/totalFovDialog.glade.h:4
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:3
-#: tmp/configDialog.glade.h:56
-#: tmp/nbPictsDialog.glade.h:5
-#: tmp/totalFovDialog.glade.h:5
+#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:56
+#: tmp/nbPictsDialog.glade.h:5 tmp/totalFovDialog.glade.h:5
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -326,8 +320,7 @@ msgstr ""
 msgid "Configuration"
 msgstr ""
 
-#: tmp/configDialog.glade.h:15
-#: tmp/shootDialog.glade.h:4
+#: tmp/configDialog.glade.h:15 tmp/shootDialog.glade.h:4
 msgid "Data"
 msgstr ""
 
@@ -363,8 +356,7 @@ msgstr ""
 msgid "GPS"
 msgstr ""
 
-#: tmp/configDialog.glade.h:24
-#: tmp/mainWindow.glade.h:11
+#: tmp/configDialog.glade.h:24 tmp/mainWindow.glade.h:11
 msgid "Hardware"
 msgstr ""
 
@@ -388,8 +380,7 @@ msgstr ""
 msgid "Misc"
 msgstr ""
 
-#: tmp/configDialog.glade.h:31
-#: tmp/mainWindow.glade.h:16
+#: tmp/configDialog.glade.h:31 tmp/mainWindow.glade.h:16
 msgid "Mosaic"
 msgstr ""
 
@@ -421,8 +412,7 @@ msgstr ""
 msgid "Serial port"
 msgstr ""
 
-#: tmp/configDialog.glade.h:40
-#: tmp/shootDialog.glade.h:9
+#: tmp/configDialog.glade.h:40 tmp/shootDialog.glade.h:9
 msgid "Shooting"
 msgstr ""
 
@@ -442,8 +432,7 @@ msgstr ""
 msgid "Time value (sec)"
 msgstr ""
 
-#: tmp/configDialog.glade.h:45
-#: tmp/shootDialog.glade.h:13
+#: tmp/configDialog.glade.h:45 tmp/shootDialog.glade.h:13
 msgid "Timer"
 msgstr ""
 
@@ -571,10 +560,6 @@ msgid ""
 "CeCILL"
 msgstr ""
 
-#: tmp/helpAboutDialog.glade.h:36
-msgid "À propos de Papywizard"
-msgstr ""
-
 #: tmp/loggerDialog.glade.h:1
 msgid "Clear log"
 msgstr ""
@@ -587,8 +572,7 @@ msgstr ""
 msgid "Save log"
 msgstr ""
 
-#: tmp/loggerDialog.glade.h:4
-#: tmp/shootDialog.glade.h:16
+#: tmp/loggerDialog.glade.h:4 tmp/shootDialog.glade.h:16
 msgid "gtk-close"
 msgstr "gtk-close"
 
@@ -650,8 +634,7 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: tmp/mainWindow.glade.h:18
-#: tmp/nbPictsDialog.glade.h:1
+#: tmp/mainWindow.glade.h:18 tmp/nbPictsDialog.glade.h:1
 msgid "Nb picts"
 msgstr ""
 
@@ -659,10 +642,8 @@ msgstr ""
 msgid "Papywizard"
 msgstr ""
 
-#: tmp/mainWindow.glade.h:20
-#: tmp/nbPictsDialog.glade.h:2
-#: tmp/shootDialog.glade.h:8
-#: tmp/totalFovDialog.glade.h:1
+#: tmp/mainWindow.glade.h:20 tmp/nbPictsDialog.glade.h:2
+#: tmp/shootDialog.glade.h:8 tmp/totalFovDialog.glade.h:1
 msgid "Pitch"
 msgstr ""
 
@@ -702,8 +683,7 @@ msgstr ""
 msgid "Start (°)"
 msgstr ""
 
-#: tmp/mainWindow.glade.h:31
-#: tmp/totalFovDialog.glade.h:2
+#: tmp/mainWindow.glade.h:31 tmp/totalFovDialog.glade.h:2
 msgid "Total fov (°)"
 msgstr ""
 
@@ -711,10 +691,8 @@ msgstr ""
 msgid "View Log..."
 msgstr ""
 
-#: tmp/mainWindow.glade.h:33
-#: tmp/nbPictsDialog.glade.h:3
-#: tmp/shootDialog.glade.h:15
-#: tmp/totalFovDialog.glade.h:3
+#: tmp/mainWindow.glade.h:33 tmp/nbPictsDialog.glade.h:3
+#: tmp/shootDialog.glade.h:15 tmp/totalFovDialog.glade.h:3
 msgid "Yaw"
 msgstr ""
 
@@ -765,4 +743,3 @@ msgstr ""
 #: tmp/waitBanner.glade.h:1
 msgid "Please wait..."
 msgstr ""
-

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-10 11:17+0100\n"
+"POT-Creation-Date: 2009-01-11 12:31+0100\n"
 "PO-Revision-Date: 2009-01-10 11:18+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
@@ -42,8 +42,7 @@ msgstr "Resume"
 msgid "Paused"
 msgstr "Paused"
 
-#: papywizard/controller/shootController.py:533
-#: tmp/shootDialog.glade.h:7
+#: papywizard/controller/shootController.py:533 tmp/shootDialog.glade.h:7
 msgid "Pause"
 msgstr "Pause"
 
@@ -71,8 +70,7 @@ msgstr "Moving"
 msgid "Stabilization"
 msgstr "Stabilization"
 
-#: papywizard/controller/shootController.py:603
-#: tmp/configDialog.glade.h:29
+#: papywizard/controller/shootController.py:603 tmp/configDialog.glade.h:29
 msgid "Mirror lockup"
 msgstr "Mirror lockup"
 
@@ -270,17 +268,13 @@ msgstr "Question"
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:2
-#: tmp/configDialog.glade.h:55
-#: tmp/nbPictsDialog.glade.h:4
-#: tmp/totalFovDialog.glade.h:4
+#: tmp/bluetoothChooserDialog.glade.h:2 tmp/configDialog.glade.h:55
+#: tmp/nbPictsDialog.glade.h:4 tmp/totalFovDialog.glade.h:4
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:3
-#: tmp/configDialog.glade.h:56
-#: tmp/nbPictsDialog.glade.h:5
-#: tmp/totalFovDialog.glade.h:5
+#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:56
+#: tmp/nbPictsDialog.glade.h:5 tmp/totalFovDialog.glade.h:5
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -336,8 +330,7 @@ msgstr "Comment"
 msgid "Configuration"
 msgstr "Configuration"
 
-#: tmp/configDialog.glade.h:15
-#: tmp/shootDialog.glade.h:4
+#: tmp/configDialog.glade.h:15 tmp/shootDialog.glade.h:4
 msgid "Data"
 msgstr "Data"
 
@@ -373,8 +366,7 @@ msgstr "Focal (mm)"
 msgid "GPS"
 msgstr "GPS"
 
-#: tmp/configDialog.glade.h:24
-#: tmp/mainWindow.glade.h:11
+#: tmp/configDialog.glade.h:24 tmp/mainWindow.glade.h:11
 msgid "Hardware"
 msgstr "Hardware"
 
@@ -398,8 +390,7 @@ msgstr "Logger level"
 msgid "Misc"
 msgstr "Misc"
 
-#: tmp/configDialog.glade.h:31
-#: tmp/mainWindow.glade.h:16
+#: tmp/configDialog.glade.h:31 tmp/mainWindow.glade.h:16
 msgid "Mosaic"
 msgstr "Mosaic"
 
@@ -431,8 +422,7 @@ msgstr "Sensor resolution"
 msgid "Serial port"
 msgstr "Serial port"
 
-#: tmp/configDialog.glade.h:40
-#: tmp/shootDialog.glade.h:9
+#: tmp/configDialog.glade.h:40 tmp/shootDialog.glade.h:9
 msgid "Shooting"
 msgstr "Shooting"
 
@@ -452,8 +442,7 @@ msgstr "Start from"
 msgid "Time value (sec)"
 msgstr "Time value (sec)"
 
-#: tmp/configDialog.glade.h:45
-#: tmp/shootDialog.glade.h:13
+#: tmp/configDialog.glade.h:45 tmp/shootDialog.glade.h:13
 msgid "Timer"
 msgstr "Timer"
 
@@ -635,10 +624,6 @@ msgstr ""
 "knowledge of the CeCILL license and that you accept its terms.\n"
 "CeCILL"
 
-#: tmp/helpAboutDialog.glade.h:36
-msgid "À propos de Papywizard"
-msgstr "À propos de Papywizard"
-
 #: tmp/loggerDialog.glade.h:1
 msgid "Clear log"
 msgstr "Clear log"
@@ -651,8 +636,7 @@ msgstr "Logger"
 msgid "Save log"
 msgstr "Save log"
 
-#: tmp/loggerDialog.glade.h:4
-#: tmp/shootDialog.glade.h:16
+#: tmp/loggerDialog.glade.h:4 tmp/shootDialog.glade.h:16
 msgid "gtk-close"
 msgstr "gtk-close"
 
@@ -716,8 +700,7 @@ msgstr "Manual"
 msgid "Name"
 msgstr "Name"
 
-#: tmp/mainWindow.glade.h:18
-#: tmp/nbPictsDialog.glade.h:1
+#: tmp/mainWindow.glade.h:18 tmp/nbPictsDialog.glade.h:1
 msgid "Nb picts"
 msgstr "# picts"
 
@@ -725,10 +708,8 @@ msgstr "# picts"
 msgid "Papywizard"
 msgstr "Papywizard"
 
-#: tmp/mainWindow.glade.h:20
-#: tmp/nbPictsDialog.glade.h:2
-#: tmp/shootDialog.glade.h:8
-#: tmp/totalFovDialog.glade.h:1
+#: tmp/mainWindow.glade.h:20 tmp/nbPictsDialog.glade.h:2
+#: tmp/shootDialog.glade.h:8 tmp/totalFovDialog.glade.h:1
 msgid "Pitch"
 msgstr "Pitch"
 
@@ -768,8 +749,7 @@ msgstr "Shoot..."
 msgid "Start (°)"
 msgstr "Start (°)"
 
-#: tmp/mainWindow.glade.h:31
-#: tmp/totalFovDialog.glade.h:2
+#: tmp/mainWindow.glade.h:31 tmp/totalFovDialog.glade.h:2
 msgid "Total fov (°)"
 msgstr "Total fov (°)"
 
@@ -777,10 +757,8 @@ msgstr "Total fov (°)"
 msgid "View Log..."
 msgstr "View Log..."
 
-#: tmp/mainWindow.glade.h:33
-#: tmp/nbPictsDialog.glade.h:3
-#: tmp/shootDialog.glade.h:15
-#: tmp/totalFovDialog.glade.h:3
+#: tmp/mainWindow.glade.h:33 tmp/nbPictsDialog.glade.h:3
+#: tmp/shootDialog.glade.h:15 tmp/totalFovDialog.glade.h:3
 msgid "Yaw"
 msgstr "Yaw"
 
@@ -832,18 +810,31 @@ msgstr "Total"
 msgid "Please wait..."
 msgstr "Please wait..."
 
+#, fuzzy
+#~ msgid "About Papywizard"
+#~ msgstr "Papywizard"
+
+#~ msgid "À propos de Papywizard"
+#~ msgstr "À propos de Papywizard"
+
 #~ msgid "Preset Info"
 #~ msgstr "Preset Info"
+
 #~ msgid "Unhandled exception"
 #~ msgstr "Unhandled exception"
+
 #~ msgid "Wrong camera orientation"
 #~ msgstr "Wrong camera orientation"
+
 #~ msgid "<b>Mosaic settings</b>"
 #~ msgstr "<b>Mosaic settings</b>"
+
 #~ msgid "<b>Preset settings</b>"
 #~ msgstr "<b>Preset settings</b>"
+
 #~ msgid "Elapsed time"
 #~ msgstr "Elapsed time"
+
 #~ msgid "Sequence"
 #~ msgstr "Sequence"
 
@@ -854,246 +845,358 @@ msgstr "Please wait..."
 #, fuzzy
 #~ msgid "Repeat %d/%d"
 #~ msgstr "Repeat"
+
 #~ msgid "GPS data"
 #~ msgstr "GPS data"
+
 #~ msgid "Step"
 #~ msgstr "Step"
+
 #~ msgid "-- of --"
 #~ msgstr "-- of --"
+
 #~ msgid "Pano"
 #~ msgstr "Pano"
+
 #~ msgid "--/%d"
 #~ msgstr "--/%d"
+
 #~ msgid "%d/%d"
 #~ msgstr "%d/%d"
+
 #~ msgid ""
 #~ "yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %"
 #~ "(pitchNbPicts)d"
 #~ msgstr ""
 #~ "yaw %(yawIndex)d of %(yawNbPicts)d, pitch %(pitchIndex)d of %"
 #~ "(pitchNbPicts)d"
+
 #~ msgid "Position %(index)d of %(totalNbPicts)d"
 #~ msgstr "Position %(index)d of %(totalNbPicts)d"
+
 #~ msgid "Psoition #%(index)d of %(totalNbPicts)d"
 #~ msgstr "Psoition #%(index)d of %(totalNbPicts)d"
+
 #~ msgid "Position %s - Moving"
 #~ msgstr "Position %s - Moving"
+
 #~ msgid "Position %s - Stabilizing"
 #~ msgstr "Position %s - Stabilizing"
+
 #~ msgid "Position %s - Mirror lockup"
 #~ msgstr "Position %s - Mirror lockup"
+
 #~ msgid "Position %s"
 #~ msgstr "Position %s"
+
 #~ msgid "Shooting bkt %(bracket)d/%(bracketingNbPicts)d"
 #~ msgstr "Shooting bkt %(bracket)d/%(bracketingNbPicts)d"
+
 #~ msgid "Restart in %s"
 #~ msgstr "Restart in %s"
+
 #~ msgid "Start in %02d:%02d:%02d"
 #~ msgstr "Start in %02d:%02d:%02d"
+
 #~ msgid "Moving to %d/%d (yaw %d/%d, pitch %d/%d)"
 #~ msgstr "Moving to %d/%d (yaw %d/%d, pitch %d/%d)"
+
 #~ msgid "Moving to %d/%d"
 #~ msgstr "Moving to %d/%d"
+
 #~ msgid "Shooting at %d/%d (yaw %d/%d, pitch %d/%, bkt %d/%d"
 #~ msgstr "Shooting at %d/%d (yaw %d/%d, pitch %d/%, bkt %d/%d"
+
 #~ msgid "Shooting at %d/%d, bkt %d/%d"
 #~ msgstr "Shooting at %d/%d, bkt %d/%d"
+
 #~ msgid "Repeat in %02d:%02d:%02d"
 #~ msgstr "Repeat in %02d:%02d:%02d"
+
 #~ msgid "Date"
 #~ msgstr "Date"
+
 #~ msgid "Every"
 #~ msgstr "Every"
+
 #~ msgid "h"
 #~ msgstr "h"
+
 #~ msgid "m"
 #~ msgstr "m"
+
 #~ msgid "s"
 #~ msgstr "s"
+
 #~ msgid "Data file enable"
 #~ msgstr "Data file enable"
+
 #~ msgid "Intervalometer"
 #~ msgstr "Intervalometer"
+
 #~ msgid "Manual shooting"
 #~ msgstr "Manual shooting"
+
 #~ msgid "Data storage dir."
 #~ msgstr "Data storage dir."
+
 #~ msgid "Progression..."
 #~ msgstr "Progression..."
+
 #~ msgid "Square"
 #~ msgstr "Square"
+
 #~ msgid "Pitch field of view set to user value"
 #~ msgstr "Pitch field of view set to user value"
+
 #~ msgid "Yaw number of pictures set to user value"
 #~ msgstr "Yaw number of pictures set to user value"
+
 #~ msgid "Pitch number of pictures set to user value"
 #~ msgstr "Pitch number of pictures set to user value"
+
 #~ msgid "Total fov set to user value"
 #~ msgstr "Total fov set to user value"
+
 #~ msgid "Yaw/pitch end position set from current position"
 #~ msgstr "Yaw/pitch end position set from current position"
+
 #~ msgid "    Pitch    "
 #~ msgstr "Pitch"
+
 #~ msgid "   Yaw   "
 #~ msgstr "Yaw"
+
 #~ msgid "    Yaw    "
 #~ msgstr "Yaw"
+
 #~ msgid "Invalid configuration"
 #~ msgstr "Invalid configuration"
+
 #~ msgid "Mirror"
 #~ msgstr "Mirror"
+
 #~ msgid "Connection status"
 #~ msgstr "Connection status"
+
 #~ msgid "Pitch current position"
 #~ msgstr "Pitch current position"
+
 #~ msgid "Set end from current position"
 #~ msgstr "Set end from current position"
+
 #~ msgid "Set origin from current position"
 #~ msgstr "Set origin from current position"
+
 #~ msgid "Set start from current position"
 #~ msgstr "Set start from current position"
+
 #~ msgid "Yaw current position"
 #~ msgstr "Yaw current position"
+
 #~ msgid "Progression and status of the shooting"
 #~ msgstr "Progression and status of the shooting"
+
 #~ msgid "Select the data storage directory"
 #~ msgstr "Select the data storage directory"
+
 #~ msgid "Clear the log window"
 #~ msgstr "Clear the log window"
+
 #~ msgid "Preset name"
 #~ msgstr "Preset name"
+
 #~ msgid "Suspend"
 #~ msgstr "Suspend"
+
 #~ msgid "Templates"
 #~ msgstr "Templates"
+
 #~ msgid "Hardware has been reseted"
 #~ msgstr "Hardware has been reseted"
+
 #~ msgid "Bluetooth devices list"
 #~ msgstr "Bluetooth devices list"
+
 #~ msgid "Refresh the bluetooth devices list"
 #~ msgstr "Refresh the bluetooth devices list"
+
 #~ msgid "Address of the bluetooth converter"
 #~ msgstr "Address of the bluetooth converter"
+
 #~ msgid "Automatically connect to hardware at startup"
 #~ msgstr "Automatically connect to hardware at startup"
+
 #~ msgid "Cariage return at each end of raw/col (mosaic mode)"
 #~ msgstr "Cariage return at each end of raw/col (mosaic mode)"
+
 #~ msgid "Coef. of the sensor to 35mm size"
 #~ msgstr "Coef. of the sensor to 35mm size"
+
 #~ msgid "Delay to wait after each move"
 #~ msgstr "Delay to wait after each move"
+
 #~ msgid "Direction of the first move (mosaic mode)"
 #~ msgstr "Direction of the first move (mosaic mode)"
+
 #~ msgid "Driver to use to connect to hardware"
 #~ msgstr "Driver to use to connect to hardware"
+
 #~ msgid "Ethernet port"
 #~ msgstr "Ethernet port"
+
 #~ msgid "Focal of the lens"
 #~ msgstr "Focal of the lens"
+
 #~ msgid "Force overlap to get square pictures (mosaic mode)"
 #~ msgstr "Force overlap to get square pictures (mosaic mode)"
+
 #~ msgid "Format of the xml data file name"
 #~ msgstr "Format of the xml data file name"
+
 #~ msgid "From where to start shooting (mosaic mode)"
 #~ msgstr "From where to start shooting (mosaic mode)"
+
 #~ msgid "Host name or IP address"
 #~ msgstr "Host name or IP address"
+
 #~ msgid "Intent of the bracketing"
 #~ msgstr "Intent of the bracketing"
+
 #~ msgid "Level of the logger"
 #~ msgstr "Level of the logger"
+
 #~ msgid "Minimum wanted overlap (mosaic mode)"
 #~ msgstr "Minimum wanted overlap (mosaic mode)"
+
 #~ msgid "Number of pictures of the bracketing"
 #~ msgstr "Number of pictures of the bracketing"
+
 #~ msgid "Orientation of the camera"
 #~ msgstr "Orientation of the camera"
+
 #~ msgid "Port of the serial converter"
 #~ msgstr "Port of the serial converter"
+
 #~ msgid "Ratio of the sensor"
 #~ msgstr "Ratio of the sensor"
+
 #~ msgid "Time value of the camera"
 #~ msgstr "Time value of the camera"
+
 #~ msgid "Type of the lens"
 #~ msgstr "Type of the lens"
+
 #~ msgid "Move pitch +"
 #~ msgstr "Move pitch +"
+
 #~ msgid "Move pitch -"
 #~ msgstr "Move pitch -"
+
 #~ msgid "Move yaw +"
 #~ msgstr "Move yaw +"
+
 #~ msgid "Move yaw -"
 #~ msgstr "Move yaw -"
+
 #~ msgid "Set pitch end from current position"
 #~ msgstr "Set pitch end from current position"
+
 #~ msgid "Set pitch start from current position"
 #~ msgstr "Set pitch start from current position"
+
 #~ msgid "Set yaw end from current position"
 #~ msgstr "Set yaw end from current position"
+
 #~ msgid "Set yaw start from current position"
 #~ msgstr "Set yaw start from current position"
+
 #~ msgid "Template"
 #~ msgstr "Template"
+
 #~ msgid "Template list for preset shooting"
 #~ msgstr "Template list for preset shooting"
+
 #~ msgid "Templates information"
 #~ msgstr "Templates information"
+
 #~ msgid "What's This?"
 #~ msgstr "What's This?"
+
 #~ msgid "Manual shoot at each position"
 #~ msgstr "Manual shoot at each position"
+
 #~ msgid "Start shooting"
 #~ msgstr "Start shooting"
+
 #~ msgid "Stop shooting"
 #~ msgstr "Stop shooting"
+
 #~ msgid "Suspend/resume shooting"
 #~ msgstr "Suspend/resume shooting"
+
 #~ msgid "Write data file"
 #~ msgstr "Write data file"
+
 #~ msgid "Number of pictures"
 #~ msgstr "Number of pictures"
+
 #~ msgid "Starting Papywizard app..."
 #~ msgstr "Starting Papywizard app..."
+
 #~ msgid "Papywizard app stopped"
 #~ msgstr "Papywizard app stopped"
 
 #, fuzzy
 #~ msgid "Presets"
 #~ msgstr "Preset"
+
 #~ msgid "Log viewer"
 #~ msgstr "Log viewer"
+
 #~ msgid "Preset templates"
 #~ msgstr "Preset templates"
+
 #~ msgid "Shoot"
 #~ msgstr "Shoot"
+
 #~ msgid "Can't read configuration file (%s)"
 #~ msgstr "Can't read configuration file (%s)"
+
 #~ msgid ""
 #~ "ConfigManager.__init__(): User config. does not exist; copying from dist "
 #~ "config."
 #~ msgstr ""
 #~ "ConfigManager.__init__(): User config. does not exist; copying from dist "
 #~ "config."
+
 #~ msgid ""
 #~ "ConfigManager.__init__(): User config. has wrong version.; updating from "
 #~ "dist config."
 #~ msgstr ""
 #~ "ConfigManager.__init__(): User config. has wrong version.; updating from "
 #~ "dist config."
+
 #~ msgid "ConfigManager.__init__(): Removed [%s] section"
 #~ msgstr "ConfigManager.__init__(): Removed [%s] section"
+
 #~ msgid "ConfigManager.__init__(): Added [%s] section"
 #~ msgstr "ConfigManager.__init__(): Added [%s] section"
+
 #~ msgid "ConfigManager.__init__(): Removed [%s] %s option"
 #~ msgstr "ConfigManager.__init__(): Removed [%s] %s option"
+
 #~ msgid "ConfigManager.__init__(): Updated [%s] %s option with %s"
 #~ msgstr "ConfigManager.__init__(): Updated [%s] %s option with %s"
+
 #~ msgid "ConfigManager.__init__(): User config. written to file"
 #~ msgstr "ConfigManager.__init__(): User config. written to file"
+
 #~ msgid "ConfigManager.save()"
 #~ msgstr "ConfigManager.save()"
+
 #~ msgid "Configuration saved"
 #~ msgstr "Configuration saved"
+
 #~ msgid "MainController.__onKeyPressed()"
 #~ msgstr "MainController.__onKeyPressed()"
-
