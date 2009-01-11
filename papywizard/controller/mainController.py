@@ -411,6 +411,7 @@ class MainController(AbstractController):
                     controller = WarningMessageController(_("Fast manual speed"),
                                                           _("Manual speed set to 'fast'\nThis can be dangerous for the hardware!"))
                     controller.run()
+                    controller.shutdown()
                     self.__manualSpeed = 'fast'
                     Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select fast speed")
                     self._model.hardware.setManualSpeed('fast')
@@ -448,6 +449,7 @@ class MainController(AbstractController):
             controller = YesNoMessageController(_("About to Quit"),
                                                 _("Are you sure you want to quit Papywizard?"))
             response = controller.run()
+            controller.shutdown()
             if response == gtk.RESPONSE_YES:
                 gtk.main_quit()
             return True
@@ -692,12 +694,14 @@ class MainController(AbstractController):
             controller = WarningMessageController(_("Incompatible shooting mode"),
                                                   _("Can't set shooting mode to 'mosaic'\nwhile using 'fisheye' lens type"))
             controller.run()
+            controller.shutdown()
             self.notebook.stop_emission('switch-page')
             self.notebook.set_current_page(1) # Does not work!!!
         elif page_num == 0 and self._model.cameraOrientation == 'custom':
             controller = WarningMessageController(_("Incompatible shooting mode"),
                                                   _("Can't set shooting mode to 'mosaic'\nwhile using 'custom' camera orientation"))
             controller.run()
+            controller.shutdown()
             self.notebook.stop_emission('switch-page')
             self.notebook.set_current_page(1) # Does not work!!!
         else:
@@ -902,6 +906,7 @@ class MainController(AbstractController):
         self.shootButton.set_sensitive(True)
         self.setStatusbarMessage()
         controller.run()
+        controller.shutdown()
 
     def __populatePresetCombobox(self):
         """
@@ -934,6 +939,7 @@ class MainController(AbstractController):
             Logger().exception("MainController.__importPresetFile()")
             controller = ErrorMessageController(_("Can't import preset file"), str(msg))
             controller.run()
+            controller.shutdown()
 
     def __connectToHardware(self):
         """ Connect to real hardware.
@@ -974,6 +980,7 @@ class MainController(AbstractController):
             Logger().error("Can't connect to hardware\n%s" % self.__connectErrorMessage)
             controller = ErrorMessageController(_("Can't connect to hardware"), self.__connectErrorMessage)
             controller.run()
+            controller.shutdown()
             self.hardwareConnectMenuitem.set_active(False)
 
         #self.hardwareConnectMenuitem.set_sensitive(True)
