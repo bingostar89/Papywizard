@@ -6,7 +6,7 @@ License
 =======
 
  - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
-  - (C) 2007-2008 Frédéric Mantegazza
+  - (C) 2007-2009 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use, 
@@ -49,7 +49,7 @@ Implements
 - unlogModule
 
 @author: Frédéric Mantegazza
-@copyright: (C) 2007-2008 Frédéric Mantegazza
+@copyright: (C) 2007-2009 Frédéric Mantegazza
 @license: CeCILL
 """
 __revision__ = "$Id$"
