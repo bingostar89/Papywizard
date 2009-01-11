@@ -162,8 +162,8 @@ class AbstractGladeController(object):
 
         mainly destroy the view.
         """
-        self.dialog.destroy()
         self._disconnectSignals()
+        self.dialog.destroy()
 
     def refreshView(self):
         """ Refresh the view widgets according to model values.
