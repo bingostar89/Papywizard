@@ -7,15 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-11 12:31+0100\n"
-"PO-Revision-Date: 2008-12-16 17:56+0100\n"
+"POT-Creation-Date: 2009-01-13 16:37+0100\n"
+"PO-Revision-Date: 2009-01-13 16:38+0100\n"
 "Last-Translator: Frédéric Mantegazza <fma@gbiloba.org>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: papywizard/hardware/bluetoothDriver.py:119
 msgid "Bluetooth driver not initialized"
@@ -35,52 +34,54 @@ msgstr ""
 msgid "Timeout while reading on serial bus"
 msgstr ""
 
-#: papywizard/controller/shootController.py:522
+#: papywizard/controller/shootController.py:518
 #, fuzzy
 msgid "Resume"
 msgstr "Zresetuj"
 
-#: papywizard/controller/shootController.py:525
+#: papywizard/controller/shootController.py:521
 #, fuzzy
 msgid "Paused"
 msgstr "Zawieś"
 
-#: papywizard/controller/shootController.py:533 tmp/shootDialog.glade.h:7
+#: papywizard/controller/shootController.py:529
+#: tmp/shootDialog.glade.h:7
 msgid "Pause"
 msgstr ""
 
-#: papywizard/controller/shootController.py:544
+#: papywizard/controller/shootController.py:540
 msgid "Finished"
 msgstr ""
 
-#: papywizard/controller/shootController.py:546
+#: papywizard/controller/shootController.py:542
 msgid "Canceled"
 msgstr "Anulowano"
 
-#: papywizard/controller/shootController.py:548
+#: papywizard/controller/shootController.py:544
 #, fuzzy
 msgid "Failed"
 msgstr "Plik"
 
-#: papywizard/controller/shootController.py:558
+#: papywizard/controller/shootController.py:554
 #, fuzzy
 msgid "Waiting"
 msgstr "Zacznij od"
 
-#: papywizard/controller/shootController.py:599
+#: papywizard/controller/shootController.py:595
 msgid "Moving"
 msgstr "Namierzam"
 
-#: papywizard/controller/shootController.py:601
+#: papywizard/controller/shootController.py:597
 msgid "Stabilization"
 msgstr ""
 
-#: papywizard/controller/shootController.py:603 tmp/configDialog.glade.h:29
+#: papywizard/controller/shootController.py:599
+#: tmp/configDialog.glade.h:29
 #, fuzzy
 msgid "Mirror lockup"
 msgstr "Błąd"
 
-#: papywizard/controller/shootController.py:607
+#: papywizard/controller/shootController.py:603
 #, fuzzy
 msgid "Shutter - Picture"
 msgstr "Ilość zdjęć"
@@ -89,140 +90,140 @@ msgstr "Ilość zdjęć"
 msgid "Can't scan bluetooth"
 msgstr "Nie mogę skanować Bluetooth"
 
-#: papywizard/controller/mainController.py:384
+#: papywizard/controller/mainController.py:389
 msgid "Manual speed set to slow"
 msgstr ""
 
-#: papywizard/controller/mainController.py:390
-#: papywizard/controller/mainController.py:404
+#: papywizard/controller/mainController.py:395
+#: papywizard/controller/mainController.py:409
 msgid "Manual speed set to normal"
 msgstr ""
 
-#: papywizard/controller/mainController.py:406
+#: papywizard/controller/mainController.py:411
 msgid "Fast manual speed"
 msgstr ""
 
-#: papywizard/controller/mainController.py:407
+#: papywizard/controller/mainController.py:412
 msgid ""
 "Manual speed set to 'fast'\n"
 "This can be dangerous for the hardware!"
 msgstr ""
 
-#: papywizard/controller/mainController.py:413
+#: papywizard/controller/mainController.py:419
 msgid "Manual speed set to fast"
 msgstr ""
 
-#: papywizard/controller/mainController.py:443
+#: papywizard/controller/mainController.py:449
 msgid "About to Quit"
 msgstr ""
 
-#: papywizard/controller/mainController.py:444
+#: papywizard/controller/mainController.py:450
 msgid "Are you sure you want to quit Papywizard?"
 msgstr ""
 
-#: papywizard/controller/mainController.py:607
+#: papywizard/controller/mainController.py:645
 msgid "Yaw - limit set"
 msgstr "Yaw - limit"
 
-#: papywizard/controller/mainController.py:613
+#: papywizard/controller/mainController.py:651
 msgid "Yaw + limit set"
 msgstr "Yaw + limit"
 
-#: papywizard/controller/mainController.py:619
+#: papywizard/controller/mainController.py:657
 msgid "Pitch + limit set"
 msgstr "Pitch + limit"
 
-#: papywizard/controller/mainController.py:625
+#: papywizard/controller/mainController.py:663
 msgid "Pitch - limit set"
 msgstr "Pitch - limit"
 
-#: papywizard/controller/mainController.py:630
+#: papywizard/controller/mainController.py:668
 msgid "Limits cleared"
 msgstr "Limity usunięto"
 
-#: papywizard/controller/mainController.py:656
-#: papywizard/controller/mainController.py:662
+#: papywizard/controller/mainController.py:694
+#: papywizard/controller/mainController.py:701
 #, fuzzy
 msgid "Incompatible shooting mode"
 msgstr "Zatrzymaj strzelanie"
 
-#: papywizard/controller/mainController.py:657
+#: papywizard/controller/mainController.py:695
 msgid ""
 "Can't set shooting mode to 'mosaic'\n"
 "while using 'fisheye' lens type"
 msgstr ""
 
-#: papywizard/controller/mainController.py:663
+#: papywizard/controller/mainController.py:702
 msgid ""
 "Can't set shooting mode to 'mosaic'\n"
 "while using 'custom' camera orientation"
 msgstr ""
 
-#: papywizard/controller/mainController.py:679
+#: papywizard/controller/mainController.py:719
 msgid "Yaw start set from current position"
 msgstr "Ustaw tą pozycję jako początkową yaw"
 
-#: papywizard/controller/mainController.py:686
+#: papywizard/controller/mainController.py:726
 msgid "Pitch start set from current position"
 msgstr "Ustaw tą pozycję jako początkową pitch"
 
-#: papywizard/controller/mainController.py:693
+#: papywizard/controller/mainController.py:733
 msgid "Yaw end set from current position"
 msgstr "Ustaw tą pozycję jako końcową yaw"
 
-#: papywizard/controller/mainController.py:700
+#: papywizard/controller/mainController.py:740
 msgid "Pitch end set from current position"
 msgstr "Ustaw tą pozycję jako końcową pitch"
 
-#: papywizard/controller/mainController.py:732
+#: papywizard/controller/mainController.py:772
 msgid "Origin set at current position"
 msgstr ""
 
-#: papywizard/controller/mainController.py:799
+#: papywizard/controller/mainController.py:839
 msgid "Yaw/pitch start set from current position"
 msgstr "Ustaw tą pozycję jako początkową yaw/pitch"
 
-#: papywizard/controller/mainController.py:807
+#: papywizard/controller/mainController.py:847
 msgid "Yaw/pitch end set from current position"
 msgstr "Ustaw tą pozycję jako końcową yaw/pitch"
 
-#: papywizard/controller/mainController.py:818
+#: papywizard/controller/mainController.py:858
 #, fuzzy
 msgid "Field of view set to user value"
 msgstr "Ile zdjęć strzelać przy każdej pozycji"
 
-#: papywizard/controller/mainController.py:829
+#: papywizard/controller/mainController.py:869
 #, fuzzy
 msgid "Number of pictures set to user value"
 msgstr "Ile zdjęć strzelać przy każdej pozycji"
 
-#: papywizard/controller/mainController.py:834
+#: papywizard/controller/mainController.py:874
 #, fuzzy
 msgid "Opening configuration dialog. Please wait..."
 msgstr "Otwórz okno konfiguracji"
 
-#: papywizard/controller/mainController.py:860
+#: papywizard/controller/mainController.py:900
 #, fuzzy
 msgid "Opening shoot dialog. Please wait..."
 msgstr "Otwórz okno strzelania"
 
-#: papywizard/controller/mainController.py:899
+#: papywizard/controller/mainController.py:940
 msgid "Can't import preset file"
 msgstr ""
 
-#: papywizard/controller/mainController.py:914
+#: papywizard/controller/mainController.py:956
 msgid "Connecting to real hardware..."
 msgstr "Nawiązuje połączenie ze sprzętem..."
 
-#: papywizard/controller/mainController.py:936
+#: papywizard/controller/mainController.py:978
 msgid "Now connected to real hardware"
 msgstr "Połączenie ze sprzętem nawiązane"
 
-#: papywizard/controller/mainController.py:939
+#: papywizard/controller/mainController.py:981
 msgid "Can't connect to hardware"
 msgstr "Nie mogę połączyć się ze sprzętem"
 
-#: papywizard/controller/mainController.py:952
+#: papywizard/controller/mainController.py:995
 msgid "Now in simulation mode"
 msgstr "Tryb symulacji"
 
@@ -270,13 +271,17 @@ msgstr ""
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: tmp/bluetoothChooserDialog.glade.h:2 tmp/configDialog.glade.h:55
-#: tmp/nbPictsDialog.glade.h:4 tmp/totalFovDialog.glade.h:4
+#: tmp/bluetoothChooserDialog.glade.h:2
+#: tmp/configDialog.glade.h:55
+#: tmp/nbPictsDialog.glade.h:4
+#: tmp/totalFovDialog.glade.h:4
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: tmp/bluetoothChooserDialog.glade.h:3 tmp/configDialog.glade.h:56
-#: tmp/nbPictsDialog.glade.h:5 tmp/totalFovDialog.glade.h:5
+#: tmp/bluetoothChooserDialog.glade.h:3
+#: tmp/configDialog.glade.h:56
+#: tmp/nbPictsDialog.glade.h:5
+#: tmp/totalFovDialog.glade.h:5
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -332,7 +337,8 @@ msgstr ""
 msgid "Configuration"
 msgstr "Konfiguracja"
 
-#: tmp/configDialog.glade.h:15 tmp/shootDialog.glade.h:4
+#: tmp/configDialog.glade.h:15
+#: tmp/shootDialog.glade.h:4
 msgid "Data"
 msgstr ""
 
@@ -370,7 +376,8 @@ msgstr "Ogniskowa (mm)"
 msgid "GPS"
 msgstr ""
 
-#: tmp/configDialog.glade.h:24 tmp/mainWindow.glade.h:11
+#: tmp/configDialog.glade.h:24
+#: tmp/mainWindow.glade.h:11
 msgid "Hardware"
 msgstr "Sprzęt"
 
@@ -394,7 +401,8 @@ msgstr "Poziom Loggera"
 msgid "Misc"
 msgstr "Różne"
 
-#: tmp/configDialog.glade.h:31 tmp/mainWindow.glade.h:16
+#: tmp/configDialog.glade.h:31
+#: tmp/mainWindow.glade.h:16
 msgid "Mosaic"
 msgstr "Mozaika"
 
@@ -428,7 +436,8 @@ msgstr "Proporcja matrycy"
 msgid "Serial port"
 msgstr "Port szeregowy"
 
-#: tmp/configDialog.glade.h:40 tmp/shootDialog.glade.h:9
+#: tmp/configDialog.glade.h:40
+#: tmp/shootDialog.glade.h:9
 msgid "Shooting"
 msgstr "Strzelam"
 
@@ -449,7 +458,8 @@ msgstr "Zacznij od"
 msgid "Time value (sec)"
 msgstr ""
 
-#: tmp/configDialog.glade.h:45 tmp/shootDialog.glade.h:13
+#: tmp/configDialog.glade.h:45
+#: tmp/shootDialog.glade.h:13
 #, fuzzy
 msgid "Timer"
 msgstr "Plik"
@@ -540,11 +550,10 @@ msgstr ""
 "pitch"
 
 #: tmp/helpAboutDialog.glade.h:1
-msgid "(C) 2007-2008 Frédéric Mantegazza"
-msgstr "(C) 2007-2008 Frédéric Mantegazza"
+msgid "(C) 2007-2009 Frédéric Mantegazza"
+msgstr "(C) 2007-2009 Frédéric Mantegazza"
 
 #: tmp/helpAboutDialog.glade.h:2
-#, fuzzy
 msgid ""
 "Frédéric Mantegazza (fr)\n"
 "Jo Lutum (de)\n"
@@ -552,8 +561,9 @@ msgid ""
 "Antonio Bruno (it)"
 msgstr ""
 "Frédéric Mantegazza (fr)\n"
+"Jo Lutum (de)\n"
 "Maciej Dworak (pl)\n"
-"Jo Lutum (de)"
+"Antonio Bruno (it)"
 
 #: tmp/helpAboutDialog.glade.h:6
 msgid ""
@@ -637,7 +647,8 @@ msgstr ""
 msgid "Save log"
 msgstr ""
 
-#: tmp/loggerDialog.glade.h:4 tmp/shootDialog.glade.h:16
+#: tmp/loggerDialog.glade.h:4
+#: tmp/shootDialog.glade.h:16
 msgid "gtk-close"
 msgstr "gtk-close"
 
@@ -699,7 +710,8 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-#: tmp/mainWindow.glade.h:18 tmp/nbPictsDialog.glade.h:1
+#: tmp/mainWindow.glade.h:18
+#: tmp/nbPictsDialog.glade.h:1
 msgid "Nb picts"
 msgstr "Ilość zdjęć"
 
@@ -707,8 +719,10 @@ msgstr "Ilość zdjęć"
 msgid "Papywizard"
 msgstr ""
 
-#: tmp/mainWindow.glade.h:20 tmp/nbPictsDialog.glade.h:2
-#: tmp/shootDialog.glade.h:8 tmp/totalFovDialog.glade.h:1
+#: tmp/mainWindow.glade.h:20
+#: tmp/nbPictsDialog.glade.h:2
+#: tmp/shootDialog.glade.h:8
+#: tmp/totalFovDialog.glade.h:1
 msgid "Pitch"
 msgstr ""
 
@@ -748,7 +762,8 @@ msgstr "Strzelaj..."
 msgid "Start (°)"
 msgstr "Początek (°)"
 
-#: tmp/mainWindow.glade.h:31 tmp/totalFovDialog.glade.h:2
+#: tmp/mainWindow.glade.h:31
+#: tmp/totalFovDialog.glade.h:2
 msgid "Total fov (°)"
 msgstr "Łączne pole widzenia (°)"
 
@@ -756,8 +771,10 @@ msgstr "Łączne pole widzenia (°)"
 msgid "View Log..."
 msgstr "Zobacz log..."
 
-#: tmp/mainWindow.glade.h:33 tmp/nbPictsDialog.glade.h:3
-#: tmp/shootDialog.glade.h:15 tmp/totalFovDialog.glade.h:3
+#: tmp/mainWindow.glade.h:33
+#: tmp/nbPictsDialog.glade.h:3
+#: tmp/shootDialog.glade.h:15
+#: tmp/totalFovDialog.glade.h:3
 msgid "Yaw"
 msgstr ""
 
@@ -813,10 +830,8 @@ msgstr "Prosze poczekać..."
 #, fuzzy
 #~ msgid "About Papywizard"
 #~ msgstr "O programie"
-
 #~ msgid "<b>Mosaic settings</b>"
 #~ msgstr "<b>Ustawienia mozaiki</b>"
-
 #~ msgid "<b>Preset settings</b>"
 #~ msgstr "<b>Ustawienia fabryczne</b>"
 
@@ -867,20 +882,16 @@ msgstr "Prosze poczekać..."
 #, fuzzy
 #~ msgid "Every"
 #~ msgstr "Zakończone"
-
 #~ msgid "Data file enable"
 #~ msgstr "Plik danych włączony"
 
 #, fuzzy
 #~ msgid "Intervalometer"
 #~ msgstr "Błąd wewnętrzny"
-
 #~ msgid "Manual shooting"
 #~ msgstr "Ręczne strzelanie"
-
 #~ msgid "Progression..."
 #~ msgstr "Postęp..."
-
 #~ msgid "Square"
 #~ msgstr "Kwadratowe"
 
@@ -895,166 +906,125 @@ msgstr "Prosze poczekać..."
 #, fuzzy
 #~ msgid "Yaw/pitch end position set from current position"
 #~ msgstr "Ustaw tą pozycję jako końcową pitch"
-
 #~ msgid "    Pitch    "
 #~ msgstr "Pitch"
-
 #~ msgid "   Yaw   "
 #~ msgstr "Yaw"
-
 #~ msgid "    Yaw    "
 #~ msgstr "Yaw"
 
 #, fuzzy
 #~ msgid "Invalid configuration"
 #~ msgstr "Konfiguracja"
-
 #~ msgid "Connection status"
 #~ msgstr "Status połączenia"
 
 #, fuzzy
 #~ msgid "Pitch current position"
 #~ msgstr "Ustaw tą pozycję jako końcową pitch"
-
 #~ msgid "Set end from current position"
 #~ msgstr "Ustaw tą pozycje jako końcową"
 
 #, fuzzy
 #~ msgid "Set origin from current position"
 #~ msgstr "Ustaw tą pozycje jako końcową"
-
 #~ msgid "Set start from current position"
 #~ msgstr "Ustaw tą pozycję jako początkową"
 
 #, fuzzy
 #~ msgid "Yaw current position"
 #~ msgstr "Ustaw tą pozycję jako końcową yaw"
-
 #~ msgid "Progression and status of the shooting"
 #~ msgstr "Postęp i stan strzelania"
-
 #~ msgid "Clear the log window"
 #~ msgstr "Wyczyść okno z logiem"
-
 #~ msgid "Templates"
 #~ msgstr "Szablony"
-
 #~ msgid "Hardware has been reseted"
 #~ msgstr "Sprzęt został zrestartowany"
-
 #~ msgid "Bluetooth devices list"
 #~ msgstr "Lista urządzeń Bluetooth"
 
 #, fuzzy
 #~ msgid "Refresh the bluetooth devices list"
 #~ msgstr "Lista urządzeń Bluetooth"
-
 #~ msgid "Address of the bluetooth converter"
 #~ msgstr "Adres konwertera Bluetooth"
-
 #~ msgid "Automatically connect to hardware at startup"
 #~ msgstr "Automatycznie łącz się ze sprzętem przy uruchomieniu"
-
 #~ msgid "Cariage return at each end of raw/col (mosaic mode)"
 #~ msgstr "Powrót głowicy pod koniec każdego rzędu/kolumny (tryb mozaika)"
-
 #~ msgid "Coef. of the sensor to 35mm size"
 #~ msgstr "Ekwiwalent matrycy do 35mm"
-
 #~ msgid "Delay to wait after each move"
 #~ msgstr "Ile czekać po każdym ruchu"
-
 #~ msgid "Direction of the first move (mosaic mode)"
 #~ msgstr "Kierunek pierwszego ruchu (tryb mozaika)"
-
 #~ msgid "Driver to use to connect to hardware"
 #~ msgstr "Sterownik do połączenia ze sprzętem"
-
 #~ msgid "Focal of the lens"
 #~ msgstr "Ogniskowa"
-
 #~ msgid "Force overlap to get square pictures (mosaic mode)"
 #~ msgstr ""
 #~ "Wymuś zachodzenie na siebie aby uzyskać kwadratowy obraz (tryb mozaika)"
-
 #~ msgid "Format of the xml data file name"
 #~ msgstr "Format nazwy pliku danych xml"
-
 #~ msgid "From where to start shooting (mosaic mode)"
 #~ msgstr "Skąd zacząć strzelać (tryb mozaika)"
 
 #, fuzzy
 #~ msgid "Intent of the bracketing"
 #~ msgstr "Port konwertera szeregowego"
-
 #~ msgid "Level of the logger"
 #~ msgstr "Poziom loggera"
-
 #~ msgid "Minimum wanted overlap (mosaic mode)"
 #~ msgstr "Minimalny poziom zachodzenia na siebie (tryb mozaiki)"
 
 #, fuzzy
 #~ msgid "Orientation of the camera"
 #~ msgstr "Orientacja aparatu (tryb mozaiki)"
-
 #~ msgid "Port of the serial converter"
 #~ msgstr "Port konwertera szeregowego"
-
 #~ msgid "Ratio of the sensor"
 #~ msgstr "Proporcja matrycy"
 
 #, fuzzy
 #~ msgid "Type of the lens"
 #~ msgstr "Ogniskowa"
-
 #~ msgid "Move pitch +"
 #~ msgstr "Przesuń pitch +"
-
 #~ msgid "Move pitch -"
 #~ msgstr "Przesuń pitch -"
-
 #~ msgid "Move yaw +"
 #~ msgstr "Przesuń yaw +"
-
 #~ msgid "Move yaw -"
 #~ msgstr "Przesuń yaw -"
-
 #~ msgid "Set pitch end from current position"
 #~ msgstr "Ustaw tą pozycję jako końcową pitch"
-
 #~ msgid "Set pitch start from current position"
 #~ msgstr "Ustaw tą pozycję jako początkową pitch"
-
 #~ msgid "Set yaw end from current position"
 #~ msgstr "Ustaw tą pozycję jako końcową yaw"
-
 #~ msgid "Set yaw start from current position"
 #~ msgstr "Ustaw tą pozycję jako początkową yaw"
-
 #~ msgid "Template"
 #~ msgstr "Szablon"
-
 #~ msgid "Template list for preset shooting"
 #~ msgstr "Lista szablonów do strzelania według wcześniej ustalonych wartości"
-
 #~ msgid "Templates information"
 #~ msgstr "Informacja szablonów"
-
 #~ msgid "What's This?"
 #~ msgstr "Co to takiego?"
-
 #~ msgid "Manual shoot at each position"
 #~ msgstr "Ręcznie strzelaj przy każdej pozycji"
-
 #~ msgid "Start shooting"
 #~ msgstr "Rozpocznij strzelanie"
-
 #~ msgid "Stop shooting"
 #~ msgstr "Zatrzymaj strzelanie"
 
 #, fuzzy
 #~ msgid "Suspend/resume shooting"
 #~ msgstr "Zawieś strzelanie"
-
 #~ msgid "Write data file"
 #~ msgstr "Zapisz plik danych"
+
