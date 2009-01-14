@@ -8,9 +8,13 @@ x bug fix
 
 0000-00-00 Version SVN
 
+2009-01-14 Version 1.6.0 (stable)
+    (include all 1.5.x entries)
+    - changed connect icon
+
 2009-01-04 Version 1.5.6 (dev)
     - changed some icons in shooting dialog
-    x seg. fault and file menu crash?
+    x fixed seg. fault and File menu crash on Nokia
 
 2008-12-23 Version 1.5.5 (dev)
     - Mosaic/Preset now in a Notebook
