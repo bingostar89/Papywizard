@@ -973,7 +973,7 @@ class MainController(AbstractController):
         # Check connection status
         if self.__connectStatus:
             Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
-            self.connectImage.set_from_stock(gtk.STOCK_YES, 4)
+            self.connectImage.set_from_stock(gtk.STOCK_APPLY, 4)
             Logger().info("Now connected to real hardware")
             self.setStatusbarMessage(_("Now connected to real hardware"), 5)
         else:
@@ -991,7 +991,7 @@ class MainController(AbstractController):
         Logger().info("Go to simulation mode")
         self._model.switchToSimulatedHardware()
         Spy().setRefreshRate(config.SPY_FAST_REFRESH)
-        self.connectImage.set_from_stock(gtk.STOCK_NO, 4)
+        self.connectImage.set_from_stock(gtk.STOCK_CANCEL, 4)
         self.setStatusbarMessage(_("Now in simulation mode"), 5)
 
     def __refreshPos(self, yaw, pitch):
