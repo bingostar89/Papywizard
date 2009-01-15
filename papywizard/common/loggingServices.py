@@ -269,6 +269,17 @@ class Logger(object):
         """
         self.__logger.log(level, str(message), *args, **kwargs)
 
+    def getTraceback(self):
+        """ Return teh complete traceback.
+        
+        Should be called in an except statement.
+        """
+        tracebackString = StringIO.StringIO()
+        traceback.print_exc(file=tracebackString)
+        message = tracebackString.getvalue().strip()
+        tracebackString.close()
+        return str(message)
+
     def shutdown(self):
         """ Shutdown the logging service.
         """

@@ -56,9 +56,9 @@ Implements
 
 __revision__ = "$Id$"
 
-import pygtk
-pygtk.require("2.0")
-import gtk
+from PyQt4 import QtGui
+
+from papywizard.common.loggingServices import Logger
 
 _ = lambda a: a
 
@@ -75,80 +75,66 @@ class BaseMessageController(object):
         @param message: dialog message
         @type message: str
         """
-        self._dialog = self._createMessageDialog(subTitle)
-        self._dialog.format_secondary_text(message)
+        self._dialog = QtGui.QMessageBox()
+        self._init()
+        self._dialog.setText(message)
+        self._dialog.setInformativeText(subTitle)
 
-    def run(self):
+    def exec_(self):
         """ Run the dialog.
         
         @return: response
         @rtype: int
         """
-        response = self._dialog.run()
-        self._dialog.destroy()
+        response = self._dialog.exec_()
         return response
 
-    def shutdown(self):
-        """ Shutdown the dialog.
-        """
-        self._dialog.destroy()
-
-    def _createMessageDialog(self, subTitle, message):
-        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=type_, buttons=gtk.BUTTONS_CLOSE,
-                                   message_format=subTitle)
-        dialog.set_title(title)
-        dialog.format_secondary_text(message)
-        return dialog
+    def _init(self):
+        raise NotImplementedError
 
 
 class InfoMessageController(BaseMessageController):
     """ Info message controller.
     """
-    def _createMessageDialog(self, subTitle):
-        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_INFO, buttons=gtk.BUTTONS_CLOSE,
-                                   message_format=subTitle)
-        dialog.set_title(_("Info"))
-        return dialog
+    def _init(self):
+        self._dialog.setIcon(QtGui.QMessageBox.Information)
+        self._dialog.setStandardButtons(QtGui.QMessageBox.Close)
+        self._dialog.setWindowTitle(_("Info"))
 
 
 class WarningMessageController(BaseMessageController):
     """ Warning message controller.
     """
-    def _createMessageDialog(self, subTitle):
-        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_WARNING, buttons=gtk.BUTTONS_CLOSE,
-                                   message_format=subTitle)
-        dialog.set_title(_("Warning"))
-        return dialog
+    def _init(self):
+        self._dialog.setIcon(QtGui.QMessageBox.Warning)
+        self._dialog.setStandardButtons(QtGui.QMessageBox.Close)
+        self._dialog.setWindowTitle(_("Warning"))
 
 
 class ErrorMessageController(BaseMessageController):
     """ Error message controller.
     """
-    def _createMessageDialog(self, subTitle):
-        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                   message_format=subTitle)
-        dialog.set_title(_("Error"))
-        return dialog
+    def _init(self):
+        self._dialog.setIcon(QtGui.QMessageBox.Critical)
+        self._dialog.setStandardButtons(QtGui.QMessageBox.Close)
+        self._dialog.setWindowTitle(_("Error"))
 
 
 class ExceptionMessageController(BaseMessageController):
     """ Exception message controller.
     """
-    def _createMessageDialog(self, subTitle):
-        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_ERROR, buttons=gtk.BUTTONS_CLOSE,
-                                   message_format=subTitle)
-        dialog.set_title(_("Exception"))
-        dialog.set_default_response(gtk.RESPONSE_YES)
-        return dialog
+    def _init(self):
+        self._dialog.setIcon(QtGui.QMessageBox.Critical)
+        self._dialog.setStandardButtons(QtGui.QMessageBox.Close)
+        self._dialog.setWindowTitle(_("Exception"))
+        self._dialog.setDetailedText(Logger().getTraceback())
 
 
 class YesNoMessageController(BaseMessageController):
     """ Yes/No question message controller.
     """
-    def _createMessageDialog(self, subTitle):
-        dialog = gtk.MessageDialog(flags=gtk.DIALOG_MODAL, type=gtk.MESSAGE_QUESTION,
-                                   buttons=gtk.BUTTONS_YES_NO,
-                                   message_format=subTitle)
-        dialog.set_title(_("Question"))
-        dialog.set_default_response(gtk.RESPONSE_YES)
-        return dialog
+    def _init(self):
+        self._dialog.setIcon(QtGui.QMessageBox.Question)
+        self._dialog.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        self._dialog.setDefaultButton(QtGui.QMessageBox.Yes)
+        self._dialog.setWindowTitle(_("Question"))

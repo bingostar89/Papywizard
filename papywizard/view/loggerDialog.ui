@@ -9,6 +9,11 @@
     <height>300</height>
    </rect>
   </property>
+  <property name="font" >
+   <font>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
   <property name="windowTitle" >
    <string>Logger</string>
   </property>
@@ -28,7 +33,7 @@
         <bool>true</bool>
        </property>
        <property name="plainText" >
-        <string>Log goes gere...</string>
+        <string>Log goes here...</string>
        </property>
        <property name="backgroundVisible" >
         <bool>false</bool>

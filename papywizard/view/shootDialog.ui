@@ -9,6 +9,11 @@
     <height>399</height>
    </rect>
   </property>
+  <property name="font" >
+   <font>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
   <property name="windowTitle" >
    <string>Shooting</string>
   </property>
@@ -27,7 +32,10 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2" >
          <item>
-          <widget class="QPushButton" name="pushButton_3" >
+          <widget class="QPushButton" name="textViewPushButton" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
            <property name="sizePolicy" >
             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
              <horstretch>0</horstretch>
@@ -42,6 +50,9 @@
              <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/frame_text.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/frame_text.png</iconset>
            </property>
            <property name="checkable" >
+            <bool>true</bool>
+           </property>
+           <property name="checked" >
             <bool>true</bool>
            </property>
           </widget>
@@ -94,6 +105,182 @@
          <property name="frameShadow" >
           <enum>QFrame::Sunken</enum>
          </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6" >
+          <item>
+           <layout class="QGridLayout" name="textShootingGridLayout" >
+            <item row="0" column="1" >
+             <widget class="QLabel" name="label_3" >
+              <property name="text" >
+               <string>Total</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2" >
+             <widget class="QLabel" name="nextIndexLabel_" >
+              <property name="text" >
+               <string>Yaw</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3" >
+             <widget class="QLabel" name="label_5" >
+              <property name="text" >
+               <string>Pitch</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" >
+             <widget class="QLabel" name="label" >
+              <property name="text" >
+               <string>Current</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="margin" >
+               <number>5</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1" >
+             <widget class="QLabel" name="currentIndexLabel" >
+              <property name="font" >
+               <font>
+                <pointsize>13</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text" >
+               <string>--/--</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2" >
+             <widget class="QLabel" name="yawCurrentIndexLabel" >
+              <property name="font" >
+               <font>
+                <pointsize>13</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text" >
+               <string>--/--</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3" >
+             <widget class="QLabel" name="pitchCurrentIndexLabel" >
+              <property name="font" >
+               <font>
+                <pointsize>13</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text" >
+               <string>--/--</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0" >
+             <widget class="QLabel" name="textNextLabel" >
+              <property name="enabled" >
+               <bool>false</bool>
+              </property>
+              <property name="text" >
+               <string>Next</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="margin" >
+               <number>5</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2" >
+             <widget class="QLabel" name="yawNextIndexLabel" >
+              <property name="enabled" >
+               <bool>false</bool>
+              </property>
+              <property name="font" >
+               <font>
+                <pointsize>13</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text" >
+               <string>--/--</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="3" >
+             <widget class="QLabel" name="pitchNextIndexLabel" >
+              <property name="enabled" >
+               <bool>false</bool>
+              </property>
+              <property name="font" >
+               <font>
+                <pointsize>13</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text" >
+               <string>--/--</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1" >
+             <widget class="QLabel" name="nextIndexLabel" >
+              <property name="enabled" >
+               <bool>false</bool>
+              </property>
+              <property name="font" >
+               <font>
+                <pointsize>13</pointsize>
+                <weight>75</weight>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="text" >
+               <string>--/--</string>
+              </property>
+              <property name="alignment" >
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
@@ -184,7 +371,7 @@
          </property>
          <property name="minimumSize" >
           <size>
-           <width>30</width>
+           <width>50</width>
            <height>0</height>
           </size>
          </property>
@@ -217,7 +404,7 @@
          </property>
          <property name="minimumSize" >
           <size>
-           <width>60</width>
+           <width>70</width>
            <height>0</height>
           </size>
          </property>
@@ -244,7 +431,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="elpsedTimeLabel" >
+        <widget class="QLabel" name="elapsedTimeLabel" >
          <property name="sizePolicy" >
           <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
            <horstretch>0</horstretch>
@@ -253,7 +440,7 @@
          </property>
          <property name="minimumSize" >
           <size>
-           <width>60</width>
+           <width>70</width>
            <height>0</height>
           </size>
          </property>
@@ -308,7 +495,7 @@
             </font>
            </property>
            <property name="value" >
-            <number>24</number>
+            <number>0</number>
            </property>
            <property name="textVisible" >
             <bool>false</bool>
@@ -341,7 +528,7 @@
             </font>
            </property>
            <property name="value" >
-            <number>24</number>
+            <number>0</number>
            </property>
            <property name="textVisible" >
             <bool>false</bool>
@@ -352,6 +539,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="dataPushButton" >
+         <property name="enabled" >
+          <bool>true</bool>
+         </property>
          <property name="font" >
           <font>
            <pointsize>10</pointsize>
@@ -374,6 +564,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="timerPushButton" >
+         <property name="enabled" >
+          <bool>true</bool>
+         </property>
          <property name="font" >
           <font>
            <pointsize>10</pointsize>

@@ -55,12 +55,9 @@ import time
 import thread
 import os.path
 import webbrowser
+import types
 
-import pygtk
-pygtk.require("2.0")
-import gtk
-import pango
-import gobject
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
@@ -68,7 +65,8 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.presetManager import PresetManager
 from papywizard.common.exception import HardwareError
 from papywizard.controller.abstractController import AbstractController
-from papywizard.controller.messageController import ErrorMessageController, WarningMessageController, YesNoMessageController
+from papywizard.controller.messageController import ErrorMessageController, WarningMessageController, \
+                                                    YesNoMessageController, ExceptionMessageController
 from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.helpAboutController import HelpAboutController
 from papywizard.controller.totalFovController import TotalFovController
@@ -82,60 +80,21 @@ from papywizard.controller.spy import Spy
 class MainController(AbstractController):
     """ Main controller object.
     """
-    def __init__(self, model, serializer, gtkLogStream):
+    def __init__(self, model, serializer, qtLogStream):
         """ Init the controller.
 
         @param serializer: object used to serialize toolkit events
         @type serializer: {Serializer}
         """
         super(MainController, self).__init__(None, model, serializer)
-        self.__gtkLogStream = gtkLogStream
+        self.__qtLogStream = qtLogStream
 
         # Try to autoconnect to real hardware
         if ConfigManager().getBoolean('Preferences', 'HARDWARE_AUTO_CONNECT'):
-            self.hardwareConnectMenuitem.set_active(True)
+            self.hardwareConnect.set_active(True)
 
     def _init(self):
-        self._gladeFile = "mainWindow.glade"
-        self._signalDict = {"on_fileLoadPresetMenuitem_activate": self.__onFileLoadPresetMenuitemActivate,
-                            "on_fileLoadGtkrcMenuitem_activate": self.__onFileLoadGtkrcMenuitemActivate,
-                            "on_quitMenuitem_activate": gtk.main_quit,
-                            "on_hardwareConnectMenuitem_toggled": self.__onHardwareConnectMenuitemToggled,
-                            "on_hardwareSetLimitYawMinusMenuitem_activate": self.__onHardwareSetLimitYawMinusMenuitemActivate,
-                            "on_hardwareSetLimitYawPlusMenuitem_activate": self.__onHardwareSetLimitYawPlusMenuitemActivate,
-                            "on_hardwareSetLimitPitchPlusMenuitem_activate": self.__onHardwareSetLimitPitchPlusMenuitemActivate,
-                            "on_hardwareSetLimitPitchMinusMenuitem_activate": self.__onHardwareSetLimitPitchMinusMenuitemActivate,
-                            "on_hardwareClearLimitsMenuitem_activate": self.__onHardwareClearLimitsMenuitemActivate,
-                            "on_helpManualMenuitem_activate": self.__onHelpManualMenuitemActivate,
-                            "on_helpViewLogMenuitem_activate": self.__onHelpViewLogMenuitemActivate,
-                            "on_helpAboutMenuitem_activate": self.__onHelpAboutMenuitemActivate,
-
-                            "on_notebook_switch_page": self.__onNoteBookSwitchPage,
-
-                            "on_setYawStartButton_clicked": self.__onSetYawStartButtonClicked,
-                            "on_setPitchStartButton_clicked": self.__onSetPitchStartButtonClicked,
-                            "on_setYawEndButton_clicked": self.__onSetYawEndButtonClicked,
-                            "on_setPitchEndButton_clicked": self.__onSetPitchEndButtonClicked,
-                            "on_setStartButton_clicked": self.__onSetStartButtonClicked,
-                            "on_setEndButton_clicked": self.__onSetEndButtonClicked,
-                            "on_totalFovButton_clicked": self.__onTotalFovButtonClicked,
-                            "on_nbPictsButton_clicked": self.__onNbPictsButtonClicked,
-
-                            "on_presetCombobox_changed": self.__onPresetComboboxChanged,
-
-                            "on_hardwareSetOriginButton_clicked": self.__onHardwareSetOriginButtonClicked,
-                            "on_yawMovePlusTogglebutton_pressed": self.__onYawMovePlusTogglebuttonPressed,
-                            "on_yawMovePlusTogglebutton_released": self.__onYawMovePlusTogglebuttonReleased,
-                            "on_pitchMovePlusTogglebutton_pressed": self.__onPitchMovePlusTogglebuttonPressed,
-                            "on_pitchMovePlusTogglebutton_released": self.__onPitchMovePlusTogglebuttonReleased,
-                            "on_yawMoveMinusTogglebutton_pressed": self.__onYawMoveMinusTogglebuttonPressed,
-                            "on_yawMoveMinusTogglebutton_released": self.__onYawMoveMinusTogglebuttonReleased,
-                            "on_pitchMoveMinusTogglebutton_pressed": self.__onPitchMoveMinusTogglebuttonPressed,
-                            "on_pitchMoveMinusTogglebutton_released": self.__onPitchMoveMinusTogglebuttonReleased,
-
-                            "on_configButton_clicked": self.__onConfigButtonClicked,
-                            "on_shootButton_clicked": self.__onShootButtonClicked,
-                        }
+        self._uiFile = "mainWindow.ui"
 
         self.__keyPressedDict = {'FullScreen': False,
                                  'Right': False,
@@ -148,160 +107,105 @@ class MainController(AbstractController):
                                  'space': False,
                                  'Return': False,
                                  'Escape': False,
-                                 'Control': False,
-                                 'q': False,
                              }
-        self.__key = {'FullScreen': gtk.keysyms.F6,
-                      'Right': gtk.keysyms.Right,
-                      'Left': gtk.keysyms.Left,
-                      'Up': gtk.keysyms.Up,
-                      'Down': gtk.keysyms.Down,
-                      'Home': gtk.keysyms.Home,
-                      'End': gtk.keysyms.End,
-                      'Tab': gtk.keysyms.Tab,
-                      'space': gtk.keysyms.space,
-                      'Return': gtk.keysyms.Return,
-                      'Escape': gtk.keysyms.Escape,
-                      'Control_L': gtk.keysyms.Control_L,
-                      'Control_R': gtk.keysyms.Control_R,
-                      'q': gtk.keysyms.q,
-                      }
-
-        # Nokia plateform stuff
-        try:
-            import hildon
-            self.__key['Home'] = gtk.keysyms.F8
-            self.__key['End'] = gtk.keysyms.F7
-        except ImportError:
-            pass
+        #self.__key = {'FullScreen': gtk.keysyms.F6,
+                      #'Right': gtk.keysyms.Right,
+                      #'Left': gtk.keysyms.Left,
+                      #'Up': gtk.keysyms.Up,
+                      #'Down': gtk.keysyms.Down,
+                      #'Home': gtk.keysyms.Home,
+                      #'End': gtk.keysyms.End,
+                      #'Tab': gtk.keysyms.Tab,
+                      #'space': gtk.keysyms.space,
+                      #'Return': gtk.keysyms.Return,
+                      #'Escape': gtk.keysyms.Escape,
+                      #}
 
         self.__yawPos = 0
         self.__pitchPos = 0
-        self.__statusbarTimeoutEventId = None
         self.__connectStatus = None
         self.__connectErrorMessage = None
         self.__mosaicInputParam = 'startEnd'
         self.__manualSpeed = 'normal'
         #self.__fullScreen = False
 
-    def _retreiveWidgets(self):
-        """ Get widgets from widget tree.
-        """
-        super(MainController, self)._retreiveWidgets()
-
-        self.mainVbox = self.wTree.get_widget("mainVbox")
-        self.menubar = self.wTree.get_widget("menubar")
-        self.hardwareConnectMenuitem = self.wTree.get_widget("hardwareConnectMenuitem")
-        self.hardwareResetMenuitem = self.wTree.get_widget("hardwareResetMenuitem")
-        self.notebook = self.wTree.get_widget("notebook")
-        self.setYawStartButtonLabel = self.wTree.get_widget("setYawStartButton").child
-        self.setPitchStartButtonLabel = self.wTree.get_widget("setPitchStartButton").child
-        self.setYawEndButtonLabel = self.wTree.get_widget("setYawEndButton").child
-        self.setPitchEndButtonLabel = self.wTree.get_widget("setPitchEndButton").child
-        self.setStartTogglebutton = self.wTree.get_widget("setStartTogglebutton")
-        self.setEndTogglebutton = self.wTree.get_widget("setEndTogglebutton")
-        self.totalFovButton = self.wTree.get_widget("totalFovButton")
-        self.nbPictsButton = self.wTree.get_widget("nbPictsButton")
-        self.yawFovLabel = self.wTree.get_widget("yawFovLabel")
-        self.pitchFovLabel = self.wTree.get_widget("pitchFovLabel")
-        self.yawNbPictsLabel = self.wTree.get_widget("yawNbPictsLabel")
-        self.pitchNbPictsLabel = self.wTree.get_widget("pitchNbPictsLabel")
-        self.yawRealOverlapLabel = self.wTree.get_widget("yawRealOverlapLabel")
-        self.pitchRealOverlapLabel = self.wTree.get_widget("pitchRealOverlapLabel")
-        self.yawResolutionLabel = self.wTree.get_widget("yawResolutionLabel")
-        self.pitchResolutionLabel = self.wTree.get_widget("pitchResolutionLabel")
-        self.presetCombobox = self.wTree.get_widget("presetCombobox")
-        self.presetInfoTextview = self.wTree.get_widget("presetInfoTextview")
-        self.yawHeadPosLabel = self.wTree.get_widget("yawHeadPosLabel")
-        self.pitchHeadPosLabel = self.wTree.get_widget("pitchHeadPosLabel")
-        self.manualSpeedImage =  self.wTree.get_widget("manualSpeedImage")
-        self.yawMovePlusTogglebutton = self.wTree.get_widget("yawMovePlusTogglebutton")
-        self.pitchMovePlusTogglebutton = self.wTree.get_widget("pitchMovePlusTogglebutton")
-        self.yawMoveMinusTogglebutton = self.wTree.get_widget("yawMoveMinusTogglebutton")
-        self.pitchMoveMinusTogglebutton = self.wTree.get_widget("pitchMoveMinusTogglebutton")
-        self.configButton = self.wTree.get_widget("configButton")
-        self.shootButton = self.wTree.get_widget("shootButton")
-        self.statusbar = self.wTree.get_widget("statusbar")
-        self.statusbarContextId = self.statusbar.get_context_id("default")
-        self.connectImage = self.wTree.get_widget("connectImage")
-
     def _initWidgets(self):
+        def hasHeightForWidth(self):
+            return True
+        
+        def heightForWidth(self, width):
+            return width
 
         # Presets
-        listStore = gtk.ListStore(gobject.TYPE_STRING)
-        self.presetCombobox.set_model(listStore)
-        cell = gtk.CellRendererText()
-        self.presetCombobox.pack_start(cell, True)
-        #self.presetCombobox.add_attribute(cell, 'text', 0)
-        self.__populatePresetCombobox()
+        self.__populatePresetComboBox()
 
-        self.presetInfoBuffer = gtk.TextBuffer()
-        self.presetInfoBuffer.create_tag('name', foreground='red')
-        self.presetInfoBuffer.create_tag('tooltip', foreground='blue', style=pango.STYLE_OBLIQUE)
-        self.presetInfoTextview.set_buffer(self.presetInfoBuffer)
+        # Force arrows layout as square (does not work)
+        self._view.moveArrowsGridLayout.heightForWidth = types.MethodType(heightForWidth, self._view.moveArrowsGridLayout)
+        self._view.moveArrowsGridLayout.hasHeightForWidth = types.MethodType(hasHeightForWidth, self._view.moveArrowsGridLayout)
 
-        # Font
-        self._setFontParams(self.yawHeadPosLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.pitchHeadPosLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.setYawStartButtonLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.setPitchStartButtonLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.setYawEndButtonLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.setPitchEndButtonLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.yawFovLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.pitchFovLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.yawNbPictsLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.pitchNbPictsLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.yawRealOverlapLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.pitchRealOverlapLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.yawResolutionLabel, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.pitchResolutionLabel, weight=pango.WEIGHT_BOLD)
-
-        # Nokia plateform stuff
-        try:
-            import hildon
-
-            self.app = hildon.Program()
-            window = hildon.Window()
-            window.set_title(self.dialog.get_title())
-            #window.fullscreen()
-            #self.__fullScreen = True
-            self.app.add_window(window)
-            self.mainVbox.reparent(window)
-
-            menu = gtk.Menu()
-            for child in self.menubar.get_children():
-                child.reparent(menu)
-            window.set_menu(menu)
-
-            self.menubar.destroy()
-            self.dialog.destroy()
-            window.show_all()
-            self.menuBar = menu
-            self.dialog = window
-
-        except ImportError:
-            pass
+        # Disable 'timelapse' tab
+        self._view.tabWidget.setTabEnabled(2, False)
 
         if self.__fullScreen:
-            self.dialog.fullscreen()
+            self._view.dialog.fullscreen()
+
+        print self._view
+        self._view.show()
+
+    def _connectQtSignals(self):
+        super(MainController, self)._connectQtSignals()
+
+        # Menus
+        QtCore.QObject.connect(self._view.actionFileLoadPreset, QtCore.SIGNAL("activated()"), self.__onActionFileLoadPresetActivated)
+        #"on_fileLoadGtkrc_activate": self.__onFileLoadGtkrcActivate,
+        #"on_quit_activate": gtk.main_quit,
+
+        QtCore.QObject.connect(self._view.actionHardwareConnect, QtCore.SIGNAL("toggled(bool)"), self.__onActionHardwareConnectToggled)
+        QtCore.QObject.connect(self._view.actionHardwareSetLimitYawMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitYawMinusActivated)
+        QtCore.QObject.connect(self._view.actionHardwareSetLimitYawPlus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitYawPlusActivated)
+        QtCore.QObject.connect(self._view.actionHardwareSetLimitPitchPlus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchPlusActivated)
+        QtCore.QObject.connect(self._view.actionHardwareSetLimitPitchMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchMinusActivated)
+        QtCore.QObject.connect(self._view.actionHardwareClearLimits, QtCore.SIGNAL("activated()"), self.__onActionHardwareClearLimitsActivated)
+        QtCore.QObject.connect(self._view.actionHelpManual, QtCore.SIGNAL("activated()"), self.__onActionHelpManualActivated)
+        QtCore.QObject.connect(self._view.actionHelpViewLog, QtCore.SIGNAL("activated()"), self.__onActionHelpViewLogActivated)
+        QtCore.QObject.connect(self._view.actionHelpAboutPapywizard, QtCore.SIGNAL("activated()"), self.__onActionHelpAboutPapywizardActivated)
+
+        # Widgets
+        QtCore.QObject.connect(self._view.tabWidget, QtCore.SIGNAL("currentChanged(int)"), self.__onTabWidgetCurrentChanged)
+
+        QtCore.QObject.connect(self._view.setYawStartPushButton, QtCore.SIGNAL("clicked()"), self.__onSetYawStartPushButtonClicked)
+        QtCore.QObject.connect(self._view.setPitchStartPushButton, QtCore.SIGNAL("clicked()"), self.__onSetPitchStartPushButtonClicked)
+        QtCore.QObject.connect(self._view.setYawEndPushButton, QtCore.SIGNAL("clicked()"), self.__onSetYawEndPushButtonClicked)
+        QtCore.QObject.connect(self._view.setPitchEndPushButton, QtCore.SIGNAL("clicked()"), self.__onSetPitchEndPushButtonClicked)
+        QtCore.QObject.connect(self._view.setStartPushButton, QtCore.SIGNAL("clicked()"), self.__onSetStartPushButtonClicked)
+        QtCore.QObject.connect(self._view.setEndPushButton, QtCore.SIGNAL("clicked()"), self.__onSetEndPushButtonClicked)
+        QtCore.QObject.connect(self._view.totalFovPushButton, QtCore.SIGNAL("clicked()"), self.__onTotalFovPushButtonClicked)
+        QtCore.QObject.connect(self._view.nbPictsPushButton, QtCore.SIGNAL("clicked()"), self.__onNbPictsPushButtonClicked)
+
+        QtCore.QObject.connect(self._view.presetComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onPresetCurrentIndexComboBoxChanged)
+
+        QtCore.QObject.connect(self._view.setOriginToolButton, QtCore.SIGNAL("clicked()"), self.__onetOriginToolButtonClicked)
+        QtCore.QObject.connect(self._view.yawMovePlusToolButton, QtCore.SIGNAL("pressed()"), self.__onYawMovePlusToolButtonPressed)
+        QtCore.QObject.connect(self._view.yawMovePlusToolButton, QtCore.SIGNAL("released()"), self.__onYawMovePlusToolButtonReleased)
+        QtCore.QObject.connect(self._view.pitchMovePlusToolButton, QtCore.SIGNAL("pressed()"), self.__onPitchMovePlusToolButtonPressed)
+        QtCore.QObject.connect(self._view.pitchMovePlusToolButton, QtCore.SIGNAL("released()"), self.__onPitchMovePlusToolButtonReleased)
+        QtCore.QObject.connect(self._view.yawMoveMinusToolButton, QtCore.SIGNAL("pressed()"), self.__onYawMoveMinusToolButtonPressed)
+        QtCore.QObject.connect(self._view.yawMoveMinusToolButton, QtCore.SIGNAL("released()"), self.__onYawMoveMinusToolButtonReleased)
+        QtCore.QObject.connect(self._view.pitchMoveMinusToolButton, QtCore.SIGNAL("pressed()"), self.__onPitchMoveMinusToolButtonPressed)
+        QtCore.QObject.connect(self._view.pitchMoveMinusToolButton, QtCore.SIGNAL("released()"), self.__onPitchMoveMinusToolButtonReleased)
+
+        QtCore.QObject.connect(self._view.configPushButton, QtCore.SIGNAL("clicked()"), self.__onConfigPushButtonClicked)
+        QtCore.QObject.connect(self._view.shootPushButton, QtCore.SIGNAL("clicked()"), self.__onShootPushButtonClicked)
+
+        #self._view.dialog.connect("key-press-event", self.__onKeyPressed)
+        #self._view.dialog.connect("key-release-event", self.__onKeyReleased)
+        #self._view.dialog.connect("window-state-event", self.__onWindowStateChanged)
 
     def _connectSignals(self):
-        super(MainController, self)._connectSignals()
-
-        # Because of the hildonization (and reparenting the GUI), the dialog defined in glade
-        # does not exists anymore when _connectSignals() is called. So, the autoconnect
-        # feature can't be used for dialog signals. That's why they are defined here.
-        # Note there is no problem for other modal dialogs...
-        self.dialog.connect("key-press-event", self.__onKeyPressed)
-        self.dialog.connect("key-release-event", self.__onKeyReleased)
-        #self.dialog.connect("window-state-event", self.__onWindowStateChanged)
         Spy().newPosSignal.connect(self.__refreshPos)
         self._model.switchToRealHardwareSignal.connect(self.__switchToRealHardwareCallback)
 
     def _disconnectSignals(self):
-        self.dialog.disconnect("key-press-event", self.__onKeyPressed)
-        self.dialog.disconnect("key-release-event", self.__onKeyReleased)
-        #self.dialog.disconnect("window-state-event", self.__onWindowStateChanged)
         Spy().newPosSignal.disconnect(self.__refreshPos)
         self._model.switchToRealHardwareSignal.disconnect(self.__switchToRealHardwareCallback)
 
@@ -331,10 +235,10 @@ class MainController(AbstractController):
             if not self.__keyPressedDict['FullScreen']:
                 Logger().debug("MainController.__onKeyPressed(): 'FullScreen' key pressed")
                 if self.__fullScreen:
-                    self.dialog.unfullscreen()
+                    self._view.dialog.unfullscreen()
                     self.__fullScreen = False
                 else:
-                    self.dialog.fullscreen()
+                    self._view.dialog.fullscreen()
                     self.__fullScreen = True
                 self.__keyPressedDict['FullScreen'] = True
             return True
@@ -410,7 +314,7 @@ class MainController(AbstractController):
                 elif self.__manualSpeed == 'normal':
                     controller = WarningMessageController(_("Fast manual speed"),
                                                           _("Manual speed set to 'fast'\nThis can be dangerous for the hardware!"))
-                    controller.run()
+                    controller.exec_()
                     controller.shutdown()
                     self.__manualSpeed = 'fast'
                     Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select fast speed")
@@ -448,26 +352,10 @@ class MainController(AbstractController):
                 self.__keyPressedDict['Escape'] = True
             controller = YesNoMessageController(_("About to Quit"),
                                                 _("Are you sure you want to quit Papywizard?"))
-            response = controller.run()
+            response = controller.exec_()
             controller.shutdown()
             if response == gtk.RESPONSE_YES:
                 gtk.main_quit()
-            return True
-
-        # 'Control' key
-        elif event.keyval == self.__key['Control_L'] or event.keyval == self.__key['Control_R']:
-            if not self.__keyPressedDict['Control']:
-                Logger().debug("MainController.__onKeyPressed(): 'Control' key pressed")
-                self.__keyPressedDict['Control'] = True
-
-        # 'q' key
-        elif event.keyval == self.__key['q']:
-            if not self.__keyPressedDict['q']:
-                Logger().debug("MainController.__onKeyPressed(): 'q' key pressed")
-                self.__keyPressedDict['q'] = True
-                if self.__keyPressedDict['Control']:
-                    Logger().debug("MainController.__onKeyPressed(): 'Control-q' key pressed")
-                    gtk.main_quit()
             return True
 
         else:
@@ -559,268 +447,195 @@ class MainController(AbstractController):
                 self.__keyPressedDict['Escape'] = False
             return True
 
-        # 'Control' key
-        elif event.keyval == self.__key['Control_L'] or event.keyval == self.__key['Control_R']:
-            if self.__keyPressedDict['Control']:
-                Logger().debug("MainController.__onKeyPressed(): 'Control' key released")
-                self.__keyPressedDict['Control'] = False
-            return True
-
-        # 'q' key
-        elif event.keyval == self.__key['q']:
-            if self.__keyPressedDict['q']:
-                Logger().debug("MainController.__onKeyPressed(): 'q' key released")
-                self.__keyPressedDict['q'] = False
-            return True
-
         else:
             Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
 
-    #def __onWindowStateChanged(self, widget, event, *args):
-        #Logger().debug("MainController.__onWindowStateChanged()")
-        #if event.new_window_state & gtk.gdk.WINDOW_STATE_FULLSCREEN:
-            #self.__fullScreen = True
+    def __onActionFileLoadPresetActivated(self):
+        Logger().trace("MainController.__onActionFileLoadPresetActivated()")
+        fileName =  QtGui.QFileDialog.getOpenFileName(self._view,
+                                                      _("Load Preset file"),
+                                                      os.path.join(config.HOME_DIR, config.PRESET_FILE),
+                                                      _("XML files (*.xml);;All files (*)"))
+        if fileName:
+            self.__importPresetFile(fileName)
+
+    def __onActionHardwareConnectToggled(self, checked):
+        Logger().debug("MainController.__onActionHardwareConnectToggled(%s)" % checked)
+        #if checked:
+            #self.__connectToHardware()
         #else:
-            #self.__fullScreen = False
+            #self.__goToSimulationMode()
 
-    def __onFileLoadPresetMenuitemActivate(self, widget):
-        """
-        @todo: make a custom dialog
-        """
-        Logger().trace("MainController.__onFileLoadPresetMenuitemActivate()")
-        fileDialog = gtk.FileChooserDialog(title="Import Preset file", parent=self.dialog,
-                                           action=gtk.FILE_CHOOSER_ACTION_OPEN,
-                                           buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                                                    gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
-        filter = gtk.FileFilter()
-        filter.set_name("xml files")
-        filter.add_pattern("*.xml")
-        fileDialog.add_filter(filter)
-        filter = gtk.FileFilter()
-        filter.set_name("all files")
-        filter.add_pattern("*")
-        fileDialog.add_filter(filter)
-        #fileDialog.set_current_folder_uri(config.HOME_DIR)
-        fileDialog.set_filename(os.path.join(config.HOME_DIR, config.PRESET_FILE))
-        response = fileDialog.run()
-        if response == gtk.RESPONSE_ACCEPT:
-            presetFileName = fileDialog.get_filename()
-            self.__importPresetFile(presetFileName)
-        fileDialog.destroy()
-
-    def __onFileLoadGtkrcMenuitemActivate(self, widget):
-        Logger().trace("MainController.__onFileLoadGtkrcMenuitemActivate()")
-        fileDialog = gtk.FileChooserDialog(title="Load Gtkrc file", parent=self.dialog,
-                                           action=gtk.FILE_CHOOSER_ACTION_OPEN,
-                                           buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                                                    gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
-        filter = gtk.FileFilter()
-        filter.set_name("all files")
-        filter.add_pattern("*")
-        fileDialog.add_filter(filter)
-        #fileDialog.set_current_folder_uri(config.HOME_DIR)
-        fileDialog.set_filename(os.path.join(config.HOME_DIR, config.GTKRC_FILE))
-        response = fileDialog.run()
-        if response == gtk.RESPONSE_ACCEPT:
-            gtkrcFileName = fileDialog.get_filename()
-            Logger().debug("MainController.__onFileLoadGtkrcMenuitemActivate(): resources file=%s" % gtkrcFileName)
-            gtk.rc_parse(gtkrcFileName)
-            screen = self.dialog.get_screen()
-            settings = gtk.settings_get_for_screen(screen)
-            gtk.rc_reset_styles(settings)
-        fileDialog.destroy()
-
-    def __onHardwareConnectMenuitemToggled(self, widget):
-        switch = self.hardwareConnectMenuitem.get_active()
-        Logger().debug("MainController.__onHardwareConnectMenuitemToggled(%s)" % switch)
-        if switch:
-            self.__connectToHardware()
-        else:
-            self.__goToSimulationMode()
-
-    def __onHardwareSetLimitYawMinusMenuitemActivate(self, widget):
+    def __onActionHardwareSetLimitYawMinusActivated(self):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('yaw', '-', yaw)
-        Logger().debug("MainController.__onHardwareSetLimitYawMinusMenuitemActivate(): yaw minus limit set to %.1f" % yaw)
+        Logger().debug("MainController.__onActionHardwareSetLimitYawMinusActivated(): yaw minus limit set to %.1f" % yaw)
         self.setStatusbarMessage(_("Yaw - limit set"), 10)
 
-    def __onHardwareSetLimitYawPlusMenuitemActivate(self, widget):
+    def __onActionHardwareSetLimitYawPlusActivated(self):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('yaw', '+', yaw)
-        Logger().debug("MainController.__onHardwareSetLimitYawPlusMenuitemActivate(): yaw plus limit set to %.1f" % yaw)
+        Logger().debug("MainController.__onActionHardwareSetLimitYawPlusActivated(): yaw plus limit set to %.1f" % yaw)
         self.setStatusbarMessage(_("Yaw + limit set"), 10)
 
-    def __onHardwareSetLimitPitchPlusMenuitemActivate(self, widget):
+    def __onActionHardwareSetLimitPitchPlusActivated(self):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('pitch', '+', pitch)
-        Logger().debug("MainController.__onHardwareSetLimitPitchPlusMenuitemActivate(): pitch plus limit set to %.1f" % pitch)
+        Logger().debug("MainController.__onActionHardwareSetLimitPitchPlusActivated(): pitch plus limit set to %.1f" % pitch)
         self.setStatusbarMessage(_("Pitch + limit set"), 10)
 
-    def __onHardwareSetLimitPitchMinusMenuitemActivate(self, widget):
+    def __onActionHardwareSetLimitPitchMinusActivated(self):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('pitch', '-', pitch)
-        Logger().debug("MainController.__onHardwareSetLimitPitchMinusMenuitemActivate(): pitch minus limit set to %.1f" % pitch)
+        Logger().debug("MainController.__onActionHardwareSetLimitPitchMinusActivated(): pitch minus limit set to %.1f" % pitch)
         self.setStatusbarMessage(_("Pitch - limit set"), 10)
 
-    def __onHardwareClearLimitsMenuitemActivate(self, widget):
-        Logger().trace("MainController.__onHardwareClearLimitsMenuitemActivate()")
+    def __onActionHardwareClearLimitsActivated(self):
+        Logger().trace("MainController.__onActionHardwareClearLimitsActivated()")
         self._model.hardware.clearLimits()
         self.setStatusbarMessage(_("Limits cleared"), 10)
 
-    def __onHelpManualMenuitemActivate(self, widget):
-        Logger().trace("MainController.__onHelpManualMenuitemActivate()")
+    def __onActionHelpManualActivated(self):
+        Logger().trace("MainController.__onActionHelpManualActivated()")
         webbrowser.open(config.USER_GUIDE_URL)
 
-    def __onHelpWhatsThisMenuitemActivate(self, widget):
-        Logger().trace("MainController.__onHelpWhatsThisMenuitemActivate()")
+    def __onActionHelpWhatsThisActivated(self):
+        Logger().trace("MainController.__onActionHelpWhatsThisActivated()")
         Logger().warning("Not yet implemented")
 
-    def __onHelpViewLogMenuitemActivate(self, widget):
-        Logger().trace("MainController.__onHelpViewLogMenuitemActivate()")
+    def __onActionHelpViewLogActivated(self):
+        Logger().trace("MainController.__onActionHelpViewLogActivated()")
         controller = LoggerController(self, self._model, self._serializer)
         controller.setLogBuffer(self.__gtkLogStream)
-        controller.run()
+        controller.exec_()
         controller.shutdown()
 
-    def __onHelpAboutMenuitemActivate(self, widget):
-        Logger().trace("MainController.__onHelpAboutMenuitemActivate()")
+    def __onActionHelpAboutPapywizardActivated(self):
+        Logger().trace("MainController.__onActionHelpAboutPapywizardActivated()")
         controller = HelpAboutController(self, self._model, self._serializer)
-        controller.run()
+        controller.exec_()
         controller.shutdown()
 
-    def __onNoteBookSwitchPage(self, widget, page, page_num):
-        Logger().trace("MainController.__onNoteBookSwitchPage()")
-        if page_num == 0 and self._model.camera.lens.type_ == 'fisheye':
-            controller = WarningMessageController(_("Incompatible shooting mode"),
-                                                  _("Can't set shooting mode to 'mosaic'\nwhile using 'fisheye' lens type"))
-            controller.run()
-            controller.shutdown()
-            self.notebook.stop_emission('switch-page')
-            self.notebook.set_current_page(1) # Does not work!!!
-        elif page_num == 0 and self._model.cameraOrientation == 'custom':
-            controller = WarningMessageController(_("Incompatible shooting mode"),
-                                                  _("Can't set shooting mode to 'mosaic'\nwhile using 'custom' camera orientation"))
-            controller.run()
-            controller.shutdown()
-            self.notebook.stop_emission('switch-page')
-            self.notebook.set_current_page(1) # Does not work!!!
+    def __onTabWidgetCurrentChanged(self, index):
+        Logger().trace("MainController.__onTabWidgetCurrentChanged()")
+        if index == 0:
+            self._model.mode = 'mosaic'
+        elif index == 1:
+            self._model.mode = 'preset'
         else:
-            if page_num == 0:
-                self._model.mode = 'mosaic'
-            else:
-                self._model.mode = 'preset'
-            Logger().debug("MainController.__onNoteBookSwitchPage(): shooting mode set to '%s'" % self._model.mode)
+            Logger().warning("MainController.__onTabWidgetCurrentChanged(): 'timelapse' shooting mode not yet available")
+        Logger().debug("MainController.__onTabWidgetCurrentChanged(): shooting mode set to '%s'" % self._model.mode)
 
-    def __onSetYawStartButtonClicked(self, widget):
-        Logger().trace("MainController.__onSetYawStartButtonClicked()")
+    def __onSetYawStartPushButtonClicked(self):
+        Logger().trace("MainController.__onSetYawStartPushButtonClicked()")
         self._model.mosaic.yawStart = self.__yawPos
         self.__mosaicInputParam = 'startEnd'
         self.refreshView()
         self.setStatusbarMessage(_("Yaw start set from current position"), 10)
 
-    def __onSetPitchStartButtonClicked(self, widget):
-        Logger().trace("MainController.__onSetPitchStartButtonClicked()")
+    def __onSetPitchStartPushButtonClicked(self):
+        Logger().trace("MainController.__onSetPitchStartPushButtonClicked()")
         self._model.mosaic.pitchStart = self.__pitchPos
         self.__mosaicInputParam = 'startEnd'
         self.refreshView()
         self.setStatusbarMessage(_("Pitch start set from current position"), 10)
 
-    def __onSetYawEndButtonClicked(self, widget):
-        Logger().trace("MainController.__onSetYawEndButtonClicked()")
+    def __onSetYawEndPushButtonClicked(self):
+        Logger().trace("MainController.__onSetYawEndPushButtonClicked()")
         self._model.mosaic.yawEnd = self.__yawPos
         self.__mosaicInputParam = 'startEnd'
         self.refreshView()
         self.setStatusbarMessage(_("Yaw end set from current position"), 10)
 
-    def __onSetPitchEndButtonClicked(self, widget):
+    def __onSetPitchEndPushButtonClicked(self):
         Logger().trace("MainController.__onSetEndPitchButtonClicked()")
         self._model.mosaic.pitchEnd = self.__pitchPos
         self.__mosaicInputParam = 'startEnd'
         self.refreshView()
         self.setStatusbarMessage(_("Pitch end set from current position"), 10)
 
-    def __onSetStartButtonClicked(self, widget):
-        Logger().trace("MainController.__onSetStartButtonClicked()")
+    def __onSetStartPushButtonClicked(self):
+        Logger().trace("MainController.__onSetStartPushButtonClicked()")
         self.__setYawPitchStartPosition()
 
-    def __onSetEndButtonClicked(self, widget):
-        Logger().trace("MainController.__onSetEndButtonClicked()")
+    def __onSetEndPushButtonClicked(self):
+        Logger().trace("MainController.__onSetEndPushButtonClicked()")
         self.__setYawPitchEndPosition()
 
-    def __onTotalFovButtonClicked(self, widget):
-        Logger().trace("MainController.__onTotalFovButtonClicked()")
+    def __onTotalFovPushButtonClicked(self):
+        Logger().trace("MainController.__onTotalFovPushButtonClicked()")
         self.__openTotalFovDialog()
 
-    def __onNbPictsButtonClicked(self, widget):
-        Logger().trace("MainController.__onNbPictsButtonClicked()")
+    def __onNbPictsPushButtonClicked(self):
+        Logger().trace("MainController.__onNbPictsPushButtonClicked()")
         self.__openNbPictsDialog()
 
-    def __onPresetComboboxChanged(self, widget):
+    def __onPresetCurrentIndexComboBoxChanged(self, widget):
         presets = PresetManager().getPresets()
         try:
-            preset = presets.getByIndex(self.presetCombobox.get_active())
+            preset = presets.getByIndex(self._view.presetComboBox.currentIndex())
             self._model.preset.name = preset.getName()
             self.refreshView()
         except ValueError:
-            #Logger().exception("MainController.__onPresetComboboxChanged()", debug=True)
+            #Logger().exception("MainController.__onPresetCurrentIndexComboBoxChanged()", debug=True)
             pass
 
-    def __onHardwareSetOriginButtonClicked(self, widget):
+    def __onetOriginToolButtonClicked(self):
         Logger().trace("MainController.onHardwareSetOriginButtonClicked()")
         Logger().info("Set hardware origin")
         self._model.hardware.setOrigin()
         self.setStatusbarMessage(_("Origin set at current position"), 10)
 
-    def __onYawMovePlusTogglebuttonPressed(self, widget):
+    def __onYawMovePlusToolButtonPressed(self):
         Logger().trace("MainController.__yawMovePlusTogglebuttonPressed()")
         self._model.hardware.startAxis('yaw', '+')
 
-    def __onYawMovePlusTogglebuttonReleased(self, widget):
+    def __onYawMovePlusToolButtonReleased(self):
         Logger().trace("MainController.__yawMovePlusTogglebuttonReleased()")
         self._model.hardware.stopAxis('yaw')
         self._model.hardware.waitStopAxis('yaw')
-        self.yawMovePlusTogglebutton.set_active(False)
+        #self._view.yawMovePlusTogglebutton.set_active(False)
         self.refreshView()
 
-    def __onPitchMovePlusTogglebuttonPressed(self, widget):
+    def __onPitchMovePlusToolButtonPressed(self):
         Logger().trace("MainController.__pitchMovePlusTogglebuttonPressed()")
         self._model.hardware.startAxis('pitch', '+')
 
-    def __onPitchMovePlusTogglebuttonReleased(self, widget):
+    def __onPitchMovePlusToolButtonReleased(self):
         Logger().trace("MainController.__pitchMovePlusTogglebuttonReleased()")
         self._model.hardware.stopAxis('pitch')
         self._model.hardware.waitStopAxis('pitch')
-        self.pitchMovePlusTogglebutton.set_active(False)
+        #self._view.pitchMovePlusTogglebutton.set_active(False)
         self.refreshView()
 
-    def __onPitchMoveMinusTogglebuttonPressed(self, widget):
-        Logger().trace("MainController.__onPitchMoveMinusTogglebuttonPressed()")
+    def __onPitchMoveMinusToolButtonPressed(self):
+        Logger().trace("MainController.__onPitchMoveMinusToolButtonPressed()")
         self._model.hardware.startAxis('pitch', '-')
 
-    def __onPitchMoveMinusTogglebuttonReleased(self, widget):
-        Logger().trace("MainController.__onPitchMoveMinusTogglebuttonReleased()")
+    def __onPitchMoveMinusToolButtonReleased(self):
+        Logger().trace("MainController.__onPitchMoveMinusToolButtonReleased()")
         self._model.hardware.stopAxis('pitch')
         self._model.hardware.waitStopAxis('pitch')
-        self.pitchMoveMinusTogglebutton.set_active(False)
+        #self._view.pitchMoveMinusTogglebutton.set_active(False)
         self.refreshView()
 
-    def __onYawMoveMinusTogglebuttonPressed(self, widget):
-        Logger().trace("MainController.__onYawMoveMinusTogglebuttonPressed()")
+    def __onYawMoveMinusToolButtonPressed(self):
+        Logger().trace("MainController.__onYawMoveMinusToolButtonPressed()")
         self._model.hardware.startAxis('yaw', '-')
 
-    def __onYawMoveMinusTogglebuttonReleased(self, widget):
-        Logger().trace("MainController.__onYawMoveMinusTogglebuttonReleased()")
+    def __onYawMoveMinusToolButtonReleased(self):
+        Logger().trace("MainController.__onYawMoveMinusToolButtonReleased()")
         self._model.hardware.stopAxis('yaw')
         self._model.hardware.waitStopAxis('yaw')
-        self.yawMoveMinusTogglebutton.set_active(False)
+        #self._view.yawMoveMinusTogglebutton.set_active(False)
         self.refreshView()
 
-    def __onConfigButtonClicked(self, widget):
-        Logger().trace("MainController.__onConfigButtonClicked()")
-        self.__openConfigDialog()
+    def __onConfigPushButtonClicked(self):
+        Logger().trace("MainController.__onConfigPushButtonClicked()")
+        #self.__openConfigDialog()
 
-    def __onShootButtonClicked(self, widget):
-        Logger().trace("MainController.__onShootButtonClicked()")
+    def __onShootPushButtonClicked(self):
+        Logger().trace("MainController.__onShootPushButtonClicked()")
         self.__openShootdialog()
 
     def __switchToRealHardwareCallback(self, flag, message=""):
@@ -850,7 +665,7 @@ class MainController(AbstractController):
         """
         """
         controller = TotalFovController(self, self._model)
-        response = controller.run()
+        response = controller.exec_()
         controller.shutdown()
         if response == 0:
             self.__mosaicInputParam = 'fov'
@@ -861,7 +676,7 @@ class MainController(AbstractController):
         """
         """
         controller = NbPictsController(self, self._model)
-        response = controller.run()
+        response = controller.exec_()
         controller.shutdown()
         if response == 0:
             self.__mosaicInputParam = 'nbPicts'
@@ -875,8 +690,8 @@ class MainController(AbstractController):
         while gtk.events_pending():
             gtk.main_iteration()
         controller = ConfigController(self, self._model, self._serializer)
-        self.setStatusbarMessage()
-        response = controller.run()
+        self.clearStatusbar()
+        response = controller.exec_()
         controller.shutdown()
         if response == 0:
             Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
@@ -896,32 +711,34 @@ class MainController(AbstractController):
         """
         """
         self._model.setStepByStep(False)
-        self.shootButton.set_sensitive(False)
-        self.setStatusbarMessage(_("Opening shoot dialog. Please wait..."))
-        while gtk.events_pending():
-            gtk.main_iteration()
-        controller = ShootController(self, self._model, self._serializer)
-        if self.__fullScreen:
-            controller.dialog.fullscreen()
-        self.shootButton.set_sensitive(True)
-        self.setStatusbarMessage()
-        controller.run()
+        self._view.shootPushButton.setEnabled(False)
+        try:
+            self.setStatusbarMessage(_("Opening shoot dialog. Please wait..."))
+            #while gtk.events_pending():
+                #gtk.main_iteration()
+            controller = ShootController(self, self._model, self._serializer)
+            if self.__fullScreen:
+                controller.dialog.fullscreen()
+        finally:
+            self._view.shootPushButton.setEnabled(True)
+            self.clearStatusBar()
+        controller.exec_()
         controller.shutdown()
 
-    def __populatePresetCombobox(self):
+    def __populatePresetComboBox(self):
         """
         """
-        self.presetCombobox.get_model().clear()
+        self._view.presetComboBox.clear()
         presets = PresetManager().getPresets()
         i = 0
         while True:
             try:
                 preset = presets.getByIndex(i)
                 name = preset.getName()
-                self.presetCombobox.append_text(name)
+                self._view.presetComboBox.addItem(name)
                 i += 1
             except ValueError:
-                #Logger().exception("MainController.__populatePresetCombobox()", debug=True)
+                #Logger().exception("MainController.__populatePresetComboBox()", debug=True)
                 break
 
     def __importPresetFile(self, presetFileName):
@@ -933,13 +750,12 @@ class MainController(AbstractController):
         Logger().debug("MainController.__importPresetFile(): preset file=%s" % presetFileName)
         try:
             PresetManager().importPresetFile(presetFileName)
-            self.__populatePresetCombobox()
+            self.__populatePresetComboBox()
             self.refreshView()
         except Exception, msg:
             Logger().exception("MainController.__importPresetFile()")
-            controller = ErrorMessageController(_("Can't import preset file"), str(msg))
-            controller.run()
-            controller.shutdown()
+            controller = ExceptionMessageController(_("Can't import preset file"), str(msg))
+            controller.exec_()
 
     def __connectToHardware(self):
         """ Connect to real hardware.
@@ -979,11 +795,11 @@ class MainController(AbstractController):
         else:
             Logger().error("Can't connect to hardware\n%s" % self.__connectErrorMessage)
             controller = ErrorMessageController(_("Can't connect to hardware"), self.__connectErrorMessage)
-            controller.run()
+            controller.exec_()
             controller.shutdown()
-            self.hardwareConnectMenuitem.set_active(False)
+            self.hardwareConnect.set_active(False)
 
-        #self.hardwareConnectMenuitem.set_sensitive(True)
+        #self.hardwareConnect.setEnabled(True)
 
     def __goToSimulationMode(self):
         """ Connect to simulated hardware.
@@ -1009,57 +825,58 @@ class MainController(AbstractController):
         self._serializer.addWork(self.refreshView)
 
     # Interface
-    def setStatusbarMessage(self, message=None, delay=0):
+    def exec_(self):
+        #QtCore.QCoreApplication.exec_()
+        pass
+        
+    def setStatusbarMessage(self, message=None, timeout=0):
         """ Display a message on the statusbar.
 
-        @param message: message to display. If None, clear statusbar
+        @param message: message to display. If None, clear statusbar (use a clearStatusBar() method)
         @type message: str
 
-        @param delay: display message duration, in s (0 means forever)
-        @type delay: int
+        @param timeout: display message duration, in s (0 means forever)
+        @type timeout: int
         """
-        self.statusbar.pop(self.statusbarContextId)
-        if self.__statusbarTimeoutEventId is not None:
-            gobject.source_remove(self.__statusbarTimeoutEventId)
+        self.clearStatusBar()
         if message is not None:
-            self.statusbar.push(self.statusbarContextId, message)
-            if delay:
-                self.__statusbarTimeoutEventId = gobject.timeout_add(delay * 1000, self.setStatusbarMessage)
-            else:
-                self.__statusbarTimeoutEventId = None
+            self._view.statusBar().showMessage(message, timeout * 1000)
+
+    def clearStatusBar(self):
+        """ Clear the statusbar.
+        """
+        self._view.statusBar().clearMessage()
 
     def refreshView(self):
         if self._model.mode == 'mosaic':
-            self.notebook.set_current_page(0)
+            self._view.tabWidget.setCurrentIndex(0)
         else:
-            self.notebook.set_current_page(1)
+            self._view.tabWidget.setCurrentIndex(1)
 
-        self.setYawStartButtonLabel.set_label("%.1f" % self._model.mosaic.yawStart)
-        self.setPitchStartButtonLabel.set_label("%.1f" % self._model.mosaic.pitchStart)
-        self.setYawEndButtonLabel.set_label("%.1f" % self._model.mosaic.yawEnd)
-        self.setPitchEndButtonLabel.set_label("%.1f" % self._model.mosaic.pitchEnd)
-        self.yawFovLabel.set_text("%.1f" % self._model.mosaic.yawFov)
-        self.pitchFovLabel.set_text("%.1f" % self._model.mosaic.pitchFov)
-        self.yawNbPictsLabel.set_text("%d" % self._model.mosaic.yawNbPicts)
-        self.pitchNbPictsLabel.set_text("%d" % self._model.mosaic.pitchNbPicts)
-        self.yawRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.yawRealOverlap)))
-        self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
-        self.yawResolutionLabel.set_text("%d" % round(self._model.mosaic.getYawResolution()))
-        self.pitchResolutionLabel.set_text("%d" % round(self._model.mosaic.getPitchResolution()))
+        self._view.setYawStartPushButton.setText("%.1f" % self._model.mosaic.yawStart)
+        self._view.setPitchStartPushButton.setText("%.1f" % self._model.mosaic.pitchStart)
+        self._view.setYawEndPushButton.setText("%.1f" % self._model.mosaic.yawEnd)
+        self._view.setPitchEndPushButton.setText("%.1f" % self._model.mosaic.pitchEnd)
+        self._view.yawFovLabel.setText("%.1f" % self._model.mosaic.yawFov)
+        self._view.pitchFovLabel.setText("%.1f" % self._model.mosaic.pitchFov)
+        self._view.yawNbPictsLabel.setText("%d" % self._model.mosaic.yawNbPicts)
+        self._view.pitchNbPictsLabel.setText("%d" % self._model.mosaic.pitchNbPicts)
+        self._view.yawRealOverlapLabel.setText("%d" % int(round(100 * self._model.mosaic.yawRealOverlap)))
+        self._view.pitchRealOverlapLabel.setText("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
+        self._view.yawResolutionLabel.setText("%d" % round(self._model.mosaic.getYawResolution()))
+        self._view.pitchResolutionLabel.setText("%d" % round(self._model.mosaic.getPitchResolution()))
 
         presets = PresetManager().getPresets()
         try:
-            self.presetCombobox.set_active(presets.nameToIndex(self._model.preset.name))
+            index = presets.nameToIndex(self._model.preset.name)
         except ValueError:
             Logger().warning("Previously selected '%s' preset not found" % self._model.preset.name)
-            self.presetCombobox.set_active(0)
-        self.presetInfoBuffer.begin_user_action()
-        try:
-            self.presetInfoBuffer.delete(*self.presetInfoBuffer.get_bounds())
-            preset = presets.getByName(self._model.preset.name)
-            tooltip = preset.getTooltip()
-            self.presetInfoBuffer.insert_with_tags_by_name(self.presetInfoBuffer.get_end_iter(), tooltip, 'tooltip')
-        finally:
-            self.presetInfoBuffer.end_user_action()
-        self.yawHeadPosLabel.set_text("%.1f" % self.__yawPos)
-        self.pitchHeadPosLabel.set_text("%.1f" % self.__pitchPos)
+            index = 0
+        self._view.presetComboBox.setCurrentIndex(index)
+        self._view.presetInfoPlainTextEdit.clear()
+        preset = presets.getByIndex(index)
+        tooltip = preset.getTooltip()
+        self._view.presetInfoPlainTextEdit.setPlainText(tooltip)
+
+        self._view.yawHeadPosLabel.setText("%.1f" % self.__yawPos)
+        self._view.pitchHeadPosLabel.setText("%.1f" % self.__pitchPos)

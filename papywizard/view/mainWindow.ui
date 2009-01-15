@@ -976,9 +976,9 @@
     <property name="title" >
      <string>File</string>
     </property>
-    <addaction name="actionLoadPresetFile" />
+    <addaction name="actionFileLoadPreset" />
     <addaction name="separator" />
-    <addaction name="actionQuit" />
+    <addaction name="actionFileQuit" />
    </widget>
    <widget class="QMenu" name="menuHardware" >
     <property name="font" >
@@ -993,15 +993,15 @@
      <property name="title" >
       <string>Set Limit</string>
      </property>
-     <addaction name="actionYawMinus" />
-     <addaction name="actionYawPlus" />
-     <addaction name="actionPitchPlus" />
-     <addaction name="actionPitchMinus" />
+     <addaction name="actionHardwareSetLimitYawMinus" />
+     <addaction name="actionHardwareSetLimitYawPlus" />
+     <addaction name="actionHardwareSetLimitPitchPlus" />
+     <addaction name="actionHardwareSetLimitPitchMinus" />
     </widget>
-    <addaction name="actionConnect" />
+    <addaction name="actionHardwareConnect" />
     <addaction name="separator" />
     <addaction name="menuSetLimit" />
-    <addaction name="actionClearLimits" />
+    <addaction name="actionHardwareClearLimits" />
    </widget>
    <widget class="QMenu" name="menuHelp" >
     <property name="font" >
@@ -1012,11 +1012,11 @@
     <property name="title" >
      <string>Help</string>
     </property>
-    <addaction name="actionManual" />
+    <addaction name="actionHelpManual" />
     <addaction name="separator" />
-    <addaction name="actionViewLog" />
+    <addaction name="actionHelpViewLog" />
     <addaction name="separator" />
-    <addaction name="actionAboutPapywizard" />
+    <addaction name="actionHelpAboutPapywizard" />
     <addaction name="actionAboutQt" />
    </widget>
    <addaction name="menuFile" />
@@ -1028,7 +1028,7 @@
     <bool>false</bool>
    </property>
   </widget>
-  <action name="actionQuit" >
+  <action name="actionFileQuit" >
    <property name="icon" >
     <iconset>
      <normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/exit.png</normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/exit.png</iconset>
@@ -1045,7 +1045,7 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actionLoadPresetFile" >
+  <action name="actionFileLoadPreset" >
    <property name="icon" >
     <iconset>
      <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/fileopen.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/fileopen.png</iconset>
@@ -1054,7 +1054,7 @@
     <string>Load Preset File...</string>
    </property>
   </action>
-  <action name="actionConnect" >
+  <action name="actionHardwareConnect" >
    <property name="checkable" >
     <bool>true</bool>
    </property>
@@ -1067,7 +1067,7 @@
     </font>
    </property>
   </action>
-  <action name="actionClearLimits" >
+  <action name="actionHardwareClearLimits" >
    <property name="icon" >
     <iconset>
      <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/editclear.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/editclear.png</iconset>
@@ -1081,7 +1081,7 @@
     </font>
    </property>
   </action>
-  <action name="actionYawMinus" >
+  <action name="actionHardwareSetLimitYawMinus" >
    <property name="icon" >
     <iconset>
      <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/start.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/start.png</iconset>
@@ -1095,7 +1095,7 @@
     </font>
    </property>
   </action>
-  <action name="actionYawPlus" >
+  <action name="actionHardwareSetLimitYawPlus" >
    <property name="icon" >
     <iconset>
      <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/finish.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/finish.png</iconset>
@@ -1109,7 +1109,7 @@
     </font>
    </property>
   </action>
-  <action name="actionPitchPlus" >
+  <action name="actionHardwareSetLimitPitchPlus" >
    <property name="icon" >
     <iconset>
      <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/top.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/top.png</iconset>
@@ -1123,7 +1123,7 @@
     </font>
    </property>
   </action>
-  <action name="actionPitchMinus" >
+  <action name="actionHardwareSetLimitPitchMinus" >
    <property name="icon" >
     <iconset>
      <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/bottom.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/bottom.png</iconset>
@@ -1137,7 +1137,7 @@
     </font>
    </property>
   </action>
-  <action name="actionManual" >
+  <action name="actionHelpManual" >
    <property name="icon" >
     <iconset>
      <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/help.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/help.png</iconset>
@@ -1151,7 +1151,7 @@
     </font>
    </property>
   </action>
-  <action name="actionViewLog" >
+  <action name="actionHelpViewLog" >
    <property name="icon" >
     <iconset>
      <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/openterm.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/openterm.png</iconset>
@@ -1165,7 +1165,7 @@
     </font>
    </property>
   </action>
-  <action name="actionAboutPapywizard" >
+  <action name="actionHelpAboutPapywizard" >
    <property name="icon" >
     <iconset>
      <normaloff>../../../../../papywizard80x80.png</normaloff>../../../../../papywizard80x80.png</iconset>
@@ -1193,7 +1193,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>actionQuit</sender>
+   <sender>actionFileQuit</sender>
    <signal>activated()</signal>
    <receiver>MainWindow</receiver>
    <slot>close()</slot>

@@ -54,11 +54,8 @@ import StringIO
 import locale
 import gettext
 
-import pygtk
-pygtk.require("2.0")
-import gtk
-import gtk.glade
-import gobject
+import PyQt4.uic
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
@@ -68,10 +65,10 @@ from papywizard.common.exception import HardwareError
 from papywizard.common.publisher import Publisher
 from papywizard.hardware.head import Head, HeadSimulation
 from papywizard.model.shooting import Shooting
-from papywizard.controller.loggerController import LoggerController
+#from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.mainController import MainController
 from papywizard.controller.spy import Spy
-from papywizard.view.logBuffer import LogBuffer
+#from papywizard.view.logBuffer import LogBuffer
 
 DOMAIN = "papywizard"
 LANGS = ('en_US', 'fr_FR', 'pl_PL', 'de_DE', 'es_ES', 'nl_NL', 'it_IT')
@@ -88,27 +85,28 @@ class BlackHole:
         pass
 
 
-class Papywizard(object):
+class Papywizard(QtCore.QObject):
     """ Main application class.
     """
     def __init__(self):
         """ Init the application.
         """
-        self.gtkLogStream = LogBuffer()
-        Logger().addStreamHandler(self.gtkLogStream)
+        #self.gtkLogStream = LogBuffer()
+        #Logger().addStreamHandler(self.gtkLogStream)
         #Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
+
+    def _onDestroyed(self, widget):
+        print "_onDestroyed()"
 
     def init(self):
         """ Init the application.
         """
         Logger().info("Starting Papywizard...")
 
-        # Gtk threads
-        gtk.gdk.threads_init()
-        gtk.gdk.threads_enter()
+        self.__app = QtGui.QApplication(sys.argv)
 
-        # Gtk style
-        gtk.rc_parse(config.USER_GTKRC_FILE)
+        ## Qt styles
+        #gtk.rc_parse(config.USER_GTKRC_FILE)
 
         # Create hardware and model
         head = Head()
@@ -126,7 +124,8 @@ class Papywizard(object):
         self.__serializer = Serializer()
 
         # Create main controller
-        controller = MainController(self.__model, self.__serializer, self.gtkLogStream)
+        self.__mainController = MainController(self.__model, self.__serializer, None) #self.qtLogStream)
+        #self.connect(self.__view, QtCore.SIGNAL("destroyed(QObject *)"), self._onDestroyed)
 
     def weave(str):
         """ Weave stuffs.
@@ -197,10 +196,8 @@ class Papywizard(object):
                     localeDir = os.path.join(os.path.dirname(localeFile), os.pardir, os.pardir)
         Logger().debug("Papywizard.l10n(): localeDir=%s" % localeDir)
 
-        #gettext.bindtextdomain(DOMAIN, localeDir)
-        #gettext.textdomain(DOMAIN)
-        gtk.glade.bindtextdomain(DOMAIN, localeDir)
-        gtk.glade.textdomain(DOMAIN)
+        #gtk.glade.bindtextdomain(DOMAIN, localeDir)
+        #gtk.glade.textdomain(DOMAIN)
 
         # Get the Translation object
         try:
@@ -216,12 +213,14 @@ class Papywizard(object):
     def run(self):
         """ Run the appliction.
         """
-        gobject.timeout_add(config.SERIALIZER_REFRESH , self.__serializer.processWork)
+        serializerTimer = QtCore.QTimer()
+        self.__app.connect(serializerTimer, QtCore.SIGNAL("timeout()"), self.__serializer.processWork)
+        serializerTimer.start(config.SERIALIZER_REFRESH)
         if config.PUBLISHER_ENABLE:
             self.__publisher.start()
         Spy().start()
         Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
-        gtk.main()
+        self.__app.exec_()
 
     def shutdown(self):
         """ Shutdown the application.
@@ -230,9 +229,6 @@ class Papywizard(object):
         Spy().join()
         del self.__publisher
         self.__model.shutdown()
-
-        # Gtk threads
-        gtk.gdk.threads_leave()
 
         Logger().info("Papywizard stopped")
 
@@ -259,8 +255,7 @@ def main():
         Logger().exception("main()")
         controller = LoggerController(None, None, None)
         controller.setLogBuffer(app.gtkLogStream)
-        controller.run()
-        controller.shutdown()
+        controller.exec_()
 
 
 if __name__ == "__main__":

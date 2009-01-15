@@ -56,44 +56,23 @@ import os.path
 import time
 import threading
 
-import pygtk
-pygtk.require("2.0")
-import gtk
-import gtk.gdk
-import gobject
-import pango
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common.loggingServices import Logger
 from papywizard.common.helpers import sToHmsAsStr
 from papywizard.common.configManager import ConfigManager
 from papywizard.controller.messageController import ErrorMessageController
-from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.spy import Spy
 from papywizard.view.shootingArea import MosaicArea, PresetArea
 
 
-class ShootController(AbstractController):
+class ShootController(AbstractModalDialogController):
     """ Shoot controller object.
     """
     def _init(self):
-        self._gladeFile = "shootDialog.glade"
-        self._signalDict = {"on_dialog_key_press_event": self.__onKeyPressed,
-                            "on_dialog_key_release_event": self.__onKeyReleased,
-
-                            "on_textViewTogglebutton_toggled": self.__onTextViewTogglebuttonToggled,
-                            "on_rewindButton_clicked": self.__onRewindButtonclicked,
-                            "on_forwardButton_clicked": self.__onForwardButtonclicked,
-                            "on_dataButton_clicked": self.__onDataButtonclicked,
-                            "on_timerButton_clicked": self.__onTimerButtonClicked,
-                            "on_stepByStepTogglebutton_toggled": self.__onStepByStepTogglebuttonToggled,
-
-                            "on_startButton_clicked": self.__onStartButtonClicked,
-                            "on_pauseResumeButton_clicked": self.__onPauseResumeButtonClicked,
-                            "on_stopButton_clicked": self.__onStopButtonClicked,
-
-                            "on_doneButton_clicked": self.__onDoneButtonClicked,
-                        }
+        self._uiFile = "shootDialog.ui"
 
         self.__keyPressedDict = {'Right': False,
                                  'Left': False,
@@ -102,121 +81,99 @@ class ShootController(AbstractController):
                                  'Return': False,
                                  'Escape': False
                              }
-        self.__key = {'Right': gtk.keysyms.Right,
-                      'Left': gtk.keysyms.Left,
-                      'Up': gtk.keysyms.Up,
-                      'Down': gtk.keysyms.Down,
-                      'Return': gtk.keysyms.Return,
-                      'Escape': gtk.keysyms.Escape
-                      }
+        #self.__key = {'Right': gtk.keysyms.Right,
+                      #'Left': gtk.keysyms.Left,
+                      #'Up': gtk.keysyms.Up,
+                      #'Down': gtk.keysyms.Down,
+                      #'Return': gtk.keysyms.Return,
+                      #'Escape': gtk.keysyms.Escape
+                      #}
 
         self.__thread = None
-
-    def _retreiveWidgets(self):
-        super(ShootController, self)._retreiveWidgets()
-
-        self.viewport = self.wTree.get_widget("viewport")
-        self.textShootingArea = self.wTree.get_widget("table")
-        self.textNextLabel = self.wTree.get_widget("textNextLabel")
-        self.currentIndexLabel = self.wTree.get_widget("currentIndexLabel")
-        self.nextIndexLabel = self.wTree.get_widget("nextIndexLabel")
-        self.yawCurrentIndexLabel = self.wTree.get_widget("yawCurrentIndexLabel")
-        self.pitchCurrentIndexLabel = self.wTree.get_widget("pitchCurrentIndexLabel")
-        self.yawNextIndexLabel = self.wTree.get_widget("yawNextIndexLabel")
-        self.pitchNextIndexLabel = self.wTree.get_widget("pitchNextIndexLabel")
-        self.rewindButton = self.wTree.get_widget("rewindButton")
-        self.forwardButton = self.wTree.get_widget("forwardButton")
-        self.shootingProgressbar = self.wTree.get_widget("shootingProgressbar")
-        self.totalProgressbar = self.wTree.get_widget("totalProgressbar")
-        self.sequenceLabel = self.wTree.get_widget("sequenceLabel")
-        self.repeatLabel = self.wTree.get_widget("repeatLabel")
-        self.shootingTimeLabel = self.wTree.get_widget("shootingTimeLabel")
-        self.elapsedTimeLabel = self.wTree.get_widget("elapsedTimeLabel")
-        self.dataButton = self.wTree.get_widget("dataButton")
-        self.dataButtonImage = self.wTree.get_widget("dataButtonImage")
-        self.timerButton = self.wTree.get_widget("timerButton")
-        self.timerButtonImage = self.wTree.get_widget("timerButtonImage")
-        self.stepByStepTogglebutton = self.wTree.get_widget("stepByStepTogglebutton")
-        self.stepByStepTogglebuttonImage = self.wTree.get_widget("stepByStepTogglebuttonImage")
-        self.startButton = self.wTree.get_widget("startButton")
-        self.pauseResumeButton = self.wTree.get_widget("pauseResumeButton")
-        self.pauseResumeLabel = self.wTree.get_widget("pauseResumeLabel")
-        self.stopButton = self.wTree.get_widget("stopButton")
-        self.doneButton = self.wTree.get_widget("doneButton")
+        self.__shootingElapseTimer = QtCore.QTimer()
+        QtCore.QCoreApplication.connect(self.__shootingElapseTimer, QtCore.SIGNAL("timeout()"), self.__updateShootingElapsedTime)
 
     def _initWidgets(self):
         if self._model.timerRepeatEnable:
-            self.repeatLabel.set_text("--/%d" % self._model.timerRepeat)
+            self._view.repeatLabel.setText("--/%d" % self._model.timerRepeat)
         else:
-            self.repeatLabel.set_text("")
-
-        # Font
-        scale = 1.3
-        self._setFontParams(self.currentIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.nextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.yawCurrentIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.pitchCurrentIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.yawNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
-        self._setFontParams(self.pitchNextIndexLabel, scale=scale, weight=pango.WEIGHT_BOLD)
+            self._view.repeatLabel.setText("")
 
         # Init text view
-        self.currentIndexLabel.set_text("--/%d" % self._model.scan.totalNbPicts)
-        self.nextIndexLabel.set_text("--/%d" % self._model.scan.totalNbPicts)
+        self._view.currentIndexLabel.setText("--/%d" % self._model.scan.totalNbPicts)
+        self._view.nextIndexLabel.setText("--/%d" % self._model.scan.totalNbPicts)
         if self._model.mode == 'mosaic':
-            self.yawCurrentIndexLabel.set_text("--/%d" % self._model.mosaic.yawNbPicts)
-            self.pitchCurrentIndexLabel.set_text("--/%d" % self._model.mosaic.pitchNbPicts)
-            self.yawNextIndexLabel.set_text("--/%d" % self._model.mosaic.yawNbPicts)
-            self.pitchNextIndexLabel.set_text("--/%d" % self._model.mosaic.pitchNbPicts)
+            self._view.yawCurrentIndexLabel.setText("--/%d" % self._model.mosaic.yawNbPicts)
+            self._view.pitchCurrentIndexLabel.setText("--/%d" % self._model.mosaic.pitchNbPicts)
+            self._view.yawNextIndexLabel.setText("--/%d" % self._model.mosaic.yawNbPicts)
+            self._view.pitchNextIndexLabel.setText("--/%d" % self._model.mosaic.pitchNbPicts)
         else:
-            self.yawCurrentIndexLabel.set_text("--")
-            self.pitchCurrentIndexLabel.set_text("--")
-            self.yawNextIndexLabel.set_text("--")
-            self.pitchNextIndexLabel.set_text("--")
+            self._view.yawCurrentIndexLabel.setText("--")
+            self._view.pitchCurrentIndexLabel.setText("--")
+            self._view.yawNextIndexLabel.setText("--")
+            self._view.pitchNextIndexLabel.setText("--")
 
         # Load graphical shooting area and replace the text view
-        if self._model.mode == 'mosaic':
-            self.shootingArea = MosaicArea() # Use a factory
-        else:
-            self.shootingArea = PresetArea() # Use a factory
-        self.viewport.remove(self.textShootingArea)
-        self.viewport.add(self.shootingArea)
-        self.shootingArea.show()
+        #if self._model.mode == 'mosaic':
+            #self.shootingArea = MosaicArea() # Use a factory
+        #else:
+            #self.shootingArea = PresetArea() # Use a factory
+        #self.shootingFrame.remove(self.textShootingGridLayout)
+        #self.shootingFrame.add(self.shootingArea)
+        #self.shootingArea.show()
 
         # Populate shooting area with preview positions
         if self._model.mode == 'mosaic':
 
-            # todo: give args in shootingArea.__init__()
-            self.shootingArea.init(self._model.mosaic.yawStart, self._model.mosaic.yawEnd,
-                                   self._model.mosaic.pitchStart, self._model.mosaic.pitchEnd,
-                                   self._model.mosaic.yawFov, self._model.mosaic.pitchFov,
-                                   self._model.camera.getYawFov(self._model.cameraOrientation),
-                                   self._model.camera.getPitchFov(self._model.cameraOrientation),
-                                   self._model.mosaic.yawRealOverlap, self._model.mosaic.pitchRealOverlap)
+            ## todo: give args in shootingArea.__init__()
+            #self.shootingArea.init(self._model.mosaic.yawStart, self._model.mosaic.yawEnd,
+                                   #self._model.mosaic.pitchStart, self._model.mosaic.pitchEnd,
+                                   #self._model.mosaic.yawFov, self._model.mosaic.pitchFov,
+                                   #self._model.camera.getYawFov(self._model.cameraOrientation),
+                                   #self._model.camera.getPitchFov(self._model.cameraOrientation),
+                                   #self._model.mosaic.yawRealOverlap, self._model.mosaic.pitchRealOverlap)
             self._model.mosaic.generatePositions()
-            for (index, yawIndex, pitchIndex), (yaw, pitch) in self._model.mosaic.iterPositions():
-                self.shootingArea.add_pict(yaw, pitch, status='preview')
+            #for (index, yawIndex, pitchIndex), (yaw, pitch) in self._model.mosaic.iterPositions():
+                #self.shootingArea.add_pict(yaw, pitch, status='preview')
         else:
-            self.shootingArea.init(440., 220., # visible fov
-                                    30.,  30.) # camera fov
+            #self.shootingArea.init(440., 220., # visible fov
+                                    #30.,  30.) # camera fov
             self._model.preset.generatePositions()
-            for index, (yaw, pitch) in self._model.preset.iterPositions():
-                self.shootingArea.add_pict(yaw, pitch, status='preview')
-        yaw, pitch = self._model.hardware.readPosition()
-        self.shootingArea.set_current_head_position(yaw, pitch)
+            #for index, (yaw, pitch) in self._model.preset.iterPositions():
+                #self.shootingArea.add_pict(yaw, pitch, status='preview')
+        #yaw, pitch = self._model.hardware.readPosition()
+        #self.shootingArea.set_current_head_position(yaw, pitch)
 
         # Set the shooting area size
-        width1, heigh1 = self.shootingArea.size_request()
-        width2, heigh2 = self.textShootingArea.size_request()
-        width = max(width1, width2)
-        heigh = max(heigh1, heigh2)
-        self.shootingArea.set_size_request(width, heigh)
-        self.textShootingArea.set_size_request(width, heigh)
+        #width1, heigh1 = self.shootingArea.size_request()
+        #width2, heigh2 = self.textShootingGridLayout.size_request()
+        #width = max(width1, width2)
+        #heigh = max(heigh1, heigh2)
+        #self.shootingArea.set_size_request(width, heigh)
+        #self.textShootingGridLayout.set_size_request(width, heigh)
+
+    def _connectQtSignals(self):
+        super(ShootController, self)._connectQtSignals()
+        #self.shootingArea.connect("button-press-event", self.__onMousePushButtonPressed)
+        #self.shootingArea.connect("motion-notify-event", self.__onMotionNotify)
+        {"on_dialog_key_press_event": self.__onKeyPressed,
+         "on_dialog_key_release_event": self.__onKeyReleased,
+
+         "on_donePushButton_clicked": self.__onDonePushButtonClicked,
+     }
+        QtCore.QObject.connect(self._view.textViewPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onTextViewPushButtonToggled)
+        QtCore.QObject.connect(self._view.rewindPushButton, QtCore.SIGNAL("clicked()"), self.__onRewindPushButtonClicked)
+        QtCore.QObject.connect(self._view.forwardPushButton, QtCore.SIGNAL("clicked()"), self.__onForwardPushButtonClicked)
+
+        QtCore.QObject.connect(self._view.dataPushButton, QtCore.SIGNAL("clicked()"), self.__onDataPushButtonClicked)
+        QtCore.QObject.connect(self._view.timerPushButton, QtCore.SIGNAL("clicked()"), self.__onTimerPushButtonClicked)
+        QtCore.QObject.connect(self._view.stepByStepPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onStepByStepPushButtonToggled)
+
+        QtCore.QObject.connect(self._view.startPushButton, QtCore.SIGNAL("clicked()"), self.__onStartPushButtonClicked)
+        QtCore.QObject.connect(self._view.pauseResumePushButton, QtCore.SIGNAL("clicked()"), self.__onPauseResumePushButtonClicked)
+        QtCore.QObject.connect(self._view.stopPushButton, QtCore.SIGNAL("clicked()"), self.__onStopPushButtonClicked)
 
     def _connectSignals(self):
-        super(ShootController, self)._connectSignals()
-        self.shootingArea.connect("button-press-event", self.__onMouseButtonPressed)
-        #self.shootingArea.connect("motion-notify-event", self.__onMotionNotify)
-
         Spy().newPosSignal.connect(self.__refreshPos)
         self._model.startedSignal.connect(self.__shootingStarted)
         self._model.pausedSignal.connect(self.__shootingPaused)
@@ -240,12 +197,12 @@ class ShootController(AbstractController):
         self._model.newPositionSignal.disconnect(self.__shootingNewPosition)
         self._model.sequenceSignal.disconnect(self.__shootingSequence)
 
-    def _onDelete(self, widget, event):
-        Logger().trace("ShootController.__onDelete()")
-        if not self._model.isShooting():
-            self.shutdown()
-            return False
-        return True
+    #def _onDelete(self, widget, event):
+        #Logger().trace("ShootController.__onDelete()")
+        #if not self._model.isShooting():
+            #self.shutdown()
+            #return False
+        #return True
 
     # Callbacks GTK
     def __onKeyPressed(self, widget, event, *args):
@@ -378,13 +335,13 @@ class ShootController(AbstractController):
         else:
             Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.keyval)
 
-    def __onMouseButtonPressed(self, widget, event):
-        Logger().trace("ShootController.__onMouseButtonPressed()")
+    def __onMousePushButtonPressed(self, widget, event):
+        Logger().trace("ShootController.__onMousePushButtonPressed()")
         if self._model.isPaused():
             if event.button == 1:
-                index = self.shootingArea.get_selected_image_index(event.x, event.y)
+                #index = self._view.shootingArea.get_selected_image_index(event.x, event.y)
                 if index is not None:
-                    Logger().debug("ShootController.__onMouseButtonPressed(): x=%d, y=%d, index=%d" % (event.x, event.y, index))
+                    Logger().debug("ShootController.__onMousePushButtonPressed(): x=%d, y=%d, index=%d" % (event.x, event.y, index))
                     self._model.setNextPositionIndex(index)
                     self.__refreshNextPosition()
 
@@ -402,170 +359,166 @@ class ShootController(AbstractController):
             if state & gtk.gdk.BUTTON1_MASK:
                 Logger().debug("ShootController.__onMotionNotify(): drag x=%d, y=%d" % (x, y))
 
-    def __onTextViewTogglebuttonToggled(self, widget):
-        Logger().trace("ShootController.__onTextViewTogglebuttonToggled()")
-        if widget.get_active():
-            self.viewport.remove(self.shootingArea)
-            self.viewport.add(self.textShootingArea)
+    def __onTextViewPushButtonToggled(self, checked):
+        Logger().trace("ShootController.__onTextViewPushButtonToggled()")
+        if checked:
+            self._view.shootingFrame.remove(self._view.shootingArea)
+            self._view.shootingFrame.add(self._view.textShootingGridLayout)
         else:
-            self.viewport.remove(self.textShootingArea)
-            self.viewport.add(self.shootingArea)
+            self._view.shootingFrame.remove(self._view.textShootingGridLayout)
+            self._view.shootingFrame.add(self._view.shootingArea)
 
-    def __onRewindButtonclicked(self, widget):
-        Logger().trace("ShootController.__onRewindButtonclicked()")
+    def __onRewindPushButtonClicked(self):
+        Logger().trace("ShootController.__onRewindPushButtonClicked()")
         self.__rewindShootingPosition()
 
-    def __onForwardButtonclicked(self, widget):
-        Logger().trace("ShootController.__onForwardButtonclicked()")
+    def __onForwardPushButtonClicked(self):
+        Logger().trace("ShootController.__onForwardPushButtonClicked()")
         self.__forwardShootingPosition()
 
-    def __onDataButtonclicked(self, widget):
-        Logger().trace("ShootController.__onDataButtonclicked()")
-        controller = ConfigController(self, self._model, self._serializer)
-        controller.selectPage(5, disable=True)
-        response = controller.run()
-        controller.shutdown()
-        self.refreshView()
+    def __onDataPushButtonClicked(self):
+        Logger().trace("ShootController.__onDataPushButtonClicked()")
+        #controller = ConfigController(self, self._model, self._serializer)
+        #controller.selectPage(5, disable=True)
+        #response = controller.exec_()
+        #self.refreshView()
 
-    def __onTimerButtonClicked(self, widget):
-        Logger().trace("ShootController.__onTimerButtonClicked()")
-        controller = ConfigController(self, self._model, self._serializer)
-        controller.selectPage(6, disable=True)
-        response = controller.run()
-        controller.shutdown()
-        if self._model.timerRepeatEnable:
-            self.repeatLabel.set_text("--/%d" % self._model.timerRepeat)
-        else:
-            self.repeatLabel.set_text("")
-        self.refreshView()
+    def __onTimerPushButtonClicked(self):
+        Logger().trace("ShootController.__onTimerPushButtonClicked()")
+        #controller = ConfigController(self, self._model, self._serializer)
+        #controller.selectPage(6, disable=True)
+        #response = controller.exec_()
+        #if self._model.timerRepeatEnable:
+            #self._view.repeatLabel.setText("--/%d" % self._model.timerRepeat)
+        #else:
+            #self._view.repeatLabel.setText("")
+        #self.refreshView()
 
-    def __onStepByStepTogglebuttonToggled(self, widget):
-        Logger().trace("ShootController.__onStepByStepTogglebuttonToggled()")
-        switch = self.stepByStepTogglebutton.get_active()
-        self._model.setStepByStep(switch)
-        if switch:
-            self.stepByStepTogglebuttonImage.set_from_stock(gtk.STOCK_APPLY, 4)
-        else:
-            self.stepByStepTogglebuttonImage.set_from_stock(gtk.STOCK_CANCEL, 4)
+    def __onStepByStepPushButtonToggled(self, checked):
+        Logger().trace("ShootController.__onStepByStepPushButtonToggled()")
+        self._model.setStepByStep(checked)
+        #if checked:
+            #self._view.stepByStepPushButton.setIcon()
+        #else:
+            #self._view.stepByStepPushButton.setIcon()
 
-    def __onStartButtonClicked(self, widget):
-        Logger().trace("ShootController.__startButtonClicked()")
+    def __onStartPushButtonClicked(self):
+        Logger().trace("ShootController.__startPushButtonClicked()")
         self.__startShooting()
 
-    def __onPauseResumeButtonClicked(self, widget):
-        Logger().trace("ShootController.__onPauseResumeButtonClicked()")
+    def __onPauseResumePushButtonClicked(self):
+        Logger().trace("ShootController.__onPauseResumePushButtonClicked()")
         if self._model.isShooting(): # Should always be true here, but...
             if not self._model.isPaused():
                 self.__pauseShooting() # Not used
             else:
                 self.__resumeShooting()
 
-    def __onStopButtonClicked(self, widget):
-        Logger().trace("ShootController.__stopButtonClicked()")
+    def __onStopPushButtonClicked(self):
+        Logger().trace("ShootController.__stopPushButtonClicked()")
         self.__stopShooting()
 
-    def __onDoneButtonClicked(self, widget):
-        Logger().trace("ShootController.__onDoneButtonClicked()")
+    def __onDonePushButtonClicked(self):
+        Logger().trace("ShootController.__onDonePushButtonClicked()")
         self.shutdown()
 
     def __updateShootingElapsedTime(self):
         Logger().trace("ShootController.__updateShootingElapsedTime()")
         if self._model.isShooting():
             shootingTime, elapsedTime = self._model.getShootingElapsedTime()
-            self.shootingTimeLabel.set_text("%s" % sToHmsAsStr(shootingTime))
-            self.elapsedTimeLabel.set_text("%s" % sToHmsAsStr(elapsedTime))
-            return True # Relaunch the gobject timer
+            self._view.shootingTimeLabel.setText("%s" % sToHmsAsStr(shootingTime))
+            self._view.elapsedTimeLabel.setText("%s" % sToHmsAsStr(elapsedTime))
         else:
-            return False # Stop the gobject timer
+            self.__shootingElapseTimer.stop()
 
     # Callback model (all GUI calls must be done via the serializer)
     def __shootingStarted(self):
         Logger().trace("ShootController.__shootingStarted()")
-        self._serializer.addWork(self.shootingArea.clear)
-        self._serializer.addWork(self.shootingProgressbar.set_fraction, 0.)
-        self._serializer.addWork(self.totalProgressbar.set_fraction, 0.)
+        #self._serializer.addWork(self._view.shootingArea.clear)
+        self._serializer.addWork(self._view.shootingProgressBar.setValue, 0)
+        self._serializer.addWork(self._view.totalProgressBar.setValue, 0)
         if self._model.timerRepeatEnable:
-            self._serializer.addWork(self.repeatLabel.set_text,"--/%d" % self._model.timerRepeat)
+            self._serializer.addWork(self._view.repeatLabel.setText,"--/%d" % self._model.timerRepeat)
         else:
-            self._serializer.addWork(self.repeatLabel.set_text, "")
-        self._serializer.addWork(self.shootingTimeLabel.set_text, "00:00:00")
-        self._serializer.addWork(self.elapsedTimeLabel.set_text,  "00:00:00")
-        self._serializer.addWork(self.currentIndexLabel.set_text, "--/%d" % self._model.scan.totalNbPicts)
-        self._serializer.addWork(self.nextIndexLabel.set_text, "--/%d" % self._model.scan.totalNbPicts)
+            self._serializer.addWork(self._view.repeatLabel.setText, "")
+        self._serializer.addWork(self._view.shootingTimeLabel.setText, "00:00:00")
+        self._serializer.addWork(self._view.elapsedTimeLabel.setText,  "00:00:00")
+        self._serializer.addWork(self._view.currentIndexLabel.setText, "--/%d" % self._model.scan.totalNbPicts)
+        self._serializer.addWork(self._view.nextIndexLabel.setText, "--/%d" % self._model.scan.totalNbPicts)
         if self._model.mode == 'mosaic':
-            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, "--/%d" % self._model.mosaic.yawNbPicts)
-            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, "--/%d" % self._model.mosaic.pitchNbPicts)
-            self._serializer.addWork(self.yawNextIndexLabel.set_text, "--/%d" % self._model.mosaic.yawNbPicts)
-            self._serializer.addWork(self.pitchNextIndexLabel.set_text, "--/%d" % self._model.mosaic.pitchNbPicts)
+            self._serializer.addWork(self._view.yawCurrentIndexLabel.setText, "--/%d" % self._model.mosaic.yawNbPicts)
+            self._serializer.addWork(self._view.pitchCurrentIndexLabel.setText, "--/%d" % self._model.mosaic.pitchNbPicts)
+            self._serializer.addWork(self._view.yawNextIndexLabel.setText, "--/%d" % self._model.mosaic.yawNbPicts)
+            self._serializer.addWork(self._view.pitchNextIndexLabel.setText, "--/%d" % self._model.mosaic.pitchNbPicts)
         else:
-            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, "--")
-            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, "--")
-            self._serializer.addWork(self.yawNextIndexLabel.set_text, "--")
-            self._serializer.addWork(self.pitchNextIndexLabel.set_text, "--")
-        self._serializer.addWork(self.dataButton.set_sensitive, False)
-        self._serializer.addWork(self.timerButton.set_sensitive, False)
-        self._serializer.addWork(self.startButton.set_sensitive, False)
-        self._serializer.addWork(self.pauseResumeButton.set_sensitive, True)
-        self._serializer.addWork(self.stopButton.set_sensitive, True)
-        self._serializer.addWork(self.doneButton.set_sensitive, False)
-        self._serializer.addWork(self.rewindButton.set_sensitive, False)
-        self._serializer.addWork(self.forwardButton.set_sensitive, False)
-        gobject.timeout_add(1000, self.__updateShootingElapsedTime)
+            self._serializer.addWork(self._view.yawCurrentIndexLabel.setText, "--")
+            self._serializer.addWork(self._view.pitchCurrentIndexLabel.setText, "--")
+            self._serializer.addWork(self._view.yawNextIndexLabel.setText, "--")
+            self._serializer.addWork(self._view.pitchNextIndexLabel.setText, "--")
+        self._serializer.addWork(self._view.dataPushButton.setEnabled, False)
+        self._serializer.addWork(self._view.timerPushButton.setEnabled, False)
+        self._serializer.addWork(self._view.startPushButton.setEnabled, False)
+        self._serializer.addWork(self._view.pauseResumePushButton.setEnabled, True)
+        self._serializer.addWork(self._view.stopPushButton.setEnabled, True)
+        self._serializer.addWork(self._view.buttonBox.setEnabled, False)
+        self._serializer.addWork(self._view.rewindPushButton.setEnabled, False)
+        self._serializer.addWork(self._view.forwardPushButton.setEnabled, False)
+        self._serializer.addWork(self.__shootingElapseTimer.start, 1000)
 
     def __shootingPaused(self):
         Logger().trace("ShootController.__shootingPaused()")
-        self.pauseResumeButton.set_sensitive(True)
-        self._serializer.addWork(self.pauseResumeLabel.set_text, _("Resume"))
-        self._serializer.addWork(self.rewindButton.set_sensitive, True)
-        self._serializer.addWork(self.forwardButton.set_sensitive, True)
-        self._serializer.addWork(self.sequenceLabel.set_text, _("Paused"))
-        self.textNextLabel.set_sensitive(True)
-        self.nextIndexLabel.set_sensitive(True)
-        self.yawNextIndexLabel.set_sensitive(True)
-        self.pitchNextIndexLabel.set_sensitive(True)
+        self._view.pauseResumePushButton.setEnabled(True)
+        self._serializer.addWork(self._view.pauseResumePushButton.setText, _("Resume"))
+        self._serializer.addWork(self._view.rewindPushButton.setEnabled, True)
+        self._serializer.addWork(self._view.forwardPushButton.setEnabled, True)
+        self._serializer.addWork(self._view.sequenceLabel.setText, _("Paused"))
+        self._serializer.addWork(self._view.textNextLabel.setEnabled, True)
+        self._serializer.addWork(self._view.nextIndexLabel.setEnabled, True)
+        self._serializer.addWork(self._view.yawNextIndexLabel.setEnabled, True)
+        self._serializer.addWork(self._view.pitchNextIndexLabel.setEnabled, True)
 
     def __shootingResumed(self):
         Logger().trace("ShootController.__shootingResumed()")
-        self._serializer.addWork(self.pauseResumeLabel.set_text, _("Pause"))
-        self._serializer.addWork(self.rewindButton.set_sensitive, False)
-        self._serializer.addWork(self.forwardButton.set_sensitive, False)
-        self.textNextLabel.set_sensitive(False)
-        self.nextIndexLabel.set_sensitive(False)
-        self.yawNextIndexLabel.set_sensitive(False)
-        self.pitchNextIndexLabel.set_sensitive(False)
+        self._serializer.addWork(self._view.pauseResumePushButton.setText, _("Pause"))
+        self._serializer.addWork(self._view.rewindPushButton.setEnabled, False)
+        self._serializer.addWork(self._view.forwardPushButton.setEnabled, False)
+        self._serializer.addWork(self._view.textNextLabel.setEnabled, False)
+        self._serializer.addWork(self._view.nextIndexLabel.setEnabled, False)
+        self._serializer.addWork(self._view.yawNextIndexLabel.setEnabled, False)
+        self._serializer.addWork(self._view.pitchNextIndexLabel.setEnabled, False)
 
     def __shootingStopped(self, status):
         Logger().debug("ShootController.__shootingStopped(): status=%s" % status)
         if status == 'ok':
-            self._serializer.addWork(self.sequenceLabel.set_text, _("Finished"))
+            self._serializer.addWork(self._view.sequenceLabel.setText, _("Finished"))
         elif status == 'cancel':
-            self._serializer.addWork(self.sequenceLabel.set_text, _("Canceled"))
+            self._serializer.addWork(self._view.sequenceLabel.setText, _("Canceled"))
         elif status == 'fail':
-            self._serializer.addWork(self.sequenceLabel.set_text, _("Failed"))
-        self._serializer.addWork(self.dataButton.set_sensitive, True)
-        self._serializer.addWork(self.timerButton.set_sensitive, True)
-        self._serializer.addWork(self.startButton.set_sensitive, True)
-        self._serializer.addWork(self.pauseResumeButton.set_sensitive, False)
-        self._serializer.addWork(self.stopButton.set_sensitive, False)
-        self._serializer.addWork(self.doneButton.set_sensitive, True)
+            self._serializer.addWork(self._view.sequenceLabel.setText, _("Failed"))
+        self._serializer.addWork(self._view.dataPushButton.setEnabled, True)
+        self._serializer.addWork(self._view.timerPushButton.setEnabled, True)
+        self._serializer.addWork(self._view.startPushButton.setEnabled, True)
+        self._serializer.addWork(self._view.pauseResumePushButton.setEnabled, False)
+        self._serializer.addWork(self._view.stopPushButton.setEnabled, False)
+        self._serializer.addWork(self._view.buttonBox.setEnabled, True)
 
     def __shootingWaiting(self, wait):
         Logger().trace("ShootController.__shootingRepeat()")
         sequenceMessage = _("Waiting") + " %s" % sToHmsAsStr(wait)
-        self._serializer.addWork(self.sequenceLabel.set_text, sequenceMessage)
+        self._serializer.addWork(self._view.sequenceLabel.setText, sequenceMessage)
 
     def __shootingProgress(self, shootingProgress=None, totalProgress=None):
         Logger().trace("ShootController.__shootingProgress()")
         if shootingProgress is not None:
-            self._serializer.addWork(self.shootingProgressbar.set_fraction, shootingProgress)
+            self._serializer.addWork(self._view.shootingProgressBar.setValue, int(round(shootingProgress * 100)))
         if totalProgress is not None:
-            self._serializer.addWork(self.totalProgressbar.set_fraction, totalProgress)
+            self._serializer.addWork(self._view.totalProgressBar.setValue, int(round(totalProgress * 100)))
 
     def __shootingRepeat(self, repeat):
         Logger().trace("ShootController.__shootingRepeat()")
-        self._serializer.addWork(self.shootingArea.clear)
+        #self._serializer.addWork(self._view.shootingArea.clear)
         if self._model.timerRepeatEnable:
-            self._serializer.addWork(self.repeatLabel.set_text,"%d/%d" % (repeat, self._model.timerRepeat))
+            self._serializer.addWork(self._view.repeatLabel.setText,"%d/%d" % (repeat, self._model.timerRepeat))
 
     def __shootingNewPosition(self, index, yaw, pitch, status=None, next=False):
         Logger().trace("ShootController.__shootingNewPosition()")
@@ -573,39 +526,39 @@ class ShootController(AbstractController):
         # Update text area
         if isinstance(index, tuple):
             index, yawIndex, pitchIndex = index
-            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, "%d/%d" % (yawIndex, self._model.mosaic.yawNbPicts))
-            self._serializer.addWork(self.yawNextIndexLabel.set_text, "%d/%d" % (yawIndex, self._model.mosaic.yawNbPicts))
-            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, "%d/%d" % (pitchIndex, self._model.mosaic.pitchNbPicts))
-            self._serializer.addWork(self.pitchNextIndexLabel.set_text, "%d/%d" % (pitchIndex, self._model.mosaic.pitchNbPicts))
+            self._serializer.addWork(self._view.yawCurrentIndexLabel.setText, "%d/%d" % (yawIndex, self._model.mosaic.yawNbPicts))
+            self._serializer.addWork(self._view.yawNextIndexLabel.setText, "%d/%d" % (yawIndex, self._model.mosaic.yawNbPicts))
+            self._serializer.addWork(self._view.pitchCurrentIndexLabel.setText, "%d/%d" % (pitchIndex, self._model.mosaic.pitchNbPicts))
+            self._serializer.addWork(self._view.pitchNextIndexLabel.setText, "%d/%d" % (pitchIndex, self._model.mosaic.pitchNbPicts))
         else:
-            self._serializer.addWork(self.yawCurrentIndexLabel.set_text, "%.1f" % yaw)
-            self._serializer.addWork(self.yawNextIndexLabel.set_text, "%.1f" % yaw)
-            self._serializer.addWork(self.pitchCurrentIndexLabel.set_text, "%.1f" % pitch)
-            self._serializer.addWork(self.pitchNextIndexLabel.set_text, "%.1f" % pitch)
-        self._serializer.addWork(self.currentIndexLabel.set_text, "%d/%d" % (index, self._model.scan.totalNbPicts))
-        self._serializer.addWork(self.nextIndexLabel.set_text, "%d/%d" % (index, self._model.scan.totalNbPicts))
+            self._serializer.addWork(self._view.yawCurrentIndexLabel.setText, "%.1f" % yaw)
+            self._serializer.addWork(self._view.yawNextIndexLabel.setText, "%.1f" % yaw)
+            self._serializer.addWork(self._view.pitchCurrentIndexLabel.setText, "%.1f" % pitch)
+            self._serializer.addWork(self._view.pitchNextIndexLabel.setText, "%.1f" % pitch)
+        self._serializer.addWork(self._view.currentIndexLabel.setText, "%d/%d" % (index, self._model.scan.totalNbPicts))
+        self._serializer.addWork(self._view.nextIndexLabel.setText, "%d/%d" % (index, self._model.scan.totalNbPicts))
 
         # Update graphical area
-        self.shootingArea.add_pict(yaw, pitch, status, next)
-        self._serializer.addWork(self.shootingArea.refresh)
+        #self._view.shootingArea.add_pict(yaw, pitch, status, next)
+        #self._serializer.addWork(self._view.shootingArea.refresh)
 
     def __shootingSequence(self, sequence, **kwargs):
         Logger().trace("ShootController.__shootingSequence()")
         if sequence == 'moving':
-            self._serializer.addWork(self.sequenceLabel.set_text, _("Moving"))
+            self._serializer.addWork(self._view.sequenceLabel.setText, _("Moving"))
         elif sequence == 'stabilization':
-            self._serializer.addWork(self.sequenceLabel.set_text, _("Stabilization"))
+            self._serializer.addWork(self._view.sequenceLabel.setText, _("Stabilization"))
         elif sequence == 'mirror':
-            self._serializer.addWork(self.sequenceLabel.set_text, _("Mirror lockup"))
+            self._serializer.addWork(self._view.sequenceLabel.setText, _("Mirror lockup"))
         elif sequence == 'shutter':
             bracket = kwargs['bracket']
             totalNbPicts = self._model.camera.bracketingNbPicts
-            self._serializer.addWork(self.sequenceLabel.set_text, _("Shutter - Picture") + " %d/%d" % (bracket, totalNbPicts))
+            self._serializer.addWork(self._view.sequenceLabel.setText, _("Shutter - Picture") + " %d/%d" % (bracket, totalNbPicts))
 
     def __refreshPos(self, yaw, pitch):
         Logger().trace("ShootController.__refreshPos()")
-        self.shootingArea.set_current_head_position(yaw, pitch)
-        self._serializer.addWork(self.shootingArea.refresh)
+        #self.shootingArea.set_current_head_position(yaw, pitch)
+        #self._serializer.addWork(self._view.shootingArea.refresh)
 
     # Helpers
     def __refreshNextPosition(self):
@@ -615,15 +568,15 @@ class ShootController(AbstractController):
         # Update text area
         if isinstance(index, tuple):
             index, yawIndex, pitchIndex = index
-            self.yawNextIndexLabel.set_text("%d/%d" % (yawIndex, self._model.mosaic.yawNbPicts))
-            self.pitchNextIndexLabel.set_text("%d/%d" % (pitchIndex, self._model.mosaic.pitchNbPicts))
+            self._view.yawNextIndexLabel.setText("%d/%d" % (yawIndex, self._model.mosaic.yawNbPicts))
+            self._view.pitchNextIndexLabel.setText("%d/%d" % (pitchIndex, self._model.mosaic.pitchNbPicts))
         else:
-            self.yawNextIndexLabel.set_text("%.1f" % yaw)
-            self.pitchNextIndexLabel.set_text("%.1f" % pitch)
-        self.nextIndexLabel.set_text("%d/%d" % (index, self._model.scan.totalNbPicts))
+            self._view.yawNextIndexLabel.setText("%.1f" % yaw)
+            self._view.pitchNextIndexLabel.setText("%.1f" % pitch)
+        self._view.nextIndexLabel.setText("%d/%d" % (index, self._model.scan.totalNbPicts))
 
         # Update graphical area
-        self.shootingArea.set_selected_image_index(index)
+        #self._view.shootingArea.set_selected_image_index(index)
 
     def __rewindShootingPosition(self):
         """
@@ -661,7 +614,7 @@ class ShootController(AbstractController):
 
     def __pauseShooting(self):
         self._model.pause()
-        self.pauseResumeButton.set_sensitive(False)
+        self._view.pauseResumePushButton.setEnabled(False)
 
     def __resumeShooting(self):
         self._model.resume()
@@ -670,9 +623,6 @@ class ShootController(AbstractController):
         self._model.stop()
 
     # Interface
-    #def run(self):
-        #self.dialog.show() # ???!!!???
-
     def shutdown(self):
         super(ShootController, self).shutdown()
         if self.__thread is not None:
@@ -680,12 +630,12 @@ class ShootController(AbstractController):
 
     def refreshView(self):
         dataFlag = ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE')
-        if dataFlag:
-            self.dataButtonImage.set_from_stock(gtk.STOCK_APPLY, 4)
-        else:
-            self.dataButtonImage.set_from_stock(gtk.STOCK_CANCEL, 4)
-        timerFlag = self._model.timerAfterEnable or self._model.timerRepeatEnable
-        if timerFlag:
-            self.timerButtonImage.set_from_stock(gtk.STOCK_APPLY, 4)
-        else:
-            self.timerButtonImage.set_from_stock(gtk.STOCK_CANCEL, 4)
+        #if dataFlag:
+            #self._view.dataPushButtonImage.set_from_stock(gtk.STOCK_APPLY, 4)
+        #else:
+            #self._view.dataPushButtonImage.set_from_stock(gtk.STOCK_CANCEL, 4)
+        #timerFlag = self._model.timerAfterEnable or self._model.timerRepeatEnable
+        #if timerFlag:
+            #self._view.timerPushButtonImage.set_from_stock(gtk.STOCK_APPLY, 4)
+        #else:
+            #self._view.timerPushButtonImage.set_from_stock(gtk.STOCK_CANCEL, 4)

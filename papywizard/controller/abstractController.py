@@ -54,9 +54,8 @@ __revision__ = "$Id$"
 import sys
 import os.path
 
-import pygtk
-pygtk.require("2.0")
-import gtk.glade
+import PyQt4.uic
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common.loggingServices import Logger
 
@@ -66,7 +65,7 @@ else:
     path = os.path.dirname(__file__)
 
 
-class AbstractGladeController(object):
+class AbstractController(object):
     """ Base class for controllers.
     """
     def __init__(self, parent=None, model=None, serializer=None):
@@ -87,75 +86,46 @@ class AbstractGladeController(object):
 
         self._init()
 
-        # Set the Glade file
-        gladeFile = os.path.join(path, os.path.pardir, "view", self._gladeFile)
-        self.wTree = gtk.glade.XML(gladeFile)
+        # Build the GUI from ui file
+        uiFile = os.path.join(path, os.path.pardir, "view", self._uiFile)
+        self._view = PyQt4.uic.loadUi(uiFile)
 
-        self._retreiveWidgets()
         self._initWidgets()
+        self._connectQtSignals()
         self._connectSignals()
         self.refreshView()
 
     def _init(self):
         """ Misc. init.
         """
-        self._gladeFile = None
-        self._signalDict = None
-
-    def _retreiveWidgets(self):
-        """ Get widgets from widget tree.
-        """
-        self.dialog = self.wTree.get_widget("dialog")
-        if self.dialog is None:
-            raise ValueError("Can't retreive main dialog widget")
+        self._uiFile = None
 
     def _initWidgets(self):
         """ Init widgets.
         """
         raise NotImplementedError
 
+    def _connectQtSignals(self):
+        """ Connect widgets signals.
+        """
+        QtCore.QObject.connect(self._view, QtCore.SIGNAL("destroyed(QObject *)"), self._onDestroyed)
+        # todo: connect the window close button signal
+
     def _connectSignals(self):
         """ Connect widgets signals.
         """
-        self.wTree.signal_autoconnect(self._signalDict)
-        self.dialog.connect("delete-event", self._onDelete)
+        raise NotImplementedError
 
     def _disconnectSignals(self):
         """ Disconnect widgets signals.
         """
         raise NotImplementedError
 
-    def _setFontParams(self, widget, scale=None, weight=None):
-        """ Change the widget font size.
-
-         @param widget: widget to change the font
-         @type widget: {gtk.Widget}
-
-         @param scale: scale for the new font size
-         @type scale: int
-
-         @param weight: new weight
-         @type weight: PangoWeight enum
+    # Callbacks Qt
+    def _onDestroyed(self, widget):
+        """ 'destroyed' signal callback.
         """
-        context = widget.get_pango_context()
-        font = context.get_font_description()
-        if scale is not None:
-            font.set_size(int(font.get_size() * scale))
-        if weight is not None:
-            font.set_weight(weight)
-        widget.modify_font(font)
-
-    # Callbacks GTK
-    def _onDelete(self, widget, event):
-        """ 'delete-event' signal callback.
-        """
-        Logger().trace("AbstractController._onDelete()")
-
-    # Interface
-    def run(self):
-        """ Run the dialog.
-        """
-        return self.dialog.run()
+        Logger().trace("AbstractController._onDestroyed()")
 
     def shutdown(self):
         """ Shutdown the controller.
@@ -163,7 +133,7 @@ class AbstractGladeController(object):
         mainly destroy the view.
         """
         self._disconnectSignals()
-        self.dialog.destroy()
+        del self._view # ???!!???
 
     def refreshView(self):
         """ Refresh the view widgets according to model values.
@@ -171,117 +141,10 @@ class AbstractGladeController(object):
         raise NotImplementedError
 
 
-class AbstractBuidlerController(object):
-    """ Base class for controllers.
-    """
-    def __init__(self, parent=None, model=None, serializer=None):
-        """ Init the controller.
-
-        @param parent: parent controller
-        @type parent: {Controller}
-
-        @param model: model to use
-        @type model: {Shooting}
-
-        @param serializer: serializer for multi-threading operations
-        @type serializer: {Serializer}
-        """
-        self._parent = parent
-        self._model = model
-        self._serializer = serializer
-
-        self._init()
-
-        # Set the xml file
-        _xmlFile = "%s.xml" % self._gladeFile.split('.')[0]
-        xmlFile = os.path.join(path, os.path.pardir, "view", _xmlFile)
-        self.builder = gtk.Builder()
-        self.builder.set_translation_domain("papywizard")
-        self.builder.add_from_file(xmlFile)
-        
-        # Compatibility with glade
-        self.wTree = self.builder
-        self.builder.get_widget = self.wTree.get_object
-
-        self._retreiveWidgets()
-        self._initWidgets()
-        self._connectSignals()
-        self.refreshView()
-
-    def _init(self):
-        """ Misc. init.
-        """
-        self._gladeFile = None
-        self._signalDict = None
-
-    def _retreiveWidgets(self):
-        """ Get widgets from widget tree.
-        """
-        self.dialog = self.builder.get_widget("dialog")
-        if self.dialog is None:
-            raise ValueError("Can't retreive main dialog widget")
-
-    def _initWidgets(self):
-        """ Init widgets.
-        """
-        raise NotImplementedError
-
-    def _connectSignals(self):
-        """ Connect widgets signals.
-        """
-        self.builder.connect_signals(self._signalDict)
-        self.dialog.connect("delete-event", self._onDelete)
-
-    def _disconnectSignals(self):
-        """ Disconnect widgets signals.
-        """
-        raise NotImplementedError
-
-    def _setFontParams(self, widget, scale=None, weight=None):
-        """ Change the widget font size.
-
-         @param widget: widget to change the font
-         @type widget: {gtk.Widget}
-
-         @param scale: scale for the new font size
-         @type scale: int
-
-         @param weight: new weight
-         @type weight: PangoWeight enum
-        """
-        context = widget.get_pango_context()
-        font = context.get_font_description()
-        if scale is not None:
-            font.set_size(int(font.get_size() * scale))
-        if weight is not None:
-            font.set_weight(weight)
-        widget.modify_font(font)
-
-    # Callbacks GTK
-    def _onDelete(self, widget, event):
-        """ 'delete-event' signal callback.
-        """
-        Logger().trace("AbstractController._onDelete()")
+class AbstractModalDialogController(AbstractController):
 
     # Interface
-    def run(self):
+    def exec_(self):
         """ Run the dialog.
         """
-        return self.dialog.run()
-
-    def shutdown(self):
-        """ Shutdown the controller.
-
-        mainly destroy the view.
-        """
-        self.dialog.destroy()
-        self._disconnectSignals()
-
-    def refreshView(self):
-        """ Refresh the view widgets according to model values.
-        """
-        raise NotImplementedError
-
-
-AbstractController = AbstractGladeController
-#AbstractController = AbstractBuidlerController
+        return self._view.exec_()
