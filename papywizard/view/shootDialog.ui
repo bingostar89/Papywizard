@@ -1,0 +1,557 @@
+<ui version="4.0" >
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>607</width>
+    <height>399</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Shooting</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset>
+    <normaloff>../../../../../papywizard80x80.png</normaloff>../../../../../papywizard80x80.png</iconset>
+  </property>
+  <property name="modal" >
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_5" >
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_4" >
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4" >
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2" >
+         <item>
+          <widget class="QPushButton" name="pushButton_3" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string/>
+           </property>
+           <property name="icon" >
+            <iconset>
+             <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/frame_text.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/frame_text.png</iconset>
+           </property>
+           <property name="checkable" >
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="rewindPushButton" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="MinimumExpanding" hsizetype="Fixed" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize" >
+            <size>
+             <width>4</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="text" >
+            <string/>
+           </property>
+           <property name="icon" >
+            <iconset>
+             <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/undo.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/undo.png</iconset>
+           </property>
+           <property name="iconSize" >
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QFrame" name="shootingFrame" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="MinimumExpanding" hsizetype="MinimumExpanding" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Sunken</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_3" >
+         <item>
+          <widget class="QPushButton" name="pushButton_4" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string/>
+           </property>
+           <property name="icon" >
+            <iconset>
+             <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/mimetypes/empty.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/mimetypes/empty.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="forwardPushButton" >
+           <property name="enabled" >
+            <bool>false</bool>
+           </property>
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="MinimumExpanding" hsizetype="Fixed" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text" >
+            <string/>
+           </property>
+           <property name="icon" >
+            <iconset>
+             <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/redo.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/redo.png</iconset>
+           </property>
+           <property name="iconSize" >
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_3" >
+       <property name="sizeConstraint" >
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <item>
+        <widget class="QLabel" name="sequenceLabel" >
+         <property name="font" >
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::Panel</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="text" >
+          <string>Idle</string>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="repeatLabel" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize" >
+          <size>
+           <width>30</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font" >
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::Panel</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="text" >
+          <string/>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="shootingTimeLabel" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize" >
+          <size>
+           <width>60</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font" >
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::Panel</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="text" >
+          <string>00:00:00</string>
+         </property>
+         <property name="scaledContents" >
+          <bool>false</bool>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="elpsedTimeLabel" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize" >
+          <size>
+           <width>60</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font" >
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="frameShape" >
+          <enum>QFrame::Panel</enum>
+         </property>
+         <property name="frameShadow" >
+          <enum>QFrame::Sunken</enum>
+         </property>
+         <property name="text" >
+          <string>00:00:00</string>
+         </property>
+         <property name="scaledContents" >
+          <bool>false</bool>
+         </property>
+         <property name="alignment" >
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2" >
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout" >
+         <property name="spacing" >
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QProgressBar" name="shootingProgressBar" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize" >
+            <size>
+             <width>0</width>
+             <height>1</height>
+            </size>
+           </property>
+           <property name="font" >
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="value" >
+            <number>24</number>
+           </property>
+           <property name="textVisible" >
+            <bool>false</bool>
+           </property>
+           <property name="invertedAppearance" >
+            <bool>false</bool>
+           </property>
+           <property name="format" >
+            <string>%p%</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QProgressBar" name="totalProgressBar" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize" >
+            <size>
+             <width>0</width>
+             <height>1</height>
+            </size>
+           </property>
+           <property name="font" >
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="value" >
+            <number>24</number>
+           </property>
+           <property name="textVisible" >
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="dataPushButton" >
+         <property name="font" >
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text" >
+          <string>Data</string>
+         </property>
+         <property name="icon" >
+          <iconset>
+           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/button_cancel.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/button_cancel.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="timerPushButton" >
+         <property name="font" >
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text" >
+          <string>Timer</string>
+         </property>
+         <property name="icon" >
+          <iconset>
+           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/button_cancel.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/button_cancel.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="stepByStepPushButton" >
+         <property name="font" >
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text" >
+          <string>Step-by-step</string>
+         </property>
+         <property name="icon" >
+          <iconset>
+           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/button_cancel.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/button_cancel.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+         <property name="checkable" >
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout" >
+       <item>
+        <widget class="QPushButton" name="startPushButton" >
+         <property name="font" >
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text" >
+          <string>Start</string>
+         </property>
+         <property name="icon" >
+          <iconset>
+           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_play.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_play.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pauseResumePushButton" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
+         <property name="font" >
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text" >
+          <string>Pause</string>
+         </property>
+         <property name="icon" >
+          <iconset>
+           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_pause.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_pause.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="stopPushButton" >
+         <property name="enabled" >
+          <bool>false</bool>
+         </property>
+         <property name="font" >
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text" >
+          <string>Stop</string>
+         </property>
+         <property name="icon" >
+          <iconset>
+           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_stop.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_stop.png</iconset>
+         </property>
+         <property name="iconSize" >
+          <size>
+           <width>16</width>
+           <height>16</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="font" >
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Close</set>
+     </property>
+     <property name="centerButtons" >
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Dialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>295</x>
+     <y>381</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Dialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>227</x>
+     <y>375</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
