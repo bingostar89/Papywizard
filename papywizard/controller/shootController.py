@@ -519,20 +519,20 @@ class ShootController(AbstractController):
         self._serializer.addWork(self.rewindButton.set_sensitive, True)
         self._serializer.addWork(self.forwardButton.set_sensitive, True)
         self._serializer.addWork(self.sequenceLabel.set_text, _("Paused"))
-        self.textNextLabel.set_sensitive(True)
-        self.nextIndexLabel.set_sensitive(True)
-        self.yawNextIndexLabel.set_sensitive(True)
-        self.pitchNextIndexLabel.set_sensitive(True)
+        self._serializer.addWork(self.textNextLabel.set_sensitive, True)
+        self._serializer.addWork(self.nextIndexLabel.set_sensitive, True)
+        self._serializer.addWork(self.yawNextIndexLabel.set_sensitive, True)
+        self._serializer.addWork(self.pitchNextIndexLabel.set_sensitive, True)
 
     def __shootingResumed(self):
         Logger().trace("ShootController.__shootingResumed()")
         self._serializer.addWork(self.pauseResumeLabel.set_text, _("Pause"))
         self._serializer.addWork(self.rewindButton.set_sensitive, False)
         self._serializer.addWork(self.forwardButton.set_sensitive, False)
-        self.textNextLabel.set_sensitive(False)
-        self.nextIndexLabel.set_sensitive(False)
-        self.yawNextIndexLabel.set_sensitive(False)
-        self.pitchNextIndexLabel.set_sensitive(False)
+        self._serializer.addWork(self.textNextLabel.set_sensitive, False)
+        self._serializer.addWork(self.nextIndexLabel.set_sensitive, False)
+        self._serializer.addWork(self.yawNextIndexLabel.set_sensitive, False)
+        self._serializer.addWork(self.pitchNextIndexLabel.set_sensitive, False)
 
     def __shootingStopped(self, status):
         Logger().debug("ShootController.__shootingStopped(): status=%s" % status)
