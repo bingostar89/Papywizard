@@ -515,7 +515,7 @@ class Shooting(object):
                     except HardwareError:
                         self.hardware.stopAxis()
                         Logger().exception("Shooting.start()")
-                        Logger().warning("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f out of limits" % (yaw, pitch))
+                        Logger().warning("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f out of limits" % (index_, yaw, pitch))
 
                         if isinstance(index, tuple):
                             index_, yawIndex, pitchIndex = index
@@ -536,7 +536,7 @@ class Shooting(object):
                         checkPauseStop()
 
                         if not self.__forceNewShootingIndex:
-                            self.newPositionSignal.emit(yaw, pitch, status='error', next=False)
+                            self.newPositionSignal.emit(index, yaw, pitch, status='error', next=False)
 
                 if repeat < numRepeat:
                     remainingTime = self.timerEvery - (time.time() - startTime)
