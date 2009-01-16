@@ -74,7 +74,7 @@ from papywizard.controller.spy import Spy
 from papywizard.view.logBuffer import LogBuffer
 
 DOMAIN = "papywizard"
-LANGS = ('en_US', 'fr_FR', 'pl_PL', 'de_DE', 'es_ES', 'nl_NL', 'it_IT')
+LANGS = ('en_US', 'fr_FR', 'pl_PL', 'de_DE', 'es_ES', 'it_IT')
 
 _ = lambda a: a
 
