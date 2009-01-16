@@ -442,6 +442,10 @@ class Shooting(object):
                 # Loop over all positions
                 for index, (yaw, pitch) in self.scan.iterPositions(): # Use while True + getCurrentPosition()?
                     try:
+                        if isinstance(index, tuple):
+                            index_, yawIndex, pitchIndex = index
+                        else:
+                            index_ = index
 
                         Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
                         self.__forceNewShootingIndex = False
@@ -490,10 +494,6 @@ class Shooting(object):
                             checkPauseStop(pause=False)
 
                         # Update global shooting progression
-                        if isinstance(index, tuple):
-                            index_, yawIndex, pitchIndex = index
-                        else:
-                            index_ = index
                         shootingProgress = float(index_) / float(self.scan.totalNbPicts)
                         totalProgress = (repeat - 1) * self.scan.totalNbPicts + index_
                         totalProgress /= float(numRepeat * self.scan.totalNbPicts)
