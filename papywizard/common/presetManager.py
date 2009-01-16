@@ -231,7 +231,7 @@ class PresetManager(object):
         @param presetFileName: xml file containing the presets to import
         @type presetFileName: str
         """
-        document = xml.dom.minidom.parse(presetFileName)
+        document = xml.dom.minidom.parse(file(presetFileName))
         for presetElement in document.getElementsByTagName('preset'):
             preset = Preset(presetElement)
             self.__presets.add(preset)
