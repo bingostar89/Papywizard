@@ -80,14 +80,14 @@ from papywizard.controller.spy import Spy
 class MainController(AbstractController):
     """ Main controller object.
     """
-    def __init__(self, model, serializer, qtLogStream):
+    def __init__(self, model, serializer, logStream):
         """ Init the controller.
 
         @param serializer: object used to serialize toolkit events
         @type serializer: {Serializer}
         """
         super(MainController, self).__init__(None, model, serializer)
-        self.__qtLogStream = qtLogStream
+        self.__logStream = logStream
 
         # Try to autoconnect to real hardware
         if ConfigManager().getBoolean('Preferences', 'HARDWARE_AUTO_CONNECT'):
@@ -132,7 +132,7 @@ class MainController(AbstractController):
     def _initWidgets(self):
         def hasHeightForWidth(self):
             return True
-        
+
         def heightForWidth(self, width):
             return width
 
@@ -149,7 +149,6 @@ class MainController(AbstractController):
         if self.__fullScreen:
             self._view.dialog.fullscreen()
 
-        print self._view
         self._view.show()
 
     def _connectQtSignals(self):
@@ -506,7 +505,7 @@ class MainController(AbstractController):
     def __onActionHelpViewLogActivated(self):
         Logger().trace("MainController.__onActionHelpViewLogActivated()")
         controller = LoggerController(self, self._model, self._serializer)
-        controller.setLogBuffer(self.__gtkLogStream)
+        controller.setLogBuffer(self.__logStream)
         controller.exec_()
         controller.shutdown()
 
@@ -667,7 +666,7 @@ class MainController(AbstractController):
         controller = TotalFovController(self, self._model)
         response = controller.exec_()
         controller.shutdown()
-        if response == 0:
+        if response:
             self.__mosaicInputParam = 'fov'
             self.refreshView()
             self.setStatusbarMessage(_("Field of view set to user value"), 10)
@@ -678,7 +677,7 @@ class MainController(AbstractController):
         controller = NbPictsController(self, self._model)
         response = controller.exec_()
         controller.shutdown()
-        if response == 0:
+        if response:
             self.__mosaicInputParam = 'nbPicts'
             self.refreshView()
             self.setStatusbarMessage(_("Number of pictures set to user value"), 10)
@@ -872,6 +871,7 @@ class MainController(AbstractController):
         except ValueError:
             Logger().warning("Previously selected '%s' preset not found" % self._model.preset.name)
             index = 0
+            self._model.preset.name = presets.getByIndex(index).getName()
         self._view.presetComboBox.setCurrentIndex(index)
         self._view.presetInfoPlainTextEdit.clear()
         preset = presets.getByIndex(index)

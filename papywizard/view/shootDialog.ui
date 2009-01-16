@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>607</width>
-    <height>399</height>
+    <width>511</width>
+    <height>408</height>
    </rect>
   </property>
   <property name="font" >
@@ -46,8 +46,8 @@
             <string/>
            </property>
            <property name="icon" >
-            <iconset>
-             <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/frame_text.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/frame_text.png</iconset>
+            <iconset resource="icons.qrc" >
+             <normaloff>:/icons/fonts.png</normaloff>:/icons/fonts.png</iconset>
            </property>
            <property name="checkable" >
             <bool>true</bool>
@@ -78,8 +78,8 @@
             <string/>
            </property>
            <property name="icon" >
-            <iconset>
-             <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/undo.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/undo.png</iconset>
+            <iconset resource="icons.qrc" >
+             <normaloff>:/icons/undo.png</normaloff>:/icons/undo.png</iconset>
            </property>
            <property name="iconSize" >
             <size>
@@ -300,8 +300,8 @@
             <string/>
            </property>
            <property name="icon" >
-            <iconset>
-             <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/mimetypes/empty.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/mimetypes/empty.png</iconset>
+            <iconset resource="icons.qrc" >
+             <normaloff>:/icons/misc.png</normaloff>:/icons/misc.png</iconset>
            </property>
           </widget>
          </item>
@@ -320,8 +320,8 @@
             <string/>
            </property>
            <property name="icon" >
-            <iconset>
-             <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/redo.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/redo.png</iconset>
+            <iconset resource="icons.qrc" >
+             <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
            </property>
            <property name="iconSize" >
             <size>
@@ -551,8 +551,8 @@
           <string>Data</string>
          </property>
          <property name="icon" >
-          <iconset>
-           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/button_cancel.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/button_cancel.png</iconset>
+          <iconset resource="icons.qrc" >
+           <normaloff>:/icons/button_cancel.png</normaloff>:/icons/button_cancel.png</iconset>
          </property>
          <property name="iconSize" >
           <size>
@@ -576,8 +576,8 @@
           <string>Timer</string>
          </property>
          <property name="icon" >
-          <iconset>
-           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/button_cancel.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/button_cancel.png</iconset>
+          <iconset resource="icons.qrc" >
+           <normaloff>:/icons/button_cancel.png</normaloff>:/icons/button_cancel.png</iconset>
          </property>
          <property name="iconSize" >
           <size>
@@ -598,8 +598,8 @@
           <string>Step-by-step</string>
          </property>
          <property name="icon" >
-          <iconset>
-           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/button_cancel.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/button_cancel.png</iconset>
+          <iconset resource="icons.qrc" >
+           <normaloff>:/icons/button_cancel.png</normaloff>:/icons/button_cancel.png</iconset>
          </property>
          <property name="iconSize" >
           <size>
@@ -627,8 +627,8 @@
           <string>Start</string>
          </property>
          <property name="icon" >
-          <iconset>
-           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_play.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_play.png</iconset>
+          <iconset resource="icons.qrc" >
+           <normaloff>:/icons/player_play.png</normaloff>:/icons/player_play.png</iconset>
          </property>
          <property name="iconSize" >
           <size>
@@ -652,8 +652,8 @@
           <string>Pause</string>
          </property>
          <property name="icon" >
-          <iconset>
-           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_pause.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_pause.png</iconset>
+          <iconset resource="icons.qrc" >
+           <normaloff>:/icons/player_pause.png</normaloff>:/icons/player_pause.png</iconset>
          </property>
          <property name="iconSize" >
           <size>
@@ -677,8 +677,8 @@
           <string>Stop</string>
          </property>
          <property name="icon" >
-          <iconset>
-           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_stop.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_stop.png</iconset>
+          <iconset resource="icons.qrc" >
+           <normaloff>:/icons/player_stop.png</normaloff>:/icons/player_stop.png</iconset>
          </property>
          <property name="iconSize" >
           <size>
@@ -712,7 +712,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

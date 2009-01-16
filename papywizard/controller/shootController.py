@@ -397,10 +397,10 @@ class ShootController(AbstractModalDialogController):
     def __onStepByStepPushButtonToggled(self, checked):
         Logger().trace("ShootController.__onStepByStepPushButtonToggled()")
         self._model.setStepByStep(checked)
-        #if checked:
-            #self._view.stepByStepPushButton.setIcon()
-        #else:
-            #self._view.stepByStepPushButton.setIcon()
+        if checked:
+            self._view.stepByStepPushButton.setIcon(QtGui.QIcon(":/icons/button_ok.png"))
+        else:
+            self._view.stepByStepPushButton.setIcon(QtGui.QIcon(":/icons/button_cancel.png"))
 
     def __onStartPushButtonClicked(self):
         Logger().trace("ShootController.__startPushButtonClicked()")
@@ -630,12 +630,13 @@ class ShootController(AbstractModalDialogController):
 
     def refreshView(self):
         dataFlag = ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE')
-        #if dataFlag:
-            #self._view.dataPushButtonImage.set_from_stock(gtk.STOCK_APPLY, 4)
-        #else:
-            #self._view.dataPushButtonImage.set_from_stock(gtk.STOCK_CANCEL, 4)
-        #timerFlag = self._model.timerAfterEnable or self._model.timerRepeatEnable
-        #if timerFlag:
-            #self._view.timerPushButtonImage.set_from_stock(gtk.STOCK_APPLY, 4)
-        #else:
-            #self._view.timerPushButtonImage.set_from_stock(gtk.STOCK_CANCEL, 4)
+        if dataFlag:
+            self._view.dataPushButton.setIcon(QtGui.QIcon(":/icons/button_ok.png"))
+        else:
+            self._view.dataPushButton.setIcon(QtGui.QIcon(":/icons/button_cancel.png"))
+
+        timerFlag = self._model.timerAfterEnable or self._model.timerRepeatEnable
+        if timerFlag:
+            self._view.timerPushButton.setIcon(QtGui.QIcon(":/icons/button_ok.png"))
+        else:
+            self._view.timerPushButton.setIcon(QtGui.QIcon(":/icons/button_cancel.png"))

@@ -130,7 +130,7 @@ class AbstractController(object):
     def shutdown(self):
         """ Shutdown the controller.
 
-        mainly destroy the view.
+        Mainly destroy the view.
         """
         self._disconnectSignals()
         del self._view # ???!!???

@@ -58,17 +58,20 @@ import PyQt4.uic
 from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
+from papywizard.view.icons import qInitResources, qCleanupResources
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
+from papywizard.common.qLoggingFormatter import QSpaceColorFormatter
 from papywizard.common.serializer import Serializer
 from papywizard.common.exception import HardwareError
 from papywizard.common.publisher import Publisher
 from papywizard.hardware.head import Head, HeadSimulation
 from papywizard.model.shooting import Shooting
-#from papywizard.controller.loggerController import LoggerController
+from papywizard.controller.messageController import ExceptionMessageController
+from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.mainController import MainController
 from papywizard.controller.spy import Spy
-#from papywizard.view.logBuffer import LogBuffer
+from papywizard.view.logBuffer import LogBuffer
 
 DOMAIN = "papywizard"
 LANGS = ('en_US', 'fr_FR', 'pl_PL', 'de_DE', 'es_ES', 'nl_NL', 'it_IT')
@@ -85,25 +88,22 @@ class BlackHole:
         pass
 
 
-class Papywizard(QtCore.QObject):
+class Papywizard(object):
     """ Main application class.
     """
     def __init__(self):
         """ Init the application.
         """
-        #self.gtkLogStream = LogBuffer()
-        #Logger().addStreamHandler(self.gtkLogStream)
-        #Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
+        qInitResources()
+        self.__app = QtGui.QApplication(sys.argv)
 
-    def _onDestroyed(self, widget):
-        print "_onDestroyed()"
+        self.logStream = LogBuffer()
+        Logger().addStreamHandler(self.logStream, QSpaceColorFormatter)
 
     def init(self):
         """ Init the application.
         """
         Logger().info("Starting Papywizard...")
-
-        self.__app = QtGui.QApplication(sys.argv)
 
         ## Qt styles
         #gtk.rc_parse(config.USER_GTKRC_FILE)
@@ -125,7 +125,6 @@ class Papywizard(QtCore.QObject):
 
         # Create main controller
         self.__mainController = MainController(self.__model, self.__serializer, None) #self.qtLogStream)
-        #self.connect(self.__view, QtCore.SIGNAL("destroyed(QObject *)"), self._onDestroyed)
 
     def weave(str):
         """ Weave stuffs.
@@ -229,19 +228,22 @@ class Papywizard(QtCore.QObject):
         Spy().join()
         del self.__publisher
         self.__model.shutdown()
+        qCleanupResources()
 
         Logger().info("Papywizard stopped")
 
 
 def main():
+
+    # Init the logger
     if hasattr(sys, "frozen"):
         sys.stderr = BlackHole()
         Logger(defaultStream=False)
     else:
         Logger()
 
+    app = Papywizard()
     try:
-        app = Papywizard()
         app.l10n()
         app.init()
         #app.weave()
@@ -253,8 +255,7 @@ def main():
 
     except Exception, msg:
         Logger().exception("main()")
-        controller = LoggerController(None, None, None)
-        controller.setLogBuffer(app.gtkLogStream)
+        controller = ExceptionMessageController(_("Unhandled exception"), str(msg))
         controller.exec_()
 
 

@@ -25,7 +25,7 @@
   </property>
   <property name="windowIcon" >
    <iconset>
-    <normaloff>../../../../../papywizard80x80.png</normaloff>../../../../../papywizard80x80.png</iconset>
+    <normaloff>../../../../../../../../papywizard80x80.png</normaloff>../../../../../../../../papywizard80x80.png</iconset>
   </property>
   <property name="toolButtonStyle" >
    <enum>Qt::ToolButtonTextBesideIcon</enum>
@@ -78,8 +78,8 @@
           <string>Mosaic</string>
          </attribute>
          <attribute name="icon" >
-          <iconset>
-           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/matrix.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/matrix.png</iconset>
+          <iconset resource="icons.qrc" >
+           <normaloff>:/icons/matrix.png</normaloff>:/icons/matrix.png</iconset>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_4" >
           <item>
@@ -455,8 +455,8 @@
           <string>Preset</string>
          </attribute>
          <attribute name="icon" >
-          <iconset>
-           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_playlist.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/player_playlist.png</iconset>
+          <iconset resource="icons.qrc" >
+           <normaloff>:/icons/multiline.png</normaloff>:/icons/multiline.png</iconset>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_6" >
           <item>
@@ -544,8 +544,8 @@
           <string>Timelapse</string>
          </attribute>
          <attribute name="icon" >
-          <iconset>
-           <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/history.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/history.png</iconset>
+          <iconset resource="icons.qrc" >
+           <normaloff>:/icons/clock.png</normaloff>:/icons/clock.png</iconset>
          </attribute>
          <layout class="QVBoxLayout" name="verticalLayout_3" >
           <item>
@@ -705,8 +705,8 @@
               <string>...</string>
              </property>
              <property name="icon" >
-              <iconset>
-               <normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/up.png</normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/up.png</iconset>
+              <iconset resource="icons.qrc" >
+               <normaloff>:/icons/up.png</normaloff>:/icons/up.png</iconset>
              </property>
              <property name="iconSize" >
               <size>
@@ -745,8 +745,8 @@
               <string>...</string>
              </property>
              <property name="icon" >
-              <iconset>
-               <normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/back.png</normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/back.png</iconset>
+              <iconset resource="icons.qrc" >
+               <normaloff>:/icons/back.png</normaloff>:/icons/back.png</iconset>
              </property>
              <property name="iconSize" >
               <size>
@@ -788,8 +788,8 @@
               <string>...</string>
              </property>
              <property name="icon" >
-              <iconset>
-               <normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/gohome.png</normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/gohome.png</iconset>
+              <iconset resource="icons.qrc" >
+               <normaloff>:/icons/gohome.png</normaloff>:/icons/gohome.png</iconset>
              </property>
              <property name="iconSize" >
               <size>
@@ -825,8 +825,8 @@
               <string>...</string>
              </property>
              <property name="icon" >
-              <iconset>
-               <normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/forward.png</normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/forward.png</iconset>
+              <iconset resource="icons.qrc" >
+               <normaloff>:/icons/forward.png</normaloff>:/icons/forward.png</iconset>
              </property>
              <property name="iconSize" >
               <size>
@@ -865,8 +865,8 @@
               <string>...</string>
              </property>
              <property name="icon" >
-              <iconset>
-               <normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/down.png</normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/down.png</iconset>
+              <iconset resource="icons.qrc" >
+               <normaloff>:/icons/down.png</normaloff>:/icons/down.png</iconset>
              </property>
              <property name="iconSize" >
               <size>
@@ -906,8 +906,8 @@
            <string>Configure...</string>
           </property>
           <property name="icon" >
-           <iconset>
-            <normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/configure.png</normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/configure.png</iconset>
+           <iconset resource="icons.qrc" >
+            <normaloff>:/icons/configure.png</normaloff>:/icons/configure.png</iconset>
           </property>
           <property name="iconSize" >
            <size>
@@ -936,8 +936,8 @@
            <string>Shoot...</string>
           </property>
           <property name="icon" >
-           <iconset>
-            <normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/run.png</normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/run.png</iconset>
+           <iconset resource="icons.qrc" >
+            <normaloff>:/icons/launch.png</normaloff>:/icons/launch.png</iconset>
           </property>
           <property name="iconSize" >
            <size>
@@ -1030,8 +1030,8 @@
   </widget>
   <action name="actionFileQuit" >
    <property name="icon" >
-    <iconset>
-     <normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/exit.png</normaloff>../../../../../../../usr/share/icons/default.kde/32x32/actions/exit.png</iconset>
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/exit.png</normaloff>:/icons/exit.png</iconset>
    </property>
    <property name="text" >
     <string>Quit</string>
@@ -1047,8 +1047,8 @@
   </action>
   <action name="actionFileLoadPreset" >
    <property name="icon" >
-    <iconset>
-     <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/fileopen.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/fileopen.png</iconset>
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/fileimport.png</normaloff>:/icons/fileimport.png</iconset>
    </property>
    <property name="text" >
     <string>Load Preset File...</string>
@@ -1069,8 +1069,8 @@
   </action>
   <action name="actionHardwareClearLimits" >
    <property name="icon" >
-    <iconset>
-     <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/editclear.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/editclear.png</iconset>
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/editclear.png</normaloff>:/icons/editclear.png</iconset>
    </property>
    <property name="text" >
     <string>Clear Limits</string>
@@ -1083,8 +1083,8 @@
   </action>
   <action name="actionHardwareSetLimitYawMinus" >
    <property name="icon" >
-    <iconset>
-     <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/start.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/start.png</iconset>
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/start.png</normaloff>:/icons/start.png</iconset>
    </property>
    <property name="text" >
     <string>Yaw -</string>
@@ -1097,8 +1097,8 @@
   </action>
   <action name="actionHardwareSetLimitYawPlus" >
    <property name="icon" >
-    <iconset>
-     <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/finish.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/finish.png</iconset>
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/finish.png</normaloff>:/icons/finish.png</iconset>
    </property>
    <property name="text" >
     <string>Yaw +</string>
@@ -1111,8 +1111,8 @@
   </action>
   <action name="actionHardwareSetLimitPitchPlus" >
    <property name="icon" >
-    <iconset>
-     <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/top.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/top.png</iconset>
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/top.png</normaloff>:/icons/top.png</iconset>
    </property>
    <property name="text" >
     <string>Pitch +</string>
@@ -1125,8 +1125,8 @@
   </action>
   <action name="actionHardwareSetLimitPitchMinus" >
    <property name="icon" >
-    <iconset>
-     <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/bottom.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/bottom.png</iconset>
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/bottom.png</normaloff>:/icons/bottom.png</iconset>
    </property>
    <property name="text" >
     <string>Pitch -</string>
@@ -1139,8 +1139,8 @@
   </action>
   <action name="actionHelpManual" >
    <property name="icon" >
-    <iconset>
-     <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/help.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/help.png</iconset>
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/contents.png</normaloff>:/icons/contents.png</iconset>
    </property>
    <property name="text" >
     <string>Manual</string>
@@ -1153,8 +1153,8 @@
   </action>
   <action name="actionHelpViewLog" >
    <property name="icon" >
-    <iconset>
-     <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/openterm.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/openterm.png</iconset>
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/openterm.png</normaloff>:/icons/openterm.png</iconset>
    </property>
    <property name="text" >
     <string>View Log...</string>
@@ -1167,8 +1167,8 @@
   </action>
   <action name="actionHelpAboutPapywizard" >
    <property name="icon" >
-    <iconset>
-     <normaloff>../../../../../papywizard80x80.png</normaloff>../../../../../papywizard80x80.png</iconset>
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/bookmark.png</normaloff>:/icons/bookmark.png</iconset>
    </property>
    <property name="text" >
     <string>About Papywizard</string>
@@ -1190,7 +1190,9 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>actionFileQuit</sender>
