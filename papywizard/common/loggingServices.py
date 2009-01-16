@@ -53,72 +53,14 @@ Implements
 
 __revision__ = "$Id$"
 
-import sys
 import logging
 import logging.handlers
 import StringIO
 import traceback
 
 from papywizard.common import config
-
-if sys.platform == 'linux2':
-    consoleLogColors = {'trace':"\033[0;36;40;22m",     # cyan/noir, normal
-                        'debug':"\033[0;36;40;1m",      # cyan/noir, gras
-                        'info':"\033[0;37;40;1m",       # blanc/noir, gras
-                        'warning':"\033[0;33;40;1m",    # marron/noir, gras
-                        'error':"\033[0;31;40;1m",      # rouge/noir, gras
-                        'exception':"\033[0;35;40;1m",  # magenta/noir, gras
-                        'critical':"\033[0;37;41;1m",   # blanc/rouge, gras
-                        'default':"\033[0m",            # defaut
-                        }
-else:
-    consoleLogColors = {'trace':"",
-                        'debug':"",
-                        'info':"",
-                        'warning':"",
-                        'error':"",
-                        'exception':"",
-                        'critical':"",
-                        'default':"",
-                        }
-
-
-class DefaultFormatter(logging.Formatter):
-    """ Base class for formatters.
-    """
-
-
-class ColorFormatter(DefaultFormatter):
-    """ Color formatting.
-
-    This formatter add colors to the log, according to their level.
-
-    @todo: do not use colors for windows...
-    """
-    def _colorFormat(self, record):
-        if record.levelname == 'TRACE':
-            color = consoleLogColors['trace']
-        elif  record.levelname == 'DEBUG':
-            color = consoleLogColors['debug']
-        elif  record.levelname == 'INFO':
-            color = consoleLogColors['info']
-        elif  record.levelname == 'WARNING':
-            color = consoleLogColors['warning']
-        elif record.levelname == 'ERROR':
-            color = consoleLogColors['error']
-        elif record.levelname == 'EXCEPTION':
-            color = consoleLogColors['exception']
-        elif record.levelname == 'CRITICAL':
-            color = consoleLogColors['critical']
-        else:
-            color = consoleLogColors['default']
-        formattedMsg = DefaultFormatter.format(self, record)
-        return color + formattedMsg + consoleLogColors['default']
-
-    def format(self, record):
-        """ Record formating.
-        """
-        return self._colorFormat(record)
+from papywizard.common.loggingFormatter import DefaultFormatter, ColorFormatter, \
+                                               SpaceFormatter, SpaceColorFormatter
 
 
 class Logger(object):
@@ -141,19 +83,20 @@ class Logger(object):
         """
         if Logger.__init:
             logging.TRACE = logging.DEBUG - 5
-            #logging.EXCEPTION = logging.DEBUG + 5
             logging.EXCEPTION = logging.ERROR + 5
             logging.raiseExceptions = 0
             logging.addLevelName(logging.TRACE, "TRACE")
             logging.addLevelName(logging.EXCEPTION, "EXCEPTION")
 
             # Formatters
-            colorFormatter = ColorFormatter(config.LOGGER_FORMAT)
             #defaultFormatter = DefaultFormatter(config.LOGGER_FORMAT)
+            #colorFormatter = ColorFormatter(config.LOGGER_FORMAT)
+            spaceColorFormatter = SpaceColorFormatter(config.LOGGER_FORMAT)
 
             # Handlers
             stdoutStreamHandler = logging.StreamHandler()
-            stdoutStreamHandler.setFormatter(colorFormatter)
+            #stdoutStreamHandler.setFormatter(colorFormatter)
+            stdoutStreamHandler.setFormatter(spaceColorFormatter)
 
             # Logger
             self.__logger = logging.getLogger('papywizard')
@@ -163,14 +106,19 @@ class Logger(object):
 
             Logger.__init = False
 
-    def addStreamHandler(self, stream):
+    def addStreamHandler(self, stream, formatter=DefaultFormatter):
         """ Add a new stream handler.
 
         Can be used to register a new GUI handler.
+
+        @param stream: open stream where to write logs
+        @type: stream: ???
+
+        @param formatter: associated formatter
+        @type formatter: L{DefaultFormatter<common.loggingFormatter>}
         """
         handler = logging.StreamHandler(stream)
-        defaultFormatter = DefaultFormatter(config.LOGGER_FORMAT)
-        handler.setFormatter(defaultFormatter)
+        handler.setFormatter(formatter(config.LOGGER_FORMAT))
         self.__logger.addHandler(handler)
 
     def setLevel(self, level):
@@ -243,7 +191,7 @@ class Logger(object):
 
         @param message: message to log
         @type message: string
-        
+
         @param debug: flag to log exception on DEBUG level instead of EXCEPTION one
         @type debug: bool
         """
@@ -270,8 +218,8 @@ class Logger(object):
         self.__logger.log(level, str(message), *args, **kwargs)
 
     def getTraceback(self):
-        """ Return teh complete traceback.
-        
+        """ Return the complete traceback.
+
         Should be called in an except statement.
         """
         tracebackString = StringIO.StringIO()
