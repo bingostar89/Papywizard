@@ -51,58 +51,56 @@ Implements
 
 __revision__ = "$Id$"
 
+from PyQt4 import QtCore, QtGui
+
 from papywizard.common.loggingServices import Logger
-from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.abstractController import AbstractModalDialogController
 
 
-class NbPictsController(AbstractController):
+class NbPictsController(AbstractModalDialogController):
     """ Nb picts controller object.
     """
     def _init(self):
-        self._gladeFile = "nbPictsDialog.glade"
-        self._signalDict = {"on_okButton_clicked": self.__onOkButtonClicked,
-                            "on_cancelButton_clicked": self.__onCancelButtonClicked,
-                        }
+        self._uiFile = "nbPictsDialog.ui"
 
-    def _retreiveWidgets(self):
-        """ Get widgets from widget tree.
-        """
-        super(NbPictsController, self)._retreiveWidgets()
-
-        self.yawNbPictsSpinbutton = self.wTree.get_widget("yawNbPictsSpinbutton")
-        self.pitchNbPictsSpinbutton = self.wTree.get_widget("pitchNbPictsSpinbutton")
+    def _initWidgets(self):
 
         # Set limits
         maxYawNbPicts = 100 # Compute the maximum number of pictures
         maxPitchNbPicts = 50
-        self.yawNbPictsSpinbutton.set_range(1, maxYawNbPicts)
-        self.pitchNbPictsSpinbutton.set_range(1, maxPitchNbPicts)
+        self._view.yawNbPictsSpinBox.setRange(1, maxYawNbPicts)
+        self._view.pitchNbPictsSpinBox.setRange(1, maxPitchNbPicts)
         currentYawNbPicts = self._model.mosaic.yawNbPicts
         currentPitchNbPicts = self._model.mosaic.pitchNbPicts
-        self.yawNbPictsSpinbutton.set_value(currentYawNbPicts)
-        self.pitchNbPictsSpinbutton.set_value(currentPitchNbPicts)
+        self._view.yawNbPictsSpinBox.setValue(currentYawNbPicts)
+        self._view.pitchNbPictsSpinBox.setValue(currentPitchNbPicts)
 
-    def _initWidgets(self):
+    def _connectQtSignals(self):
+        super(NbPictsController, self)._connectQtSignals()
+        QtCore.QObject.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
+        QtCore.QObject.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
+
+    def _connectSignals(self):
         pass
 
     def _disconnectSignals(self):
         pass
 
     # Callbacks
-    def __onOkButtonClicked(self, widget):
+    def __onAccepted(self):
         """ Ok button has been clicked.
         """
-        Logger().trace("NbPictsController.__onOkButtonClicked()")
-        yawNbPicts = self.yawNbPictsSpinbutton.get_value()
-        pitchNbPicts = self.pitchNbPictsSpinbutton.get_value()
+        Logger().trace("NbPictsController.__onAccepted()")
+        yawNbPicts = self._view.yawNbPictsSpinBox.value()
+        pitchNbPicts = self._view.pitchNbPictsSpinBox.value()
         self._model.setStartEndFromNbPicts(yawNbPicts, pitchNbPicts)
-        Logger().debug("NbPictsController.__onOkButtonClicked(): nb picts set to yaw=%d, pitch=%d" % (yawNbPicts, pitchNbPicts))
+        Logger().debug("NbPictsController.__onAccepted(): nb picts set to yaw=%d, pitch=%d" % (yawNbPicts, pitchNbPicts))
 
-    def __onCancelButtonClicked(self, widget):
+    def __onRejected(self):
         """ Cancel button has been clicked.
         """
-        Logger().trace("NbPictsController.__onCancelButtonClicked()")
+        Logger().trace("NbPictsController.__onRejected()")
 
-    # Real work
+    # Interface
     def refreshView(self):
         pass

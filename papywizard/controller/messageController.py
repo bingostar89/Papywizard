@@ -77,12 +77,12 @@ class BaseMessageController(object):
         """
         self._dialog = QtGui.QMessageBox()
         self._init()
-        self._dialog.setText(message)
-        self._dialog.setInformativeText(subTitle)
+        self._dialog.setInformativeText(message)
+        self._dialog.setText(subTitle)
 
     def exec_(self):
         """ Run the dialog.
-        
+
         @return: response
         @rtype: int
         """

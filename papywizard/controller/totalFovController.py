@@ -51,58 +51,56 @@ Implements
 
 __revision__ = "$Id$"
 
+from PyQt4 import QtCore, QtGui
+
 from papywizard.common.loggingServices import Logger
-from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.abstractController import AbstractModalDialogController
 
 
-class TotalFovController(AbstractController):
+class TotalFovController(AbstractModalDialogController):
     """ Total fov controller object.
     """
     def _init(self):
-        self._gladeFile = "totalFovDialog.glade"
-        self._signalDict = {"on_okButton_clicked": self.__onOkButtonClicked,
-                            "on_cancelButton_clicked": self.__onCancelButtonClicked,
-                        }
+        self._uiFile = "totalFovDialog.ui"
 
-    def _retreiveWidgets(self):
-        """ Get widgets from widget tree.
-        """
-        super(TotalFovController, self)._retreiveWidgets()
-
-        self.yawFovSpinbutton = self.wTree.get_widget("yawFovSpinbutton")
-        self.pitchFovSpinbutton = self.wTree.get_widget("pitchFovSpinbutton")
+    def _initWidgets(self):
 
         # Set limits
         cameraYawFov = self._model.camera.getYawFov(self._model.cameraOrientation)
         cameraPitchFov = self._model.camera.getPitchFov(self._model.cameraOrientation)
-        self.yawFovSpinbutton.set_range(cameraYawFov, 720.)
-        self.pitchFovSpinbutton.set_range(cameraPitchFov, 360.)
+        self._view.yawFovDoubleSpinBox.setRange(cameraYawFov, 720.)
+        self._view.pitchFovDoubleSpinBox.setRange(cameraPitchFov, 360.)
         currentYawFov = self._model.mosaic.yawFov
         currentPitchFov = self._model.mosaic.pitchFov
-        self.yawFovSpinbutton.set_value(currentYawFov)
-        self.pitchFovSpinbutton.set_value(currentPitchFov)
+        self._view.yawFovDoubleSpinBox.setValue(currentYawFov)
+        self._view.pitchFovDoubleSpinBox.setValue(currentPitchFov)
 
-    def _initWidgets(self):
+    def _connectQtSignals(self):
+        super(TotalFovController, self)._connectQtSignals()
+        QtCore.QObject.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
+        QtCore.QObject.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
+
+    def _connectSignals(self):
         pass
 
     def _disconnectSignals(self):
         pass
 
     # Callbacks
-    def __onOkButtonClicked(self, widget):
+    def __onAccepted(self):
         """ Ok button has been clicked.
         """
-        Logger().trace("TotalFovController.__onOkButtonClicked()")
-        yawFov = self.yawFovSpinbutton.get_value()
-        pitchFov = self.pitchFovSpinbutton.get_value()
+        Logger().trace("TotalFovController.__onAccepted()")
+        yawFov = self._view.yawFovDoubleSpinBox.value()
+        pitchFov = self._view.pitchFovDoubleSpinBox.value()
         self._model.setStartEndFromFov(yawFov, pitchFov)
-        Logger().debug("MainController.__onTotalFovButtonClicked(): total fov set to yaw=%.1f, pitch=%.1f" % (yawFov, pitchFov))
+        Logger().debug("MainController.__onAccepted(): total fov set to yaw=%.1f, pitch=%.1f" % (yawFov, pitchFov))
 
-    def __onCancelButtonClicked(self, widget):
+    def __onRejected(self):
         """ Cancel button has been clicked.
         """
-        Logger().trace("TotalFovController.__onCancelButtonClicked()")
+        Logger().trace("TotalFovController.__onRejected()")
 
-    # Real work
+    # Interface
     def refreshView(self):
         pass

@@ -54,52 +54,29 @@ __revision__ = "$Id$"
 import os.path
 import time
 
-import pygtk
-pygtk.require("2.0")
-import gtk
-import gtk.gdk
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
-from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.abstractController import AbstractModalDialogController
 
 
-class LoggerController(AbstractController):
+class LoggerController(AbstractModalDialogController):
     """ Logger controller object.
     """
     def _init(self):
-        self._gladeFile = "loggerDialog.glade"
+        self._uiFile = "loggerDialog.ui"
         self._signalDict = {"on_clearButton_clicked": self.__onClearButtonClicked,
                             "on_saveButton_clicked": self.__onSaveButtonClicked,
                             "on_doneButton_clicked": self.__onDoneButtonClicked,
                         }
 
-    def _retreiveWidgets(self):
-        """ Get widgets from widget tree.
-        """
-        super(LoggerController, self)._retreiveWidgets()
-
-        self.loggerScrolledwindow = self.wTree.get_widget("loggerScrolledwindow")
-        self.loggerTextview = self.wTree.get_widget("loggerTextview")
-        self.loggerTextview.modify_base(gtk.STATE_NORMAL, gtk.gdk.color_parse('black'))
-        self.saveButton = self.wTree.get_widget("saveButton")
-        self.clearButton = self.wTree.get_widget("clearButton")
-
     def _initWidgets(self):
+        pass
 
-        # The following code is taken from pychess project;
-        # it keeps the scroller at the bottom of the text
-        # Thanks to Thomas Dybdahl Ahle who sent it to me
-        def changed(vadjust):
-            if not hasattr(vadjust, "need_scroll") or vadjust.need_scroll:
-                vadjust.set_value(vadjust.upper-vadjust.page_size)
-                vadjust.need_scroll = True
-        self.loggerScrolledwindow.get_vadjustment().connect("changed", changed)
-
-        def value_changed(vadjust):
-            vadjust.need_scroll = abs(vadjust.value + vadjust.page_size - vadjust.upper) < vadjust.step_increment
-        self.loggerScrolledwindow.get_vadjustment().connect("value-changed", value_changed)
+    def _connectSignals(self):
+        pass
 
     def _disconnectSignals(self):
         pass
@@ -109,9 +86,9 @@ class LoggerController(AbstractController):
         """ Clear button has been clicked.
         """
         Logger().trace("LoggerController.__onClearButtonClicked()")
-        self.loggerTextview.get_buffer().clear()
-        self.clearButton.set_sensitive(False)
-        self.saveButton.set_sensitive(False)
+        self._view.loggerPlainTextEdit.clear()
+        self._view.clearButton.setEnable(False)
+        self._view.saveButton.setEnable(False)
 
     def __onSaveButtonClicked(self, widget):
         """ Save button has been clicked.
@@ -126,7 +103,7 @@ class LoggerController(AbstractController):
         logFile.write(logText)
         logFile.close()
         Logger().debug("LoggerController.__onSaveButtonClicked(): log saved to '%s'" % logFileName)
-        self.saveButton.set_sensitive(False)
+        self._view.saveButton.setEnable(False)
 
     def __onDoneButtonClicked(self, widget):
         """ Done button has been clicked.
@@ -144,4 +121,4 @@ class LoggerController(AbstractController):
         @param buffer: associated buffer
         @type buffer: gtk.TextBuffer
         """
-        self.loggerTextview.set_buffer(buffer)
+        #self.loggerTextview.set_buffer(buffer)
