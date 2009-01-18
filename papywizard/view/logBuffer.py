@@ -46,14 +46,10 @@ View.
 
 __revision__ = "$Id$"
 
-import pygtk
-pygtk.require("2.0")
-import gtk
-
 from papywizard.common import config
 
 
-class LogBuffer(gtk.TextBuffer):
+class LogBuffer(object):
     """ Log buffer storage.
 
     Implement a log buffer, which automatically appends
@@ -62,50 +58,21 @@ class LogBuffer(gtk.TextBuffer):
 
     To be used within a gtk.TextView.
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, color='html', *args, **kwargs):
         """ Init the log buffer.
         """
-        super(LogBuffer, self).__init__(*args, **kwargs)
-
-        self.create_tag('TRACE', foreground='blue', background='black', font="courrier 8")
-        self.create_tag('DEBUG', foreground='lightblue', background='black', font="courrier 8")
-        self.create_tag('INFO', foreground='white', background='black', font="courrier 8")
-        self.create_tag('WARNING', foreground='yellow', background='black', font="courrier 8")
-        self.create_tag('ERROR', foreground='red', background='black', font="courrier 8")
-        self.create_tag('EXCEPTION', foreground='violet', background='black', font="courrier 8")
-        self.create_tag('CRITICAL', foreground='white', background='red', font="courrier 8")
+        self.__buffer = []
 
     def write(self, logMessage):
         """ write a log message a the end of the buffer.
 
         @param logMessage: log to write
         @type logMessage: str
-
-        @todo: check if we are in the GTK main thread;
-               ff not, need to use the serializer
         """
-        self.begin_user_action()
-        try:
-            try:
-                level = logMessage.split('::')[2]
-                self.insert_with_tags_by_name(self.get_end_iter(), logMessage, level)
-            except IndexError:
-                self.insert_with_tags_by_name(self.get_end_iter(), logMessage, 'INFO')
-            overflow = self.get_line_count() - config.LOGGER_MAX_COUNT_LINE
-            if overflow > 0:
-                self.delete(self.get_iter_at_line(0), self.get_iter_at_line(overflow))
-                # todo: scroll to the bottom of the buffer
-        finally:
-            self.end_user_action()
-
-    def clear(self):
-        """ Clear the log window.
-        """
-        self.begin_user_action()
-        try:
-            self.delete(*self.get_bounds())
-        finally:
-            self.end_user_action()
+        self.__buffer.append(logMessage)
+        overflow = len(self.__buffer) - config.LOGGER_MAX_COUNT_LINE
+        if len(self.__buffer) > config.LOGGER_MAX_COUNT_LINE:
+            del self.__buffer[0]
 
     def flush():
         """ Dummy method.
@@ -113,3 +80,6 @@ class LogBuffer(gtk.TextBuffer):
         Needed to use this class as logging stream.
         """
         pass
+
+    def getHtml(self):
+        return '<br />'.join(self.__buffer)
