@@ -67,13 +67,14 @@ class LoggerController(AbstractModalDialogController):
     """
     def _init(self):
         self._uiFile = "loggerDialog.ui"
-        self._signalDict = {"on_clearButton_clicked": self.__onClearButtonClicked,
-                            "on_saveButton_clicked": self.__onSaveButtonClicked,
-                            "on_doneButton_clicked": self.__onDoneButtonClicked,
-                        }
 
     def _initWidgets(self):
         pass
+
+    def _connectQtSignals(self):
+        super(LoggerController, self)._connectQtSignals()
+        QtCore.QObject.connect(self._view.clearLogPushButton, QtCore.SIGNAL("clicked()"), self.__onClearLogPushButtonClicked)
+        QtCore.QObject.connect(self._view.saveLogPushButton, QtCore.SIGNAL("clicked()"), self.__onSaveLogPushButtonClicked)
 
     def _connectSignals(self):
         pass
@@ -82,43 +83,49 @@ class LoggerController(AbstractModalDialogController):
         pass
 
     # Callbacks
-    def __onClearButtonClicked(self, widget):
+    def __onClearLogPushButtonClicked(self):
         """ Clear button has been clicked.
         """
-        Logger().trace("LoggerController.__onClearButtonClicked()")
+        Logger().trace("LoggerController.__onClearLogPushButtonClicked()")
         self._view.loggerPlainTextEdit.clear()
-        self._view.clearButton.setEnable(False)
-        self._view.saveButton.setEnable(False)
+        self._view.clearLogPushButton.setEnabled(False)
+        self._view.saveLogPushButton.setEnabled(False)
 
-    def __onSaveButtonClicked(self, widget):
+    def __onSaveLogPushButtonClicked(self):
         """ Save button has been clicked.
         """
-        Logger().trace("LoggerController.__onSaveButtonClicked()")
+        Logger().trace("LoggerController.__onSaveLogPushButtonClicked()")
         dateTime = time.strftime("%Y-%m-%d_%Hh%Mm%Ss", time.localtime())
         logFileFormat = "papywizard_%s.log" % dateTime
         logFileName = os.path.join(ConfigManager().get('Preferences', 'DATA_STORAGE_DIR'), logFileFormat)
-        buffer_ = self.loggerTextview.get_buffer()
-        logText = buffer_.get_text(buffer_.get_start_iter(), buffer_.get_end_iter())
+        logText = self._view.loggerPlainTextEdit.toPlainText()
         logFile = file(logFileName, 'w')
         logFile.write(logText)
         logFile.close()
-        Logger().debug("LoggerController.__onSaveButtonClicked(): log saved to '%s'" % logFileName)
-        self._view.saveButton.setEnable(False)
+        Logger().debug("LoggerController.__onSaveLogPushButtonClicked(): log saved to '%s'" % logFileName)
+        self._view.saveLogPushButton.setEnabled(False)
 
-    def __onDoneButtonClicked(self, widget):
-        """ Done button has been clicked.
-        """
-        Logger().trace("LoggerController.__onDoneButtonClicked()")
-        self.dialog.response(0)
-
-    # Real work
+    # Interface
     def refreshView(self):
-        pass
+        
+        # Scroll to the bottom left of the window
+        self._view.loggerPlainTextEdit.moveCursor(QtGui.QTextCursor.End)
+        self._view.loggerPlainTextEdit.moveCursor(QtGui.QTextCursor.StartOfLine)
 
-    def setLogBuffer(self, buffer):
-        """ Set the associated buffer.
+    def appendPlainText(self, text):
+        """ Set the text.
 
-        @param buffer: associated buffer
-        @type buffer: gtk.TextBuffer
+        @param text: text to display
+        @type text: str
         """
-        #self.loggerTextview.set_buffer(buffer)
+        self._view.loggerPlainTextEdit.appendPlainText(text)
+        self.refreshView()
+
+    def appendHtml(self, html):
+        """ Set the text as html.
+
+        @param html: text to display
+        @type html: str
+        """
+        self._view.loggerPlainTextEdit.appendHtml(html)
+        self.refreshView()

@@ -53,6 +53,7 @@ import traceback
 import StringIO
 import locale
 import gettext
+import threading
 
 import PyQt4.uic
 from PyQt4 import QtCore, QtGui
@@ -74,7 +75,7 @@ from papywizard.controller.spy import Spy
 from papywizard.view.logBuffer import LogBuffer
 
 DOMAIN = "papywizard"
-LANGS = ('en_US', 'fr_FR', 'pl_PL', 'de_DE', 'es_ES', 'nl_NL', 'it_IT')
+LANGS = ('en_US', 'fr_FR', 'pl_PL', 'de_DE', 'es_ES', 'it_IT')
 
 _ = lambda a: a
 
@@ -115,7 +116,6 @@ class Papywizard(object):
 
         # Create spy thread
         Spy(self.__model, config.SPY_FAST_REFRESH)
-        #Spy().start()
 
         # Create publisher thread
         self.__publisher = Publisher()
@@ -124,7 +124,7 @@ class Papywizard(object):
         self.__serializer = Serializer()
 
         # Create main controller
-        self.__mainController = MainController(self.__model, self.__serializer, None) #self.qtLogStream)
+        self.__mainController = MainController(self.__model, self.__serializer, self.logStream)
 
     def weave(str):
         """ Weave stuffs.
@@ -171,6 +171,9 @@ class Papywizard(object):
         for lang in LANGS:
             if lang not in langs:
                 langs.append(lang)
+
+        # As Qt i18n system is not yet used, we do not use locales
+        langs=[]
 
         Logger().debug("Papywizard.l10n(): langs=%s" % langs)
 
@@ -234,6 +237,8 @@ class Papywizard(object):
 
 
 def main():
+
+    #threading.currentThread().setName("QtMainThread")
 
     # Init the logger
     if hasattr(sys, "frozen"):

@@ -63,7 +63,7 @@ from papywizard.common.loggingServices import Logger
 _ = lambda a: a
 
 
-class BaseMessageController(object):
+class BaseMessageController(object): # Inherits QMessageDialog
     """ Abstract message controller.
     """
     def __init__(self, subTitle, message):
@@ -80,6 +80,9 @@ class BaseMessageController(object):
         self._dialog.setInformativeText(message)
         self._dialog.setText(subTitle)
 
+    def _init(self):
+        raise NotImplementedError
+
     def exec_(self):
         """ Run the dialog.
 
@@ -89,8 +92,10 @@ class BaseMessageController(object):
         response = self._dialog.exec_()
         return response
 
-    def _init(self):
-        raise NotImplementedError
+    def shutdown(self):
+        """ Dummy method for compatibility.
+        """
+        pass
 
 
 class InfoMessageController(BaseMessageController):

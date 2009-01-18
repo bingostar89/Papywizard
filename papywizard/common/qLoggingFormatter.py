@@ -81,7 +81,7 @@ class QDefaultFormatter(DefaultFormatter):
 class QColorFormatter(QDefaultFormatter):
     """ Formatage avec couleurs.
     """
-    colors = {'trace':"<font color=darkblue>",
+    colors = {'trace':"<font color=blue>",
               'debug':"<font color=lightblue>",
               'info':"<font color=white>",
               'warning':"<font color=yellow>",
@@ -90,6 +90,15 @@ class QColorFormatter(QDefaultFormatter):
               'critical':"<font color=white bgcolor=red>",
               'default':"<font color=white>"
               }
+    #colors = {'trace':"<font color=blue>",
+              #'debug':"<font color=darkblue>",
+              #'info':"<font color=black>",
+              #'warning':"<font color=orange>",
+              #'error':"<font color=red>",
+              #'exception':"<font color=violet>",
+              #'critical':"<font color=white bgcolor=red>",
+              #'default':"<font color=black>"
+              #}
 
     def _toColor(self, msg, levelname):
         """ Colorize.

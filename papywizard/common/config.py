@@ -83,26 +83,6 @@ USER_GUIDE_URL = "http://trac.gbiloba.org/papywizard/wiki/UserGuide"
 GTKRC_FILE = "gtkrc"
 USER_GTKRC_FILE = os.path.join(USER_CONFIG_DIR, GTKRC_FILE)
 
-# GUI index for controller
-HEAD_ORIENTATION_INDEX = {'up': 0, 'left': 1, 'right': 2, 'down': 3,
-                          0: 'up', 1: 'left', 2: 'right', 3: 'down'}
-CAMERA_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1, 'custom': 2,
-                            0: 'portrait', 1: 'landscape', 2: 'custom'}
-CAMERA_BRACKETING_INTENT_INDEX = {'exposure': 0, 'focus' : 1, 'white balance': 2, 'movement': 3,
-                                  0: 'exposure', 1: 'focus', 2: 'white balance', 3: 'movement'}
-LENS_TYPE_INDEX = {'rectilinear': 0, 'fisheye': 1,
-                   0: 'rectilinear', 1: 'fisheye'}
-MOSAIC_START_FROM_INDEX = {'start': 0, 'end': 1,
-                           0: 'start', 1 : 'end'}
-MOSAIC_INITIAL_DIR_INDEX = {'yaw': 0, 'pitch': 1,
-                            0: 'yaw', 1: 'pitch'}
-LOGGER_INDEX = {'trace': 0, 'debug': 1, 'info': 2, 'warning' :3, 'error': 4, 'exception': 5, 'critical': 6,
-                0: 'trace', 1: 'debug', 2: 'info', 3: 'warning', 4: 'error', 5: 'exception', 6: 'critical'}
-DRIVER_INDEX = {'bluetooth': 0, 'serial': 1, 'ethernet': 2,
-                0: 'bluetooth', 1: 'serial', 2: 'ethernet'}
-SENSOR_RATIOS_INDEX = {'3:2': 0, '4:3': 1, '5:4': 2, '16:9': 3,
-                       0: '3:2', 1: '4:3', 2: '5:4', 3: '16:9'}
-
 # Model
 SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3., '5:4': 5./4., '16:9': 16./9.}
 
