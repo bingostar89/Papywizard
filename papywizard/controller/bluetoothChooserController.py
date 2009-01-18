@@ -54,72 +54,45 @@ __revision__ = "$Id$"
 import time
 import thread
 
-import pygtk
-pygtk.require("2.0")
-import gtk
-import gobject
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.messageController import ErrorMessageController
-from papywizard.controller.abstractController import AbstractController
-from papywizard.controller.waitController import WaitController
+from papywizard.controller.abstractController import AbstractModalDialogController
 
 
-class BluetoothChooserController(AbstractController):
+class BluetoothChooserController(AbstractModalDialogController):
     """ Bluetooth chooser controller object.
     """
     def _init(self):
-        self._gladeFile = "bluetoothChooserDialog.glade"
-        self._signalDict = {"on_okButton_clicked": self.__onOkButtonClicked,
-                            "on_cancelButton_clicked": self.__onCancelButtonClicked,
-                            "on_refreshButton_clicked": self.__onRefreshButtonClicked
-                        }
+        self._uiFile = "bluetoothChooserDialog.ui"
 
         self.__bluetoothDevices = []
         self.__refreshStatus = None
         self.__refreshErrorMessage = None
 
-    def _retreiveWidgets(self):
-        """ Get widgets from widget tree.
-        """
-        super(BluetoothChooserController, self)._retreiveWidgets()
-
-        self.bluetoothAddressCombobox = self.wTree.get_widget("bluetoothAddressCombobox")
-        self.refreshButton = self.wTree.get_widget("refreshButton")
-
     def _initWidgets(self):
-        self.__bluetoothListStore = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
-        self.bluetoothAddressCombobox.set_model(self.__bluetoothListStore)
-        cell = gtk.CellRendererText()
-        self.bluetoothAddressCombobox.pack_start(cell, True)
-        self.bluetoothAddressCombobox.add_attribute(cell, 'text', 0)
-        cell = gtk.CellRendererText()
-        self.bluetoothAddressCombobox.pack_start(cell, True)
-        self.bluetoothAddressCombobox.add_attribute(cell, 'text', 1)
+        pass
+
+    def _connectQtSignals(self):
+        super(BluetoothChooserController, self)._connectQtSignals()
+
+        QtCore.QObject.connect(self._view.refreshPushButton, QtCore.SIGNAL("clicked()"), self.__onRefreshPushButtonClicked)
+
+    def _connectSignals(self):
+        pass
 
     def _disconnectSignals(self):
         pass
 
     # Callbacks
-    def __onOkButtonClicked(self, widget):
-        """ Ok button has been clicked.
-        """
-        Logger().trace("BluetoothChooserController.__onOkButtonClicked()")
-
-    def __onCancelButtonClicked(self, widget):
-        """ Cancel button has been clicked.
-
-        Close the dialog.
-        """
-        Logger().trace("BluetoothChooserController.__onCancelButtonClicked()")
-
-    def __onRefreshButtonClicked(self, widget):
+    def __onRefreshPushButtonClicked(self):
         """ Refresh button has been clicked.
 
         Refresh bluetooth device list.
         """
-        Logger().trace("BluetoothChooserController.__onRefreshButtonClicked()")
+        Logger().trace("BluetoothChooserController.__onRefreshPushButtonClicked()")
         self.__refreshBluetoothList()
 
     def __refreshBluetoothList(self):
@@ -127,14 +100,6 @@ class BluetoothChooserController(AbstractController):
 
         @todo: put sub-functions in an object (make abstract object first)
         """
-        def refreshProgressbar(progressbar):
-            """ Refresh the progressbar in activity mode.
-
-            Should be called by a timeout.
-            """
-            progressbar.pulse()
-            return True
-
         def refreshBluetoothList():
             """ Scan bluetooth and refresh the bluetooth devices list.
             """
@@ -148,16 +113,10 @@ class BluetoothChooserController(AbstractController):
                 Logger().exception("refreshBluetoothList()")
                 self.__refreshErrorMessage = str(msg)
                 self.__refreshStatus = False
-            self.__waitController.closeBanner()
 
         Logger().info("Scanning available bluetooth devices...")
-        #self.refreshButton.set_sensitive(False)
-
-        # Open wait banner (todo: use real banner on Nokia). Make a special object
         self.__refreshStatus = None
-        self.__waitController = WaitController(self, self._model, self._serializer)
-        self.__waitBanner = self.__waitController.dialog
-        self.__waitBanner.show()
+        #self.refreshButton.setEnabled(False)
 
         # Launch refresh thread
         #thread.start_new_thread(self._model.refreshBluetoothList, ())
@@ -165,27 +124,27 @@ class BluetoothChooserController(AbstractController):
 
         # Wait for end of connection
         while self.__refreshStatus is None:
-            while gtk.events_pending():
-                gtk.main_iteration()
+            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             time.sleep(0.05)
 
         # Check connection status
         if self.__refreshStatus:
-            self.__bluetoothListStore.clear()
+            self._view.bluetoothAddressComboBox.clear()
             for address, name in self.__bluetoothDevices:
-                self.__bluetoothListStore.append([address, name])
-            self.bluetoothAddressCombobox.set_active(0)
+                self._view.bluetoothAddressComboBox.addItem("%s -- %s" % (address, name))
+            self._view.bluetoothAddressComboBox.setCurrentIndex(0)
             Logger().info("Bluetooth available devices: %s" % self.__bluetoothDevices)
         else:
             Logger().error("Can't scan bluetooth\n%s" % self.__refreshErrorMessage)
-            ErrorMessageController(_("Can't scan bluetooth"), self.__refreshErrorMessage)
+            controller = ErrorMessageController(_("Can't scan bluetooth"), self.__refreshErrorMessage)
+            controller.exec_()
+            controller.shutdown()
 
-        #self.refreshButton.set_sensitive(True)
+        #self.refreshButton.setEnabled(True)
 
     def refreshView(self):
         self.__refreshBluetoothList()
 
     # Real work
     def getSelectedBluetoothAddress(self):
-         selectedIter = self.bluetoothAddressCombobox.get_active_iter()
-         return self.__bluetoothListStore.get(selectedIter, 0, 1)
+        return self._view.bluetoothAddressComboBox.currentText().split(" -- ")

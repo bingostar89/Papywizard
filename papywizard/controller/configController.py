@@ -51,355 +51,289 @@ Implements
 
 __revision__ = "$Id$"
 
-import pygtk
-pygtk.require("2.0")
-import gtk
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.helpers import hmsAsStrToS, hmsToS, sToHms, sToHmsAsStr
 from papywizard.common.loggingServices import Logger
-from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.controller.messageController import WarningMessageController
 from papywizard.controller.bluetoothChooserController import BluetoothChooserController
 
 
-class ConfigController(AbstractController):
+class ConfigController(AbstractModalDialogController):
     """ Configuration controller object.
     """
     def _init(self):
-        self._gladeFile = "configDialog.glade"
-        self._signalDict = {"on_okButton_clicked": self.__onOkButtonClicked,
-                            "on_cancelButton_clicked": self.__onCancelButtonClicked,
-                            "on_cameraOrientationCombobox_changed": self.__onCameraOrientationComboboxChanged,
-                            "on_lensTypeCombobox_changed": self.__onLensTypeComboboxChanged,
-                            "on_driverCombobox_changed": self.__onDriverComboboxChanged,
-                            "on_bluetoothChooseButton_clicked": self.__onBluetoothChooseButtonClicked,
-                        }
+        self._uiFile = "configDialog.ui"
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
         super(ConfigController, self)._retreiveWidgets()
 
-        self.notebook = self.wTree.get_widget("notebook")
-
-        # Shooting page
-        self.headOrientationCombobox = self.wTree.get_widget("headOrientationCombobox")
-        self.cameraOrientationCombobox = self.wTree.get_widget("cameraOrientationCombobox")
-        self.cameraRollSpinbutton = self.wTree.get_widget("cameraRollSpinbutton")
-        self.stabilizationDelaySpinbutton = self.wTree.get_widget("stabilizationDelaySpinbutton")
-
-        # Mosaic page
-        self.overlapSpinbutton = self.wTree.get_widget("overlapSpinbutton")
-        self.startFromCombobox = self.wTree.get_widget("startFromCombobox")
-        self.initialDirectionCombobox = self.wTree.get_widget("initialDirectionCombobox")
-        self.crCheckbutton = self.wTree.get_widget("crCheckbutton")
-
-        # Camera page
-        self.timeValueSpinbutton = self.wTree.get_widget("timeValueSpinbutton")
-        self.mirrorLockupCheckbutton = self.wTree.get_widget("mirrorLockupCheckbutton")
-        self.bracketingNbPictsSpinbutton = self.wTree.get_widget("bracketingNbPictsSpinbutton")
-        self.bracketingIntentCombobox = self.wTree.get_widget("bracketingIntentCombobox")
-        self.sensorCoefSpinbutton = self.wTree.get_widget("sensorCoefSpinbutton")
-        self.sensorRatioCombobox = self.wTree.get_widget("sensorRatioCombobox")
-        self.sensorResolutionSpinbutton = self.wTree.get_widget("sensorResolutionSpinbutton")
-
-        # Lens page
-        self.lensTypeCombobox = self.wTree.get_widget("lensTypeCombobox")
-        self.focalLabel = self.wTree.get_widget("focalLabel")
-        self.focalSpinbutton = self.wTree.get_widget("focalSpinbutton")
-
-        # Hardware page
-        self.driverCombobox = self.wTree.get_widget("driverCombobox")
-        self.bluetoothDeviceAddressLabel = self.wTree.get_widget("bluetoothDeviceAddressLabel")
-        self.bluetoothDeviceAddressEntry = self.wTree.get_widget("bluetoothDeviceAddressEntry")
-        self.bluetoothChooseButton = self.wTree.get_widget("bluetoothChooseButton")
-        self.serialPortLabel = self.wTree.get_widget("serialPortLabel")
-        self.serialPortEntry = self.wTree.get_widget("serialPortEntry")
-        self.ethernetHostPortLabel = self.wTree.get_widget("ethernetHostPortLabel")
-        self.ethernetHostEntry = self.wTree.get_widget("ethernetHostEntry")
-        self.ethernetPortSpinbutton = self.wTree.get_widget("ethernetPortSpinbutton")
-        self.hardwareAutoConnectCheckbutton = self.wTree.get_widget("hardwareAutoConnectCheckbutton")
-
-        # Data page
-        self.dataStorageDirFilechooserbutton = self.wTree.get_widget("dataStorageDirFilechooserbutton")
-        self.dataFileFormatEntry = self.wTree.get_widget("dataFileFormatEntry")
-        self.dataFileEnableCheckbutton = self.wTree.get_widget("dataFileEnableCheckbutton")
-        self.dataTitleEntry = self.wTree.get_widget("dataTitleEntry")
-        self.dataGpsEntry = self.wTree.get_widget("dataGpsEntry")
-        self.dataCommentEntry = self.wTree.get_widget("dataCommentEntry")
-
-        # Timer page
-        self.timerAfterHourSpinbutton = self.wTree.get_widget("timerAfterHourSpinbutton")
-        self.timerAfterMinuteSpinbutton = self.wTree.get_widget("timerAfterMinuteSpinbutton")
-        self.timerAfterSecondSpinbutton = self.wTree.get_widget("timerAfterSecondSpinbutton")
-        self.timerAfterEnableCheckbutton = self.wTree.get_widget("timerAfterEnableCheckbutton")
-        self.timerRepeatSpinbutton = self.wTree.get_widget("timerRepeatSpinbutton")
-        self.timerRepeatEnableCheckbutton = self.wTree.get_widget("timerRepeatEnableCheckbutton")
-        self.timerEveryHourSpinbutton = self.wTree.get_widget("timerEveryHourSpinbutton")
-        self.timerEveryMinuteSpinbutton = self.wTree.get_widget("timerEveryMinuteSpinbutton")
-        self.timerEverySecondSpinbutton = self.wTree.get_widget("timerEverySecondSpinbutton")
-
-        # Misc page
-        self.loggerLevelCombobox = self.wTree.get_widget("loggerLevelCombobox")
-
     def _initWidgets(self):
+        pass
+
+    def _connectQtSignals(self):
+        super(ConfigController, self)._connectQtSignals()
+
+        QtCore.QObject.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
+        QtCore.QObject.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
+        QtCore.QObject.connect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
+        QtCore.QObject.connect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onLensTypeComboBoxCurrentIndexChanged)
+        QtCore.QObject.connect(self._view.driverComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onDriverComboBoxCurrentIndexChanged)
+        QtCore.QObject.connect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
+        QtCore.QObject.connect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
+
+    def _connectSignals(self):
         pass
 
     def _disconnectSignals(self):
         pass
 
     # Callbacks
-    def __onOkButtonClicked(self, widget):
+    def __onAccepted(self):
         """ Ok button has been clicked.
 
         Save back values to model.
         """
-        Logger().trace("ConfigController.__onOkButtonClicked()")
+        Logger().trace("ConfigController.__onAccepted()")
 
         # Shooting page
-        self._model.headOrientation = config.HEAD_ORIENTATION_INDEX[self.headOrientationCombobox.get_active()]
-        self._model.cameraOrientation = config.CAMERA_ORIENTATION_INDEX[self.cameraOrientationCombobox.get_active()]
+        self._model.headOrientation = str(self._view.headOrientationComboBox.currentText())
+        self._model.cameraOrientation = str(self._view.cameraOrientationComboBox.currentText())
         if self._model.cameraOrientation == 'custom':
-            self._model.cameraRoll = self.cameraRollSpinbutton.get_value()
-        self._model.stabilizationDelay = self.stabilizationDelaySpinbutton.get_value()
+            self._model.cameraRoll = self._view.cameraRollDoubleSpinBox.value()
+        self._model.stabilizationDelay = self._view.stabilizationDelayDoubleSpinBox.value()
 
         # Mosaic page
-        self._model.mosaic.overlap = self.overlapSpinbutton.get_value() / 100.
-        self._model.mosaic.startFrom = config.MOSAIC_START_FROM_INDEX[self.startFromCombobox.get_active()]
-        self._model.mosaic.initialDirection = config.MOSAIC_INITIAL_DIR_INDEX[self.initialDirectionCombobox.get_active()]
-        self._model.mosaic.cr = self.crCheckbutton.get_active()
+        self._model.mosaic.overlap = self._view.overlapSpinBox.value() / 100.
+        self._model.mosaic.startFrom = str(self._view.startFromComboBox.currentText())
+        self._model.mosaic.initialDirection = str(self._view.initialDirectionComboBox.currentText())
+        self._model.mosaic.cr = self._view.crCheckBox.isChecked()
 
         # Camera page
-        self._model.camera.timeValue = self.timeValueSpinbutton.get_value()
-        self._model.camera.mirrorLockup = self.mirrorLockupCheckbutton.get_active()
-        self._model.camera.bracketingNbPicts = int(self.bracketingNbPictsSpinbutton.get_value())
-        self._model.camera.bracketingIntent = config.CAMERA_BRACKETING_INTENT_INDEX[self.bracketingIntentCombobox.get_active()]
-        self._model.camera.sensorCoef = self.sensorCoefSpinbutton.get_value()
-        self._model.camera.sensorRatio = config.SENSOR_RATIOS_INDEX[self.sensorRatioCombobox.get_active()]
-        self._model.camera.sensorResolution = self.sensorResolutionSpinbutton.get_value()
+        self._model.camera.timeValue = self._view.timeValueDoubleSpinBox.value()
+        self._model.camera.mirrorLockup = self._view.mirrorLockupCheckBox.isChecked()
+        self._model.camera.bracketingNbPicts = self._view.bracketingNbPictsSpinBox.value()
+        self._model.camera.bracketingIntent = str(self._view.bracketingIntentComboBox.currentText())
+        self._model.camera.sensorCoef = self._view.sensorCoefDoubleSpinBox.value()
+        self._model.camera.sensorRatio = str(self._view.sensorRatioComboBox.currentText())
+        self._model.camera.sensorResolution = self._view.sensorResolutionDoubleSpinBox.value()
 
         # Lens page
-        self._model.camera.lens.type_ = config.LENS_TYPE_INDEX[self.lensTypeCombobox.get_active()]
-        self._model.camera.lens.focal = self.focalSpinbutton.get_value()
+        self._model.camera.lens.type_ = str(self._view.lensTypeComboBox.currentText())
+        self._model.camera.lens.focal = self._view.focalDoubleSpinBox.value()
 
         # Hardware page
-        ConfigManager().set('Preferences', 'HARDWARE_DRIVER',
-                            config.DRIVER_INDEX[self.driverCombobox.get_active()])
-        ConfigManager().set('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS', self.bluetoothDeviceAddressEntry.get_text())
-        ConfigManager().set('Preferences', 'HARDWARE_SERIAL_PORT', self.serialPortEntry.get_text())
-        ConfigManager().set('Preferences', 'HARDWARE_ETHERNET_HOST', self.ethernetHostEntry.get_text())
-        ConfigManager().setInt('Preferences', 'HARDWARE_ETHERNET_PORT', int(self.ethernetPortSpinbutton.get_value()))
-        ConfigManager().setBoolean('Preferences', 'HARDWARE_AUTO_CONNECT', self.hardwareAutoConnectCheckbutton.get_active())
+        ConfigManager().set('Preferences', 'HARDWARE_DRIVER', str(self._view.driverComboBox.currentText()))
+        ConfigManager().set('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS', str(self._view.bluetoothDeviceAddressLineEdit.text()))
+        ConfigManager().set('Preferences', 'HARDWARE_SERIAL_PORT', str(self._view.serialPortLineEdit.text()))
+        ConfigManager().set('Preferences', 'HARDWARE_ETHERNET_HOST', str(self._view.ethernetHostLineEdit.text()))
+        ConfigManager().setInt('Preferences', 'HARDWARE_ETHERNET_PORT', self._view.ethernetPortSpinBox.value())
+        ConfigManager().setBoolean('Preferences', 'HARDWARE_AUTO_CONNECT', self._view.hardwareAutoConnectCheckBox.isChecked())
 
         # Data page
-        newDir = self.dataStorageDirFilechooserbutton.get_current_folder()
-        ConfigManager().set('Preferences', 'DATA_STORAGE_DIR', newDir)
-        ConfigManager().set('Preferences', 'DATA_FILE_FORMAT', self.dataFileFormatEntry.get_text())
-        ConfigManager().setBoolean('Preferences', 'DATA_FILE_ENABLE', bool(self.dataFileEnableCheckbutton.get_active()))
-        ConfigManager().set('Preferences', 'DATA_TITLE', self.dataTitleEntry.get_text())
-        ConfigManager().set('Preferences', 'DATA_GPS', self.dataGpsEntry.get_text())
-        ConfigManager().set('Preferences', 'DATA_COMMENT', self.dataCommentEntry.get_text())
+        ConfigManager().set('Preferences', 'DATA_STORAGE_DIR', str(self._view.dataStorageDirLineEdit.text()))
+        ConfigManager().set('Preferences', 'DATA_FILE_FORMAT', str(self._view.dataFileFormatLineEdit.text()))
+        ConfigManager().setBoolean('Preferences', 'DATA_FILE_ENABLE', bool(self._view.dataFileEnableCheckBox.isChecked()))
+        ConfigManager().set('Preferences', 'DATA_TITLE', str(self._view.dataTitleLineEdit.text()))
+        ConfigManager().set('Preferences', 'DATA_GPS', str(self._view.dataGpsLineEdit.text()))
+        ConfigManager().set('Preferences', 'DATA_COMMENT', str(self._view.dataCommentLineEdit.text()))
 
         # Timer page
-        h = self.timerAfterHourSpinbutton.get_value()
-        m = self.timerAfterMinuteSpinbutton.get_value()
-        s = self.timerAfterSecondSpinbutton.get_value()
-        self._model.timerAfter = hmsToS(h, m, s)
-        self._model.timerAfterEnable = self.timerAfterEnableCheckbutton.get_active()
-        self._model.timerRepeat = self.timerRepeatSpinbutton.get_value()
-        self._model.timerRepeatEnable = self.timerRepeatEnableCheckbutton.get_active()
-        h = self.timerEveryHourSpinbutton.get_value()
-        m = self.timerEveryMinuteSpinbutton.get_value()
-        s = self.timerEverySecondSpinbutton.get_value()
-        self._model.timerEvery = hmsToS(h, m, s)
+        time_ = self._view.timerAfterTimeEdit.time()
+        self._model.timerAfter = hmsAsStrToS(time_.toString("hh:mm:ss"))
+        self._model.timerAfterEnable = self._view.timerAfterEnableCheckBox.isChecked()
+        self._model.timerRepeat = self._view.timerRepeatSpinBox.value()
+        self._model.timerRepeatEnable = self._view.timerRepeatEnableCheckBox.isChecked()
+        time_ = self._view.timerEveryTimeEdit.time()
+        self._model.timerEvery = hmsAsStrToS(time_.toString("hh:mm:ss"))
 
         # Misc page
-        ConfigManager().set('Preferences', 'LOGGER_LEVEL',
-                            config.LOGGER_INDEX[self.loggerLevelCombobox.get_active()])
+        ConfigManager().set('Preferences', 'LOGGER_LEVEL', str(self._view.loggerLevelComboBox.currentText()))
 
         ConfigManager().save()
 
-    def __onCancelButtonClicked(self, widget):
+    def __onRejected(self):
         """ Cancel button has been clicked.
 
         Close the pref. dialog.
         """
-        Logger().trace("ConfigController.__onCancelButtonClicked()")
+        Logger().trace("ConfigController.__onRejected()")
 
-    def __onCameraOrientationComboboxChanged(self, widget):
+    def __onCameraOrientationComboBoxCurrentIndexChanged(self, orientation):
         """ Camera orientation changed.
         """
-        orientation = config.CAMERA_ORIENTATION_INDEX[self.cameraOrientationCombobox.get_active()]
-        Logger().debug("ConfigController.__onCameraOrientationComboboxChanged(): orientation=%s" % orientation)
+        Logger().debug("ConfigController.__onCameraOrientationComboBoxCurrentIndexChanged(): orientation=%s" % orientation)
         if orientation == 'portrait':
-            self.cameraRollSpinbutton.set_sensitive(False)
-            self.cameraRollSpinbutton.set_value(90.)
+            self._view.cameraRollDoubleSpinBox.setEnabled(False)
+            self._view.cameraRollDoubleSpinBox.setValue(90.)
         elif orientation == 'landscape':
-            self.cameraRollSpinbutton.set_sensitive(False)
-            self.cameraRollSpinbutton.set_value(0.)
+            self._view.cameraRollDoubleSpinBox.setEnabled(False)
+            self._view.cameraRollDoubleSpinBox.setValue(0.)
         else:
             if self._model.mode == 'mosaic':
-                WarningMessageController(_("Wrong value for camera orientation"),
-                                         _("Can't set camera orientation to 'custom'\nwhile in 'mosaic' mode"))
-                self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[self._model.cameraOrientation])
+                controller = WarningMessageController(_("Wrong value for camera orientation"),
+                                                      _("Can't set camera orientation to 'custom'\nwhile in 'mosaic' mode"))
+                controller.exec_()
+                controller.shutdown()
+                self._view.cameraOrientationComboBox.setCurrentIndex(self._view.cameraOrientationComboBox.findText(self._model.cameraOrientation))
             else:
-                self.cameraRollSpinbutton.set_sensitive(True)
-                self.cameraRollSpinbutton.set_value(self._model.cameraRoll)
+                self._view.cameraRollDoubleSpinBox.setEnabled(True)
+                self._view.cameraRollDoubleSpinBox.setValue(self._model.cameraRoll)
 
-    def __onLensTypeComboboxChanged(self, widget):
+    def __onLensTypeComboBoxCurrentIndexChanged(self, type_):
         """ Lens type combobox has changed.
 
         Enable/disable focal lens.
         """
-        Logger().trace("ConfigController.__onLensTypeComboboxChanged()")
-        type_ = config.LENS_TYPE_INDEX[self.lensTypeCombobox.get_active()]
+        Logger().debug("ConfigController.__onLensTypeComboBoxCurrentIndexChanged(): type=%s" % type_)
         if type_ == 'fisheye' and self._model.mode == 'mosaic':
             controller = WarningMessageController(_("Wrong value for lens type"),
                                                   _("Can't set lens type to 'fisheye'\nwhile in 'mosaic' mode"))
-            controller.run()
+            controller.exec_()
             controller.shutdown()
-            self.lensTypeCombobox.set_active(config.LENS_TYPE_INDEX['rectilinear'])
+            self._view.lensTypeComboBox.setCurrentIndex(self._view.lensTypeComboBox.findText('rectilinear'))
         else:
             if type_ == 'rectilinear':
-                self.focalLabel.set_sensitive(True)
-                self.focalSpinbutton.set_sensitive(True)
+                self._view.focalLabel.setEnabled(True)
+                self._view.focalDoubleSpinBox.setEnabled(True)
             else:
-                self.focalLabel.set_sensitive(False)
-                self.focalSpinbutton.set_sensitive(False)
-            Logger().debug("ConfigController.__onLensTypeComboboxChanged(): lens type set to '%s'" % type_)
+                self._view.focalLabel.setEnabled(False)
+                self._view.focalDoubleSpinBox.setEnabled(False)
+            Logger().debug("ConfigController.__onLensTypeComboBoxCurrentIndexChanged(): lens type set to '%s'" % type_)
 
-    def __onDriverComboboxChanged(self, widget):
+    def __onDriverComboBoxCurrentIndexChanged(self, driver):
         """ Driver combobox has changed.
 
         Enable/disable BT address / serial port.
         """
-        Logger().trace("ConfigController.__onDriverComboboxChanged()")
-        driver = config.DRIVER_INDEX[self.driverCombobox.get_active()]
+        Logger().debug("ConfigController.__onDriverComboBoxCurrentIndexChanged(): driver=%s" % driver)
         if driver == 'bluetooth':
-            self.bluetoothDeviceAddressLabel.set_sensitive(True)
-            self.bluetoothDeviceAddressEntry.set_sensitive(True)
-            self.bluetoothChooseButton.set_sensitive(True)
-            self.serialPortLabel.set_sensitive(False)
-            self.serialPortEntry.set_sensitive(False)
-            self.ethernetHostPortLabel.set_sensitive(False)
-            self.ethernetHostEntry.set_sensitive(False)
-            self.ethernetPortSpinbutton.set_sensitive(False)
+            self._view.bluetoothDeviceAddressLabel.setEnabled(True)
+            self._view.bluetoothDeviceAddressLineEdit.setEnabled(True)
+            self._view.bluetoothChoosePushButton.setEnabled(True)
+            self._view.serialPortLabel.setEnabled(False)
+            self._view.serialPortLineEdit.setEnabled(False)
+            self._view.ethernetHostPortLabel.setEnabled(False)
+            self._view.ethernetHostLineEdit.setEnabled(False)
+            self._view.ethernetPortSpinBox.setEnabled(False)
         elif driver == 'serial':
-            self.bluetoothDeviceAddressLabel.set_sensitive(False)
-            self.bluetoothDeviceAddressEntry.set_sensitive(False)
-            self.bluetoothChooseButton.set_sensitive(False)
-            self.serialPortLabel.set_sensitive(True)
-            self.serialPortEntry.set_sensitive(True)
-            self.ethernetHostPortLabel.set_sensitive(False)
-            self.ethernetHostEntry.set_sensitive(False)
-            self.ethernetPortSpinbutton.set_sensitive(False)
+            self._view.bluetoothDeviceAddressLabel.setEnabled(False)
+            self._view.bluetoothDeviceAddressLineEdit.setEnabled(False)
+            self._view.bluetoothChoosePushButton.setEnabled(False)
+            self._view.serialPortLabel.setEnabled(True)
+            self._view.serialPortLineEdit.setEnabled(True)
+            self._view.ethernetHostPortLabel.setEnabled(False)
+            self._view.ethernetHostLineEdit.setEnabled(False)
+            self._view.ethernetPortSpinBox.setEnabled(False)
         elif driver == 'ethernet':
-            self.bluetoothDeviceAddressLabel.set_sensitive(False)
-            self.bluetoothDeviceAddressEntry.set_sensitive(False)
-            self.bluetoothChooseButton.set_sensitive(False)
-            self.serialPortLabel.set_sensitive(False)
-            self.serialPortEntry.set_sensitive(False)
-            self.ethernetHostPortLabel.set_sensitive(True)
-            self.ethernetHostEntry.set_sensitive(True)
-            self.ethernetPortSpinbutton.set_sensitive(True)
+            self._view.bluetoothDeviceAddressLabel.setEnabled(False)
+            self._view.bluetoothDeviceAddressLineEdit.setEnabled(False)
+            self._view.bluetoothChoosePushButton.setEnabled(False)
+            self._view.serialPortLabel.setEnabled(False)
+            self._view.serialPortLineEdit.setEnabled(False)
+            self._view.ethernetHostPortLabel.setEnabled(True)
+            self._view.ethernetHostLineEdit.setEnabled(True)
+            self._view.ethernetPortSpinBox.setEnabled(True)
 
-    def __onBluetoothChooseButtonClicked(self, widget):
+    def __onBluetoothChoosePushButtonClicked(self):
         """ Choose bluetooth button clicked.
 
         Open the bluetooth chooser dialog.
         """
-        Logger().trace("ConfigController.__onBluetoothChooseButtonClicked()")
+        Logger().trace("ConfigController.__onBluetoothChoosePushButtonClicked()")
         controller = BluetoothChooserController(self, self._model, self._serializer)
-        response = controller.run()
-        controller.shutdown()
-        if response == 0:
+        response = controller.exec_()
+        if response:
             address, name = controller.getSelectedBluetoothAddress()
-            Logger().debug("ConfigController.__onChooseBluetoothButtonClicked(): address=%s, name=%s" % \
-                            (address, name))
-            self.bluetoothDeviceAddressEntry.set_text(address)
+            Logger().debug("ConfigController.__onChooseBluetoothButtonClicked(): address=%s, name=%s" % (address, name))
+            self._view.bluetoothDeviceAddressLineEdit.setText(address)
+        controller.shutdown()
+
+    def __onDataStorageDirPushButtonClicked(self):
+        """ Select data storage dir button clicked.
+        
+        Open a file dialog to select the dir.
+        """
+        Logger().trace("ConfigController.__onDataStorageDirPushButtonClicked()")
+        Logger().warning("Not yet implemented")
 
     # Interface
-    def selectPage(self, pageNum, disable=False):
-        """ Select the specified page.
+    def selectTab(self, tabIndex, disable=False):
+        """ Select the specified tab.
 
-        @param pageNum: page num
-        @type pageNum: int
+        @param tabIndex: page num
+        @type tabIndex: int
 
         @param disable: if True, disable all other pages
         @type disable: bool
         """
-        self.notebook.set_current_page(pageNum)
-        #self.notebook.set_show_tabs(False)
-        for iPage in xrange(self.notebook.get_n_pages()):
-            if pageNum != iPage:
-                page = self.notebook.get_nth_page(iPage)
-                page.set_sensitive(False)
-                label = self.notebook.get_tab_label(page)
-                label.set_sensitive(False)
+        self._view.tabWidget.setCurrentIndex(tabIndex)
+        #self._view.tabWidget.set_show_tabs(False)
+        for index in xrange(self._view.tabWidget.count()):
+            self._view.tabWidget.setTabEnabled(index, tabIndex == index)
+            #if tabIndex != index:
+                #self._view.tabWidget.setTabEnabled(index, False)
 
     def refreshView(self):
 
         # Shooting page
-        self.headOrientationCombobox.set_active(config.HEAD_ORIENTATION_INDEX[self._model.headOrientation])
-        self.cameraOrientationCombobox.set_active(config.CAMERA_ORIENTATION_INDEX[self._model.cameraOrientation])
-        self.stabilizationDelaySpinbutton.set_value(self._model.stabilizationDelay)
+        self._view.headOrientationComboBox.setCurrentIndex(self._view.headOrientationComboBox.findText(self._model.headOrientation))
+        self._view.cameraOrientationComboBox.setCurrentIndex(self._view.cameraOrientationComboBox.findText(self._model.cameraOrientation))
+        self._view.stabilizationDelayDoubleSpinBox.setValue(self._model.stabilizationDelay)
 
         # Mosaic page
-        self.overlapSpinbutton.set_value(int(100 * self._model.mosaic.overlap))
-        self.startFromCombobox.set_active(config.MOSAIC_START_FROM_INDEX[self._model.mosaic.startFrom])
-        self.initialDirectionCombobox.set_active(config.MOSAIC_INITIAL_DIR_INDEX[self._model.mosaic.initialDirection])
-        self.crCheckbutton.set_active(self._model.mosaic.cr)
+        self._view.overlapSpinBox.setValue(int(100 * self._model.mosaic.overlap))
+        self._view.startFromComboBox.setCurrentIndex(self._view.startFromComboBox.findText(self._model.mosaic.startFrom))
+        self._view.initialDirectionComboBox.setCurrentIndex(self._view.initialDirectionComboBox.findText(self._model.mosaic.initialDirection))
+        self._view.crCheckBox.setChecked(self._model.mosaic.cr)
 
         # Camera page
-        self.timeValueSpinbutton.set_value(self._model.camera.timeValue)
-        self.mirrorLockupCheckbutton.set_active(self._model.camera.mirrorLockup)
-        self.bracketingNbPictsSpinbutton.set_value(self._model.camera.bracketingNbPicts)
-        self.bracketingIntentCombobox.set_active(config.CAMERA_BRACKETING_INTENT_INDEX[self._model.camera.bracketingIntent])
-        self.sensorCoefSpinbutton.set_value(self._model.camera.sensorCoef)
-        self.sensorRatioCombobox.set_active(config.SENSOR_RATIOS_INDEX[self._model.camera.sensorRatio])
-        self.sensorResolutionSpinbutton.set_value(self._model.camera.sensorResolution)
+        self._view.timeValueDoubleSpinBox.setValue(self._model.camera.timeValue)
+        self._view.mirrorLockupCheckBox.setChecked(self._model.camera.mirrorLockup)
+        self._view.bracketingNbPictsSpinBox.setValue(self._model.camera.bracketingNbPicts)
+        self._view.bracketingIntentComboBox.setCurrentIndex(self._view.bracketingIntentComboBox.findText(self._model.camera.bracketingIntent))
+        self._view.sensorCoefDoubleSpinBox.setValue(self._model.camera.sensorCoef)
+        self._view.sensorRatioComboBox.setCurrentIndex(self._view.sensorRatioComboBox.findText(self._model.camera.sensorRatio))
+        self._view.sensorResolutionDoubleSpinBox.setValue(self._model.camera.sensorResolution)
 
         # Lens page
-        self.lensTypeCombobox.set_active(config.LENS_TYPE_INDEX[self._model.camera.lens.type_])
-        self.focalSpinbutton.set_value(self._model.camera.lens.focal)
-        try:
-            driverIndex = config.DRIVER_INDEX[ConfigManager().get('Preferences', 'HARDWARE_DRIVER')]
-        except KeyError:
-            driverIndex = 0
+        self._view.lensTypeComboBox.setCurrentIndex(self._view.lensTypeComboBox.findText(self._model.camera.lens.type_))
+        self._view.focalDoubleSpinBox.setValue(self._model.camera.lens.focal)
 
         # Hardware page
-        self.driverCombobox.set_active(driverIndex)
-        self.bluetoothDeviceAddressEntry.set_text(ConfigManager().get('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS'))
-        self.serialPortEntry.set_text(ConfigManager().get('Preferences', 'HARDWARE_SERIAL_PORT'))
-        self.ethernetHostEntry.set_text(ConfigManager().get('Preferences', 'HARDWARE_ETHERNET_HOST'))
-        self.ethernetPortSpinbutton.set_value(ConfigManager().getInt('Preferences', 'HARDWARE_ETHERNET_PORT'))
-        self.hardwareAutoConnectCheckbutton.set_active(ConfigManager().getBoolean('Preferences', 'HARDWARE_AUTO_CONNECT'))
+        driverIndex = self._view.driverComboBox.findText(ConfigManager().get('Preferences', 'HARDWARE_DRIVER'))
+        self._view.driverComboBox.setCurrentIndex(driverIndex)
+        self._view.bluetoothDeviceAddressLineEdit.setText(ConfigManager().get('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS'))
+        self._view.serialPortLineEdit.setText(ConfigManager().get('Preferences', 'HARDWARE_SERIAL_PORT'))
+        self._view.ethernetHostLineEdit.setText(ConfigManager().get('Preferences', 'HARDWARE_ETHERNET_HOST'))
+        self._view.ethernetPortSpinBox.setValue(ConfigManager().getInt('Preferences', 'HARDWARE_ETHERNET_PORT'))
+        self._view.hardwareAutoConnectCheckBox.setChecked(ConfigManager().getBoolean('Preferences', 'HARDWARE_AUTO_CONNECT'))
 
         # Data page
         dataStorageDir = ConfigManager().get('Preferences', 'DATA_STORAGE_DIR')
-        self.dataFileFormatEntry.set_text(ConfigManager().get('Preferences', 'DATA_FILE_FORMAT'))
         if not dataStorageDir:
             dataStorageDir = config.DATA_STORAGE_DIR
-        self.dataStorageDirFilechooserbutton.set_current_folder(dataStorageDir)
-        self.dataFileEnableCheckbutton.set_active(ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE'))
-        self.dataTitleEntry.set_text(ConfigManager().get('Preferences', 'DATA_TITLE'))
-        self.dataGpsEntry.set_text(ConfigManager().get('Preferences', 'DATA_GPS'))
-        self.dataCommentEntry.set_text(ConfigManager().get('Preferences', 'DATA_COMMENT'))
+        self._view.dataStorageDirLineEdit.setText(dataStorageDir)
+        self._view.dataFileFormatLineEdit.setText(ConfigManager().get('Preferences', 'DATA_FILE_FORMAT'))
+        self._view.dataFileEnableCheckBox.setChecked(ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE'))
+        self._view.dataTitleLineEdit.setText(ConfigManager().get('Preferences', 'DATA_TITLE'))
+        self._view.dataGpsLineEdit.setText(ConfigManager().get('Preferences', 'DATA_GPS'))
+        self._view.dataCommentLineEdit.setText(ConfigManager().get('Preferences', 'DATA_COMMENT'))
 
         # Timer page
-        h, m, s = sToHms(self._model.timerAfter)
-        self.timerAfterHourSpinbutton.set_value(h)
-        self.timerAfterMinuteSpinbutton.set_value(m)
-        self.timerAfterSecondSpinbutton.set_value(s)
-        self.timerAfterEnableCheckbutton.set_active(self._model.timerAfterEnable)
-        self.timerRepeatSpinbutton.set_value(self._model.timerRepeat)
-        self.timerRepeatEnableCheckbutton.set_active(self._model.timerRepeatEnable)
-        h, m, s = sToHms(self._model.timerEvery)
-        self.timerEveryHourSpinbutton.set_value(h)
-        self.timerEveryMinuteSpinbutton.set_value(m)
-        self.timerEverySecondSpinbutton.set_value(s)
+        time_ = QtCore.QTime.fromString(QtCore.QString(sToHmsAsStr(self._model.timerAfter)), "hh:mm:ss")
+        self._view.timerAfterTimeEdit.setTime(time_)
+        self._view.timerAfterEnableCheckBox.setChecked(self._model.timerAfterEnable)
+        self._view.timerRepeatSpinBox.setValue(self._model.timerRepeat)
+        self._view.timerRepeatEnableCheckBox.setChecked(self._model.timerRepeatEnable)
+        time_ = QtCore.QTime.fromString(QtCore.QString(sToHmsAsStr(self._model.timerEvery)), "hh:mm:ss")
+        self._view.timerEveryTimeEdit.setTime(time_)
 
         # Misc page
-        self.loggerLevelCombobox.set_active(config.LOGGER_INDEX[ConfigManager().get('Preferences', 'LOGGER_LEVEL')])
+        loggerIndex = self._view.loggerLevelComboBox.findText(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
+        self._view.loggerLevelComboBox.setCurrentIndex(loggerIndex)
