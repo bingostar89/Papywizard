@@ -88,6 +88,10 @@ Section "SectionPrincipale" SEC01
   File "..\locale\pl\LC_MESSAGES\papywizard.mo"
   SetOutPath "$INSTDIR\share\locale\de\LC_MESSAGES"
   File "..\locale\de\LC_MESSAGES\papywizard.mo"
+  SetOutPath "$INSTDIR\share\locale\it\LC_MESSAGES"
+  File "..\locale\it\LC_MESSAGES\papywizard.mo"
+  SetOutPath "$INSTDIR\share\locale\es\LC_MESSAGES"
+  File "..\locale\es\LC_MESSAGES\papywizard.mo"
 SectionEnd
 
 Section "GTK+ runtime" SEC02
@@ -139,7 +143,7 @@ Section Uninstall
   Delete "$INSTDIR\Papywizard-3D.exe"
   Delete "$INSTDIR\Papywizard-Simul.exe"
   Delete "$INSTDIR\w9xpopen.exe"
-  Delete "$INSTDIR\Papywizard.exe.log"
+  Delete "$INSTDIR\*.log"
   Delete "$INSTDIR\papywizard.ico"
   Delete "$SMPROGRAMS\Papywizard\Uninstall.lnk"
   Delete "$SMPROGRAMS\Papywizard\Website.lnk"
@@ -156,6 +160,8 @@ Section Uninstall
   Delete "$INSTDIR\share\locale\fr\LC_MESSAGES\papywizard.mo"
   Delete "$INSTDIR\share\locale\pl\LC_MESSAGES\papywizard.mo"
   Delete "$INSTDIR\share\locale\de\LC_MESSAGES\papywizard.mo"
+  Delete "$INSTDIR\share\locale\it\LC_MESSAGES\papywizard.mo"
+  Delete "$INSTDIR\share\locale\es\LC_MESSAGES\papywizard.mo"
   RMDir  "$INSTDIR\papywizard\common"
   RMDir  "$INSTDIR\papywizard\view"
   RMDir  "$INSTDIR\papywizard"
