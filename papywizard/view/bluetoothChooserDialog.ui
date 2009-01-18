@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>231</width>
-    <height>85</height>
+    <width>416</width>
+    <height>92</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -23,7 +23,13 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout" >
      <item>
-      <widget class="QComboBox" name="bluetoothAddressComboBox" />
+      <widget class="QComboBox" name="bluetoothAddressComboBox" >
+       <property name="font" >
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="refreshPushButton" >
@@ -32,6 +38,11 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="font" >
+        <font>
+         <pointsize>10</pointsize>
+        </font>
        </property>
        <property name="text" >
         <string/>
@@ -46,6 +57,11 @@
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="font" >
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
      <property name="orientation" >
       <enum>Qt::Horizontal</enum>
      </property>

@@ -8,8 +8,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>530</width>
-    <height>284</height>
+    <width>545</width>
+    <height>312</height>
    </rect>
   </property>
   <property name="font" >
@@ -39,7 +39,7 @@
       </font>
      </property>
      <property name="currentIndex" >
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="shootingTab" >
       <attribute name="title" >
@@ -172,7 +172,7 @@
           </widget>
          </item>
          <item row="2" column="1" >
-          <widget class="QDoubleSpinBox" name="satbilizationDelayDoubleSpinBox" >
+          <widget class="QDoubleSpinBox" name="stabilizationDelayDoubleSpinBox" >
            <property name="font" >
             <font>
              <pointsize>10</pointsize>
@@ -408,7 +408,7 @@
           </widget>
          </item>
          <item row="1" column="2" >
-          <widget class="QComboBox" name="bracketingIntentCcomboBox" >
+          <widget class="QComboBox" name="bracketingIntentComboBox" >
            <item>
             <property name="text" >
              <string>exposure</string>
@@ -678,7 +678,7 @@
           </widget>
          </item>
          <item row="1" column="0" >
-          <widget class="QLabel" name="bluetoothDeciceAddressLabel" >
+          <widget class="QLabel" name="bluetoothDeviceAddressLabel" >
            <property name="text" >
             <string>BT device address</string>
            </property>
@@ -698,7 +698,7 @@
           </widget>
          </item>
          <item row="1" column="2" >
-          <widget class="QPushButton" name="choosePushButton" >
+          <widget class="QPushButton" name="bluetoothChoosePushButton" >
            <property name="text" >
             <string>Choose...</string>
            </property>
@@ -773,7 +773,7 @@
           </widget>
          </item>
          <item row="4" column="1" >
-          <widget class="QCheckBox" name="autoConnectCheckBox" >
+          <widget class="QCheckBox" name="hardwareAutoConnectCheckBox" >
            <property name="text" >
             <string>Auto-connect</string>
            </property>
@@ -890,6 +890,9 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="1" >
+          <widget class="QLineEdit" name="dataStorageDirLineEdit" />
+         </item>
          <item row="0" column="2" >
           <widget class="QPushButton" name="dataStorageDirPushButton" >
            <property name="sizePolicy" >
@@ -902,15 +905,8 @@
             <string/>
            </property>
            <property name="icon" >
-            <iconset>
-             <normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/fileopen.png</normaloff>../../../../../../../usr/share/icons/default.kde/22x22/actions/fileopen.png</iconset>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" >
-          <widget class="QComboBox" name="dataStorageDirComboBox" >
-           <property name="editable" >
-            <bool>true</bool>
+            <iconset resource="icons.qrc" >
+             <normaloff>:/icons/fileopen.png</normaloff>:/icons/fileopen.png</iconset>
            </property>
           </widget>
          </item>
@@ -1003,6 +999,9 @@
            <property name="displayFormat" >
             <string>HH:mm:ss</string>
            </property>
+           <property name="currentSectionIndex" >
+            <number>2</number>
+           </property>
           </widget>
          </item>
         </layout>
@@ -1094,7 +1093,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>513</width>
-    <height>378</height>
+    <width>551</width>
+    <height>408</height>
    </rect>
   </property>
   <property name="minimumSize" >
@@ -20,6 +20,9 @@
     <pointsize>10</pointsize>
    </font>
   </property>
+  <property name="focusPolicy" >
+   <enum>Qt::StrongFocus</enum>
+  </property>
   <property name="windowTitle" >
    <string>Papywizard</string>
   </property>
@@ -28,7 +31,7 @@
     <normaloff>../../../../../../../../papywizard80x80.png</normaloff>../../../../../../../../papywizard80x80.png</iconset>
   </property>
   <property name="toolButtonStyle" >
-   <enum>Qt::ToolButtonTextBesideIcon</enum>
+   <enum>Qt::ToolButtonIconOnly</enum>
   </property>
   <property name="dockNestingEnabled" >
    <bool>false</bool>
@@ -164,6 +167,9 @@
               </property>
               <property name="text" >
                <string>--</string>
+              </property>
+              <property name="flat" >
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -958,8 +964,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>513</width>
-     <height>31</height>
+     <width>551</width>
+     <height>35</height>
     </rect>
    </property>
    <property name="font" >
@@ -1017,7 +1023,7 @@
     <addaction name="actionHelpViewLog" />
     <addaction name="separator" />
     <addaction name="actionHelpAboutPapywizard" />
-    <addaction name="actionAboutQt" />
+    <addaction name="actionHelpAboutQt" />
    </widget>
    <addaction name="menuFile" />
    <addaction name="menuHardware" />
@@ -1168,7 +1174,7 @@
   <action name="actionHelpAboutPapywizard" >
    <property name="icon" >
     <iconset resource="icons.qrc" >
-     <normaloff>:/icons/bookmark.png</normaloff>:/icons/bookmark.png</iconset>
+     <normaloff>:/icons/papywizard.png</normaloff>:/icons/papywizard.png</iconset>
    </property>
    <property name="text" >
     <string>About Papywizard</string>
@@ -1179,7 +1185,11 @@
     </font>
    </property>
   </action>
-  <action name="actionAboutQt" >
+  <action name="actionHelpAboutQt" >
+   <property name="icon" >
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/qt.png</normaloff>:/icons/qt.png</iconset>
+   </property>
    <property name="text" >
     <string>About Qt</string>
    </property>
