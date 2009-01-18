@@ -1031,21 +1031,20 @@ class MainController(AbstractController):
     def refreshView(self):
         if self._model.mode == 'mosaic':
             self.notebook.set_current_page(0)
+            self.setYawStartButtonLabel.set_label("%.1f" % self._model.mosaic.yawStart)
+            self.setPitchStartButtonLabel.set_label("%.1f" % self._model.mosaic.pitchStart)
+            self.setYawEndButtonLabel.set_label("%.1f" % self._model.mosaic.yawEnd)
+            self.setPitchEndButtonLabel.set_label("%.1f" % self._model.mosaic.pitchEnd)
+            self.yawFovLabel.set_text("%.1f" % self._model.mosaic.yawFov)
+            self.pitchFovLabel.set_text("%.1f" % self._model.mosaic.pitchFov)
+            self.yawNbPictsLabel.set_text("%d" % self._model.mosaic.yawNbPicts)
+            self.pitchNbPictsLabel.set_text("%d" % self._model.mosaic.pitchNbPicts)
+            self.yawRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.yawRealOverlap)))
+            self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
+            self.yawResolutionLabel.set_text("%d" % round(self._model.mosaic.getYawResolution()))
+            self.pitchResolutionLabel.set_text("%d" % round(self._model.mosaic.getPitchResolution()))
         else:
             self.notebook.set_current_page(1)
-
-        self.setYawStartButtonLabel.set_label("%.1f" % self._model.mosaic.yawStart)
-        self.setPitchStartButtonLabel.set_label("%.1f" % self._model.mosaic.pitchStart)
-        self.setYawEndButtonLabel.set_label("%.1f" % self._model.mosaic.yawEnd)
-        self.setPitchEndButtonLabel.set_label("%.1f" % self._model.mosaic.pitchEnd)
-        self.yawFovLabel.set_text("%.1f" % self._model.mosaic.yawFov)
-        self.pitchFovLabel.set_text("%.1f" % self._model.mosaic.pitchFov)
-        self.yawNbPictsLabel.set_text("%d" % self._model.mosaic.yawNbPicts)
-        self.pitchNbPictsLabel.set_text("%d" % self._model.mosaic.pitchNbPicts)
-        self.yawRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.yawRealOverlap)))
-        self.pitchRealOverlapLabel.set_text("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
-        self.yawResolutionLabel.set_text("%d" % round(self._model.mosaic.getYawResolution()))
-        self.pitchResolutionLabel.set_text("%d" % round(self._model.mosaic.getPitchResolution()))
 
         presets = PresetManager().getPresets()
         try:
