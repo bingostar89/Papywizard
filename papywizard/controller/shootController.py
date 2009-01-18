@@ -65,7 +65,7 @@ from papywizard.controller.messageController import ErrorMessageController
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.spy import Spy
-from papywizard.view.shootingArea import MosaicArea, PresetArea
+#from papywizard.view.shootingArea import MosaicArea, PresetArea
 
 
 class ShootController(AbstractModalDialogController):
