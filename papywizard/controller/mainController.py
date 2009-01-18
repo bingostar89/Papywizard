@@ -735,12 +735,12 @@ class MainController(AbstractController):
             if self.__mosaicInputParam == 'startEnd':
                 pass
             elif self.__mosaicInputParam == 'fov':
-                yawFov = float(self.yawFovLabel.get_text())
-                pitchFov = float(self.pitchFovLabel.get_text())
+                yawFov = float(self._view.yawFovLabel.text())
+                pitchFov = float(self._view.pitchFovLabel.text())
                 self._model.setStartEndFromFov(yawFov, pitchFov)
             elif self.__mosaicInputParam == 'nbPicts':
-                yawNbPicts = int(self.yawNbPictsLabel.get_text())
-                pitchNbPicts = int(self.pitchNbPictsLabel.get_text())
+                yawNbPicts = int(self._view.yawNbPictsLabel.text())
+                pitchNbPicts = int(self._view.pitchNbPictsLabel.text())
                 self._model.setStartEndFromNbPicts(yawNbPicts, pitchNbPicts)
             self.refreshView()
 
