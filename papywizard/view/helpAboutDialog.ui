@@ -1,0 +1,334 @@
+<ui version="4.0" >
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>313</width>
+    <height>311</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>About Papywizard</string>
+  </property>
+  <property name="windowIcon" >
+   <iconset resource="icons.qrc" >
+    <normaloff>:/icons/papywizard.png</normaloff>:/icons/papywizard.png</iconset>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" >
+   <item>
+    <widget class="QTabWidget" name="tabWidget" >
+     <property name="currentIndex" >
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="generalTab" >
+      <attribute name="title" >
+       <string>General</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3" >
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2" >
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout" >
+           <item>
+            <widget class="QLabel" name="label" >
+             <property name="font" >
+              <font>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
+             <property name="text" >
+              <string/>
+             </property>
+             <property name="pixmap" >
+              <pixmap resource="icons.qrc" >:/icons/papywizard.png</pixmap>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="papywizardVersionLabel" >
+             <property name="sizePolicy" >
+              <sizepolicy vsizetype="Preferred" hsizetype="Preferred" >
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font" >
+              <font>
+               <pointsize>20</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text" >
+              <string>Papywizard x.x.x</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3" >
+           <property name="font" >
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text" >
+            <string>Papywizard is a panohead control software, mainly developped for the Merlin/Orion astronomic mount but usable for other panoheads.</string>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="wordWrap" >
+            <bool>true</bool>
+           </property>
+           <property name="margin" >
+            <number>10</number>
+           </property>
+           <property name="textInteractionFlags" >
+            <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_4" >
+           <property name="font" >
+            <font>
+             <pointsize>10</pointsize>
+             <italic>true</italic>
+            </font>
+           </property>
+           <property name="text" >
+            <string>© 2007-2009 Frédéric Mantegazza</string>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="textInteractionFlags" >
+            <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_5" >
+           <property name="font" >
+            <font>
+             <pointsize>10</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="cursor" >
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text" >
+            <string>http://trac.gbiloba.org/papywizard</string>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="textInteractionFlags" >
+            <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByMouse</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="creditsTab" >
+      <attribute name="title" >
+       <string>Credits</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_5" >
+       <item>
+        <layout class="QGridLayout" name="gridLayout" >
+         <item row="0" column="0" >
+          <widget class="QLabel" name="label_6" >
+           <property name="text" >
+            <string>Written by</string>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+           </property>
+           <property name="margin" >
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" >
+          <widget class="QPlainTextEdit" name="plainTextEdit_2" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Ignored" hsizetype="Expanding" >
+             <horstretch>0</horstretch>
+             <verstretch>1</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="baseSize" >
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="plainText" >
+            <string>Frédéric Mantegazza</string>
+           </property>
+           <property name="textInteractionFlags" >
+            <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" >
+          <widget class="QLabel" name="label_7" >
+           <property name="text" >
+            <string>Translated by</string>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+           </property>
+           <property name="margin" >
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" >
+          <widget class="QPlainTextEdit" name="plainTextEdit_3" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Ignored" hsizetype="Expanding" >
+             <horstretch>0</horstretch>
+             <verstretch>4</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="plainText" >
+            <string>Frédéric Mantegazza (fr)
+Jo Lutum (de)
+Maciej Dworak (pl)
+Antonio Bruno (it)</string>
+           </property>
+           <property name="textInteractionFlags" >
+            <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" >
+          <widget class="QLabel" name="label_8" >
+           <property name="text" >
+            <string>Graphics by</string>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+           </property>
+           <property name="margin" >
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1" >
+          <widget class="QPlainTextEdit" name="plainTextEdit_4" >
+           <property name="sizePolicy" >
+            <sizepolicy vsizetype="Ignored" hsizetype="Expanding" >
+             <horstretch>0</horstretch>
+             <verstretch>2</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="plainText" >
+            <string>Hubert Pawlowski
+Frédéric Mantegazza</string>
+           </property>
+           <property name="textInteractionFlags" >
+            <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="licenseTab" >
+      <attribute name="title" >
+       <string>License</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4" >
+       <item>
+        <widget class="QPlainTextEdit" name="plainTextEdit" >
+         <property name="plainText" >
+          <string>This software is governed by the CeCILL license under French law and abiding by the rules of distribution of free software. You can  use, modify and/or redistribute the software under the terms of the CeCILL license as circulated by CEA, CNRS and INRIA at the following URL http://www.cecill.info.
+
+As a counterpart to the access to the source code and  rights to copy, modify and redistribute granted by the license, users are provided only with a limited warranty  and the software's author,  the holder of the economic rights,  and the successive licensors  have only  limited liability.
+
+In this respect, the user's attention is drawn to the risks associated with loading,  using,  modifying and/or developing or reproducing the software by the user in light of its specific status of free software, that may mean  that it is complicated to manipulate,  and  that  also therefore means  that it is reserved for developers  and  experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the software's suitability as regards their requirements in conditions enabling the security of their systems and/or data to be ensured and,  more generally, to use and operate it in the same conditions as regards security.
+
+The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</string>
+         </property>
+         <property name="textInteractionFlags" >
+          <set>Qt::LinksAccessibleByKeyboard|Qt::LinksAccessibleByMouse|Qt::TextBrowserInteraction|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="font" >
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Close</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="icons.qrc" />
+ </resources>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Dialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Dialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
