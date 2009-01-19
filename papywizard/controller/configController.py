@@ -82,6 +82,7 @@ class ConfigController(AbstractModalDialogController):
         QtCore.QObject.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
         QtCore.QObject.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
         QtCore.QObject.connect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
+        QtCore.QObject.connect(self._view.bracketingNbPictsSpinBox, QtCore.SIGNAL("valueChanged(int)"), self.__onBracketingNbPictsSpinBoxValueChanged)
         QtCore.QObject.connect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onLensTypeComboBoxCurrentIndexChanged)
         QtCore.QObject.connect(self._view.driverComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onDriverComboBoxCurrentIndexChanged)
         QtCore.QObject.connect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
@@ -101,20 +102,20 @@ class ConfigController(AbstractModalDialogController):
         """
         Logger().trace("ConfigController.__onAccepted()")
 
-        # Shooting page
+        # Shooting tab
         self._model.headOrientation = str(self._view.headOrientationComboBox.currentText())
         self._model.cameraOrientation = str(self._view.cameraOrientationComboBox.currentText())
         if self._model.cameraOrientation == 'custom':
             self._model.cameraRoll = self._view.cameraRollDoubleSpinBox.value()
         self._model.stabilizationDelay = self._view.stabilizationDelayDoubleSpinBox.value()
 
-        # Mosaic page
+        # Mosaic tab
         self._model.mosaic.overlap = self._view.overlapSpinBox.value() / 100.
         self._model.mosaic.startFrom = str(self._view.startFromComboBox.currentText())
         self._model.mosaic.initialDirection = str(self._view.initialDirectionComboBox.currentText())
         self._model.mosaic.cr = self._view.crCheckBox.isChecked()
 
-        # Camera page
+        # Camera tab
         self._model.camera.timeValue = self._view.timeValueDoubleSpinBox.value()
         self._model.camera.mirrorLockup = self._view.mirrorLockupCheckBox.isChecked()
         self._model.camera.bracketingNbPicts = self._view.bracketingNbPictsSpinBox.value()
@@ -123,11 +124,11 @@ class ConfigController(AbstractModalDialogController):
         self._model.camera.sensorRatio = str(self._view.sensorRatioComboBox.currentText())
         self._model.camera.sensorResolution = self._view.sensorResolutionDoubleSpinBox.value()
 
-        # Lens page
+        # Lens tab
         self._model.camera.lens.type_ = str(self._view.lensTypeComboBox.currentText())
         self._model.camera.lens.focal = self._view.focalDoubleSpinBox.value()
 
-        # Hardware page
+        # Hardware tab
         ConfigManager().set('Preferences', 'HARDWARE_DRIVER', str(self._view.driverComboBox.currentText()))
         ConfigManager().set('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS', str(self._view.bluetoothDeviceAddressLineEdit.text()))
         ConfigManager().set('Preferences', 'HARDWARE_SERIAL_PORT', str(self._view.serialPortLineEdit.text()))
@@ -135,7 +136,7 @@ class ConfigController(AbstractModalDialogController):
         ConfigManager().setInt('Preferences', 'HARDWARE_ETHERNET_PORT', self._view.ethernetPortSpinBox.value())
         ConfigManager().setBoolean('Preferences', 'HARDWARE_AUTO_CONNECT', self._view.hardwareAutoConnectCheckBox.isChecked())
 
-        # Data page
+        # Data tab
         ConfigManager().set('Preferences', 'DATA_STORAGE_DIR', str(self._view.dataStorageDirLineEdit.text()))
         ConfigManager().set('Preferences', 'DATA_FILE_FORMAT', str(self._view.dataFileFormatLineEdit.text()))
         ConfigManager().setBoolean('Preferences', 'DATA_FILE_ENABLE', bool(self._view.dataFileEnableCheckBox.isChecked()))
@@ -143,7 +144,7 @@ class ConfigController(AbstractModalDialogController):
         ConfigManager().set('Preferences', 'DATA_GPS', str(self._view.dataGpsLineEdit.text()))
         ConfigManager().set('Preferences', 'DATA_COMMENT', str(self._view.dataCommentLineEdit.text()))
 
-        # Timer page
+        # Timer tab
         time_ = self._view.timerAfterTimeEdit.time()
         self._model.timerAfter = hmsAsStrToS(time_.toString("hh:mm:ss"))
         self._model.timerAfterEnable = self._view.timerAfterEnableCheckBox.isChecked()
@@ -152,7 +153,7 @@ class ConfigController(AbstractModalDialogController):
         time_ = self._view.timerEveryTimeEdit.time()
         self._model.timerEvery = hmsAsStrToS(time_.toString("hh:mm:ss"))
 
-        # Misc page
+        # Misc tab
         ConfigManager().set('Preferences', 'LOGGER_LEVEL', str(self._view.loggerLevelComboBox.currentText()))
 
         ConfigManager().save()
@@ -185,10 +186,20 @@ class ConfigController(AbstractModalDialogController):
                 self._view.cameraRollDoubleSpinBox.setEnabled(True)
                 self._view.cameraRollDoubleSpinBox.setValue(self._model.cameraRoll)
 
+    def __onBracketingNbPictsSpinBoxValueChanged(self, value):
+        """ Bracketing nb picts spin box has change.
+
+        Enable/disable bracketing intent combobox.
+
+        DOES NOT WORK!!!!
+        """
+        Logger().debug("ConfigController.__onBracketingNbPictsSpinBoxValueChanged(): value=%d" % value)
+        self._view.bracketingIntentComboBox.setEnabled(self._model.camera.bracketingNbPicts != 1)
+
     def __onLensTypeComboBoxCurrentIndexChanged(self, type_):
         """ Lens type combobox has changed.
 
-        Enable/disable focal lens.
+        Enable/disable focal lens entry.
         """
         Logger().debug("ConfigController.__onLensTypeComboBoxCurrentIndexChanged(): type=%s" % type_)
         if type_ == 'fisheye' and self._model.mode == 'mosaic':
@@ -256,11 +267,17 @@ class ConfigController(AbstractModalDialogController):
 
     def __onDataStorageDirPushButtonClicked(self):
         """ Select data storage dir button clicked.
-        
+
         Open a file dialog to select the dir.
         """
         Logger().trace("ConfigController.__onDataStorageDirPushButtonClicked()")
-        Logger().warning("Not yet implemented")
+        dataStorageDir = ConfigManager().get('Preferences', 'DATA_STORAGE_DIR')
+        dirName = QtGui.QFileDialog.getExistingDirectory(self._view,
+                                                         _("Choose Data Storage dir"),
+                                                         dataStorageDir,
+                                                         QtGui.QFileDialog.ShowDirsOnly)
+        if dirName:
+            self._view.dataStorageDirLineEdit.setText(dirName)
 
     # Interface
     def selectTab(self, tabIndex, disable=False):
@@ -273,39 +290,37 @@ class ConfigController(AbstractModalDialogController):
         @type disable: bool
         """
         self._view.tabWidget.setCurrentIndex(tabIndex)
-        #self._view.tabWidget.set_show_tabs(False)
         for index in xrange(self._view.tabWidget.count()):
             self._view.tabWidget.setTabEnabled(index, tabIndex == index)
-            #if tabIndex != index:
-                #self._view.tabWidget.setTabEnabled(index, False)
 
     def refreshView(self):
 
-        # Shooting page
+        # Shooting tab
         self._view.headOrientationComboBox.setCurrentIndex(self._view.headOrientationComboBox.findText(self._model.headOrientation))
         self._view.cameraOrientationComboBox.setCurrentIndex(self._view.cameraOrientationComboBox.findText(self._model.cameraOrientation))
         self._view.stabilizationDelayDoubleSpinBox.setValue(self._model.stabilizationDelay)
 
-        # Mosaic page
+        # Mosaic tab
         self._view.overlapSpinBox.setValue(int(100 * self._model.mosaic.overlap))
         self._view.startFromComboBox.setCurrentIndex(self._view.startFromComboBox.findText(self._model.mosaic.startFrom))
         self._view.initialDirectionComboBox.setCurrentIndex(self._view.initialDirectionComboBox.findText(self._model.mosaic.initialDirection))
         self._view.crCheckBox.setChecked(self._model.mosaic.cr)
 
-        # Camera page
+        # Camera tab
         self._view.timeValueDoubleSpinBox.setValue(self._model.camera.timeValue)
         self._view.mirrorLockupCheckBox.setChecked(self._model.camera.mirrorLockup)
         self._view.bracketingNbPictsSpinBox.setValue(self._model.camera.bracketingNbPicts)
         self._view.bracketingIntentComboBox.setCurrentIndex(self._view.bracketingIntentComboBox.findText(self._model.camera.bracketingIntent))
+        self._view.bracketingIntentComboBox.setEnabled(self._model.camera.bracketingNbPicts != 1)
         self._view.sensorCoefDoubleSpinBox.setValue(self._model.camera.sensorCoef)
         self._view.sensorRatioComboBox.setCurrentIndex(self._view.sensorRatioComboBox.findText(self._model.camera.sensorRatio))
         self._view.sensorResolutionDoubleSpinBox.setValue(self._model.camera.sensorResolution)
 
-        # Lens page
+        # Lens tab
         self._view.lensTypeComboBox.setCurrentIndex(self._view.lensTypeComboBox.findText(self._model.camera.lens.type_))
         self._view.focalDoubleSpinBox.setValue(self._model.camera.lens.focal)
 
-        # Hardware page
+        # Hardware tab
         driverIndex = self._view.driverComboBox.findText(ConfigManager().get('Preferences', 'HARDWARE_DRIVER'))
         self._view.driverComboBox.setCurrentIndex(driverIndex)
         self._view.bluetoothDeviceAddressLineEdit.setText(ConfigManager().get('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS'))
@@ -314,7 +329,7 @@ class ConfigController(AbstractModalDialogController):
         self._view.ethernetPortSpinBox.setValue(ConfigManager().getInt('Preferences', 'HARDWARE_ETHERNET_PORT'))
         self._view.hardwareAutoConnectCheckBox.setChecked(ConfigManager().getBoolean('Preferences', 'HARDWARE_AUTO_CONNECT'))
 
-        # Data page
+        # Data tab
         dataStorageDir = ConfigManager().get('Preferences', 'DATA_STORAGE_DIR')
         if not dataStorageDir:
             dataStorageDir = config.DATA_STORAGE_DIR
@@ -325,7 +340,7 @@ class ConfigController(AbstractModalDialogController):
         self._view.dataGpsLineEdit.setText(ConfigManager().get('Preferences', 'DATA_GPS'))
         self._view.dataCommentLineEdit.setText(ConfigManager().get('Preferences', 'DATA_COMMENT'))
 
-        # Timer page
+        # Timer tab
         time_ = QtCore.QTime.fromString(QtCore.QString(sToHmsAsStr(self._model.timerAfter)), "hh:mm:ss")
         self._view.timerAfterTimeEdit.setTime(time_)
         self._view.timerAfterEnableCheckBox.setChecked(self._model.timerAfterEnable)
@@ -334,6 +349,16 @@ class ConfigController(AbstractModalDialogController):
         time_ = QtCore.QTime.fromString(QtCore.QString(sToHmsAsStr(self._model.timerEvery)), "hh:mm:ss")
         self._view.timerEveryTimeEdit.setTime(time_)
 
-        # Misc page
+        # Misc tab
         loggerIndex = self._view.loggerLevelComboBox.findText(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
         self._view.loggerLevelComboBox.setCurrentIndex(loggerIndex)
+
+    def getSelectedTab(self):
+        """ Return the selected tab.
+        """
+        return self._view.tabWidget.currentIndex()
+
+    def setSelectedTab(self, index):
+        """ Set the tab to be selected.
+        """
+        self._view.tabWidget.setCurrentIndex(index)
