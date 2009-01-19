@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>545</width>
+    <width>613</width>
     <height>312</height>
    </rect>
   </property>
@@ -515,6 +515,9 @@
          </item>
          <item row="4" column="1" >
           <widget class="QDoubleSpinBox" name="sensorResolutionDoubleSpinBox" >
+           <property name="suffix" >
+            <string> Mpx</string>
+           </property>
            <property name="decimals" >
             <number>1</number>
            </property>
@@ -983,11 +986,24 @@
          </item>
          <item row="2" column="1" >
           <widget class="QTimeEdit" name="timerEveryTimeEdit" >
+           <property name="dateTime" >
+            <datetime>
+             <hour>0</hour>
+             <minute>0</minute>
+             <second>0</second>
+             <year>2000</year>
+             <month>1</month>
+             <day>1</day>
+            </datetime>
+           </property>
            <property name="currentSection" >
             <enum>QDateTimeEdit::SecondSection</enum>
            </property>
            <property name="displayFormat" >
             <string>HH:mm:ss</string>
+           </property>
+           <property name="currentSectionIndex" >
+            <number>2</number>
            </property>
           </widget>
          </item>
