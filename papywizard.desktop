@@ -8,6 +8,6 @@ GenericName[fr]=Pilotage tête panoramique Merlin/Orion
 Comment=automate hi-res and full-spherical panos shots
 Comment[en]=automate hi-res and full-spherical panos shots
 Comment[fr]=automatise la prise de vue panoramique
-Icon=paywizard
+Icon=papywizard
 Exec=papywizard.sh
 Categories=Application;Graphics;
