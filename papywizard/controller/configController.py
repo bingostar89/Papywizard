@@ -58,8 +58,8 @@ from papywizard.common.configManager import ConfigManager
 from papywizard.common.helpers import hmsAsStrToS, hmsToS, sToHms, sToHmsAsStr
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractModalDialogController
-from papywizard.controller.messageController import WarningMessageController
 from papywizard.controller.bluetoothChooserController import BluetoothChooserController
+from papywizard.view.messageDialog import WarningMessageDialog
 
 
 class ConfigController(AbstractModalDialogController):
@@ -177,10 +177,9 @@ class ConfigController(AbstractModalDialogController):
             self._view.cameraRollDoubleSpinBox.setValue(0.)
         else:
             if self._model.mode == 'mosaic':
-                controller = WarningMessageController(_("Wrong value for camera orientation"),
-                                                      _("Can't set camera orientation to 'custom'\nwhile in 'mosaic' mode"))
-                controller.exec_()
-                controller.shutdown()
+                dialog = WarningMessageDialog(_("Wrong value for camera orientation"),
+                                              _("Can't set camera orientation to 'custom' while in 'mosaic' mode"))
+                dialog.exec_()
                 self._view.cameraOrientationComboBox.setCurrentIndex(self._view.cameraOrientationComboBox.findText(self._model.cameraOrientation))
             else:
                 self._view.cameraRollDoubleSpinBox.setEnabled(True)
@@ -190,11 +189,9 @@ class ConfigController(AbstractModalDialogController):
         """ Bracketing nb picts spin box has change.
 
         Enable/disable bracketing intent combobox.
-
-        DOES NOT WORK!!!!
         """
         Logger().debug("ConfigController.__onBracketingNbPictsSpinBoxValueChanged(): value=%d" % value)
-        self._view.bracketingIntentComboBox.setEnabled(self._model.camera.bracketingNbPicts != 1)
+        self._view.bracketingIntentComboBox.setEnabled(value != 1)
 
     def __onLensTypeComboBoxCurrentIndexChanged(self, type_):
         """ Lens type combobox has changed.
@@ -203,10 +200,9 @@ class ConfigController(AbstractModalDialogController):
         """
         Logger().debug("ConfigController.__onLensTypeComboBoxCurrentIndexChanged(): type=%s" % type_)
         if type_ == 'fisheye' and self._model.mode == 'mosaic':
-            controller = WarningMessageController(_("Wrong value for lens type"),
-                                                  _("Can't set lens type to 'fisheye'\nwhile in 'mosaic' mode"))
-            controller.exec_()
-            controller.shutdown()
+            dialog = WarningMessageDialog(_("Wrong value for lens type"),
+                                          _("Can't set lens type to 'fisheye' while in 'mosaic' mode"))
+            dialog.exec_()
             self._view.lensTypeComboBox.setCurrentIndex(self._view.lensTypeComboBox.findText('rectilinear'))
         else:
             if type_ == 'rectilinear':
