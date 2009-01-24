@@ -5,21 +5,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>220</width>
-    <height>110</height>
+    <width>201</width>
+    <height>115</height>
    </rect>
-  </property>
-  <property name="font" >
-   <font>
-    <pointsize>10</pointsize>
-   </font>
   </property>
   <property name="windowTitle" >
    <string>Nb Picts</string>
   </property>
   <property name="windowIcon" >
-   <iconset>
-    <normaloff>papywizard.png</normaloff>papywizard.png</iconset>
+   <iconset resource="icons.qrc" >
+    <normaloff>:/icons/papywizard.png</normaloff>:/icons/papywizard.png</iconset>
   </property>
   <property name="modal" >
    <bool>true</bool>
@@ -103,7 +98,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="icons.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

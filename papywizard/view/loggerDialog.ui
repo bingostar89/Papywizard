@@ -9,17 +9,12 @@
     <height>405</height>
    </rect>
   </property>
-  <property name="font" >
-   <font>
-    <pointsize>10</pointsize>
-   </font>
-  </property>
   <property name="windowTitle" >
    <string>Logger</string>
   </property>
   <property name="windowIcon" >
-   <iconset>
-    <normaloff>../../../../../papywizard80x80.png</normaloff>../../../../../papywizard80x80.png</iconset>
+   <iconset resource="icons.qrc" >
+    <normaloff>:/icons/papywizard.png</normaloff>:/icons/papywizard.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2" >
    <item>
@@ -120,7 +115,6 @@
        <property name="font" >
         <font>
          <family>Bitstream Vera Sans Mono</family>
-         <pointsize>8</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>

@@ -8,21 +8,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>613</width>
-    <height>312</height>
+    <width>557</width>
+    <height>289</height>
    </rect>
-  </property>
-  <property name="font" >
-   <font>
-    <pointsize>10</pointsize>
-   </font>
   </property>
   <property name="windowTitle" >
    <string>Dialog</string>
   </property>
   <property name="windowIcon" >
-   <iconset>
-    <normaloff>../../../../../papywizard80x80.png</normaloff>../../../../../papywizard80x80.png</iconset>
+   <iconset resource="icons.qrc" >
+    <normaloff>:/icons/papywizard.png</normaloff>:/icons/papywizard.png</iconset>
   </property>
   <property name="modal" >
    <bool>true</bool>
@@ -33,11 +28,6 @@
    </property>
    <item>
     <widget class="QTabWidget" name="tabWidget" >
-     <property name="font" >
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
      <property name="currentIndex" >
       <number>0</number>
      </property>
@@ -50,11 +40,6 @@
         <layout class="QGridLayout" name="gridLayout" >
          <item row="0" column="0" >
           <widget class="QLabel" name="label" >
-           <property name="font" >
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
            <property name="text" >
             <string>Head orientation</string>
            </property>
@@ -68,11 +53,6 @@
          </item>
          <item row="0" column="1" >
           <widget class="QComboBox" name="headOrientationComboBox" >
-           <property name="font" >
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
            <item>
             <property name="text" >
              <string>up</string>
@@ -97,11 +77,6 @@
          </item>
          <item row="1" column="0" >
           <widget class="QLabel" name="label_2" >
-           <property name="font" >
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
            <property name="text" >
             <string>Camera orientation</string>
            </property>
@@ -115,11 +90,6 @@
          </item>
          <item row="1" column="1" >
           <widget class="QComboBox" name="cameraOrientationComboBox" >
-           <property name="font" >
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
            <item>
             <property name="text" >
              <string>portrait</string>
@@ -155,11 +125,6 @@
          </item>
          <item row="2" column="0" >
           <widget class="QLabel" name="label_3" >
-           <property name="font" >
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
            <property name="text" >
             <string>Stabilization delay</string>
            </property>
@@ -173,11 +138,6 @@
          </item>
          <item row="2" column="1" >
           <widget class="QDoubleSpinBox" name="stabilizationDelayDoubleSpinBox" >
-           <property name="font" >
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
            <property name="suffix" >
             <string> s</string>
            </property>
@@ -205,11 +165,6 @@
         <layout class="QGridLayout" name="gridLayout_2" >
          <item row="0" column="0" >
           <widget class="QLabel" name="label_4" >
-           <property name="font" >
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
            <property name="text" >
             <string>Overlap</string>
            </property>
@@ -223,11 +178,6 @@
          </item>
          <item row="0" column="1" >
           <widget class="QSpinBox" name="overlapSpinBox" >
-           <property name="font" >
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
            <property name="suffix" >
             <string> %</string>
            </property>
@@ -247,11 +197,6 @@
          </item>
          <item row="1" column="0" >
           <widget class="QLabel" name="label_5" >
-           <property name="font" >
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
            <property name="text" >
             <string>Start from</string>
            </property>
@@ -265,11 +210,6 @@
          </item>
          <item row="1" column="1" >
           <widget class="QComboBox" name="startFromComboBox" >
-           <property name="font" >
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
            <item>
             <property name="text" >
              <string>start</string>
@@ -284,11 +224,6 @@
          </item>
          <item row="2" column="0" >
           <widget class="QLabel" name="label_6" >
-           <property name="font" >
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
            <property name="text" >
             <string>Initial direction</string>
            </property>
@@ -302,11 +237,6 @@
          </item>
          <item row="2" column="1" >
           <widget class="QComboBox" name="initialDirectionComboBox" >
-           <property name="font" >
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
            <item>
             <property name="text" >
              <string>yaw</string>
@@ -321,11 +251,6 @@
          </item>
          <item row="2" column="2" >
           <widget class="QCheckBox" name="crCheckBox" >
-           <property name="font" >
-            <font>
-             <pointsize>10</pointsize>
-            </font>
-           </property>
            <property name="text" >
             <string>CR</string>
            </property>
@@ -485,7 +410,7 @@
            </item>
            <item>
             <property name="text" >
-             <string>3:4</string>
+             <string>4:3</string>
             </property>
            </item>
            <item>
@@ -1096,7 +1021,7 @@
     <widget class="QDialogButtonBox" name="buttonBox" >
      <property name="font" >
       <font>
-       <pointsize>10</pointsize>
+       <pointsize>9</pointsize>
       </font>
      </property>
      <property name="orientation" >
