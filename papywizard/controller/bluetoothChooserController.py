@@ -58,8 +58,8 @@ from PyQt4 import QtCore, QtGui
 
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
-from papywizard.controller.messageController import ErrorMessageController
 from papywizard.controller.abstractController import AbstractModalDialogController
+from papywizard.view.messageDialog import ExceptionMessageDialog
 
 
 class BluetoothChooserController(AbstractModalDialogController):
@@ -136,10 +136,8 @@ class BluetoothChooserController(AbstractModalDialogController):
             Logger().info("Bluetooth available devices: %s" % self.__bluetoothDevices)
         else:
             Logger().error("Can't scan bluetooth\n%s" % self.__refreshErrorMessage)
-            controller = ErrorMessageController(_("Can't scan bluetooth"), self.__refreshErrorMessage)
-            controller.exec_()
-            controller.shutdown()
-
+            dialog = ExceptionMessageDialog(_("Can't scan bluetooth"), self.__refreshErrorMessage)
+            dialog.exec_()
         #self.refreshButton.setEnabled(True)
 
     def refreshView(self):
