@@ -68,11 +68,11 @@ from papywizard.common.exception import HardwareError
 from papywizard.common.publisher import Publisher
 from papywizard.hardware.head import Head, HeadSimulation
 from papywizard.model.shooting import Shooting
-from papywizard.controller.messageController import ExceptionMessageController
 from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.mainController import MainController
 from papywizard.controller.spy import Spy
 from papywizard.view.logBuffer import LogBuffer
+from papywizard.view.messageDialog import ExceptionMessageDialog
 
 DOMAIN = "papywizard"
 LANGS = ('en_US', 'fr_FR', 'pl_PL', 'de_DE', 'es_ES', 'it_IT')
@@ -260,8 +260,8 @@ def main():
 
     except Exception, msg:
         Logger().exception("main()")
-        controller = ExceptionMessageController(_("Unhandled exception"), str(msg))
-        controller.exec_()
+        dialog = ExceptionMessageDialog(_("Unhandled exception"), str(msg))
+        dialog.exec_()
 
 
 if __name__ == "__main__":
