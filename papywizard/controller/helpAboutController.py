@@ -51,22 +51,21 @@ Implements
 
 __revision__ = "$Id$"
 
-import StringIO
-import traceback
-
 from papywizard.common import config
-from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.abstractController import AbstractModalDialogController
 
 
-class HelpAboutController(AbstractController):
+class HelpAboutController(AbstractModalDialogController):
     """ Help About menu controller object.
     """
     def _init(self):
-        self._gladeFile = "helpAboutDialog.glade"
-        self._signalDict = {}
+        self._uiFile = "helpAboutDialog.ui"
 
     def _initWidgets(self):
-        self.dialog.set_version(config.VERSION)
+        self._view.papywizardVersionLabel.setText("Papywizard %s" % config.VERSION)
+
+    def _connectSignals(self):
+        pass
 
     def _disconnectSignals(self):
         pass
