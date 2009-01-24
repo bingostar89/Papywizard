@@ -107,7 +107,7 @@ class LoggerController(AbstractModalDialogController):
 
     # Interface
     def refreshView(self):
-        
+
         # Scroll to the bottom left of the window
         self._view.loggerPlainTextEdit.moveCursor(QtGui.QTextCursor.End)
         self._view.loggerPlainTextEdit.moveCursor(QtGui.QTextCursor.StartOfLine)
