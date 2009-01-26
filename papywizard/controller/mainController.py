@@ -521,6 +521,7 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onTabWidgetCurrentChanged()")
         if index == 0:
             self._model.mode = 'mosaic'
+            self._refreshMosaicPage()
         elif index == 1:
             self._model.mode = 'preset'
         #elif index == 2
@@ -826,7 +827,7 @@ class MainController(AbstractController):
         @param pitch: pitch axix value
         @type pitch: float
         """
-        Logger().trace("MainController.__refreshPos()")
+        #Logger().trace("MainController.__refreshPos()")
         self.__yawPos = yaw
         self.__pitchPos = pitch
         self._serializer.addWork(self.refreshView)
@@ -854,9 +855,7 @@ class MainController(AbstractController):
         """
         self._view.statusBar().clearMessage()
 
-    def refreshView(self):
-        if self._model.mode == 'mosaic':
-            self._view.tabWidget.setCurrentIndex(0)
+    def _refreshMosaicPage(self):
             self._view.setYawStartPushButton.setText("%.1f" % self._model.mosaic.yawStart)
             self._view.setPitchStartPushButton.setText("%.1f" % self._model.mosaic.pitchStart)
             self._view.setYawEndPushButton.setText("%.1f" % self._model.mosaic.yawEnd)
@@ -869,6 +868,11 @@ class MainController(AbstractController):
             self._view.pitchRealOverlapLabel.setText("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
             self._view.yawResolutionLabel.setText("%d" % round(self._model.mosaic.getYawResolution()))
             self._view.pitchResolutionLabel.setText("%d" % round(self._model.mosaic.getPitchResolution()))
+
+    def refreshView(self):
+        if self._model.mode == 'mosaic':
+            self._view.tabWidget.setCurrentIndex(0)
+            self._refreshMosaicPage()
         else:
             self._view.tabWidget.setCurrentIndex(1)
             flag = self._model.cameraOrientation != 'custom' and self._model.camera.lens.type_ != 'fisheye'
