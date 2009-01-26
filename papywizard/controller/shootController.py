@@ -61,11 +61,10 @@ from PyQt4 import QtCore, QtGui
 from papywizard.common.loggingServices import Logger
 from papywizard.common.helpers import sToHmsAsStr
 from papywizard.common.configManager import ConfigManager
-from papywizard.controller.messageController import ErrorMessageController
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.spy import Spy
-#from papywizard.view.shootingArea import MosaicArea, PresetArea
+from papywizard.view.shootingScene import ShootingView, MosaicShootingScene, PresetShootingScene
 
 
 class ShootController(AbstractModalDialogController):
@@ -78,8 +77,6 @@ class ShootController(AbstractModalDialogController):
                                  'Left': False,
                                  'Up': False,
                                  'Down': False,
-                                 'Return': False,
-                                 'Escape': False
                              }
         self.__key = {'Right': QtCore.Qt.Key_Right,
                       'Left': QtCore.Qt.Key_Left,
@@ -94,6 +91,11 @@ class ShootController(AbstractModalDialogController):
         QtCore.QCoreApplication.connect(self.__shootingElapseTimer, QtCore.SIGNAL("timeout()"), self.__updateShootingElapsedTime)
 
     def _initWidgets(self):
+
+        # Let the dialog be managed as a window so it can
+        # be displayed fullscreen on Nokia N8x0 devices
+        self._view.setWindowFlags(QtCore.Qt.Window)
+
         if self._model.timerRepeatEnable:
             self._view.repeatLabel.setText("--/%d" % self._model.timerRepeat)
         else:
@@ -113,54 +115,49 @@ class ShootController(AbstractModalDialogController):
             self._view.yawNextIndexLabel.setText("--")
             self._view.pitchNextIndexLabel.setText("--")
 
-        # Load graphical shooting area and replace the text view
-        #if self._model.mode == 'mosaic':
-            #self.shootingArea = MosaicArea() # Use a factory
-        #else:
-            #self.shootingArea = PresetArea() # Use a factory
-        #self.shootingFrame.remove(self.textShootingGridLayout)
-        #self.shootingFrame.add(self.shootingArea)
-        #self.shootingArea.show()
+        # Create graphical shooting view and scene
+        self._view.shootingGraphicsView = ShootingView()
+        self._view.shootingStackedWidget.insertWidget(0, self._view.shootingGraphicsView)
+        self._view.shootingStackedWidget.setCurrentIndex(0)
+        if self._model.mode == 'mosaic':  # Use a factory
+            self.__shootingScene = MosaicShootingScene(self._model.mosaic.yawStart, self._model.mosaic.yawEnd,
+                                                       self._model.mosaic.pitchStart, self._model.mosaic.pitchEnd,
+                                                       self._model.mosaic.yawFov, self._model.mosaic.pitchFov,
+                                                       self._model.camera.getYawFov(self._model.cameraOrientation),
+                                                       self._model.camera.getPitchFov(self._model.cameraOrientation))
 
-        # Populate shooting area with preview positions
-        if self._model.mode == 'mosaic':
-
-            ## todo: give args in shootingArea.__init__()
-            #self.shootingArea.init(self._model.mosaic.yawStart, self._model.mosaic.yawEnd,
-                                   #self._model.mosaic.pitchStart, self._model.mosaic.pitchEnd,
-                                   #self._model.mosaic.yawFov, self._model.mosaic.pitchFov,
-                                   #self._model.camera.getYawFov(self._model.cameraOrientation),
-                                   #self._model.camera.getPitchFov(self._model.cameraOrientation),
-                                   #self._model.mosaic.yawRealOverlap, self._model.mosaic.pitchRealOverlap)
+            # Populate shooting area with preview positions
             self._model.mosaic.generatePositions()
-            #for (index, yawIndex, pitchIndex), (yaw, pitch) in self._model.mosaic.iterPositions():
-                #self.shootingArea.add_pict(yaw, pitch, status='preview')
+            for (index, yawIndex, pitchIndex), (yaw, pitch) in self._model.mosaic.iterPositions():
+                self.__shootingScene.addPicture(index, yaw, pitch, status='preview')
         else:
-            #self.shootingArea.init(440., 220., # visible fov
-                                    #30.,  30.) # camera fov
-            self._model.preset.generatePositions()
-            #for index, (yaw, pitch) in self._model.preset.iterPositions():
-                #self.shootingArea.add_pict(yaw, pitch, status='preview')
-        #yaw, pitch = self._model.hardware.readPosition()
-        #self.shootingArea.set_current_head_position(yaw, pitch)
+            self.__shootingScene = PresetShootingScene(0, 360,
+                                                       -90, 90,
+                                                       360, 180,
+                                                       60,
+                                                       60)
 
-        # Set the shooting area size
-        #width1, heigh1 = self.shootingArea.size_request()
-        #width2, heigh2 = self.textShootingGridLayout.size_request()
-        #width = max(width1, width2)
-        #heigh = max(heigh1, heigh2)
-        #self.shootingArea.set_size_request(width, heigh)
-        #self.textShootingGridLayout.set_size_request(width, heigh)
-        
+            # Populate shooting area with preview positions
+            self._model.preset.generatePositions()
+            for index, (yaw, pitch) in self._model.preset.iterPositions():
+                self.__shootingScene.addPicture(index, yaw, pitch, status='preview')
+
+        # Connect picture clicked signal
+        self.__shootingScene.pictureClicked.connect(self.__onPictureClicked)
+
+        self._view.shootingGraphicsView.setScene(self.__shootingScene)
+
+        # Refresh head position
+        yaw, pitch = self._model.hardware.readPosition()
+        self.__shootingScene.setHeadPosition(yaw, pitch)
+
         # Keyboard behaviour
         self._view.grabKeyboard()
 
     def _connectQtSignals(self):
         super(ShootController, self)._connectQtSignals()
-        #self.shootingArea.connect("button-press-event", self.__onMousePushButtonPressed)
-        #self.shootingArea.connect("motion-notify-event", self.__onMotionNotify)
 
-        QtCore.QObject.connect(self._view.textViewPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onTextViewPushButtonToggled)
+        QtCore.QObject.connect(self._view.shootingStackPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onShootingStackPushButtonToggled)
         QtCore.QObject.connect(self._view.rewindPushButton, QtCore.SIGNAL("clicked()"), self.__onRewindPushButtonClicked)
         QtCore.QObject.connect(self._view.forwardPushButton, QtCore.SIGNAL("clicked()"), self.__onForwardPushButtonClicked)
 
@@ -199,15 +196,17 @@ class ShootController(AbstractModalDialogController):
         self._model.newPositionSignal.disconnect(self.__shootingNewPosition)
         self._model.sequenceSignal.disconnect(self.__shootingSequence)
 
-    #def _onDelete(self, widget, event):
-        #Logger().trace("ShootController.__onDelete()")
-        #if not self._model.isShooting():
-            #self.shutdown()
-            #return False
-        #return True
-
     # Callbacks Qt
+    def _onCloseEvent(self, event):
+        Logger().trace("ShootController._onCloseEvent()")
+        if not self._model.isShooting():
+            self.shutdown()
+            event.accept()
+        else:
+            event.ignore()
+
     def __onKeyPressed(self, event):
+        #Logger().debug("MainController.__onKeyPressed(): key='%s" % event.key())
 
         # 'Right' key
         if event.key() == self.__key['Right']:
@@ -216,7 +215,7 @@ class ShootController(AbstractModalDialogController):
                     Logger().debug("MainController.__onKeyPressed(): 'Right' key pressed; forward shooting position")
                     self.__keyPressedDict['Right'] = True
                     self.__forwardShootingPosition()
-            return
+            event.ignore()
 
         # 'Left' key
         elif event.key() == self.__key['Left']:
@@ -225,7 +224,7 @@ class ShootController(AbstractModalDialogController):
                     Logger().debug("MainController.__onKeyPressed(): 'Left' key pressed; rewind shooting position")
                     self.__keyPressedDict['Left'] = True
                     self.__rewindShootingPosition()
-            return
+            event.ignore()
 
         # 'Up' key
         elif event.key() == self.__key['Up']:
@@ -234,7 +233,7 @@ class ShootController(AbstractModalDialogController):
                     Logger().debug("MainController.__onKeyPressed(): 'Up' key pressed; rewind shooting position")
                     self.__keyPressedDict['Up'] = True
                     self.__rewindShootingPosition()
-            return
+            event.ignore()
 
         # 'Down' key
         elif event.key() == self.__key['Down']:
@@ -243,109 +242,82 @@ class ShootController(AbstractModalDialogController):
                     Logger().debug("MainController.__onKeyPressed(): 'Down' key pressed; forward shooting position")
                     self.__keyPressedDict['Down'] = True
                     self.__forwardShootingPosition()
-            return
+            event.ignore()
 
         # 'Return' key
         if event.key() == self.__key['Return']:
-            if not self.__keyPressedDict['Return']:
-                Logger().debug("shootController.__onKeyPressed(): 'Return' key pressed")
-                self.__keyPressedDict['Return'] = True
+            Logger().debug("shootController.__onKeyPressed(): 'Return' key pressed")
 
-                # Pressing 'Return' while not shooting starts shooting
-                if not self._model.isShooting():
-                    Logger().debug("shootController.__onKeyPressed(): start shooting")
-                    self.__startShooting()
+            # Pressing 'Return' while not shooting starts shooting
+            if not self._model.isShooting():
+                Logger().debug("shootController.__onKeyPressed(): start shooting")
+                self.__startShooting()
 
-                # Pressing 'Return' while shooting...
+            # Pressing 'Return' while shooting...
+            else:
+
+                # ...and not paused pauses shooting
+                if not self._model.isPaused():
+                    Logger().debug("shootController.__onKeyPressed(): pause shooting")
+                    self.__pauseShooting()
+
+                #... and paused resumes shooting
                 else:
-
-                    # ...and not paused pauses shooting
-                    if not self._model.isPaused():
-                        Logger().debug("shootController.__onKeyPressed(): pause shooting")
-                        self.__pauseShooting()
-
-                    #... and paused resumes shooting
-                    else:
-                        Logger().debug("shootController.__onKeyPressed(): resume shooting")
-                        self.__resumeShooting()
-            return
+                    Logger().debug("shootController.__onKeyPressed(): resume shooting")
+                    self.__resumeShooting()
+            event.ignore()
 
         # 'Escape' key
         elif event.key() == self.__key['Escape']:
-            if not self.__keyPressedDict['Escape']:
-                Logger().debug("shootController.__onKeyPressed(): 'Escape' key pressed")
-                self.__keyPressedDict['Escape'] = True
- 
-                # Pressing 'Escape' while not shooting exit shoot dialog
-                if not self._model.isShooting():
-                    Logger().debug("shootController.__onKeyPressed(): close shooting dialog")
-                    self._view.reject()
- 
-                # Pressing 'Escape' while shooting stops shooting
-                else:
-                    Logger().debug("shootController.__onKeyPressed(): stop shooting")
-                    self.__stopShooting()
-            return
+            Logger().debug("shootController.__onKeyPressed(): 'Escape' key pressed")
+
+            # Pressing 'Escape' while not shooting exit shoot dialog
+            if not self._model.isShooting():
+                Logger().debug("shootController.__onKeyPressed(): close shooting dialog")
+                self._view.reject()
+
+            # Pressing 'Escape' while shooting stops shooting
+            else:
+                Logger().debug("shootController.__onKeyPressed(): stop shooting")
+                self.__stopShooting()
+            event.ignore()
 
         else:
-            Logger().warning("MainController.__onKeyPressed(): unbind '%s' key" % event.key())
+            event.accept()
 
     def __onKeyReleased(self, event):
+        #Logger().debug("MainController.__onKeyReleased(): key='%s" % event.key())
 
         # 'Right' key
         if event.key() == self.__key['Right']:
             if self.__keyPressedDict['Right']:
                 Logger().debug("MainController.__onKeyReleased(): 'Right' key released")
                 self.__keyPressedDict['Right'] = False
-            return
+            event.ignore()
 
         # 'Left' key
         if event.key() == self.__key['Left']:
             if self.__keyPressedDict['Left']:
                 Logger().debug("MainController.__onKeyReleased(): 'Left' key released")
                 self.__keyPressedDict['Left'] = False
-            return
+            event.ignore()
 
         # 'Up' key
         if event.key() == self.__key['Up']:
             if self.__keyPressedDict['Up']:
                 Logger().debug("MainController.__onKeyReleased(): 'Up' key released;")
                 self.__keyPressedDict['Up'] = False
-            return
+            event.ignore()
 
         # 'Down' key
         if event.key() == self.__key['Down']:
             if self.__keyPressedDict['Down']:
                 Logger().debug("MainController.__onKeyReleased(): 'Down' key released;")
                 self.__keyPressedDict['Down'] = False
-            return
-
-        # 'Return' key
-        if event.key() == self.__key['Return']:
-            if self.__keyPressedDict['Return']:
-                Logger().debug("MainController.__onKeyReleased(): 'Return' key released")
-                self.__keyPressedDict['Return'] = False
-            return
-
-        # 'Escape' key
-        if event.key() == self.__key['Escape']:
-            if self.__keyPressedDict['Escape']:
-                Logger().debug("MainController.__onKeyReleased(): 'Escape' key released")
-                self.__keyPressedDict['Escape'] = False
-            return
+            event.ignore()
 
         else:
-            Logger().warning("MainController.__onKeyReleased(): unbind '%s' key" % event.key())
-
-    def __onMousePushButtonPressed(self, widget, event):
-        Logger().trace("ShootController.__onMousePushButtonPressed()")
-        if self._model.isPaused():
-            if event.button == 1:
-                #index = self._view.shootingArea.get_selected_image_index(event.x, event.y)
-                if index is not None:
-                    Logger().debug("ShootController.__onMousePushButtonPressed(): x=%d, y=%d, index=%d" % (event.x, event.y, index))
-                    self._model.setNextPositionIndex(index)
-                    self.__refreshNextPosition()
+            event.accept()
 
     def __onMotionNotify(self, widget, event):
         #Logger().trace("ShootController.__onMotionNotify()")
@@ -361,14 +333,12 @@ class ShootController(AbstractModalDialogController):
             if state & gtk.gdk.BUTTON1_MASK:
                 Logger().debug("ShootController.__onMotionNotify(): drag x=%d, y=%d" % (x, y))
 
-    def __onTextViewPushButtonToggled(self, checked):
-        Logger().trace("ShootController.__onTextViewPushButtonToggled()")
+    def __onShootingStackPushButtonToggled(self, checked):
+        Logger().trace("ShootController.__onShootingStackPushButtonToggled()")
         if checked:
-            self._view.shootingFrame.remove(self._view.shootingArea)
-            self._view.shootingFrame.add(self._view.textShootingGridLayout)
+            self._view.shootingStackedWidget.setCurrentIndex(1)
         else:
-            self._view.shootingFrame.remove(self._view.textShootingGridLayout)
-            self._view.shootingFrame.add(self._view.shootingArea)
+            self._view.shootingStackedWidget.setCurrentIndex(0)
 
     def __onRewindPushButtonClicked(self):
         Logger().trace("ShootController.__onRewindPushButtonClicked()")
@@ -424,6 +394,12 @@ class ShootController(AbstractModalDialogController):
         Logger().trace("ShootController.__onDonePushButtonClicked()")
         self.shutdown()
 
+    def __onPictureClicked(self, index):
+        Logger().trace("ShootController.__onPictureClicked(): index=%d" % index)
+        if self._model.isPaused():
+            self._model.setNextPositionIndex(index)
+            self.__refreshNextPosition()
+
     def __updateShootingElapsedTime(self):
         Logger().trace("ShootController.__updateShootingElapsedTime()")
         if self._model.isShooting():
@@ -436,7 +412,7 @@ class ShootController(AbstractModalDialogController):
     # Callback model (all GUI calls must be done via the serializer)
     def __shootingStarted(self):
         Logger().trace("ShootController.__shootingStarted()")
-        #self._serializer.addWork(self._view.shootingArea.clear)
+        self._serializer.addWork(self.__shootingScene.clear)
         self._serializer.addWork(self._view.shootingProgressBar.setValue, 0)
         self._serializer.addWork(self._view.totalProgressBar.setValue, 0)
         if self._model.timerRepeatEnable:
@@ -518,7 +494,7 @@ class ShootController(AbstractModalDialogController):
 
     def __shootingRepeat(self, repeat):
         Logger().trace("ShootController.__shootingRepeat()")
-        #self._serializer.addWork(self._view.shootingArea.clear)
+        self._serializer.addWork(self.__shootingScene.clear)
         if self._model.timerRepeatEnable:
             self._serializer.addWork(self._view.repeatLabel.setText,"%d/%d" % (repeat, self._model.timerRepeat))
 
@@ -541,8 +517,7 @@ class ShootController(AbstractModalDialogController):
         self._serializer.addWork(self._view.nextIndexLabel.setText, "%d/%d" % (index, self._model.scan.totalNbPicts))
 
         # Update graphical area
-        #self._view.shootingArea.add_pict(yaw, pitch, status, next)
-        #self._serializer.addWork(self._view.shootingArea.refresh)
+        self._serializer.addWork(self.__shootingScene.setPictureState, index, status, next)
 
     def __shootingSequence(self, sequence, **kwargs):
         Logger().trace("ShootController.__shootingSequence()")
@@ -558,9 +533,16 @@ class ShootController(AbstractModalDialogController):
             self._serializer.addWork(self._view.sequenceLabel.setText, _("Shutter - Picture") + " %d/%d" % (bracket, totalNbPicts))
 
     def __refreshPos(self, yaw, pitch):
-        Logger().trace("ShootController.__refreshPos()")
-        #self.shootingArea.set_current_head_position(yaw, pitch)
-        #self._serializer.addWork(self._view.shootingArea.refresh)
+        """ Refresh position according to new pos.
+
+        @param yaw: yaw axis value
+        @type yaw: float
+
+        @param pitch: pitch axix value
+        @type pitch: float
+        """
+        #Logger().trace("ShootController.__refreshPos()")
+        self._serializer.addWork(self.__shootingScene.setHeadPosition, yaw, pitch)
 
     # Helpers
     def __refreshNextPosition(self):
@@ -578,7 +560,7 @@ class ShootController(AbstractModalDialogController):
         self._view.nextIndexLabel.setText("%d/%d" % (index, self._model.scan.totalNbPicts))
 
         # Update graphical area
-        #self._view.shootingArea.set_selected_image_index(index)
+        self.__shootingScene.selectPictureByIndex(index)
 
     def __rewindShootingPosition(self):
         """

@@ -94,13 +94,6 @@
          <property name="currentIndex" >
           <number>0</number>
          </property>
-         <widget class="QWidget" name="shootingGraphicsPage" >
-          <layout class="QGridLayout" name="gridLayout_2" >
-           <item row="0" column="0" >
-            <widget class="QGraphicsView" name="shootingGraphicsView" />
-           </item>
-          </layout>
-         </widget>
          <widget class="QWidget" name="shootingTextPage" >
           <layout class="QGridLayout" name="gridLayout" >
            <item row="0" column="0" >

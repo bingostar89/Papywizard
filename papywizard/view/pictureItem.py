@@ -55,121 +55,117 @@ __revision__ = "$Id: imageArea.py 1308 2009-01-11 16:19:42Z fma $"
 
 from PyQt4 import QtCore, QtGui
 
+from papywizard.common import config
 
-class AbstractPictureItem(QtGui.QGraphicsRectItem):
+BORDER_WIDTH = 1.5
+
+
+class AbstractPictureItem(QtGui.QGraphicsItem):
     """ Abstract picture item.
     """
     def __init__(self, x, y, w, h, parent=None):
         """  Init the abstract picture item.
 
-        @param x: x coordinate of the image
+        @param scene: scene owning this picture
+        @type scene: L{QGraphicsScene<QtGui>}
+    
+        @param x: x coordinate of the picture
         @type x: int
-
-        @param y: y coordinate of the image
+    
+        @param y: y coordinate of the picture
         @type y: int
-
-        @param w: width of the image
+    
+        @param w: width of the picture
         @type w: int
-
-        @param h: height of the image
+    
+        @param h: height of the picture
         @type h: int
         """
-        #print "PictureItem.__init__()"
-        self._drawingArea = drawingArea
-        self.yaw = yaw
-        self.pitch = pitch
-        self.x = x
-        self.y = y
-        self.w = w
-        self.h = h
-        self.status = status
-        self.next = next
-
-    # Helpers
+        QtGui.QGraphicsItem.__init__(self, parent)
+        self._x = x
+        self._y = y
+        self._w = w
+        self._h = h
+        self._status = 'preview'
+        self._next = False
 
     # Interface
-    def setPosition(self, index, yaw, pitch):
-        """ Set the position of the picture.
-        
-        @param index: index in the shooting sequence
-        @type index: int
-        
-        @param yaw: yaw of the image (°)
-        @type yaw: float
-
-        @param pitch: pitch of the image (°)
-        @type pitch: float
+    def setIndex(self, index):
+        """ Set the index of the picture in teh shooting sequence.
         """
-        pass
+        self._index = index
+
+    def getIndex(self):
+        """ Return the index of the picture in the shooting sequence.
+        """
+        return self._index
 
     def setState(self, status=None, next=False):
         """ Set the current state of the picture.
 
         @param status: status of the picture, in
-                       ('ok', 'okReshoot', 'error', 'errorReshoot', 'preview', 'skip')
+                       ('ok', 'ok-reshoot', 'error', 'error-reshoot', 'preview', 'skip')
         @type status: str
 
         @param next: if True, this picture is the next to shoot
         @type next: bool
         """
+        if status is not None:
+            self._status = status
+        self._next = next
+        self.update()
 
-    def draw(self):
-        """ Draw itself on the drawable.
+    def isNext(self):
+        """ Is the picture the next to shoot? 
+        
+        @return: True if next, False if not
+        @rtype: bool
         """
-        raise NotImplementedError
-
-    def isCoordsIn(self, x, y):
-        """ Check if given coords are in the pict. area.
-        """
-        raise NotImplementedError
+        return self._next
 
 
 class MosaicPictureItem(AbstractPictureItem):
     """ Picture item implementation for mosaic.
     """
-    def draw(self):
-        #print "MosaicPictureItem.draw()"
 
-        # Border
-        if self.next:
-            gc = self._drawingArea.gc['border-next']
+    # Qt overloaded methods
+    def boundingRect(self):
+        return QtCore.QRectF(self._x - BORDER_WIDTH / 2,
+                             self._y - BORDER_WIDTH / 2,
+                             self._w + BORDER_WIDTH,
+                             self._h + BORDER_WIDTH)
+
+    def paint(self, painter, options, widget):
+        innerColor = config.SHOOTING_COLOR_SCHEME['default'][self._status]
+        if self.isNext():
+            borderColor = config.SHOOTING_COLOR_SCHEME['default']['border-next']
         else:
-            gc = self._drawingArea.gc['border']
-        self._drawingArea.window.draw_rectangle(gc, True, self.x, self.y, self.w, self.h)
-
-        # Inside
-        self._drawingArea.window.draw_rectangle(self._drawingArea.gc[self.status], True, self.x + 2, self.y + 2, self.w - 4, self.h - 4)
-
-    def isCoordsIn(self, x, y):
-        if self.x <= x <= (self.x + self.w) and \
-           self.y <= y <= (self.y + self.h):
-            return True
-        else:
-            return False
+            borderColor = config.SHOOTING_COLOR_SCHEME['default']['border']
+        painter.fillRect(self._x, self._y, self._w, self._h,
+                         QtGui.QColor(*innerColor))
+        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), BORDER_WIDTH))
+        painter.drawRect(self._x, self._y, self._w, self._h)
 
 
 class PresetPictureItem(AbstractPictureItem):
     """ Picture item implementation for preset.
     """
-    def draw(self):
-        #print "PresetPictureItem.draw()"
 
-        # Border
-        if self.next:
-            gc = self._drawingArea.gc['border-next']
+    # Qt overloaded methods
+    def boundingRect(self):
+        return QtCore.QRectF(self._x - BORDER_WIDTH / 2,
+                             self._y - BORDER_WIDTH / 2,
+                             self._w + BORDER_WIDTH,
+                             self._h + BORDER_WIDTH)
+
+    def paint(self, painter, options, widget):
+        innerColor = config.SHOOTING_COLOR_SCHEME['default'][self._status]
+        if self.isNext():
+            borderColor = config.SHOOTING_COLOR_SCHEME['default']['border-next']
         else:
-            gc = self._drawingArea.gc['border']
-        self._drawingArea.window.draw_arc(gc, True, self.x, self.y, self.w, self.h, 0, 360 * 64)
-
-        # Inside
-        self._drawingArea.window.draw_arc(self._drawingArea.gc[self.status], True, self.x + 2, self.y + 2, self.w - 4, self.h - 4, 0, 360 * 64)
-
-    def isCoordsIn(self, x, y):
-        """
-        @todo: make circle detection instead of square
-        """
-        if self.x <= x <= (self.x + self.w) and \
-           self.y <= y <= (self.y + self.h):
-            return True
-        else:
-            return False
+            borderColor = config.SHOOTING_COLOR_SCHEME['default']['border']
+        path = QtGui.QPainterPath()
+        path.addEllipse(self._x, self._y, self._w, self._h)
+        painter.fillPath(path, QtGui.QColor(*innerColor))
+        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), BORDER_WIDTH))
+        painter.drawEllipse(self._x, self._y, self._w, self._h)
