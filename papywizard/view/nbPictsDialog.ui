@@ -24,11 +24,6 @@
     <layout class="QGridLayout" name="gridLayout" >
      <item row="0" column="1" >
       <widget class="QLabel" name="label" >
-       <property name="font" >
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
        <property name="text" >
         <string>Yaw</string>
        </property>
@@ -39,11 +34,6 @@
      </item>
      <item row="0" column="2" >
       <widget class="QLabel" name="label_3" >
-       <property name="font" >
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
        <property name="text" >
         <string>Pitch</string>
        </property>
@@ -54,11 +44,6 @@
      </item>
      <item row="1" column="0" >
       <widget class="QLabel" name="label_2" >
-       <property name="font" >
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
        <property name="text" >
         <string>Nb Picts</string>
        </property>
