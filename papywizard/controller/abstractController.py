@@ -65,7 +65,7 @@ else:
     path = os.path.dirname(__file__)
 
 
-class AbstractController(object):
+class AbstractController(QtCore.QObject):
     """ Base class for controllers.
     """
     def __init__(self, parent=None, model=None, serializer=None):
@@ -80,6 +80,7 @@ class AbstractController(object):
         @param serializer: serializer for multi-threading operations
         @type serializer: {Serializer}
         """
+        QtCore.QObject.__init__(self)
         self._parent = parent
         self._model = model
         self._serializer = serializer
@@ -108,8 +109,7 @@ class AbstractController(object):
     def _connectQtSignals(self):
         """ Connect widgets signals.
         """
-        QtCore.QObject.connect(self._view, QtCore.SIGNAL("destroyed(QObject *)"), self._onDestroyed)
-        # todo: connect the window close button signal
+        self._view.closeEvent = self._onCloseEvent
 
     def _connectSignals(self):
         """ Connect widgets signals.
@@ -122,18 +122,17 @@ class AbstractController(object):
         raise NotImplementedError
 
     # Callbacks Qt
-    def _onDestroyed(self, widget):
-        """ 'destroyed' signal callback.
+    def _onCloseEvent(self, event):
+        """ close signal callback.
         """
-        Logger().trace("AbstractController._onDestroyed()")
+        Logger().trace("AbstractController._onCloseEvent()")
+        event.accept()
 
     def shutdown(self):
         """ Shutdown the controller.
-
-        Mainly destroy the view.
         """
         self._disconnectSignals()
-        del self._view # ???!!???
+        #del self._view # ???!!???
 
     def refreshView(self):
         """ Refresh the view widgets according to model values.
