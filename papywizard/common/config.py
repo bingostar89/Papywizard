@@ -87,19 +87,21 @@ USER_GTKRC_FILE = os.path.join(USER_CONFIG_DIR, GTKRC_FILE)
 SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3., '5:4': 5./4., '16:9': 16./9.}
 
 # View
+ALPHA = 208
 SHOOTING_COLOR_SCHEME = {'default': {'background': "#d0d0d0",
                                      'axis': "#ff8080",
                                      'head': "#0000ff",
-                                     'border': "#000000",
-                                     'border-next': "#ffffff",
-                                     'preview': "#c0c0c0",
-                                     'skip': "#a0a0a0",
-                                     'ok': "#00ff00",
-                                     'ok-reshoot': "#c0ffc0",
-                                     'error': "#ff0000",
-                                     'error-reshoot': "#ffc0c0"
+                                     'border':(0, 0, 0, ALPHA),
+                                     'border-next': (208, 208, 208, ALPHA),
+                                     'preview': (160, 160, 160, ALPHA),
+                                     'skip': (128, 128, 128, ALPHA),
+                                     'ok': (0, 192, 0, ALPHA),
+                                     'ok-reshoot': (160, 192, 160, ALPHA),
+                                     'error': (192, 0, 0, ALPHA),
+                                     'error-reshoot': (192, 160, 160, ALPHA)
                                     }
                         }
+QtOpenGL = False
 
 # Logger
 LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"
