@@ -122,6 +122,16 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         self._pictures = OrderedDict()
         self.pictureClicked = Signal()
 
+        # Next position crosshair ???
+        #self._nextYawLine = QtGui.QGraphicsLineItem()
+        #self._nextYawLine.setPen(QtGui.QColor("red"))
+        #self._nextYawLine.setZValue(9999)
+        #self._nextPitchLine = QtGui.QGraphicsLineItem()
+        #self._nextPitchLine.setPen(QtGui.QColor("red"))
+        #self._nextPitchLine.setZValue(9999)
+        #self.addItem(self._nextYawLine)
+        #self.addItem(self._nextPitchLine)
+
         # Head position crosshair
         self._headYawLine = QtGui.QGraphicsLineItem()
         self._headYawLine.setPen(QtGui.QColor("blue"))
@@ -132,8 +142,6 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         self.addItem(self._headYawLine)
         self.addItem(self._headPitchLine)
 
-        # Next position crosshair ???
-
         self._init()
         self.update()
 
@@ -142,33 +150,6 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         """
         raise NotImplementedError("ShootingScene._init() is abstract and must be overidden")
 
-    def _changePicturesStatus(self, index):
-        """ Set the status of pictures.
-
-        @param index: index of next picture to shoot
-        @type index: int
-        """
-        for i, picture in enumerate(self._pictures.itervalues()):
-            
-            if i + 1 == index:
-                picture.setState(next=True)
-            else:
-                picture.setState(next=False)
-            if i + 1 < index:
-                if picture._status == 'ok-reshoot':
-                    picture._status = 'ok'
-                elif picture._status == 'error-reshoot':
-                    picture._status = 'error'
-                elif picture._status == 'preview':
-                    picture._status = 'skip'
-            else:
-                if picture._status == 'ok':
-                    picture._status = 'ok-reshoot'
-                elif picture._status == 'error':
-                    picture._status = 'error-reshoot'
-                elif picture._status == 'skip':
-                    picture._status = 'preview'
-
     # Qt handlers
     def mousePressEvent(self, event):
         picture = self.itemAt(event.scenePos())
@@ -176,7 +157,7 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
             self.pictureClicked.emit(picture.getIndex())
 
     # Interface
-    def addPicture(self, index, yaw, pitch, status=None, next=False):
+    def addPicture(self, index, yaw, pitch, state=None, next=False):
         """ Add a pict at yaw/pitch coordinates.
 
         @param yaw: yaw pict position (°)
@@ -185,29 +166,43 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         @param pitch: pitch pict position (°)
         @type pitch: float
 
-        @param status: status of the shooting at this position
-        @type status: str
+        @param state: state of the shooting at this position
+        @type state: str
 
         @param next: if True, this picture is the next to shoot
         @type next: bool
         """
         raise NotImplementedError("ShootingScene.addPicture() is abstract and must be overidden")
 
-    def setPictureState(self, index, status=None, next=False):
-        picture = self._pictures[index]
-        picture.setState(status, next)
+    def setPictureState(self, index, state):
+        """ Set the picture state.
         
-    #def setNextPicture(self, index):
-        #""" Set the picture at index the next to shoot.
-        #"""
+        @param index: index of the picture to set the state
+        @type index: int
         
+        @param state: new state of the picture
+        @type state: str
+        """
+        self._pictures[index].setState(state)
+        self.update()
+        
+    def selectNextPicture(self, index):
+        """ Set the picture at index the next to shoot.
+        
+        @param index: index of the next picture to shoot
+        @type index: int
+        """
+        for picture in self._pictures.itervalues():
+            picture.setNextIndex(index)
+        self.update()
 
     def clear(self):
         """ Clear the shooting area
         """
         #print "ShootingScene.clear()"
         for picture in self._pictures.itervalues():
-            picture.setState(status='preview', next=False)
+            picture.setState(state='preview')
+            picture.setNextIndex(0)
         self.update()
 
     def setHeadPosition(self, yaw, pitch):
@@ -221,15 +216,6 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         self._headPitchLine.setLine(-1000, -pitch, 1000, -pitch)
         self.update()
 
-    def selectPictureByIndex(self, index):
-        """
-        """
-        self._changePicturesStatus(index)
-        self.update()
-
-    #def refresh(self):
-        #self.update(self.sceneRect())
-
 
 class MosaicShootingScene(AbstractShootingScene):
     def _init(self):
@@ -241,12 +227,12 @@ class MosaicShootingScene(AbstractShootingScene):
         self.setSceneRect(x, y, w, h)
 
     # Interface
-    def addPicture(self, index, yaw, pitch, status=None, next=False):
-        #print "MosaicShootingScene.addPicture(%.1f, %.1f, status=%s, next=%s)" % (yaw, pitch, status, next)
+    def addPicture(self, index, yaw, pitch, state=None):
+        #print "MosaicShootingScene.addPicture(%.1f, %.1f, state=%s)" % (yaw, pitch, state)
 
         # Check if picture already in list
         if self._pictures.has_key(index):
-            raise ValueError("Picture index already exists")
+            raise ValueError("Picture at index %d already exists" % index)
         else:
             x = yaw - self._yawCameraFov / 2
             y = -pitch - self._pitchCameraFov / 2 # y axis is inverted on QGraphics objects
@@ -255,8 +241,7 @@ class MosaicShootingScene(AbstractShootingScene):
             #print "MosaicShootingScene.addPicture(): x=%d, y=%d, w=%d, h=%d" % (x, y, w, h)
             picture = MosaicPictureItem(x, y, w, h)
             picture.setIndex(index)
-            picture.setState(status, next)
-            picture.setZValue(index)
+            picture.setState(state)
             self.addItem(picture)
             self._pictures[index] = picture
         self.update()
@@ -268,7 +253,7 @@ class PresetShootingScene(AbstractShootingScene):
         y = min(self._pitchStart, self._pitchEnd) - self._pitchCameraFov / 2
         w = self._yawFov + self._yawCameraFov
         h = self._pitchFov + self._pitchCameraFov
-        print "PresetShootingScene._init(): x=%d, y=%d, w=%d, h=%d" % (x, y, w, h)
+        #print "PresetShootingScene._init(): x=%d, y=%d, w=%d, h=%d" % (x, y, w, h)
         self.setSceneRect(x, y, w, h)
         
         # Add full-sphere border
@@ -277,12 +262,12 @@ class PresetShootingScene(AbstractShootingScene):
         self.addItem(fullSphericalArea)
 
     # Interface
-    def addPicture(self, index, yaw, pitch, status=None, next=False):
-        #print "PresetShootingScene.addPicture(%.1f, %.1f, status=%s, next=%s)" % (yaw, pitch, status, next)
+    def addPicture(self, index, yaw, pitch, state=None):
+        #print "PresetShootingScene.addPicture(%.1f, %.1f, state=%s)" % (yaw, pitch, state)
 
         # Check if picture already in list
         if self._pictures.has_key(index):
-            raise ValueError("Picture index already exists")
+            raise ValueError("Picture at index %d already exists" % index)
         else:
             x = yaw - self._yawCameraFov / 2
             y = -pitch - self._pitchCameraFov / 2 # y axis is inverted on QGraphics objects
@@ -291,8 +276,7 @@ class PresetShootingScene(AbstractShootingScene):
             #print "PresetShootingScene.addPicture(): x=%d, y=%d, w=%d, h=%d" % (x, y, w, h)
             picture = PresetPictureItem(x, y, w, h)
             picture.setIndex(index)
-            picture.setState(status, next)
-            picture.setZValue(index)
+            picture.setState(state)
             self.addItem(picture)
             self._pictures[index] = picture
         self.update()

@@ -101,7 +101,7 @@ class Shooting(object):
         self.waitingSignal = Signal()
         self.progressSignal = Signal()
         self.repeatSignal = Signal()
-        self.newPositionSignal = Signal()
+        self.updatePositionSignal = Signal()
         self.sequenceSignal = Signal()
 
         # Model
@@ -449,7 +449,7 @@ class Shooting(object):
 
                         Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
                         self.__forceNewShootingIndex = False
-                        self.newPositionSignal.emit(index, yaw, pitch, next=True)
+                        self.updatePositionSignal.emit(index, yaw, pitch, next=True)
 
                         Logger().info("Moving")
                         self.sequenceSignal.emit('moving')
@@ -498,7 +498,7 @@ class Shooting(object):
                         totalProgress = (repeat - 1) * self.scan.totalNbPicts + index_
                         totalProgress /= float(numRepeat * self.scan.totalNbPicts)
                         self.progressSignal.emit(shootingProgress, totalProgress)
-                        self.newPositionSignal.emit(index, yaw, pitch, status='ok', next=True)
+                        self.updatePositionSignal.emit(index, yaw, pitch, status='ok')
 
                         # Test manual shooting flag (skipped if timeValue was 0.)
                         if self.camera.timeValue:
@@ -509,8 +509,8 @@ class Shooting(object):
                         # Check pause or stop
                         checkPauseStop()
 
-                        if not self.__forceNewShootingIndex:
-                            self.newPositionSignal.emit(index, yaw, pitch, status='ok', next=False)
+                        #if not self.__forceNewShootingIndex:
+                            #self.updatePositionSignal.emit(index, yaw, pitch, status='ok', next=False)
 
                     except HardwareError:
                         self.hardware.stopAxis()
@@ -525,7 +525,7 @@ class Shooting(object):
                         totalProgress = (repeat - 1) * self.scan.totalNbPicts + index_
                         totalProgress /= float(numRepeat * self.scan.totalNbPicts)
                         self.progressSignal.emit(shootingProgress, totalProgress)
-                        self.newPositionSignal.emit(index, yaw, pitch, status='error', next=True)
+                        self.updatePositionSignal.emit(index, yaw, pitch, status='error')
 
                         # Test manual shooting flag
                         if self.__stepByStep and not self.__stop:
@@ -535,8 +535,8 @@ class Shooting(object):
                         # Check pause or stop
                         checkPauseStop()
 
-                        if not self.__forceNewShootingIndex:
-                            self.newPositionSignal.emit(index, yaw, pitch, status='error', next=False)
+                        #if not self.__forceNewShootingIndex:
+                            #self.updatePositionSignal.emit(index, yaw, pitch, status='error', next=False)
 
                 if repeat < numRepeat:
                     remainingTime = self.timerEvery - (time.time() - startTime)

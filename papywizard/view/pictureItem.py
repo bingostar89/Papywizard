@@ -86,9 +86,11 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
         self._y = y
         self._w = w
         self._h = h
-        self._status = 'preview'
-        self._next = False
+        self._index = None
+        self._state = None
+        self._nextIndex = 0 # 0 is not a valid index
 
+    # Helpers
     def _computeBorderWidth(self):
         """ Compute picture border width.
         
@@ -99,10 +101,49 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
         yRatio = self.scene().views()[0].height() / self.scene().height()
         return BORDER_WIDTH / min(xRatio, yRatio)
 
+    def _computeColors(self):
+        """ Compute colors according to state.
+        
+        Also check if the current picture is before or after the next to shoot.
+        
+        @return: inner and border colors
+        @rtype: tuple of int
+        """
+        #if i + 1 == index:
+            #picture.setState(next=True)
+        #else:
+            #picture.setState(next=False)
+        #if i + 1 < index:
+            #if picture._state == 'ok-reshoot':
+                #picture._state = 'ok'
+            #elif picture._state == 'error-reshoot':
+                #picture._state = 'error'
+            #elif picture._state == 'preview':
+                #picture._state = 'skip'
+        #else:
+            #if picture._state == 'ok':
+                #picture._state = 'ok-reshoot'
+            #elif picture._state == 'error':
+                #picture._state = 'error-reshoot'
+            #elif picture._state == 'skip':
+                #picture._state = 'preview'
+
+        if self._index < self._nextIndex:
+            innerColor = config.SHOOTING_COLOR_SCHEME['default'][self._state]
+        else:
+            innerColor = config.SHOOTING_COLOR_SCHEME['default']["%s-toshoot" % self._state]
+        if self._index == self._nextIndex:
+            borderColor = config.SHOOTING_COLOR_SCHEME['default']['border-next']
+        else:
+            borderColor = config.SHOOTING_COLOR_SCHEME['default']['border']
+
+        return innerColor, borderColor
+
     # Interface
     def setIndex(self, index):
         """ Set the index of the picture in the shooting sequence.
         """
+        self.setZValue(index)
         self._index = index
 
     def getIndex(self):
@@ -110,28 +151,21 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
         """
         return self._index
 
-    def setState(self, status=None, next=False):
+    def setState(self, state=None):
         """ Set the current state of the picture.
 
-        @param status: status of the picture, in
-                       ('ok', 'ok-reshoot', 'error', 'error-reshoot', 'preview', 'skip')
-        @type status: str
-
-        @param next: if True, this picture is the next to shoot
-        @type next: bool
+        @param state: state of the picture, in ('preview', 'ok', 'error')
+        @type state: str
         """
-        if status is not None:
-            self._status = status
-        self._next = next
-        self.update()
+        self._state = state
 
-    def isNext(self):
-        """ Is the picture the next to shoot? 
-        
-        @return: True if next, False if not
-        @rtype: bool
+    def setNextIndex(self, index):
+        """ Give the index of the next picture to shoot.
+
+        @param index: index of the next picture to shoot
+        @type index: int
         """
-        return self._next
+        self._nextIndex = index
 
 
 class MosaicPictureItem(AbstractPictureItem):
@@ -146,11 +180,7 @@ class MosaicPictureItem(AbstractPictureItem):
                              self._h + self._computeBorderWidth())
 
     def paint(self, painter, options, widget):
-        innerColor = config.SHOOTING_COLOR_SCHEME['default'][self._status]
-        if self.isNext():
-            borderColor = config.SHOOTING_COLOR_SCHEME['default']['border-next']
-        else:
-            borderColor = config.SHOOTING_COLOR_SCHEME['default']['border']
+        innerColor, borderColor = self._computeColors()
         painter.fillRect(self._x, self._y, self._w, self._h, QtGui.QColor(*innerColor))
         painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
         painter.drawRect(self._x, self._y, self._w, self._h)
@@ -168,11 +198,7 @@ class PresetPictureItem(AbstractPictureItem):
                              self._h + self._computeBorderWidth())
 
     def paint(self, painter, options, widget):
-        innerColor = config.SHOOTING_COLOR_SCHEME['default'][self._status]
-        if self.isNext():
-            borderColor = config.SHOOTING_COLOR_SCHEME['default']['border-next']
-        else:
-            borderColor = config.SHOOTING_COLOR_SCHEME['default']['border']
+        innerColor, borderColor = self._computeColors()
         path = QtGui.QPainterPath()
         path.addEllipse(self._x, self._y, self._w, self._h)
         painter.fillPath(path, QtGui.QColor(*innerColor))

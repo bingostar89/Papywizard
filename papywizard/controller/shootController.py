@@ -129,7 +129,7 @@ class ShootController(AbstractModalDialogController):
             # Populate shooting area with preview positions
             self._model.mosaic.generatePositions()
             for (index, yawIndex, pitchIndex), (yaw, pitch) in self._model.mosaic.iterPositions():
-                self.__shootingScene.addPicture(index, yaw, pitch, status='preview')
+                self.__shootingScene.addPicture(index, yaw, pitch, 'preview')
         else:
             self.__shootingScene = PresetShootingScene(0, 360,
                                                        -90, 90,
@@ -140,7 +140,7 @@ class ShootController(AbstractModalDialogController):
             # Populate shooting area with preview positions
             self._model.preset.generatePositions()
             for index, (yaw, pitch) in self._model.preset.iterPositions():
-                self.__shootingScene.addPicture(index, yaw, pitch, status='preview')
+                self.__shootingScene.addPicture(index, yaw, pitch, 'preview')
 
         # Connect picture clicked signal
         self.__shootingScene.pictureClicked.connect(self.__onPictureClicked)
@@ -178,7 +178,7 @@ class ShootController(AbstractModalDialogController):
         self._model.waitingSignal.connect(self.__shootingWaiting)
         self._model.progressSignal.connect(self.__shootingProgress)
         self._model.repeatSignal.connect(self.__shootingRepeat)
-        self._model.newPositionSignal.connect(self.__shootingNewPosition)
+        self._model.updatePositionSignal.connect(self.__shootingUpdatePosition)
         self._model.sequenceSignal.connect(self.__shootingSequence)
 
         self._view.keyPressEvent = self.__onKeyPressed
@@ -193,7 +193,7 @@ class ShootController(AbstractModalDialogController):
         self._model.waitingSignal.disconnect(self.__shootingWaiting)
         self._model.progressSignal.disconnect(self.__shootingProgress)
         self._model.repeatSignal.connect(self.__shootingRepeat)
-        self._model.newPositionSignal.disconnect(self.__shootingNewPosition)
+        self._model.updatePositionSignal.disconnect(self.__shootingUpdatePosition)
         self._model.sequenceSignal.disconnect(self.__shootingSequence)
 
     # Callbacks Qt
@@ -498,8 +498,8 @@ class ShootController(AbstractModalDialogController):
         if self._model.timerRepeatEnable:
             self._serializer.addWork(self._view.repeatLabel.setText,"%d/%d" % (repeat, self._model.timerRepeat))
 
-    def __shootingNewPosition(self, index, yaw, pitch, status=None, next=False):
-        Logger().trace("ShootController.__shootingNewPosition()")
+    def __shootingUpdatePosition(self, index, yaw, pitch, status=None, next=False):
+        Logger().trace("ShootController.__shootingUpdatePosition()")
 
         # Update text area
         if isinstance(index, tuple):
@@ -517,7 +517,12 @@ class ShootController(AbstractModalDialogController):
         self._serializer.addWork(self._view.nextIndexLabel.setText, "%d/%d" % (index, self._model.scan.totalNbPicts))
 
         # Update graphical area
-        self._serializer.addWork(self.__shootingScene.setPictureState, index, status, next)
+        if status is not None:
+            self._serializer.addWork(self.__shootingScene.setPictureState, index, status)
+        if next is True:
+            self._serializer.addWork(self.__shootingScene.selectNextPicture, index)
+        else:
+            self._serializer.addWork(self.__shootingScene.selectNextPicture, index + 1)
 
     def __shootingSequence(self, sequence, **kwargs):
         Logger().trace("ShootController.__shootingSequence()")
@@ -560,7 +565,7 @@ class ShootController(AbstractModalDialogController):
         self._view.nextIndexLabel.setText("%d/%d" % (index, self._model.scan.totalNbPicts))
 
         # Update graphical area
-        self.__shootingScene.selectPictureByIndex(index)
+        self.__shootingScene.selectNextPicture(index)
 
     def __rewindShootingPosition(self):
         """
