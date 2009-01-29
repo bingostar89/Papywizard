@@ -118,7 +118,8 @@ class Papywizard(object):
         Spy(self.__model, config.SPY_FAST_REFRESH)
 
         # Create publisher thread
-        self.__publisher = Publisher()
+        if config.PUBLISHER_ENABLE:
+            self.__publisher = Publisher()
 
         # Create serializer, for async events
         self.__serializer = Serializer()
@@ -229,7 +230,7 @@ class Papywizard(object):
         """
         Spy().stop()
         Spy().join()
-        del self.__publisher
+        #del self.__publisher
         self.__model.shutdown()
         qCleanupResources()
 
