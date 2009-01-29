@@ -122,22 +122,25 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         self._pictures = OrderedDict()
         self.pictureClicked = Signal()
 
-        # Next position crosshair ???
-        #self._nextYawLine = QtGui.QGraphicsLineItem()
-        #self._nextYawLine.setPen(QtGui.QColor("red"))
-        #self._nextYawLine.setZValue(9999)
-        #self._nextPitchLine = QtGui.QGraphicsLineItem()
-        #self._nextPitchLine.setPen(QtGui.QColor("red"))
-        #self._nextPitchLine.setZValue(9999)
-        #self.addItem(self._nextYawLine)
-        #self.addItem(self._nextPitchLine)
+        # Next position crosshair
+        self._nextYawLine = QtGui.QGraphicsLineItem()
+        #self._nextYawLine.rotate(45.)
+        self._nextYawLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['next']))
+        self._nextYawLine.setZValue(9998)
+        self._nextPitchLine = QtGui.QGraphicsLineItem()
+        #self._nextPitchLine.rotate(45.)
+        self._nextPitchLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['next']))
+        self._nextPitchLine.setZValue(9998)
+        self.addItem(self._nextYawLine)
+        self.addItem(self._nextPitchLine)
+        
 
         # Head position crosshair
         self._headYawLine = QtGui.QGraphicsLineItem()
-        self._headYawLine.setPen(QtGui.QColor("blue"))
+        self._headYawLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['head']))
         self._headYawLine.setZValue(9999)
         self._headPitchLine = QtGui.QGraphicsLineItem()
-        self._headPitchLine.setPen(QtGui.QColor("blue"))
+        self._headPitchLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['head']))
         self._headPitchLine.setZValue(9999)
         self.addItem(self._headYawLine)
         self.addItem(self._headPitchLine)
@@ -194,6 +197,15 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         """
         for picture in self._pictures.itervalues():
             picture.setNextIndex(index)
+
+        if self._pictures.has_key(index):
+            nextPicture = self._pictures[index]
+            yaw = nextPicture.scenePos().x()
+            pitch = nextPicture.scenePos().y()
+            print yaw, pitch
+            self._nextYawLine.setLine(yaw, -1000, yaw, 1000)
+            self._nextPitchLine.setLine(-1000, pitch, 1000, pitch)
+
         self.update()
 
     def clear(self):
@@ -208,10 +220,6 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
     def setHeadPosition(self, yaw, pitch):
         """ Set the current head position.
         """
-        x = self.sceneRect().x()
-        y = self.sceneRect().y()
-        w = self.sceneRect().width()
-        h = self.sceneRect().height()
         self._headYawLine.setLine(yaw, -1000, yaw, 1000)
         self._headPitchLine.setLine(-1000, -pitch, 1000, -pitch)
         self.update()
@@ -234,12 +242,7 @@ class MosaicShootingScene(AbstractShootingScene):
         if self._pictures.has_key(index):
             raise ValueError("Picture at index %d already exists" % index)
         else:
-            x = yaw - self._yawCameraFov / 2
-            y = -pitch - self._pitchCameraFov / 2 # y axis is inverted on QGraphics objects
-            w = self._yawCameraFov
-            h = self._pitchCameraFov
-            #print "MosaicShootingScene.addPicture(): x=%d, y=%d, w=%d, h=%d" % (x, y, w, h)
-            picture = MosaicPictureItem(x, y, w, h)
+            picture = MosaicPictureItem(yaw, -pitch, self._yawCameraFov, self._pitchCameraFov)
             picture.setIndex(index)
             picture.setState(state)
             self.addItem(picture)
@@ -269,12 +272,7 @@ class PresetShootingScene(AbstractShootingScene):
         if self._pictures.has_key(index):
             raise ValueError("Picture at index %d already exists" % index)
         else:
-            x = yaw - self._yawCameraFov / 2
-            y = -pitch - self._pitchCameraFov / 2 # y axis is inverted on QGraphics objects
-            w = self._yawCameraFov
-            h = self._pitchCameraFov
-            #print "PresetShootingScene.addPicture(): x=%d, y=%d, w=%d, h=%d" % (x, y, w, h)
-            picture = PresetPictureItem(x, y, w, h)
+            picture = PresetPictureItem(yaw, -pitch, self._yawCameraFov, self._pitchCameraFov)
             picture.setIndex(index)
             picture.setState(state)
             self.addItem(picture)

@@ -63,7 +63,7 @@ BORDER_WIDTH = 3
 class AbstractPictureItem(QtGui.QGraphicsItem):
     """ Abstract picture item.
     """
-    def __init__(self, x, y, w, h, parent=None):
+    def __init__(self, yaw, pitch ,yawFov, pitchFov, parent=None):
         """  Init the abstract picture item.
 
         @param scene: scene owning this picture
@@ -82,10 +82,9 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
         @type h: int
         """
         QtGui.QGraphicsItem.__init__(self, parent)
-        self._x = x
-        self._y = y
-        self._w = w
-        self._h = h
+        self.setPos(yaw, pitch)
+        self._yawFov = yawFov
+        self._pitchFov = pitchFov
         self._index = None
         self._state = None
         self._nextIndex = 0 # 0 is not a valid index
@@ -109,25 +108,6 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
         @return: inner and border colors
         @rtype: tuple of int
         """
-        #if i + 1 == index:
-            #picture.setState(next=True)
-        #else:
-            #picture.setState(next=False)
-        #if i + 1 < index:
-            #if picture._state == 'ok-reshoot':
-                #picture._state = 'ok'
-            #elif picture._state == 'error-reshoot':
-                #picture._state = 'error'
-            #elif picture._state == 'preview':
-                #picture._state = 'skip'
-        #else:
-            #if picture._state == 'ok':
-                #picture._state = 'ok-reshoot'
-            #elif picture._state == 'error':
-                #picture._state = 'error-reshoot'
-            #elif picture._state == 'skip':
-                #picture._state = 'preview'
-
         if self._index < self._nextIndex:
             innerColor = config.SHOOTING_COLOR_SCHEME['default'][self._state]
         else:
@@ -138,6 +118,21 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
             borderColor = config.SHOOTING_COLOR_SCHEME['default']['border']
 
         return innerColor, borderColor
+
+    def _computeRect(self):
+        """ Compute the rectangle coordinates.
+        """
+        x = -self._yawFov / 2
+        y = -self._pitchFov / 2
+        w = self._yawFov
+        h = self._pitchFov
+        return x, y, w, h
+
+    # Qt overloaded methods
+    def boundingRect(self):
+        x, y, w, h = self._computeRect()
+        return QtCore.QRectF(x - self._computeBorderWidth() / 2, y - self._computeBorderWidth() / 2,
+                             w + self._computeBorderWidth(), h + self._computeBorderWidth())
 
     # Interface
     def setIndex(self, index):
@@ -173,17 +168,12 @@ class MosaicPictureItem(AbstractPictureItem):
     """
 
     # Qt overloaded methods
-    def boundingRect(self):
-        return QtCore.QRectF(self._x - self._computeBorderWidth() / 2,
-                             self._y - self._computeBorderWidth() / 2,
-                             self._w + self._computeBorderWidth(),
-                             self._h + self._computeBorderWidth())
-
     def paint(self, painter, options, widget):
+        x, y, w, h = self._computeRect()
         innerColor, borderColor = self._computeColors()
-        painter.fillRect(self._x, self._y, self._w, self._h, QtGui.QColor(*innerColor))
+        painter.fillRect(x, y, w, h, QtGui.QColor(*innerColor))
         painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
-        painter.drawRect(self._x, self._y, self._w, self._h)
+        painter.drawRect(x, y, w, h)
 
 
 class PresetPictureItem(AbstractPictureItem):
@@ -191,16 +181,11 @@ class PresetPictureItem(AbstractPictureItem):
     """
 
     # Qt overloaded methods
-    def boundingRect(self):
-        return QtCore.QRectF(self._x - self._computeBorderWidth() / 2,
-                             self._y - self._computeBorderWidth() / 2,
-                             self._w + self._computeBorderWidth(),
-                             self._h + self._computeBorderWidth())
-
     def paint(self, painter, options, widget):
+        x, y, w, h = self._computeRect()
         innerColor, borderColor = self._computeColors()
         path = QtGui.QPainterPath()
-        path.addEllipse(self._x, self._y, self._w, self._h)
+        path.addEllipse(x, y, w, h)
         painter.fillPath(path, QtGui.QColor(*innerColor))
         painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
-        painter.drawEllipse(self._x, self._y, self._w, self._h)
+        painter.drawEllipse(x, y, w, h)
