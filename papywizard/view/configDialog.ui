@@ -53,6 +53,9 @@
          </item>
          <item row="0" column="1" >
           <widget class="QComboBox" name="headOrientationComboBox" >
+           <property name="currentIndex" >
+            <number>-1</number>
+           </property>
            <item>
             <property name="text" >
              <string>up</string>
@@ -90,6 +93,9 @@
          </item>
          <item row="1" column="1" >
           <widget class="QComboBox" name="cameraOrientationComboBox" >
+           <property name="currentIndex" >
+            <number>-1</number>
+           </property>
            <item>
             <property name="text" >
              <string>portrait</string>
@@ -111,6 +117,9 @@
           <widget class="QDoubleSpinBox" name="cameraRollDoubleSpinBox" >
            <property name="enabled" >
             <bool>false</bool>
+           </property>
+           <property name="suffix" >
+            <string> °</string>
            </property>
            <property name="decimals" >
             <number>1</number>
@@ -210,6 +219,9 @@
          </item>
          <item row="1" column="1" >
           <widget class="QComboBox" name="startFromComboBox" >
+           <property name="currentIndex" >
+            <number>-1</number>
+           </property>
            <item>
             <property name="text" >
              <string>start</string>
@@ -237,6 +249,9 @@
          </item>
          <item row="2" column="1" >
           <widget class="QComboBox" name="initialDirectionComboBox" >
+           <property name="currentIndex" >
+            <number>-1</number>
+           </property>
            <item>
             <property name="text" >
              <string>yaw</string>
@@ -334,6 +349,9 @@
          </item>
          <item row="1" column="2" >
           <widget class="QComboBox" name="bracketingIntentComboBox" >
+           <property name="currentIndex" >
+            <number>-1</number>
+           </property>
            <item>
             <property name="text" >
              <string>exposure</string>
@@ -371,6 +389,9 @@
          </item>
          <item row="2" column="1" >
           <widget class="QDoubleSpinBox" name="sensorCoefDoubleSpinBox" >
+           <property name="suffix" >
+            <string> x</string>
+           </property>
            <property name="decimals" >
             <number>1</number>
            </property>
@@ -403,6 +424,9 @@
          </item>
          <item row="3" column="1" >
           <widget class="QComboBox" name="sensorRatioComboBox" >
+           <property name="currentIndex" >
+            <number>-1</number>
+           </property>
            <item>
             <property name="text" >
              <string>3:2</string>
@@ -480,6 +504,9 @@
          </item>
          <item row="0" column="1" >
           <widget class="QComboBox" name="lensTypeComboBox" >
+           <property name="currentIndex" >
+            <number>-1</number>
+           </property>
            <item>
             <property name="text" >
              <string>rectilinear</string>
@@ -545,6 +572,9 @@
            <property name="enabled" >
             <bool>false</bool>
            </property>
+           <property name="suffix" >
+            <string> x</string>
+           </property>
            <property name="decimals" >
             <number>1</number>
            </property>
@@ -588,6 +618,9 @@
          </item>
          <item row="0" column="1" >
           <widget class="QComboBox" name="driverComboBox" >
+           <property name="currentIndex" >
+            <number>-1</number>
+           </property>
            <item>
             <property name="text" >
              <string>bluetooth</string>
@@ -635,7 +668,7 @@
          <item row="2" column="0" >
           <widget class="QLabel" name="serialPortLabel" >
            <property name="enabled" >
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="text" >
             <string>Serial port</string>
@@ -651,7 +684,7 @@
          <item row="2" column="1" >
           <widget class="QLineEdit" name="serialPortLineEdit" >
            <property name="enabled" >
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="text" >
             <string>0</string>
@@ -661,7 +694,7 @@
          <item row="3" column="0" >
           <widget class="QLabel" name="ethernetHostPortLabel" >
            <property name="enabled" >
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="text" >
             <string>Ethernet host/port</string>
@@ -677,7 +710,7 @@
          <item row="3" column="1" >
           <widget class="QLineEdit" name="ethernetHostLineEdit" >
            <property name="enabled" >
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="text" >
             <string>locahost</string>
@@ -687,7 +720,7 @@
          <item row="3" column="2" >
           <widget class="QSpinBox" name="ethernetPortSpinBox" >
            <property name="enabled" >
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="minimum" >
             <number>1024</number>
@@ -884,6 +917,9 @@
          </item>
          <item row="1" column="1" >
           <widget class="QSpinBox" name="timerRepeatSpinBox" >
+           <property name="suffix" >
+            <string/>
+           </property>
            <property name="minimum" >
             <number>1</number>
            </property>
@@ -972,7 +1008,7 @@
          <item row="0" column="1" >
           <widget class="QComboBox" name="loggerLevelComboBox" >
            <property name="currentIndex" >
-            <number>2</number>
+            <number>-1</number>
            </property>
            <item>
             <property name="text" >
