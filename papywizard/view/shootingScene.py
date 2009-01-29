@@ -53,9 +53,10 @@ Implements
 
 __revision__ = "$Id: shootingScene.py 1308 2009-01-11 16:19:42Z fma $"
 
+from papywizard.common.loggingServices import Logger
 from papywizard.common.signal import Signal
 
-from PyQt4 import QtCore, QtGui, QtOpenGL
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
@@ -69,7 +70,11 @@ class ShootingView(QtGui.QGraphicsView):
         
         # Enable OpenGL support (crash!)
         if config.QtOpenGL:
-            self.setViewport(QtOpenGL.QGLWidget(QtOpenGL.QGLFormat(QtOpenGL.QGL.SampleBuffers)))
+            try:
+                from PyQt4 import QtOpenGL
+                self.setViewport(QtOpenGL.QGLWidget(QtOpenGL.QGLFormat(QtOpenGL.QGL.SampleBuffers)))
+            except ImportError:
+                Logger().warning("QtOpenGL module not available")
 
     def resizeEvent(self, event):
         self.fitInView(self.scene().sceneRect(), QtCore.Qt.KeepAspectRatio)
@@ -191,6 +196,11 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
     def setPictureState(self, index, status=None, next=False):
         picture = self._pictures[index]
         picture.setState(status, next)
+        
+    #def setNextPicture(self, index):
+        #""" Set the picture at index the next to shoot.
+        #"""
+        
 
     def clear(self):
         """ Clear the shooting area

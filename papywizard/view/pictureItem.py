@@ -57,7 +57,7 @@ from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
 
-BORDER_WIDTH = 1.5
+BORDER_WIDTH = 3
 
 
 class AbstractPictureItem(QtGui.QGraphicsItem):
@@ -89,9 +89,19 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
         self._status = 'preview'
         self._next = False
 
+    def _computeBorderWidth(self):
+        """ Compute picture border width.
+        
+        Compute the width of the border to use in paint() and boundingRect()
+        methods so the size on screen is constant, whatever the view size is.
+        """
+        xRatio = self.scene().views()[0].width() / self.scene().width()
+        yRatio = self.scene().views()[0].height() / self.scene().height()
+        return BORDER_WIDTH / min(xRatio, yRatio)
+
     # Interface
     def setIndex(self, index):
-        """ Set the index of the picture in teh shooting sequence.
+        """ Set the index of the picture in the shooting sequence.
         """
         self._index = index
 
@@ -130,10 +140,10 @@ class MosaicPictureItem(AbstractPictureItem):
 
     # Qt overloaded methods
     def boundingRect(self):
-        return QtCore.QRectF(self._x - BORDER_WIDTH / 2,
-                             self._y - BORDER_WIDTH / 2,
-                             self._w + BORDER_WIDTH,
-                             self._h + BORDER_WIDTH)
+        return QtCore.QRectF(self._x - self._computeBorderWidth() / 2,
+                             self._y - self._computeBorderWidth() / 2,
+                             self._w + self._computeBorderWidth(),
+                             self._h + self._computeBorderWidth())
 
     def paint(self, painter, options, widget):
         innerColor = config.SHOOTING_COLOR_SCHEME['default'][self._status]
@@ -141,9 +151,8 @@ class MosaicPictureItem(AbstractPictureItem):
             borderColor = config.SHOOTING_COLOR_SCHEME['default']['border-next']
         else:
             borderColor = config.SHOOTING_COLOR_SCHEME['default']['border']
-        painter.fillRect(self._x, self._y, self._w, self._h,
-                         QtGui.QColor(*innerColor))
-        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), BORDER_WIDTH))
+        painter.fillRect(self._x, self._y, self._w, self._h, QtGui.QColor(*innerColor))
+        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
         painter.drawRect(self._x, self._y, self._w, self._h)
 
 
@@ -153,10 +162,10 @@ class PresetPictureItem(AbstractPictureItem):
 
     # Qt overloaded methods
     def boundingRect(self):
-        return QtCore.QRectF(self._x - BORDER_WIDTH / 2,
-                             self._y - BORDER_WIDTH / 2,
-                             self._w + BORDER_WIDTH,
-                             self._h + BORDER_WIDTH)
+        return QtCore.QRectF(self._x - self._computeBorderWidth() / 2,
+                             self._y - self._computeBorderWidth() / 2,
+                             self._w + self._computeBorderWidth(),
+                             self._h + self._computeBorderWidth())
 
     def paint(self, painter, options, widget):
         innerColor = config.SHOOTING_COLOR_SCHEME['default'][self._status]
@@ -167,5 +176,5 @@ class PresetPictureItem(AbstractPictureItem):
         path = QtGui.QPainterPath()
         path.addEllipse(self._x, self._y, self._w, self._h)
         painter.fillPath(path, QtGui.QColor(*innerColor))
-        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), BORDER_WIDTH))
+        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
         painter.drawEllipse(self._x, self._y, self._w, self._h)
