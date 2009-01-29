@@ -87,18 +87,19 @@ USER_GTKRC_FILE = os.path.join(USER_CONFIG_DIR, GTKRC_FILE)
 SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3., '5:4': 5./4., '16:9': 16./9.}
 
 # View
-ALPHA = 208
-SHOOTING_COLOR_SCHEME = {'default': {'background': "#d0d0d0",
-                                     'axis': "#ff8080",
-                                     'head': "#0000ff",
-                                     'border':(0, 0, 0, ALPHA),
-                                     'border-next': (208, 208, 208, ALPHA),
-                                     'preview': (160, 160, 160, ALPHA),
-                                     'skip': (128, 128, 128, ALPHA),
-                                     'ok': (0, 192, 0, ALPHA),
-                                     'ok-reshoot': (160, 192, 160, ALPHA),
-                                     'error': (192, 0, 0, ALPHA),
-                                     'error-reshoot': (192, 160, 160, ALPHA)
+ALPHA = 224
+SHOOTING_COLOR_SCHEME = {'default': {'background': (64, 64, 64, 255),
+                                     'axis': (255, 128, 128, 255),
+                                     'head': (0, 0, 255, 255),
+                                     'next': (255, 0, 0, 255),
+                                     'border': (0, 0, 0, ALPHA),
+                                     'border-next': (224, 224, 224, ALPHA),
+                                     'preview': (128, 128, 128, ALPHA),
+                                     'preview-toshoot': (160, 160, 160, ALPHA),
+                                     'ok': (0, 224, 0, ALPHA),
+                                     'ok-toshoot': (160, 224, 160, ALPHA),
+                                     'error': (224, 0, 0, ALPHA),
+                                     'error-toshoot': (224, 192, 0, ALPHA)
                                     }
                         }
 QtOpenGL = False
