@@ -8,6 +8,13 @@ x bug fix
 
 0000-00-00 Version SVN
 
+2009-01-31 Version 1.6.1 (stable)
+    + added pl language
+    - removed nl language
+    x added missing serializer calls
+    x test if mosaic mode to refresh mosaic window
+    x added missing i18n dir in windows package
+
 2009-01-14 Version 1.6.0 (stable)
     (include all 1.5.x entries)
     - changed connect icon
