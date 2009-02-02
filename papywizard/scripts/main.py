@@ -96,7 +96,7 @@ class Papywizard(object):
         """ Init the application.
         """
         qInitResources()
-        self.__app = QtGui.QApplication(sys.argv)
+        self.__qtApp = QtGui.QApplication(sys.argv)
 
         self.logStream = LogBuffer()
         Logger().addStreamHandler(self.logStream, QSpaceColorFormatter)
@@ -106,8 +106,13 @@ class Papywizard(object):
         """
         Logger().info("Starting Papywizard...")
 
-        ## Qt styles
-        #gtk.rc_parse(config.USER_GTKRC_FILE)
+        # Qt styles
+        try:
+            styleSheet = file(config.USER_STYLESHEET_FILE)
+            self.__qtApp.setStyleSheet(styleSheet.read())
+            styleSheet.close()
+        except IOError:
+            Logger().warning("No user style sheet found")
 
         # Create hardware and model
         head = Head()
@@ -206,7 +211,7 @@ class Papywizard(object):
         try:
             lang = gettext.translation(DOMAIN, localeDir, languages=langs)
         except IOError:
-            Logger().warning("Can't find i18n file")
+            Logger().warning("No i18n file found")
             lang = gettext.translation(DOMAIN, localeDir, languages=langs, fallback=True)
 
         # Install the language, map _()
@@ -217,13 +222,13 @@ class Papywizard(object):
         """ Run the appliction.
         """
         serializerTimer = QtCore.QTimer()
-        self.__app.connect(serializerTimer, QtCore.SIGNAL("timeout()"), self.__serializer.processWork)
+        self.__qtApp.connect(serializerTimer, QtCore.SIGNAL("timeout()"), self.__serializer.processWork)
         serializerTimer.start(config.SERIALIZER_REFRESH)
         if config.PUBLISHER_ENABLE:
             self.__publisher.start()
         Spy().start()
         Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
-        self.__app.exec_()
+        self.__qtApp.exec_()
 
     def shutdown(self):
         """ Shutdown the application.
