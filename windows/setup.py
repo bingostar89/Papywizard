@@ -71,12 +71,9 @@ from papywizard.common import config
 VERSION_PACKAGE = 1
 
 
-dlls_excludes = ["iconv.dll", "intl.dll", "libatk-1.0-0.dll", "libgdk-win32-2.0-0.dll",
-                 "libgdk_pixbuf-2.0-0.dll", "libglib-2.0-0.dll", "libgmodule-2.0-0.dll",
-                 "libgobject-2.0-0.dll", "libgthread-2.0-0.dll", "libgtk-win32-2.0-0.dll",
-                 "libpangocairo-1.0-0.dll", "libcairo-2.dll", "libpango-1.0-0.dll",
-                 "libpangowin32-1.0-0.dll"]
-
+includes = ["sip", "elementtree"]
+excludes = []
+dlls_excludes = []
 
 class Target:
     def __init__(self, **kw):
@@ -89,8 +86,8 @@ class Target:
 
 setup(options={"py2exe": {'compressed': 1,
                           'optimize': 2,
-                          'includes': ["atk", "cairo", "pango", "pangocairo", "gobject", "gtk.keysyms"],
-                          'excludes': [],
+                          'includes': includes,
+                          'excludes': excludes,
                           'dll_excludes': dlls_excludes,
                           'dist_dir': "./dist",
                           'bundle_files': 1}},
@@ -109,19 +106,19 @@ setup(options={"py2exe": {'compressed': 1,
                       dest_base="Papywizard-Simul")],
       data_files=[("papywizard/common", ["../papywizard/common/papywizard.conf",
                                          "../papywizard/common/presets.xml"]),
-                  ("papywizard/view", ["../papywizard/view/papywizard.png",
-                                       "../papywizard/view/bluetoothChooserDialog.glade",
-                                       "../papywizard/view/configDialog.glade",
-                                       "../papywizard/view/helpAboutDialog.glade",
-                                       "../papywizard/view/loggerDialog.glade",
-                                       "../papywizard/view/mainWindow.glade",
-                                       "../papywizard/view/nbPictsDialog.glade",
-                                       "../papywizard/view/shootDialog.glade",
-                                       "../papywizard/view/totalFovDialog.glade",
-                                       "../papywizard/view/waitBanner.glade",
+                  ("papywizard/view", ["../papywizard/view/bluetoothChooserDialog.ui",
+                                       "../papywizard/view/configDialog.ui",
+                                       "../papywizard/view/helpAboutDialog.ui",
+                                       "../papywizard/view/loggerDialog.ui",
+                                       "../papywizard/view/mainWindow.ui",
+                                       "../papywizard/view/nbPictsDialog.ui",
+                                       "../papywizard/view/shootDialog.ui",
+                                       "../papywizard/view/totalFovDialog.ui"
                                        ]),
                   ("share/locale/en/LC_MESSAGES", ["../locale/en/LC_MESSAGES/papywizard.mo"]),
                   ("share/locale/fr/LC_MESSAGES", ["../locale/fr/LC_MESSAGES/papywizard.mo"]),
                   ("share/locale/pl/LC_MESSAGES", ["../locale/pl/LC_MESSAGES/papywizard.mo"]),
-                  ("share/locale/de/LC_MESSAGES", ["../locale/de/LC_MESSAGES/papywizard.mo"])]
+                  ("share/locale/de/LC_MESSAGES", ["../locale/de/LC_MESSAGES/papywizard.mo"]),
+                  ("share/locale/it/LC_MESSAGES", ["../locale/pl/LC_MESSAGES/papywizard.mo"]),
+                  ("share/locale/es/LC_MESSAGES", ["../locale/de/LC_MESSAGES/papywizard.mo"])]
      )
