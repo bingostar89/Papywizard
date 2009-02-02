@@ -111,8 +111,9 @@ class Papywizard(object):
             styleSheet = file(config.USER_STYLESHEET_FILE)
             self.__qtApp.setStyleSheet(styleSheet.read())
             styleSheet.close()
+            Logger().info("User Style Sheet loaded")
         except IOError:
-            Logger().warning("No user style sheet found")
+            Logger().warning("No user Style Sheet found")
 
         # Create hardware and model
         head = Head()
@@ -233,6 +234,7 @@ class Papywizard(object):
     def shutdown(self):
         """ Shutdown the application.
         """
+        self.__mainController.shutdown()
         Spy().stop()
         Spy().join()
         #del self.__publisher
