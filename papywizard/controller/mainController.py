@@ -138,15 +138,14 @@ class MainController(AbstractController):
             return width
 
         # Status bar
-        # Manual speed
+        # Manual speed and connect button
         self._view.manualSpeedLabel = QtGui.QLabel()
         self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_fwd.png").scaled(22, 22))
         self._view.statusBar().addPermanentWidget(self._view.manualSpeedLabel)
-
-        # Connect button
         self._view.connectLabel = QtGui.QLabel()
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
         self._view.statusBar().addPermanentWidget(self._view.connectLabel)
+        self._view.statusBar().show()
 
         # Presets
         self.__populatePresetComboBox()
@@ -160,31 +159,6 @@ class MainController(AbstractController):
 
         # Keyboard behaviour
         self._view.grabKeyboard()
-
-        # Nokia plateform stuff
-        #try:
-            #import hildon
-
-            #self.app = hildon.Program()
-            #window = hildon.Window()
-            #window.set_title(self.dialog.get_title())
-            ##window.fullscreen()
-            ##self.__fullScreen = True
-            #self.app.add_window(window)
-            #self.mainVbox.reparent(window)
-
-            #menu = gtk.Menu()
-            #for child in self.menubar.get_children():
-                #child.reparent(menu)
-            #window.set_menu(menu)
-
-            #self.menubar.destroy()
-            #self.dialog.destroy()
-            #window.show_all()
-            #self.menuBar = menu
-            #self.dialog = window
-        #except ImportError:
-            #pass
 
         if self.__fullScreen:
             #self._view.setWindowState(self._view.windowState() | QtCore.Qt.WindowFullScreen)
@@ -275,14 +249,12 @@ class MainController(AbstractController):
         # 'FullScreen' key
         if event.key() == self.__key['FullScreen'] and not event.isAutoRepeat():
             Logger().debug("MainController.__onKeyPressed(): 'FullScreen' key pressed")
-            if self.__fullScreen:
+            if self._view.windowState() & QtCore.Qt.WindowFullScreen:
                 Logger().debug("MainController.__onKeyPressed(): switch to normal")
                 self._view.showNormal()
-                self.__fullScreen = False
             else:
                 Logger().debug("MainController.__onKeyPressed(): switch to fullscreen")
                 self._view.showFullScreen()
-                self.__fullScreen = True
             event.ignore()
 
         # 'Right' key
@@ -738,8 +710,8 @@ class MainController(AbstractController):
             self.setStatusbarMessage(_("Opening shoot dialog. Please wait..."))
             QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             controller = ShootController(self, self._model, self._serializer)
-            if self.__fullScreen:
-                controller._view.setWindowState(self._view.windowState() | QtCore.Qt.WindowFullScreen)
+            if self._view.windowState() & QtCore.Qt.WindowFullScreen:
+                controller._view.showFullScreen()
         finally:
             #self._view.shootPushButton.setEnabled(True)
             self.clearStatusBar()
@@ -863,7 +835,14 @@ class MainController(AbstractController):
     def exec_(self):
         #QtCore.QCoreApplication.exec_()
         pass
-        
+
+    def shutdown(self):
+        super(MainController, self).shutdown()
+        if self._view.windowState() & QtCore.Qt.WindowFullScreen:
+            self.__fullScreen = True
+        else:
+            self.__fullScreen = False
+
     def setStatusbarMessage(self, message=None, timeout=0):
         """ Display a message on the statusbar.
 
