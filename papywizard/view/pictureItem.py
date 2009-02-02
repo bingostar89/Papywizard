@@ -45,6 +45,7 @@ Implements
 - PictureItem
 - MosaicPictureItem
 - PresetPictureItem
+- CrosshairCusrsor
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
@@ -56,6 +57,7 @@ __revision__ = "$Id: imageArea.py 1308 2009-01-11 16:19:42Z fma $"
 from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
+from papywizard.common.loggingServices import Logger
 
 BORDER_WIDTH = 3
 
@@ -68,16 +70,16 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
 
         @param scene: scene owning this picture
         @type scene: L{QGraphicsScene<QtGui>}
-    
+
         @param x: x coordinate of the picture
         @type x: int
-    
+
         @param y: y coordinate of the picture
         @type y: int
-    
+
         @param w: width of the picture
         @type w: int
-    
+
         @param h: height of the picture
         @type h: int
         """
@@ -92,7 +94,7 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
     # Helpers
     def _computeBorderWidth(self):
         """ Compute picture border width.
-        
+
         Compute the width of the border to use in paint() and boundingRect()
         methods so the size on screen is constant, whatever the view size is.
         """
@@ -102,9 +104,9 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
 
     def _computeColors(self):
         """ Compute colors according to state.
-        
+
         Also check if the current picture is before or after the next to shoot.
-        
+
         @return: inner and border colors
         @rtype: tuple of int
         """
@@ -136,7 +138,10 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
 
     # Interface
     def setIndex(self, index):
-        """ Set the index of the picture in the shooting sequence.
+        """ Set the index of the current picture.
+
+        @param index: index of the current picture
+        @type index: int
         """
         self.setZValue(index)
         self._index = index
@@ -146,7 +151,7 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
         """
         return self._index
 
-    def setState(self, state=None):
+    def setState(self, state):
         """ Set the current state of the picture.
 
         @param state: state of the picture, in ('preview', 'ok', 'error')
@@ -172,7 +177,8 @@ class MosaicPictureItem(AbstractPictureItem):
         x, y, w, h = self._computeRect()
         innerColor, borderColor = self._computeColors()
         painter.fillRect(x, y, w, h, QtGui.QColor(*innerColor))
-        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
+        #painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
+        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['border'])), self._computeBorderWidth()))
         painter.drawRect(x, y, w, h)
 
 
@@ -181,11 +187,57 @@ class PresetPictureItem(AbstractPictureItem):
     """
 
     # Qt overloaded methods
+    def boundingRegion(self, itemToDeviceTransform):
+        x, y, w, h = self._computeRect()
+        return QtCore.QRegion(x - self._computeBorderWidth() / 2, y - self._computeBorderWidth() / 2,
+                              w + self._computeBorderWidth(), h + self._computeBorderWidth(),
+                              QtGui.QRegion.Ellipse)
+
+    def shape(self):
+        path = QtGui.QPainterPath()
+        path.addEllipse(self.boundingRect())
+        return path
+
     def paint(self, painter, options, widget):
         x, y, w, h = self._computeRect()
         innerColor, borderColor = self._computeColors()
         path = QtGui.QPainterPath()
         path.addEllipse(x, y, w, h)
         painter.fillPath(path, QtGui.QColor(*innerColor))
-        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
+        #painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
+        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['border'])), self._computeBorderWidth()))
         painter.drawEllipse(x, y, w, h)
+
+
+class CrosshairCusrsor(QtGui.QGraphicsItemGroup):
+    """ Crosshair cursor item for head and next picture to shoot.
+
+    @todo: use view sqrt(width ** 2 + height ** 2) has limits.
+    """
+    def __init__(self, parent=None):
+        QtGui.QGraphicsItemGroup .__init__(self, parent)
+        self._yawLine = QtGui.QGraphicsLineItem()
+        self._yawLine.setLine(0, -1000, 0, 1000)
+        self.addToGroup(self._yawLine)
+        self._pitchLine = QtGui.QGraphicsLineItem()
+        self._pitchLine.setLine(-1000, 0, 1000, 0)
+        self.addToGroup(self._pitchLine)
+
+    # Qt overloaded methods
+    def shape(self):
+        """ Return the shape of the crosshair.
+
+        We return an empty shape, so the crosshair is not detected in the
+        scene mousePressEvent() callback, using event.itemAt() method.
+        """
+        path = QtGui.QPainterPath()
+        return path
+
+    # Interface
+    def setPen(self, pen):
+        """ Set the pen of the crosshair.
+
+        We simulate this method, and call all sub-items one.
+        """
+        self._yawLine.setPen(pen)
+        self._pitchLine.setPen(pen)

@@ -42,6 +42,7 @@ View
 Implements
 ==========
 
+- ShootingView
 - AbstractShootingScene
 - MosaicShootingScene
 - PresetShootingScene
@@ -53,21 +54,22 @@ Implements
 
 __revision__ = "$Id: shootingScene.py 1308 2009-01-11 16:19:42Z fma $"
 
-from papywizard.common.loggingServices import Logger
-from papywizard.common.signal import Signal
-
 from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
+from papywizard.common.loggingServices import Logger
+from papywizard.common.signal import Signal
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.orderedDict import OrderedDict
-from papywizard.view.pictureItem import MosaicPictureItem, PresetPictureItem
+from papywizard.view.pictureItem import AbstractPictureItem, MosaicPictureItem, PresetPictureItem, \
+                                        CrosshairCusrsor
 
 
 class ShootingView(QtGui.QGraphicsView):
     def __init__(self, parent=None):
         QtGui.QGraphicsView.__init__(self, parent)
-        
+        self.setBackgroundBrush(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['background']))
+
         # Enable OpenGL support (crash!)
         if config.QtOpenGL:
             try:
@@ -122,28 +124,18 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         self._pictures = OrderedDict()
         self.pictureClicked = Signal()
 
-        # Next position crosshair
-        self._nextYawLine = QtGui.QGraphicsLineItem()
-        #self._nextYawLine.rotate(45.)
-        self._nextYawLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['next']))
-        self._nextYawLine.setZValue(9998)
-        self._nextPitchLine = QtGui.QGraphicsLineItem()
-        #self._nextPitchLine.rotate(45.)
-        self._nextPitchLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['next']))
-        self._nextPitchLine.setZValue(9998)
-        self.addItem(self._nextYawLine)
-        self.addItem(self._nextPitchLine)
-        
-
         # Head position crosshair
-        self._headYawLine = QtGui.QGraphicsLineItem()
-        self._headYawLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['head']))
-        self._headYawLine.setZValue(9999)
-        self._headPitchLine = QtGui.QGraphicsLineItem()
-        self._headPitchLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['head']))
-        self._headPitchLine.setZValue(9999)
-        self.addItem(self._headYawLine)
-        self.addItem(self._headPitchLine)
+        self._headCrosshair = CrosshairCusrsor()
+        self._headCrosshair.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['head']))
+        self._headCrosshair.setZValue(9999)
+        self.addItem(self._headCrosshair)
+
+        # Next position crosshair
+        self._nextCrosshair = CrosshairCusrsor()
+        self._nextCrosshair.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['next']))
+        self._nextCrosshair.setZValue(9998)
+        self._nextCrosshair.rotate(45.)
+        self.addItem(self._nextCrosshair)
 
         self._init()
         self.update()
@@ -155,12 +147,15 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
 
     # Qt handlers
     def mousePressEvent(self, event):
+        #Logger().trace("ShootingScene.mousePressEvent()")
         picture = self.itemAt(event.scenePos())
-        if picture is not None:
-            self.pictureClicked.emit(picture.getIndex())
+        if isinstance(picture, AbstractPictureItem):
+            index = picture.getIndex()
+            Logger().debug("ShootingScene.mousePressEvent(): picture index=%d" % index)
+            self.pictureClicked.emit(index)
 
     # Interface
-    def addPicture(self, index, yaw, pitch, state=None, next=False):
+    def addPicture(self, index, yaw, pitch, state='preview'):
         """ Add a pict at yaw/pitch coordinates.
 
         @param yaw: yaw pict position (°)
@@ -171,40 +166,36 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
 
         @param state: state of the shooting at this position
         @type state: str
-
-        @param next: if True, this picture is the next to shoot
-        @type next: bool
         """
         raise NotImplementedError("ShootingScene.addPicture() is abstract and must be overidden")
 
     def setPictureState(self, index, state):
         """ Set the picture state.
-        
+
         @param index: index of the picture to set the state
         @type index: int
-        
+
         @param state: new state of the picture
         @type state: str
         """
         self._pictures[index].setState(state)
         self.update()
-        
+
     def selectNextPicture(self, index):
         """ Set the picture at index the next to shoot.
-        
+
         @param index: index of the next picture to shoot
         @type index: int
         """
         for picture in self._pictures.itervalues():
             picture.setNextIndex(index)
 
+        # Update net position crosshair
         if self._pictures.has_key(index):
             nextPicture = self._pictures[index]
             yaw = nextPicture.scenePos().x()
             pitch = nextPicture.scenePos().y()
-            print yaw, pitch
-            self._nextYawLine.setLine(yaw, -1000, yaw, 1000)
-            self._nextPitchLine.setLine(-1000, pitch, 1000, pitch)
+            self._nextCrosshair.setPos(yaw, pitch)
 
         self.update()
 
@@ -220,8 +211,7 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
     def setHeadPosition(self, yaw, pitch):
         """ Set the current head position.
         """
-        self._headYawLine.setLine(yaw, -1000, yaw, 1000)
-        self._headPitchLine.setLine(-1000, -pitch, 1000, -pitch)
+        self._headCrosshair.setPos(yaw, -pitch)
         self.update()
 
 
@@ -231,12 +221,12 @@ class MosaicShootingScene(AbstractShootingScene):
         y = min(self._pitchStart, self._pitchEnd) - self._pitchCameraFov / 2
         w = self._yawFov
         h = self._pitchFov
-        #print "MosaicShootingScene._init(): x=%d, y=%d, w=%d, h=%d" % (x, y, w, h)
+        #Logger().debug(""MosaicShootingScene._init(): x=%d, y=%d, w=%d, h=%d" % (x, y, w, h))
         self.setSceneRect(x, y, w, h)
 
     # Interface
-    def addPicture(self, index, yaw, pitch, state=None):
-        #print "MosaicShootingScene.addPicture(%.1f, %.1f, state=%s)" % (yaw, pitch, state)
+    def addPicture(self, index, yaw, pitch, state='preview'):
+        #Logger().debug(""MosaicShootingScene.addPicture(%.1f, %.1f, state=%s)" % (yaw, pitch, state))
 
         # Check if picture already in list
         if self._pictures.has_key(index):
@@ -256,17 +246,17 @@ class PresetShootingScene(AbstractShootingScene):
         y = min(self._pitchStart, self._pitchEnd) - self._pitchCameraFov / 2
         w = self._yawFov + self._yawCameraFov
         h = self._pitchFov + self._pitchCameraFov
-        #print "PresetShootingScene._init(): x=%d, y=%d, w=%d, h=%d" % (x, y, w, h)
+        #Logger().debug(""PresetShootingScene._init(): x=%d, y=%d, w=%d, h=%d" % (x, y, w, h))
         self.setSceneRect(x, y, w, h)
-        
+
         # Add full-sphere border
         fullSphericalArea = QtGui.QGraphicsRectItem(self._yawStart, self._pitchStart, self._yawFov, self._pitchFov)
         fullSphericalArea.setZValue(0)
         self.addItem(fullSphericalArea)
 
     # Interface
-    def addPicture(self, index, yaw, pitch, state=None):
-        #print "PresetShootingScene.addPicture(%.1f, %.1f, state=%s)" % (yaw, pitch, state)
+    def addPicture(self, index, yaw, pitch, state='preview'):
+        #Logger().debug(""PresetShootingScene.addPicture(%.1f, %.1f, state=%s)" % (yaw, pitch, state))
 
         # Check if picture already in list
         if self._pictures.has_key(index):
