@@ -424,10 +424,10 @@ class Shooting(object):
                     Logger().debug("Shooting.start(): create mosaic data object")
                     data = MosaicData()
                     values.update({'yawNbPicts': "%d" % self.mosaic.yawNbPicts,
-                                'pitchNbPicts': "%d" % self.mosaic.pitchNbPicts,
-                                'overlap': "%.2f" % self.mosaic.overlap,
-                                'yawRealOverlap': "%.2f" % self.mosaic.yawRealOverlap,
-                                'pitchRealOverlap': "%.2f" % self.mosaic.pitchRealOverlap})
+                                   'pitchNbPicts': "%d" % self.mosaic.pitchNbPicts,
+                                   'overlap': "%.2f" % self.mosaic.overlap,
+                                   'yawRealOverlap': "%.2f" % self.mosaic.yawRealOverlap,
+                                   'pitchRealOverlap': "%.2f" % self.mosaic.pitchRealOverlap})
                 else:
                     Logger().debug("Shooting.start(): create preset data object")
                     data = PresetData()
@@ -459,7 +459,7 @@ class Shooting(object):
                         self.sequenceSignal.emit('stabilization')
                         time.sleep(self.stabilizationDelay)
 
-                        # Test manual shooting flag
+                        # Test manual shooting flag (use a function)
                         if self.__stepByStep and not self.__stop:
                             self.__pause = True
                             Logger().info("Wait for manual shooting trigger...")
