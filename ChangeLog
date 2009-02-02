@@ -7,6 +7,14 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+
+2009-02-02 Version 1.9.1 (dev)
+    + added crosshair cursor for next position
+    + css load support
+    x fullscreen mode fixed on maemo
+    x statusbar shown on maemo
+
+2009-01-26 Version 1.9.0 (dev)
     - switch to PyQt
 
 2009-01-14 Version 1.6.0 (stable)
