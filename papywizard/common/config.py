@@ -80,26 +80,26 @@ USER_CONFIG_FILE = os.path.join(USER_CONFIG_DIR, CONFIG_FILE)
 PRESET_FILE = "presets.xml"
 USER_PRESET_FILE = os.path.join(USER_CONFIG_DIR, PRESET_FILE)
 USER_GUIDE_URL = "http://trac.gbiloba.org/papywizard/wiki/UserGuide"
-GTKRC_FILE = "gtkrc"
-USER_GTKRC_FILE = os.path.join(USER_CONFIG_DIR, GTKRC_FILE)
+STYLESHEET_FILE = "papywizard.css"
+USER_STYLESHEET_FILE = os.path.join(USER_CONFIG_DIR, STYLESHEET_FILE)
 
 # Model
 SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3., '5:4': 5./4., '16:9': 16./9.}
 
 # View
 ALPHA = 224
-SHOOTING_COLOR_SCHEME = {'default': {'background': (64, 64, 64, 255),
+SHOOTING_COLOR_SCHEME = {'default': {'background': (224, 224, 224, 255),
                                      'axis': (255, 128, 128, 255),
                                      'head': (0, 0, 255, 255),
                                      'next': (255, 0, 0, 255),
-                                     'border': (0, 0, 0, ALPHA),
-                                     'border-next': (224, 224, 224, ALPHA),
+                                     'border': (64, 64, 64, ALPHA),
+                                     'border-next': (224, 0, 224, ALPHA),
                                      'preview': (128, 128, 128, ALPHA),
                                      'preview-toshoot': (160, 160, 160, ALPHA),
                                      'ok': (0, 224, 0, ALPHA),
-                                     'ok-toshoot': (160, 224, 160, ALPHA),
+                                     'ok-toshoot': (128, 224, 128, ALPHA),
                                      'error': (224, 0, 0, ALPHA),
-                                     'error-toshoot': (224, 192, 0, ALPHA)
+                                     'error-toshoot': (224, 128, 128, ALPHA)
                                     }
                         }
 QtOpenGL = False
@@ -119,7 +119,7 @@ ENCODER_360 = 0x0E6600
 ENCODER_ZERO = 0x800000
 MANUAL_SPEED = {'slow': 170,  # "aa0000"  / 5
                 'normal': 34, # "220000"
-                'fast':17}    # "110000"  * 2
+                'fast': 17}   # "110000"  * 2
 
 AXIS_SPEED = 15.
 SERIAL_BAUDRATE = 9600
