@@ -151,6 +151,9 @@ class ShootController(AbstractModalDialogController):
         yaw, pitch = self._model.hardware.readPosition()
         self.__shootingScene.setHeadPosition(yaw, pitch)
 
+        # Refresh next picture position
+        self.__shootingScene.selectNextPicture(1)
+
         # Keyboard behaviour
         self._view.grabKeyboard()
 
