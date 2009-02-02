@@ -833,7 +833,7 @@ class MainController(AbstractController):
 
     # Interface
     def exec_(self):
-        #QtCore.QCoreApplication.exec_()
+        #QtCore.qApp.exec_()
         pass
 
     def shutdown(self):

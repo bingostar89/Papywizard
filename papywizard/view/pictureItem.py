@@ -97,6 +97,8 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
 
         Compute the width of the border to use in paint() and boundingRect()
         methods so the size on screen is constant, whatever the view size is.
+
+        What if there are several views?
         """
         xRatio = self.scene().views()[0].width() / self.scene().width()
         yRatio = self.scene().views()[0].height() / self.scene().height()
@@ -212,7 +214,7 @@ class PresetPictureItem(AbstractPictureItem):
 class CrosshairCusrsor(QtGui.QGraphicsItemGroup):
     """ Crosshair cursor item for head and next picture to shoot.
 
-    @todo: use view sqrt(width ** 2 + height ** 2) has limits.
+    @todo: use view sqrt(width ** 2 + height ** 2) as limits.
     """
     def __init__(self, parent=None):
         QtGui.QGraphicsItemGroup .__init__(self, parent)
