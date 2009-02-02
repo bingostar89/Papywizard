@@ -941,7 +941,8 @@
     <property name="title" >
      <string>File</string>
     </property>
-    <addaction name="actionFileLoadPreset" />
+    <addaction name="actionFileImportPreset" />
+    <addaction name="actionFileLoadStyleSheet" />
     <addaction name="separator" />
     <addaction name="actionFileQuit" />
    </widget>
@@ -995,13 +996,13 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actionFileLoadPreset" >
+  <action name="actionFileImportPreset" >
    <property name="icon" >
     <iconset resource="icons.qrc" >
      <normaloff>:/icons/fileimport.png</normaloff>:/icons/fileimport.png</iconset>
    </property>
    <property name="text" >
-    <string>Load Preset File...</string>
+    <string>Import Preset File...</string>
    </property>
   </action>
   <action name="actionHardwareConnect" >
@@ -1091,6 +1092,15 @@
    </property>
    <property name="text" >
     <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionFileLoadStyleSheet" >
+   <property name="icon" >
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/fileopen.png</normaloff>:/icons/fileopen.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Load Style Sheet...</string>
    </property>
   </action>
  </widget>

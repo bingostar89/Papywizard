@@ -197,8 +197,8 @@ class MainController(AbstractController):
         super(MainController, self)._connectQtSignals()
 
         # Menus
-        self.connect(self._view.actionFileLoadPreset, QtCore.SIGNAL("activated()"), self.__onActionFileLoadPresetActivated)
-        #"on_fileLoadGtkrc_activate": self.__onFileLoadGtkrcActivate,
+        self.connect(self._view.actionFileImportPreset, QtCore.SIGNAL("activated()"), self.__onActionFileImportPresetActivated)
+        self.connect(self._view.actionFileLoadStyleSheet, QtCore.SIGNAL("activated()"), self.__onActionFileLoadStyleSheetActivated)
         #"on_quit_activate": gtk.main_quit,
 
         self.connect(self._view.actionHardwareConnect, QtCore.SIGNAL("toggled(bool)"), self.__onActionHardwareConnectToggled)
@@ -443,14 +443,23 @@ class MainController(AbstractController):
         else:
             event.ignore()
 
-    def __onActionFileLoadPresetActivated(self):
-        Logger().trace("MainController.__onActionFileLoadPresetActivated()")
+    def __onActionFileImportPresetActivated(self):
+        Logger().trace("MainController.__onActionFileImportPresetActivated()")
         fileName =  QtGui.QFileDialog.getOpenFileName(self._view,
-                                                      _("Load Preset file"),
+                                                      _("Import Preset File"),
                                                       os.path.join(config.HOME_DIR, config.PRESET_FILE),
                                                       _("XML files (*.xml);;All files (*)"))
         if fileName:
-            self.__loadPresetFile(fileName)
+            self.__importPresetFile(fileName)
+
+    def __onActionFileLoadStyleSheetActivated(self):
+        Logger().trace("MainController.__onActionFileLoadStyleSheetActivated()")
+        fileName =  QtGui.QFileDialog.getOpenFileName(self._view,
+                                                      _("Load Style Sheet"),
+                                                      os.path.join(config.HOME_DIR, config.STYLESHEET_FILE),
+                                                      _("XML files (*.css);;All files (*)"))
+        if fileName:
+            self.__loadStyleSheet(fileName)
 
     def __onActionHardwareConnectToggled(self, checked):
         Logger().debug("MainController.__onActionHardwareConnectToggled(%s)" % checked)
@@ -755,21 +764,39 @@ class MainController(AbstractController):
                 #Logger().exception("MainController.__populatePresetComboBox()", debug=True)
                 break
 
-    def __loadPresetFile(self, presetFileName):
+    def __importPresetFile(self, presetFileName):
         """ Import the presets from given file.
 
         @param presetFileName: name of the preset xml file
         @type presetFileName: str
         """
-        Logger().debug("MainController.__loadPresetFile(): preset file=%s" % presetFileName)
+        Logger().debug("MainController.__importPresetFile(): preset file=%s" % presetFileName)
         try:
             PresetManager().importPresetFile(presetFileName)
             self.__populatePresetComboBox()
             self.refreshView()
         except Exception, msg:
-            Logger().exception("MainController.__loadPresetFile()")
+            Logger().exception("MainController.__importPresetFile()")
             self._view.releaseKeyboard()
-            dialog = ExceptionMessageDialog(_("Can't load preset file"), str(msg))
+            dialog = ExceptionMessageDialog(_("Can't import preset file"), str(msg))
+            dialog.exec_()
+            self._view.grabKeyboard()
+
+    def __loadStyleSheet(self, styleSheetFileName):
+        """ Load and apply the style sheet.
+
+        @param styleSheetFileName: name of the style sheet
+        @type styleSheetFileName: str
+        """
+        Logger().debug("MainController.__loadStyleSheet(): style sheet=%s" % styleSheetFileName)
+        try:
+            styleSheetFile = file(styleSheetFileName)
+            QtGui.qApp.setStyleSheet(styleSheetFile.read())
+            styleSheetFile.close()
+        except Exception, msg:
+            Logger().exception("MainController.__loadStyleSheet()")
+            self._view.releaseKeyboard()
+            dialog = ExceptionMessageDialog(_("Can't load style sheet"), str(msg))
             dialog.exec_()
             self._view.grabKeyboard()
 
