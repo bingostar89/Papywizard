@@ -53,7 +53,7 @@ import os.path
 VERSION_MAJOR = 1
 VERSION_MINOR = 9 # Odd means dev. release
 VERSION_UPDATE = 1
-VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
+VERSION = "%d.%d.%db" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 VERSION_XML = "a"
 
 # Paths
@@ -91,15 +91,16 @@ ALPHA = 224
 SHOOTING_COLOR_SCHEME = {'default': {'background': (224, 224, 224, 255),
                                      'axis': (255, 128, 128, 255),
                                      'head': (0, 0, 255, 255),
-                                     'next': (255, 0, 0, 255),
                                      'border': (64, 64, 64, ALPHA),
-                                     'border-next': (224, 0, 224, ALPHA),
                                      'preview': (128, 128, 128, ALPHA),
+                                     'preview-next': (224, 224, 0, ALPHA),
                                      'preview-toshoot': (160, 160, 160, ALPHA),
                                      'ok': (0, 224, 0, ALPHA),
+                                     'ok-next': (160, 224, 0, ALPHA),
                                      'ok-toshoot': (128, 224, 128, ALPHA),
                                      'error': (224, 0, 0, ALPHA),
-                                     'error-toshoot': (224, 128, 128, ALPHA)
+                                     'error-next': (224, 160, 0, ALPHA),
+                                     'error-toshoot': (224, 128, 128, ALPHA),
                                     }
                         }
 QtOpenGL = False
