@@ -138,7 +138,7 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         #self.addItem(self._nextCrosshair)
 
         self._init()
-        self.update()
+        #self.update()
 
     def _init(self):
         """ Init the scene rect.
@@ -197,7 +197,7 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
             #pitch = nextPicture.scenePos().y()
             #self._nextCrosshair.setPos(yaw, pitch)
 
-        self.update()
+        #self.update()
 
     def clear(self):
         """ Clear the shooting area
@@ -206,13 +206,13 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         for picture in self._pictures.itervalues():
             picture.setState(state='preview')
             picture.setNextIndex(0)
-        self.update()
+        #self.update()
 
     def setHeadPosition(self, yaw, pitch):
         """ Set the current head position.
         """
         self._headCrosshair.setPos(yaw, -pitch)
-        self.update()
+        #self.update()
 
 
 class MosaicShootingScene(AbstractShootingScene):
@@ -237,7 +237,7 @@ class MosaicShootingScene(AbstractShootingScene):
             picture.setState(state)
             self.addItem(picture)
             self._pictures[index] = picture
-        self.update()
+        #self.update()
 
 
 class PresetShootingScene(AbstractShootingScene):
@@ -267,4 +267,4 @@ class PresetShootingScene(AbstractShootingScene):
             picture.setState(state)
             self.addItem(picture)
             self._pictures[index] = picture
-        self.update()
+        #self.update()
