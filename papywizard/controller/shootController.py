@@ -421,8 +421,8 @@ class ShootController(AbstractModalDialogController):
     def __shootingStarted(self):
         Logger().trace("ShootController.__shootingStarted()")
         self.__shootingScene.clear()
-        self._view.shootingProgressBar.setValue(0)
-        self._view.totalProgressBar.setValue(0)
+        self.emit(QtCore.SIGNAL("shootingProgressBarValueChanged(int)"), 0)
+        self.emit(QtCore.SIGNAL("totalProgressBarValueChanged(int)"), 0)
         if self._model.timerRepeatEnable:
             self._view.repeatLabel.setText("--/%d" % self._model.timerRepeat)
         else:
