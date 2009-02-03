@@ -150,7 +150,7 @@ class SpyObject(QtCore.QThread):
         @param refresh: refresh rate
         @type refresh: float
         """
-        self.__refresh = refresh
+        self.__refresh = int(refresh * 1000)
 
     def isRunning(self):
         """ Test if spy is running.
