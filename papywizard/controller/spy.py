@@ -51,73 +51,65 @@ Implements
 
 __revision__ = "$Id$"
 
-import time
 import threading
+
+from PyQt4 import QtCore
 
 from papywizard.common.loggingServices import Logger
 from papywizard.common.signal import Signal
 from papywizard.common.exception import HardwareError
 
+spy = None
 
-class Spy(threading.Thread):
+
+class SpyObject(QtCore.QThread):
     """ Spy.
-    
+
     This controller periodically polls the hardware to get
     its position. When a change is detected, it emits
-    a signal, passing new hardware position.
+    a signal, passing the new hardware position.
     """
-    __state = {}
-    __init = True
-
-    def __new__(cls, *args, **kwds):
-        """ Implement the Borg pattern.
-        """
-        self = object.__new__(cls, *args, **kwds)
-        self.__dict__ = cls.__state
-        return self
-
-    def __init__(self, model=None, refresh=None):
+    def __init__(self, model, refresh):
         """ Init the object.
 
         @param model: model to use
         @type model: {Shooting}
 
-        @param refresh: delay between 2 refreshs
+        @param refresh: delay between 2 refreshs (s)
         @type refresh: int
         """
-        if Spy.__init:
-            if model is None or refresh is None:
-                raise ValueError("Spy first call must have correct params")
-            super(Spy, self).__init__()
-            self.setDaemon(1)
-            self.setName("Spy")
-            self.__model = model
-            self.__run = False
-            self.__suspend = False
-            self.__refresh = refresh
-            self.newPosSignal = Signal()
-            try:
-                self.__yaw, self.__pitch = self.__model.hardware.readPosition()
-                Logger().debug("Spy.__init__(): yaw=%.1f, pitch=%.1f" % (self.__yaw, self.__pitch))
-            except HardwareError:
-                Logger().exception("Spy.run(): can't read position")
-            Spy.__init = False
+        QtCore.QThread.__init__(self)
+        self.__model = model
+        self.__run = False
+        self.__suspend = False
+        self.__refresh = int(refresh / 1000.)
+        self.newPosSignal = Signal() # Use Qt signals
+        try:
+            self.__yaw, self.__pitch = self.__model.hardware.readPosition()
+            Logger().debug("Spy.__init__(): yaw=%.1f, pitch=%.1f" % (self.__yaw, self.__pitch))
+        except HardwareError:
+            Logger().exception("Spy.run(): can't read position")
 
     def run(self):
         """ Main entry of the thread.
         """
+        threading.currentThread().setName("Spy")
         Logger().info("Starting Spy...")
         self.__run = True
-        while self.__run:
-            if self.__suspend:
-                while self.__suspend:
-                    time.sleep(self.__refresh)
-            self.execute()
-            time.sleep(self.__refresh)
+        try:
+            while self.__run:
+                if self.__suspend:
+                    while self.__suspend:
+                        self.msleep(self.__refresh)
+                self.refresh()
+                self.msleep(self.__refresh)
 
-        Logger().info("Spy stopped")
+            Logger().info("Spy stopped")
+        except:
+            Logger().exception("Spy.run()")
+            Logger().critical("Spy thread crashed")
 
-    def execute(self, force=False):
+    def refresh(self, force=False):
         """ Execute one refresh.
 
         @param force: if True, emit signal even if same position
@@ -128,13 +120,13 @@ class Spy(threading.Thread):
             if yaw != self.__yaw or pitch != self.__pitch or force:
                 #Logger().debug("Spy.execute(): new yaw=%.1f, new pitch=%.1f" % (yaw, pitch))
                 try:
-                    self.newPosSignal.emit(yaw, pitch)
+                    self.newPosSignal.emit(yaw, pitch) # emit a Qt signal
                 except:
-                    Logger().exception("Spy.execute(): can't emit signal")
+                    Logger().exception("Spy.refresh(): can't emit signal")
                 self.__yaw = yaw
                 self.__pitch = pitch
         except HardwareError:
-            Logger().exception("Spy.execute(): can't read position")
+            Logger().exception("Spy.refresh(): can't read position")
 
         return True
 
@@ -169,3 +161,14 @@ class Spy(threading.Thread):
         @rtype: bool
         """
         return self.__run
+
+
+# Spy factory
+def Spy(model=None, refresh=None):
+    global spy
+    if spy is None:
+        if model is None or refresh is None:
+            raise ValueError("Spy first call must have correct params")
+        spy = SpyObject(model, refresh)
+
+    return spy

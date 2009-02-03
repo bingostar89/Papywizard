@@ -54,6 +54,7 @@ import StringIO
 import locale
 import gettext
 import threading
+import time
 
 import PyQt4.uic
 from PyQt4 import QtCore, QtGui
@@ -63,7 +64,7 @@ from papywizard.view.icons import qInitResources, qCleanupResources
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.qLoggingFormatter import QSpaceColorFormatter
-from papywizard.common.serializer import Serializer
+#from papywizard.common.serializer import Serializer
 from papywizard.common.exception import HardwareError
 from papywizard.common.publisher import Publisher
 from papywizard.hardware.head import Head, HeadSimulation
@@ -128,10 +129,11 @@ class Papywizard(object):
             self.__publisher = Publisher()
 
         # Create serializer, for async events
-        self.__serializer = Serializer()
+        #self.__serializer = Serializer()
 
         # Create main controller
-        self.__mainController = MainController(self.__model, self.__serializer, self.logStream)
+        #self.__mainController = MainController(self.__model, self.__serializer, self.logStream)
+        self.__mainController = MainController(self.__model, self.logStream)
 
     def weave(str):
         """ Weave stuffs.
@@ -205,9 +207,6 @@ class Papywizard(object):
                     localeDir = os.path.join(os.path.dirname(localeFile), os.pardir, os.pardir)
         Logger().debug("Papywizard.l10n(): localeDir=%s" % localeDir)
 
-        #gtk.glade.bindtextdomain(DOMAIN, localeDir)
-        #gtk.glade.textdomain(DOMAIN)
-
         # Get the Translation object
         try:
             lang = gettext.translation(DOMAIN, localeDir, languages=langs)
@@ -222,12 +221,15 @@ class Papywizard(object):
     def run(self):
         """ Run the appliction.
         """
-        serializerTimer = QtCore.QTimer()
-        self.__qtApp.connect(serializerTimer, QtCore.SIGNAL("timeout()"), self.__serializer.processWork)
-        serializerTimer.start(config.SERIALIZER_REFRESH)
+        #serializerTimer = QtCore.QTimer()
+        #self.__qtApp.connect(serializerTimer, QtCore.SIGNAL("timeout()"), self.__serializer.processWork)
+        #serializerTimer.start(config.SERIALIZER_REFRESH)
         if config.PUBLISHER_ENABLE:
             self.__publisher.start()
         Spy().start()
+        time.sleep(1)
+        if Spy().isFinished():
+            raise RuntimeError("Can't start Spy thread")
         Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
         self.__qtApp.exec_()
 
@@ -236,7 +238,7 @@ class Papywizard(object):
         """
         self.__mainController.shutdown()
         Spy().stop()
-        Spy().join()
+        Spy().wait()
         #del self.__publisher
         self.__model.shutdown()
         qCleanupResources()
@@ -246,7 +248,7 @@ class Papywizard(object):
 
 def main():
 
-    #threading.currentThread().setName("QtMainThread")
+    threading.currentThread().setName("MainThread")
 
     # Init the logger
     if hasattr(sys, "frozen"):

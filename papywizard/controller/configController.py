@@ -79,14 +79,15 @@ class ConfigController(AbstractModalDialogController):
     def _connectQtSignals(self):
         super(ConfigController, self)._connectQtSignals()
 
-        QtCore.QObject.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
-        QtCore.QObject.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
-        QtCore.QObject.connect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
-        QtCore.QObject.connect(self._view.bracketingNbPictsSpinBox, QtCore.SIGNAL("valueChanged(int)"), self.__onBracketingNbPictsSpinBoxValueChanged)
-        QtCore.QObject.connect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onLensTypeComboBoxCurrentIndexChanged)
-        QtCore.QObject.connect(self._view.driverComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onDriverComboBoxCurrentIndexChanged)
-        QtCore.QObject.connect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
-        QtCore.QObject.connect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
+        self.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
+        self.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
+
+        self.connect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
+        self.connect(self._view.bracketingNbPictsSpinBox, QtCore.SIGNAL("valueChanged(int)"), self.__onBracketingNbPictsSpinBoxValueChanged)
+        self.connect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onLensTypeComboBoxCurrentIndexChanged)
+        self.connect(self._view.driverComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onDriverComboBoxCurrentIndexChanged)
+        self.connect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
+        self.connect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
 
     def _connectSignals(self):
         pass
@@ -253,7 +254,7 @@ class ConfigController(AbstractModalDialogController):
         Open the bluetooth chooser dialog.
         """
         Logger().trace("ConfigController.__onBluetoothChoosePushButtonClicked()")
-        controller = BluetoothChooserController(self, self._model, self._serializer)
+        controller = BluetoothChooserController(self, self._model)#, self._serializer)
         response = controller.exec_()
         if response:
             address, name = controller.getSelectedBluetoothAddress()

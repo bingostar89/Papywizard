@@ -151,7 +151,7 @@ class ShootController(AbstractModalDialogController):
         yaw, pitch = self._model.hardware.readPosition()
         self.__shootingScene.setHeadPosition(yaw, pitch)
 
-        # Refresh next picture position
+        # Select next picture position
         self.__shootingScene.selectNextPicture(1)
 
         # Keyboard behaviour
@@ -160,17 +160,22 @@ class ShootController(AbstractModalDialogController):
     def _connectQtSignals(self):
         super(ShootController, self)._connectQtSignals()
 
-        QtCore.QObject.connect(self._view.shootingStackPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onShootingStackPushButtonToggled)
-        QtCore.QObject.connect(self._view.rewindPushButton, QtCore.SIGNAL("clicked()"), self.__onRewindPushButtonClicked)
-        QtCore.QObject.connect(self._view.forwardPushButton, QtCore.SIGNAL("clicked()"), self.__onForwardPushButtonClicked)
+        self.connect(self._view.shootingStackPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onShootingStackPushButtonToggled)
+        self.connect(self._view.rewindPushButton, QtCore.SIGNAL("clicked()"), self.__onRewindPushButtonClicked)
+        self.connect(self._view.forwardPushButton, QtCore.SIGNAL("clicked()"), self.__onForwardPushButtonClicked)
 
-        QtCore.QObject.connect(self._view.dataPushButton, QtCore.SIGNAL("clicked()"), self.__onDataPushButtonClicked)
-        QtCore.QObject.connect(self._view.timerPushButton, QtCore.SIGNAL("clicked()"), self.__onTimerPushButtonClicked)
-        QtCore.QObject.connect(self._view.stepByStepPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onStepByStepPushButtonToggled)
+        self.connect(self._view.dataPushButton, QtCore.SIGNAL("clicked()"), self.__onDataPushButtonClicked)
+        self.connect(self._view.timerPushButton, QtCore.SIGNAL("clicked()"), self.__onTimerPushButtonClicked)
+        self.connect(self._view.stepByStepPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onStepByStepPushButtonToggled)
 
-        QtCore.QObject.connect(self._view.startPushButton, QtCore.SIGNAL("clicked()"), self.__onStartPushButtonClicked)
-        QtCore.QObject.connect(self._view.pauseResumePushButton, QtCore.SIGNAL("clicked()"), self.__onPauseResumePushButtonClicked)
-        QtCore.QObject.connect(self._view.stopPushButton, QtCore.SIGNAL("clicked()"), self.__onStopPushButtonClicked)
+        self.connect(self._view.startPushButton, QtCore.SIGNAL("clicked()"), self.__onStartPushButtonClicked)
+        self.connect(self._view.pauseResumePushButton, QtCore.SIGNAL("clicked()"), self.__onPauseResumePushButtonClicked)
+        self.connect(self._view.stopPushButton, QtCore.SIGNAL("clicked()"), self.__onStopPushButtonClicked)
+
+        self.connect(self, QtCore.SIGNAL("shootingProgressBarValueChanged(int)"),
+                     self._view.shootingProgressBar, QtCore.SLOT("setValue(int)"))
+        self.connect(self, QtCore.SIGNAL("totalProgressBarValueChanged(int)"),
+                     self._view.totalProgressBar, QtCore.SLOT("setValue(int)"))
 
     def _connectSignals(self):
         Spy().newPosSignal.connect(self.__refreshPos)
@@ -353,14 +358,14 @@ class ShootController(AbstractModalDialogController):
 
     def __onDataPushButtonClicked(self):
         Logger().trace("ShootController.__onDataPushButtonClicked()")
-        controller = ConfigController(self, self._model, self._serializer)
+        controller = ConfigController(self, self._model)#, self._serializer)
         controller.selectTab(5, disable=True)
         response = controller.exec_()
         self.refreshView()
 
     def __onTimerPushButtonClicked(self):
         Logger().trace("ShootController.__onTimerPushButtonClicked()")
-        controller = ConfigController(self, self._model, self._serializer)
+        controller = ConfigController(self, self._model)#, self._serializer)
         controller.selectTab(6, disable=True)
         response = controller.exec_()
         if self._model.timerRepeatEnable:
@@ -404,7 +409,7 @@ class ShootController(AbstractModalDialogController):
             self.__refreshNextPosition()
 
     def __updateShootingElapsedTime(self):
-        Logger().trace("ShootController.__updateShootingElapsedTime()")
+        #Logger().trace("ShootController.__updateShootingElapsedTime()")
         if self._model.isShooting():
             shootingTime, elapsedTime = self._model.getShootingElapsedTime()
             self._view.shootingTimeLabel.setText("%s" % sToHmsAsStr(shootingTime))
@@ -412,94 +417,94 @@ class ShootController(AbstractModalDialogController):
         else:
             self.__shootingElapseTimer.stop()
 
-    # Callback model (all GUI calls must be done via the serializer)
+    # Callback model
     def __shootingStarted(self):
         Logger().trace("ShootController.__shootingStarted()")
-        self._serializer.addWork(self.__shootingScene.clear)
-        self._serializer.addWork(self._view.shootingProgressBar.setValue, 0)
-        self._serializer.addWork(self._view.totalProgressBar.setValue, 0)
+        self.__shootingScene.clear()
+        self._view.shootingProgressBar.setValue(0)
+        self._view.totalProgressBar.setValue(0)
         if self._model.timerRepeatEnable:
-            self._serializer.addWork(self._view.repeatLabel.setText,"--/%d" % self._model.timerRepeat)
+            self._view.repeatLabel.setText("--/%d" % self._model.timerRepeat)
         else:
-            self._serializer.addWork(self._view.repeatLabel.setText, "")
-        self._serializer.addWork(self._view.shootingTimeLabel.setText, "00:00:00")
-        self._serializer.addWork(self._view.elapsedTimeLabel.setText,  "00:00:00")
-        self._serializer.addWork(self._view.currentIndexLabel.setText, "--/%d" % self._model.scan.totalNbPicts)
-        self._serializer.addWork(self._view.nextIndexLabel.setText, "--/%d" % self._model.scan.totalNbPicts)
+            self._view.repeatLabel.setText("")
+        self._view.shootingTimeLabel.setText("00:00:00")
+        self._view.elapsedTimeLabel.setText("00:00:00")
+        self._view.currentIndexLabel.setText("--/%d" % self._model.scan.totalNbPicts)
+        self._view.nextIndexLabel.setText("--/%d" % self._model.scan.totalNbPicts)
         if self._model.mode == 'mosaic':
-            self._serializer.addWork(self._view.yawCurrentIndexLabel.setText, "--/%d" % self._model.mosaic.yawNbPicts)
-            self._serializer.addWork(self._view.pitchCurrentIndexLabel.setText, "--/%d" % self._model.mosaic.pitchNbPicts)
-            self._serializer.addWork(self._view.yawNextIndexLabel.setText, "--/%d" % self._model.mosaic.yawNbPicts)
-            self._serializer.addWork(self._view.pitchNextIndexLabel.setText, "--/%d" % self._model.mosaic.pitchNbPicts)
+            self._view.yawCurrentIndexLabel.setText("--/%d" % self._model.mosaic.yawNbPicts)
+            self._view.pitchCurrentIndexLabel.setText("--/%d" % self._model.mosaic.pitchNbPicts)
+            self._view.yawNextIndexLabel.setText("--/%d" % self._model.mosaic.yawNbPicts)
+            self._view.pitchNextIndexLabel.setText("--/%d" % self._model.mosaic.pitchNbPicts)
         else:
-            self._serializer.addWork(self._view.yawCurrentIndexLabel.setText, "--")
-            self._serializer.addWork(self._view.pitchCurrentIndexLabel.setText, "--")
-            self._serializer.addWork(self._view.yawNextIndexLabel.setText, "--")
-            self._serializer.addWork(self._view.pitchNextIndexLabel.setText, "--")
-        self._serializer.addWork(self._view.dataPushButton.setEnabled, False)
-        self._serializer.addWork(self._view.timerPushButton.setEnabled, False)
-        self._serializer.addWork(self._view.startPushButton.setEnabled, False)
-        self._serializer.addWork(self._view.pauseResumePushButton.setEnabled, True)
-        self._serializer.addWork(self._view.stopPushButton.setEnabled, True)
-        self._serializer.addWork(self._view.buttonBox.setEnabled, False)
-        self._serializer.addWork(self._view.rewindPushButton.setEnabled, False)
-        self._serializer.addWork(self._view.forwardPushButton.setEnabled, False)
-        self._serializer.addWork(self.__shootingElapseTimer.start, 1000)
+            self._view.yawCurrentIndexLabel.setText("--")
+            self._view.pitchCurrentIndexLabel.setText("--")
+            self._view.yawNextIndexLabel.setText("--")
+            self._view.pitchNextIndexLabel.setText("--")
+        self._view.dataPushButton.setEnabled(False)
+        self._view.timerPushButton.setEnabled(False)
+        self._view.startPushButton.setEnabled(False)
+        self._view.pauseResumePushButton.setEnabled(True)
+        self._view.stopPushButton.setEnabled(True)
+        self._view.buttonBox.setEnabled(False)
+        self._view.rewindPushButton.setEnabled(False)
+        self._view.forwardPushButton.setEnabled(False)
+        self.__shootingElapseTimer.start(1000)
 
     def __shootingPaused(self):
         Logger().trace("ShootController.__shootingPaused()")
         self._view.pauseResumePushButton.setEnabled(True)
-        self._serializer.addWork(self._view.pauseResumePushButton.setText, _("Resume"))
-        self._serializer.addWork(self._view.rewindPushButton.setEnabled, True)
-        self._serializer.addWork(self._view.forwardPushButton.setEnabled, True)
-        self._serializer.addWork(self._view.sequenceLabel.setText, _("Paused"))
-        self._serializer.addWork(self._view.textNextLabel.setEnabled, True)
-        self._serializer.addWork(self._view.nextIndexLabel.setEnabled, True)
-        self._serializer.addWork(self._view.yawNextIndexLabel.setEnabled, True)
-        self._serializer.addWork(self._view.pitchNextIndexLabel.setEnabled, True)
+        self._view.pauseResumePushButton.setText(_("Resume"))
+        self._view.rewindPushButton.setEnabled(True)
+        self._view.forwardPushButton.setEnabled(True)
+        self._view.sequenceLabel.setText(_("Paused"))
+        self._view.textNextLabel.setEnabled(True)
+        self._view.nextIndexLabel.setEnabled(True)
+        self._view.yawNextIndexLabel.setEnabled(True)
+        self._view.pitchNextIndexLabel.setEnabled(True)
 
     def __shootingResumed(self):
         Logger().trace("ShootController.__shootingResumed()")
-        self._serializer.addWork(self._view.pauseResumePushButton.setText, _("Pause"))
-        self._serializer.addWork(self._view.rewindPushButton.setEnabled, False)
-        self._serializer.addWork(self._view.forwardPushButton.setEnabled, False)
-        self._serializer.addWork(self._view.textNextLabel.setEnabled, False)
-        self._serializer.addWork(self._view.nextIndexLabel.setEnabled, False)
-        self._serializer.addWork(self._view.yawNextIndexLabel.setEnabled, False)
-        self._serializer.addWork(self._view.pitchNextIndexLabel.setEnabled, False)
+        self._view.pauseResumePushButton.setText(_("Pause"))
+        self._view.rewindPushButton.setEnabled(False)
+        self._view.forwardPushButton.setEnabled(False)
+        self._view.textNextLabel.setEnabled(False)
+        self._view.nextIndexLabel.setEnabled(False)
+        self._view.yawNextIndexLabel.setEnabled(False)
+        self._view.pitchNextIndexLabel.setEnabled(False)
 
     def __shootingStopped(self, status):
         Logger().debug("ShootController.__shootingStopped(): status=%s" % status)
         if status == 'ok':
-            self._serializer.addWork(self._view.sequenceLabel.setText, _("Finished"))
+            self._view.sequenceLabel.setText( _("Finished"))
         elif status == 'cancel':
-            self._serializer.addWork(self._view.sequenceLabel.setText, _("Canceled"))
+            self._view.sequenceLabel.setText(_("Canceled"))
         elif status == 'fail':
-            self._serializer.addWork(self._view.sequenceLabel.setText, _("Failed"))
-        self._serializer.addWork(self._view.dataPushButton.setEnabled, True)
-        self._serializer.addWork(self._view.timerPushButton.setEnabled, True)
-        self._serializer.addWork(self._view.startPushButton.setEnabled, True)
-        self._serializer.addWork(self._view.pauseResumePushButton.setEnabled, False)
-        self._serializer.addWork(self._view.stopPushButton.setEnabled, False)
-        self._serializer.addWork(self._view.buttonBox.setEnabled, True)
+            self._view.sequenceLabel.setText(_("Failed"))
+        self._view.dataPushButton.setEnabled(True)
+        self._view.timerPushButton.setEnabled(True)
+        self._view.startPushButton.setEnabled(True)
+        self._view.pauseResumePushButton.setEnabled(False)
+        self._view.stopPushButton.setEnabled(False)
+        self._view.buttonBox.setEnabled(True)
 
     def __shootingWaiting(self, wait):
         Logger().trace("ShootController.__shootingRepeat()")
         sequenceMessage = _("Waiting") + " %s" % sToHmsAsStr(wait)
-        self._serializer.addWork(self._view.sequenceLabel.setText, sequenceMessage)
+        self._view.sequenceLabel.setText(sequenceMessage)
 
     def __shootingProgress(self, shootingProgress=None, totalProgress=None):
         Logger().trace("ShootController.__shootingProgress()")
         if shootingProgress is not None:
-            self._serializer.addWork(self._view.shootingProgressBar.setValue, int(round(shootingProgress * 100)))
+            self.emit(QtCore.SIGNAL("shootingProgressBarValueChanged(int)"), int(round(shootingProgress * 100)))
         if totalProgress is not None:
-            self._serializer.addWork(self._view.totalProgressBar.setValue, int(round(totalProgress * 100)))
+           self.emit(QtCore.SIGNAL("totalProgressBarValueChanged(int)"), int(round(totalProgress * 100)))
 
     def __shootingRepeat(self, repeat):
         Logger().trace("ShootController.__shootingRepeat()")
-        self._serializer.addWork(self.__shootingScene.clear)
+        self.__shootingScene.clear()
         if self._model.timerRepeatEnable:
-            self._serializer.addWork(self._view.repeatLabel.setText,"%d/%d" % (repeat, self._model.timerRepeat))
+            self._view.repeatLabel.setText("%d/%d" % (repeat, self._model.timerRepeat))
 
     def __shootingUpdatePosition(self, index, yaw, pitch, status=None, next=False):
         Logger().trace("ShootController.__shootingUpdatePosition()")
@@ -507,38 +512,38 @@ class ShootController(AbstractModalDialogController):
         # Update text area
         if isinstance(index, tuple):
             index, yawIndex, pitchIndex = index
-            self._serializer.addWork(self._view.yawCurrentIndexLabel.setText, "%d/%d" % (yawIndex, self._model.mosaic.yawNbPicts))
-            self._serializer.addWork(self._view.yawNextIndexLabel.setText, "%d/%d" % (yawIndex, self._model.mosaic.yawNbPicts))
-            self._serializer.addWork(self._view.pitchCurrentIndexLabel.setText, "%d/%d" % (pitchIndex, self._model.mosaic.pitchNbPicts))
-            self._serializer.addWork(self._view.pitchNextIndexLabel.setText, "%d/%d" % (pitchIndex, self._model.mosaic.pitchNbPicts))
+            self._view.yawCurrentIndexLabel.setText("%d/%d" % (yawIndex, self._model.mosaic.yawNbPicts))
+            self._view.yawNextIndexLabel.setText("%d/%d" % (yawIndex, self._model.mosaic.yawNbPicts))
+            self._view.pitchCurrentIndexLabel.setText("%d/%d" % (pitchIndex, self._model.mosaic.pitchNbPicts))
+            self._view.pitchNextIndexLabel.setText("%d/%d" % (pitchIndex, self._model.mosaic.pitchNbPicts))
         else:
-            self._serializer.addWork(self._view.yawCurrentIndexLabel.setText, "%.1f" % yaw)
-            self._serializer.addWork(self._view.yawNextIndexLabel.setText, "%.1f" % yaw)
-            self._serializer.addWork(self._view.pitchCurrentIndexLabel.setText, "%.1f" % pitch)
-            self._serializer.addWork(self._view.pitchNextIndexLabel.setText, "%.1f" % pitch)
-        self._serializer.addWork(self._view.currentIndexLabel.setText, "%d/%d" % (index, self._model.scan.totalNbPicts))
-        self._serializer.addWork(self._view.nextIndexLabel.setText, "%d/%d" % (index, self._model.scan.totalNbPicts))
+            self._view.yawCurrentIndexLabel.setText("%.1f" % yaw)
+            self._view.yawNextIndexLabel.setText("%.1f" % yaw)
+            self._view.pitchCurrentIndexLabel.setText("%.1f" % pitch)
+            self._view.pitchNextIndexLabel.setText("%.1f" % pitch)
+        self._view.currentIndexLabel.setText("%d/%d" % (index, self._model.scan.totalNbPicts))
+        self._view.nextIndexLabel.setText("%d/%d" % (index, self._model.scan.totalNbPicts))
 
         # Update graphical area
         if status is not None:
-            self._serializer.addWork(self.__shootingScene.setPictureState, index, status)
+            self.__shootingScene.setPictureState(index, status)
         if next is True:
-            self._serializer.addWork(self.__shootingScene.selectNextPicture, index)
+            self.__shootingScene.selectNextPicture(index)
         else:
-            self._serializer.addWork(self.__shootingScene.selectNextPicture, index + 1)
+            self.__shootingScene.selectNextPicture(index + 1)
 
     def __shootingSequence(self, sequence, **kwargs):
         Logger().trace("ShootController.__shootingSequence()")
         if sequence == 'moving':
-            self._serializer.addWork(self._view.sequenceLabel.setText, _("Moving"))
+            self._view.sequenceLabel.setText(_("Moving"))
         elif sequence == 'stabilization':
-            self._serializer.addWork(self._view.sequenceLabel.setText, _("Stabilization"))
+            self._view.sequenceLabel.setText(_("Stabilization"))
         elif sequence == 'mirror':
-            self._serializer.addWork(self._view.sequenceLabel.setText, _("Mirror lockup"))
+            self._view.sequenceLabel.setText(_("Mirror lockup"))
         elif sequence == 'shutter':
             bracket = kwargs['bracket']
             totalNbPicts = self._model.camera.bracketingNbPicts
-            self._serializer.addWork(self._view.sequenceLabel.setText, _("Shutter - Picture") + " %d/%d" % (bracket, totalNbPicts))
+            self._view.sequenceLabel.setText(_("Shutter - Picture") + " %d/%d" % (bracket, totalNbPicts))
 
     def __refreshPos(self, yaw, pitch):
         """ Refresh position according to new pos.
@@ -550,7 +555,7 @@ class ShootController(AbstractModalDialogController):
         @type pitch: float
         """
         #Logger().trace("ShootController.__refreshPos()")
-        self._serializer.addWork(self.__shootingScene.setHeadPosition, yaw, pitch)
+        self.__shootingScene.setHeadPosition(yaw, pitch)
 
     # Helpers
     def __refreshNextPosition(self):
@@ -598,10 +603,10 @@ class ShootController(AbstractModalDialogController):
 
         # Join previous thread, if any
         if self.__thread is not None:
-            self.__thread.join()
+            self.__thread.wait()
 
         # Start new shooting thread
-        self.__thread = threading.Thread(target=self._model.start, name="Shooting")
+        self.__thread = ShootingThread(self._model)
         self.__thread.start()
 
     def __pauseShooting(self):
@@ -618,7 +623,7 @@ class ShootController(AbstractModalDialogController):
     def shutdown(self):
         super(ShootController, self).shutdown()
         if self.__thread is not None:
-            self.__thread.join()
+            self.__thread.wait()
 
     def refreshView(self):
         dataFlag = ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE')
@@ -632,3 +637,17 @@ class ShootController(AbstractModalDialogController):
             self._view.timerPushButton.setIcon(QtGui.QIcon(":/icons/button_ok.png"))
         else:
             self._view.timerPushButton.setIcon(QtGui.QIcon(":/icons/button_cancel.png"))
+
+
+class ShootingThread(QtCore.QThread):
+    """ Special thread starting shooting.
+    """
+    def __init__(self, model, parent=None):
+        """ Init the shooting thread.
+        """
+        QtCore.QThread.__init__(self, parent)
+        self.__model = model
+
+    def run(self):
+        threading.currentThread().setName("Shooting")
+        self.__model.start()

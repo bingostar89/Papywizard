@@ -77,8 +77,9 @@ class TotalFovController(AbstractModalDialogController):
 
     def _connectQtSignals(self):
         super(TotalFovController, self)._connectQtSignals()
-        QtCore.QObject.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
-        QtCore.QObject.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
+
+        self.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
+        self.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
 
     def _connectSignals(self):
         pass

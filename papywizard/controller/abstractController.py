@@ -68,7 +68,7 @@ else:
 class AbstractController(QtCore.QObject):
     """ Base class for controllers.
     """
-    def __init__(self, parent=None, model=None, serializer=None):
+    def __init__(self, parent=None, model=None):#, serializer=None):
         """ Init the controller.
 
         @param parent: parent controller
@@ -83,7 +83,7 @@ class AbstractController(QtCore.QObject):
         QtCore.QObject.__init__(self)
         self._parent = parent
         self._model = model
-        self._serializer = serializer
+        #self._serializer = serializer
 
         self._init()
 

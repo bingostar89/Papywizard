@@ -78,7 +78,7 @@ class BluetoothChooserController(AbstractModalDialogController):
     def _connectQtSignals(self):
         super(BluetoothChooserController, self)._connectQtSignals()
 
-        QtCore.QObject.connect(self._view.refreshPushButton, QtCore.SIGNAL("clicked()"), self.__onRefreshPushButtonClicked)
+        self.connect(self._view.refreshPushButton, QtCore.SIGNAL("clicked()"), self.__onRefreshPushButtonClicked)
 
     def _connectSignals(self):
         pass

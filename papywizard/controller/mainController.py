@@ -79,13 +79,14 @@ from papywizard.view.messageDialog import WarningMessageDialog, ErrorMessageDial
 class MainController(AbstractController):
     """ Main controller object.
     """
-    def __init__(self, model, serializer, logStream):
+    #def __init__(self, model, serializer, logStream):
+    def __init__(self, model, logStream):
         """ Init the controller.
 
         @param serializer: object used to serialize toolkit events
         @type serializer: {Serializer}
         """
-        AbstractController.__init__(self, None, model, serializer)
+        AbstractController.__init__(self, None, model)#, serializer)
         self.__logStream = logStream
 
         # Try to autoconnect to real hardware
@@ -173,7 +174,6 @@ class MainController(AbstractController):
         # Menus
         self.connect(self._view.actionFileImportPreset, QtCore.SIGNAL("activated()"), self.__onActionFileImportPresetActivated)
         self.connect(self._view.actionFileLoadStyleSheet, QtCore.SIGNAL("activated()"), self.__onActionFileLoadStyleSheetActivated)
-        #"on_quit_activate": gtk.main_quit,
 
         self.connect(self._view.actionHardwareConnect, QtCore.SIGNAL("toggled(bool)"), self.__onActionHardwareConnectToggled)
         self.connect(self._view.actionHardwareSetLimitYawMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitYawMinusActivated)
@@ -479,7 +479,7 @@ class MainController(AbstractController):
 
     def __onActionHelpViewLogActivated(self):
         Logger().trace("MainController.__onActionHelpViewLogActivated()")
-        controller = LoggerController(self, self._model, self._serializer)
+        controller = LoggerController(self, self._model)#, self._serializer)
         controller.appendHtml(self.__logStream.getHtml())
         self._view.releaseKeyboard()
         controller.exec_()
@@ -488,7 +488,7 @@ class MainController(AbstractController):
 
     def __onActionHelpAboutPapywizardActivated(self):
         Logger().trace("MainController.__onActionHelpAboutPapywizardActivated()")
-        controller = HelpAboutController(self, self._model, self._serializer)
+        controller = HelpAboutController(self, self._model)#, self._serializer)
         self._view.releaseKeyboard()
         controller.exec_()
         self._view.grabKeyboard()
@@ -676,7 +676,7 @@ class MainController(AbstractController):
             #self._view.configPushButton.setEnabled(False)
             self.setStatusbarMessage(_("Opening configuration dialog. Please wait..."))
             QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-            controller = ConfigController(self, self._model, self._serializer)
+            controller = ConfigController(self, self._model)#, self._serializer)
             controller.setSelectedTab(self.__lastConfigTabSelected)
         finally:
             #self._view.configPushButton.setEnabled(True)
@@ -709,7 +709,7 @@ class MainController(AbstractController):
             #self._view.shootPushButton.setEnabled(False)
             self.setStatusbarMessage(_("Opening shoot dialog. Please wait..."))
             QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-            controller = ShootController(self, self._model, self._serializer)
+            controller = ShootController(self, self._model)#, self._serializer)
             if self._view.windowState() & QtCore.Qt.WindowFullScreen:
                 controller._view.showFullScreen()
         finally:
@@ -829,7 +829,8 @@ class MainController(AbstractController):
         #Logger().trace("MainController.__refreshPos()")
         self.__yawPos = yaw
         self.__pitchPos = pitch
-        self._serializer.addWork(self.refreshView)
+        self._view.yawHeadPosLabel.setText("%.1f" % self.__yawPos)
+        self._view.pitchHeadPosLabel.setText("%.1f" % self.__pitchPos)
 
     # Interface
     def exec_(self):
