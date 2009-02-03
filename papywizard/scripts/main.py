@@ -64,7 +64,6 @@ from papywizard.view.icons import qInitResources, qCleanupResources
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.qLoggingFormatter import QSpaceColorFormatter
-#from papywizard.common.serializer import Serializer
 from papywizard.common.exception import HardwareError
 from papywizard.common.publisher import Publisher
 from papywizard.hardware.head import Head, HeadSimulation
@@ -94,11 +93,8 @@ class Papywizard(object):
     """ Main application class.
     """
     def __init__(self):
-        """ Init the application.
+        """ Init the Papywizard object.
         """
-        qInitResources()
-        self.__qtApp = QtGui.QApplication(sys.argv)
-
         self.logStream = LogBuffer()
         Logger().addStreamHandler(self.logStream, QSpaceColorFormatter)
 
@@ -107,14 +103,22 @@ class Papywizard(object):
         """
         Logger().info("Starting Papywizard...")
 
-        # Qt styles
+        qInitResources()
+        qtApp = QtGui.QApplication(sys.argv)
+
+        # Qt style sheet
         try:
             styleSheet = file(config.USER_STYLESHEET_FILE)
-            self.__qtApp.setStyleSheet(styleSheet.read())
+            qtApp.setStyleSheet(styleSheet.read())
             styleSheet.close()
-            Logger().info("User Style Sheet loaded")
         except IOError:
             Logger().warning("No user Style Sheet found")
+        styleSheet = qtApp.styleSheet()
+        if styleSheet:
+            if styleSheet.startsWith("file://"):
+                Logger().info("Style Sheet loaded from command line param.")
+            else:
+                Logger().info("User Style Sheet loaded")
 
         # Create hardware and model
         head = Head()
@@ -221,17 +225,11 @@ class Papywizard(object):
     def run(self):
         """ Run the appliction.
         """
-        #serializerTimer = QtCore.QTimer()
-        #self.__qtApp.connect(serializerTimer, QtCore.SIGNAL("timeout()"), self.__serializer.processWork)
-        #serializerTimer.start(config.SERIALIZER_REFRESH)
         if config.PUBLISHER_ENABLE:
             self.__publisher.start()
         Spy().start()
-        time.sleep(1)
-        if Spy().isFinished():
-            raise RuntimeError("Can't start Spy thread")
         Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
-        self.__qtApp.exec_()
+        self.__mainController.exec_()
 
     def shutdown(self):
         """ Shutdown the application.

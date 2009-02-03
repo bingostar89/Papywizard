@@ -834,8 +834,7 @@ class MainController(AbstractController):
 
     # Interface
     def exec_(self):
-        #QtCore.qApp.exec_()
-        pass
+        return QtGui.qApp.exec_()
 
     def shutdown(self):
         super(MainController, self).shutdown()
@@ -844,10 +843,10 @@ class MainController(AbstractController):
         else:
             self.__fullScreen = False
 
-    def setStatusbarMessage(self, message=None, timeout=0):
+    def setStatusbarMessage(self, message, timeout=0):
         """ Display a message on the statusbar.
 
-        @param message: message to display. If None, clear statusbar (use a clearStatusBar() method)
+        @param message: message to display
         @type message: str
 
         @param timeout: display message duration, in s (0 means forever)
