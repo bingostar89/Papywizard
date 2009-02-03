@@ -82,7 +82,7 @@ class SpyObject(QtCore.QThread):
         self.__model = model
         self.__run = False
         self.__suspend = False
-        self.__refresh = int(refresh / 1000.)
+        self.__refresh = int(refresh * 1000.)
         self.newPosSignal = Signal() # Use Qt signals
         try:
             self.__yaw, self.__pitch = self.__model.hardware.readPosition()
@@ -128,8 +128,6 @@ class SpyObject(QtCore.QThread):
         except HardwareError:
             Logger().exception("Spy.refresh(): can't read position")
 
-        return True
-
     def stop(self):
         """ Stop the thread.
         """
@@ -156,6 +154,8 @@ class SpyObject(QtCore.QThread):
 
     def isRunning(self):
         """ Test if spy is running.
+        
+        warning: this method overloads the QThread one!!!
 
         @return: True if running, False if not
         @rtype: bool
