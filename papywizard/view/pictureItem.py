@@ -114,12 +114,12 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
         """
         if self._index < self._nextIndex:
             innerColor = config.SHOOTING_COLOR_SCHEME['default'][self._state]
+        elif self._index == self._nextIndex:
+            innerColor = config.SHOOTING_COLOR_SCHEME['default']['%s-next' % self._state]
         else:
-            innerColor = config.SHOOTING_COLOR_SCHEME['default']["%s-toshoot" % self._state]
-        if self._index == self._nextIndex:
-            borderColor = config.SHOOTING_COLOR_SCHEME['default']['border-next']
-        else:
-            borderColor = config.SHOOTING_COLOR_SCHEME['default']['border']
+            innerColor = config.SHOOTING_COLOR_SCHEME['default']['%s-toshoot' % self._state]
+
+        borderColor = config.SHOOTING_COLOR_SCHEME['default']['border']
 
         return innerColor, borderColor
 

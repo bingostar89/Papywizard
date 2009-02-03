@@ -131,11 +131,11 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         self.addItem(self._headCrosshair)
 
         # Next position crosshair
-        self._nextCrosshair = CrosshairCusrsor()
-        self._nextCrosshair.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['next']))
-        self._nextCrosshair.setZValue(9998)
-        self._nextCrosshair.rotate(45.)
-        self.addItem(self._nextCrosshair)
+        #self._nextCrosshair = CrosshairCusrsor()
+        #self._nextCrosshair.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['next']))
+        #self._nextCrosshair.setZValue(9998)
+        #self._nextCrosshair.rotate(45.)
+        #self.addItem(self._nextCrosshair)
 
         self._init()
         self.update()
@@ -190,12 +190,12 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         for picture in self._pictures.itervalues():
             picture.setNextIndex(index)
 
-        # Update net position crosshair
-        if self._pictures.has_key(index):
-            nextPicture = self._pictures[index]
-            yaw = nextPicture.scenePos().x()
-            pitch = nextPicture.scenePos().y()
-            self._nextCrosshair.setPos(yaw, pitch)
+        # Update next position crosshair
+        #if self._pictures.has_key(index):
+            #nextPicture = self._pictures[index]
+            #yaw = nextPicture.scenePos().x()
+            #pitch = nextPicture.scenePos().y()
+            #self._nextCrosshair.setPos(yaw, pitch)
 
         self.update()
 
