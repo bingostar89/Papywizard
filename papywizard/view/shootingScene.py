@@ -197,7 +197,7 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
             #pitch = nextPicture.scenePos().y()
             #self._nextCrosshair.setPos(yaw, pitch)
 
-        #self.update()
+        self.update()
 
     def clear(self):
         """ Clear the shooting area
@@ -205,8 +205,8 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         #print "ShootingScene.clear()"
         for picture in self._pictures.itervalues():
             picture.setState(state='preview')
-            picture.setNextIndex(0)
-        #self.update()
+            picture.setNextIndex(1)
+        self.update()
 
     def setHeadPosition(self, yaw, pitch):
         """ Set the current head position.
@@ -226,7 +226,7 @@ class MosaicShootingScene(AbstractShootingScene):
 
     # Interface
     def addPicture(self, index, yaw, pitch, state='preview'):
-        #Logger().debug(""MosaicShootingScene.addPicture(%.1f, %.1f, state=%s)" % (yaw, pitch, state))
+        #Logger().debug("MosaicShootingScene.addPicture(): index=%d, yaw=%.1f, pitch%.1f, state=%s" % (index, yaw, pitch, state))
 
         # Check if picture already in list
         if self._pictures.has_key(index):
