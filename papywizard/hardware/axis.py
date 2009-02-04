@@ -58,6 +58,8 @@ __revision__ = "$Id$"
 import time
 import threading
 
+from PyQt4 import QtCore
+
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
@@ -76,8 +78,8 @@ class AbstractAxis(object):
         super(AbstractAxis, self).__init__()
 
         self._num = num
-        self._plusLimit = 9999.9
-        self._minusLimit = -9999.9
+        self._upperLimit = 9999.9
+        self._lowerLimit = -9999.9
         self._manualSpeed = None
 
     def _checkLimits(self, pos):
@@ -86,9 +88,9 @@ class AbstractAxis(object):
         @param pos: position to check
         @type pos: float
         """
-        if not self._minusLimit <= pos <= self._plusLimit:
+        if not self._lowerLimit <= pos <= self._upperLimit:
             raise HardwareError("Axis %d limit reached: %.1f not in [%.1f:%.1f]" % \
-                                 (self._num, pos, self._minusLimit, self._plusLimit))
+                                 (self._num, pos, self._lowerLimit, self._upperLimit))
 
     def init(self):
         """ Init the axis hardware.
@@ -117,17 +119,17 @@ class AbstractAxis(object):
         @type limit: float
         """
         if dir_ == '+':
-            self._plusLimit = limit
+            self._upperLimit = limit
         elif dir_ == '-':
-            self._minusLimit = limit
+            self._lowerLimit = limit
         else:
             raise ValueError("dir must be in ('+', '-')")
 
     def clearLimits(self):
         """ Clear all limits.
         """
-        self._plusLimit = 9999.9
-        self._minusLimit = -9999.9
+        self._upperLimit = 9999.9
+        self._lowerLimit = -9999.9
 
     def read(self):
         """ Return the current position of axis.
