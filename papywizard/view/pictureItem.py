@@ -179,8 +179,7 @@ class MosaicPictureItem(AbstractPictureItem):
         x, y, w, h = self._computeRect()
         innerColor, borderColor = self._computeColors()
         painter.fillRect(x, y, w, h, QtGui.QColor(*innerColor))
-        #painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
-        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['border'])), self._computeBorderWidth()))
+        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
         painter.drawRect(x, y, w, h)
 
 
@@ -206,8 +205,7 @@ class PresetPictureItem(AbstractPictureItem):
         path = QtGui.QPainterPath()
         path.addEllipse(x, y, w, h)
         painter.fillPath(path, QtGui.QColor(*innerColor))
-        #painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
-        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['border'])), self._computeBorderWidth()))
+        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
         painter.drawEllipse(x, y, w, h)
 
 
