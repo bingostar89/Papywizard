@@ -87,52 +87,39 @@ class AbstractScan(object):
 
     totalNbPicts = property(__getTotalNbPicts)
 
+    def _getIndex(self):
+        """ Get the current position index.
+        """
+        return self._index
+
+    def _setIndex(self, index):
+        """ Set the current position index.
+
+        @param index: index of the current position
+        @type index: int
+        """
+        if 1 <= index <= len(self._positions):
+            self._index = index
+        else:
+            raise IndexError("index out of range")
+
+    index = property(_getIndex, _setIndex)
+
     # Helpers
 
     # Interface
     def generatePositions(self):
-        """ Generate all (yaw, pitch) positions.
+        """ Generate all positions.
         """
         raise NotImplementedError
 
-    def iterPositions(self):
-        """ Iteration over all shooting positions.
-        """
-        raise NotImplementedError
-
-    def getPositionIndex(self):
-        """ Get the index of the current position position.
-
-        @return: index of the current position
-        @rtype: int
-        """
-        return self._index
-
-    def setNextPositionIndex(self, index):
-        """ Set the next position to index.
-
-        @param index: index of the next position
-        @type index: int
-        """
-        if 1 <= index <= len(self._positions):
-            self._index = index - 1 # Next iteration will increase index by 1
-        else:
-            raise IndexError("index out of range")
-
-    def getPositionAtIndex(self, index):
-        """ Get complete position of the specified index.
+    def getCurrentPosition(self):
+        """ Get the current position.
 
         @param index: index of the next position
         @type index: int
         """
         raise NotImplementedError
-
-    #def getCurrentPosition(self):
-        #if self.__forceNewShootingIndex:
-            #index = self._index + 1
-        #else:
-            #index = self._index
-        #return self.getPositionAtIndex(index)
 
 
 class MosaicScan(AbstractScan):
@@ -269,6 +256,7 @@ class MosaicScan(AbstractScan):
     #Interface
     def generatePositions(self):
         self._positions = []
+        self._index = 1
         if self.startFrom == 'start':
             yawStart = self.yawStart
             pitchStart = self.pitchStart
@@ -328,23 +316,9 @@ class MosaicScan(AbstractScan):
                     pitchIndexInc *= -1
                     pitchIndex += pitchIndexInc
 
-    def iterPositions(self):
-        """ Iterate of all positions.
-
-        yield (index, yawIndex, pitchIndex), (yaw, pitch)
-        """
-        self._index = 1
-        while True:
-            try:
-                yawIndex, pitchIndex, yaw, pitch = self._positions[self._index - 1]
-                yield (self._index, yawIndex, pitchIndex), (yaw, pitch)
-            except IndexError:
-                raise StopIteration
-            self._index += 1
-
-    def getPositionAtIndex(self, index):
-        yawIndex, pitchIndex, yaw, pitch = self._positions[index - 1]
-        return (index, yawIndex, pitchIndex), (yaw, pitch)
+    def getCurrentPosition(self):
+        yawIndex, pitchIndex, yaw, pitch = self._positions[self._index - 1]
+        return (self._index, yawIndex, pitchIndex), (yaw, pitch)
 
     def getYawResolution(self):
         """ Compute the total pano yaw resolution
@@ -396,24 +370,11 @@ class PresetScan(AbstractScan):
     # Interface
     def generatePositions(self):
         self._positions = []
+        self._index = 1
         preset = self.__presets.getByName(self.name)
         Logger().debug("PresetScan.generatePositions(): preset=%s" % preset)
         self._positions = preset.getPositions()
 
-    def iterPositions(self):
-        """ Iteration over all shooting positions.
-
-        yield index, (yaw, pitch)
-        """
-        self._index = 1
-        while True:
-            try:
-                yaw, pitch = self._positions[self._index - 1]
-                yield self._index, (yaw, pitch)
-            except IndexError:
-                raise StopIteration
-            self._index += 1
-
-    def getPositionAtIndex(self, index):
-        yaw, pitch = self._positions[index - 1]
-        return index, (yaw, pitch)
+    def getCurrentPosition(self):
+        yaw, pitch = self._positions[self._index - 1]
+        return self._index, (yaw, pitch)
