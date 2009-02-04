@@ -128,8 +128,14 @@ class ShootController(AbstractModalDialogController):
 
             # Populate shooting area with preview positions
             self._model.mosaic.generatePositions()
-            for (index, yawIndex, pitchIndex), (yaw, pitch) in self._model.mosaic.iterPositions():
-                self.__shootingScene.addPicture(index, yaw, pitch, 'preview')
+            #for (index, yawIndex, pitchIndex), (yaw, pitch) in self._model.mosaic.iterPositions():
+            while True:
+                try:
+                    (index, yawIndex, pitchIndex), (yaw, pitch) = self._model.mosaic.getCurrentPosition()
+                    self.__shootingScene.addPicture(index, yaw, pitch, 'preview')
+                    self._model.mosaic.index += 1
+                except IndexError:
+                    break
         else:
             self.__shootingScene = PresetShootingScene(0, 360,
                                                        -90, 90,
@@ -139,8 +145,14 @@ class ShootController(AbstractModalDialogController):
 
             # Populate shooting area with preview positions
             self._model.preset.generatePositions()
-            for index, (yaw, pitch) in self._model.preset.iterPositions():
-                self.__shootingScene.addPicture(index, yaw, pitch, 'preview')
+            #for index, (yaw, pitch) in self._model.preset.iterPositions():
+            while True:
+                try:
+                    index, (yaw, pitch) = self._model.preset.getCurrentPosition()
+                    self.__shootingScene.addPicture(index, yaw, pitch, 'preview')
+                    self._model.mosaic.index += 1
+                except IndexError:
+                    break
 
         # Connect picture clicked signal
         self.__shootingScene.pictureClicked.connect(self.__onPictureClicked)
@@ -172,37 +184,32 @@ class ShootController(AbstractModalDialogController):
         self.connect(self._view.pauseResumePushButton, QtCore.SIGNAL("clicked()"), self.__onPauseResumePushButtonClicked)
         self.connect(self._view.stopPushButton, QtCore.SIGNAL("clicked()"), self.__onStopPushButtonClicked)
 
-        self.connect(self, QtCore.SIGNAL("shootingProgressBarValueChanged(int)"),
-                     self._view.shootingProgressBar, QtCore.SLOT("setValue(int)"))
-        self.connect(self, QtCore.SIGNAL("totalProgressBarValueChanged(int)"),
-                     self._view.totalProgressBar, QtCore.SLOT("setValue(int)"))
-
     def _connectSignals(self):
         Spy().newPosSignal.connect(self.__refreshPos)
-        self._model.startedSignal.connect(self.__shootingStarted)
-        self._model.pausedSignal.connect(self.__shootingPaused)
-        self._model.resumedSignal.connect(self.__shootingResumed)
-        self._model.stoppedSignal.connect(self.__shootingStopped)
-        self._model.waitingSignal.connect(self.__shootingWaiting)
-        self._model.progressSignal.connect(self.__shootingProgress)
-        self._model.repeatSignal.connect(self.__shootingRepeat)
-        self._model.updatePositionSignal.connect(self.__shootingUpdatePosition)
-        self._model.sequenceSignal.connect(self.__shootingSequence)
+        self.connect(self._model, QtCore.SIGNAL("started"), self.__shootingStarted)
+        self.connect(self._model, QtCore.SIGNAL("paused"), self.__shootingPaused)
+        self.connect(self._model, QtCore.SIGNAL("resumed"), self.__shootingResumed)
+        self.connect(self._model, QtCore.SIGNAL("stopped"), self.__shootingStopped)
+        self.connect(self._model, QtCore.SIGNAL("waiting"), self.__shootingWaiting)
+        self.connect(self._model, QtCore.SIGNAL("progress"), self.__shootingProgress)
+        self.connect(self._model, QtCore.SIGNAL("repeat"), self.__shootingRepeat)
+        self.connect(self._model, QtCore.SIGNAL("update"), self.__shootingUpdate)
+        self.connect(self._model, QtCore.SIGNAL("sequence"), self.__shootingSequence)
 
         self._view.keyPressEvent = self.__onKeyPressed
         self._view.keyReleaseEvent = self.__onKeyReleased
 
     def _disconnectSignals(self):
         Spy().newPosSignal.disconnect(self.__refreshPos)
-        self._model.startedSignal.disconnect(self.__shootingStarted)
-        self._model.pausedSignal.disconnect(self.__shootingPaused)
-        self._model.resumedSignal.disconnect(self.__shootingResumed)
-        self._model.stoppedSignal.disconnect(self.__shootingStopped)
-        self._model.waitingSignal.disconnect(self.__shootingWaiting)
-        self._model.progressSignal.disconnect(self.__shootingProgress)
-        self._model.repeatSignal.connect(self.__shootingRepeat)
-        self._model.updatePositionSignal.disconnect(self.__shootingUpdatePosition)
-        self._model.sequenceSignal.disconnect(self.__shootingSequence)
+        self.disconnect(self._model, QtCore.SIGNAL("started"), self.__shootingStarted)
+        self.disconnect(self._model, QtCore.SIGNAL("paused"), self.__shootingPaused)
+        self.disconnect(self._model, QtCore.SIGNAL("resumed"), self.__shootingResumed)
+        self.disconnect(self._model, QtCore.SIGNAL("stopped"), self.__shootingStopped)
+        self.disconnect(self._model, QtCore.SIGNAL("waiting"), self.__shootingWaiting)
+        self.disconnect(self._model, QtCore.SIGNAL("progress"), self.__shootingProgress)
+        self.disconnect(self._model, QtCore.SIGNAL("repeat"), self.__shootingRepeat)
+        self.disconnect(self._model, QtCore.SIGNAL("update"), self.__shootingUpdate)
+        self.disconnect(self._model, QtCore.SIGNAL("sequence"), self.__shootingSequence)
 
     # Callbacks Qt
     def _onCloseEvent(self, event):
@@ -405,8 +412,9 @@ class ShootController(AbstractModalDialogController):
     def __onPictureClicked(self, index):
         Logger().trace("ShootController.__onPictureClicked(): index=%d" % index)
         if self._model.isPaused():
-            self._model.setNextPositionIndex(index)
+            self._model.scan.index = index
             self.__refreshNextPosition()
+            self._model.forceNewPosition()
 
     def __updateShootingElapsedTime(self):
         #Logger().trace("ShootController.__updateShootingElapsedTime()")
@@ -421,8 +429,8 @@ class ShootController(AbstractModalDialogController):
     def __shootingStarted(self):
         Logger().trace("ShootController.__shootingStarted()")
         self.__shootingScene.clear()
-        self.emit(QtCore.SIGNAL("shootingProgressBarValueChanged(int)"), 0)
-        self.emit(QtCore.SIGNAL("totalProgressBarValueChanged(int)"), 0)
+        self._view.shootingProgressBar.setValue(0)
+        self._view.totalProgressBar.setValue(0)
         if self._model.timerRepeatEnable:
             self._view.repeatLabel.setText("--/%d" % self._model.timerRepeat)
         else:
@@ -496,9 +504,9 @@ class ShootController(AbstractModalDialogController):
     def __shootingProgress(self, shootingProgress=None, totalProgress=None):
         Logger().trace("ShootController.__shootingProgress()")
         if shootingProgress is not None:
-            self.emit(QtCore.SIGNAL("shootingProgressBarValueChanged(int)"), int(round(shootingProgress * 100)))
+            self._view.shootingProgressBar.setValue(int(round(shootingProgress * 100)))
         if totalProgress is not None:
-           self.emit(QtCore.SIGNAL("totalProgressBarValueChanged(int)"), int(round(totalProgress * 100)))
+           self._view.totalProgressBar.setValue(int(round(totalProgress * 100)))
 
     def __shootingRepeat(self, repeat):
         Logger().trace("ShootController.__shootingRepeat()")
@@ -506,8 +514,8 @@ class ShootController(AbstractModalDialogController):
         if self._model.timerRepeatEnable:
             self._view.repeatLabel.setText("%d/%d" % (repeat, self._model.timerRepeat))
 
-    def __shootingUpdatePosition(self, index, yaw, pitch, status=None, next=False):
-        Logger().trace("ShootController.__shootingUpdatePosition()")
+    def __shootingUpdate(self, index, yaw, pitch, state=None, next=False):
+        Logger().trace("ShootController.__shootingUpdate()")
 
         # Update text area
         if isinstance(index, tuple):
@@ -525,14 +533,14 @@ class ShootController(AbstractModalDialogController):
         self._view.nextIndexLabel.setText("%d/%d" % (index, self._model.scan.totalNbPicts))
 
         # Update graphical area
-        if status is not None:
-            self.__shootingScene.setPictureState(index, status)
+        if state is not None:
+            self.__shootingScene.setPictureState(index, state)
         if next is True:
             self.__shootingScene.selectNextPicture(index)
-        else:
+        elif next is False:
             self.__shootingScene.selectNextPicture(index + 1)
 
-    def __shootingSequence(self, sequence, **kwargs):
+    def __shootingSequence(self, sequence, bracket=None):
         Logger().trace("ShootController.__shootingSequence()")
         if sequence == 'moving':
             self._view.sequenceLabel.setText(_("Moving"))
@@ -541,7 +549,6 @@ class ShootController(AbstractModalDialogController):
         elif sequence == 'mirror':
             self._view.sequenceLabel.setText(_("Mirror lockup"))
         elif sequence == 'shutter':
-            bracket = kwargs['bracket']
             totalNbPicts = self._model.camera.bracketingNbPicts
             self._view.sequenceLabel.setText(_("Shutter - Picture") + " %d/%d" % (bracket, totalNbPicts))
 
@@ -559,8 +566,7 @@ class ShootController(AbstractModalDialogController):
 
     # Helpers
     def __refreshNextPosition(self):
-        index = self._model.getShootingIndex() # getNexPositionIndex()
-        index, (yaw, pitch) = self._model.scan.getPositionAtIndex(index)
+        index, (yaw, pitch) = self._model.scan.getCurrentPosition()
 
         # Update text area
         if isinstance(index, tuple):
@@ -578,24 +584,24 @@ class ShootController(AbstractModalDialogController):
     def __rewindShootingPosition(self):
         """
         """
-        index = self._model.getShootingIndex()
-        Logger().debug("ShootController.__rewindShootingPosition(): old index=%d" % index)
+        Logger().debug("ShootController.__rewindShootingPosition(): old index=%d" % self._model.scan.index)
         try:
-            self._model.setNextPositionIndex(index - 1)
+            self._model.scan.index -= 1
             self.__refreshNextPosition()
-            Logger().debug("ShootController.__rewindShootingPosition():new index=%d" % (index - 1))
+            self._model.forceNewPosition()
+            Logger().debug("ShootController.__rewindShootingPosition(): new index=%d" % self._model.scan.index)
         except IndexError:
             Logger().exception("ShootController.__rewindShootingPosition()", debug=True)
 
     def __forwardShootingPosition(self):
         """
         """
-        index = self._model.getShootingIndex()
-        Logger().debug("ShootController.__forwardShootingPosition(): old index=%d" % index)
+        Logger().debug("ShootController.__forwardShootingPosition(): old index=%d" % self._model.scan.index)
         try:
-            self._model.setNextPositionIndex(index + 1)
+            self._model.scan.index += 1
             self.__refreshNextPosition()
-            Logger().debug("ShootController.__forwardShootingPosition(): new index=%d" % (index + 1))
+            self._model.forceNewPosition()
+            Logger().debug("ShootController.__forwardShootingPosition(): new index=%d" % self._model.scan.index)
         except IndexError:
             Logger().exception("ShootController.__forwardShootingPosition()", debug=True)
 

@@ -52,7 +52,8 @@ Implements
 __revision__ = "$Id$"
 
 import time
-import threading
+
+from PyQt4 import QtCore
 
 from papywizard.common import config
 from papywizard.common.helpers import hmsAsStrToS, sToHmsAsStr
@@ -65,10 +66,10 @@ from papywizard.model.data import MosaicData, PresetData
 from papywizard.model.scan import MosaicScan, PresetScan
 
 
-class Shooting(object):
+class Shooting(QtCore.QObject):
     """ Shooting model.
     """
-    def __init__(self, realHardware, simulatedHardware):
+    def __init__(self, realHardware, simulatedHardware, parent=None):
         """ Init the object.
 
         @param realHardware: real hardware head
@@ -77,12 +78,13 @@ class Shooting(object):
         @param simulatedHardware: simulated hardware head
         @type simulatedHardware: {HeadSimulation}
         """
+        QtCore.QObject.__init__(self, parent)
         self.__shooting = False
         self.__pause = False
         self.__paused = False
         self.__stop = False
         self.__stepByStep = False
-        self.__forceNewShootingIndex = False
+        self.__forceNewPosition = False
         self.__startTime = None
         self.__pauseTime = None
         self.__totalPausedTime = 0.
@@ -91,20 +93,9 @@ class Shooting(object):
         self.realHardware = realHardware
         self.simulatedHardware = simulatedHardware
         self.hardware = self.simulatedHardware
-        self.switchToRealHardwareSignal = Signal()
+        self.switchToRealHardwareSignal = Signal() # Use PyQt signal
 
-        # Shooting sequence signals
-        self.startedSignal = Signal()
-        self.resumedSignal = Signal()
-        self.pausedSignal = Signal()
-        self.stoppedSignal = Signal()
-        self.waitingSignal = Signal()
-        self.progressSignal = Signal()
-        self.repeatSignal = Signal()
-        self.updatePositionSignal = Signal()
-        self.sequenceSignal = Signal()
-
-        # Model
+        # Sub-models
         self.camera = Camera()
         self.mosaic = MosaicScan(self)
         self.preset = PresetScan(self)
@@ -310,23 +301,8 @@ class Shooting(object):
         """
         self.__stepByStep = flag
 
-    def getShootingIndex(self):
-        """ Get the index of the current shooting position.
-
-        @return: index of the current shooting position
-        @rtype: int
-        """
-        index = self.scan.getPositionIndex()
-        if self.__forceNewShootingIndex:
-            return index + 1
-        else:
-            return index
-
-    def setNextPositionIndex(self, index):
-        """ Set the next position index.
-        """
-        self.scan.setNextPositionIndex(index)
-        self.__forceNewShootingIndex = True
+    def forceNewPosition(self):
+        self.__forceNewPosition = True
 
     def getShootingElapsedTime(self):
         """ Get the shooting elapsed time.
@@ -343,34 +319,38 @@ class Shooting(object):
     def start(self):
         """ Start pano shooting.
         """
-        def checkPauseStop(pause=True, stop=True):
-            """ Check if pause or stop requested.
+        def checkPause():
+            """ Check if pause requested.
             """
-            if pause and self.__pause:
-                Logger().info("Pause")
+            if self.__pause:
+                Logger().info("Pause shooting")
                 self.__pauseTime = time.time()
                 self.__paused = True
-                self.pausedSignal.emit()
+                self.emit(QtCore.SIGNAL("paused"))
                 while self.__pause:
                     time.sleep(0.1)
                 self.__paused = False
-                self.resumedSignal.emit()
+                self.emit(QtCore.SIGNAL("resumed"))
                 self.__totalPausedTime += time.time() - self.__pauseTime
-                Logger().info("Resume")
-            if stop and self.__stop:
-                Logger().info("Stop")
+                Logger().info("Resume shooting")
+
+        def checkStop():
+            """ Check if stop requested.
+            """
+            if self.__stop:
+                Logger().info("Stop shooting")
                 raise StopIteration
 
         Logger().trace("Shooting.start()")
+        self.scan.index = 1
         self.__startTime = time.time()
         self.__totalPausedTime = 0.
-        self.startedSignal.emit()
-
         self.__stop = False
         self.__pause = False
         self.__paused = False
         self.__shooting = True
-        self.progressSignal.emit(0., 0.)
+        self.emit(QtCore.SIGNAL("started"))
+        self.emit(QtCore.SIGNAL("progress"), 0., 0.)
 
         if self.cameraOrientation == 'portrait':
             roll = 90.
@@ -395,7 +375,7 @@ class Shooting(object):
                   'lensType': "%s" % self.camera.lens.type_,
                   'focal': "%.1f" % self.camera.lens.focal}
 
-        Logger().info("Starting shoot process...")
+        Logger().info("Start shooting process...")
         try:
 
             # Timer after
@@ -404,10 +384,10 @@ class Shooting(object):
                 remainingTime = self.timerAfter - (time.time() - initialTime)
                 while remainingTime > 0:
                     Logger().debug("Shooting.start(): start in %s" % sToHmsAsStr(remainingTime))
-                    self.waitingSignal.emit(remainingTime)
+                    self.emit(QtCore.SIGNAL("waiting"), remainingTime)
                     time.sleep(1)
 
-                    # Check pause or stop
+                    # Check only stop
                     checkPauseStop(pause=False)
 
                     remainingTime = self.timerAfter - (time.time() - initialTime)
@@ -436,40 +416,56 @@ class Shooting(object):
 
                 startTime = time.time()
                 Logger().debug("Shooting.start(): repeat %d/%d" % (repeat, numRepeat))
-                self.repeatSignal.emit(repeat)
-                self.progressSignal.emit(0.)
+                self.emit(QtCore.SIGNAL("repeat"), repeat)
+                self.emit(QtCore.SIGNAL("progress"), 0., None)
 
                 # Loop over all positions
-                for index, (yaw, pitch) in self.scan.iterPositions(): # Use while True + getCurrentPosition()?
-                    try:
-                        if isinstance(index, tuple):
-                            index_, yawIndex, pitchIndex = index
-                        else:
-                            index_ = index
+                index, (yaw, pitch) = self.scan.getCurrentPosition()
+                if isinstance(index, tuple):
+                    index_, yawIndex, pitchIndex = index
+                else:
+                    index_ = index
+                Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
+                self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
 
-                        Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
-                        self.__forceNewShootingIndex = False
-                        self.updatePositionSignal.emit(index, yaw, pitch, next=True)
+                while True:
+                    try:
+                        #index, (yaw, pitch) = self.scan.getCurrentPosition()
+                        #if isinstance(index, tuple):
+                            #index_, yawIndex, pitchIndex = index
+                        #else:
+                            #index_ = index
+                        #Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
+                        #self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
+
+                        self.__forceNewPosition = False
 
                         Logger().info("Moving")
-                        self.sequenceSignal.emit('moving')
+                        self.emit(QtCore.SIGNAL("sequence"), 'moving', None)
                         self.hardware.gotoPosition(yaw, pitch)
 
                         Logger().info("Stabilization")
-                        self.sequenceSignal.emit('stabilization')
+                        self.emit(QtCore.SIGNAL("sequence"), 'stabilization', None)
                         time.sleep(self.stabilizationDelay)
 
-                        # Test manual shooting flag (use a function)
+                        # Test step-by-step flag (use a function)
                         if self.__stepByStep and not self.__stop:
                             self.__pause = True
                             Logger().info("Wait for manual shooting trigger...")
 
-                        # Check pause or stop
-                        checkPauseStop()
+                        checkPause()
+                        checkStop()
 
                         # If a new shooting position has been requested (rewind/forward),
-                        # we force a new iteration to get the new position
-                        if self.__forceNewShootingIndex:
+                        # we get the new position and start over
+                        if self.__forceNewPosition:
+                            index, (yaw, pitch) = self.scan.getCurrentPosition()
+                            if isinstance(index, tuple):
+                                index_, yawIndex, pitchIndex = index
+                            else:
+                                index_ = index
+                            Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
+                            self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
                             continue
 
                         # Take pictures
@@ -478,39 +474,26 @@ class Shooting(object):
                             # Mirror lockup sequence
                             if self.camera.mirrorLockup:
                                 Logger().info("Mirror lockup")
-                                self.sequenceSignal.emit('mirror')
+                                self.emit(QtCore.SIGNAL("sequence"), 'mirror', None)
                                 self.hardware.shoot(self.stabilizationDelay)
 
                             # Take pictures
                             Logger().info("Shutter cycle")
                             Logger().debug("Shooting.start(): pict #%d of %d" % (bracket, self.scan.totalNbPicts))
-                            self.sequenceSignal.emit('shutter', bracket=bracket)
+                            self.emit(QtCore.SIGNAL("sequence"), 'shutter', bracket)
                             self.hardware.shoot(self.camera.timeValue)
 
                             # Add image to the xml data file
                             data.addPicture(bracket, yaw, pitch, roll)
 
-                            # Check only stop
-                            checkPauseStop(pause=False)
+                            checkStop()
 
                         # Update global shooting progression
                         shootingProgress = float(index_) / float(self.scan.totalNbPicts)
                         totalProgress = (repeat - 1) * self.scan.totalNbPicts + index_
                         totalProgress /= float(numRepeat * self.scan.totalNbPicts)
-                        self.progressSignal.emit(shootingProgress, totalProgress)
-                        self.updatePositionSignal.emit(index, yaw, pitch, status='ok')
-
-                        # Test manual shooting flag (skipped if timeValue was 0.)
-                        if self.camera.timeValue:
-                            if self.__stepByStep and not self.__stop:
-                                self.__pause = True
-                                Logger().info("Wait for manual shooting trigger...")
-
-                        # Check pause or stop
-                        checkPauseStop()
-
-                        #if not self.__forceNewShootingIndex:
-                            #self.updatePositionSignal.emit(index, yaw, pitch, status='ok', next=False)
+                        self.emit(QtCore.SIGNAL("progress"), shootingProgress, totalProgress)
+                        self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, 'ok', None)
 
                     except HardwareError:
                         self.hardware.stopAxis()
@@ -524,29 +507,49 @@ class Shooting(object):
                         shootingProgress = float(index_) / float(self.scan.totalNbPicts)
                         totalProgress = (repeat - 1) * self.scan.totalNbPicts + index_
                         totalProgress /= float(numRepeat * self.scan.totalNbPicts)
-                        self.progressSignal.emit(shootingProgress, totalProgress)
-                        self.updatePositionSignal.emit(index, yaw, pitch, status='error')
+                        self.emit(QtCore.SIGNAL("progress"), shootingProgress, shootingProgress)
+                        self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, 'error', None)
 
-                        # Test manual shooting flag
-                        if self.__stepByStep and not self.__stop:
-                            self.__pause = True
-                            Logger().info("Wait for manual shooting trigger...")
+                    # Next position
+                    try:
+                        self.scan.index += 1
+                    except IndexError:
+                        break # Go to pause mode to allow reshooting pos at the end of pano,
+                              # and emit update so the next position is index + 1 (next=False)
+                              # Do not break, but use a flag, which will be tested at the end
+                    index, (yaw, pitch) = self.scan.getCurrentPosition()
+                    if isinstance(index, tuple):
+                        index_, yawIndex, pitchIndex = index
+                    else:
+                        index_ = index
+                    Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
+                    self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
 
-                        # Check pause or stop
-                        checkPauseStop()
+                    # Test step-by-step flag
+                    if self.__stepByStep and not self.__stop:
+                        self.__pause = True
+                        Logger().info("Wait for manual shooting trigger...")
 
-                        #if not self.__forceNewShootingIndex:
-                            #self.updatePositionSignal.emit(index, yaw, pitch, status='error', next=False)
+                    checkPause()
+                    checkStop()
+
+                    if self.__forceNewPosition:
+                        index, (yaw, pitch) = self.scan.getCurrentPosition()
+                        if isinstance(index, tuple):
+                            index_, yawIndex, pitchIndex = index
+                        else:
+                            index_ = index
+                        Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
+                        self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
 
                 if repeat < numRepeat:
                     remainingTime = self.timerEvery - (time.time() - startTime)
                     while remainingTime > 0:
                         Logger().debug("Shooting.start(): restart in %s" % sToHmsAsStr(remainingTime))
-                        self.waitingSignal.emit(remainingTime)
+                        self.emit(QtCore.SIGNAL("waiting"), remainingTime)
                         time.sleep(1)
 
-                        # Check pause or stop
-                        checkPauseStop(pause=False)
+                        checkStop()
 
                         remainingTime = self.timerEvery - (time.time() - startTime)
 
@@ -562,8 +565,11 @@ class Shooting(object):
             status = 'ok'
             Logger().info("Shoot process finished")
 
+            # Remove the next status of the last shot position
+            self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, False)
+
         self.__shooting = False
-        self.stoppedSignal.emit(status)
+        self.emit(QtCore.SIGNAL("stopped"), status)
 
     def isShooting(self):
         """ Test if shooting is running.
