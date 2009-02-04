@@ -365,14 +365,14 @@ class ShootController(AbstractModalDialogController):
 
     def __onDataPushButtonClicked(self):
         Logger().trace("ShootController.__onDataPushButtonClicked()")
-        controller = ConfigController(self, self._model)#, self._serializer)
+        controller = ConfigController(self, self._model)
         controller.selectTab(5, disable=True)
         response = controller.exec_()
         self.refreshView()
 
     def __onTimerPushButtonClicked(self):
         Logger().trace("ShootController.__onTimerPushButtonClicked()")
-        controller = ConfigController(self, self._model)#, self._serializer)
+        controller = ConfigController(self, self._model)
         controller.selectTab(6, disable=True)
         response = controller.exec_()
         if self._model.timerRepeatEnable:

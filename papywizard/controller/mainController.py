@@ -79,14 +79,10 @@ from papywizard.view.messageDialog import WarningMessageDialog, ErrorMessageDial
 class MainController(AbstractController):
     """ Main controller object.
     """
-    #def __init__(self, model, serializer, logStream):
     def __init__(self, model, logStream):
         """ Init the controller.
-
-        @param serializer: object used to serialize toolkit events
-        @type serializer: {Serializer}
         """
-        AbstractController.__init__(self, None, model)#, serializer)
+        AbstractController.__init__(self, None, model)
         self.__logStream = logStream
 
         # Try to autoconnect to real hardware
@@ -479,7 +475,7 @@ class MainController(AbstractController):
 
     def __onActionHelpViewLogActivated(self):
         Logger().trace("MainController.__onActionHelpViewLogActivated()")
-        controller = LoggerController(self, self._model)#, self._serializer)
+        controller = LoggerController(self, self._model)
         controller.appendHtml(self.__logStream.getHtml())
         self._view.releaseKeyboard()
         controller.exec_()
@@ -488,7 +484,7 @@ class MainController(AbstractController):
 
     def __onActionHelpAboutPapywizardActivated(self):
         Logger().trace("MainController.__onActionHelpAboutPapywizardActivated()")
-        controller = HelpAboutController(self, self._model)#, self._serializer)
+        controller = HelpAboutController(self, self._model)
         self._view.releaseKeyboard()
         controller.exec_()
         self._view.grabKeyboard()
@@ -676,7 +672,7 @@ class MainController(AbstractController):
             #self._view.configPushButton.setEnabled(False)
             self.setStatusbarMessage(_("Opening configuration dialog. Please wait..."))
             QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-            controller = ConfigController(self, self._model)#, self._serializer)
+            controller = ConfigController(self, self._model)
             controller.setSelectedTab(self.__lastConfigTabSelected)
         finally:
             #self._view.configPushButton.setEnabled(True)
@@ -709,7 +705,7 @@ class MainController(AbstractController):
             #self._view.shootPushButton.setEnabled(False)
             self.setStatusbarMessage(_("Opening shoot dialog. Please wait..."))
             QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-            controller = ShootController(self, self._model)#, self._serializer)
+            controller = ShootController(self, self._model)
             if self._view.windowState() & QtCore.Qt.WindowFullScreen:
                 controller._view.showFullScreen()
         finally:

@@ -132,11 +132,7 @@ class Papywizard(object):
         if config.PUBLISHER_ENABLE:
             self.__publisher = Publisher()
 
-        # Create serializer, for async events
-        #self.__serializer = Serializer()
-
         # Create main controller
-        #self.__mainController = MainController(self.__model, self.__serializer, self.logStream)
         self.__mainController = MainController(self.__model, self.logStream)
 
     def weave(str):
