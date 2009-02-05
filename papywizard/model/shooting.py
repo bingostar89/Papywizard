@@ -514,16 +514,18 @@ class Shooting(QtCore.QObject):
                     try:
                         self.scan.index += 1
                     except IndexError:
-                        break # Go to pause mode to allow reshooting pos at the end of pano,
-                              # and emit update so the next position is index + 1 (next=False)
-                              # Do not break, but use a flag, which will be tested at the end
-                    index, (yaw, pitch) = self.scan.getCurrentPosition()
-                    if isinstance(index, tuple):
-                        index_, yawIndex, pitchIndex = index
+                        self.scan.setOverPosition() # Hugly!!!
+                        self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, False)
+                        self.__end = True
                     else:
-                        index_ = index
-                    Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
-                    self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
+                        self.__end = False
+                        index, (yaw, pitch) = self.scan.getCurrentPosition()
+                        if isinstance(index, tuple):
+                            index_, yawIndex, pitchIndex = index
+                        else:
+                            index_ = index
+                        Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
+                        self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
 
                     # Test step-by-step flag
                     if self.__stepByStep and not self.__stop:
@@ -541,6 +543,10 @@ class Shooting(QtCore.QObject):
                             index_ = index
                         Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
                         self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
+                        continue
+
+                    if self.__end:
+                        break
 
                 if repeat < numRepeat:
                     remainingTime = self.timerEvery - (time.time() - startTime)

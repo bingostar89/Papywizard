@@ -101,7 +101,7 @@ class AbstractScan(object):
         if 1 <= index <= len(self._positions):
             self._index = index
         else:
-            raise IndexError("index out of range")
+            raise IndexError("position index out of range")
 
     index = property(_getIndex, _setIndex)
 
@@ -120,6 +120,13 @@ class AbstractScan(object):
         @type index: int
         """
         raise NotImplementedError
+
+    def setOverPosition(self):
+        """ Workarround use by Shooting.
+
+        Hugly!!!
+        """
+        self._index = len(self._positions) + 1
 
 
 class MosaicScan(AbstractScan):
