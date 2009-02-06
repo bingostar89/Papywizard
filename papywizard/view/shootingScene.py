@@ -58,9 +58,7 @@ from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
-from papywizard.common.signal import Signal
 from papywizard.common.configManager import ConfigManager
-from papywizard.common.orderedDict import OrderedDict
 from papywizard.view.pictureItem import AbstractPictureItem, MosaicPictureItem, PresetPictureItem, \
                                         CrosshairCusrsor
 
@@ -72,7 +70,7 @@ class ShootingView(QtGui.QGraphicsView):
         #self.setOptimizationFlag(QtGui.QGraphicsView.DontClipPainter, True)
         #self.setOptimizationFlag(QtGui.QGraphicsView.DontSavePainterState, True)
         #self.setOptimizationFlag(QtGui.QGraphicsView.DontAdjustForAntialiasing, False)
-        #self.setCacheMode(QtGui.QGraphicsView.CacheBackground)
+        self.setCacheMode(QtGui.QGraphicsView.CacheBackground)
 
         # Enable OpenGL support
         if config.QtOpenGL:
@@ -84,7 +82,7 @@ class ShootingView(QtGui.QGraphicsView):
                 Logger().warning("QtOpenGL module not available")
 
     def resizeEvent(self, event):
-        self.scene().refreshPictures()
+        self.scene().refresh()
         self.fitInView(self.scene().sceneRect(), QtCore.Qt.KeepAspectRatio) #, QtCore.Qt.SmoothTransformation)
 
 
@@ -127,12 +125,10 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         self._pitchFov = pitchFov
         self._yawCameraFov = yawCameraFov
         self._pitchCameraFov = pitchCameraFov
-        self._pictures = {} #OrderedDict()
-        self.pictureClicked = Signal() # Use PyQt signal
+        self._pictures = {}
 
         # Head position crosshair
-        self._headCrosshair = CrosshairCusrsor()
-        self._headCrosshair.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['head']))
+        self._headCrosshair = CrosshairCusrsor(self._yawFov / 10)
         self._headCrosshair.setZValue(9999)
         self.addItem(self._headCrosshair)
 
@@ -143,6 +139,12 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         """
         raise NotImplementedError("ShootingScene._init() is abstract and must be overidden")
 
+    # Signals
+    def pictureClicked(self, index):
+        """ User clicked on a picture in the scene.
+        """
+        self.emit(QtCore.SIGNAL("pictureClicked"), index)
+
     # Qt handlers
     def mousePressEvent(self, event):
         Logger().trace("ShootingScene.mousePressEvent()")
@@ -151,7 +153,7 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         try:
             index = picture.parentItem().getIndex()
             Logger().debug("ShootingScene.mousePressEvent(): picture index=%d" % index)
-            self.pictureClicked.emit(index)
+            self.pictureClicked(index)
         except AttributeError:
             Logger().exception("ShootingScene.mousePressEvent()", debug=True)
 
@@ -206,14 +208,15 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         """
         self._headCrosshair.setPos(yaw, -pitch)
 
-    def refreshPictures(self):
-        """ Force refresh pictures.
+    def refresh(self):
+        """ Force refresh the scene.
 
         This method is mainly called by the view resizeEvent, and ask
-        the picture to recompute their border according to the new view size.
+        the items to recompute their width according to the new view size.
         """
         for picture in self._pictures.itervalues():
             picture.refresh()
+        self._headCrosshair.refresh()
 
 class MosaicShootingScene(AbstractShootingScene):
     def _init(self):
