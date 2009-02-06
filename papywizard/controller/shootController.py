@@ -179,15 +179,15 @@ class ShootController(AbstractModalDialogController):
 
     def _connectSignals(self):
         self.connect(Spy(), QtCore.SIGNAL("newPosition"), self.__refreshPos, QtCore.Qt.BlockingQueuedConnection)
-        self.connect(self._model, QtCore.SIGNAL("started"), self.__shootingStarted)
-        self.connect(self._model, QtCore.SIGNAL("paused"), self.__shootingPaused)
-        self.connect(self._model, QtCore.SIGNAL("resumed"), self.__shootingResumed)
-        self.connect(self._model, QtCore.SIGNAL("stopped"), self.__shootingStopped)
-        self.connect(self._model, QtCore.SIGNAL("waiting"), self.__shootingWaiting)
-        self.connect(self._model, QtCore.SIGNAL("progress"), self.__shootingProgress)
-        self.connect(self._model, QtCore.SIGNAL("repeat"), self.__shootingRepeat)
-        self.connect(self._model, QtCore.SIGNAL("update"), self.__shootingUpdate)
-        self.connect(self._model, QtCore.SIGNAL("sequence"), self.__shootingSequence)
+        self.connect(self._model, QtCore.SIGNAL("started"), self.__shootingStarted, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("paused"), self.__shootingPaused, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("resumed"), self.__shootingResumed, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("stopped"), self.__shootingStopped, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("waiting"), self.__shootingWaiting, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("progress"), self.__shootingProgress, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("repeat"), self.__shootingRepeat, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("update"), self.__shootingUpdate, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("sequence"), self.__shootingSequence, QtCore.Qt.BlockingQueuedConnection)
 
         self._view.keyPressEvent = self.__onKeyPressed
         self._view.keyReleaseEvent = self.__onKeyReleased
