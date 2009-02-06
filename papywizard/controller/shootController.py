@@ -150,7 +150,7 @@ class ShootController(AbstractModalDialogController):
                 break
 
         # Connect picture clicked signal
-        self.__shootingScene.pictureClicked.connect(self.__onPictureClicked)
+        self.connect(self.__shootingScene, QtCore.SIGNAL("pictureClicked"), self.__onPictureClicked)
 
         # Refresh head position
         yaw, pitch = self._model.hardware.readPosition()
@@ -178,7 +178,7 @@ class ShootController(AbstractModalDialogController):
         self.connect(self._view.stopPushButton, QtCore.SIGNAL("clicked()"), self.__onStopPushButtonClicked)
 
     def _connectSignals(self):
-        self.connect(Spy(), QtCore.SIGNAL("newPosition"), self.__refreshPos, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(Spy(), QtCore.SIGNAL("update"), self.__onUpdatePosition, QtCore.Qt.BlockingQueuedConnection)
         self.connect(self._model, QtCore.SIGNAL("started"), self.__shootingStarted, QtCore.Qt.BlockingQueuedConnection)
         self.connect(self._model, QtCore.SIGNAL("paused"), self.__shootingPaused, QtCore.Qt.BlockingQueuedConnection)
         self.connect(self._model, QtCore.SIGNAL("resumed"), self.__shootingResumed, QtCore.Qt.BlockingQueuedConnection)
@@ -193,7 +193,7 @@ class ShootController(AbstractModalDialogController):
         self._view.keyReleaseEvent = self.__onKeyReleased
 
     def _disconnectSignals(self):
-        self.disconnect(Spy(), QtCore.SIGNAL("newPosition"), self.__refreshPos)
+        self.disconnect(Spy(), QtCore.SIGNAL("update"), self.__onUpdatePosition)
         self.disconnect(self._model, QtCore.SIGNAL("started"), self.__shootingStarted)
         self.disconnect(self._model, QtCore.SIGNAL("paused"), self.__shootingPaused)
         self.disconnect(self._model, QtCore.SIGNAL("resumed"), self.__shootingResumed)
@@ -507,7 +507,7 @@ class ShootController(AbstractModalDialogController):
         if self._model.timerRepeatEnable:
             self._view.repeatLabel.setText("%d/%d" % (repeat, self._model.timerRepeat))
 
-    def __shootingUpdate(self, index, yaw, pitch, state=None, next=False):
+    def __shootingUpdate(self, index, yaw, pitch, state=None, next=None):
         Logger().trace("ShootController.__shootingUpdate()")
 
         # Update text area
@@ -545,7 +545,7 @@ class ShootController(AbstractModalDialogController):
             totalNbPicts = self._model.camera.bracketingNbPicts
             self._view.sequenceLabel.setText(_("Shutter - Picture") + " %d/%d" % (bracket, totalNbPicts))
 
-    def __refreshPos(self, yaw, pitch):
+    def __onUpdatePosition(self, yaw, pitch):
         """ Refresh position according to new pos.
 
         @param yaw: yaw axis value
@@ -554,7 +554,7 @@ class ShootController(AbstractModalDialogController):
         @param pitch: pitch axix value
         @type pitch: float
         """
-        #Logger().trace("ShootController.__refreshPos()")
+        #Logger().trace("ShootController.__onUpdatePosition()")
         self.__shootingScene.setHeadPosition(yaw, pitch)
 
     # Helpers
