@@ -69,17 +69,23 @@ class ShootingView(QtGui.QGraphicsView):
     def __init__(self, parent=None):
         QtGui.QGraphicsView.__init__(self, parent)
         self.setBackgroundBrush(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['background']))
+        #self.setOptimizationFlag(QtGui.QGraphicsView.DontClipPainter, True)
+        #self.setOptimizationFlag(QtGui.QGraphicsView.DontSavePainterState, True)
+        #self.setOptimizationFlag(QtGui.QGraphicsView.DontAdjustForAntialiasing, False)
+        #self.setCacheMode(QtGui.QGraphicsView.CacheBackground)
 
-        # Enable OpenGL support (crash!)
+        # Enable OpenGL support
         if config.QtOpenGL:
             try:
                 from PyQt4 import QtOpenGL
-                self.setViewport(QtOpenGL.QGLWidget(QtOpenGL.QGLFormat(QtOpenGL.QGL.SampleBuffers)))
+                self.setViewport(QtOpenGL.QGLWidget())
+                Logger().info("Use OpenGL")
             except ImportError:
                 Logger().warning("QtOpenGL module not available")
 
     def resizeEvent(self, event):
-        self.fitInView(self.scene().sceneRect(), QtCore.Qt.KeepAspectRatio)
+        self.scene().refreshPictures()
+        self.fitInView(self.scene().sceneRect(), QtCore.Qt.KeepAspectRatio) #, QtCore.Qt.SmoothTransformation)
 
 
 class AbstractShootingScene(QtGui.QGraphicsScene):
@@ -121,8 +127,8 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         self._pitchFov = pitchFov
         self._yawCameraFov = yawCameraFov
         self._pitchCameraFov = pitchCameraFov
-        self._pictures = OrderedDict()
-        self.pictureClicked = Signal()
+        self._pictures = {} #OrderedDict()
+        self.pictureClicked = Signal() # Use PyQt signal
 
         # Head position crosshair
         self._headCrosshair = CrosshairCusrsor()
@@ -130,15 +136,7 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         self._headCrosshair.setZValue(9999)
         self.addItem(self._headCrosshair)
 
-        # Next position crosshair
-        #self._nextCrosshair = CrosshairCusrsor()
-        #self._nextCrosshair.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['next']))
-        #self._nextCrosshair.setZValue(9998)
-        #self._nextCrosshair.rotate(45.)
-        #self.addItem(self._nextCrosshair)
-
         self._init()
-        #self.update()
 
     def _init(self):
         """ Init the scene rect.
@@ -147,12 +145,15 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
 
     # Qt handlers
     def mousePressEvent(self, event):
-        #Logger().trace("ShootingScene.mousePressEvent()")
+        Logger().trace("ShootingScene.mousePressEvent()")
         picture = self.itemAt(event.scenePos())
-        if isinstance(picture, AbstractPictureItem):
-            index = picture.getIndex()
+        Logger().debug("ShootingScene.mousePressEvent(): picture=%s" % picture)
+        try:
+            index = picture.parentItem().getIndex()
             Logger().debug("ShootingScene.mousePressEvent(): picture index=%d" % index)
             self.pictureClicked.emit(index)
+        except AttributeError:
+            Logger().exception("ShootingScene.mousePressEvent()", debug=True)
 
     # Interface
     def addPicture(self, index, yaw, pitch, state='preview'):
@@ -187,33 +188,32 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         @param index: index of the next picture to shoot
         @type index: int
         """
+        AbstractPictureItem.nextIndex = index
         for picture in self._pictures.itervalues():
-            picture.setNextIndex(index)
-
-        # Update next position crosshair
-        #if self._pictures.has_key(index):
-            #nextPicture = self._pictures[index]
-            #yaw = nextPicture.scenePos().x()
-            #pitch = nextPicture.scenePos().y()
-            #self._nextCrosshair.setPos(yaw, pitch)
-
+            picture.refresh()
         self.update()
 
     def clear(self):
         """ Clear the shooting area
         """
-        #print "ShootingScene.clear()"
         for picture in self._pictures.itervalues():
             picture.setState(state='preview')
-            picture.setNextIndex(1)
+            AbstractPictureItem.nextIndex = 1
         self.update()
 
     def setHeadPosition(self, yaw, pitch):
         """ Set the current head position.
         """
         self._headCrosshair.setPos(yaw, -pitch)
-        #self.update()
 
+    def refreshPictures(self):
+        """ Force refresh pictures.
+
+        This method is mainly called by the view resizeEvent, and ask
+        the picture to recompute their border according to the new view size.
+        """
+        for picture in self._pictures.itervalues():
+            picture.refresh()
 
 class MosaicShootingScene(AbstractShootingScene):
     def _init(self):
@@ -221,7 +221,7 @@ class MosaicShootingScene(AbstractShootingScene):
         y = min(self._pitchStart, self._pitchEnd) - self._pitchCameraFov / 2
         w = self._yawFov
         h = self._pitchFov
-        #Logger().debug(""MosaicShootingScene._init(): x=%d, y=%d, w=%d, h=%d" % (x, y, w, h))
+        #Logger().debug("MosaicShootingScene._init(): x=%d, y=%d, w=%d, h=%d" % (x, y, w, h))
         self.setSceneRect(x, y, w, h)
 
     # Interface
@@ -232,12 +232,11 @@ class MosaicShootingScene(AbstractShootingScene):
         if self._pictures.has_key(index):
             raise ValueError("Picture at index %d already exists" % index)
         else:
-            picture = MosaicPictureItem(yaw, -pitch, self._yawCameraFov, self._pitchCameraFov)
-            picture.setIndex(index)
-            picture.setState(state)
+            picture = MosaicPictureItem(index, self._yawCameraFov, self._pitchCameraFov)
             self.addItem(picture)
+            picture.setState(state)
+            picture.setPos(yaw, -pitch)
             self._pictures[index] = picture
-        #self.update()
 
 
 class PresetShootingScene(AbstractShootingScene):
@@ -256,15 +255,14 @@ class PresetShootingScene(AbstractShootingScene):
 
     # Interface
     def addPicture(self, index, yaw, pitch, state='preview'):
-        #Logger().debug(""PresetShootingScene.addPicture(%.1f, %.1f, state=%s)" % (yaw, pitch, state))
+        #Logger().debug("PresetShootingScene.addPicture(): index=%d, yaw=%.1f, pitch%.1f, state=%s" % (index, yaw, pitch, state))
 
         # Check if picture already in list
         if self._pictures.has_key(index):
             raise ValueError("Picture at index %d already exists" % index)
         else:
-            picture = PresetPictureItem(yaw, -pitch, self._yawCameraFov, self._pitchCameraFov)
-            picture.setIndex(index)
-            picture.setState(state)
+            picture = PresetPictureItem(index, self._yawCameraFov, self._pitchCameraFov)
             self.addItem(picture)
+            picture.setState(state)
+            picture.setPos(yaw, -pitch)
             self._pictures[index] = picture
-        #self.update()

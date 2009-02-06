@@ -126,16 +126,6 @@ class ShootController(AbstractModalDialogController):
                                                        self._model.camera.getYawFov(self._model.cameraOrientation),
                                                        self._model.camera.getPitchFov(self._model.cameraOrientation))
 
-            # Populate shooting area with preview positions
-            self._model.mosaic.generatePositions()
-            #for (index, yawIndex, pitchIndex), (yaw, pitch) in self._model.mosaic.iterPositions():
-            while True:
-                try:
-                    (index, yawIndex, pitchIndex), (yaw, pitch) = self._model.mosaic.getCurrentPosition()
-                    self.__shootingScene.addPicture(index, yaw, pitch, 'preview')
-                    self._model.mosaic.index += 1
-                except IndexError:
-                    break
         else:
             self.__shootingScene = PresetShootingScene(0, 360,
                                                        -90, 90,
@@ -143,21 +133,24 @@ class ShootController(AbstractModalDialogController):
                                                        60,
                                                        60)
 
-            # Populate shooting area with preview positions
-            self._model.preset.generatePositions()
-            #for index, (yaw, pitch) in self._model.preset.iterPositions():
-            while True:
-                try:
-                    index, (yaw, pitch) = self._model.preset.getCurrentPosition()
-                    self.__shootingScene.addPicture(index, yaw, pitch, 'preview')
-                    self._model.mosaic.index += 1
-                except IndexError:
-                    break
+        # Assign shooting scene to view
+        self._view.shootingGraphicsView.setScene(self.__shootingScene)
+
+        # Populate shooting scene with preview positions
+        self._model.scan.generatePositions()
+        while True:
+            try:
+                index, (yaw, pitch) = self._model.scan.getCurrentPosition()
+                if isinstance(index, tuple):
+                    index, yawIndex, pitchIndex = index
+                self.__shootingScene.addPicture(index, yaw, pitch, 'preview')
+                self._model.scan.index += 1
+            except IndexError:
+                Logger().exception("ShootController._initWidgets()", debug=True)
+                break
 
         # Connect picture clicked signal
         self.__shootingScene.pictureClicked.connect(self.__onPictureClicked)
-
-        self._view.shootingGraphicsView.setScene(self.__shootingScene)
 
         # Refresh head position
         yaw, pitch = self._model.hardware.readPosition()

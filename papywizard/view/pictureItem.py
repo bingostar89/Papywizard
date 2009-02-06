@@ -62,40 +62,40 @@ from papywizard.common.loggingServices import Logger
 BORDER_WIDTH = 3
 
 
-class AbstractPictureItem(QtGui.QGraphicsItem):
+class AbstractPictureItem(QtGui.QGraphicsItemGroup):
     """ Abstract picture item.
     """
-    def __init__(self, yaw, pitch ,yawFov, pitchFov, parent=None):
+    nextIndex = 0 # 0 is not a valid index
+
+    def __init__(self, index, yawFov, pitchFov, parent=None):
         """  Init the abstract picture item.
 
-        @param scene: scene owning this picture
-        @type scene: L{QGraphicsScene<QtGui>}
+        @param yawFov: yaw fov of the picture
+        @type yawFov: float
 
-        @param x: x coordinate of the picture
-        @type x: int
-
-        @param y: y coordinate of the picture
-        @type y: int
-
-        @param w: width of the picture
-        @type w: int
-
-        @param h: height of the picture
-        @type h: int
+        @param pitchFov: pitch fov of the picture
+        @type pitchFov: float
         """
-        QtGui.QGraphicsItem.__init__(self, parent)
-        self.setPos(yaw, pitch)
+        QtGui.QGraphicsItemGroup.__init__(self, parent)
+        self._index = index
+        self.setZValue(index)
         self._yawFov = yawFov
         self._pitchFov = pitchFov
-        self._index = None
-        self._state = None
-        self._nextIndex = 0 # 0 is not a valid index
+        self._state = 'preview'
+        x, y, w, h = self._computeRect()
+        self._item = self._createItem(x, y, w, h)
+        self.addToGroup(self._item)
+
+    def _createItem(self):
+        """ Create the real item.
+        """
+        raise NotImplementedError("AbstractPictureItem._createItem() is abstract and must be overidden")
 
     # Helpers
     def _computeBorderWidth(self):
         """ Compute picture border width.
 
-        Compute the width of the border to use in paint() and boundingRect()
+        Compute the width of the border to use in refresh() and boundingRect()
         methods so the size on screen is constant, whatever the view size is.
 
         What if there are several views?
@@ -112,9 +112,9 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
         @return: inner and border colors
         @rtype: tuple of int
         """
-        if self._index < self._nextIndex:
+        if self._index < AbstractPictureItem.nextIndex:
             innerColor = config.SHOOTING_COLOR_SCHEME['default'][self._state]
-        elif self._index == self._nextIndex:
+        elif self._index == AbstractPictureItem.nextIndex:
             innerColor = config.SHOOTING_COLOR_SCHEME['default']['%s-next' % self._state]
         else:
             innerColor = config.SHOOTING_COLOR_SCHEME['default']['%s-toshoot' % self._state]
@@ -132,22 +132,7 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
         h = self._pitchFov
         return x, y, w, h
 
-    # Qt overloaded methods
-    def boundingRect(self):
-        x, y, w, h = self._computeRect()
-        return QtCore.QRectF(x - self._computeBorderWidth() / 2, y - self._computeBorderWidth() / 2,
-                             w + self._computeBorderWidth(), h + self._computeBorderWidth())
-
     # Interface
-    def setIndex(self, index):
-        """ Set the index of the current picture.
-
-        @param index: index of the current picture
-        @type index: int
-        """
-        self.setZValue(index)
-        self._index = index
-
     def getIndex(self):
         """ Return the index of the picture in the shooting sequence.
         """
@@ -160,53 +145,33 @@ class AbstractPictureItem(QtGui.QGraphicsItem):
         @type state: str
         """
         self._state = state
+        self.refresh()
 
-    def setNextIndex(self, index):
-        """ Give the index of the next picture to shoot.
-
-        @param index: index of the next picture to shoot
-        @type index: int
+    def refresh(self):
+        """ Refresh the picture.
         """
-        self._nextIndex = index
+        innerColor, borderColor = self._computeColors()
+        self._item.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
+        self._item.setBrush(QtGui.QBrush(QtGui.QColor(*innerColor))) #, QtCore.Qt.LinearGradientPattern))
 
 
 class MosaicPictureItem(AbstractPictureItem):
     """ Picture item implementation for mosaic.
     """
-
-    # Qt overloaded methods
-    def paint(self, painter, options, widget):
-        x, y, w, h = self._computeRect()
-        innerColor, borderColor = self._computeColors()
-        painter.fillRect(x, y, w, h, QtGui.QColor(*innerColor))
-        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
-        painter.drawRect(x, y, w, h)
+    def _createItem(self, x, y, w, h):
+        return QtGui.QGraphicsRectItem(x, y, w, h, self)
 
 
 class PresetPictureItem(AbstractPictureItem):
     """ Picture item implementation for preset.
     """
-
-    # Qt overloaded methods
-    def boundingRegion(self, itemToDeviceTransform):
-        x, y, w, h = self._computeRect()
-        return QtCore.QRegion(x - self._computeBorderWidth() / 2, y - self._computeBorderWidth() / 2,
-                              w + self._computeBorderWidth(), h + self._computeBorderWidth(),
-                              QtGui.QRegion.Ellipse)
+    def _createItem(self, x, y, w, h):
+        return QtGui.QGraphicsEllipseItem(x, y, w, h, self)
 
     def shape(self):
         path = QtGui.QPainterPath()
         path.addEllipse(self.boundingRect())
         return path
-
-    def paint(self, painter, options, widget):
-        x, y, w, h = self._computeRect()
-        innerColor, borderColor = self._computeColors()
-        path = QtGui.QPainterPath()
-        path.addEllipse(x, y, w, h)
-        painter.fillPath(path, QtGui.QColor(*innerColor))
-        painter.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
-        painter.drawEllipse(x, y, w, h)
 
 
 class CrosshairCusrsor(QtGui.QGraphicsItemGroup):
@@ -215,7 +180,7 @@ class CrosshairCusrsor(QtGui.QGraphicsItemGroup):
     @todo: use view sqrt(width ** 2 + height ** 2) as limits.
     """
     def __init__(self, parent=None):
-        QtGui.QGraphicsItemGroup .__init__(self, parent)
+        QtGui.QGraphicsItemGroup.__init__(self, parent)
         self._yawLine = QtGui.QGraphicsLineItem()
         self._yawLine.setLine(0, -1000, 0, 1000)
         self.addToGroup(self._yawLine)
@@ -232,6 +197,11 @@ class CrosshairCusrsor(QtGui.QGraphicsItemGroup):
         """
         path = QtGui.QPainterPath()
         return path
+
+    def boundingRegion(self, itemToDeviceTransform):
+        """ Return the region of the crosshair.
+        """
+        return QtGui.QRegion()
 
     # Interface
     def setPen(self, pen):
