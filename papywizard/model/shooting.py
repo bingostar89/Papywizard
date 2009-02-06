@@ -312,7 +312,7 @@ class Shooting(QtCore.QObject):
         @param bracket: number of the bracket
         @type bracket: int
         """
-        self.emit(QtCore.SIGNAL("sequence"), bracket)
+        self.emit(QtCore.SIGNAL("sequence"), sequence, bracket)
 
     # Interface
     def setStartEndFromFov(self, yawFov, pitchFov):
