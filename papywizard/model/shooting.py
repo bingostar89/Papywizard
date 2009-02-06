@@ -58,7 +58,6 @@ from PyQt4 import QtCore
 from papywizard.common import config
 from papywizard.common.helpers import hmsAsStrToS, sToHmsAsStr
 from papywizard.common.loggingServices import Logger
-from papywizard.common.signal import Signal
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.exception import HardwareError
 from papywizard.model.camera import Camera
@@ -93,7 +92,6 @@ class Shooting(QtCore.QObject):
         self.realHardware = realHardware
         self.simulatedHardware = simulatedHardware
         self.hardware = self.simulatedHardware
-        self.switchToRealHardwareSignal = Signal() # Use PyQt signal
 
         # Sub-models
         self.camera = Camera()
@@ -223,6 +221,99 @@ class Shooting(QtCore.QObject):
 
     scan = property(__getScan)
 
+    # Signals
+    def hardwareConnected(self, flag, message=""):
+        """ Hardware connect/disconnect.
+        
+        @param flag: True if connected, false otherwise
+        @type flag: bool
+        
+        @param message: optional error message
+        @type message: str
+        """
+        self.emit(QtCore.SIGNAL("hardwareConnected"), flag, message)
+
+    def started(self):
+        """ Shooting started.
+        """
+        self.emit(QtCore.SIGNAL("started"))
+
+    def paused(self):
+        """ Shooting paused.
+        """
+        self.emit(QtCore.SIGNAL("paused"))
+
+    def resumed(self):
+        """ Shooting resumed.
+        """
+        self.emit(QtCore.SIGNAL("resumed"))
+
+    def stopped(self, status):
+        """ Shooting stopped.
+        
+        @param status: shooting status
+        @type status: str
+        """
+        self.emit(QtCore.SIGNAL("stopped"), status)
+
+    def waiting(self, wait):
+        """ Shooting waiting.
+        
+        @param wait: remaining time to wait (s)
+        @type wait: float
+        """
+        self.emit(QtCore.SIGNAL("waiting"), wait)
+
+    def progress(self, shootingProgress=None, totalProgress=None):
+        """ Shooting progress.
+        
+        @param shootingProgress: shooting progress value
+        @type shootingProgress: float
+        
+        @param totalProgress: total progress value
+        @type totalProgress: float
+        """
+        self.emit(QtCore.SIGNAL("progress"), shootingProgress, totalProgress)
+
+    def repeat(self, repeat):
+        """ Shooting repeat counter.
+        
+        @param repeat: repeat counter
+        @type repeat: int
+        """
+        self.emit(QtCore.SIGNAL("repeat"), repeat)
+
+    def update(self, index, yaw, pitch, state=None, next=None):
+        """ Shooting update.
+        
+        @param index: position index
+        @type int
+        
+        @param yaw: position yaw
+        @type yaw: float
+        
+        @param pitch: position pitch
+        @type pitch: float
+        
+        @param state: position state
+        @type state: str
+        
+        @param next: next position flag
+        @type next: bool
+        """
+        self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, state, next)
+
+    def sequence(self, sequence, bracket=None):
+        """ Shooting sequence.
+        
+        @param sequence: name of the current sequence
+        @type sequence: str
+        
+        @param bracket: number of the bracket
+        @type bracket: int
+        """
+        self.emit(QtCore.SIGNAL("sequence"), bracket)
+
     # Interface
     def setStartEndFromFov(self, yawFov, pitchFov):
         """ Set yaw start/end positions from total fov.
@@ -275,10 +366,10 @@ class Shooting(QtCore.QObject):
             self.realHardware.init()
             Logger().debug("Shooting.switchToRealHardware(): realHardware initialized")
             self.hardware = self.realHardware
-            self.switchToRealHardwareSignal.emit(True)
+            self.hardwareConnected(True)
         except HardwareError, message:
             Logger().exception("Shooting.switchToRealHardware()")
-            self.switchToRealHardwareSignal.emit(False, str(message))
+            self.hardwareConnected(False, str(message))
 
     def switchToSimulatedHardware(self):
         """ Use simulated hardware.
@@ -326,11 +417,11 @@ class Shooting(QtCore.QObject):
                 Logger().info("Pause shooting")
                 self.__pauseTime = time.time()
                 self.__paused = True
-                self.emit(QtCore.SIGNAL("paused"))
+                self.paused()
                 while self.__pause:
                     time.sleep(0.1)
                 self.__paused = False
-                self.emit(QtCore.SIGNAL("resumed"))
+                self.resumed()
                 self.__totalPausedTime += time.time() - self.__pauseTime
                 Logger().info("Resume shooting")
 
@@ -349,8 +440,8 @@ class Shooting(QtCore.QObject):
         self.__pause = False
         self.__paused = False
         self.__shooting = True
-        self.emit(QtCore.SIGNAL("started"))
-        self.emit(QtCore.SIGNAL("progress"), 0., 0.)
+        self.started()
+        self.progress(0., 0.)
 
         if self.cameraOrientation == 'portrait':
             roll = 90.
@@ -384,7 +475,7 @@ class Shooting(QtCore.QObject):
                 remainingTime = self.timerAfter - (time.time() - initialTime)
                 while remainingTime > 0:
                     Logger().debug("Shooting.start(): start in %s" % sToHmsAsStr(remainingTime))
-                    self.emit(QtCore.SIGNAL("waiting"), remainingTime)
+                    self.waiting(remainingTime)
                     time.sleep(1)
 
                     # Check only stop
@@ -416,8 +507,8 @@ class Shooting(QtCore.QObject):
 
                 startTime = time.time()
                 Logger().debug("Shooting.start(): repeat %d/%d" % (repeat, numRepeat))
-                self.emit(QtCore.SIGNAL("repeat"), repeat)
-                self.emit(QtCore.SIGNAL("progress"), 0., None)
+                self.repeat(repeat)
+                self.progress(0.)
 
                 # Loop over all positions
                 while True:
@@ -428,16 +519,16 @@ class Shooting(QtCore.QObject):
                         else:
                             index_ = index
                         Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
-                        self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
+                        self.update(index, yaw, pitch, next=True)
 
                         self.__forceNewPosition = False
 
                         Logger().info("Moving")
-                        self.emit(QtCore.SIGNAL("sequence"), 'moving', None)
+                        self.sequence('moving')
                         self.hardware.gotoPosition(yaw, pitch)
 
                         Logger().info("Stabilization")
-                        self.emit(QtCore.SIGNAL("sequence"), 'stabilization', None)
+                        self.sequence('stabilization')
                         time.sleep(self.stabilizationDelay)
 
                         # Test step-by-step flag (use a function)
@@ -459,13 +550,13 @@ class Shooting(QtCore.QObject):
                             # Mirror lockup sequence
                             if self.camera.mirrorLockup:
                                 Logger().info("Mirror lockup")
-                                self.emit(QtCore.SIGNAL("sequence"), 'mirror', None)
+                                self.sequence('mirror')
                                 self.hardware.shoot(self.stabilizationDelay)
 
                             # Take pictures
                             Logger().info("Shutter cycle")
                             Logger().debug("Shooting.start(): pict #%d of %d" % (bracket, self.scan.totalNbPicts))
-                            self.emit(QtCore.SIGNAL("sequence"), 'shutter', bracket)
+                            self.sequence('shutter', bracket)
                             self.hardware.shoot(self.camera.timeValue)
 
                             # Add image to the xml data file
@@ -477,8 +568,8 @@ class Shooting(QtCore.QObject):
                         shootingProgress = float(index_) / float(self.scan.totalNbPicts)
                         totalProgress = (repeat - 1) * self.scan.totalNbPicts + index_
                         totalProgress /= float(numRepeat * self.scan.totalNbPicts)
-                        self.emit(QtCore.SIGNAL("progress"), shootingProgress, totalProgress)
-                        self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, 'ok', None)
+                        self.progress(shootingProgress, totalProgress)
+                        self.update(index, yaw, pitch, state='ok')
 
                     except HardwareError:
                         self.hardware.stopAxis()
@@ -492,8 +583,8 @@ class Shooting(QtCore.QObject):
                         shootingProgress = float(index_) / float(self.scan.totalNbPicts)
                         totalProgress = (repeat - 1) * self.scan.totalNbPicts + index_
                         totalProgress /= float(numRepeat * self.scan.totalNbPicts)
-                        self.emit(QtCore.SIGNAL("progress"), shootingProgress, shootingProgress)
-                        self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, 'error', None)
+                        self.progress(shootingProgress, shootingProgress)
+                        self.update(index, yaw, pitch, state='error')
 
                     # Next position
                     end = False
@@ -504,7 +595,7 @@ class Shooting(QtCore.QObject):
                         # Force index behond valid position. Hugly!!!
                         # Better find a way to tell the view not to display the next position
                         self.scan.setOverPosition()
-                        self.emit(QtCore.SIGNAL("update"), self.scan.index, yaw, pitch, None, True)
+                        self.update(self.scan.index, yaw, pitch, next=True)
                         end = True
                     else:
                         index, (yaw, pitch) = self.scan.getCurrentPosition()
@@ -513,7 +604,7 @@ class Shooting(QtCore.QObject):
                         else:
                             index_ = index
                         Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
-                        self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
+                        self.update(index, yaw, pitch, next=True)
 
                     # Test step-by-step flag
                     if self.__stepByStep and not self.__stop:
@@ -536,7 +627,7 @@ class Shooting(QtCore.QObject):
                     remainingTime = self.timerEvery - (time.time() - startTime)
                     while remainingTime > 0:
                         Logger().debug("Shooting.start(): restart in %s" % sToHmsAsStr(remainingTime))
-                        self.emit(QtCore.SIGNAL("waiting"), remainingTime)
+                        self.waiting(remainingTime)
                         time.sleep(1)
 
                         checkStop()
@@ -556,7 +647,7 @@ class Shooting(QtCore.QObject):
             Logger().info("Shoot process finished")
 
         self.__shooting = False
-        self.emit(QtCore.SIGNAL("stopped"), status)
+        self.stopped(status)
 
     def isShooting(self):
         """ Test if shooting is running.
