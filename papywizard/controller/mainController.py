@@ -214,12 +214,12 @@ class MainController(AbstractController):
         self._view.keyReleaseEvent = self.__onKeyReleased
 
     def _connectSignals(self):
-        self.connect(Spy(), QtCore.SIGNAL("newPosition"), self.__refreshPos, QtCore.Qt.BlockingQueuedConnection)
-        self._model.switchToRealHardwareSignal.connect(self.__switchToRealHardwareCallback)
+        self.connect(Spy(), QtCore.SIGNAL("update"), self.__onUpdatePosition, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("hardwareConnected"), self.__onHardwareConnected, QtCore.Qt.BlockingQueuedConnection)
 
     def _disconnectSignals(self):
-        self.disconnect(Spy(), QtCore.SIGNAL("newPosition"), self.__refreshPos)
-        self._model.switchToRealHardwareSignal.disconnect(self.__switchToRealHardwareCallback)
+        self.disconnect(Spy(), QtCore.SIGNAL("update"), self.__onUpdatePosition)
+        self.disconnect(self._model, QtCore.SIGNAL("hardwareConnected"), self.__onHardwareConnected)
 
     # Properties
     def __getFullScreenFlag(self):
@@ -617,8 +617,8 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onShootPushButtonClicked()")
         self.__openShootdialog()
 
-    def __switchToRealHardwareCallback(self, flag, message=""):
-        Logger().debug("MainController.__switchToRealHardwareCallback(): flag=%s" % flag)
+    def __onHardwareConnected(self, flag, message=""):
+        Logger().debug("MainController.__onHardwareConnected(): flag=%s" % flag)
         self.__connectStatus = flag
         self.__connectErrorMessage = message
 
@@ -813,7 +813,7 @@ class MainController(AbstractController):
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
         self.setStatusbarMessage(_("Now in simulation mode"), 10)
 
-    def __refreshPos(self, yaw, pitch):
+    def __onUpdatePosition(self, yaw, pitch):
         """ Refresh position according to new pos.
 
         @param yaw: yaw axis value
@@ -822,7 +822,7 @@ class MainController(AbstractController):
         @param pitch: pitch axix value
         @type pitch: float
         """
-        #Logger().trace("MainController.__refreshPos()")
+        #Logger().trace("MainController.__onUpdatePosition()")
         self.__yawPos = yaw
         self.__pitchPos = pitch
         self._view.yawHeadPosLabel.setText("%.1f" % self.__yawPos)
