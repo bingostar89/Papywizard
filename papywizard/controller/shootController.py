@@ -178,31 +178,31 @@ class ShootController(AbstractModalDialogController):
         self.connect(self._view.stopPushButton, QtCore.SIGNAL("clicked()"), self.__onStopPushButtonClicked)
 
     def _connectSignals(self):
-        self.connect(Spy(), QtCore.SIGNAL("update"), self.__onUpdatePosition, QtCore.Qt.BlockingQueuedConnection)
-        self.connect(self._model, QtCore.SIGNAL("started"), self.__shootingStarted, QtCore.Qt.BlockingQueuedConnection)
-        self.connect(self._model, QtCore.SIGNAL("paused"), self.__shootingPaused, QtCore.Qt.BlockingQueuedConnection)
-        self.connect(self._model, QtCore.SIGNAL("resumed"), self.__shootingResumed, QtCore.Qt.BlockingQueuedConnection)
-        self.connect(self._model, QtCore.SIGNAL("stopped"), self.__shootingStopped, QtCore.Qt.BlockingQueuedConnection)
-        self.connect(self._model, QtCore.SIGNAL("waiting"), self.__shootingWaiting, QtCore.Qt.BlockingQueuedConnection)
-        self.connect(self._model, QtCore.SIGNAL("progress"), self.__shootingProgress, QtCore.Qt.BlockingQueuedConnection)
-        self.connect(self._model, QtCore.SIGNAL("repeat"), self.__shootingRepeat, QtCore.Qt.BlockingQueuedConnection)
-        self.connect(self._model, QtCore.SIGNAL("update"), self.__shootingUpdate, QtCore.Qt.BlockingQueuedConnection)
-        self.connect(self._model, QtCore.SIGNAL("sequence"), self.__shootingSequence, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("started"), self.__onShootingStarted, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("paused"), self.__onShootingPaused, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("resumed"), self.__onShootingResumed, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("stopped"), self.__onShootingStopped, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("waiting"), self.__onShootingWaiting, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("progress"), self.__onShootingProgress, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("repeat"), self.__onShootingRepeat, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("update"), self.__onShootingUpdate, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("sequence"), self.__onShootingSequence, QtCore.Qt.BlockingQueuedConnection)
 
         self._view.keyPressEvent = self.__onKeyPressed
         self._view.keyReleaseEvent = self.__onKeyReleased
 
     def _disconnectSignals(self):
-        self.disconnect(Spy(), QtCore.SIGNAL("update"), self.__onUpdatePosition)
-        self.disconnect(self._model, QtCore.SIGNAL("started"), self.__shootingStarted)
-        self.disconnect(self._model, QtCore.SIGNAL("paused"), self.__shootingPaused)
-        self.disconnect(self._model, QtCore.SIGNAL("resumed"), self.__shootingResumed)
-        self.disconnect(self._model, QtCore.SIGNAL("stopped"), self.__shootingStopped)
-        self.disconnect(self._model, QtCore.SIGNAL("waiting"), self.__shootingWaiting)
-        self.disconnect(self._model, QtCore.SIGNAL("progress"), self.__shootingProgress)
-        self.disconnect(self._model, QtCore.SIGNAL("repeat"), self.__shootingRepeat)
-        self.disconnect(self._model, QtCore.SIGNAL("update"), self.__shootingUpdate)
-        self.disconnect(self._model, QtCore.SIGNAL("sequence"), self.__shootingSequence)
+        self.disconnect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate)
+        self.disconnect(self._model, QtCore.SIGNAL("started"), self.__onShootingStarted)
+        self.disconnect(self._model, QtCore.SIGNAL("paused"), self.__onShootingPaused)
+        self.disconnect(self._model, QtCore.SIGNAL("resumed"), self.__onShootingResumed)
+        self.disconnect(self._model, QtCore.SIGNAL("stopped"), self.__onShootingStopped)
+        self.disconnect(self._model, QtCore.SIGNAL("waiting"), self.__onShootingWaiting)
+        self.disconnect(self._model, QtCore.SIGNAL("progress"), self.__onShootingProgress)
+        self.disconnect(self._model, QtCore.SIGNAL("repeat"), self.__onShootingRepeat)
+        self.disconnect(self._model, QtCore.SIGNAL("update"), self.__onShootingUpdate)
+        self.disconnect(self._model, QtCore.SIGNAL("sequence"), self.__onShootingSequence)
 
     # Callbacks Qt
     def _onCloseEvent(self, event):
@@ -419,8 +419,8 @@ class ShootController(AbstractModalDialogController):
             self.__shootingElapseTimer.stop()
 
     # Callback model
-    def __shootingStarted(self):
-        Logger().trace("ShootController.__shootingStarted()")
+    def __onShootingStarted(self):
+        Logger().trace("ShootController.__onShootingStarted()")
         self.__shootingScene.clear()
         self._view.shootingProgressBar.setValue(0)
         self._view.totalProgressBar.setValue(0)
@@ -452,8 +452,8 @@ class ShootController(AbstractModalDialogController):
         self._view.forwardPushButton.setEnabled(False)
         self.__shootingElapseTimer.start(1000)
 
-    def __shootingPaused(self):
-        Logger().trace("ShootController.__shootingPaused()")
+    def __onShootingPaused(self):
+        Logger().trace("ShootController.__onShootingPaused()")
         self._view.pauseResumePushButton.setEnabled(True)
         self._view.pauseResumePushButton.setText(_("Resume"))
         self._view.rewindPushButton.setEnabled(True)
@@ -464,8 +464,8 @@ class ShootController(AbstractModalDialogController):
         self._view.yawNextIndexLabel.setEnabled(True)
         self._view.pitchNextIndexLabel.setEnabled(True)
 
-    def __shootingResumed(self):
-        Logger().trace("ShootController.__shootingResumed()")
+    def __onShootingResumed(self):
+        Logger().trace("ShootController.__onShootingResumed()")
         self._view.pauseResumePushButton.setText(_("Pause"))
         self._view.rewindPushButton.setEnabled(False)
         self._view.forwardPushButton.setEnabled(False)
@@ -474,8 +474,8 @@ class ShootController(AbstractModalDialogController):
         self._view.yawNextIndexLabel.setEnabled(False)
         self._view.pitchNextIndexLabel.setEnabled(False)
 
-    def __shootingStopped(self, status):
-        Logger().debug("ShootController.__shootingStopped(): status=%s" % status)
+    def __onShootingStopped(self, status):
+        Logger().debug("ShootController.__onShootingStopped(): status=%s" % status)
         if status == 'ok':
             self._view.sequenceLabel.setText( _("Finished"))
         elif status == 'cancel':
@@ -489,26 +489,26 @@ class ShootController(AbstractModalDialogController):
         self._view.stopPushButton.setEnabled(False)
         self._view.buttonBox.setEnabled(True)
 
-    def __shootingWaiting(self, wait):
-        Logger().trace("ShootController.__shootingRepeat()")
+    def __onShootingWaiting(self, wait):
+        Logger().trace("ShootController.__onShootingRepeat()")
         sequenceMessage = _("Waiting") + " %s" % sToHmsAsStr(wait)
         self._view.sequenceLabel.setText(sequenceMessage)
 
-    def __shootingProgress(self, shootingProgress=None, totalProgress=None):
-        Logger().trace("ShootController.__shootingProgress()")
+    def __onShootingProgress(self, shootingProgress=None, totalProgress=None):
+        Logger().trace("ShootController.__onShootingProgress()")
         if shootingProgress is not None:
             self._view.shootingProgressBar.setValue(int(round(shootingProgress * 100)))
         if totalProgress is not None:
            self._view.totalProgressBar.setValue(int(round(totalProgress * 100)))
 
-    def __shootingRepeat(self, repeat):
-        Logger().trace("ShootController.__shootingRepeat()")
+    def __onShootingRepeat(self, repeat):
+        Logger().trace("ShootController.__onShootingRepeat()")
         self.__shootingScene.clear()
         if self._model.timerRepeatEnable:
             self._view.repeatLabel.setText("%d/%d" % (repeat, self._model.timerRepeat))
 
-    def __shootingUpdate(self, index, yaw, pitch, state=None, next=None):
-        Logger().trace("ShootController.__shootingUpdate()")
+    def __onShootingUpdate(self, index, yaw, pitch, state=None, next=None):
+        Logger().trace("ShootController.__onShootingUpdate()")
 
         # Update text area
         if isinstance(index, tuple):
@@ -533,8 +533,8 @@ class ShootController(AbstractModalDialogController):
         elif next is False:
             self.__shootingScene.selectNextPicture(index + 1)
 
-    def __shootingSequence(self, sequence, bracket=None):
-        Logger().trace("ShootController.__shootingSequence()")
+    def __onShootingSequence(self, sequence, bracket=None):
+        Logger().debug("ShootController.__onShootingSequence(): sequence=%s" % sequence)
         if sequence == 'moving':
             self._view.sequenceLabel.setText(_("Moving"))
         elif sequence == 'stabilization':
@@ -545,7 +545,7 @@ class ShootController(AbstractModalDialogController):
             totalNbPicts = self._model.camera.bracketingNbPicts
             self._view.sequenceLabel.setText(_("Shutter - Picture") + " %d/%d" % (bracket, totalNbPicts))
 
-    def __onUpdatePosition(self, yaw, pitch):
+    def __onPositionUpdate(self, yaw, pitch):
         """ Refresh position according to new pos.
 
         @param yaw: yaw axis value
@@ -554,7 +554,7 @@ class ShootController(AbstractModalDialogController):
         @param pitch: pitch axix value
         @type pitch: float
         """
-        #Logger().trace("ShootController.__onUpdatePosition()")
+        #Logger().trace("ShootController.__onPositionUpdate()")
         self.__shootingScene.setHeadPosition(yaw, pitch)
 
     # Helpers

@@ -214,11 +214,11 @@ class MainController(AbstractController):
         self._view.keyReleaseEvent = self.__onKeyReleased
 
     def _connectSignals(self):
-        self.connect(Spy(), QtCore.SIGNAL("update"), self.__onUpdatePosition, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate, QtCore.Qt.BlockingQueuedConnection)
         self.connect(self._model, QtCore.SIGNAL("hardwareConnected"), self.__onHardwareConnected, QtCore.Qt.BlockingQueuedConnection)
 
     def _disconnectSignals(self):
-        self.disconnect(Spy(), QtCore.SIGNAL("update"), self.__onUpdatePosition)
+        self.disconnect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate)
         self.disconnect(self._model, QtCore.SIGNAL("hardwareConnected"), self.__onHardwareConnected)
 
     # Properties
@@ -813,7 +813,7 @@ class MainController(AbstractController):
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
         self.setStatusbarMessage(_("Now in simulation mode"), 10)
 
-    def __onUpdatePosition(self, yaw, pitch):
+    def __onPositionUpdate(self, yaw, pitch):
         """ Refresh position according to new pos.
 
         @param yaw: yaw axis value
@@ -822,7 +822,7 @@ class MainController(AbstractController):
         @param pitch: pitch axix value
         @type pitch: float
         """
-        #Logger().trace("MainController.__onUpdatePosition()")
+        #Logger().trace("MainController.__onPositionUpdate()")
         self.__yawPos = yaw
         self.__pitchPos = pitch
         self._view.yawHeadPosLabel.setText("%.1f" % self.__yawPos)
