@@ -83,12 +83,24 @@ class SpyObject(QtCore.QThread):
         self.__run = False
         self.__suspend = False
         self.__refresh = int(refresh * 1000)
-        self.newPosSignal = Signal() # Use Qt signals
+        #self.newPosSignal = Signal() # Use Qt signals
         try:
             self.__yaw, self.__pitch = self.__model.hardware.readPosition()
             Logger().debug("Spy.__init__(): yaw=%.1f, pitch=%.1f" % (self.__yaw, self.__pitch))
         except HardwareError:
             Logger().exception("Spy.run(): can't read position")
+
+    # Signals
+    def newPosition(self, yaw, pitch):
+        """ A new position is available.
+        
+        @param yaw: position yaw
+        @type yaw: float
+        
+        @param pitch: position pitch
+        @type pitch: float
+        """
+        self.emit(QtCore.SIGNAL("newPosition"), yaw, pitch)
 
     def run(self):
         """ Main entry of the thread.
@@ -120,7 +132,7 @@ class SpyObject(QtCore.QThread):
             if yaw != self.__yaw or pitch != self.__pitch or force:
                 #Logger().debug("Spy.execute(): new yaw=%.1f, new pitch=%.1f" % (yaw, pitch))
                 try:
-                    self.newPosSignal.emit(yaw, pitch) # emit a Qt signal
+                    self.newPosition(yaw, pitch)
                 except:
                     Logger().exception("Spy.refresh(): can't emit signal")
                 self.__yaw = yaw

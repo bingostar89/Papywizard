@@ -214,11 +214,11 @@ class MainController(AbstractController):
         self._view.keyReleaseEvent = self.__onKeyReleased
 
     def _connectSignals(self):
-        Spy().newPosSignal.connect(self.__refreshPos)
+        self.connect(Spy(), QtCore.SIGNAL("newPosition"), self.__refreshPos, QtCore.Qt.BlockingQueuedConnection)
         self._model.switchToRealHardwareSignal.connect(self.__switchToRealHardwareCallback)
 
     def _disconnectSignals(self):
-        Spy().newPosSignal.disconnect(self.__refreshPos)
+        self.disconnect(Spy(), QtCore.SIGNAL("newPosition"), self.__refreshPos)
         self._model.switchToRealHardwareSignal.disconnect(self.__switchToRealHardwareCallback)
 
     # Properties

@@ -178,7 +178,7 @@ class ShootController(AbstractModalDialogController):
         self.connect(self._view.stopPushButton, QtCore.SIGNAL("clicked()"), self.__onStopPushButtonClicked)
 
     def _connectSignals(self):
-        Spy().newPosSignal.connect(self.__refreshPos)
+        self.connect(Spy(), QtCore.SIGNAL("newPosition"), self.__refreshPos, QtCore.Qt.BlockingQueuedConnection)
         self.connect(self._model, QtCore.SIGNAL("started"), self.__shootingStarted)
         self.connect(self._model, QtCore.SIGNAL("paused"), self.__shootingPaused)
         self.connect(self._model, QtCore.SIGNAL("resumed"), self.__shootingResumed)
@@ -193,7 +193,7 @@ class ShootController(AbstractModalDialogController):
         self._view.keyReleaseEvent = self.__onKeyReleased
 
     def _disconnectSignals(self):
-        Spy().newPosSignal.disconnect(self.__refreshPos)
+        self.disconnect(Spy(), QtCore.SIGNAL("newPosition"), self.__refreshPos)
         self.disconnect(self._model, QtCore.SIGNAL("started"), self.__shootingStarted)
         self.disconnect(self._model, QtCore.SIGNAL("paused"), self.__shootingPaused)
         self.disconnect(self._model, QtCore.SIGNAL("resumed"), self.__shootingResumed)
