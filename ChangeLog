@@ -7,6 +7,10 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + improved graphical scene refresh speed
+    - switched to PyQt threads (removed serializer)
+    - use yellow color for next position instead of crosshair cursor
+    - use PyQt signals
 
 2009-02-02 Version 1.9.1 (dev)
     + added crosshair cursor for next position
