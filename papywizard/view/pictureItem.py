@@ -60,6 +60,7 @@ from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 
 BORDER_WIDTH = 3
+CROSSHAIR_WIDTH = 3
 
 
 class AbstractPictureItem(QtGui.QGraphicsItemGroup):
@@ -179,14 +180,30 @@ class CrosshairCusrsor(QtGui.QGraphicsItemGroup):
 
     @todo: use view sqrt(width ** 2 + height ** 2) as limits.
     """
-    def __init__(self, parent=None):
+    def __init__(self, size, parent=None):
         QtGui.QGraphicsItemGroup.__init__(self, parent)
         self._yawLine = QtGui.QGraphicsLineItem()
-        self._yawLine.setLine(0, -1000, 0, 1000)
+        self._yawLine.setLine(0, -size, 0, size)
+        self._yawLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['head']))
         self.addToGroup(self._yawLine)
         self._pitchLine = QtGui.QGraphicsLineItem()
-        self._pitchLine.setLine(-1000, 0, 1000, 0)
+        self._pitchLine.setLine(-size, 0, size, 0)
+        self._pitchLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['head']))
         self.addToGroup(self._pitchLine)
+        self.rotate(45)
+
+    # Helpers
+    def _computeWidth(self):
+        """ Compute width.
+
+        Compute the width of the border to use in refresh() and boundingRect()
+        methods so the size on screen is constant, whatever the view size is.
+
+        What if there are several views?
+        """
+        xRatio = self.scene().views()[0].width() / self.scene().width()
+        yRatio = self.scene().views()[0].height() / self.scene().height()
+        return CROSSHAIR_WIDTH / min(xRatio, yRatio)
 
     # Qt overloaded methods
     def shape(self):
@@ -204,10 +221,8 @@ class CrosshairCusrsor(QtGui.QGraphicsItemGroup):
         return QtGui.QRegion()
 
     # Interface
-    def setPen(self, pen):
-        """ Set the pen of the crosshair.
-
-        We simulate this method, and call all sub-items one.
+    def refresh(self):
+        """ Refresh the crosshair.
         """
-        self._yawLine.setPen(pen)
-        self._pitchLine.setPen(pen)
+        self._yawLine.setPen(QtGui.QPen(self._yawLine.pen().brush(), self._computeWidth()))
+        self._pitchLine.setPen(QtGui.QPen(self._pitchLine.pen().brush(), self._computeWidth()))
