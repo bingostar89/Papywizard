@@ -420,23 +420,15 @@ class Shooting(QtCore.QObject):
                 self.emit(QtCore.SIGNAL("progress"), 0., None)
 
                 # Loop over all positions
-                index, (yaw, pitch) = self.scan.getCurrentPosition()
-                if isinstance(index, tuple):
-                    index_, yawIndex, pitchIndex = index
-                else:
-                    index_ = index
-                Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
-                self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
-
                 while True:
                     try:
-                        #index, (yaw, pitch) = self.scan.getCurrentPosition()
-                        #if isinstance(index, tuple):
-                            #index_, yawIndex, pitchIndex = index
-                        #else:
-                            #index_ = index
-                        #Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
-                        #self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
+                        index, (yaw, pitch) = self.scan.getCurrentPosition()
+                        if isinstance(index, tuple):
+                            index_, yawIndex, pitchIndex = index
+                        else:
+                            index_ = index
+                        Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
+                        self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
 
                         self.__forceNewPosition = False
 
@@ -457,15 +449,8 @@ class Shooting(QtCore.QObject):
                         checkStop()
 
                         # If a new shooting position has been requested (rewind/forward),
-                        # we get the new position and start over
+                        # we start over
                         if self.__forceNewPosition:
-                            index, (yaw, pitch) = self.scan.getCurrentPosition()
-                            if isinstance(index, tuple):
-                                index_, yawIndex, pitchIndex = index
-                            else:
-                                index_ = index
-                            Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
-                            self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
                             continue
 
                         # Take pictures
@@ -511,14 +496,17 @@ class Shooting(QtCore.QObject):
                         self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, 'error', None)
 
                     # Next position
+                    end = False
                     try:
                         self.scan.index += 1
                     except IndexError:
-                        self.scan.setOverPosition() # Hugly!!!
-                        self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, False)
-                        self.__end = True
+
+                        # Force index behond valid position. Hugly!!!
+                        # Better find a way to tell the view not to display the next position
+                        self.scan.setOverPosition()
+                        self.emit(QtCore.SIGNAL("update"), self.scan.index, yaw, pitch, None, True)
+                        end = True
                     else:
-                        self.__end = False
                         index, (yaw, pitch) = self.scan.getCurrentPosition()
                         if isinstance(index, tuple):
                             index_, yawIndex, pitchIndex = index
@@ -535,17 +523,13 @@ class Shooting(QtCore.QObject):
                     checkPause()
                     checkStop()
 
+                    # If a new shooting position has been requested (rewind/forward),
+                    # we start over
                     if self.__forceNewPosition:
-                        index, (yaw, pitch) = self.scan.getCurrentPosition()
-                        if isinstance(index, tuple):
-                            index_, yawIndex, pitchIndex = index
-                        else:
-                            index_ = index
-                        Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
-                        self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, True)
                         continue
 
-                    if self.__end:
+                    # If the sequence is finished, we leave the loop
+                    if end:
                         break
 
                 if repeat < numRepeat:
@@ -570,9 +554,6 @@ class Shooting(QtCore.QObject):
         else:
             status = 'ok'
             Logger().info("Shoot process finished")
-
-            # Remove the next status of the last shot position
-            self.emit(QtCore.SIGNAL("update"), index, yaw, pitch, None, False)
 
         self.__shooting = False
         self.emit(QtCore.SIGNAL("stopped"), status)
