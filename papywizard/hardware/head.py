@@ -54,6 +54,8 @@ __revision__ = "$Id$"
 
 import time
 
+from PyQt4 import QtCore
+
 from papywizard.common import config
 from papywizard.common.exception import HardwareError
 from papywizard.common.configManager import ConfigManager
@@ -220,7 +222,7 @@ class Head(object):
 
     def setManualSpeed(self, speed):
         """ Set manual speed.
-        
+
         @param speed: new speed, in ('slow', 'normal', 'fast')
         @type speed: str
         """
