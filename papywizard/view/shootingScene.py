@@ -66,7 +66,7 @@ from papywizard.view.pictureItem import AbstractPictureItem, MosaicPictureItem, 
 class ShootingView(QtGui.QGraphicsView):
     def __init__(self, parent=None):
         QtGui.QGraphicsView.__init__(self, parent)
-        self.setBackgroundBrush(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['background']))
+        self.setBackgroundBrush(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME[config.COLOR_SCHEME]['background']))
         #self.setOptimizationFlag(QtGui.QGraphicsView.DontClipPainter, True)
         #self.setOptimizationFlag(QtGui.QGraphicsView.DontSavePainterState, True)
         #self.setOptimizationFlag(QtGui.QGraphicsView.DontAdjustForAntialiasing, False)

@@ -114,13 +114,13 @@ class AbstractPictureItem(QtGui.QGraphicsItemGroup):
         @rtype: tuple of int
         """
         if self._index < AbstractPictureItem.nextIndex:
-            innerColor = config.SHOOTING_COLOR_SCHEME['default'][self._state]
+            innerColor = config.SHOOTING_COLOR_SCHEME[config.COLOR_SCHEME][self._state]
         elif self._index == AbstractPictureItem.nextIndex:
-            innerColor = config.SHOOTING_COLOR_SCHEME['default']['%s-next' % self._state]
+            innerColor = config.SHOOTING_COLOR_SCHEME[config.COLOR_SCHEME]['%s-next' % self._state]
         else:
-            innerColor = config.SHOOTING_COLOR_SCHEME['default']['%s-toshoot' % self._state]
+            innerColor = config.SHOOTING_COLOR_SCHEME[config.COLOR_SCHEME]['%s-toshoot' % self._state]
 
-        borderColor = config.SHOOTING_COLOR_SCHEME['default']['border']
+        borderColor = config.SHOOTING_COLOR_SCHEME[config.COLOR_SCHEME]['border']
 
         return innerColor, borderColor
 
@@ -184,11 +184,11 @@ class CrosshairCusrsor(QtGui.QGraphicsItemGroup):
         QtGui.QGraphicsItemGroup.__init__(self, parent)
         self._yawLine = QtGui.QGraphicsLineItem()
         self._yawLine.setLine(0, -size, 0, size)
-        self._yawLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['head']))
+        self._yawLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME[config.COLOR_SCHEME]['head']))
         self.addToGroup(self._yawLine)
         self._pitchLine = QtGui.QGraphicsLineItem()
         self._pitchLine.setLine(-size, 0, size, 0)
-        self._pitchLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME['default']['head']))
+        self._pitchLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME[config.COLOR_SCHEME]['head']))
         self.addToGroup(self._pitchLine)
         self.rotate(45)
 
