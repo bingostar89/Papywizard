@@ -240,7 +240,7 @@ class ShootController(AbstractModalDialogController):
                 if self._model.isPaused():
                     Logger().debug("MainController.__onKeyPressed(): 'Up' key pressed; rewind shooting position")
                     self.__keyPressedDict['Up'] = True
-                    self.__rewindShootingPosition()
+                    self.__forwardShootingPosition()
             event.ignore()
 
         # 'Down' key
@@ -249,7 +249,7 @@ class ShootController(AbstractModalDialogController):
                 if self._model.isPaused():
                     Logger().debug("MainController.__onKeyPressed(): 'Down' key pressed; forward shooting position")
                     self.__keyPressedDict['Down'] = True
-                    self.__forwardShootingPosition()
+                    self.__rewindShootingPosition()
             event.ignore()
 
         # 'Return' key
