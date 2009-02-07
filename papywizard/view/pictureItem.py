@@ -152,7 +152,7 @@ class AbstractPictureItem(QtGui.QGraphicsItemGroup):
         """ Refresh the picture.
         """
         innerColor, borderColor = self._computeColors()
-        self._item.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
+        #self._item.setPen(QtGui.QPen(QtGui.QBrush(QtGui.QColor(*borderColor)), self._computeBorderWidth()))
         self._item.setBrush(QtGui.QBrush(QtGui.QColor(*innerColor))) #, QtCore.Qt.LinearGradientPattern))
 
 
@@ -178,10 +178,11 @@ class PresetPictureItem(AbstractPictureItem):
 class CrosshairCusrsor(QtGui.QGraphicsItemGroup):
     """ Crosshair cursor item for head and next picture to shoot.
 
-    @todo: use view sqrt(width ** 2 + height ** 2) as limits.
+    @todo: faire un réticule rond plus croix
     """
     def __init__(self, size, parent=None):
         QtGui.QGraphicsItemGroup.__init__(self, parent)
+        
         self._yawLine = QtGui.QGraphicsLineItem()
         self._yawLine.setLine(0, -size, 0, size)
         self._yawLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME[config.COLOR_SCHEME]['head']))
@@ -190,7 +191,10 @@ class CrosshairCusrsor(QtGui.QGraphicsItemGroup):
         self._pitchLine.setLine(-size, 0, size, 0)
         self._pitchLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME[config.COLOR_SCHEME]['head']))
         self.addToGroup(self._pitchLine)
-        self.rotate(45)
+        self._circle = QtGui.QGraphicsEllipseItem(-size / 2, -size / 2, size, size)
+        self._circle.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME[config.COLOR_SCHEME]['head']))
+        self.addToGroup(self._circle)
+        #self.rotate(45)
 
     # Helpers
     def _computeWidth(self):
@@ -224,5 +228,7 @@ class CrosshairCusrsor(QtGui.QGraphicsItemGroup):
     def refresh(self):
         """ Refresh the crosshair.
         """
-        self._yawLine.setPen(QtGui.QPen(self._yawLine.pen().brush(), self._computeWidth()))
-        self._pitchLine.setPen(QtGui.QPen(self._pitchLine.pen().brush(), self._computeWidth()))
+        #for item in self.childItems():
+            #item.setPen(QtGui.QPen(self._yawLine.pen().brush(), self._computeWidth()))
+        #self._yawLine.setPen(QtGui.QPen(self._yawLine.pen().brush(), self._computeWidth()))
+        #self._pitchLine.setPen(QtGui.QPen(self._pitchLine.pen().brush(), self._computeWidth()))
