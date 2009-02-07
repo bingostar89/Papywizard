@@ -192,9 +192,12 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         @param index: index of the next picture to shoot
         @type index: int
         """
+        previousIndex = AbstractPictureItem.nextIndex
         AbstractPictureItem.nextIndex = index
         for picture in self._pictures.itervalues():
-            picture.refresh()
+            if previousIndex <= picture.getIndex() <= index or \
+               index <= picture.getIndex() <= previousIndex:
+                picture.refresh()
         self.update()
 
     def clear(self):
