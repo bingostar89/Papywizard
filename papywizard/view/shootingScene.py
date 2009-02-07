@@ -184,7 +184,6 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         @type state: str
         """
         self._pictures[index].setState(state)
-        self.update()
 
     def selectNextPicture(self, index):
         """ Set the picture at index the next to shoot.
@@ -198,7 +197,6 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
             if previousIndex <= picture.getIndex() <= index or \
                index <= picture.getIndex() <= previousIndex:
                 picture.refresh()
-        self.update()
 
     def clear(self):
         """ Clear the shooting area
@@ -206,7 +204,6 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         for picture in self._pictures.itervalues():
             picture.setState(state='preview')
             AbstractPictureItem.nextIndex = 1
-        self.update()
 
     def setHeadPosition(self, yaw, pitch):
         """ Set the current head position.
@@ -222,6 +219,7 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         for picture in self._pictures.itervalues():
             picture.refresh()
         self._headCrosshair.refresh()
+
 
 class MosaicShootingScene(AbstractShootingScene):
     def _init(self):
