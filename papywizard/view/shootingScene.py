@@ -54,6 +54,8 @@ Implements
 
 __revision__ = "$Id: shootingScene.py 1308 2009-01-11 16:19:42Z fma $"
 
+import math
+
 from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
@@ -82,7 +84,7 @@ class ShootingView(QtGui.QGraphicsView):
                 Logger().warning("QtOpenGL module not available")
 
     def resizeEvent(self, event):
-        self.scene().refresh()
+        #self.scene().refresh()
         self.fitInView(self.scene().sceneRect(), QtCore.Qt.KeepAspectRatio) #, QtCore.Qt.SmoothTransformation)
 
 
@@ -128,7 +130,7 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         self._pictures = {}
 
         # Head position crosshair
-        self._headCrosshair = CrosshairCusrsor(self._yawFov / 10)
+        self._headCrosshair = CrosshairCusrsor(math.sqrt(self._yawFov ** 2 + self._pitchFov ** 2) / 10)
         self._headCrosshair.setZValue(9999)
         self.addItem(self._headCrosshair)
 
