@@ -228,7 +228,7 @@ class CrosshairCusrsor(QtGui.QGraphicsItemGroup):
     def refresh(self):
         """ Refresh the crosshair.
         """
-        #for item in self.childItems():
-            #item.setPen(QtGui.QPen(self._yawLine.pen().brush(), self._computeWidth()))
+        for item in self.childItems():
+            item.setPen(QtGui.QPen(self._yawLine.pen().brush(), self._computeWidth()))
         #self._yawLine.setPen(QtGui.QPen(self._yawLine.pen().brush(), self._computeWidth()))
         #self._pitchLine.setPen(QtGui.QPen(self._pitchLine.pen().brush(), self._computeWidth()))
