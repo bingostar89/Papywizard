@@ -130,8 +130,8 @@ class ShootController(AbstractModalDialogController):
             self.__shootingScene = PresetShootingScene(0, 360,
                                                        -90, 90,
                                                        360, 180,
-                                                       60,
-                                                       60)
+                                                       30,
+                                                       30)
 
         # Assign shooting scene to view
         self._view.shootingGraphicsView.setScene(self.__shootingScene)
