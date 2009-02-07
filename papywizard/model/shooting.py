@@ -433,7 +433,6 @@ class Shooting(QtCore.QObject):
                 raise StopIteration
 
         Logger().trace("Shooting.start()")
-        self.scan.index = 1
         self.__startTime = time.time()
         self.__totalPausedTime = 0.
         self.__stop = False
@@ -511,6 +510,7 @@ class Shooting(QtCore.QObject):
                 self.progress(0.)
 
                 # Loop over all positions
+                self.scan.index = 1
                 while True:
                     try:
                         index, (yaw, pitch) = self.scan.getCurrentPosition()
