@@ -1107,11 +1107,19 @@
    </property>
   </action>
   <action name="actionHardwareGotoHome" >
+   <property name="icon" >
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/goto.png</normaloff>:/icons/goto.png</iconset>
+   </property>
    <property name="text" >
     <string>Goto Home...</string>
    </property>
   </action>
   <action name="actionHardwareGotoInitial" >
+   <property name="icon" >
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/goto.png</normaloff>:/icons/goto.png</iconset>
+   </property>
    <property name="text" >
     <string>Goto Initial...</string>
    </property>
