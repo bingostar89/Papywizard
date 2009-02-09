@@ -73,7 +73,8 @@ from papywizard.controller.configController import ConfigController
 from papywizard.controller.shootController import ShootController
 from papywizard.controller.spy import Spy
 from papywizard.view.messageDialog import WarningMessageDialog, ErrorMessageDialog, \
-                                          ExceptionMessageDialog, YesNoMessageDialog
+                                          ExceptionMessageDialog, YesNoMessageDialog, \
+                                          AbortMessageDialog
 
 
 class MainController(AbstractController):
@@ -472,10 +473,14 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onActionHardwareGotoHomeActivated()")
         self.setStatusbarMessage(_("Goto home position..."))
         self._model.hardware.gotoPosition(0., 0., wait=False)
+        dialog = AbortMessageDialog("Goto home position", "Please wait...")
+        dialog.show()
         while self._model.hardware.isAxisMoving():
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+            QtGui.QApplication.processEvents() #QtCore.QEventLoop.ExcludeUserInputEvents)
+            if dialog.result() == QtGui.QMessageBox.Abort:
+                self._model.hardware.stopAxis()
+                break
             time.sleep(0.01)
-        # TODO: clear all input events
         self.setStatusbarMessage(_("Home position reached"), 10)
 
     def __onActionHardwareGotoInitialActivated(self):
@@ -483,10 +488,14 @@ class MainController(AbstractController):
         self.setStatusbarMessage(_("Goto initial position..."))
         QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
         self._model.hardware.gotoPosition(0., 0., useOffset=False, wait=False)
+        dialog = AbortMessageDialog("Goto initial position", "Please wait...")
+        dialog.show()
         while self._model.hardware.isAxisMoving():
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+            QtGui.QApplication.processEvents() #QtCore.QEventLoop.ExcludeUserInputEvents)
+            if dialog.result() == QtGui.QMessageBox.Abort:
+                self._model.hardware.stopAxis()
+                break
             time.sleep(0.01)
-        # TODO: clear all input events
         self.setStatusbarMessage(_("Initial position reached"), 10)
 
     def __onActionHelpManualActivated(self):
