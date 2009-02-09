@@ -76,17 +76,12 @@ class Head(object):
 
     def init(self):
         """ Init the head.
-
-        This must be done when turning on the head.
-        Note that the manual remote already does that if it is pluged-in when
-        the head is switched on.
-        Also note that it does not set axis to zero.
         """
         self.driver = DriverFactory().create(ConfigManager().get('Preferences', 'HARDWARE_DRIVER'))
         Logger().debug("Head.init(): initializing driver...")
         self.driver.init()
         Logger().debug("Head.init(): driver initialized")
-        if ConfigManager().get('Preferences', 'HARDWARE_DRIVER') == 'bluetooth':
+        if ConfigManager().get('Preferences', 'HARDWARE_DRIVER') == 'bluetooth': # Hugly!!!
             Logger().debug("Head.init(): waiting for bluetooth connection...")
             time.sleep(config.BLUETOOTH_DRIVER_CONNECT_DELAY)
         Logger().debug("Head.init(): initializing axis...")
@@ -155,14 +150,21 @@ class Head(object):
         pitch = self.pitchAxis.read()
         return yaw, pitch
 
-    def gotoPosition(self, yaw, pitch, wait=True):
+    def gotoPosition(self, yaw, pitch, inc=False, useOffset=True, wait=True):
         """ Goto given position.
         """
-        self.yawAxis.drive(yaw, wait=False)
-        self.pitchAxis.drive(pitch, wait=False)
+        self.yawAxis.drive(yaw, inc, useOffset, wait=False)
+        self.pitchAxis.drive(pitch, inc, useOffset, wait=False)
         if wait:
-            self.yawAxis.waitEndOfDrive()
-            self.pitchAxis.waitEndOfDrive()
+            self.waitEndOfDrive()
+            #self.yawAxis.waitEndOfDrive()
+            #self.pitchAxis.waitEndOfDrive()
+
+    def waitEndOfDrive(self):
+        """ Wait all axis to end the drive.
+        """
+        self.yawAxis.waitEndOfDrive()
+        self.pitchAxis.waitEndOfDrive()
 
     def startAxis(self, axis, dir_):
         """ Start an axis in the selected direction.
@@ -205,6 +207,22 @@ class Head(object):
             self.yawAxis.waitStop()
         if axis in ('pitch', 'all'):
             self.pitchAxis.waitStop()
+
+    def isAxisMoving(self, axis='all'):
+        """ Check if axis is moving.
+
+        @param axis: axis to stop ('yaw', 'pitch', 'all')
+        @type axis: str
+        """
+        if axis not in ('yaw', 'pitch', 'all'):
+            raise ValueError("axis must be in ('yaw', 'pitch', 'all')")
+        flag = False
+        if axis in ('yaw', 'all') :
+            flag = self.yawAxis.isMoving()
+        if axis in ('pitch', 'all'):
+            flag = flag or self.pitchAxis.isMoving()
+
+        return flag
 
     def shoot(self, delay=None):
         """ Take a picture.
