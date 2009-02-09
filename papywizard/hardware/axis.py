@@ -81,6 +81,7 @@ class AbstractAxis(object):
         self._upperLimit = 9999.9
         self._lowerLimit = -9999.9
         self._manualSpeed = None
+        self._offset = 0.
 
     def _checkLimits(self, pos):
         """ Check if position is in axis limits.
@@ -104,10 +105,8 @@ class AbstractAxis(object):
 
     def setOrigin(self):
         """ Set current axis positions as origin.
-
-        Use offset.
         """
-        raise NotImplementedError
+        self._offset += self.read()
 
     def setLimit(self, dir_, limit):
         """ Set the minus limit.
@@ -139,7 +138,7 @@ class AbstractAxis(object):
         """
         raise NotImplementedError
 
-    def drive(self, pos, inc=False, wait=True):
+    def drive(self, pos, inc=False, useOffset=True, wait=True):
         """ Drive the axis.
 
         @param pos: position to reach, in °
@@ -147,6 +146,9 @@ class AbstractAxis(object):
 
         @param inc: if True, pos is an increment
         @type inc: bool
+
+        @param useOffset: flag to use offset or not
+        @type useOffset: bool
 
         @param wait: if True, wait for end of movement,
                      returns immediatly otherwise.
@@ -218,7 +220,6 @@ class Axis(AbstractAxis):
 
         self._manualSpeed = config.MANUAL_SPEED['normal']
         self.__driver = driver
-        self.__offset = 0
 
     def _sendCmd(self, cmd, param=""):
         """ Send a command to the axis.
@@ -240,7 +241,7 @@ class Axis(AbstractAxis):
                 Logger().warning("Axis._sendCmd(): axis %d can't sent command. Retrying..." % self._num)
             else:
                 break
-        if nbTry == 2:
+        else:
             raise HardwareError("Axis %d can't send command" % self._num)
         #Logger().debug("Axis._sendCmd(): axis %d cmd=%s, ans=%s" % (self._num, cmd, answer))
         return answer
@@ -268,8 +269,8 @@ class Axis(AbstractAxis):
     def reset(self):
         pass # find commands to send...
 
-    def setOrigin(self):
-        self.__offset += self.read()
+    #def setOrigin(self):
+        #self._offset += self.read()
 
     def read(self):
         self.__driver.acquireBus()
@@ -278,18 +279,19 @@ class Axis(AbstractAxis):
         finally:
             self.__driver.releaseBus()
         pos = cod2deg(decodeAxisValue(value))
-        pos -= self.__offset
+        pos -= self._offset
 
         return pos
 
-    def drive(self, pos, inc=False, wait=True):
+    def drive(self, pos, inc=False, useOffset=True, wait=True):
         currentPos = self.read()
 
         # Compute absolute position from increment if needed
         if inc:
             pos = currentPos + inc
         else:
-            pos += self.__offset
+            if useOffset:
+                pos += self._offset
 
         self._checkLimits(pos)
 
@@ -502,20 +504,23 @@ class AxisSimulation(AbstractAxis, threading.Thread):
         self.__jog = False
         self.__drive = False
 
-    def setOrigin(self):
-        self.__pos = 0.
+    #def setOrigin(self):
+        #self.__pos = 0.
 
     def read(self):
-        return self.__pos
+        return self.__pos - self._offset
 
-    def drive(self, pos, inc=False, wait=True):
+    def drive(self, pos, inc=False, useOffset=True, wait=True):
         Logger().debug("AxisSimulation.drive(): axis %d drive to %.1f" % (self._num, pos))
 
         # Compute absolute position from increment if needed
         if inc:
             self.__setpoint = self.__pos + inc
         else:
-            self.__setpoint = pos
+            if useOffset:
+                self.__setpoint = pos + self._offset
+            else:
+                self.__setpoint = pos
 
         self._checkLimits(self.__setpoint)
 
