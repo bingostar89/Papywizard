@@ -90,7 +90,7 @@ class AbstractPictureItem(QtGui.QGraphicsItemGroup):
     def _createItem(self):
         """ Create the real item.
         """
-        raise NotImplementedError("AbstractPictureItem._createItem() is abstract and must be overidden")
+        raise NotImplementedError("AbstractPictureItem._createItem() must be overidden")
 
     # Helpers
     def _computeBorderWidth(self):
@@ -182,7 +182,7 @@ class CrosshairCusrsor(QtGui.QGraphicsItemGroup):
     """
     def __init__(self, size, parent=None):
         QtGui.QGraphicsItemGroup.__init__(self, parent)
-        
+
         self._yawLine = QtGui.QGraphicsLineItem()
         self._yawLine.setLine(0, -size, 0, size)
         self._yawLine.setPen(QtGui.QColor(*config.SHOOTING_COLOR_SCHEME[config.COLOR_SCHEME]['head']))
