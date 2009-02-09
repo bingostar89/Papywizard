@@ -7,6 +7,9 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + menu to go to home and init position
+
+2009-02-07 Version 1.9.2 (dev)
     + improved graphical scene refresh speed
     - switched to PyQt threads (removed serializer)
     - use yellow color for next position instead of crosshair cursor
