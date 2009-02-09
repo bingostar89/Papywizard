@@ -7,7 +7,7 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
-    + menu to go to home and init position
+    + menu to go to home and initial position
 
 2009-02-07 Version 1.9.2 (dev)
     + improved graphical scene refresh speed
