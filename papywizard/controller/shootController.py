@@ -379,8 +379,13 @@ class ShootController(AbstractModalDialogController):
         self._model.setStepByStep(checked)
         if checked:
             self._view.stepByStepPushButton.setIcon(QtGui.QIcon(":/icons/button_ok.png"))
+            self._view.pauseResumePushButton.setText(_("Step"))
         else:
             self._view.stepByStepPushButton.setIcon(QtGui.QIcon(":/icons/button_cancel.png"))
+            if self._model.isPaused():
+                self._view.pauseResumePushButton.setText(_("Resume"))
+            else:
+                self._view.pauseResumePushButton.setText(_("Pause"))
 
     def __onStartPushButtonClicked(self):
         Logger().trace("ShootController.__startPushButtonClicked()")
@@ -455,7 +460,10 @@ class ShootController(AbstractModalDialogController):
     def __onShootingPaused(self):
         Logger().trace("ShootController.__onShootingPaused()")
         self._view.pauseResumePushButton.setEnabled(True)
-        self._view.pauseResumePushButton.setText(_("Resume"))
+        if self._view.stepByStepPushButton.isChecked():
+            self._view.pauseResumePushButton.setText(_("Step"))
+        else:
+            self._view.pauseResumePushButton.setText(_("Resume"))
         self._view.rewindPushButton.setEnabled(True)
         self._view.forwardPushButton.setEnabled(True)
         self._view.sequenceLabel.setText(_("Paused"))
@@ -466,7 +474,8 @@ class ShootController(AbstractModalDialogController):
 
     def __onShootingResumed(self):
         Logger().trace("ShootController.__onShootingResumed()")
-        self._view.pauseResumePushButton.setText(_("Pause"))
+        if not self._view.stepByStepPushButton.isChecked():
+            self._view.pauseResumePushButton.setText(_("Pause"))
         self._view.rewindPushButton.setEnabled(False)
         self._view.forwardPushButton.setEnabled(False)
         self._view.textNextLabel.setEnabled(False)
