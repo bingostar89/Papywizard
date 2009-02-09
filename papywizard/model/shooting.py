@@ -553,6 +553,11 @@ class Shooting(QtCore.QObject):
                                 self.sequence('mirror')
                                 self.hardware.shoot(self.stabilizationDelay)
 
+                                # Delay for 400D issue (test)
+                                # todo: log shoot time in hardware.shoot(), and automatically
+                                # adds the delay if needed there
+                                time.sleep(self.stabilizationDelay)
+
                             # Take pictures
                             Logger().info("Shutter cycle")
                             Logger().debug("Shooting.start(): pict #%d of %d" % (bracket, self.scan.totalNbPicts))
@@ -564,27 +569,24 @@ class Shooting(QtCore.QObject):
 
                             checkStop()
 
-                        # Update global shooting progression
-                        shootingProgress = float(index_) / float(self.scan.totalNbPicts)
-                        totalProgress = (repeat - 1) * self.scan.totalNbPicts + index_
-                        totalProgress /= float(numRepeat * self.scan.totalNbPicts)
-                        self.progress(shootingProgress, totalProgress)
-                        self.update(index, yaw, pitch, state='ok')
+                            # Delay for 400D issue (test)
+                            time.sleep(self.stabilizationDelay)
 
                     except HardwareError:
                         self.hardware.stopAxis()
                         Logger().exception("Shooting.start()")
                         Logger().warning("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f out of limits" % (index_, yaw, pitch))
+                        state = 'error'
 
-                        if isinstance(index, tuple):
-                            index_, yawIndex, pitchIndex = index
-                        else:
-                            index_ = index
-                        shootingProgress = float(index_) / float(self.scan.totalNbPicts)
-                        totalProgress = (repeat - 1) * self.scan.totalNbPicts + index_
-                        totalProgress /= float(numRepeat * self.scan.totalNbPicts)
-                        self.progress(shootingProgress, shootingProgress)
-                        self.update(index, yaw, pitch, state='error')
+                    else:
+                        state = 'ok'
+
+                    # Update global shooting progression
+                    shootingProgress = float(index_) / float(self.scan.totalNbPicts)
+                    totalProgress = (repeat - 1) * self.scan.totalNbPicts + index_
+                    totalProgress /= float(numRepeat * self.scan.totalNbPicts)
+                    self.progress(shootingProgress, totalProgress)
+                    self.update(index, yaw, pitch, state=state)
 
                     # Next position
                     end = False
