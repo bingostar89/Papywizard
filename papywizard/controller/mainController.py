@@ -177,6 +177,9 @@ class MainController(AbstractController):
         self.connect(self._view.actionHardwareSetLimitPitchPlus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchPlusActivated)
         self.connect(self._view.actionHardwareSetLimitPitchMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchMinusActivated)
         self.connect(self._view.actionHardwareClearLimits, QtCore.SIGNAL("activated()"), self.__onActionHardwareClearLimitsActivated)
+        self.connect(self._view.actionHardwareGotoHome, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoHomeActivated)
+        self.connect(self._view.actionHardwareGotoInitial, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoInitialActivated)
+
         self.connect(self._view.actionHelpManual, QtCore.SIGNAL("activated()"), self.__onActionHelpManualActivated)
         self.connect(self._view.actionHelpViewLog, QtCore.SIGNAL("activated()"), self.__onActionHelpViewLogActivated)
         self.connect(self._view.actionHelpAboutPapywizard, QtCore.SIGNAL("activated()"), self.__onActionHelpAboutPapywizardActivated)
@@ -464,6 +467,27 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onActionHardwareClearLimitsActivated()")
         self._model.hardware.clearLimits()
         self.setStatusbarMessage(_("Limits cleared"), 10)
+
+    def __onActionHardwareGotoHomeActivated(self):
+        Logger().trace("MainController.__onActionHardwareGotoHomeActivated()")
+        self.setStatusbarMessage(_("Goto home position..."))
+        self._model.hardware.gotoPosition(0., 0., wait=False)
+        while self._model.hardware.isAxisMoving():
+            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+            time.sleep(0.01)
+        # TODO: clear all input events
+        self.setStatusbarMessage(_("Home position reached"), 10)
+
+    def __onActionHardwareGotoInitialActivated(self):
+        Logger().trace("MainController.__onActionHardwareGotoInitialActivated()")
+        self.setStatusbarMessage(_("Goto initial position..."))
+        QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+        self._model.hardware.gotoPosition(0., 0., useOffset=False, wait=False)
+        while self._model.hardware.isAxisMoving():
+            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+            time.sleep(0.01)
+        # TODO: clear all input events
+        self.setStatusbarMessage(_("Initial position reached"), 10)
 
     def __onActionHelpManualActivated(self):
         Logger().trace("MainController.__onActionHelpManualActivated()")

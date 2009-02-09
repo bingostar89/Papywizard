@@ -929,7 +929,7 @@
      <x>0</x>
      <y>0</y>
      <width>565</width>
-     <height>35</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="font" >
@@ -963,6 +963,9 @@
     <addaction name="separator" />
     <addaction name="menuSetLimit" />
     <addaction name="actionHardwareClearLimits" />
+    <addaction name="separator" />
+    <addaction name="actionHardwareGotoHome" />
+    <addaction name="actionHardwareGotoInitial" />
    </widget>
    <widget class="QMenu" name="menuHelp" >
     <property name="title" >
@@ -1101,6 +1104,16 @@
    </property>
    <property name="text" >
     <string>Load Style Sheet...</string>
+   </property>
+  </action>
+  <action name="actionHardwareGotoHome" >
+   <property name="text" >
+    <string>Goto Home...</string>
+   </property>
+  </action>
+  <action name="actionHardwareGotoInitial" >
+   <property name="text" >
+    <string>Goto Initial...</string>
    </property>
   </action>
  </widget>
