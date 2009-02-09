@@ -129,3 +129,12 @@ class YesNoMessageDialog(BaseMessageDialog):
         self.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         self.setDefaultButton(QtGui.QMessageBox.Yes)
         self.setWindowTitle(_("Question"))
+
+
+class AbortMessageDialog(BaseMessageDialog):
+    """ Abort message dialog.
+    """
+    def _init(self):
+        self.setIcon(QtGui.QMessageBox.NoIcon)
+        self.setStandardButtons(QtGui.QMessageBox.Abort)
+        self.setWindowTitle(_("Abort"))
