@@ -52,7 +52,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: imageArea.py 1308 2009-01-11 16:19:42Z fma $"
+__revision__ = "$Id$"
 
 from PyQt4 import QtCore, QtGui
 
