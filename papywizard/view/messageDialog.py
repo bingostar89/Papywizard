@@ -54,7 +54,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: messageController.py 1345 2009-01-18 15:52:55Z fma $"
+__revision__ = "$Id$"
 
 from PyQt4 import QtCore, QtGui
 
