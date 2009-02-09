@@ -480,11 +480,13 @@ class MainController(AbstractController):
             QtGui.QApplication.processEvents() #QtCore.QEventLoop.ExcludeUserInputEvents)
             if dialog.result() == QtGui.QMessageBox.Abort:
                 self._model.hardware.stopAxis()
+                self.setStatusbarMessage(_("Operation aborted"), 10)
                 break
             time.sleep(0.01)
+        else:
+            self.setStatusbarMessage(_("Home position reached"), 10)
         dialog.hide()
         self._view.grabKeyboard()
-        self.setStatusbarMessage(_("Home position reached"), 10)
 
     def __onActionHardwareGotoInitialActivated(self):
         Logger().trace("MainController.__onActionHardwareGotoInitialActivated()")
@@ -498,11 +500,13 @@ class MainController(AbstractController):
             QtGui.QApplication.processEvents() #QtCore.QEventLoop.ExcludeUserInputEvents)
             if dialog.result() == QtGui.QMessageBox.Abort:
                 self._model.hardware.stopAxis()
+                self.setStatusbarMessage(_("Operation aborted"), 10)
                 break
             time.sleep(0.01)
+        else:
+            self.setStatusbarMessage(_("Initial position reached"), 10)
         dialog.hide()
         self._view.grabKeyboard()
-        self.setStatusbarMessage(_("Initial position reached"), 10)
 
     def __onActionHelpManualActivated(self):
         Logger().trace("MainController.__onActionHelpManualActivated()")
