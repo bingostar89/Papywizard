@@ -474,6 +474,7 @@ class MainController(AbstractController):
         self.setStatusbarMessage(_("Goto home position..."))
         self._model.hardware.gotoPosition(0., 0., wait=False)
         dialog = AbortMessageDialog("Goto home position", "Please wait...")
+        self._view.releaseKeyboard()
         dialog.show()
         while self._model.hardware.isAxisMoving():
             QtGui.QApplication.processEvents() #QtCore.QEventLoop.ExcludeUserInputEvents)
@@ -481,6 +482,8 @@ class MainController(AbstractController):
                 self._model.hardware.stopAxis()
                 break
             time.sleep(0.01)
+        dialog.hide()
+        self._view.grabKeyboard()
         self.setStatusbarMessage(_("Home position reached"), 10)
 
     def __onActionHardwareGotoInitialActivated(self):
@@ -489,6 +492,7 @@ class MainController(AbstractController):
         QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
         self._model.hardware.gotoPosition(0., 0., useOffset=False, wait=False)
         dialog = AbortMessageDialog("Goto initial position", "Please wait...")
+        self._view.releaseKeyboard()
         dialog.show()
         while self._model.hardware.isAxisMoving():
             QtGui.QApplication.processEvents() #QtCore.QEventLoop.ExcludeUserInputEvents)
@@ -496,6 +500,8 @@ class MainController(AbstractController):
                 self._model.hardware.stopAxis()
                 break
             time.sleep(0.01)
+        dialog.hide()
+        self._view.grabKeyboard()
         self.setStatusbarMessage(_("Initial position reached"), 10)
 
     def __onActionHelpManualActivated(self):
