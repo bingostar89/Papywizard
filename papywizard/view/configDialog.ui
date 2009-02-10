@@ -29,7 +29,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget" >
      <property name="currentIndex" >
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="shootingTab" >
       <attribute name="title" >
@@ -304,13 +304,13 @@
             <string> s</string>
            </property>
            <property name="decimals" >
-            <number>1</number>
+            <number>3</number>
            </property>
            <property name="maximum" >
             <double>120.000000000000000</double>
            </property>
            <property name="singleStep" >
-            <double>0.100000000000000</double>
+            <double>0.001000000000000</double>
            </property>
            <property name="value" >
             <double>0.500000000000000</double>
