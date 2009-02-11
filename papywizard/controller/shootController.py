@@ -380,8 +380,11 @@ class ShootController(AbstractModalDialogController):
         if checked:
             self._view.stepByStepPushButton.setIcon(QtGui.QIcon(":/icons/button_ok.png"))
             self._view.pauseResumePushButton.setText(_("Step"))
+            if not self._model.isPaused():
+                self._view.pauseResumePushButton.setEnabled(False)
         else:
             self._view.stepByStepPushButton.setIcon(QtGui.QIcon(":/icons/button_cancel.png"))
+            self._view.pauseResumePushButton.setEnabled(True)
             if self._model.isPaused():
                 self._view.pauseResumePushButton.setText(_("Resume"))
             else:
@@ -398,6 +401,7 @@ class ShootController(AbstractModalDialogController):
                 self.__pauseShooting() # Not used
             else:
                 self.__resumeShooting()
+                # Use a stepShooting stuff
 
     def __onStopPushButtonClicked(self):
         Logger().trace("ShootController.__stopPushButtonClicked()")
@@ -450,7 +454,8 @@ class ShootController(AbstractModalDialogController):
         self._view.dataPushButton.setEnabled(False)
         self._view.timerPushButton.setEnabled(False)
         self._view.startPushButton.setEnabled(False)
-        self._view.pauseResumePushButton.setEnabled(True)
+        if not self._view.stepByStepPushButton.isChecked():
+            self._view.pauseResumePushButton.setEnabled(True)
         self._view.stopPushButton.setEnabled(True)
         self._view.buttonBox.setEnabled(False)
         self._view.rewindPushButton.setEnabled(False)
@@ -460,9 +465,10 @@ class ShootController(AbstractModalDialogController):
     def __onShootingPaused(self):
         Logger().trace("ShootController.__onShootingPaused()")
         self._view.pauseResumePushButton.setEnabled(True)
-        if self._view.stepByStepPushButton.isChecked():
-            self._view.pauseResumePushButton.setText(_("Step"))
-        else:
+        #if self._view.stepByStepPushButton.isChecked():
+            #self._view.pauseResumePushButton.setText(_("Step"))
+        #else:
+        if not self._view.stepByStepPushButton.isChecked():
             self._view.pauseResumePushButton.setText(_("Resume"))
         self._view.rewindPushButton.setEnabled(True)
         self._view.forwardPushButton.setEnabled(True)
@@ -622,6 +628,8 @@ class ShootController(AbstractModalDialogController):
         self._view.pauseResumePushButton.setEnabled(False)
 
     def __resumeShooting(self):
+        if self._view.stepByStepPushButton.isChecked():
+            self._view.pauseResumePushButton.setEnabled(False)
         self._model.resume()
 
     def __stopShooting(self):
