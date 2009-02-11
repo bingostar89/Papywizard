@@ -87,7 +87,7 @@ class Shooting(QtCore.QObject):
         self.__startTime = None
         self.__pauseTime = None
         self.__totalPausedTime = 0.
-
+        self.__LastShootTime = time.time()
         # Hardware
         self.realHardware = realHardware
         self.simulatedHardware = simulatedHardware
@@ -224,10 +224,10 @@ class Shooting(QtCore.QObject):
     # Signals
     def hardwareConnected(self, flag, message=""):
         """ Hardware connect/disconnect.
-        
+
         @param flag: True if connected, false otherwise
         @type flag: bool
-        
+
         @param message: optional error message
         @type message: str
         """
@@ -250,7 +250,7 @@ class Shooting(QtCore.QObject):
 
     def stopped(self, status):
         """ Shooting stopped.
-        
+
         @param status: shooting status
         @type status: str
         """
@@ -258,7 +258,7 @@ class Shooting(QtCore.QObject):
 
     def waiting(self, wait):
         """ Shooting waiting.
-        
+
         @param wait: remaining time to wait (s)
         @type wait: float
         """
@@ -266,10 +266,10 @@ class Shooting(QtCore.QObject):
 
     def progress(self, shootingProgress=None, totalProgress=None):
         """ Shooting progress.
-        
+
         @param shootingProgress: shooting progress value
         @type shootingProgress: float
-        
+
         @param totalProgress: total progress value
         @type totalProgress: float
         """
@@ -277,7 +277,7 @@ class Shooting(QtCore.QObject):
 
     def repeat(self, repeat):
         """ Shooting repeat counter.
-        
+
         @param repeat: repeat counter
         @type repeat: int
         """
@@ -285,19 +285,19 @@ class Shooting(QtCore.QObject):
 
     def update(self, index, yaw, pitch, state=None, next=None):
         """ Shooting update.
-        
+
         @param index: position index
         @type int
-        
+
         @param yaw: position yaw
         @type yaw: float
-        
+
         @param pitch: position pitch
         @type pitch: float
-        
+
         @param state: position state
         @type state: str
-        
+
         @param next: next position flag
         @type next: bool
         """
@@ -305,10 +305,10 @@ class Shooting(QtCore.QObject):
 
     def sequence(self, sequence, bracket=None):
         """ Shooting sequence.
-        
+
         @param sequence: name of the current sequence
         @type sequence: str
-        
+
         @param bracket: number of the bracket
         @type bracket: int
         """
@@ -557,7 +557,15 @@ class Shooting(QtCore.QObject):
                             Logger().info("Shutter cycle")
                             Logger().debug("Shooting.start(): pict #%d of %d" % (bracket, self.scan.totalNbPicts))
                             self.sequence('shutter', bracket)
+
+                            # Ensure that pulse width low delay has elapsed before last shoot
+                            delay = self.camera.pulseWidthLow / 1000. - (time.time() - self.__LastShootTime)
+                            if delay > 0:
+                                time.sleep(delay)
                             self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
+                            self.__LastShootTime = time.time()
+
+                            # Wait for the end of shutter cycle
                             if self.camera.timeValue - self.camera.pulseWidthHigh / 1000. > 0:
                                 time.sleep(self.camera.timeValue - self.camera.pulseWidthHigh / 1000.)
 
