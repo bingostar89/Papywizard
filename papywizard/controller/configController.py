@@ -66,7 +66,7 @@ class ConfigController(AbstractModalDialogController):
     """ Configuration controller object.
     """
     def _init(self):
-        self._uiFile = "configDialog2.ui"
+        self._uiFile = "configDialog.ui"
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
