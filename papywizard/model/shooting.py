@@ -398,8 +398,8 @@ class Shooting(QtCore.QObject):
     def getShootingElapsedTime(self):
         """ Get the shooting elapsed time.
 
-        @return: elapsed time (s)
-        @rtype: int
+        @return: shooting time and elapsed time (s)
+        @rtype: tuple of int
         """
         shootingTime = time.time() - self.__startTime - self.__totalPausedTime
         if self.__paused and self.__pauseTime is not None:
@@ -527,10 +527,6 @@ class Shooting(QtCore.QObject):
                         self.sequence('moving')
                         self.hardware.gotoPosition(yaw, pitch)
 
-                        Logger().info("Stabilization")
-                        self.sequence('stabilization')
-                        time.sleep(self.stabilizationDelay)
-
                         # Test step-by-step flag (use a function)
                         if self.__stepByStep and not self.__stop:
                             self.__pause = True
@@ -551,26 +547,24 @@ class Shooting(QtCore.QObject):
                             if self.camera.mirrorLockup:
                                 Logger().info("Mirror lockup")
                                 self.sequence('mirror')
-                                self.hardware.shoot(self.stabilizationDelay)
+                                self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
 
-                                # Delay for 400D issue (test)
-                                # todo: log shoot time in hardware.shoot(), and automatically
-                                # adds the delay if needed there
-                                time.sleep(self.stabilizationDelay)
+                            Logger().info("Stabilization")
+                            self.sequence('stabilization')
+                            time.sleep(self.stabilizationDelay)
 
                             # Take pictures
                             Logger().info("Shutter cycle")
                             Logger().debug("Shooting.start(): pict #%d of %d" % (bracket, self.scan.totalNbPicts))
                             self.sequence('shutter', bracket)
-                            self.hardware.shoot(self.camera.timeValue)
+                            self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
+                            if self.camera.timeValue - self.camera.pulseWidthHigh / 1000. > 0:
+                                time.sleep(self.camera.timeValue - self.camera.pulseWidthHigh / 1000.)
 
                             # Add image to the xml data file
                             data.addPicture(bracket, yaw, pitch, roll)
 
                             checkStop()
-
-                            # Delay for 400D issue (test)
-                            time.sleep(self.stabilizationDelay)
 
                     except HardwareError:
                         self.hardware.stopAxis()
@@ -608,8 +602,10 @@ class Shooting(QtCore.QObject):
                         Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
                         self.update(index, yaw, pitch, next=True)
 
-                    # Test step-by-step flag
-                    if self.__stepByStep and not self.__stop:
+
+                    # Test manual shooting flag
+                    # skipped if timeValue is 0
+                    if self.camera.timeValue and self.__stepByStep and not self.__stop:
                         self.__pause = True
                         Logger().info("Wait for manual shooting trigger...")
 
@@ -631,10 +627,9 @@ class Shooting(QtCore.QObject):
                         Logger().debug("Shooting.start(): restart in %s" % sToHmsAsStr(remainingTime))
                         self.waiting(remainingTime)
                         time.sleep(1)
+                        remainingTime = self.timerEvery - (time.time() - startTime)
 
                         checkStop()
-
-                        remainingTime = self.timerEvery - (time.time() - startTime)
 
         except StopIteration:
             Logger().debug("Shooting.start(): stop detected")
