@@ -69,42 +69,6 @@ class Camera(object):
         """
         self.lens = Lens()
 
-    def __getSensorRatio(self):
-        """
-        """
-        return ConfigManager().get('Preferences', 'CAMERA_SENSOR_RATIO')
-
-    def __setSensorRatio(self, sensorRatio):
-        """
-        """
-        ConfigManager().set('Preferences', 'CAMERA_SENSOR_RATIO', sensorRatio)
-
-    sensorRatio = property(__getSensorRatio, __setSensorRatio)
-
-    def __getSensorCoef(self):
-        """
-        """
-        return ConfigManager().getFloat('Preferences', 'CAMERA_SENSOR_COEF')
-
-    def __setSensorCoef(self, sensorCoef):
-        """
-        """
-        ConfigManager().setFloat('Preferences', 'CAMERA_SENSOR_COEF', sensorCoef, 1)
-
-    sensorCoef = property(__getSensorCoef, __setSensorCoef)
-
-    def __getSensorResolution(self):
-        """
-        """
-        return ConfigManager().getFloat('Preferences', 'CAMERA_SENSOR_RESOLUTION')
-        
-    def __setSensorResolution(self, resolution):
-        """
-        """
-        ConfigManager().setFloat('Preferences', 'CAMERA_SENSOR_RESOLUTION', resolution, 1)
-
-    sensorResolution = property(__getSensorResolution, __setSensorResolution)
-
     def __getTimeValue(self):
         """
         """
@@ -116,6 +80,42 @@ class Camera(object):
         ConfigManager().setFloat('Preferences', 'CAMERA_TIME_VALUE', timeValue, 1)
 
     timeValue = property(__getTimeValue, __setTimeValue)
+
+    def __getMirrorLockup(self):
+        """
+        """
+        return ConfigManager().getBoolean('Preferences', 'CAMERA_MIRROR_LOCKUP')
+
+    def __setMirrorLockup(self, mirrorLockup):
+        """
+        """
+        ConfigManager().setBoolean('Preferences', 'CAMERA_MIRROR_LOCKUP', mirrorLockup)
+
+    mirrorLockup = property(__getMirrorLockup, __setMirrorLockup)
+
+    def __getPulseWidthHigh(self):
+        """
+        """
+        return ConfigManager().getInt('Preferences', 'CAMERA_PULSE_WIDTH_HIGH')
+
+    def __setPulseWidthHigh(self, width):
+        """
+        """
+        ConfigManager().setInt('Preferences', 'CAMERA_PULSE_WIDTH_HIGH', width)
+
+    pulseWidthHigh = property(__getPulseWidthHigh, __setPulseWidthHigh)
+
+    def __getPulseWidthLow(self):
+        """
+        """
+        return ConfigManager().getInt('Preferences', 'CAMERA_PULSE_WIDTH_LOW')
+
+    def __setPulseWidthLow(self, width):
+        """
+        """
+        ConfigManager().setInt('Preferences', 'CAMERA_PULSE_WIDTH_Low', width)
+
+    pulseWidthLow = property(__getPulseWidthLow, __setPulseWidthLow)
 
     def __getBracketingNbPicts(self):
         """
@@ -141,17 +141,41 @@ class Camera(object):
 
     bracketingIntent = property(__getBracketingIntent, __setBracketingIntent)
 
-    def __getMirrorLockup(self):
+    def __getSensorCoef(self):
         """
         """
-        return ConfigManager().getBoolean('Preferences', 'CAMERA_MIRROR_LOCKUP')
+        return ConfigManager().getFloat('Preferences', 'CAMERA_SENSOR_COEF')
 
-    def __setMirrorLockup(self, mirrorLockup):
+    def __setSensorCoef(self, sensorCoef):
         """
         """
-        ConfigManager().setBoolean('Preferences', 'CAMERA_MIRROR_LOCKUP', mirrorLockup)
+        ConfigManager().setFloat('Preferences', 'CAMERA_SENSOR_COEF', sensorCoef, 1)
 
-    mirrorLockup = property(__getMirrorLockup, __setMirrorLockup)
+    sensorCoef = property(__getSensorCoef, __setSensorCoef)
+
+    def __getSensorRatio(self):
+        """
+        """
+        return ConfigManager().get('Preferences', 'CAMERA_SENSOR_RATIO')
+
+    def __setSensorRatio(self, sensorRatio):
+        """
+        """
+        ConfigManager().set('Preferences', 'CAMERA_SENSOR_RATIO', sensorRatio)
+
+    sensorRatio = property(__getSensorRatio, __setSensorRatio)
+
+    def __getSensorResolution(self):
+        """
+        """
+        return ConfigManager().getFloat('Preferences', 'CAMERA_SENSOR_RESOLUTION')
+
+    def __setSensorResolution(self, resolution):
+        """
+        """
+        ConfigManager().setFloat('Preferences', 'CAMERA_SENSOR_RESOLUTION', resolution, 1)
+
+    sensorResolution = property(__getSensorResolution, __setSensorResolution)
 
     def getYawFov(self, cameraOrientation):
         """ Compute the yaw FoV.

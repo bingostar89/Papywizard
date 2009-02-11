@@ -66,7 +66,7 @@ class ConfigController(AbstractModalDialogController):
     """ Configuration controller object.
     """
     def _init(self):
-        self._uiFile = "configDialog.ui"
+        self._uiFile = "configDialog2.ui"
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
@@ -119,6 +119,8 @@ class ConfigController(AbstractModalDialogController):
         # Camera tab
         self._model.camera.timeValue = self._view.timeValueDoubleSpinBox.value()
         self._model.camera.mirrorLockup = self._view.mirrorLockupCheckBox.isChecked()
+        self._model.camera.pulseWidthHigh = self._view.pulseWidthHighSpinBox.value()
+        self._model.camera.pulseWidthLow = self._view.pulseWidthLowSpinBox.value()
         self._model.camera.bracketingNbPicts = self._view.bracketingNbPictsSpinBox.value()
         self._model.camera.bracketingIntent = str(self._view.bracketingIntentComboBox.currentText())
         self._model.camera.sensorCoef = self._view.sensorCoefDoubleSpinBox.value()
@@ -306,6 +308,8 @@ class ConfigController(AbstractModalDialogController):
         # Camera tab
         self._view.timeValueDoubleSpinBox.setValue(self._model.camera.timeValue)
         self._view.mirrorLockupCheckBox.setChecked(self._model.camera.mirrorLockup)
+        self._view.pulseWidthHighSpinBox.setValue(self._model.camera.pulseWidthHigh)
+        self._view.pulseWidthLowSpinBox.setValue(self._model.camera.pulseWidthLow)
         self._view.bracketingNbPictsSpinBox.setValue(self._model.camera.bracketingNbPicts)
         self._view.bracketingIntentComboBox.setCurrentIndex(self._view.bracketingIntentComboBox.findText(self._model.camera.bracketingIntent))
         self._view.bracketingIntentComboBox.setEnabled(self._model.camera.bracketingNbPicts != 1)
