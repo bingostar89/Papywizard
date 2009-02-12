@@ -683,7 +683,7 @@ class MainController(AbstractController):
         self.setStatusbarMessage(self.tr("Yaw/pitch end set from current position"), 10)
 
     def __openTotalFovDialog(self):
-        """
+        """ Open the Total Fov input dialog.
         """
         controller = TotalFovController(self, self._model)
         self._view.releaseKeyboard()
@@ -696,7 +696,7 @@ class MainController(AbstractController):
             self.setStatusbarMessage(self.tr("Field of view set to user value"), 10)
 
     def __openNbPictsDialog(self):
-        """
+        """ Open the Nb Picts input dialog.
         """
         controller = NbPictsController(self, self._model)
         self._view.releaseKeyboard()
@@ -709,7 +709,7 @@ class MainController(AbstractController):
             self.setStatusbarMessage(self.tr("Number of pictures set to user value"), 10)
 
     def __openConfigDialog(self):
-        """
+        """ Open the configuration dialog.
         """
         try:
             #self._view.configPushButton.setEnabled(False)
@@ -741,7 +741,7 @@ class MainController(AbstractController):
             self.refreshView()
 
     def __openShootdialog(self):
-        """
+        """ Open teh shooting dialog.
         """
         self._model.setStepByStep(False)
         try:
@@ -760,7 +760,7 @@ class MainController(AbstractController):
         controller.shutdown()
 
     def __populatePresetComboBox(self):
-        """
+        """ Populate the preset combo box.
         """
         self._view.presetComboBox.clear()
         presets = PresetManager().getPresets()
@@ -813,6 +813,8 @@ class MainController(AbstractController):
 
     def __connectToHardware(self):
         """ Connect to real hardware.
+
+        # To be redesigned, so it can be canceled, and exceptions can be traced.
         """
         Logger().info("Connecting to real hardware...")
         self.setStatusbarMessage(self.tr("Connecting to real hardware..."))
@@ -841,8 +843,8 @@ class MainController(AbstractController):
             Logger().error("Can't connect to hardware\n%s" % self.__connectErrorMessage)
             #self._view.connectLabel.setIcon(QtGui.QIcon(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22)))
             self.setStatusbarMessage(self.tr("Connect to hardware failed"), 10)
-            self._view.releaseKeyboard()
             dialog = ErrorMessageDialog(self.tr("Can't connect to hardware"), self.__connectErrorMessage)
+            self._view.releaseKeyboard()
             dialog.exec_()
             self._view.grabKeyboard()
             self._view.actionHardwareConnect.setChecked(False)
