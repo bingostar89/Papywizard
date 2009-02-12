@@ -160,7 +160,7 @@ The fact that you are presently reading this means that you have had knowledge o
 <context>
     <name>ErrorMessageController</name>
     <message>
-        <location filename="papywizard/controller/messageController.py" line="126"/>
+        <location filename="papywizard/controller/messageController.py" line="124"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -176,7 +176,7 @@ The fact that you are presently reading this means that you have had knowledge o
 <context>
     <name>ExceptionMessageController</name>
     <message>
-        <location filename="papywizard/controller/messageController.py" line="135"/>
+        <location filename="papywizard/controller/messageController.py" line="133"/>
         <source>Exception</source>
         <translation type="unfinished"></translation>
     </message>
@@ -192,7 +192,7 @@ The fact that you are presently reading this means that you have had knowledge o
 <context>
     <name>InfoMessageController</name>
     <message>
-        <location filename="papywizard/controller/messageController.py" line="108"/>
+        <location filename="papywizard/controller/messageController.py" line="106"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
@@ -373,27 +373,27 @@ The fact that you are presently reading this means that you have had knowledge o
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="818"/>
+        <location filename="papywizard/controller/mainController.py" line="820"/>
         <source>Connecting to real hardware...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="839"/>
+        <location filename="papywizard/controller/mainController.py" line="841"/>
         <source>Now connected to real hardware</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="843"/>
+        <location filename="papywizard/controller/mainController.py" line="845"/>
         <source>Connect to hardware failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="845"/>
+        <location filename="papywizard/controller/mainController.py" line="846"/>
         <source>Can&apos;t connect to hardware</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="857"/>
+        <location filename="papywizard/controller/mainController.py" line="859"/>
         <source>Now in simulation mode</source>
         <translation type="unfinished"></translation>
     </message>
@@ -609,12 +609,12 @@ The fact that you are presently reading this means that you have had knowledge o
 <context>
     <name>SerialDriver</name>
     <message>
-        <location filename="papywizard/hardware/serialDriver.py" line="97"/>
+        <location filename="papywizard/hardware/serialDriver.py" line="100"/>
         <source>SerialDriver not initialized</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/hardware/serialDriver.py" line="117"/>
+        <location filename="papywizard/hardware/serialDriver.py" line="120"/>
         <source>Timeout while reading on serial bus</source>
         <translation type="unfinished"></translation>
     </message>
@@ -627,57 +627,57 @@ The fact that you are presently reading this means that you have had knowledge o
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="472"/>
+        <location filename="papywizard/controller/shootController.py" line="474"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="484"/>
+        <location filename="papywizard/controller/shootController.py" line="486"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="475"/>
+        <location filename="papywizard/controller/shootController.py" line="477"/>
         <source>Paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="495"/>
+        <location filename="papywizard/controller/shootController.py" line="497"/>
         <source>Finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="497"/>
+        <location filename="papywizard/controller/shootController.py" line="499"/>
         <source>Canceled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="499"/>
+        <location filename="papywizard/controller/shootController.py" line="501"/>
         <source>Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="509"/>
+        <location filename="papywizard/controller/shootController.py" line="511"/>
         <source>Waiting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="554"/>
+        <location filename="papywizard/controller/shootController.py" line="556"/>
         <source>Moving</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="556"/>
+        <location filename="papywizard/controller/shootController.py" line="558"/>
         <source>Stabilization</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="558"/>
+        <location filename="papywizard/controller/shootController.py" line="560"/>
         <source>Mirror lockup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="561"/>
+        <location filename="papywizard/controller/shootController.py" line="563"/>
         <source>Shutter - Picture</source>
         <translation type="unfinished"></translation>
     </message>
@@ -685,7 +685,7 @@ The fact that you are presently reading this means that you have had knowledge o
 <context>
     <name>WarningMessageController</name>
     <message>
-        <location filename="papywizard/controller/messageController.py" line="117"/>
+        <location filename="papywizard/controller/messageController.py" line="115"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
@@ -701,7 +701,7 @@ The fact that you are presently reading this means that you have had knowledge o
 <context>
     <name>YesNoMessageController</name>
     <message>
-        <location filename="papywizard/controller/messageController.py" line="146"/>
+        <location filename="papywizard/controller/messageController.py" line="144"/>
         <source>Question</source>
         <translation type="unfinished"></translation>
     </message>
@@ -899,11 +899,6 @@ The fact that you are presently reading this means that you have had knowledge o
     <message>
         <location filename="papywizard/view/configDialog.ui" line="496"/>
         <source> Mpx</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/configDialog.ui" line="435"/>
-        <source>If 0, Time value is used</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

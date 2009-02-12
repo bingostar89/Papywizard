@@ -168,7 +168,7 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
 <context>
     <name>ErrorMessageController</name>
     <message>
-        <location filename="papywizard/controller/messageController.py" line="126"/>
+        <location filename="papywizard/controller/messageController.py" line="124"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
@@ -184,7 +184,7 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
 <context>
     <name>ExceptionMessageController</name>
     <message>
-        <location filename="papywizard/controller/messageController.py" line="135"/>
+        <location filename="papywizard/controller/messageController.py" line="133"/>
         <source>Exception</source>
         <translation>Exception</translation>
     </message>
@@ -200,7 +200,7 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
 <context>
     <name>InfoMessageController</name>
     <message>
-        <location filename="papywizard/controller/messageController.py" line="108"/>
+        <location filename="papywizard/controller/messageController.py" line="106"/>
         <source>Info</source>
         <translation>Information</translation>
     </message>
@@ -381,27 +381,27 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
         <translation>Impossible de charger la feuille de style</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="818"/>
+        <location filename="papywizard/controller/mainController.py" line="820"/>
         <source>Connecting to real hardware...</source>
         <translation>Connexion au matériel...</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="839"/>
+        <location filename="papywizard/controller/mainController.py" line="841"/>
         <source>Now connected to real hardware</source>
         <translation>Maintenant connecté au matériel</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="843"/>
+        <location filename="papywizard/controller/mainController.py" line="845"/>
         <source>Connect to hardware failed</source>
         <translation>La connection au matériel a échoué</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="845"/>
+        <location filename="papywizard/controller/mainController.py" line="846"/>
         <source>Can&apos;t connect to hardware</source>
         <translation>Impossible de se connecter au matériel</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="857"/>
+        <location filename="papywizard/controller/mainController.py" line="859"/>
         <source>Now in simulation mode</source>
         <translation>Maintenant en mode simulation</translation>
     </message>
@@ -617,12 +617,12 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
 <context>
     <name>SerialDriver</name>
     <message>
-        <location filename="papywizard/hardware/serialDriver.py" line="97"/>
+        <location filename="papywizard/hardware/serialDriver.py" line="100"/>
         <source>SerialDriver not initialized</source>
         <translation>SerialDriver non initialisé</translation>
     </message>
     <message>
-        <location filename="papywizard/hardware/serialDriver.py" line="117"/>
+        <location filename="papywizard/hardware/serialDriver.py" line="120"/>
         <source>Timeout while reading on serial bus</source>
         <translation>Timeout de lecture sur bus bluetooth</translation>
     </message>
@@ -635,57 +635,57 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
         <translation>Pas</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="472"/>
+        <location filename="papywizard/controller/shootController.py" line="474"/>
         <source>Resume</source>
         <translation>Reprendre</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="484"/>
+        <location filename="papywizard/controller/shootController.py" line="486"/>
         <source>Pause</source>
         <translation>Suspendre</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="475"/>
+        <location filename="papywizard/controller/shootController.py" line="477"/>
         <source>Paused</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="495"/>
+        <location filename="papywizard/controller/shootController.py" line="497"/>
         <source>Finished</source>
         <translation>Terminé</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="497"/>
+        <location filename="papywizard/controller/shootController.py" line="499"/>
         <source>Canceled</source>
         <translation>Annulé</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="499"/>
+        <location filename="papywizard/controller/shootController.py" line="501"/>
         <source>Failed</source>
         <translation>Échoué</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="509"/>
+        <location filename="papywizard/controller/shootController.py" line="511"/>
         <source>Waiting</source>
         <translation>Attente</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="554"/>
+        <location filename="papywizard/controller/shootController.py" line="556"/>
         <source>Moving</source>
         <translation>Déplacement</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="556"/>
+        <location filename="papywizard/controller/shootController.py" line="558"/>
         <source>Stabilization</source>
         <translation>Sstabilisation</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="558"/>
+        <location filename="papywizard/controller/shootController.py" line="560"/>
         <source>Mirror lockup</source>
         <translation>Verrouillage miroir</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="561"/>
+        <location filename="papywizard/controller/shootController.py" line="563"/>
         <source>Shutter - Picture</source>
         <translation>Obturateur - Image</translation>
     </message>
@@ -693,7 +693,7 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
 <context>
     <name>WarningMessageController</name>
     <message>
-        <location filename="papywizard/controller/messageController.py" line="117"/>
+        <location filename="papywizard/controller/messageController.py" line="115"/>
         <source>Warning</source>
         <translation>Attention</translation>
     </message>
@@ -709,7 +709,7 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
 <context>
     <name>YesNoMessageController</name>
     <message>
-        <location filename="papywizard/controller/messageController.py" line="146"/>
+        <location filename="papywizard/controller/messageController.py" line="144"/>
         <source>Question</source>
         <translation>Question</translation>
     </message>
@@ -910,11 +910,6 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
         <translation>Mpx</translation>
     </message>
     <message>
-        <location filename="papywizard/view/configDialog.ui" line="435"/>
-        <source>If 0, Time value is used</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="papywizard/view/configDialog.ui" line="460"/>
         <source> ms</source>
         <translation> ms</translation>
@@ -922,7 +917,7 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
     <message>
         <location filename="papywizard/view/configDialog.ui" line="476"/>
         <source>Pulse width (high/low)</source>
-        <translation type="unfinished">Largeur impulsion (haut/bas)</translation>
+        <translation>Largeur impulsion (haut/bas)</translation>
     </message>
     <message>
         <location filename="papywizard/view/configDialog.ui" line="489"/>
