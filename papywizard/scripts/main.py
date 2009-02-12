@@ -92,11 +92,11 @@ class Papywizard(object):
         """
         Logger().info("Starting Papywizard...")
 
-        # Init resources and application
-        qInitResources()
-
         # Init global Qt application
         qtApp = QtGui.QApplication(sys.argv)
+
+        # Init resources and application
+        qInitResources()
 
         # i18n stuff
         locale = QtCore.QLocale.system().name()
