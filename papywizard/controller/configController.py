@@ -180,8 +180,8 @@ class ConfigController(AbstractModalDialogController):
             self._view.cameraRollDoubleSpinBox.setValue(0.)
         else:
             if self._model.mode == 'mosaic':
-                dialog = WarningMessageDialog(_("Wrong value for camera orientation"),
-                                              _("Can't set camera orientation to 'custom' while in 'mosaic' mode"))
+                dialog = WarningMessageDialog(self.tr("Wrong value for camera orientation"),
+                                              self.tr("Can't set camera orientation to 'custom' while in 'mosaic' mode"))
                 dialog.exec_()
                 self._view.cameraOrientationComboBox.setCurrentIndex(self._view.cameraOrientationComboBox.findText(self._model.cameraOrientation))
             else:
@@ -203,8 +203,8 @@ class ConfigController(AbstractModalDialogController):
         """
         Logger().debug("ConfigController.__onLensTypeComboBoxCurrentIndexChanged(): type=%s" % type_)
         if type_ == 'fisheye' and self._model.mode == 'mosaic':
-            dialog = WarningMessageDialog(_("Wrong value for lens type"),
-                                          _("Can't set lens type to 'fisheye' while in 'mosaic' mode"))
+            dialog = WarningMessageDialog(self.tr("Wrong value for lens type"),
+                                          self.tr("Can't set lens type to 'fisheye' while in 'mosaic' mode"))
             dialog.exec_()
             self._view.lensTypeComboBox.setCurrentIndex(self._view.lensTypeComboBox.findText('rectilinear'))
         else:
@@ -272,7 +272,7 @@ class ConfigController(AbstractModalDialogController):
         Logger().trace("ConfigController.__onDataStorageDirPushButtonClicked()")
         dataStorageDir = ConfigManager().get('Preferences', 'DATA_STORAGE_DIR')
         dirName = QtGui.QFileDialog.getExistingDirectory(self._view,
-                                                         _("Choose Data Storage dir"),
+                                                         self.tr("Choose Data Storage dir"),
                                                          dataStorageDir,
                                                          QtGui.QFileDialog.ShowDirsOnly)
         if dirName:

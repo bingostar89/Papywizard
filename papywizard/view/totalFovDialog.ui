@@ -45,12 +45,15 @@
      <item row="1" column="0" >
       <widget class="QLabel" name="label_2" >
        <property name="text" >
-        <string>Total fov (°)</string>
+        <string>Total Fov</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1" >
       <widget class="QDoubleSpinBox" name="yawFovDoubleSpinBox" >
+       <property name="suffix" >
+        <string> °</string>
+       </property>
        <property name="decimals" >
         <number>1</number>
        </property>
@@ -61,6 +64,9 @@
      </item>
      <item row="1" column="2" >
       <widget class="QDoubleSpinBox" name="pitchFovDoubleSpinBox" >
+       <property name="suffix" >
+        <string> °</string>
+       </property>
        <property name="decimals" >
         <number>1</number>
        </property>

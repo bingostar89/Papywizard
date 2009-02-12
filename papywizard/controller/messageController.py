@@ -56,14 +56,14 @@ Implements
 
 __revision__ = "$Id$"
 
-from PyQt4 import QtGui
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common.loggingServices import Logger
 
 _ = lambda a: a
 
 
-class BaseMessageController(object): # Inherits QMessageDialog
+class BaseMessageController(QtCore.QObject): # Inherits QMessageDialog
     """ Abstract message controller.
     """
     def __init__(self, subTitle, message):
@@ -75,6 +75,7 @@ class BaseMessageController(object): # Inherits QMessageDialog
         @param message: dialog message
         @type message: str
         """
+        QtCore.QObject.__init__(self)
         self._dialog = QtGui.QMessageBox()
         self._init()
         self._dialog.setInformativeText(message)
@@ -104,7 +105,7 @@ class InfoMessageController(BaseMessageController):
     def _init(self):
         self._dialog.setIcon(QtGui.QMessageBox.Information)
         self._dialog.setStandardButtons(QtGui.QMessageBox.Close)
-        self._dialog.setWindowTitle(_("Info"))
+        self._dialog.setWindowTitle(self.tr("Info"))
 
 
 class WarningMessageController(BaseMessageController):
@@ -113,7 +114,7 @@ class WarningMessageController(BaseMessageController):
     def _init(self):
         self._dialog.setIcon(QtGui.QMessageBox.Warning)
         self._dialog.setStandardButtons(QtGui.QMessageBox.Close)
-        self._dialog.setWindowTitle(_("Warning"))
+        self._dialog.setWindowTitle(self.tr("Warning"))
 
 
 class ErrorMessageController(BaseMessageController):
@@ -122,7 +123,7 @@ class ErrorMessageController(BaseMessageController):
     def _init(self):
         self._dialog.setIcon(QtGui.QMessageBox.Critical)
         self._dialog.setStandardButtons(QtGui.QMessageBox.Close)
-        self._dialog.setWindowTitle(_("Error"))
+        self._dialog.setWindowTitle(self.tr("Error"))
 
 
 class ExceptionMessageController(BaseMessageController):
@@ -131,7 +132,7 @@ class ExceptionMessageController(BaseMessageController):
     def _init(self):
         self._dialog.setIcon(QtGui.QMessageBox.Critical)
         self._dialog.setStandardButtons(QtGui.QMessageBox.Close)
-        self._dialog.setWindowTitle(_("Exception"))
+        self._dialog.setWindowTitle(self.tr("Exception"))
         self._dialog.setDetailedText(Logger().getTraceback())
 
 
@@ -142,4 +143,4 @@ class YesNoMessageController(BaseMessageController):
         self._dialog.setIcon(QtGui.QMessageBox.Question)
         self._dialog.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         self._dialog.setDefaultButton(QtGui.QMessageBox.Yes)
-        self._dialog.setWindowTitle(_("Question"))
+        self._dialog.setWindowTitle(self.tr("Question"))

@@ -379,16 +379,16 @@ class ShootController(AbstractModalDialogController):
         self._model.setStepByStep(checked)
         if checked:
             self._view.stepByStepPushButton.setIcon(QtGui.QIcon(":/icons/button_ok.png"))
-            self._view.pauseResumePushButton.setText(_("Step"))
+            self._view.pauseResumePushButton.setText(self.tr("Step"))
             if not self._model.isPaused():
                 self._view.pauseResumePushButton.setEnabled(False)
         else:
             self._view.stepByStepPushButton.setIcon(QtGui.QIcon(":/icons/button_cancel.png"))
             self._view.pauseResumePushButton.setEnabled(True)
             if self._model.isPaused():
-                self._view.pauseResumePushButton.setText(_("Resume"))
+                self._view.pauseResumePushButton.setText(self.tr("Resume"))
             else:
-                self._view.pauseResumePushButton.setText(_("Pause"))
+                self._view.pauseResumePushButton.setText(self.tr("Pause"))
 
     def __onStartPushButtonClicked(self):
         Logger().trace("ShootController.__startPushButtonClicked()")
@@ -466,13 +466,13 @@ class ShootController(AbstractModalDialogController):
         Logger().trace("ShootController.__onShootingPaused()")
         self._view.pauseResumePushButton.setEnabled(True)
         #if self._view.stepByStepPushButton.isChecked():
-            #self._view.pauseResumePushButton.setText(_("Step"))
+            #self._view.pauseResumePushButton.setText(self.tr("Step"))
         #else:
         if not self._view.stepByStepPushButton.isChecked():
-            self._view.pauseResumePushButton.setText(_("Resume"))
+            self._view.pauseResumePushButton.setText(self.tr("Resume"))
         self._view.rewindPushButton.setEnabled(True)
         self._view.forwardPushButton.setEnabled(True)
-        self._view.sequenceLabel.setText(_("Paused"))
+        self._view.sequenceLabel.setText(self.tr("Paused"))
         self._view.textNextLabel.setEnabled(True)
         self._view.nextIndexLabel.setEnabled(True)
         self._view.yawNextIndexLabel.setEnabled(True)
@@ -481,7 +481,7 @@ class ShootController(AbstractModalDialogController):
     def __onShootingResumed(self):
         Logger().trace("ShootController.__onShootingResumed()")
         if not self._view.stepByStepPushButton.isChecked():
-            self._view.pauseResumePushButton.setText(_("Pause"))
+            self._view.pauseResumePushButton.setText(self.tr("Pause"))
         self._view.rewindPushButton.setEnabled(False)
         self._view.forwardPushButton.setEnabled(False)
         self._view.textNextLabel.setEnabled(False)
@@ -492,11 +492,11 @@ class ShootController(AbstractModalDialogController):
     def __onShootingStopped(self, status):
         Logger().debug("ShootController.__onShootingStopped(): status=%s" % status)
         if status == 'ok':
-            self._view.sequenceLabel.setText( _("Finished"))
+            self._view.sequenceLabel.setText( self.tr("Finished"))
         elif status == 'cancel':
-            self._view.sequenceLabel.setText(_("Canceled"))
+            self._view.sequenceLabel.setText(self.tr("Canceled"))
         elif status == 'fail':
-            self._view.sequenceLabel.setText(_("Failed"))
+            self._view.sequenceLabel.setText(self.tr("Failed"))
         self._view.dataPushButton.setEnabled(True)
         self._view.timerPushButton.setEnabled(True)
         self._view.startPushButton.setEnabled(True)
@@ -506,7 +506,7 @@ class ShootController(AbstractModalDialogController):
 
     def __onShootingWaiting(self, wait):
         Logger().trace("ShootController.__onShootingRepeat()")
-        sequenceMessage = _("Waiting") + " %s" % sToHmsAsStr(wait)
+        sequenceMessage = self.tr("Waiting") + " %s" % sToHmsAsStr(wait)
         self._view.sequenceLabel.setText(sequenceMessage)
 
     def __onShootingProgress(self, shootingProgress=None, totalProgress=None):
@@ -551,14 +551,14 @@ class ShootController(AbstractModalDialogController):
     def __onShootingSequence(self, sequence, bracket=None):
         Logger().debug("ShootController.__onShootingSequence(): sequence=%s" % sequence)
         if sequence == 'moving':
-            self._view.sequenceLabel.setText(_("Moving"))
+            self._view.sequenceLabel.setText(self.tr("Moving"))
         elif sequence == 'stabilization':
-            self._view.sequenceLabel.setText(_("Stabilization"))
+            self._view.sequenceLabel.setText(self.tr("Stabilization"))
         elif sequence == 'mirror':
-            self._view.sequenceLabel.setText(_("Mirror lockup"))
+            self._view.sequenceLabel.setText(self.tr("Mirror lockup"))
         elif sequence == 'shutter':
             totalNbPicts = self._model.camera.bracketingNbPicts
-            self._view.sequenceLabel.setText(_("Shutter - Picture") + " %d/%d" % (bracket, totalNbPicts))
+            self._view.sequenceLabel.setText(self.tr("Shutter - Picture") + " %d/%d" % (bracket, totalNbPicts))
 
     def __onPositionUpdate(self, yaw, pitch):
         """ Refresh position according to new pos.

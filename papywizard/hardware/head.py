@@ -109,11 +109,11 @@ class Head(object):
         if self.driver is not None:
             self.driver.shutdown()
 
-    def setOrigin(self):
-        """ Set current axis positions as origin.
+    def setReference(self):
+        """ Set current axis positions as reference.
         """
-        self.yawAxis.setOrigin()
-        self.pitchAxis.setOrigin()
+        self.yawAxis.setReference()
+        self.pitchAxis.setReference()
 
     def setLimit(self, axis, dir_, limit):
         """ Set a limit.

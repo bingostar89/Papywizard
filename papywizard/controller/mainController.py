@@ -200,7 +200,7 @@ class MainController(AbstractController):
 
         self.connect(self._view.presetComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onPresetComboBoxCurrentIndexChanged)
 
-        self.connect(self._view.setOriginToolButton, QtCore.SIGNAL("clicked()"), self.__onetOriginToolButtonClicked)
+        self.connect(self._view.setReferenceToolButton, QtCore.SIGNAL("clicked()"), self.__onSetReferenceToolButtonClicked)
         self.connect(self._view.yawMovePlusToolButton, QtCore.SIGNAL("pressed()"), self.__onYawMovePlusToolButtonPressed)
         self.connect(self._view.yawMovePlusToolButton, QtCore.SIGNAL("released()"), self.__onYawMovePlusToolButtonReleased)
         self.connect(self._view.pitchMovePlusToolButton, QtCore.SIGNAL("pressed()"), self.__onPitchMovePlusToolButtonPressed)
@@ -302,13 +302,13 @@ class MainController(AbstractController):
                     Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; select slow speed")
                     self._model.hardware.setManualSpeed('slow')
                     self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_play.png").scaled(22, 22))
-                    self.setStatusbarMessage(_("Manual speed set to slow"), 10)
+                    self.setStatusbarMessage(self.tr("Manual speed set to slow"), 10)
                 elif self.__manualSpeed == 'fast':
                     self.__manualSpeed = 'normal'
                     Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; select normal speed")
                     self._model.hardware.setManualSpeed('normal')
                     self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_fwd.png").scaled(22, 22))
-                    self.setStatusbarMessage(_("Manual speed set to normal"), 10)
+                    self.setStatusbarMessage(self.tr("Manual speed set to normal"), 10)
             event.ignore()
 
         # 'End' key
@@ -320,17 +320,17 @@ class MainController(AbstractController):
                     Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select normal speed")
                     self._model.hardware.setManualSpeed('normal')
                     self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_fwd.png").scaled(22, 22))
-                    self.setStatusbarMessage(_("Manual speed set to normal"), 10)
+                    self.setStatusbarMessage(self.tr("Manual speed set to normal"), 10)
                 elif self.__manualSpeed == 'normal':
                     self._view.releaseKeyboard()
-                    dialog = WarningMessageDialog(_("Fast manual speed"), _("This can be dangerous for the hardware!"))
+                    dialog = WarningMessageDialog(self.tr("Fast manual speed"), self.tr("This can be dangerous for the hardware!"))
                     dialog.exec_()
                     self._view.grabKeyboard()
                     self.__manualSpeed = 'fast'
                     Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select fast speed")
                     self._model.hardware.setManualSpeed('fast')
                     self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/messagebox_warning.png").scaled(22, 22))
-                    self.setStatusbarMessage(_("Manual speed set to fast"), 10)
+                    self.setStatusbarMessage(self.tr("Manual speed set to fast"), 10)
             event.ignore()
 
         # 'Tab' key
@@ -359,7 +359,7 @@ class MainController(AbstractController):
         elif event.key() == self.__key['Escape'] and not event.isAutoRepeat():
             Logger().debug("MainController.__onKeyPressed(): 'Escape' key pressed")
             self._view.releaseKeyboard()
-            dialog = YesNoMessageDialog(_("About to Quit"), _("Are you sure you want to quit Papywizard?"))
+            dialog = YesNoMessageDialog(self.tr("About to Quit"), self.tr("Are you sure you want to quit Papywizard?"))
             response = dialog.exec_()
             self._view.grabKeyboard()
             if response == QtGui.QMessageBox.Yes:
@@ -418,18 +418,18 @@ class MainController(AbstractController):
     def __onActionFileImportPresetActivated(self):
         Logger().trace("MainController.__onActionFileImportPresetActivated()")
         fileName =  QtGui.QFileDialog.getOpenFileName(self._view,
-                                                      _("Import Preset File"),
+                                                      self.tr("Import Preset File"),
                                                       os.path.join(config.HOME_DIR, config.PRESET_FILE),
-                                                      _("XML files (*.xml);;All files (*)"))
+                                                      self.tr("XML files (*.xml);;All files (*)"))
         if fileName:
             self.__importPresetFile(fileName)
 
     def __onActionFileLoadStyleSheetActivated(self):
         Logger().trace("MainController.__onActionFileLoadStyleSheetActivated()")
         fileName =  QtGui.QFileDialog.getOpenFileName(self._view,
-                                                      _("Load Style Sheet"),
+                                                      self.tr("Load Style Sheet"),
                                                       os.path.join(config.HOME_DIR, config.STYLESHEET_FILE),
-                                                      _("XML files (*.css);;All files (*)"))
+                                                      self.tr("CSS files (*.css);;All files (*)"))
         if fileName:
             self.__loadStyleSheet(fileName)
 
@@ -444,34 +444,34 @@ class MainController(AbstractController):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('yaw', '-', yaw)
         Logger().debug("MainController.__onActionHardwareSetLimitYawMinusActivated(): yaw minus limit set to %.1f" % yaw)
-        self.setStatusbarMessage(_("Yaw - limit set"), 10)
+        self.setStatusbarMessage(self.tr("Yaw - limit set"), 10)
 
     def __onActionHardwareSetLimitYawPlusActivated(self):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('yaw', '+', yaw)
         Logger().debug("MainController.__onActionHardwareSetLimitYawPlusActivated(): yaw plus limit set to %.1f" % yaw)
-        self.setStatusbarMessage(_("Yaw + limit set"), 10)
+        self.setStatusbarMessage(self.tr("Yaw + limit set"), 10)
 
     def __onActionHardwareSetLimitPitchPlusActivated(self):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('pitch', '+', pitch)
         Logger().debug("MainController.__onActionHardwareSetLimitPitchPlusActivated(): pitch plus limit set to %.1f" % pitch)
-        self.setStatusbarMessage(_("Pitch + limit set"), 10)
+        self.setStatusbarMessage(self.tr("Pitch + limit set"), 10)
 
     def __onActionHardwareSetLimitPitchMinusActivated(self):
         yaw, pitch = self._model.hardware.readPosition()
         self._model.hardware.setLimit('pitch', '-', pitch)
         Logger().debug("MainController.__onActionHardwareSetLimitPitchMinusActivated(): pitch minus limit set to %.1f" % pitch)
-        self.setStatusbarMessage(_("Pitch - limit set"), 10)
+        self.setStatusbarMessage(self.tr("Pitch - limit set"), 10)
 
     def __onActionHardwareClearLimitsActivated(self):
         Logger().trace("MainController.__onActionHardwareClearLimitsActivated()")
         self._model.hardware.clearLimits()
-        self.setStatusbarMessage(_("Limits cleared"), 10)
+        self.setStatusbarMessage(self.tr("Limits cleared"), 10)
 
     def __onActionHardwareGotoHomeActivated(self):
         Logger().trace("MainController.__onActionHardwareGotoHomeActivated()")
-        self.setStatusbarMessage(_("Goto home position..."))
+        self.setStatusbarMessage(self.tr("Goto home position..."))
         self._model.hardware.gotoPosition(0., 0., wait=False)
         dialog = AbortMessageDialog("Goto home position", "Please wait...")
         self._view.releaseKeyboard()
@@ -480,17 +480,17 @@ class MainController(AbstractController):
             QtGui.QApplication.processEvents() #QtCore.QEventLoop.ExcludeUserInputEvents)
             if dialog.result() == QtGui.QMessageBox.Abort:
                 self._model.hardware.stopAxis()
-                self.setStatusbarMessage(_("Operation aborted"), 10)
+                self.setStatusbarMessage(self.tr("Operation aborted"), 10)
                 break
             time.sleep(0.01)
         else:
-            self.setStatusbarMessage(_("Home position reached"), 10)
+            self.setStatusbarMessage(self.tr("Home position reached"), 10)
         dialog.hide()
         self._view.grabKeyboard()
 
     def __onActionHardwareGotoInitialActivated(self):
         Logger().trace("MainController.__onActionHardwareGotoInitialActivated()")
-        self.setStatusbarMessage(_("Goto initial position..."))
+        self.setStatusbarMessage(self.tr("Goto initial position..."))
         QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
         self._model.hardware.gotoPosition(0., 0., useOffset=False, wait=False)
         dialog = AbortMessageDialog("Goto initial position", "Please wait...")
@@ -500,11 +500,11 @@ class MainController(AbstractController):
             QtGui.QApplication.processEvents() #QtCore.QEventLoop.ExcludeUserInputEvents)
             if dialog.result() == QtGui.QMessageBox.Abort:
                 self._model.hardware.stopAxis()
-                self.setStatusbarMessage(_("Operation aborted"), 10)
+                self.setStatusbarMessage(self.tr("Operation aborted"), 10)
                 break
             time.sleep(0.01)
         else:
-            self.setStatusbarMessage(_("Initial position reached"), 10)
+            self.setStatusbarMessage(self.tr("Initial position reached"), 10)
         dialog.hide()
         self._view.grabKeyboard()
 
@@ -553,28 +553,28 @@ class MainController(AbstractController):
         self._model.mosaic.yawStart = self.__yawPos
         self.__mosaicInputParam = 'startEnd'
         self.refreshView()
-        self.setStatusbarMessage(_("Yaw start set from current position"), 10)
+        self.setStatusbarMessage(self.tr("Yaw start set from current position"), 10)
 
     def __onSetPitchStartPushButtonClicked(self):
         Logger().trace("MainController.__onSetPitchStartPushButtonClicked()")
         self._model.mosaic.pitchStart = self.__pitchPos
         self.__mosaicInputParam = 'startEnd'
         self.refreshView()
-        self.setStatusbarMessage(_("Pitch start set from current position"), 10)
+        self.setStatusbarMessage(self.tr("Pitch start set from current position"), 10)
 
     def __onSetYawEndPushButtonClicked(self):
         Logger().trace("MainController.__onSetYawEndPushButtonClicked()")
         self._model.mosaic.yawEnd = self.__yawPos
         self.__mosaicInputParam = 'startEnd'
         self.refreshView()
-        self.setStatusbarMessage(_("Yaw end set from current position"), 10)
+        self.setStatusbarMessage(self.tr("Yaw end set from current position"), 10)
 
     def __onSetPitchEndPushButtonClicked(self):
         Logger().trace("MainController.__onSetEndPitchButtonClicked()")
         self._model.mosaic.pitchEnd = self.__pitchPos
         self.__mosaicInputParam = 'startEnd'
         self.refreshView()
-        self.setStatusbarMessage(_("Pitch end set from current position"), 10)
+        self.setStatusbarMessage(self.tr("Pitch end set from current position"), 10)
 
     def __onSetStartPushButtonClicked(self):
         Logger().trace("MainController.__onSetStartPushButtonClicked()")
@@ -599,14 +599,14 @@ class MainController(AbstractController):
             self._model.preset.name = preset.getName()
             self.refreshView()
         except ValueError:
-            #Logger().exception("MainController.__onPresetComboBoxCurrentIndexChanged()", debug=True)
+            Logger().exception("MainController.__onPresetComboBoxCurrentIndexChanged()", debug=True)
             pass
 
-    def __onetOriginToolButtonClicked(self):
-        Logger().trace("MainController.onHardwareSetOriginButtonClicked()")
-        Logger().info("Set hardware origin")
-        self._model.hardware.setOrigin()
-        self.setStatusbarMessage(_("Origin set at current position"), 10)
+    def __onSetReferenceToolButtonClicked(self):
+        Logger().trace("MainController.__onSetReferenceToolButtonClicked()")
+        Logger().info("Set hardware reference")
+        self._model.hardware.setReference()
+        self.setStatusbarMessage(self.tr("Reference set at current position"), 10)
 
     def __onYawMovePlusToolButtonPressed(self):
         Logger().trace("MainController.__yawMovePlusToolButtonPressed()")
@@ -672,7 +672,7 @@ class MainController(AbstractController):
         self._model.mosaic.yawStart, self._model.mosaic.pitchStart = self.__yawPos, self.__pitchPos
         self.__mosaicInputParam = 'startEnd'
         self.refreshView()
-        self.setStatusbarMessage(_("Yaw/pitch start set from current position"), 10)
+        self.setStatusbarMessage(self.tr("Yaw/pitch start set from current position"), 10)
 
     def __setYawPitchEndPosition(self):
         """ Set yaw/pitch start from current position.
@@ -680,7 +680,7 @@ class MainController(AbstractController):
         self._model.mosaic.yawEnd, self._model.mosaic.pitchEnd = self.__yawPos, self.__pitchPos
         self.__mosaicInputParam = 'startEnd'
         self.refreshView()
-        self.setStatusbarMessage(_("Yaw/pitch end set from current position"), 10)
+        self.setStatusbarMessage(self.tr("Yaw/pitch end set from current position"), 10)
 
     def __openTotalFovDialog(self):
         """
@@ -693,7 +693,7 @@ class MainController(AbstractController):
         if response:
             self.__mosaicInputParam = 'fov'
             self.refreshView()
-            self.setStatusbarMessage(_("Field of view set to user value"), 10)
+            self.setStatusbarMessage(self.tr("Field of view set to user value"), 10)
 
     def __openNbPictsDialog(self):
         """
@@ -706,14 +706,14 @@ class MainController(AbstractController):
         if response:
             self.__mosaicInputParam = 'nbPicts'
             self.refreshView()
-            self.setStatusbarMessage(_("Number of pictures set to user value"), 10)
+            self.setStatusbarMessage(self.tr("Number of pictures set to user value"), 10)
 
     def __openConfigDialog(self):
         """
         """
         try:
             #self._view.configPushButton.setEnabled(False)
-            self.setStatusbarMessage(_("Opening configuration dialog. Please wait..."))
+            self.setStatusbarMessage(self.tr("Opening configuration dialog. Please wait..."))
             QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             controller = ConfigController(self, self._model)
             controller.setSelectedTab(self.__lastConfigTabSelected)
@@ -746,7 +746,7 @@ class MainController(AbstractController):
         self._model.setStepByStep(False)
         try:
             #self._view.shootPushButton.setEnabled(False)
-            self.setStatusbarMessage(_("Opening shoot dialog. Please wait..."))
+            self.setStatusbarMessage(self.tr("Opening shoot dialog. Please wait..."))
             QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             controller = ShootController(self, self._model)
             if self._view.windowState() & QtCore.Qt.WindowFullScreen:
@@ -789,7 +789,7 @@ class MainController(AbstractController):
         except Exception, msg:
             Logger().exception("MainController.__importPresetFile()")
             self._view.releaseKeyboard()
-            dialog = ExceptionMessageDialog(_("Can't import preset file"), str(msg))
+            dialog = ExceptionMessageDialog(self.tr("Can't import preset file"), str(msg))
             dialog.exec_()
             self._view.grabKeyboard()
 
@@ -807,7 +807,7 @@ class MainController(AbstractController):
         except Exception, msg:
             Logger().exception("MainController.__loadStyleSheet()")
             self._view.releaseKeyboard()
-            dialog = ExceptionMessageDialog(_("Can't load style sheet"), str(msg))
+            dialog = ExceptionMessageDialog(self.tr("Can't load style sheet"), str(msg))
             dialog.exec_()
             self._view.grabKeyboard()
 
@@ -815,7 +815,7 @@ class MainController(AbstractController):
         """ Connect to real hardware.
         """
         Logger().info("Connecting to real hardware...")
-        self.setStatusbarMessage(_("Connecting to real hardware..."))
+        self.setStatusbarMessage(self.tr("Connecting to real hardware..."))
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_creating.png").scaled(22, 22))
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         self.__connectStatus = None
@@ -836,13 +836,13 @@ class MainController(AbstractController):
             Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
             self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_established.png").scaled(22, 22))
             Logger().info("Now connected to real hardware")
-            self.setStatusbarMessage(_("Now connected to real hardware"), 10)
+            self.setStatusbarMessage(self.tr("Now connected to real hardware"), 10)
         else:
             Logger().error("Can't connect to hardware\n%s" % self.__connectErrorMessage)
             #self._view.connectLabel.setIcon(QtGui.QIcon(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22)))
-            self.setStatusbarMessage(_("Connect to hardware failed"), 10)
+            self.setStatusbarMessage(self.tr("Connect to hardware failed"), 10)
             self._view.releaseKeyboard()
-            dialog = ErrorMessageDialog(_("Can't connect to hardware"), self.__connectErrorMessage)
+            dialog = ErrorMessageDialog(self.tr("Can't connect to hardware"), self.__connectErrorMessage)
             dialog.exec_()
             self._view.grabKeyboard()
             self._view.actionHardwareConnect.setChecked(False)
@@ -854,7 +854,7 @@ class MainController(AbstractController):
         self._model.switchToSimulatedHardware()
         Spy().setRefreshRate(config.SPY_FAST_REFRESH)
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
-        self.setStatusbarMessage(_("Now in simulation mode"), 10)
+        self.setStatusbarMessage(self.tr("Now in simulation mode"), 10)
 
     def __onPositionUpdate(self, yaw, pitch):
         """ Refresh position according to new pos.

@@ -53,15 +53,18 @@ __revision__ = "$Id$"
 
 import threading
 
+from PyQt4 import QtCore
+
 from papywizard.common.loggingServices import Logger
 
 
-class BusDriver(object):
+class BusDriver(QtCore.QObject):
     """ Base (abstract) class for bus drivers.
     """
     def __init__(self):
         """ Init the object.
         """
+        QtCore.QObject.__init_(self)
         self._init = False
         self._lock = threading.RLock()
 

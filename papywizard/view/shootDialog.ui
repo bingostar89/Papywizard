@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>dialog</class>
- <widget class="QDialog" name="dialog" >
+ <class>shootDialog</class>
+ <widget class="QDialog" name="shootDialog" >
   <property name="windowModality" >
    <enum>Qt::NonModal</enum>
   </property>
@@ -693,7 +693,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>dialog</receiver>
+   <receiver>shootDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel" >
@@ -709,7 +709,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>dialog</receiver>
+   <receiver>shootDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel" >

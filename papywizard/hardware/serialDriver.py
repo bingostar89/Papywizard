@@ -94,7 +94,7 @@ class SerialDriver(BusDriver):
 
     def sendCmd(self, cmd):
         if not self._init:
-            raise HardwareError(_("SerialDriver not initialized"))
+            raise HardwareError(self.tr("SerialDriver not initialized"))
 
         self.acquireBus()
         try:
@@ -108,13 +108,13 @@ class SerialDriver(BusDriver):
                 c = self._serial.read()
                 #Logger().debug("SerialPassiveDriver.sendCmd(): c=%s" % repr(c))
                 if not c:
-                    raise IOError(_("Timeout while reading on serial bus"))
+                    raise IOError(self.tr("Timeout while reading on serial bus"))
             data = ""
             while True:
                 c = self._serial.read()
                 #Logger().debug("SerialPassiveDriver.sendCmd(): c=%s, data=%s" % (repr(c), repr(data)))
                 if not c:
-                    raise IOError(_("Timeout while reading on serial bus"))
+                    raise IOError(self.tr("Timeout while reading on serial bus"))
                 elif c == '\r':
                     break
                 data += c

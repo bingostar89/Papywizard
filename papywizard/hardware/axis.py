@@ -103,8 +103,8 @@ class AbstractAxis(object):
         """
         raise NotImplementedError
 
-    def setOrigin(self):
-        """ Set current axis positions as origin.
+    def setReference(self):
+        """ Set current axis positions as reference.
         """
         self._offset += self.read()
 
@@ -268,9 +268,6 @@ class Axis(AbstractAxis):
 
     def reset(self):
         pass # find commands to send...
-
-    #def setOrigin(self):
-        #self._offset += self.read()
 
     def read(self):
         self.__driver.acquireBus()
@@ -503,9 +500,6 @@ class AxisSimulation(AbstractAxis, threading.Thread):
     def reset(self):
         self.__jog = False
         self.__drive = False
-
-    #def setOrigin(self):
-        #self.__pos = 0.
 
     def read(self):
         return self.__pos - self._offset

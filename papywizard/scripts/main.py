@@ -48,13 +48,7 @@ Main script
 __revision__ = "$Id$"
 
 import sys
-import os.path
-import traceback
-import StringIO
-import locale
-import gettext
 import threading
-import time
 
 import PyQt4.uic
 from PyQt4 import QtCore, QtGui
@@ -73,11 +67,6 @@ from papywizard.controller.mainController import MainController
 from papywizard.controller.spy import Spy
 from papywizard.view.logBuffer import LogBuffer
 from papywizard.view.messageDialog import ExceptionMessageDialog
-
-DOMAIN = "papywizard"
-LANGS = ('en_US', 'fr_FR', 'pl_PL', 'de_DE', 'es_ES', 'it_IT')
-
-_ = lambda a: a
 
 
 class BlackHole:
@@ -103,17 +92,18 @@ class Papywizard(object):
         """
         Logger().info("Starting Papywizard...")
 
+        # Init resources and application
         qInitResources()
-        qtApp = QtGui.QApplication(sys.argv)
+        self.__qtApp = QtGui.QApplication(sys.argv)
 
         # Qt style sheet
         try:
             styleSheet = file(config.USER_STYLESHEET_FILE)
-            qtApp.setStyleSheet(styleSheet.read())
+            self.__qtApp.setStyleSheet(styleSheet.read())
             styleSheet.close()
         except IOError:
             Logger().warning("No user Style Sheet found")
-        styleSheet = qtApp.styleSheet()
+        styleSheet = self.__qtApp.styleSheet()
         if styleSheet:
             if styleSheet.startsWith("file://"):
                 Logger().info("Style Sheet loaded from command line param.")
@@ -148,75 +138,19 @@ class Papywizard(object):
 
     def l10n(self):
         """ i10n stuff.
-
-        Thanks to Mark Mruss from http://www.learningpython.com
-
-        @todo: even if launch locally, locales are first searched in system dir
         """
-        langs = []
-
-        # Check the default locale
-        lc, encoding = locale.getdefaultlocale()
-        Logger().debug("Papywizard.l10n(): default locale=%s" % lc)
-        if lc:
-
-            # If we have a default, it's the first in the list
-            langs.append(lc)
-
-        # Now lets get all of the supported languages on the system
-        language = os.environ.get('LANGUAGE', None)
-        Logger().debug("Papywizard.l10n(): LANGUAGE=%s" % language)
-        if language is not None:
-
-            # Language comes back something like en_CA:en_US:en_GB:en
-            # on linux systems, on Win32 it's nothing, so we need to
-            # split it up into a list
-            for lang in language.split(":"):
-                if lang not in langs:
-                    langs.append(lang)
-
-        # Now add on to the back of the list the translations that we
-        # know that we have, our defaults
-        for lang in LANGS:
-            if lang not in langs:
-                langs.append(lang)
-
-        # As Qt i18n system is not yet used, we do not use locales
-        langs=[]
-
-        Logger().debug("Papywizard.l10n(): langs=%s" % langs)
-
-        # Get the locale dir
-        # First check in windows install
-        if hasattr(sys, "frozen"):
-            localeDir = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "share", "locale")
+        locale = QtCore.QLocale.system().name()
+        Logger().debug("Papywizard.l10n(): locale=%s" % locale)
+        qtTranslator = QtCore.QTranslator()
+        if qtTranslator.load("qt_%s" % locale, ":/"):
+            self.__qtApp.installTranslator(qtTranslator)
         else:
-
-            # Search in current dir
-            localeDir = os.path.realpath(os.path.dirname(sys.argv[0]))
-            localeDir = os.path.join(localeDir, "locale")
-            localeFile = gettext.find(DOMAIN, localeDir, languages=langs)
-            if localeFile is None:
-
-                # Search in default system dirs
-                localeFile = gettext.find(DOMAIN, languages=langs)
-                if localeFile is None:
-                    localeFile = gettext.find(DOMAIN, "/usr/local/share/locale", languages=langs)
-
-                if localeFile is not None:
-                    localeDir = os.path.join(os.path.dirname(localeFile), os.pardir, os.pardir)
-        Logger().debug("Papywizard.l10n(): localeDir=%s" % localeDir)
-
-        # Get the Translation object
-        try:
-            lang = gettext.translation(DOMAIN, localeDir, languages=langs)
-        except IOError:
-            Logger().warning("No i18n file found")
-            lang = gettext.translation(DOMAIN, localeDir, languages=langs, fallback=True)
-
-        # Install the language, map _()
-        _ = lang.gettext
-        lang.install()
+            Logger().warning("Can't find qt translation file")
+        appTranslator = QtCore.QTranslator()
+        if appTranslator.load("papywizard_%s" % locale, ":/"):
+            self.__qtApp.installTranslator(appTranslator)
+        else:
+            Logger().warning("Can't find papywizard translation file")
 
     def run(self):
         """ Run the appliction.
@@ -264,7 +198,7 @@ def main():
 
     except Exception, msg:
         Logger().exception("main()")
-        dialog = ExceptionMessageDialog(_("Unhandled exception"), str(msg))
+        dialog = ExceptionMessageDialog("Unhandled exception", str(msg))
         dialog.exec_()
 
 

@@ -90,7 +90,7 @@ class InfoMessageDialog(BaseMessageDialog):
     def _init(self):
         self.setIcon(QtGui.QMessageBox.Information)
         self.setStandardButtons(QtGui.QMessageBox.Close)
-        self.setWindowTitle(_("Info"))
+        self.setWindowTitle(self.tr("Info"))
 
 
 class WarningMessageDialog(BaseMessageDialog):
@@ -99,7 +99,7 @@ class WarningMessageDialog(BaseMessageDialog):
     def _init(self):
         self.setIcon(QtGui.QMessageBox.Warning)
         self.setStandardButtons(QtGui.QMessageBox.Close)
-        self.setWindowTitle(_("Warning"))
+        self.setWindowTitle(self.tr("Warning"))
 
 
 class ErrorMessageDialog(BaseMessageDialog):
@@ -108,7 +108,7 @@ class ErrorMessageDialog(BaseMessageDialog):
     def _init(self):
         self.setIcon(QtGui.QMessageBox.Critical)
         self.setStandardButtons(QtGui.QMessageBox.Close)
-        self.setWindowTitle(_("Error"))
+        self.setWindowTitle(self.tr("Error"))
 
 
 class ExceptionMessageDialog(BaseMessageDialog):
@@ -117,7 +117,7 @@ class ExceptionMessageDialog(BaseMessageDialog):
     def _init(self):
         self.setIcon(QtGui.QMessageBox.Critical)
         self.setStandardButtons(QtGui.QMessageBox.Close)
-        self.setWindowTitle(_("Exception"))
+        self.setWindowTitle(self.tr("Exception"))
         self.setDetailedText(Logger().getTraceback())
 
 
@@ -128,7 +128,7 @@ class YesNoMessageDialog(BaseMessageDialog):
         self.setIcon(QtGui.QMessageBox.Question)
         self.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         self.setDefaultButton(QtGui.QMessageBox.Yes)
-        self.setWindowTitle(_("Question"))
+        self.setWindowTitle(self.tr("Question"))
 
 
 class AbortMessageDialog(BaseMessageDialog):
@@ -137,4 +137,4 @@ class AbortMessageDialog(BaseMessageDialog):
     def _init(self):
         self.setIcon(QtGui.QMessageBox.NoIcon)
         self.setStandardButtons(QtGui.QMessageBox.Abort)
-        self.setWindowTitle(_("Abort"))
+        self.setWindowTitle(self.tr("Abort"))

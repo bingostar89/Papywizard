@@ -136,7 +136,7 @@ class BluetoothChooserController(AbstractModalDialogController):
             Logger().info("Bluetooth available devices: %s" % self.__bluetoothDevices)
         else:
             Logger().error("Can't scan bluetooth\n%s" % self.__refreshErrorMessage)
-            dialog = ExceptionMessageDialog(_("Can't scan bluetooth"), self.__refreshErrorMessage)
+            dialog = ExceptionMessageDialog(self.tr("Can't scan bluetooth"), self.__refreshErrorMessage)
             dialog.exec_()
         #self.refreshButton.setEnabled(True)
 
