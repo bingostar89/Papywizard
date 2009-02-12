@@ -370,7 +370,7 @@
          <item row="3" column="0" >
           <widget class="QLabel" name="label_9" >
            <property name="text" >
-            <string>Sensor (coef/ratio/res)</string>
+            <string>Sensor (coef, ratio)</string>
            </property>
            <property name="alignment" >
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -429,22 +429,6 @@
            </item>
           </widget>
          </item>
-         <item row="3" column="3" >
-          <widget class="QDoubleSpinBox" name="sensorResolutionDoubleSpinBox" >
-           <property name="suffix" >
-            <string> Mpx</string>
-           </property>
-           <property name="decimals" >
-            <number>1</number>
-           </property>
-           <property name="singleStep" >
-            <double>0.100000000000000</double>
-           </property>
-           <property name="value" >
-            <double>8.199999999999999</double>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="1" >
           <widget class="QSpinBox" name="pulseWidthHighSpinBox" >
            <property name="toolTip" >
@@ -463,6 +447,9 @@
             <number>1000</number>
            </property>
            <property name="singleStep" >
+            <number>10</number>
+           </property>
+           <property name="value" >
             <number>10</number>
            </property>
           </widget>
@@ -491,12 +478,44 @@
            <property name="alignment" >
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
+           <property name="margin" >
+            <number>5</number>
+           </property>
           </widget>
          </item>
          <item row="0" column="2" >
           <widget class="QCheckBox" name="mirrorLockupCheckBox" >
            <property name="text" >
             <string>Mirror lockup</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1" >
+          <widget class="QDoubleSpinBox" name="sensorResolutionDoubleSpinBox" >
+           <property name="suffix" >
+            <string> Mpx</string>
+           </property>
+           <property name="decimals" >
+            <number>1</number>
+           </property>
+           <property name="singleStep" >
+            <double>0.100000000000000</double>
+           </property>
+           <property name="value" >
+            <double>8.199999999999999</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0" >
+          <widget class="QLabel" name="label_11" >
+           <property name="text" >
+            <string>Sensor resolution</string>
+           </property>
+           <property name="alignment" >
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="margin" >
+            <number>5</number>
            </property>
           </widget>
          </item>
