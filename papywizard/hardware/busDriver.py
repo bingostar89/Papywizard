@@ -64,7 +64,7 @@ class BusDriver(QtCore.QObject):
     def __init__(self):
         """ Init the object.
         """
-        QtCore.QObject.__init_(self)
+        QtCore.QObject.__init__(self)
         self._init = False
         self._lock = threading.RLock()
 

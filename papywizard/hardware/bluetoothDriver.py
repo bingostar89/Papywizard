@@ -83,9 +83,9 @@ class BluetoothDriver(BusDriver):
                 Logger().exception("BluetoothDriver.init()")
                 err, msg = eval(error.message)
                 raise HardwareError(msg)
-            except Exception, msg:
+            except:
                 Logger().exception("BluetoothDriver.init()")
-                raise HardwareError(str(msg))
+                raise
             else:
                 Logger().debug("BluetoothDriver.init(): successfully connected to %s" % address)
 
