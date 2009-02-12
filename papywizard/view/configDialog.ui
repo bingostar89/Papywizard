@@ -432,7 +432,7 @@
          <item row="1" column="1" >
           <widget class="QSpinBox" name="pulseWidthHighSpinBox" >
            <property name="toolTip" >
-            <string>If 0, Time value is used</string>
+            <string/>
            </property>
            <property name="statusTip" >
             <string/>
@@ -441,7 +441,7 @@
             <string> ms</string>
            </property>
            <property name="minimum" >
-            <number>0</number>
+            <number>10</number>
            </property>
            <property name="maximum" >
             <number>1000</number>
