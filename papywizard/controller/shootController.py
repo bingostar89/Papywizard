@@ -384,7 +384,9 @@ class ShootController(AbstractModalDialogController):
                 self._view.pauseResumePushButton.setEnabled(False)
         else:
             self._view.stepByStepPushButton.setIcon(QtGui.QIcon(":/icons/button_cancel.png"))
-            self._view.pauseResumePushButton.setEnabled(True)
+            if self._model.isShooting():
+                self._view.pauseResumePushButton.setEnabled(True) # Should not be enabled if
+                                                                  # a pause request has been asked
             if self._model.isPaused():
                 self._view.pauseResumePushButton.setText(self.tr("Resume"))
             else:
