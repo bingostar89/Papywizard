@@ -94,23 +94,39 @@ class Papywizard(object):
 
         # Init resources and application
         qInitResources()
-        self.__qtApp = QtGui.QApplication(sys.argv)
 
-        # Qt style sheet
+        # Init global Qt application
+        qtApp = QtGui.QApplication(sys.argv)
+
+        # i18n stuff
+        locale = QtCore.QLocale.system().name()
+        Logger().debug("Papywizard.l10n(): locale=%s" % locale)
+        qtTranslator = QtCore.QTranslator()
+        if qtTranslator.load("locale/qt_%s" % locale):
+            qtApp.installTranslator(qtTranslator)
+        else:
+            Logger().warning("Can't find qt translation file")
+        appTranslator = QtCore.QTranslator()
+        if appTranslator.load("locale/papywizard_%s" % locale):
+            qtApp.installTranslator(appTranslator)
+        else:
+            Logger().warning("Can't find papywizard translation file")
+
+        # Qt stylesheet
         try:
             styleSheet = file(config.USER_STYLESHEET_FILE)
-            self.__qtApp.setStyleSheet(styleSheet.read())
+            qtApp.setStyleSheet(styleSheet.read())
             styleSheet.close()
         except IOError:
             Logger().warning("No user Style Sheet found")
-        styleSheet = self.__qtApp.styleSheet()
+        styleSheet = qtApp.styleSheet()
         if styleSheet:
             if styleSheet.startsWith("file://"):
                 Logger().info("Style Sheet loaded from command line param.")
             else:
                 Logger().info("User Style Sheet loaded")
 
-        # Create hardware and model
+        # Create model
         head = Head()
         headSimulation = HeadSimulation()
         self.__model = Shooting(head, headSimulation)
@@ -136,39 +152,40 @@ class Papywizard(object):
         except ImportError:
             Logger().warning("Logilab aspects module must be installed to use logging aspects")
 
-    def l10n(self):
-        """ i10n stuff.
-        """
-        locale = QtCore.QLocale.system().name()
-        Logger().debug("Papywizard.l10n(): locale=%s" % locale)
-        qtTranslator = QtCore.QTranslator()
-        if qtTranslator.load("qt_%s" % locale, ":/"):
-            self.__qtApp.installTranslator(qtTranslator)
-        else:
-            Logger().warning("Can't find qt translation file")
-        appTranslator = QtCore.QTranslator()
-        if appTranslator.load("papywizard_%s" % locale, ":/"):
-            self.__qtApp.installTranslator(appTranslator)
-        else:
-            Logger().warning("Can't find papywizard translation file")
-
     def run(self):
         """ Run the appliction.
         """
+
+        # Start publisher thread if needed
         if config.PUBLISHER_ENABLE:
             self.__publisher.start()
+
+        # Start spy thread
         Spy().start()
+
+        # Set logger level
         Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
+
+        # Enter Qt main loop
         self.__mainController.exec_()
 
     def shutdown(self):
         """ Shutdown the application.
         """
+
+        # Shutdown controller
         self.__mainController.shutdown()
+
+        # Stop spy thread
         Spy().stop()
         Spy().wait()
+
         #del self.__publisher
+
+        # Shutdown model
         self.__model.shutdown()
+
+        # Cleanup resources
         qCleanupResources()
 
         Logger().info("Papywizard stopped")
@@ -187,13 +204,9 @@ def main():
 
     app = Papywizard()
     try:
-        app.l10n()
         app.init()
         #app.weave()
-        try:
-            app.run()
-        except KeyboardInterrupt:
-            pass
+        app.run()
         app.shutdown()
 
     except Exception, msg:
