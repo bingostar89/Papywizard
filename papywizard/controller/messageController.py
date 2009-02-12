@@ -60,8 +60,6 @@ from PyQt4 import QtCore, QtGui
 
 from papywizard.common.loggingServices import Logger
 
-_ = lambda a: a
-
 
 class BaseMessageController(QtCore.QObject): # Inherits QMessageDialog
     """ Abstract message controller.
