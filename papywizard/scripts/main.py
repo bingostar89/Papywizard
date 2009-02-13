@@ -50,23 +50,11 @@ __revision__ = "$Id$"
 import sys
 import threading
 
-import PyQt4.uic
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtGui
 
-from papywizard.common import config
-from papywizard.view.icons import qInitResources, qCleanupResources
-from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.qLoggingFormatter import QSpaceColorFormatter
-from papywizard.common.exception import HardwareError
-from papywizard.common.publisher import Publisher
-from papywizard.hardware.head import Head, HeadSimulation
-from papywizard.model.shooting import Shooting
-from papywizard.controller.loggerController import LoggerController
-from papywizard.controller.mainController import MainController
-from papywizard.controller.spy import Spy
 from papywizard.view.logBuffer import LogBuffer
-from papywizard.view.messageDialog import ExceptionMessageDialog
 
 
 class BlackHole:
@@ -76,18 +64,6 @@ class BlackHole:
 
     def write(self, text):
         pass
-
-
-def weave(str):
-    """ Weave stuffs.
-    """
-    try:
-        from papywizard.common.loggingAspects import logMethods
-        logMethods(Head)
-        logMethods(HeadSimulation)
-        logMethods(MainController)
-    except ImportError:
-        Logger().warning("Logilab aspects module must be installed to use logging aspects")
 
 
 def main():
@@ -115,13 +91,28 @@ def main():
 
         # Create the splashscreen
         pixmap = QtGui.QPixmap("papywizard-splash.png")
-        splash = QtGui.QSplashScreen(pixmap, QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.X11BypassWindowManagerHint)
+        splash = QtGui.QSplashScreen(pixmap)#, QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.X11BypassWindowManagerHint)
         splash.show()
         qtApp.processEvents()
 
+        # Addtional imports
+        Logger().info("Importing additional modules...")
+        splash.showMessage("Importing additional modules...")
+        qtApp.processEvents()
+        from PyQt4 import QtCore
+        from papywizard.common import config
+        from papywizard.common.configManager import ConfigManager
+        #from papywizard.common.publisher import Publisher
+        from papywizard.hardware.head import Head, HeadSimulation
+        from papywizard.model.shooting import Shooting
+        from papywizard.controller.mainController import MainController
+        from papywizard.controller.spy import Spy
+        from papywizard.view.icons import qInitResources, qCleanupResources
+        from papywizard.view.messageDialog import ExceptionMessageDialog
+
         # Init resources and application
         Logger().info("Initializing resources...")
-        splash.showMessage("Init resources...")
+        splash.showMessage("Initializing resources...")
         qtApp.processEvents()
         qInitResources()
 
@@ -161,9 +152,9 @@ def main():
         styleSheet = qtApp.styleSheet()
         if styleSheet:
             if styleSheet.startsWith("file://"):
-                Logger().info("Style Sheet loaded from command line param.")
+                Logger().debug("Style Sheet loaded from command line param.")
             else:
-                Logger().info("User Style Sheet loaded")
+                Logger().debug("User Style Sheet loaded")
 
         # Create model
         Logger().info("Creating model...")
