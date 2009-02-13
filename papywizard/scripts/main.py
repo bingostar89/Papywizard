@@ -78,27 +78,63 @@ class BlackHole:
         pass
 
 
-class Papywizard(object):
-    """ Main application class.
+def weave(str):
+    """ Weave stuffs.
     """
-    def __init__(self):
-        """ Init the Papywizard object.
-        """
-        self.logStream = LogBuffer()
-        Logger().addStreamHandler(self.logStream, QSpaceColorFormatter)
+    try:
+        from papywizard.common.loggingAspects import logMethods
+        logMethods(Head)
+        logMethods(HeadSimulation)
+        logMethods(MainController)
+    except ImportError:
+        Logger().warning("Logilab aspects module must be installed to use logging aspects")
 
-    def init(self):
-        """ Init the application.
-        """
+
+def main():
+    try:
+        # Give a name to the main trhead
+        threading.currentThread().setName("MainThread")
+
+        # Init the logger
+        if hasattr(sys, "frozen"):
+
+            # Forbid all console outputs
+            sys.stderr = BlackHole()
+            Logger(defaultStream=False)
+        else:
+            Logger()
+
+        # Create the buffer for GUI log
+        logStream = LogBuffer()
+        Logger().addStreamHandler(logStream, QSpaceColorFormatter)
+
         Logger().info("Starting Papywizard...")
 
         # Init global Qt application
         qtApp = QtGui.QApplication(sys.argv)
 
+        # Create the splashscreen
+        pixmap = QtGui.QPixmap("papywizard-splash.png")
+        splash = QtGui.QSplashScreen(pixmap, QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.X11BypassWindowManagerHint)
+        splash.show()
+        qtApp.processEvents()
+
         # Init resources and application
+        Logger().info("Initializing resources...")
+        splash.showMessage("Init resources...")
+        qtApp.processEvents()
         qInitResources()
 
+        # Load configuration
+        Logger().info("Loading configuration...")
+        splash.showMessage("Loading configuration...")
+        qtApp.processEvents()
+        ConfigManager()
+
         # i18n stuff
+        Logger().info("Loading translation files...")
+        splash.showMessage("Loading translation files...")
+        qtApp.processEvents()
         locale = QtCore.QLocale.system().name()
         Logger().debug("Papywizard.l10n(): locale=%s" % locale)
         qtTranslator = QtCore.QTranslator()
@@ -112,7 +148,10 @@ class Papywizard(object):
         else:
             Logger().warning("Can't find papywizard translation file")
 
-        # Qt stylesheet
+        # Load Qt stylesheet
+        Logger().info("Loading Style Sheets...")
+        splash.showMessage("Loading Style Sheets...")
+        qtApp.processEvents()
         try:
             styleSheet = file(config.USER_STYLESHEET_FILE)
             qtApp.setStyleSheet(styleSheet.read())
@@ -127,87 +166,46 @@ class Papywizard(object):
                 Logger().info("User Style Sheet loaded")
 
         # Create model
+        Logger().info("Creating model...")
+        splash.showMessage("Creating model...")
+        qtApp.processEvents()
         head = Head()
         headSimulation = HeadSimulation()
-        self.__model = Shooting(head, headSimulation)
+        model = Shooting(head, headSimulation)
 
         # Create spy thread
-        Spy(self.__model, config.SPY_FAST_REFRESH)
-
-        # Create publisher thread
-        if config.PUBLISHER_ENABLE:
-            self.__publisher = Publisher()
-
-        # Create main controller
-        self.__mainController = MainController(self.__model, self.logStream)
-
-    def weave(str):
-        """ Weave stuffs.
-        """
-        try:
-            from papywizard.common.loggingAspects import logMethods
-            logMethods(Head)
-            logMethods(HeadSimulation)
-            logMethods(MainController)
-        except ImportError:
-            Logger().warning("Logilab aspects module must be installed to use logging aspects")
-
-    def run(self):
-        """ Run the appliction.
-        """
-
-        # Start publisher thread if needed
-        if config.PUBLISHER_ENABLE:
-            self.__publisher.start()
-
-        # Start spy thread
+        Spy(model, config.SPY_FAST_REFRESH)
         Spy().start()
 
-        # Set logger level
+        # Create main controller
+        Logger().info("Creating GUI...")
+        splash.showMessage("Creating GUI...")
+        qtApp.processEvents()
+        mainController = MainController(model, logStream)
+
+        # Set user logger level
         Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
 
-        # Enter Qt main loop
-        self.__mainController.exec_()
+        # Terminate splashscreen
+        splash.finish(mainController._view) # !!!
 
-    def shutdown(self):
-        """ Shutdown the application.
-        """
+        # Enter Qt main loop
+        qtApp.exec_()
 
         # Shutdown controller
-        self.__mainController.shutdown()
+        mainController.shutdown()
 
         # Stop spy thread
         Spy().stop()
         Spy().wait()
 
-        #del self.__publisher
-
         # Shutdown model
-        self.__model.shutdown()
+        model.shutdown()
 
         # Cleanup resources
         qCleanupResources()
 
         Logger().info("Papywizard stopped")
-
-
-def main():
-
-    threading.currentThread().setName("MainThread")
-
-    # Init the logger
-    if hasattr(sys, "frozen"):
-        sys.stderr = BlackHole()
-        Logger(defaultStream=False)
-    else:
-        Logger()
-
-    app = Papywizard()
-    try:
-        app.init()
-        #app.weave()
-        app.run()
-        app.shutdown()
 
     except Exception, msg:
         Logger().exception("main()")
