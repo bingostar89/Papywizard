@@ -47,7 +47,8 @@ Implements
 - WarningMessageDialog
 - ErrorDialogController
 - ExceptionMessageDialog
-
+- YesNoMessageDialog
+- AbortMessageDialog
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
