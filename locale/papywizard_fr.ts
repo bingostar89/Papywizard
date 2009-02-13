@@ -4,7 +4,7 @@
 <context>
     <name>AbortMessageDialog</name>
     <message>
-        <location filename="papywizard/view/messageDialog.py" line="140"/>
+        <location filename="papywizard/view/messageDialog.py" line="139"/>
         <source>Abort</source>
         <translation>Annuler</translation>
     </message>
@@ -20,27 +20,27 @@
 <context>
     <name>ConfigController</name>
     <message>
-        <location filename="papywizard/controller/configController.py" line="183"/>
+        <location filename="papywizard/controller/configController.py" line="185"/>
         <source>Wrong value for camera orientation</source>
         <translation>Mauvaise valeur pour l&apos;orientation de l&apos;appareil</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/configController.py" line="184"/>
+        <location filename="papywizard/controller/configController.py" line="186"/>
         <source>Can&apos;t set camera orientation to &apos;custom&apos; while in &apos;mosaic&apos; mode</source>
         <translation>Impossible de fixer l&apos;orientation de l&apos;appareil sur &apos;autre&apos; avec le mode &apos;mosaïque&apos;</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/configController.py" line="206"/>
+        <location filename="papywizard/controller/configController.py" line="209"/>
         <source>Wrong value for lens type</source>
         <translation>Mauvais type d&apos;objectif</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/configController.py" line="207"/>
+        <location filename="papywizard/controller/configController.py" line="210"/>
         <source>Can&apos;t set lens type to &apos;fisheye&apos; while in &apos;mosaic&apos; mode</source>
         <translation>Impossible d&apos;utiliser un objectif type &apos;fisheye&apos; avec le mode &apos;mosaïque&apos;</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/configController.py" line="275"/>
+        <location filename="papywizard/controller/configController.py" line="283"/>
         <source>Choose Data Storage dir</source>
         <translation>Choisir répertoire stockage de données</translation>
     </message>
@@ -166,49 +166,25 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
     </message>
 </context>
 <context>
-    <name>ErrorMessageController</name>
-    <message>
-        <location filename="papywizard/controller/messageController.py" line="124"/>
-        <source>Error</source>
-        <translation>Erreur</translation>
-    </message>
-</context>
-<context>
     <name>ErrorMessageDialog</name>
     <message>
-        <location filename="papywizard/view/messageDialog.py" line="111"/>
+        <location filename="papywizard/view/messageDialog.py" line="110"/>
         <source>Error</source>
         <translation>Erreur</translation>
-    </message>
-</context>
-<context>
-    <name>ExceptionMessageController</name>
-    <message>
-        <location filename="papywizard/controller/messageController.py" line="133"/>
-        <source>Exception</source>
-        <translation>Exception</translation>
     </message>
 </context>
 <context>
     <name>ExceptionMessageDialog</name>
     <message>
-        <location filename="papywizard/view/messageDialog.py" line="120"/>
+        <location filename="papywizard/view/messageDialog.py" line="119"/>
         <source>Exception</source>
         <translation>Exception</translation>
     </message>
 </context>
 <context>
-    <name>InfoMessageController</name>
-    <message>
-        <location filename="papywizard/controller/messageController.py" line="106"/>
-        <source>Info</source>
-        <translation>Information</translation>
-    </message>
-</context>
-<context>
     <name>InfoMessageDialog</name>
     <message>
-        <location filename="papywizard/view/messageDialog.py" line="93"/>
+        <location filename="papywizard/view/messageDialog.py" line="92"/>
         <source>Info</source>
         <translation>Information</translation>
     </message>
@@ -691,33 +667,17 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
     </message>
 </context>
 <context>
-    <name>WarningMessageController</name>
-    <message>
-        <location filename="papywizard/controller/messageController.py" line="115"/>
-        <source>Warning</source>
-        <translation>Attention</translation>
-    </message>
-</context>
-<context>
     <name>WarningMessageDialog</name>
     <message>
-        <location filename="papywizard/view/messageDialog.py" line="102"/>
+        <location filename="papywizard/view/messageDialog.py" line="101"/>
         <source>Warning</source>
         <translation>Attention</translation>
-    </message>
-</context>
-<context>
-    <name>YesNoMessageController</name>
-    <message>
-        <location filename="papywizard/controller/messageController.py" line="144"/>
-        <source>Question</source>
-        <translation>Question</translation>
     </message>
 </context>
 <context>
     <name>YesNoMessageDialog</name>
     <message>
-        <location filename="papywizard/view/messageDialog.py" line="131"/>
+        <location filename="papywizard/view/messageDialog.py" line="130"/>
         <source>Question</source>
         <translation>Question</translation>
     </message>
@@ -955,11 +915,6 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
         <translation> mm</translation>
     </message>
     <message>
-        <location filename="papywizard/view/configDialog.ui" line="601"/>
-        <source>Multiplier</source>
-        <translation>Multiplicateur</translation>
-    </message>
-    <message>
         <location filename="papywizard/view/configDialog.ui" line="642"/>
         <source>Hardware</source>
         <translation>Matériel</translation>
@@ -1158,6 +1113,11 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
         <location filename="papywizard/view/configDialog.ui" line="512"/>
         <source>Sensor resolution</source>
         <translation>Résolution capteur</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/configDialog.ui" line="601"/>
+        <source>Optical multiplier</source>
+        <translation>Multiplicateur optique</translation>
     </message>
 </context>
 <context>

@@ -3,7 +3,7 @@
 <context>
     <name>AbortMessageDialog</name>
     <message>
-        <location filename="papywizard/view/messageDialog.py" line="140"/>
+        <location filename="papywizard/view/messageDialog.py" line="139"/>
         <source>Abort</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19,27 +19,27 @@
 <context>
     <name>ConfigController</name>
     <message>
-        <location filename="papywizard/controller/configController.py" line="183"/>
+        <location filename="papywizard/controller/configController.py" line="185"/>
         <source>Wrong value for camera orientation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/configController.py" line="184"/>
+        <location filename="papywizard/controller/configController.py" line="186"/>
         <source>Can&apos;t set camera orientation to &apos;custom&apos; while in &apos;mosaic&apos; mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/configController.py" line="206"/>
+        <location filename="papywizard/controller/configController.py" line="209"/>
         <source>Wrong value for lens type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/configController.py" line="207"/>
+        <location filename="papywizard/controller/configController.py" line="210"/>
         <source>Can&apos;t set lens type to &apos;fisheye&apos; while in &apos;mosaic&apos; mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/configController.py" line="275"/>
+        <location filename="papywizard/controller/configController.py" line="283"/>
         <source>Choose Data Storage dir</source>
         <translation type="unfinished"></translation>
     </message>
@@ -158,49 +158,25 @@ The fact that you are presently reading this means that you have had knowledge o
     </message>
 </context>
 <context>
-    <name>ErrorMessageController</name>
-    <message>
-        <location filename="papywizard/controller/messageController.py" line="124"/>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ErrorMessageDialog</name>
     <message>
-        <location filename="papywizard/view/messageDialog.py" line="111"/>
+        <location filename="papywizard/view/messageDialog.py" line="110"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ExceptionMessageController</name>
-    <message>
-        <location filename="papywizard/controller/messageController.py" line="133"/>
-        <source>Exception</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ExceptionMessageDialog</name>
     <message>
-        <location filename="papywizard/view/messageDialog.py" line="120"/>
+        <location filename="papywizard/view/messageDialog.py" line="119"/>
         <source>Exception</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>InfoMessageController</name>
-    <message>
-        <location filename="papywizard/controller/messageController.py" line="106"/>
-        <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>InfoMessageDialog</name>
     <message>
-        <location filename="papywizard/view/messageDialog.py" line="93"/>
+        <location filename="papywizard/view/messageDialog.py" line="92"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
@@ -683,33 +659,17 @@ The fact that you are presently reading this means that you have had knowledge o
     </message>
 </context>
 <context>
-    <name>WarningMessageController</name>
-    <message>
-        <location filename="papywizard/controller/messageController.py" line="115"/>
-        <source>Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>WarningMessageDialog</name>
     <message>
-        <location filename="papywizard/view/messageDialog.py" line="102"/>
+        <location filename="papywizard/view/messageDialog.py" line="101"/>
         <source>Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>YesNoMessageController</name>
-    <message>
-        <location filename="papywizard/controller/messageController.py" line="144"/>
-        <source>Question</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>YesNoMessageDialog</name>
     <message>
-        <location filename="papywizard/view/messageDialog.py" line="131"/>
+        <location filename="papywizard/view/messageDialog.py" line="130"/>
         <source>Question</source>
         <translation type="unfinished"></translation>
     </message>
@@ -947,11 +907,6 @@ The fact that you are presently reading this means that you have had knowledge o
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/view/configDialog.ui" line="601"/>
-        <source>Multiplier</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="papywizard/view/configDialog.ui" line="642"/>
         <source>Hardware</source>
         <translation type="unfinished"></translation>
@@ -1149,6 +1104,11 @@ The fact that you are presently reading this means that you have had knowledge o
     <message>
         <location filename="papywizard/view/configDialog.ui" line="512"/>
         <source>Sensor resolution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/configDialog.ui" line="601"/>
+        <source>Optical multiplier</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
