@@ -65,51 +65,53 @@ class BlackHole:
     def write(self, text): 
         pass
 
-
-class Papywizard3D(object):
-    """ Main 3D application class.
+def connect():
+    """ Connect to server socket.
     """
-    def __init__(self):
-        """ Init the application.
-        """
-        Logger().setLevel(config.VIEW3D_LOGGER_LEVEL)
+    Logger().debug("Papywizard3D._connect(): try to connect to server...")
+    while True:
+        try:
 
-    def _connect(self):
-        """ Connect to server socket.
-        """
-        Logger().debug("Papywizard3D._connect(): try to connect to server...")
+            # Create and connect socket for Papywizard main app connection
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.connect((config.PUBLISHER_HOST, config.PUBLISHER_PORT))
+        except socket.error:
+            Logger().warning("Can't connect to server. Renewing in 5 s...")
+            time.sleep(5)
+            continue
+        else:
+            Logger().debug("Papywizard3D._connect(): connection established")
+            break
+
+    return sock
+
+
+def main():
+
+    # Init the logger
+    if hasattr(sys, "frozen"):
+
+        # Forbid all console outputs
+        sys.stderr = BlackHole()
+        Logger(defaultStream=False)
+    else:
+        Logger()
+    Logger().setLevel(config.VIEW3D_LOGGER_LEVEL)
+
+    # Create 3D view
+    view3D = View3D("Papywizard3D", scale=(1, 1, 1))
+    view3D.visible = True
+
+    # Enter main loop
+    Logger().info("Starting Papywizard 3D...")
+    try:
+        #sock = connect()
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.bind((config.PUBLISHER_HOST, config.PUBLISHER_PORT))
         while True:
-            try:
-
-                # Create and connect socket for Papywizard main app connection
-                self.__sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.__sock.connect((config.PUBLISHER_HOST, config.PUBLISHER_PORT))
-            except socket.error:
-                Logger().warning("Can't connect to server. Renewing in 5 s...")
-                time.sleep(5)
-                continue
-            else:
-                Logger().debug("Papywizard3D._connect(): connection established")
-                break
-
-    def init(self):
-        """ Init the application.
-        """
-        self.__view3D = View3D("Papywizard3D", scale=(1, 1, 1))
-        self.__view3D.visible = True
-        self._connect()
-        self.__run = False
-
-    def run(self):
-        """ Run the appliction.
-        """
-        Logger().info("Starting Papywizard 3D...")
-        self.__run = True
-
-        while self.__run:
             data = ""
             try:
-                data = self.__sock.recv(4096)
+                data = sock.recv(512)
             except socket.error:
                 Logger().exception("Papywizard3D.run()")
             else:
@@ -118,34 +120,16 @@ class Papywizard3D(object):
                     yaw = float(data[0])
                     pitch = float(data[1])
                     Logger().debug("Papywizard3D.run(): yaw=%.1f, pitch=%.1f" % (yaw, pitch))
-                    self.__view3D.draw(yaw, pitch)
+                    view3D.draw(yaw, pitch)
                 else:
-                    Logger().error("Papywizard3D.run(): lost connection with server")
+                    Logger().warning("Papywizard3D.run(): lost connection with server")
                     time.sleep(1)
-                    self._connect()
+                    #sock = connect()
 
-        Logger().info("Papywizard 3D stopped")
-
-    def shutdown(self):
-        """ Stop application.
-        """
-        self.__run = False
-
-
-def main():
-    if hasattr(sys, "frozen"):
-        sys.stderr = BlackHole()
-        Logger(defaultStream=False)
-    else:
-        Logger()
-
-    app = Papywizard3D()
-    try:
-        app.init()
-        app.run()
     except KeyboardInterrupt:
-        pass
-    app.shutdown()
+        Logger().debug("KeyboardInterrupt")
+
+    Logger().info("Papywizard 3D stopped")
 
 
 if __name__ == "__main__":
