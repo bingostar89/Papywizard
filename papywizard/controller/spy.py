@@ -104,7 +104,7 @@ class SpyObject(QtCore.QThread):
         @todo: use an external object connected to the updated signal
         """
         if self.__sock is not None:
-            print self.__sock.writeDatagram("%f,%f" % (yaw, pitch), QtNetwork.QHostAddress(config.PUBLISHER_HOST), config.PUBLISHER_PORT)
+            self.__sock.writeDatagram("%f,%f" % (yaw, pitch), QtNetwork.QHostAddress(config.PUBLISHER_HOST), config.PUBLISHER_PORT)
 
     # Signals
     def update(self, yaw, pitch):
