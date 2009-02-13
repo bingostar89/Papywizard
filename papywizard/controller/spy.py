@@ -83,7 +83,7 @@ class SpyObject(QtCore.QThread):
         self.__model = model
         self.__run = False
         self.__suspend = False
-        self.__refresh = int(refresh * 1000)
+        self.__refresh = refresh
         self.__sock = None
 
         try:
