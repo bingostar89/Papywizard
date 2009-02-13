@@ -145,8 +145,11 @@ In this respect, the user&apos;s attention is drawn to the risks associated with
 
 The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</source>
         <translation>Ce logiciel est régi par la licence CeCILL soumise au droit français et respectant les principes de diffusion des logiciels libres. Vous pouvez utiliser, modifier et/ou redistribuer ce programme sous les conditions de la licence CeCILL telle que diffusée par le CEA, le CNRS et l&apos;INRIA sur le site http://www.cecill.info.
+
 En contrepartie de l&apos;accessibilité au code source et des droits de copie, de modification et de redistribution accordés par cette licence, il n&apos;est offert aux utilisateurs qu&apos;une garantie limitée.  Pour les mêmes raisons, seule une responsabilité restreinte pèse sur l&apos;auteur du programme, le titulaire des droits patrimoniaux et les concédants successifs.
+
 A cet égard  l&apos;attention de l&apos;utilisateur est attirée sur les risques associés au chargement,  à l&apos;utilisation,  à la modification et/ou au développement et à la reproduction du logiciel par l&apos;utilisateur étant  donné sa spécificité de logiciel libre, qui peut le rendre complexe à manipuler et qui le réserve donc à des développeurs et des professionnels avertis possédant  des  connaissances  informatiques approfondies.  Les utilisateurs sont donc invités à charger  et  tester  l&apos;adéquation  du logiciel à leurs besoins dans des conditions permettant d&apos;assurer la sécurité de leurs systèmes et ou de leurs données et, plus généralement, à l&apos;utiliser et l&apos;exploiter dans les mêmes conditions de sécurité.
+
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les termes.</translation>
     </message>
     <message>
