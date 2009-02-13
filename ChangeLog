@@ -7,6 +7,12 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + splashscreen
+    + i18n support
+    - moved last python threads to Qt threads
+    - publisher now use UDP datagram
+
+2009-02-11 Version 1.9.4 (dev)
     + added pulse width high/low params
     x fixed state of Step button
 
