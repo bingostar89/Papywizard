@@ -52,13 +52,13 @@ import os.path
 # Version
 VERSION_MAJOR = 1
 VERSION_MINOR = 9 # Odd means dev. release
-VERSION_UPDATE = 4
+VERSION_UPDATE = 5
 VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 VERSION_XML = "a"
 
 # Paths
 HOME_DIR = os.path.expanduser("~")
-if sys.platform == 'win32': # and win64 ?
+if sys.platform == 'win32':
     USER_CONFIG_DIR = os.path.join(os.path.expandvars("$APPDATA"), "papywizard2")
     DATA_STORAGE_DIR = HOME_DIR # Find a way to retreive the "My Documents" dir in all languages
 else:
@@ -118,6 +118,26 @@ SHOOTING_COLOR_SCHEME = {'default': {'background': (224, 224, 224, 255),
                         }
 QtOpenGL = False
 
+# GUI index for controller
+HEAD_ORIENTATION_INDEX = {'up': 0, 'left': 1, 'right': 2, 'down': 3,
+                          0: 'up', 1: 'left', 2: 'right', 3: 'down'}
+CAMERA_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1, 'custom': 2,
+                            0: 'portrait', 1: 'landscape', 2: 'custom'}
+MOSAIC_START_FROM_INDEX = {'start': 0, 'end': 1,
+                           0: 'start', 1 : 'end'}
+MOSAIC_INITIAL_DIR_INDEX = {'yaw': 0, 'pitch': 1,
+                            0: 'yaw', 1: 'pitch'}
+CAMERA_BRACKETING_INTENT_INDEX = {'exposure': 0, 'focus' : 1, 'white balance': 2, 'movement': 3,
+                                  0: 'exposure', 1: 'focus', 2: 'white balance', 3: 'movement'}
+SENSOR_RATIO_INDEX = {'3:2': 0, '4:3': 1, '5:4': 2, '16:9': 3,
+                      0: '3:2', 1: '4:3', 2: '5:4', 3: '16:9'}
+LENS_TYPE_INDEX = {'rectilinear': 0, 'fisheye': 1,
+                   0: 'rectilinear', 1: 'fisheye'}
+DRIVER_INDEX = {'bluetooth': 0, 'serial': 1, 'ethernet': 2,
+                0: 'bluetooth', 1: 'serial', 2: 'ethernet'}
+LOGGER_INDEX = {'trace': 0, 'debug': 1, 'info': 2, 'warning' :3, 'error': 4, 'exception': 5, 'critical': 6,
+                0: 'trace', 1: 'debug', 2: 'info', 3: 'warning', 4: 'error', 5: 'exception', 6: 'critical'}
+
 # Logger
 LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"
 LOGGER_MAX_COUNT_LINE = 200
@@ -126,8 +146,8 @@ LOGGER_MAX_COUNT_LINE = 200
 # Hardware
 AXIS_NUM_YAW = 1
 AXIS_NUM_PITCH = 2
-AXIS_ACCURACY = 0.1
-SHOOT_PULSE = 0.2
+AXIS_ACCURACY = 0.1 # °
+SHOOT_PULSE = 0.2 # s
 BLUETOOTH_DRIVER_CONNECT_DELAY = 8.
 ENCODER_360 = 0x0E6600
 ENCODER_ZERO = 0x800000
@@ -135,30 +155,30 @@ MANUAL_SPEED = {'slow': 170,  # "aa0000"  / 5
                 'normal': 34, # "220000"
                 'fast': 17}   # "110000"  * 2
 
-AXIS_SPEED = 15.
+AXIS_SPEED = 15. # °/s
 SERIAL_BAUDRATE = 9600
-SERIAL_TIMEOUT = 0.2
+SERIAL_TIMEOUT = 0.2 # s
 
 # Misc
 SERIALIZER_REFRESH = 10 # ms
-SPY_SLOW_REFRESH = 0.5  # s
-SPY_FAST_REFRESH = 0.1  # s
+SPY_SLOW_REFRESH = 500 # ms
+SPY_FAST_REFRESH = 100 # ms
 
 # View3D
-VIEW3D_HEAD_HFOV = 30.
-VIEW3D_HEAD_VFOV = 20.
-VIEW3D_HEAD_FOV_LENGTH = 1.
+VIEW3D_HEAD_HFOV = 30. # °
+VIEW3D_HEAD_VFOV = 20. # °
+VIEW3D_HEAD_FOV_LENGTH = 1. # ?
 VIEW3D_LOGGER_LEVEL = 'debug'
 
 # Low-level simulator
 SIMUL_DEFAULT_CONNEXION = 'ethernet'
 SIMUL_SERIAL_PORT = "/dev/ttyS0"
 #SIMUL_SERIAL_PORT = "COM1"
-SIMUL_ETHERNET_HOST = "localhost"
+SIMUL_ETHERNET_HOST = "127.0.0.1"
 SIMUL_ETHERNET_PORT = 7165
 SIMUL_LOGGER_LEVEL = 'debug'
 
 # Publisher
 PUBLISHER_ENABLE = True
-PUBLISHER_HOST = '127.0.0.1'
+PUBLISHER_HOST = "127.0.0.1"
 PUBLISHER_PORT = 7166
