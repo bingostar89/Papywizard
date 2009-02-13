@@ -90,6 +90,18 @@ class Lens(object):
 
     focal = property(__getFocal, __setFocal)
 
+    def __getOpticalMultiplier(self):
+        """
+        """
+        return ConfigManager().getFloat('Preferences', 'LENS_OPTICAL_MULTIPLIER')
+
+    def __setOpticalMultiplier(self, opticalMultiplier):
+        """
+        """
+        ConfigManager().setFloat('Preferences', 'LENS_OPTICAL_MULTIPLIER', opticalMultiplier, 1)
+
+    opticalMultiplier = property(__getOpticalMultiplier, __setOpticalMultiplier)
+
     def computeFov(self, size):
         """ Compute FoV.
 
@@ -99,7 +111,7 @@ class Lens(object):
         @return: FoV of the lens
         @rtype: float
         """
-        return 360. / math.pi * math.atan(size / (2. * self.focal))
+        return 360. / math.pi * math.atan(size / (2. * self.focal * self.opticalMultiplier))
 
     def shutdown(self):
         """ Cleanly terminate the lens

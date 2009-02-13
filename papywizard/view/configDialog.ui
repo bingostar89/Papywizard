@@ -593,12 +593,12 @@
           </widget>
          </item>
          <item row="2" column="0" >
-          <widget class="QLabel" name="multiplierLabel" >
+          <widget class="QLabel" name="opticalMultiplierLabel" >
            <property name="enabled" >
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="text" >
-            <string>Multiplier</string>
+            <string>Optical multiplier</string>
            </property>
            <property name="alignment" >
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -609,9 +609,9 @@
           </widget>
          </item>
          <item row="2" column="1" >
-          <widget class="QDoubleSpinBox" name="multiplierDoubleSpinBox" >
+          <widget class="QDoubleSpinBox" name="opticalMultiplierDoubleSpinBox" >
            <property name="enabled" >
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="suffix" >
             <string> x</string>

@@ -82,10 +82,10 @@ class ConfigController(AbstractModalDialogController):
         self.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
         self.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
 
-        self.connect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
+        self.connect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
         self.connect(self._view.bracketingNbPictsSpinBox, QtCore.SIGNAL("valueChanged(int)"), self.__onBracketingNbPictsSpinBoxValueChanged)
-        self.connect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onLensTypeComboBoxCurrentIndexChanged)
-        self.connect(self._view.driverComboBox, QtCore.SIGNAL("currentIndexChanged(const QString&)"), self.__onDriverComboBoxCurrentIndexChanged)
+        self.connect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onLensTypeComboBoxCurrentIndexChanged)
+        self.connect(self._view.driverComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onDriverComboBoxCurrentIndexChanged)
         self.connect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
         self.connect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
 
@@ -104,16 +104,16 @@ class ConfigController(AbstractModalDialogController):
         Logger().trace("ConfigController.__onAccepted()")
 
         # Shooting tab
-        self._model.headOrientation = str(self._view.headOrientationComboBox.currentText())
-        self._model.cameraOrientation = str(self._view.cameraOrientationComboBox.currentText())
+        self._model.headOrientation = config.HEAD_ORIENTATION_INDEX[self._view.headOrientationComboBox.currentIndex()]
+        self._model.cameraOrientation = config.CAMERA_ORIENTATION_INDEX[self._view.cameraOrientationComboBox.currentIndex()]
         if self._model.cameraOrientation == 'custom':
             self._model.cameraRoll = self._view.cameraRollDoubleSpinBox.value()
         self._model.stabilizationDelay = self._view.stabilizationDelayDoubleSpinBox.value()
 
         # Mosaic tab
         self._model.mosaic.overlap = self._view.overlapSpinBox.value() / 100.
-        self._model.mosaic.startFrom = str(self._view.startFromComboBox.currentText())
-        self._model.mosaic.initialDirection = str(self._view.initialDirectionComboBox.currentText())
+        self._model.mosaic.startFrom = config.MOSAIC_START_FROM_INDEX[self._view.startFromComboBox.currentIndex()]
+        self._model.mosaic.initialDirection = config.MOSAIC_INITIAL_DIR_INDEX[self._view.initialDirectionComboBox.currentIndex()]
         self._model.mosaic.cr = self._view.crCheckBox.isChecked()
 
         # Camera tab
@@ -122,17 +122,18 @@ class ConfigController(AbstractModalDialogController):
         self._model.camera.pulseWidthHigh = self._view.pulseWidthHighSpinBox.value()
         self._model.camera.pulseWidthLow = self._view.pulseWidthLowSpinBox.value()
         self._model.camera.bracketingNbPicts = self._view.bracketingNbPictsSpinBox.value()
-        self._model.camera.bracketingIntent = str(self._view.bracketingIntentComboBox.currentText())
+        self._model.camera.bracketingIntent = config.CAMERA_BRACKETING_INTENT_INDEX[self._view.bracketingIntentComboBox.currentIndex()]
         self._model.camera.sensorCoef = self._view.sensorCoefDoubleSpinBox.value()
-        self._model.camera.sensorRatio = str(self._view.sensorRatioComboBox.currentText())
+        self._model.camera.sensorRatio = config.SENSOR_RATIO_INDEX[self._view.sensorRatioComboBox.currentIndex()]
         self._model.camera.sensorResolution = self._view.sensorResolutionDoubleSpinBox.value()
 
         # Lens tab
-        self._model.camera.lens.type_ = str(self._view.lensTypeComboBox.currentText())
+        self._model.camera.lens.type_ = config.LENS_TYPE_INDEX[self._view.lensTypeComboBox.currentIndex()]
         self._model.camera.lens.focal = self._view.focalDoubleSpinBox.value()
+        self._model.camera.lens.opticalMultiplier = self._view.opticalMultiplierDoubleSpinBox.value()
 
         # Hardware tab
-        ConfigManager().set('Preferences', 'HARDWARE_DRIVER', str(self._view.driverComboBox.currentText()))
+        ConfigManager().set('Preferences', 'HARDWARE_DRIVER', config.DRIVER_INDEX[self._view.driverComboBox.currentIndex()])
         ConfigManager().set('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS', str(self._view.bluetoothDeviceAddressLineEdit.text()))
         ConfigManager().set('Preferences', 'HARDWARE_SERIAL_PORT', str(self._view.serialPortLineEdit.text()))
         ConfigManager().set('Preferences', 'HARDWARE_ETHERNET_HOST', str(self._view.ethernetHostLineEdit.text()))
@@ -157,7 +158,7 @@ class ConfigController(AbstractModalDialogController):
         self._model.timerEvery = hmsAsStrToS(time_.toString("hh:mm:ss"))
 
         # Misc tab
-        ConfigManager().set('Preferences', 'LOGGER_LEVEL', str(self._view.loggerLevelComboBox.currentText()))
+        ConfigManager().set('Preferences', 'LOGGER_LEVEL', config.LOGGER_INDEX[self._view.loggerLevelComboBox.currentIndex()])
 
         ConfigManager().save()
 
@@ -168,9 +169,10 @@ class ConfigController(AbstractModalDialogController):
         """
         Logger().trace("ConfigController.__onRejected()")
 
-    def __onCameraOrientationComboBoxCurrentIndexChanged(self, orientation):
+    def __onCameraOrientationComboBoxCurrentIndexChanged(self, index):
         """ Camera orientation changed.
         """
+        orientation = config.CAMERA_ORIENTATION_INDEX[index]
         Logger().debug("ConfigController.__onCameraOrientationComboBoxCurrentIndexChanged(): orientation=%s" % orientation)
         if orientation == 'portrait':
             self._view.cameraRollDoubleSpinBox.setEnabled(False)
@@ -196,11 +198,12 @@ class ConfigController(AbstractModalDialogController):
         Logger().debug("ConfigController.__onBracketingNbPictsSpinBoxValueChanged(): value=%d" % value)
         self._view.bracketingIntentComboBox.setEnabled(value != 1)
 
-    def __onLensTypeComboBoxCurrentIndexChanged(self, type_):
+    def __onLensTypeComboBoxCurrentIndexChanged(self, index):
         """ Lens type combobox has changed.
 
         Enable/disable focal lens entry.
         """
+        type_ = config.LENS_TYPE_INDEX[index]
         Logger().debug("ConfigController.__onLensTypeComboBoxCurrentIndexChanged(): type=%s" % type_)
         if type_ == 'fisheye' and self._model.mode == 'mosaic':
             dialog = WarningMessageDialog(self.tr("Wrong value for lens type"),
@@ -211,16 +214,21 @@ class ConfigController(AbstractModalDialogController):
             if type_ == 'rectilinear':
                 self._view.focalLabel.setEnabled(True)
                 self._view.focalDoubleSpinBox.setEnabled(True)
+                self._view.opticalMultiplierLabel.setEnabled(True)
+                self._view.opticalMultiplierDoubleSpinBox.setEnabled(True)
             else:
                 self._view.focalLabel.setEnabled(False)
                 self._view.focalDoubleSpinBox.setEnabled(False)
+                self._view.opticalMultiplierLabel.setEnabled(False)
+                self._view.opticalMultiplierDoubleSpinBox.setEnabled(False)
             Logger().debug("ConfigController.__onLensTypeComboBoxCurrentIndexChanged(): lens type set to '%s'" % type_)
 
-    def __onDriverComboBoxCurrentIndexChanged(self, driver):
+    def __onDriverComboBoxCurrentIndexChanged(self, index):
         """ Driver combobox has changed.
 
         Enable/disable BT address / serial port.
         """
+        driver = config.DRIVER_INDEX[index]
         Logger().debug("ConfigController.__onDriverComboBoxCurrentIndexChanged(): driver=%s" % driver)
         if driver == 'bluetooth':
             self._view.bluetoothDeviceAddressLabel.setEnabled(True)
@@ -295,14 +303,14 @@ class ConfigController(AbstractModalDialogController):
     def refreshView(self):
 
         # Shooting tab
-        self._view.headOrientationComboBox.setCurrentIndex(self._view.headOrientationComboBox.findText(self._model.headOrientation))
-        self._view.cameraOrientationComboBox.setCurrentIndex(self._view.cameraOrientationComboBox.findText(self._model.cameraOrientation))
+        self._view.headOrientationComboBox.setCurrentIndex(config.HEAD_ORIENTATION_INDEX[self._model.headOrientation])
+        self._view.cameraOrientationComboBox.setCurrentIndex(config.CAMERA_ORIENTATION_INDEX[self._model.cameraOrientation])
         self._view.stabilizationDelayDoubleSpinBox.setValue(self._model.stabilizationDelay)
 
         # Mosaic tab
         self._view.overlapSpinBox.setValue(int(100 * self._model.mosaic.overlap))
-        self._view.startFromComboBox.setCurrentIndex(self._view.startFromComboBox.findText(self._model.mosaic.startFrom))
-        self._view.initialDirectionComboBox.setCurrentIndex(self._view.initialDirectionComboBox.findText(self._model.mosaic.initialDirection))
+        self._view.startFromComboBox.setCurrentIndex(config.MOSAIC_START_FROM_INDEX[self._model.mosaic.startFrom])
+        self._view.initialDirectionComboBox.setCurrentIndex(config.MOSAIC_INITIAL_DIR_INDEX[self._model.mosaic.initialDirection])
         self._view.crCheckBox.setChecked(self._model.mosaic.cr)
 
         # Camera tab
@@ -311,18 +319,19 @@ class ConfigController(AbstractModalDialogController):
         self._view.pulseWidthHighSpinBox.setValue(self._model.camera.pulseWidthHigh)
         self._view.pulseWidthLowSpinBox.setValue(self._model.camera.pulseWidthLow)
         self._view.bracketingNbPictsSpinBox.setValue(self._model.camera.bracketingNbPicts)
-        self._view.bracketingIntentComboBox.setCurrentIndex(self._view.bracketingIntentComboBox.findText(self._model.camera.bracketingIntent))
+        self._view.bracketingIntentComboBox.setCurrentIndex(config.CAMERA_BRACKETING_INTENT_INDEX[self._model.camera.bracketingIntent])
         self._view.bracketingIntentComboBox.setEnabled(self._model.camera.bracketingNbPicts != 1)
         self._view.sensorCoefDoubleSpinBox.setValue(self._model.camera.sensorCoef)
-        self._view.sensorRatioComboBox.setCurrentIndex(self._view.sensorRatioComboBox.findText(self._model.camera.sensorRatio))
+        self._view.sensorRatioComboBox.setCurrentIndex(config.SENSOR_RATIO_INDEX[self._model.camera.sensorRatio])
         self._view.sensorResolutionDoubleSpinBox.setValue(self._model.camera.sensorResolution)
 
         # Lens tab
-        self._view.lensTypeComboBox.setCurrentIndex(self._view.lensTypeComboBox.findText(self._model.camera.lens.type_))
+        self._view.lensTypeComboBox.setCurrentIndex(config.LENS_TYPE_INDEX[self._model.camera.lens.type_])
         self._view.focalDoubleSpinBox.setValue(self._model.camera.lens.focal)
+        self._view.opticalMultiplierDoubleSpinBox.setValue(self._model.camera.lens.opticalMultiplier)
 
         # Hardware tab
-        driverIndex = self._view.driverComboBox.findText(ConfigManager().get('Preferences', 'HARDWARE_DRIVER'))
+        driverIndex = config.DRIVER_INDEX[ConfigManager().get('Preferences', 'HARDWARE_DRIVER')]
         self._view.driverComboBox.setCurrentIndex(driverIndex)
         self._view.bluetoothDeviceAddressLineEdit.setText(ConfigManager().get('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS'))
         self._view.serialPortLineEdit.setText(ConfigManager().get('Preferences', 'HARDWARE_SERIAL_PORT'))
@@ -351,7 +360,7 @@ class ConfigController(AbstractModalDialogController):
         self._view.timerEveryTimeEdit.setTime(time_)
 
         # Misc tab
-        loggerIndex = self._view.loggerLevelComboBox.findText(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
+        loggerIndex = config.LOGGER_INDEX[ConfigManager().get('Preferences', 'LOGGER_LEVEL')]
         self._view.loggerLevelComboBox.setCurrentIndex(loggerIndex)
 
     def getSelectedTab(self):

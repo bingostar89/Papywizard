@@ -463,7 +463,7 @@ class Shooting(QtCore.QObject):
                   'sensorCoef': "%.1f" % self.camera.sensorCoef,
                   'sensorRatio': "%s" % self.camera.sensorRatio,
                   'lensType': "%s" % self.camera.lens.type_,
-                  'focal': "%.1f" % self.camera.lens.focal}
+                  'focal': "%.1f" % (self.camera.lens.focal * self.camera.lens.opticalMultiplier)}
 
         Logger().info("Start shooting process...")
         try:
