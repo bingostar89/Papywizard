@@ -84,8 +84,7 @@ class ShootingView(QtGui.QGraphicsView):
                 Logger().warning("QtOpenGL module not available")
 
     def resizeEvent(self, event):
-        #self.scene().refresh()
-        self.fitInView(self.scene().sceneRect(), QtCore.Qt.KeepAspectRatio) #, QtCore.Qt.SmoothTransformation)
+        self.fitInView(self.scene().sceneRect(), QtCore.Qt.KeepAspectRatio)
 
 
 class AbstractShootingScene(QtGui.QGraphicsScene):
