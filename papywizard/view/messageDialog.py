@@ -61,8 +61,6 @@ from PyQt4 import QtCore, QtGui
 
 from papywizard.common.loggingServices import Logger
 
-_ = lambda a: a
-
 
 class BaseMessageDialog(QtGui.QMessageBox):
     """ Abstract message dialog.
