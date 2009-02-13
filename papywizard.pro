@@ -15,7 +15,6 @@ SOURCES += papywizard/common/configManager.py \
            papywizard/common/config.py \
            papywizard/common/exception.py \
            papywizard/common/helpers.py \
-           papywizard/common/loggingAspects.py \
            papywizard/common/loggingFormatter.py \
            papywizard/common/loggingServices.py \
            papywizard/common/orderedDict.py \
@@ -30,7 +29,6 @@ SOURCES += papywizard/controller/abstractController.py \
            papywizard/controller/helpAboutController.py \
            papywizard/controller/loggerController.py \
            papywizard/controller/mainController.py \
-           papywizard/controller/messageController.py \
            papywizard/controller/nbPictsController.py \
            papywizard/controller/shootController.py \
            papywizard/controller/spy.py \
