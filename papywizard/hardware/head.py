@@ -275,6 +275,6 @@ class HeadSimulation(Head):
 
     def shutdown(self):
         self.yawAxis.stopThread()
-        self.yawAxis.join()
+        self.yawAxis.wait()
         self.pitchAxis.stopThread()
-        self.pitchAxis.join()
+        self.pitchAxis.wait()

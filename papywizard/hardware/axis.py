@@ -66,7 +66,7 @@ from papywizard.common.exception import HardwareError
 from papywizard.common.helpers import decodeAxisValue, encodeAxisValue, deg2cod, cod2deg
 
 
-class AbstractAxis(object):
+class AbstractAxis:
     """ Abstract axis.
     """
     def __init__(self, num):
@@ -75,8 +75,6 @@ class AbstractAxis(object):
         @param num: axis num (1: yaw, 2: pitch)
         @type num: int
         """
-        super(AbstractAxis, self).__init__()
-
         self._num = num
         self._upperLimit = 9999.9
         self._lowerLimit = -9999.9
@@ -216,7 +214,7 @@ class Axis(AbstractAxis):
     """ Hardware axis.
     """
     def __init__(self, num, driver):
-        super(Axis, self).__init__(num)
+        AbstractAxis.__init__(self, num)
 
         self._manualSpeed = config.MANUAL_SPEED['normal']
         self.__driver = driver
@@ -428,14 +426,12 @@ class Axis(AbstractAxis):
         self._manualSpeed = config.MANUAL_SPEED[speed]
 
 
-class AxisSimulation(AbstractAxis, threading.Thread):
+class AxisSimulation(AbstractAxis, QtCore.QThread):
     """ Simulated hardware axis.
     """
     def __init__(self, num):
-        super(AxisSimulation, self).__init__(num)
-
-        self.setDaemon(1)
-        self.setName("Axis #%d" % num)
+        AbstractAxis.__init__(self, num)
+        QtCore.QThread.__init__(self)
 
         self._manualSpeed = 1.
         self.__pos = 0.
@@ -445,10 +441,12 @@ class AxisSimulation(AbstractAxis, threading.Thread):
         self.__dir = None
         self.__time = None
         self.__run = False
+        self.__name = "Axis #%d" % num
 
     def run(self):
         """ Main entry of the thread.
         """
+        threading.currentThread().setName(self.__name)
         self.__run = True
         while self.__run:
 
@@ -472,7 +470,7 @@ class AxisSimulation(AbstractAxis, threading.Thread):
 
             # Drive command. Check when stop
             if self.__drive:
-                #Logger().trace("AxisSimulation.run(): axis %d driving" % self._num)
+                #Logger().trace("AxisSimulation.run(): ax&is %d driving" % self._num)
                 if self.__dir == '+':
                     if self.__pos >= self.__setpoint:
                         self.__jog = False
@@ -484,7 +482,7 @@ class AxisSimulation(AbstractAxis, threading.Thread):
                         self.__drive = False
                         self.__pos = self.__setpoint
 
-            time.sleep(config.SPY_FAST_REFRESH)
+            self.msleep(config.SPY_FAST_REFRESH)
 
         Logger().debug("AxisSimulation.run(): axis simulation thread terminated")
 
