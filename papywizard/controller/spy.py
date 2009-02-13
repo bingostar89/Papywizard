@@ -53,8 +53,9 @@ __revision__ = "$Id$"
 
 import threading
 
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtNetwork
 
+from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.signal import Signal
 from papywizard.common.exception import HardwareError
@@ -83,29 +84,55 @@ class SpyObject(QtCore.QThread):
         self.__run = False
         self.__suspend = False
         self.__refresh = int(refresh * 1000)
+        self.__sock = None
+
         try:
             self.__yaw, self.__pitch = self.__model.hardware.readPosition()
             Logger().debug("Spy.__init__(): yaw=%.1f, pitch=%.1f" % (self.__yaw, self.__pitch))
         except HardwareError:
             Logger().exception("Spy.run(): can't read position")
 
+    def __publish(self, yaw, pitch):
+        """ Publish the position on the UDP socket.
+
+        @param yaw: position yaw
+        @type yaw: float
+
+        @param pitch: position pitch
+        @type pitch: float
+
+        @todo: use an external object connected to the updated signal
+        """
+        if self.__sock is not None:
+            print self.__sock.writeDatagram("%f,%f" % (yaw, pitch), QtNetwork.QHostAddress(config.PUBLISHER_HOST), config.PUBLISHER_PORT)
+
     # Signals
     def update(self, yaw, pitch):
         """ Update position.
-        
+
         @param yaw: position yaw
         @type yaw: float
-        
+
         @param pitch: position pitch
         @type pitch: float
         """
         self.emit(QtCore.SIGNAL("update"), yaw, pitch)
 
+    # Main loop
     def run(self):
         """ Main entry of the thread.
         """
         threading.currentThread().setName("Spy")
         Logger().info("Starting Spy...")
+
+        # Create UDB socket
+        if config.PUBLISHER_ENABLE:
+            self.__sock = QtNetwork.QUdpSocket()
+
+        # Force a first refresh
+        self.refresh(force=True)
+
+        # Enter main loop
         self.__run = True
         try:
             while self.__run:
@@ -131,7 +158,12 @@ class SpyObject(QtCore.QThread):
             if yaw != self.__yaw or pitch != self.__pitch or force:
                 #Logger().debug("Spy.execute(): new yaw=%.1f, new pitch=%.1f" % (yaw, pitch))
                 try:
+
+                    # Emit Qt signal
                     self.update(yaw, pitch)
+
+                    # Also publish the position on the UDP socket
+                    self.__publish(yaw, pitch)
                 except:
                     Logger().exception("Spy.refresh(): can't emit signal")
                 self.__yaw = yaw
@@ -165,7 +197,7 @@ class SpyObject(QtCore.QThread):
 
     def isRunning(self):
         """ Test if spy is running.
-        
+
         warning: this method overloads the QThread one!!!
 
         @return: True if running, False if not
