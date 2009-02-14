@@ -9,5 +9,6 @@
 #    <file>i18n/qt_de.qm</file>
 #    <file>i18n/qt_fr.qm</file>
 #    <file>i18n/qt_pl.qm</file>
+#    <file>i18n/qt_pl.es</file>
   </qresource>
 </RCC>
