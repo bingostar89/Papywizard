@@ -473,7 +473,7 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onActionHardwareGotoHomeActivated()")
         self.setStatusbarMessage(self.tr("Goto home position..."))
         self._model.hardware.gotoPosition(0., 0., wait=False)
-        dialog = AbortMessageDialog("Goto home position", "Please wait...")
+        dialog = AbortMessageDialog(self.tr("Goto home position"), self.tr("Please wait..."))
         self._view.releaseKeyboard()
         dialog.show()
         while self._model.hardware.isAxisMoving():
@@ -493,7 +493,7 @@ class MainController(AbstractController):
         self.setStatusbarMessage(self.tr("Goto initial position..."))
         QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
         self._model.hardware.gotoPosition(0., 0., useOffset=False, wait=False)
-        dialog = AbortMessageDialog("Goto initial position", "Please wait...")
+        dialog = AbortMessageDialog(self.tr("Goto initial position"), self.tr("Please wait..."))
         self._view.releaseKeyboard()
         dialog.show()
         while self._model.hardware.isAxisMoving():
