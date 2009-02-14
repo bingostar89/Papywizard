@@ -96,8 +96,8 @@ def main():
         qtApp.processEvents()
 
         # Addtional imports
-        Logger().info("Importing additional modules...")
-        splash.showMessage("Importing additional modules...")
+        Logger().info("Importing modules...")
+        splash.showMessage("Importing modules...")
         qtApp.processEvents()
         from PyQt4 import QtCore
         from papywizard.common import config
