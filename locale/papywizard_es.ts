@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="es">
-<defaultcodec></defaultcodec>
-<context>
-    <name>AbortMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="139"/>
-        <source>Abort</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
 <context>
     <name>BluetoothChooserController</name>
     <message>
@@ -166,30 +157,6 @@ The fact that you are presently reading this means that you have had knowledge o
         <location filename="papywizard/view/totalFovDialog.ui" line="68"/>
         <source> °</source>
         <translation> °</translation>
-    </message>
-</context>
-<context>
-    <name>ErrorMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="110"/>
-        <source>Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ExceptionMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="119"/>
-        <source>Exception</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>InfoMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="92"/>
-        <source>Info</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -387,6 +354,21 @@ The fact that you are presently reading this means that you have had knowledge o
     <message>
         <location filename="papywizard/controller/mainController.py" line="859"/>
         <source>Now in simulation mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="476"/>
+        <source>Goto home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="496"/>
+        <source>Please wait...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="496"/>
+        <source>Goto initial position</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -666,22 +648,6 @@ The fact that you are presently reading this means that you have had knowledge o
     <message>
         <location filename="papywizard/controller/shootController.py" line="563"/>
         <source>Shutter - Picture</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>WarningMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="101"/>
-        <source>Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>YesNoMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="130"/>
-        <source>Question</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

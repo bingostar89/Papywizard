@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="pl">
 <context>
-    <name>AbortMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="139"/>
-        <source>Abort</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>BluetoothChooserController</name>
     <message>
         <location filename="papywizard/controller/bluetoothChooserController.py" line="139"/>
@@ -165,30 +157,6 @@ The fact that you are presently reading this means that you have had knowledge o
         <location filename="papywizard/view/totalFovDialog.ui" line="38"/>
         <source>Pitch</source>
         <translation>Pitch</translation>
-    </message>
-</context>
-<context>
-    <name>ErrorMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="110"/>
-        <source>Error</source>
-        <translation>Błąd</translation>
-    </message>
-</context>
-<context>
-    <name>ExceptionMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="119"/>
-        <source>Exception</source>
-        <translation>Wyjątek</translation>
-    </message>
-</context>
-<context>
-    <name>InfoMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="92"/>
-        <source>Info</source>
-        <translation>Info</translation>
     </message>
 </context>
 <context>
@@ -387,6 +355,21 @@ The fact that you are presently reading this means that you have had knowledge o
         <location filename="papywizard/controller/mainController.py" line="609"/>
         <source>Reference set at current position</source>
         <translation type="unfinished">Obecne położenie ustawiono jako początkowe</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="476"/>
+        <source>Goto home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="496"/>
+        <source>Please wait...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="496"/>
+        <source>Goto initial position</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -666,22 +649,6 @@ The fact that you are presently reading this means that you have had knowledge o
         <location filename="papywizard/controller/shootController.py" line="563"/>
         <source>Shutter - Picture</source>
         <translation>Migawka - Obraz</translation>
-    </message>
-</context>
-<context>
-    <name>WarningMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="101"/>
-        <source>Warning</source>
-        <translation>Uwaga</translation>
-    </message>
-</context>
-<context>
-    <name>YesNoMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="130"/>
-        <source>Question</source>
-        <translation>Pytanie</translation>
     </message>
 </context>
 <context>

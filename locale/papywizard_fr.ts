@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="fr">
-<context>
-    <name>AbortMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="139"/>
-        <source>Abort</source>
-        <translation>Annuler</translation>
-    </message>
-</context>
+<defaultcodec></defaultcodec>
 <context>
     <name>BluetoothChooserController</name>
     <message>
@@ -165,30 +158,6 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
         <location filename="papywizard/view/totalFovDialog.ui" line="38"/>
         <source>Pitch</source>
         <translation>Tangage</translation>
-    </message>
-</context>
-<context>
-    <name>ErrorMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="110"/>
-        <source>Error</source>
-        <translation>Erreur</translation>
-    </message>
-</context>
-<context>
-    <name>ExceptionMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="119"/>
-        <source>Exception</source>
-        <translation>Exception</translation>
-    </message>
-</context>
-<context>
-    <name>InfoMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="92"/>
-        <source>Info</source>
-        <translation>Information</translation>
     </message>
 </context>
 <context>
@@ -387,6 +356,21 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
         <location filename="papywizard/controller/mainController.py" line="609"/>
         <source>Reference set at current position</source>
         <translation>Référence fixée à la position courrante</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="476"/>
+        <source>Goto home position</source>
+        <translation>Déplacement vers la position de référence</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="496"/>
+        <source>Please wait...</source>
+        <translation>Veuillez patienter...</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="496"/>
+        <source>Goto initial position</source>
+        <translation>Déplacement vers la position initiale</translation>
     </message>
 </context>
 <context>
@@ -666,22 +650,6 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
         <location filename="papywizard/controller/shootController.py" line="563"/>
         <source>Shutter - Picture</source>
         <translation>Obturateur - Image</translation>
-    </message>
-</context>
-<context>
-    <name>WarningMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="101"/>
-        <source>Warning</source>
-        <translation>Attention</translation>
-    </message>
-</context>
-<context>
-    <name>YesNoMessageDialog</name>
-    <message>
-        <location filename="papywizard/view/messageDialog.py" line="130"/>
-        <source>Question</source>
-        <translation>Question</translation>
     </message>
 </context>
 <context>
