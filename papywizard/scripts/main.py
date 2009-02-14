@@ -90,8 +90,10 @@ def main():
         qtApp = QtGui.QApplication(sys.argv)
 
         # Create the splashscreen
-        pixmap = QtGui.QPixmap("papywizard-splash.png")
-        splash = QtGui.QSplashScreen(pixmap)#, QtCore.Qt.WindowStaysOnTopHint | QtCore.Qt.X11BypassWindowManagerHint)
+        from papywizard.common import pixmaps
+        pixmap = QtGui.QPixmap()
+        pixmap.load(":/pixmaps/splashscreen.png")
+        splash = QtGui.QSplashScreen(pixmap)
         splash.show()
         qtApp.processEvents()
 
@@ -101,40 +103,29 @@ def main():
         qtApp.processEvents()
         from PyQt4 import QtCore
         from papywizard.common import config
+        from papywizard.common import i18n
         from papywizard.common.configManager import ConfigManager
         #from papywizard.common.publisher import Publisher
         from papywizard.hardware.head import Head, HeadSimulation
         from papywizard.model.shooting import Shooting
         from papywizard.controller.mainController import MainController
         from papywizard.controller.spy import Spy
-        from papywizard.view.icons import qInitResources, qCleanupResources
-        from papywizard.view.messageDialog import ExceptionMessageDialog
-
-        # Init resources and application
-        Logger().info("Initializing resources...")
-        splash.showMessage("Initializing resources...")
-        qtApp.processEvents()
-        qInitResources()
-
-        # Load configuration
-        Logger().info("Loading configuration...")
-        splash.showMessage("Loading configuration...")
-        qtApp.processEvents()
-        ConfigManager()
+        from papywizard.view import icons
 
         # i18n stuff
         Logger().info("Loading i18n files...")
         splash.showMessage("Loading i18n files...")
         qtApp.processEvents()
         locale = QtCore.QLocale.system().name()
-        Logger().debug("Papywizard.l10n(): locale=%s" % locale)
+        Logger().debug("Papywizard.i18n(): locale=%s" % locale)
         qtTranslator = QtCore.QTranslator()
-        if qtTranslator.load("locale/qt_%s" % locale):
+        if qtTranslator.load("qt_%s" % locale,
+                             QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.TranslationsPath)):
             qtApp.installTranslator(qtTranslator)
         else:
             Logger().warning("Can't find qt translation file")
         appTranslator = QtCore.QTranslator()
-        if appTranslator.load("locale/papywizard_%s" % locale):
+        if appTranslator.load("papywizard_%s" % locale, ":/i18n"):
             qtApp.installTranslator(appTranslator)
         else:
             Logger().warning("Can't find papywizard translation file")
@@ -155,6 +146,12 @@ def main():
                 Logger().debug("Style Sheet loaded from command line param.")
             else:
                 Logger().debug("User Style Sheet loaded")
+
+        # Load user configuration
+        Logger().info("Loading configuration...")
+        splash.showMessage("Loading configuration...")
+        qtApp.processEvents()
+        ConfigManager()
 
         # Create model
         Logger().info("Creating model...")
@@ -194,12 +191,15 @@ def main():
         model.shutdown()
 
         # Cleanup resources
-        qCleanupResources()
+        i18n.qCleanupResources()
+        pixmaps.qCleanupResources()
+        icons.qCleanupResources()
 
         Logger().info("Papywizard stopped")
 
     except Exception, msg:
         Logger().exception("main()")
+        from papywizard.view.messageDialog import ExceptionMessageDialog
         dialog = ExceptionMessageDialog("Unhandled exception", str(msg))
         dialog.exec_()
 
