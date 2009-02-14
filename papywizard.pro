@@ -66,4 +66,5 @@ TRANSLATIONS += locale/papywizard_en.ts \
                 locale/papywizard_fr.ts \
                 locale/papywizard_pl.ts \
                 locale/papywizard_de.ts \
-                locale/papywizard_it.ts
+                locale/papywizard_it.ts \
+                locale/papywizard_es.ts
