@@ -73,9 +73,9 @@ SOURCES += papywizard/scripts/main3D.py \
            papywizard/view/shootingScene.py
 
 # i18n
-TRANSLATIONS += locale/papywizard_en.ts \
-                locale/papywizard_fr.ts \
-                locale/papywizard_pl.ts \
-                locale/papywizard_de.ts \
-                locale/papywizard_it.ts \
-                locale/papywizard_es.ts
+TRANSLATIONS += papywizard/common/i18n/papywizard_en.ts \
+                papywizard/common/i18n/papywizard_fr.ts \
+                papywizard/common/i18n/papywizard_pl.ts \
+                papywizard/common/i18n/papywizard_de.ts \
+                papywizard/common/i18n/papywizard_it.ts \
+                papywizard/common/i18n/papywizard_es.ts
