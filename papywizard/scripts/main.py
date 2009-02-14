@@ -123,8 +123,8 @@ def main():
         ConfigManager()
 
         # i18n stuff
-        Logger().info("Loading translation files...")
-        splash.showMessage("Loading translation files...")
+        Logger().info("Loading i18n files...")
+        splash.showMessage("Loading i18n files...")
         qtApp.processEvents()
         locale = QtCore.QLocale.system().name()
         Logger().debug("Papywizard.l10n(): locale=%s" % locale)
