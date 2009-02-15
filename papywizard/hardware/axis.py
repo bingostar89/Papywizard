@@ -291,6 +291,7 @@ class Axis(AbstractAxis):
         self._checkLimits(pos)
 
         # Choose between default (hardware) method or external closed-loop method
+        # Not yet implemented (need to use a thread; see below)
         if pos - currentPos > 6.:
             self._driveWithInternalClosedLoop(pos)
         else:
@@ -314,6 +315,7 @@ class Axis(AbstractAxis):
             self._sendCmd("L")
             self._sendCmd("G", "00")
             self._sendCmd("S", strValue)
+            #self._sendCmd("I", encodeAxisValue(self._manualSpeed))
             self._sendCmd("J")
         finally:
             self.__driver.releaseBus()
@@ -345,7 +347,7 @@ class Axis(AbstractAxis):
                 self._sendCmd("G", "31")
 
             # Load speed
-            self._sendCmd("I", "500000")
+            self._sendCmd("I", "500000") # Use manual speed
 
             # Start move
             self._sendCmd("J")
