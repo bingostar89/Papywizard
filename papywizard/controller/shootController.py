@@ -174,7 +174,7 @@ class ShootController(AbstractModalDialogController):
         self.connect(self._view.stepByStepPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onStepByStepPushButtonToggled)
 
         self.connect(self._view.startPushButton, QtCore.SIGNAL("clicked()"), self.__onStartPushButtonClicked)
-        self.connect(self._view.pauseResumePushButton, QtCore.SIGNAL("clicked()"), self.__onPauseResumePushButtonClicked)
+        self.connect(self._view.pauseResumeStepPushButton, QtCore.SIGNAL("clicked()"), self.__onPauseResumeStepPushButtonClicked)
         self.connect(self._view.stopPushButton, QtCore.SIGNAL("clicked()"), self.__onStopPushButtonClicked)
 
     def _connectSignals(self):
@@ -379,25 +379,28 @@ class ShootController(AbstractModalDialogController):
         self._model.setStepByStep(checked)
         if checked:
             self._view.stepByStepPushButton.setIcon(QtGui.QIcon(":/icons/button_ok.png"))
-            self._view.pauseResumePushButton.setText(self.tr("Step"))
+            self._view.pauseResumeStepPushButton.setText(self.tr("Step"))
+            self._view.pauseResumeStepPushButton.setIcon(QtGui.QIcon(":/icons/player_end.png"))
             if not self._model.isPaused():
-                self._view.pauseResumePushButton.setEnabled(False)
+                self._view.pauseResumeStepPushButton.setEnabled(False)
         else:
             self._view.stepByStepPushButton.setIcon(QtGui.QIcon(":/icons/button_cancel.png"))
             if self._model.isShooting():
-                self._view.pauseResumePushButton.setEnabled(True) # Should not be enabled if
+                self._view.pauseResumeStepPushButton.setEnabled(True) # Should not be enabled if
                                                                   # a pause request has been asked
             if self._model.isPaused():
-                self._view.pauseResumePushButton.setText(self.tr("Resume"))
+                self._view.pauseResumeStepPushButton.setText(self.tr("Resume"))
+                self._view.pauseResumeStepPushButton.setIcon(QtGui.QIcon(":/icons/player_pause.png"))
             else:
-                self._view.pauseResumePushButton.setText(self.tr("Pause"))
+                self._view.pauseResumeStepPushButton.setText(self.tr("Pause"))
+                self._view.pauseResumeStepPushButton.setIcon(QtGui.QIcon(":/icons/player_pause.png"))
 
     def __onStartPushButtonClicked(self):
         Logger().trace("ShootController.__startPushButtonClicked()")
         self.__startShooting()
 
-    def __onPauseResumePushButtonClicked(self):
-        Logger().trace("ShootController.__onPauseResumePushButtonClicked()")
+    def __onPauseResumeStepPushButtonClicked(self):
+        Logger().trace("ShootController.__onPauseResumeStepPushButtonClicked()")
         if self._model.isShooting(): # Should always be true here, but...
             if not self._model.isPaused():
                 self.__pauseShooting() # Not used
@@ -457,7 +460,7 @@ class ShootController(AbstractModalDialogController):
         self._view.timerPushButton.setEnabled(False)
         self._view.startPushButton.setEnabled(False)
         if not self._view.stepByStepPushButton.isChecked():
-            self._view.pauseResumePushButton.setEnabled(True)
+            self._view.pauseResumeStepPushButton.setEnabled(True)
         self._view.stopPushButton.setEnabled(True)
         self._view.buttonBox.setEnabled(False)
         self._view.rewindPushButton.setEnabled(False)
@@ -466,12 +469,13 @@ class ShootController(AbstractModalDialogController):
 
     def __onShootingPaused(self):
         Logger().trace("ShootController.__onShootingPaused()")
-        self._view.pauseResumePushButton.setEnabled(True)
+        self._view.pauseResumeStepPushButton.setEnabled(True)
         #if self._view.stepByStepPushButton.isChecked():
-            #self._view.pauseResumePushButton.setText(self.tr("Step"))
+            #self._view.pauseResumeStepPushButton.setText(self.tr("Step"))
         #else:
         if not self._view.stepByStepPushButton.isChecked():
-            self._view.pauseResumePushButton.setText(self.tr("Resume"))
+            self._view.pauseResumeStepPushButton.setText(self.tr("Resume"))
+            self._view.pauseResumeStepPushButton.setIcon(QtGui.QIcon(":/icons/player_pause.png"))
         self._view.rewindPushButton.setEnabled(True)
         self._view.forwardPushButton.setEnabled(True)
         self._view.sequenceLabel.setText(self.tr("Paused"))
@@ -483,7 +487,8 @@ class ShootController(AbstractModalDialogController):
     def __onShootingResumed(self):
         Logger().trace("ShootController.__onShootingResumed()")
         if not self._view.stepByStepPushButton.isChecked():
-            self._view.pauseResumePushButton.setText(self.tr("Pause"))
+            self._view.pauseResumeStepPushButton.setText(self.tr("Pause"))
+            self._view.pauseResumeStepPushButton.setIcon(QtGui.QIcon(":/icons/player_pause.png"))
         self._view.rewindPushButton.setEnabled(False)
         self._view.forwardPushButton.setEnabled(False)
         self._view.textNextLabel.setEnabled(False)
@@ -502,7 +507,7 @@ class ShootController(AbstractModalDialogController):
         self._view.dataPushButton.setEnabled(True)
         self._view.timerPushButton.setEnabled(True)
         self._view.startPushButton.setEnabled(True)
-        self._view.pauseResumePushButton.setEnabled(False)
+        self._view.pauseResumeStepPushButton.setEnabled(False)
         self._view.stopPushButton.setEnabled(False)
         self._view.buttonBox.setEnabled(True)
 
@@ -627,11 +632,11 @@ class ShootController(AbstractModalDialogController):
 
     def __pauseShooting(self):
         self._model.pause()
-        self._view.pauseResumePushButton.setEnabled(False)
+        self._view.pauseResumeStepPushButton.setEnabled(False)
 
     def __resumeShooting(self):
         if self._view.stepByStepPushButton.isChecked():
-            self._view.pauseResumePushButton.setEnabled(False)
+            self._view.pauseResumeStepPushButton.setEnabled(False)
         self._model.resume()
 
     def __stopShooting(self):
