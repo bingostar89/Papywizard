@@ -162,6 +162,7 @@ def main():
         model = Shooting(head, headSimulation)
 
         # Create spy thread
+        Logger().info("Starting Spy...")
         Spy(model, config.SPY_FAST_REFRESH)
         Spy().start()
 
@@ -181,16 +182,21 @@ def main():
         qtApp.exec_()
 
         # Shutdown controller
+        Logger().info("Shuting down GUI...")
         mainController.shutdown()
 
         # Stop spy thread
+        Logger().info("Shuting down Spy...")
         Spy().stop()
+        Logger().info("Waiting Spy thread to terminate...")
         Spy().wait()
 
         # Shutdown model
+        Logger().info("Shuting down model...")
         model.shutdown()
 
         # Cleanup resources
+        Logger().info("Cleaning up resources...")
         i18n.qCleanupResources()
         pixmaps.qCleanupResources()
         icons.qCleanupResources()
