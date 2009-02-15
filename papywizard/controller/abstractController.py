@@ -124,6 +124,7 @@ class AbstractController(QtCore.QObject):
         Logger().trace("AbstractController._onCloseEvent()")
         event.accept()
 
+    # Interface
     def shutdown(self):
         """ Shutdown the controller.
         """
@@ -139,6 +140,11 @@ class AbstractController(QtCore.QObject):
 class AbstractModalDialogController(AbstractController):
 
     # Interface
+    def show(self):
+        """ Show the dialog.
+        """
+        self._view.show()
+        
     def exec_(self):
         """ Run the dialog.
         """

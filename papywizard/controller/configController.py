@@ -265,6 +265,8 @@ class ConfigController(AbstractModalDialogController):
         """
         Logger().trace("ConfigController.__onBluetoothChoosePushButtonClicked()")
         controller = BluetoothChooserController(self, self._model)
+        controller.show()
+        controller.refreshBluetoothList()
         response = controller.exec_()
         if response:
             address, name = controller.getSelectedBluetoothAddress()

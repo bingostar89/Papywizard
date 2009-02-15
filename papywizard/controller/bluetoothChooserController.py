@@ -93,9 +93,9 @@ class BluetoothChooserController(AbstractModalDialogController):
         Refresh bluetooth device list.
         """
         Logger().trace("BluetoothChooserController.__onRefreshPushButtonClicked()")
-        self.__refreshBluetoothList()
+        self.refreshBluetoothList()
 
-    def __refreshBluetoothList(self):
+    def refreshBluetoothList(self):
         """ Connect to real hardware.
 
         @todo: put sub-functions in an object (make abstract object first)
@@ -116,7 +116,8 @@ class BluetoothChooserController(AbstractModalDialogController):
 
         Logger().info("Scanning available bluetooth devices...")
         self.__refreshStatus = None
-        #self.refreshButton.setEnabled(False)
+        self._view.refreshPushButton.setEnabled(False)
+        QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
         # Launch refresh thread
         #thread.start_new_thread(self._model.refreshBluetoothList, ())
@@ -138,10 +139,11 @@ class BluetoothChooserController(AbstractModalDialogController):
             Logger().error("Can't scan bluetooth\n%s" % self.__refreshErrorMessage)
             dialog = ExceptionMessageDialog(self.tr("Can't scan bluetooth"), self.__refreshErrorMessage)
             dialog.exec_()
-        #self.refreshButton.setEnabled(True)
+        self._view.refreshPushButton.setEnabled(True)
+        QtGui.qApp.restoreOverrideCursor()
 
     def refreshView(self):
-        self.__refreshBluetoothList()
+        pass
 
     # Real work
     def getSelectedBluetoothAddress(self):
