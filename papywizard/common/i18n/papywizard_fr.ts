@@ -639,7 +639,7 @@ Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris c
     <message>
         <location filename="papywizard/controller/shootController.py" line="558"/>
         <source>Stabilization</source>
-        <translation>Sstabilisation</translation>
+        <translation>Stabilisation</translation>
     </message>
     <message>
         <location filename="papywizard/controller/shootController.py" line="560"/>
