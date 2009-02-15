@@ -40,7 +40,7 @@ Module purpose
 
 Main script
 
-@author: FrÃ©dÃ©ric Mantegazza
+@author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
 @license: CeCILL
 """
