@@ -713,12 +713,14 @@ class MainController(AbstractController):
         """
         try:
             #self._view.configPushButton.setEnabled(False)
+            QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
             self.setStatusbarMessage(self.tr("Opening configuration dialog. Please wait..."))
             QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             controller = ConfigController(self, self._model)
             controller.setSelectedTab(self.__lastConfigTabSelected)
         finally:
             #self._view.configPushButton.setEnabled(True)
+            QtGui.qApp.restoreOverrideCursor()
             self.clearStatusBar()
         self._view.releaseKeyboard()
         response = controller.exec_()
@@ -746,6 +748,7 @@ class MainController(AbstractController):
         self._model.setStepByStep(False)
         try:
             #self._view.shootPushButton.setEnabled(False)
+            QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
             self.setStatusbarMessage(self.tr("Opening shoot dialog. Please wait..."))
             QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             controller = ShootController(self, self._model)
@@ -753,6 +756,7 @@ class MainController(AbstractController):
                 controller._view.showFullScreen()
         finally:
             #self._view.shootPushButton.setEnabled(True)
+            QtGui.qApp.restoreOverrideCursor()
             self.clearStatusBar()
         self._view.releaseKeyboard()
         controller.exec_()
