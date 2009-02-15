@@ -52,7 +52,7 @@ import os.path
 # Version
 VERSION_MAJOR = 1
 VERSION_MINOR = 9 # Odd means dev. release
-VERSION_UPDATE = 5
+VERSION_UPDATE = 6
 VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 VERSION_XML = "a"
 
@@ -82,6 +82,7 @@ USER_PRESET_FILE = os.path.join(USER_CONFIG_DIR, PRESET_FILE)
 USER_GUIDE_URL = "http://trac.gbiloba.org/papywizard/wiki/UserGuide"
 STYLESHEET_FILE = "papywizard.css"
 USER_STYLESHEET_FILE = os.path.join(USER_CONFIG_DIR, STYLESHEET_FILE)
+SPLASHCREEN_FILE = "splashscreen.png"
 
 # Model
 SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3., '5:4': 5./4., '16:9': 16./9.}

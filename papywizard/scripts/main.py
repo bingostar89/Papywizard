@@ -95,7 +95,7 @@ def main():
         # Create the splashscreen
         from papywizard.common import pixmaps
         pixmap = QtGui.QPixmap()
-        pixmap.load(":/pixmaps/splashscreen.png")
+        pixmap.load(":/pixmaps/%s" % config.SPLASHCREEN_FILE)
         splash = QtGui.QSplashScreen(pixmap)
         splash.show()
         qtApp.processEvents()
