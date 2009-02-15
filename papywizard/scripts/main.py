@@ -52,6 +52,7 @@ import threading
 
 from PyQt4 import QtGui
 
+from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.qLoggingFormatter import QSpaceColorFormatter
 from papywizard.view.logBuffer import LogBuffer
@@ -88,6 +89,8 @@ def main():
 
         # Init global Qt application
         qtApp = QtGui.QApplication(sys.argv)
+        qtApp.setApplicationName("Papywizard")
+        qtApp.setApplicationVersion(config.VERSION)
 
         # Create the splashscreen
         from papywizard.common import pixmaps
@@ -102,7 +105,6 @@ def main():
         splash.showMessage("Importing modules...")
         qtApp.processEvents()
         from PyQt4 import QtCore
-        from papywizard.common import config
         from papywizard.common import i18n
         from papywizard.common.configManager import ConfigManager
         #from papywizard.common.publisher import Publisher
