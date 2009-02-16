@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="de">
+<defaultcodec></defaultcodec>
 <context>
     <name>BluetoothChooserController</name>
     <message>
@@ -33,7 +34,7 @@
     <message>
         <location filename="papywizard/controller/configController.py" line="283"/>
         <source>Choose Data Storage dir</source>
-        <translation type="unfinished"></translation>
+        <translation>Datenverzeichnis wählen</translation>
     </message>
 </context>
 <context encoding="UTF-8">
@@ -41,22 +42,22 @@
     <message>
         <location filename="papywizard/view/bluetoothChooserDialog.ui" line="13"/>
         <source>Bluetooth chooser</source>
-        <translation type="unfinished"></translation>
+        <translation>Bluetooth Auswahl</translation>
     </message>
     <message encoding="UTF-8">
         <location filename="papywizard/view/totalFovDialog.ui" line="68"/>
         <source> °</source>
-        <translation type="unfinished"> °</translation>
+        <translation> °</translation>
     </message>
     <message>
         <location filename="papywizard/view/helpAboutDialog.ui" line="13"/>
         <source>About Papywizard</source>
-        <translation type="unfinished"></translation>
+        <translation>Über Papywizard</translation>
     </message>
     <message>
         <location filename="papywizard/view/helpAboutDialog.ui" line="30"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <location filename="papywizard/view/helpAboutDialog.ui" line="71"/>
@@ -81,12 +82,12 @@
     <message>
         <location filename="papywizard/view/helpAboutDialog.ui" line="145"/>
         <source>Credits</source>
-        <translation type="unfinished"></translation>
+        <translation>Mitarbeit</translation>
     </message>
     <message>
         <location filename="papywizard/view/helpAboutDialog.ui" line="153"/>
         <source>Written by</source>
-        <translation type="unfinished"></translation>
+        <translation>Erstellt von</translation>
     </message>
     <message encoding="UTF-8">
         <location filename="papywizard/view/helpAboutDialog.ui" line="178"/>
@@ -96,7 +97,7 @@
     <message>
         <location filename="papywizard/view/helpAboutDialog.ui" line="188"/>
         <source>Translated by</source>
-        <translation type="unfinished"></translation>
+        <translation>Übersetzt von</translation>
     </message>
     <message encoding="UTF-8">
         <location filename="papywizard/view/helpAboutDialog.ui" line="207"/>
@@ -112,7 +113,7 @@ Antonio Bruno (it)</translation>
     <message>
         <location filename="papywizard/view/helpAboutDialog.ui" line="220"/>
         <source>Graphics by</source>
-        <translation type="unfinished"></translation>
+        <translation>Grafik von</translation>
     </message>
     <message encoding="UTF-8">
         <location filename="papywizard/view/helpAboutDialog.ui" line="239"/>
@@ -124,7 +125,7 @@ Frédéric Mantegazza</translation>
     <message>
         <location filename="papywizard/view/helpAboutDialog.ui" line="253"/>
         <source>License</source>
-        <translation type="unfinished"></translation>
+        <translation>Lizenz</translation>
     </message>
     <message>
         <location filename="papywizard/view/helpAboutDialog.ui" line="259"/>
@@ -204,17 +205,17 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/controller/mainController.py" line="423"/>
         <source>XML files (*.xml);;All files (*)</source>
-        <translation type="unfinished">XML files (*.xml);;All files (*)</translation>
+        <translation>XML Dateien (*.xml);;Alle Dateien (*)</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="430"/>
         <source>Load Style Sheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Lade Style sheet</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="432"/>
         <source>CSS files (*.css);;All files (*)</source>
-        <translation type="unfinished">CSS files (*.css);;All files (*)</translation>
+        <translation>CSS Dateien (*.css);;All Dateien (*)</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="447"/>
@@ -244,27 +245,27 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/controller/mainController.py" line="474"/>
         <source>Goto home position...</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu Home Position...</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="503"/>
         <source>Operation aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorgang abgebrochen</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="487"/>
         <source>Home position reached</source>
-        <translation type="unfinished"></translation>
+        <translation>Home Position erreicht</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="493"/>
         <source>Goto initial position...</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu Ausgangsposition...</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="507"/>
         <source>Initial position reached</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgangsposition erreicht</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="556"/>
@@ -324,7 +325,7 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/controller/mainController.py" line="810"/>
         <source>Can&apos;t load style sheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Style sheet kann nicht geladen werden</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="820"/>
@@ -339,7 +340,7 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/controller/mainController.py" line="845"/>
         <source>Connect to hardware failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="846"/>
@@ -349,27 +350,27 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/controller/mainController.py" line="859"/>
         <source>Now in simulation mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Jetzt im Simulationsmodus</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="609"/>
         <source>Reference set at current position</source>
-        <translation type="unfinished">Aktuelle Position als Nullpunkt gesetzt</translation>
+        <translation>Aktuelle Position als Nullpunkt gesetzt</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="476"/>
         <source>Goto home position</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu Home Position</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="496"/>
         <source>Please wait...</source>
-        <translation type="unfinished"></translation>
+        <translation>Bitte warten...</translation>
     </message>
     <message>
         <location filename="papywizard/controller/mainController.py" line="496"/>
         <source>Goto initial position</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu Ausgangsposition</translation>
     </message>
 </context>
 <context>
@@ -447,12 +448,12 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/view/mainWindow.ui" line="556"/>
         <source>Timelapse</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeitraffer</translation>
     </message>
     <message>
         <location filename="papywizard/view/mainWindow.ui" line="566"/>
         <source>Not yet implemented</source>
-        <translation type="unfinished">Not yet implemented</translation>
+        <translation>Noch nicht implementiert</translation>
     </message>
     <message>
         <location filename="papywizard/view/mainWindow.ui" line="595"/>
@@ -507,7 +508,7 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/view/mainWindow.ui" line="1008"/>
         <source>Import Preset File...</source>
-        <translation>Import Datei Voreinstellungen</translation>
+        <translation>Import Datei Voreinstellungen...</translation>
     </message>
     <message>
         <location filename="papywizard/view/mainWindow.ui" line="1016"/>
@@ -552,27 +553,27 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/view/mainWindow.ui" line="1088"/>
         <source>About Papywizard</source>
-        <translation type="unfinished">Über Papywizard</translation>
+        <translation>Über Papywizard</translation>
     </message>
     <message>
         <location filename="papywizard/view/mainWindow.ui" line="1097"/>
         <source>About Qt</source>
-        <translation type="unfinished"></translation>
+        <translation>Über Qt</translation>
     </message>
     <message>
         <location filename="papywizard/view/mainWindow.ui" line="1106"/>
         <source>Load Style Sheet...</source>
-        <translation type="unfinished"></translation>
+        <translation>Lade Style Sheet</translation>
     </message>
     <message>
         <location filename="papywizard/view/mainWindow.ui" line="1115"/>
         <source>Goto Home...</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zur Homeposition...</translation>
     </message>
     <message>
         <location filename="papywizard/view/mainWindow.ui" line="1124"/>
         <source>Goto Initial...</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zur Ausgangsposition...</translation>
     </message>
 </context>
 <context>
@@ -593,7 +594,7 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/controller/shootController.py" line="382"/>
         <source>Step</source>
-        <translation type="unfinished"></translation>
+        <translation>Schritt</translation>
     </message>
     <message>
         <location filename="papywizard/controller/shootController.py" line="474"/>
@@ -716,7 +717,7 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/view/configDialog.ui" line="138"/>
         <source>Stabilization delay</source>
-        <translation type="unfinished">Stab. Pause</translation>
+        <translation>Stab. Pause</translation>
     </message>
     <message>
         <location filename="papywizard/view/configDialog.ui" line="304"/>
@@ -846,7 +847,7 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/view/configDialog.ui" line="476"/>
         <source>Pulse width (high/low)</source>
-        <translation type="unfinished"></translation>
+        <translation>Impulsdauer (high/low)</translation>
     </message>
     <message>
         <location filename="papywizard/view/configDialog.ui" line="489"/>
@@ -981,7 +982,7 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/view/configDialog.ui" line="863"/>
         <source>Here goes the title</source>
-        <translation type="unfinished"></translation>
+        <translation>Titel hier eintragen</translation>
     </message>
     <message>
         <location filename="papywizard/view/configDialog.ui" line="873"/>
@@ -991,7 +992,7 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/view/configDialog.ui" line="886"/>
         <source>Here goes the location</source>
-        <translation type="unfinished"></translation>
+        <translation>Ortsangabe hier eintragen</translation>
     </message>
     <message>
         <location filename="papywizard/view/configDialog.ui" line="896"/>
@@ -1001,7 +1002,7 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/view/configDialog.ui" line="909"/>
         <source>Generated by Papywizard %(version)s</source>
-        <translation type="unfinished"></translation>
+        <translation>erstellt von Papywizard %(version)s</translation>
     </message>
     <message>
         <location filename="papywizard/view/configDialog.ui" line="946"/>
@@ -1076,7 +1077,7 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/view/configDialog.ui" line="373"/>
         <source>Sensor (coef, ratio)</source>
-        <translation type="unfinished">Sensor (faktor, verhältnis)</translation>
+        <translation>Sensor (Faktor, Verhältnis)</translation>
     </message>
     <message>
         <location filename="papywizard/view/configDialog.ui" line="512"/>
@@ -1086,7 +1087,7 @@ As a counterpart to the access to the source code and  rights to copy, modify an
     <message>
         <location filename="papywizard/view/configDialog.ui" line="601"/>
         <source>Optical multiplier</source>
-        <translation type="unfinished"></translation>
+        <translation>Optischer Faktor</translation>
     </message>
 </context>
 <context>
