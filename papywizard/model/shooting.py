@@ -478,7 +478,7 @@ class Shooting(QtCore.QObject):
                     time.sleep(1)
 
                     # Check only stop
-                    checkPauseStop(pause=False)
+                    checkStop()
 
                     remainingTime = self.timerAfter - (time.time() - initialTime)
 
