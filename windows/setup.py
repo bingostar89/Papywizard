@@ -114,11 +114,5 @@ setup(options={"py2exe": {'compressed': 1,
                                        "../papywizard/view/nbPictsDialog.ui",
                                        "../papywizard/view/shootDialog.ui",
                                        "../papywizard/view/totalFovDialog.ui"
-                                       ]),
-                  ("share/locale/en/LC_MESSAGES", ["../locale/en/LC_MESSAGES/papywizard.mo"]),
-                  ("share/locale/fr/LC_MESSAGES", ["../locale/fr/LC_MESSAGES/papywizard.mo"]),
-                  ("share/locale/pl/LC_MESSAGES", ["../locale/pl/LC_MESSAGES/papywizard.mo"]),
-                  ("share/locale/de/LC_MESSAGES", ["../locale/de/LC_MESSAGES/papywizard.mo"]),
-                  ("share/locale/it/LC_MESSAGES", ["../locale/pl/LC_MESSAGES/papywizard.mo"]),
-                  ("share/locale/es/LC_MESSAGES", ["../locale/de/LC_MESSAGES/papywizard.mo"])]
+                                       ])]
      )
