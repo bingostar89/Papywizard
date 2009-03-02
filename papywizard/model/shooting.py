@@ -560,7 +560,9 @@ class Shooting(QtCore.QObject):
                                 Logger().info("Mirror lockup")
                                 self.sequence('mirror')
                                 try:
-                                    externalShooting.mirrorLockup(self.stabilizationDelay)
+                                    retCode, output = externalShooting.mirrorLockup(self.stabilizationDelay)
+                                    Logger().debug("Shooting.start(): externalShooting.mirrorLockup() return code=%d" % retCode)
+                                    Logger().debug("Shooting.start(): externalShooting.mirrorLockup() output:\n%s" % output)
                                 except (NameError, AttributeError):
                                     Logger().exception("Shooting.start()", debug=True)
                                     self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
@@ -582,7 +584,9 @@ class Shooting(QtCore.QObject):
                             if delay > 0:
                                 time.sleep(delay)
                             try:
-                                externalShooting.shoot(bracket)
+                                returnCode, output = externalShooting.shoot(bracket)
+                                Logger().debug("Shooting.start(): externalShooting.mirrorLockup() return code=%d" % retCode)
+                                Logger().debug("Shooting.start(): externalShooting.mirrorLockup() output:\n%s" % output)
                             except (NameError, AttributeError):
                                 Logger().exception("Shooting.start()", debug=True)
                                 self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
