@@ -75,16 +75,15 @@ class BluetoothChooserController(AbstractModalDialogController):
     def _initWidgets(self):
         pass
 
-    def _connectQtSignals(self):
-        super(BluetoothChooserController, self)._connectQtSignals()
+    def _connectSignals(self):
+        AbstractModalDialogController._connectSignals(self)
 
         self.connect(self._view.refreshPushButton, QtCore.SIGNAL("clicked()"), self.__onRefreshPushButtonClicked)
 
-    def _connectSignals(self):
-        pass
+    def _disconnectSignales(self):
+        AbstractModalDialogController._disconnectSignals(self)
 
-    def _disconnectSignals(self):
-        pass
+        self.disconnect(self._view.refreshPushButton, QtCore.SIGNAL("clicked()"), self.__onRefreshPushButtonClicked)
 
     # Callbacks
     def __onRefreshPushButtonClicked(self):

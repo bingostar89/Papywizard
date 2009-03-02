@@ -75,17 +75,17 @@ class NbPictsController(AbstractModalDialogController):
         self._view.yawNbPictsSpinBox.setValue(currentYawNbPicts)
         self._view.pitchNbPictsSpinBox.setValue(currentPitchNbPicts)
 
-    def _connectQtSignals(self):
-        super(NbPictsController, self)._connectQtSignals()
+    def _connectSignals(self):
+        AbstractModalDialogController._connectSignals(self)
 
         self.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
         self.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
 
-    def _connectSignals(self):
-        pass
-
     def _disconnectSignals(self):
-        pass
+        AbstractModalDialogController._disconnectSignals(self)
+
+        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
+        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
 
     # Callbacks
     def __onAccepted(self):

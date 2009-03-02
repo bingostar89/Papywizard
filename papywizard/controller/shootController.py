@@ -162,8 +162,8 @@ class ShootController(AbstractModalDialogController):
         # Keyboard behaviour
         self._view.grabKeyboard()
 
-    def _connectQtSignals(self):
-        super(ShootController, self)._connectQtSignals()
+    def _connectSignals(self):
+        AbstractModalDialogController._connectSignals(self)
 
         self.connect(self._view.shootingStackPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onShootingStackPushButtonToggled)
         self.connect(self._view.rewindPushButton, QtCore.SIGNAL("clicked()"), self.__onRewindPushButtonClicked)
@@ -177,7 +177,6 @@ class ShootController(AbstractModalDialogController):
         self.connect(self._view.pauseResumeStepPushButton, QtCore.SIGNAL("clicked()"), self.__onPauseResumeStepPushButtonClicked)
         self.connect(self._view.stopPushButton, QtCore.SIGNAL("clicked()"), self.__onStopPushButtonClicked)
 
-    def _connectSignals(self):
         self.connect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate, QtCore.Qt.BlockingQueuedConnection)
         self.connect(self._model, QtCore.SIGNAL("started"), self.__onShootingStarted, QtCore.Qt.BlockingQueuedConnection)
         self.connect(self._model, QtCore.SIGNAL("paused"), self.__onShootingPaused, QtCore.Qt.BlockingQueuedConnection)
@@ -189,10 +188,26 @@ class ShootController(AbstractModalDialogController):
         self.connect(self._model, QtCore.SIGNAL("update"), self.__onShootingUpdate, QtCore.Qt.BlockingQueuedConnection)
         self.connect(self._model, QtCore.SIGNAL("sequence"), self.__onShootingSequence, QtCore.Qt.BlockingQueuedConnection)
 
+        self._view._originalKeyPressEvent = self._view.keyPressEvent
         self._view.keyPressEvent = self.__onKeyPressed
+        self._view._originalKeyReleaseEvent = self._view.keyReleaseEvent
         self._view.keyReleaseEvent = self.__onKeyReleased
 
     def _disconnectSignals(self):
+        AbstractModalDialogController._disconnectSignals(self)
+
+        self.disconnect(self._view.shootingStackPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onShootingStackPushButtonToggled)
+        self.disconnect(self._view.rewindPushButton, QtCore.SIGNAL("clicked()"), self.__onRewindPushButtonClicked)
+        self.disconnect(self._view.forwardPushButton, QtCore.SIGNAL("clicked()"), self.__onForwardPushButtonClicked)
+
+        self.disconnect(self._view.dataPushButton, QtCore.SIGNAL("clicked()"), self.__onDataPushButtonClicked)
+        self.disconnect(self._view.timerPushButton, QtCore.SIGNAL("clicked()"), self.__onTimerPushButtonClicked)
+        self.disconnect(self._view.stepByStepPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onStepByStepPushButtonToggled)
+
+        self.disconnect(self._view.startPushButton, QtCore.SIGNAL("clicked()"), self.__onStartPushButtonClicked)
+        self.disconnect(self._view.pauseResumeStepPushButton, QtCore.SIGNAL("clicked()"), self.__onPauseResumeStepPushButtonClicked)
+        self.disconnect(self._view.stopPushButton, QtCore.SIGNAL("clicked()"), self.__onStopPushButtonClicked)
+
         self.disconnect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate)
         self.disconnect(self._model, QtCore.SIGNAL("started"), self.__onShootingStarted)
         self.disconnect(self._model, QtCore.SIGNAL("paused"), self.__onShootingPaused)
@@ -203,6 +218,9 @@ class ShootController(AbstractModalDialogController):
         self.disconnect(self._model, QtCore.SIGNAL("repeat"), self.__onShootingRepeat)
         self.disconnect(self._model, QtCore.SIGNAL("update"), self.__onShootingUpdate)
         self.disconnect(self._model, QtCore.SIGNAL("sequence"), self.__onShootingSequence)
+
+        self._view.keyPressEvent = self._view._originalKeyPressEvent
+        self._view.keyReleaseEvent = self._view._originalKeyReleaseEvent
 
     # Callbacks Qt
     def _onCloseEvent(self, event):

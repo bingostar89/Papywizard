@@ -165,8 +165,8 @@ class MainController(AbstractController):
 
         self._view.show()
 
-    def _connectQtSignals(self):
-        super(MainController, self)._connectQtSignals()
+    def _connectSignals(self):
+        AbstractController._connectSignals(self)
 
         # Menus
         self.connect(self._view.actionFileImportPreset, QtCore.SIGNAL("activated()"), self.__onActionFileImportPresetActivated)
@@ -213,17 +213,69 @@ class MainController(AbstractController):
         self.connect(self._view.configPushButton, QtCore.SIGNAL("clicked()"), self.__onConfigPushButtonClicked)
         self.connect(self._view.shootPushButton, QtCore.SIGNAL("clicked()"), self.__onShootPushButtonClicked)
 
-        self._view.grabKeyboard()
-        self._view.keyPressEvent = self.__onKeyPressed
-        self._view.keyReleaseEvent = self.__onKeyReleased
-
-    def _connectSignals(self):
         self.connect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate, QtCore.Qt.BlockingQueuedConnection)
         self.connect(self._model, QtCore.SIGNAL("hardwareConnected"), self.__onHardwareConnected, QtCore.Qt.BlockingQueuedConnection)
 
+        self._view.grabKeyboard()
+        self._view._originalKeyPressEvent = self._view.keyPressEvent
+        self._view.keyPressEvent = self.__onKeyPressed
+        self._view._originalKeyReleaseEvent = self._view.keyReleaseEvent
+        self._view.keyReleaseEvent = self.__onKeyReleased
+
     def _disconnectSignals(self):
+        AbstractController._disconnectSignals(self)
+
+        # Menus
+        self.disconnect(self._view.actionFileImportPreset, QtCore.SIGNAL("activated()"), self.__onActionFileImportPresetActivated)
+        self.disconnect(self._view.actionFileLoadStyleSheet, QtCore.SIGNAL("activated()"), self.__onActionFileLoadStyleSheetActivated)
+
+        self.disconnect(self._view.actionHardwareConnect, QtCore.SIGNAL("toggled(bool)"), self.__onActionHardwareConnectToggled)
+        self.disconnect(self._view.actionHardwareSetLimitYawMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitYawMinusActivated)
+        self.disconnect(self._view.actionHardwareSetLimitYawPlus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitYawPlusActivated)
+        self.disconnect(self._view.actionHardwareSetLimitPitchPlus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchPlusActivated)
+        self.disconnect(self._view.actionHardwareSetLimitPitchMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchMinusActivated)
+        self.disconnect(self._view.actionHardwareClearLimits, QtCore.SIGNAL("activated()"), self.__onActionHardwareClearLimitsActivated)
+        self.disconnect(self._view.actionHardwareGotoHome, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoHomeActivated)
+        self.disconnect(self._view.actionHardwareGotoInitial, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoInitialActivated)
+
+        self.disconnect(self._view.actionHelpManual, QtCore.SIGNAL("activated()"), self.__onActionHelpManualActivated)
+        self.disconnect(self._view.actionHelpViewLog, QtCore.SIGNAL("activated()"), self.__onActionHelpViewLogActivated)
+        self.disconnect(self._view.actionHelpAboutPapywizard, QtCore.SIGNAL("activated()"), self.__onActionHelpAboutPapywizardActivated)
+        self.disconnect(self._view.actionHelpAboutQt, QtCore.SIGNAL("activated()"), self.__onActionHelpAboutQtActivated)
+
+        # Widgets
+        self.disconnect(self._view.tabWidget, QtCore.SIGNAL("currentChanged(int)"), self.__onTabWidgetCurrentChanged)
+
+        self.disconnect(self._view.setYawStartPushButton, QtCore.SIGNAL("clicked()"), self.__onSetYawStartPushButtonClicked)
+        self.disconnect(self._view.setPitchStartPushButton, QtCore.SIGNAL("clicked()"), self.__onSetPitchStartPushButtonClicked)
+        self.disconnect(self._view.setYawEndPushButton, QtCore.SIGNAL("clicked()"), self.__onSetYawEndPushButtonClicked)
+        self.disconnect(self._view.setPitchEndPushButton, QtCore.SIGNAL("clicked()"), self.__onSetPitchEndPushButtonClicked)
+        self.disconnect(self._view.setStartPushButton, QtCore.SIGNAL("clicked()"), self.__onSetStartPushButtonClicked)
+        self.disconnect(self._view.setEndPushButton, QtCore.SIGNAL("clicked()"), self.__onSetEndPushButtonClicked)
+        self.disconnect(self._view.totalFovPushButton, QtCore.SIGNAL("clicked()"), self.__onTotalFovPushButtonClicked)
+        self.disconnect(self._view.nbPictsPushButton, QtCore.SIGNAL("clicked()"), self.__onNbPictsPushButtonClicked)
+
+        self.disconnect(self._view.presetComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onPresetComboBoxCurrentIndexChanged)
+
+        self.disconnect(self._view.setReferenceToolButton, QtCore.SIGNAL("clicked()"), self.__onSetReferenceToolButtonClicked)
+        self.disconnect(self._view.yawMovePlusToolButton, QtCore.SIGNAL("pressed()"), self.__onYawMovePlusToolButtonPressed)
+        self.disconnect(self._view.yawMovePlusToolButton, QtCore.SIGNAL("released()"), self.__onYawMovePlusToolButtonReleased)
+        self.disconnect(self._view.pitchMovePlusToolButton, QtCore.SIGNAL("pressed()"), self.__onPitchMovePlusToolButtonPressed)
+        self.disconnect(self._view.pitchMovePlusToolButton, QtCore.SIGNAL("released()"), self.__onPitchMovePlusToolButtonReleased)
+        self.disconnect(self._view.yawMoveMinusToolButton, QtCore.SIGNAL("pressed()"), self.__onYawMoveMinusToolButtonPressed)
+        self.disconnect(self._view.yawMoveMinusToolButton, QtCore.SIGNAL("released()"), self.__onYawMoveMinusToolButtonReleased)
+        self.disconnect(self._view.pitchMoveMinusToolButton, QtCore.SIGNAL("pressed()"), self.__onPitchMoveMinusToolButtonPressed)
+        self.disconnect(self._view.pitchMoveMinusToolButton, QtCore.SIGNAL("released()"), self.__onPitchMoveMinusToolButtonReleased)
+
+        self.disconnect(self._view.configPushButton, QtCore.SIGNAL("clicked()"), self.__onConfigPushButtonClicked)
+        self.disconnect(self._view.shootPushButton, QtCore.SIGNAL("clicked()"), self.__onShootPushButtonClicked)
+
         self.disconnect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate)
         self.disconnect(self._model, QtCore.SIGNAL("hardwareConnected"), self.__onHardwareConnected)
+
+        self._view.releaseKeyboard()
+        self._view.keyPressEvent = self._view._originalKeyPressEvent
+        self._view.keyReleaseEvent = self._view._originalKeyReleaseEvent
 
     # Properties
     def __getFullScreenFlag(self):

@@ -76,8 +76,8 @@ class ConfigController(AbstractModalDialogController):
     def _initWidgets(self):
         pass
 
-    def _connectQtSignals(self):
-        super(ConfigController, self)._connectQtSignals()
+    def _connectSignals(self):
+        AbstractModalDialogController._connectSignals(self)
 
         self.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
         self.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
@@ -89,11 +89,18 @@ class ConfigController(AbstractModalDialogController):
         self.connect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
         self.connect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
 
-    def _connectSignals(self):
-        pass
-
     def _disconnectSignals(self):
-        pass
+        AbstractModalDialogController._disconnectSignals(self)
+
+        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
+        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
+
+        self.disconnect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
+        self.disconnect(self._view.bracketingNbPictsSpinBox, QtCore.SIGNAL("valueChanged(int)"), self.__onBracketingNbPictsSpinBoxValueChanged)
+        self.disconnect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onLensTypeComboBoxCurrentIndexChanged)
+        self.disconnect(self._view.driverComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onDriverComboBoxCurrentIndexChanged)
+        self.disconnect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
+        self.disconnect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
 
     # Callbacks
     def __onAccepted(self):

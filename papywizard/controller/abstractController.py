@@ -105,17 +105,18 @@ class AbstractController(QtCore.QObject):
     def _connectQtSignals(self):
         """ Connect widgets signals.
         """
-        self._view.closeEvent = self._onCloseEvent
+        Logger().warning("AbstractController._connectQtSignals(): obsolete method")
 
     def _connectSignals(self):
         """ Connect widgets signals.
         """
-        raise NotImplementedError
+        self._view._originalCloseEvent = self._view.closeEvent
+        self._view.closeEvent = self._onCloseEvent
 
     def _disconnectSignals(self):
         """ Disconnect widgets signals.
         """
-        raise NotImplementedError
+        self._view.closeEvent = self._view._originalCloseEvent
 
     # Callbacks Qt
     def _onCloseEvent(self, event):
@@ -144,7 +145,7 @@ class AbstractModalDialogController(AbstractController):
         """ Show the dialog.
         """
         self._view.show()
-        
+
     def exec_(self):
         """ Run the dialog.
         """

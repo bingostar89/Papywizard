@@ -75,17 +75,17 @@ class TotalFovController(AbstractModalDialogController):
         self._view.yawFovDoubleSpinBox.setValue(currentYawFov)
         self._view.pitchFovDoubleSpinBox.setValue(currentPitchFov)
 
-    def _connectQtSignals(self):
-        super(TotalFovController, self)._connectQtSignals()
+    def _connectSignals(self):
+        AbstractModalDialogController._connectSignals(self)
 
         self.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
         self.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
 
-    def _connectSignals(self):
-        pass
-
     def _disconnectSignals(self):
-        pass
+        AbstractModalDialogController._disconnectSignals(self)
+
+        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
+        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
 
     # Callbacks
     def __onAccepted(self):

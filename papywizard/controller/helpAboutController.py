@@ -64,11 +64,5 @@ class HelpAboutController(AbstractModalDialogController):
     def _initWidgets(self):
         self._view.papywizardVersionLabel.setText("Papywizard %s" % config.VERSION)
 
-    def _connectSignals(self):
-        pass
-
-    def _disconnectSignals(self):
-        pass
-
     def refreshView(self):
         pass

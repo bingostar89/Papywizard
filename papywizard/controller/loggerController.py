@@ -71,16 +71,17 @@ class LoggerController(AbstractModalDialogController):
     def _initWidgets(self):
         pass
 
-    def _connectQtSignals(self):
-        super(LoggerController, self)._connectQtSignals()
-        QtCore.QObject.connect(self._view.clearLogPushButton, QtCore.SIGNAL("clicked()"), self.__onClearLogPushButtonClicked)
-        QtCore.QObject.connect(self._view.saveLogPushButton, QtCore.SIGNAL("clicked()"), self.__onSaveLogPushButtonClicked)
-
     def _connectSignals(self):
-        pass
+        AbstractModalDialogController._connectSignals(self)
+
+        self.connect(self._view.clearLogPushButton, QtCore.SIGNAL("clicked()"), self.__onClearLogPushButtonClicked)
+        self.connect(self._view.saveLogPushButton, QtCore.SIGNAL("clicked()"), self.__onSaveLogPushButtonClicked)
 
     def _disconnectSignals(self):
-        pass
+        AbstractModalDialogController._disconnectSignals(self)
+
+        self.disconnect(self._view.clearLogPushButton, QtCore.SIGNAL("clicked()"), self.__onClearLogPushButtonClicked)
+        self.disconnect(self._view.saveLogPushButton, QtCore.SIGNAL("clicked()"), self.__onSaveLogPushButtonClicked)
 
     # Callbacks
     def __onClearLogPushButtonClicked(self):
