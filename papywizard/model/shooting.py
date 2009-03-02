@@ -52,6 +52,7 @@ Implements
 __revision__ = "$Id$"
 
 import time
+import imp
 
 from PyQt4 import QtCore
 
@@ -63,6 +64,17 @@ from papywizard.common.exception import HardwareError
 from papywizard.model.camera import Camera
 from papywizard.model.data import MosaicData, PresetData
 from papywizard.model.scan import MosaicScan, PresetScan
+
+# Try to import the 'shoot' module from user config. dir
+try:
+    file, pathname, description = imp.find_module("shoot", [config.USER_CONFIG_DIR])
+    try:
+        externalShooting = imp.load_module('externalShooting', file, pathname, description)
+    finally:
+        file.close()
+except ImportError:
+    Logger().exception("Shooting.start(): loading user external shooting script", debug=True)
+    Logger().warning("No user external shooting script found")
 
 
 class Shooting(QtCore.QObject):
@@ -547,7 +559,14 @@ class Shooting(QtCore.QObject):
                             if self.camera.mirrorLockup:
                                 Logger().info("Mirror lockup")
                                 self.sequence('mirror')
-                                self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
+                                try:
+                                    externalShooting.mirrorLockup(self.stabilizationDelay)
+                                except (NameError, AttributeError):
+                                    Logger().exception("Shooting.start()", debug=True)
+                                    self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
+                                except:
+                                    Logger().exception("Shooting.start()")
+                                    raise HardwareError("External shooting script failed on 'mirrorLockup()'")
 
                             Logger().info("Stabilization")
                             self.sequence('stabilization')
@@ -562,7 +581,14 @@ class Shooting(QtCore.QObject):
                             delay = self.camera.pulseWidthLow / 1000. - (time.time() - self.__LastShootTime)
                             if delay > 0:
                                 time.sleep(delay)
-                            self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
+                            try:
+                                externalShooting.shoot(bracket)
+                            except (NameError, AttributeError):
+                                Logger().exception("Shooting.start()", debug=True)
+                                self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
+                            except:
+                                Logger().exception("Shooting.start()")
+                                raise HardwareError("External shooting script failed on 'shoot()'")
                             self.__LastShootTime = time.time()
 
                             # Wait for the end of shutter cycle
