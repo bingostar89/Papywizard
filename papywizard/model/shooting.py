@@ -571,8 +571,9 @@ class Shooting(QtCore.QObject):
                                 except:
                                     Logger().exception("Shooting.start()")
                                     raise HardwareError("External shooting script failed on 'mirrorLockup()'")
-                                if retCode:
-                                    raise HardwareError("External shooting script failed on 'mirrorLockup()'")
+                                else:
+                                    if retCode:
+                                        raise HardwareError("External shooting script failed on 'mirrorLockup()'")
 
                             Logger().info("Stabilization")
                             self.sequence('stabilization')
@@ -589,6 +590,7 @@ class Shooting(QtCore.QObject):
                                 time.sleep(delay)
                             try:
                                 retCode, stdout, stderr = externalShooting.shoot(bracket)
+                                # todo: open log window for external script output
                                 Logger().debug("Shooting.start(): externalShooting.shoot() return code=%d" % retCode)
                                 if stderr:
                                     Logger().debug("Shooting.start(): externalShooting.shoot() stderr:\n%s" % stderr)
@@ -599,8 +601,9 @@ class Shooting(QtCore.QObject):
                             except:
                                 Logger().exception("Shooting.start()")
                                 raise HardwareError("External shooting script failed on 'shoot()'")
-                            if retCode:
-                                raise HardwareError("External shooting script failed on 'shoot()'")
+                            else:
+                                if retCode:
+                                    raise HardwareError("External shooting script failed on 'shoot()'")
                             self.__LastShootTime = time.time()
 
                             # Wait for the end of shutter cycle
