@@ -88,7 +88,6 @@ class AbstractController(QtCore.QObject):
         self._view = PyQt4.uic.loadUi(uiFile)
 
         self._initWidgets()
-        self._connectQtSignals()
         self._connectSignals()
         self.refreshView()
 
@@ -101,11 +100,6 @@ class AbstractController(QtCore.QObject):
         """ Init widgets.
         """
         raise NotImplementedError
-
-    def _connectQtSignals(self):
-        """ Connect widgets signals.
-        """
-        Logger().warning("AbstractController._connectQtSignals(): obsolete method")
 
     def _connectSignals(self):
         """ Connect widgets signals.
