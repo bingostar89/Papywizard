@@ -69,8 +69,10 @@ class QDefaultFormatter(DefaultFormatter):
     def _toHtml(self, msg):
         """ Convert for html.
         """
-        msg = msg.replace('<', "&lt;");
-        msg = msg.replace('>', "&gt;");
+        msg = msg.replace('<', "&lt;")
+        msg = msg.replace('>', "&gt;")
+        msg = msg.replace('\n', "<br>")
+        msg = msg.replace(' ', "&nbsp;")
         return msg
 
     def format(self, record):
