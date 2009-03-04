@@ -67,6 +67,7 @@ class LoggerController(AbstractModalDialogController):
     """
     def _init(self):
         self._uiFile = "loggerDialog.ui"
+        self.__logBuffer = None
 
     def _initWidgets(self):
         pass
@@ -88,7 +89,8 @@ class LoggerController(AbstractModalDialogController):
         """ Clear button has been clicked.
         """
         Logger().trace("LoggerController.__onClearLogPushButtonClicked()")
-        self._view.loggerPlainTextEdit.clear()
+        self.__logBuffer.clear()
+        self.refreshView()
         self._view.clearLogPushButton.setEnabled(False)
         self._view.saveLogPushButton.setEnabled(False)
 
@@ -110,23 +112,13 @@ class LoggerController(AbstractModalDialogController):
     def refreshView(self):
 
         # Scroll to the bottom left of the window
-        self._view.loggerPlainTextEdit.moveCursor(QtGui.QTextCursor.End)
-        self._view.loggerPlainTextEdit.moveCursor(QtGui.QTextCursor.StartOfLine)
+        if self.__logBuffer is not None:
+            self._view.loggerPlainTextEdit.appendHtml(self.__logBuffer.getHtml())
+            self._view.loggerPlainTextEdit.moveCursor(QtGui.QTextCursor.End)
+            self._view.loggerPlainTextEdit.moveCursor(QtGui.QTextCursor.StartOfLine)
 
-    def appendPlainText(self, text):
-        """ Set the text.
-
-        @param text: text to display
-        @type text: str
+    def setBuffer(self, logBuffer):
+        """ Set the buffer.
         """
-        self._view.loggerPlainTextEdit.appendPlainText(text)
-        self.refreshView()
-
-    def appendHtml(self, html):
-        """ Set the text as html.
-
-        @param html: text to display
-        @type html: str
-        """
-        self._view.loggerPlainTextEdit.appendHtml(html)
+        self.__logBuffer = logBuffer
         self.refreshView()

@@ -82,4 +82,9 @@ class LogBuffer(object):
         pass
 
     def getHtml(self):
-        return '<br />'.join(self.__buffer)
+        return "<br />".join(self.__buffer)
+
+    def clear(self):
+        """ Clear the buffer.
+        """
+        self.__buffer = []

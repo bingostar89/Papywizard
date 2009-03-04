@@ -571,7 +571,7 @@ class MainController(AbstractController):
     def __onActionHelpViewLogActivated(self):
         Logger().trace("MainController.__onActionHelpViewLogActivated()")
         controller = LoggerController(self, self._model)
-        controller.appendHtml(self.__logStream.getHtml())
+        controller.setBuffer(self.__logStream)
         self._view.releaseKeyboard()
         controller.exec_()
         self._view.grabKeyboard()
