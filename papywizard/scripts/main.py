@@ -50,7 +50,7 @@ __revision__ = "$Id$"
 import sys
 import threading
 
-from PyQt4 import QtGui
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
@@ -96,7 +96,7 @@ def main():
         from papywizard.common import pixmaps
         pixmap = QtGui.QPixmap()
         pixmap.load(":/pixmaps/%s" % config.SPLASHCREEN_FILE)
-        splash = QtGui.QSplashScreen(pixmap)
+        splash = QtGui.QSplashScreen(pixmap, QtCore.Qt.WindowStaysOnTopHint)
         splash.show()
         qtApp.processEvents()
 
@@ -104,7 +104,6 @@ def main():
         Logger().info("Importing modules...")
         splash.showMessage("Importing modules...")
         qtApp.processEvents()
-        from PyQt4 import QtCore
         from papywizard.common import i18n
         from papywizard.common.configManager import ConfigManager
         #from papywizard.common.publisher import Publisher
