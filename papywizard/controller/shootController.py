@@ -378,14 +378,18 @@ class ShootController(AbstractModalDialogController):
         Logger().trace("ShootController.__onDataPushButtonClicked()")
         controller = ConfigController(self, self._model)
         controller.selectTab(5, disable=True)
-        response = controller.exec_()
+        self._view.releaseKeyboard()
+        controller.exec_()
+        self._view.grabKeyboard()
         self.refreshView()
 
     def __onTimerPushButtonClicked(self):
         Logger().trace("ShootController.__onTimerPushButtonClicked()")
         controller = ConfigController(self, self._model)
         controller.selectTab(6, disable=True)
-        response = controller.exec_()
+        self._view.releaseKeyboard()
+        controller.exec_()
+        self._view.grabKeyboard()
         if self._model.timerRepeatEnable:
             self._view.repeatLabel.setText("--/%d" % self._model.timerRepeat)
         else:
