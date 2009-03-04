@@ -81,6 +81,7 @@ class AbstractController(QtCore.QObject):
         self._parent = parent
         self._model = model
 
+        self._uiFile = None
         self._init()
 
         # Build the GUI from ui file
@@ -94,7 +95,7 @@ class AbstractController(QtCore.QObject):
     def _init(self):
         """ Misc. init.
         """
-        self._uiFile = None
+        raise NotImplementedError
 
     def _initWidgets(self):
         """ Init widgets.
