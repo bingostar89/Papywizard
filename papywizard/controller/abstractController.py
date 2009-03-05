@@ -60,7 +60,7 @@ from PyQt4 import QtCore, QtGui
 from papywizard.common.loggingServices import Logger
 
 if hasattr(sys, "frozen"):
-    path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "common")
+    path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "controller")
 else:
     path = os.path.dirname(__file__)
 
