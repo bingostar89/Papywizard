@@ -78,7 +78,7 @@ class AbstractController(QtCore.QObject):
         @type model: {Shooting}
         """
         QtCore.QObject.__init__(self)
-        self._parent = parent
+        self._parent = parent # Pass parent to __init__()?
         self._model = model
 
         self._uiFile = None
