@@ -198,7 +198,7 @@ class ConfigManager(object):
         @param option: option to get value from
         @type option: str
         """
-        return self.__config.get(section, option)
+        return self.__config.get(section, option, raw=True)
 
     def getInt(self, section, option):
         """ Get a value.
@@ -245,7 +245,6 @@ class ConfigManager(object):
         @param value: value to set
         @type value: str
         """
-        value = value.replace("%", "%%")
         self.__config.set(section, option, value)
 
     def setInt(self, section, option, value):
