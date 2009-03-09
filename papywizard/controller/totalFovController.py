@@ -75,32 +75,15 @@ class TotalFovController(AbstractModalDialogController):
         self._view.yawFovDoubleSpinBox.setValue(currentYawFov)
         self._view.pitchFovDoubleSpinBox.setValue(currentPitchFov)
 
-    def _connectSignals(self):
-        AbstractModalDialogController._connectSignals(self)
-
-        self.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
-        self.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
-
-    def _disconnectSignals(self):
-        AbstractModalDialogController._disconnectSignals(self)
-
-        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
-        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
-
     # Callbacks
-    def __onAccepted(self):
+    def _onAccepted(self):
         """ Ok button has been clicked.
         """
-        Logger().trace("TotalFovController.__onAccepted()")
+        Logger().trace("TotalFovController._onAccepted()")
         yawFov = self._view.yawFovDoubleSpinBox.value()
         pitchFov = self._view.pitchFovDoubleSpinBox.value()
         self._model.setStartEndFromFov(yawFov, pitchFov)
-        Logger().debug("MainController.__onAccepted(): total fov set to yaw=%.1f, pitch=%.1f" % (yawFov, pitchFov))
-
-    def __onRejected(self):
-        """ Cancel button has been clicked.
-        """
-        Logger().trace("TotalFovController.__onRejected()")
+        Logger().debug("MainController._onAccepted(): total fov set to yaw=%.1f, pitch=%.1f" % (yawFov, pitchFov))
 
     # Interface
     def refreshView(self):

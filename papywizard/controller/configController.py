@@ -79,9 +79,6 @@ class ConfigController(AbstractModalDialogController):
     def _connectSignals(self):
         AbstractModalDialogController._connectSignals(self)
 
-        self.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
-        self.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
-
         self.connect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
         self.connect(self._view.bracketingNbPictsSpinBox, QtCore.SIGNAL("valueChanged(int)"), self.__onBracketingNbPictsSpinBoxValueChanged)
         self.connect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onLensTypeComboBoxCurrentIndexChanged)
@@ -92,9 +89,6 @@ class ConfigController(AbstractModalDialogController):
     def _disconnectSignals(self):
         AbstractModalDialogController._disconnectSignals(self)
 
-        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
-        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
-
         self.disconnect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
         self.disconnect(self._view.bracketingNbPictsSpinBox, QtCore.SIGNAL("valueChanged(int)"), self.__onBracketingNbPictsSpinBoxValueChanged)
         self.disconnect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onLensTypeComboBoxCurrentIndexChanged)
@@ -103,12 +97,12 @@ class ConfigController(AbstractModalDialogController):
         self.disconnect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
 
     # Callbacks
-    def __onAccepted(self):
+    def _onAccepted(self):
         """ Ok button has been clicked.
 
         Save back values to model.
         """
-        Logger().trace("ConfigController.__onAccepted()")
+        Logger().trace("ConfigController._onAccepted()")
 
         # Shooting tab
         self._model.headOrientation = config.HEAD_ORIENTATION_INDEX[self._view.headOrientationComboBox.currentIndex()]
@@ -168,13 +162,6 @@ class ConfigController(AbstractModalDialogController):
         ConfigManager().set('Preferences', 'LOGGER_LEVEL', config.LOGGER_INDEX[self._view.loggerLevelComboBox.currentIndex()])
 
         ConfigManager().save()
-
-    def __onRejected(self):
-        """ Cancel button has been clicked.
-
-        Close the pref. dialog.
-        """
-        Logger().trace("ConfigController.__onRejected()")
 
     def __onCameraOrientationComboBoxCurrentIndexChanged(self, index):
         """ Camera orientation changed.

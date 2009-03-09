@@ -134,6 +134,30 @@ class AbstractController(QtCore.QObject):
 
 
 class AbstractModalDialogController(AbstractController):
+    """
+    """
+    def _connectSignals(self):
+        AbstractController._connectSignals(self)
+
+        self.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self._onAccepted)
+        self.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self._onRejected)
+
+    def _disconnectSignals(self):
+        AbstractController._disconnectSignals(self)
+
+        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self._onAccepted)
+        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self._onRejected)
+
+    # Callbacks
+    def _onAccepted(self):
+        """ Ok button has been clicked.
+        """
+        Logger().trace("AbstractModalDialogController._onAccepted()")
+
+    def _onRejected(self):
+        """ Cancel button has been clicked.
+        """
+        Logger().trace("AbstractModalDialogController._onRejected()")
 
     # Interface
     def show(self):

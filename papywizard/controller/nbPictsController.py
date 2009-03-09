@@ -75,32 +75,15 @@ class NbPictsController(AbstractModalDialogController):
         self._view.yawNbPictsSpinBox.setValue(currentYawNbPicts)
         self._view.pitchNbPictsSpinBox.setValue(currentPitchNbPicts)
 
-    def _connectSignals(self):
-        AbstractModalDialogController._connectSignals(self)
-
-        self.connect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
-        self.connect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
-
-    def _disconnectSignals(self):
-        AbstractModalDialogController._disconnectSignals(self)
-
-        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("accepted()"), self.__onAccepted)
-        self.disconnect(self._view.buttonBox, QtCore.SIGNAL("rejected()"), self.__onRejected)
-
     # Callbacks
-    def __onAccepted(self):
+    def _onAccepted(self):
         """ Ok button has been clicked.
         """
-        Logger().trace("NbPictsController.__onAccepted()")
+        Logger().trace("NbPictsController._onAccepted()")
         yawNbPicts = self._view.yawNbPictsSpinBox.value()
         pitchNbPicts = self._view.pitchNbPictsSpinBox.value()
         self._model.setStartEndFromNbPicts(yawNbPicts, pitchNbPicts)
-        Logger().debug("NbPictsController.__onAccepted(): nb picts set to yaw=%d, pitch=%d" % (yawNbPicts, pitchNbPicts))
-
-    def __onRejected(self):
-        """ Cancel button has been clicked.
-        """
-        Logger().trace("NbPictsController.__onRejected()")
+        Logger().debug("NbPictsController._onAccepted(): nb picts set to yaw=%d, pitch=%d" % (yawNbPicts, pitchNbPicts))
 
     # Interface
     def refreshView(self):
