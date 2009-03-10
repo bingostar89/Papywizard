@@ -80,5 +80,4 @@ class DriverFactory(object):
                 raise HardwareError("Unknown '%s' driver type" % type_)
         except Exception, msg:
             Logger().exception("DriverFactory.create()")
-            raise HardwareError(str(msg))
-            
+            raise HardwareError(unicode(msg))

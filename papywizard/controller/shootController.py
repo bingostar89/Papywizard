@@ -666,7 +666,7 @@ class ShootController(AbstractModalDialogController):
 
     # Interface
     def shutdown(self):
-        super(ShootController, self).shutdown()
+        AbstractModalDialogController.shutdown(self)
         if self.__thread is not None:
             self.__thread.wait()
 

@@ -59,7 +59,7 @@ import time
 import sys
 
 
-class DefaultFormatter(logging.Formatter, object):
+class DefaultFormatter(logging.Formatter):
     """ Formateur par défaut pour les subscribers.
     """
 
@@ -115,7 +115,7 @@ class ColorFormatter(DefaultFormatter):
         return color + msg + ColorFormatter.colors['default']
 
     def format(self, record):
-        msg = super(ColorFormatter, self).format(record)
+        msg = DefaultFormatter.format(self, record)
         return self._toColor(msg, record.levelname)
 
 
@@ -143,7 +143,7 @@ class SpaceFormatter(DefaultFormatter):
         return space + msg
 
     def format(self, record):
-        msg = super(SpaceFormatter, self).format(record)
+        msg = DefaultFormatter.format(self, record)
         return self._addSpace(msg)
 
 
@@ -151,5 +151,5 @@ class SpaceColorFormatter(SpaceFormatter, ColorFormatter):
     """ Formatter avec couleurs et sauts de lignes.
     """
     def format(self, record):
-        msg = super(SpaceColorFormatter, self).format(record)
-        return ColorFormatter._toColor(self, msg, record.levelname)
+        msg = SpaceFormatter.format(self, record)
+        return self._toColor(msg, record.levelname)

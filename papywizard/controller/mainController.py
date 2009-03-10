@@ -845,7 +845,7 @@ class MainController(AbstractController):
         except Exception, msg:
             Logger().exception("MainController.__importPresetFile()")
             self._view.releaseKeyboard()
-            dialog = ExceptionMessageDialog(self.tr("Can't import preset file"), str(msg))
+            dialog = ExceptionMessageDialog(self.tr("Can't import preset file"), unicode(msg))
             dialog.exec_()
             self._view.grabKeyboard()
 
@@ -863,7 +863,7 @@ class MainController(AbstractController):
         except Exception, msg:
             Logger().exception("MainController.__loadStyleSheet()")
             self._view.releaseKeyboard()
-            dialog = ExceptionMessageDialog(self.tr("Can't load style sheet"), str(msg))
+            dialog = ExceptionMessageDialog(self.tr("Can't load style sheet"), unicode(msg))
             dialog.exec_()
             self._view.grabKeyboard()
 
@@ -934,7 +934,8 @@ class MainController(AbstractController):
         return QtGui.qApp.exec_()
 
     def shutdown(self):
-        super(MainController, self).shutdown()
+        AbstractController.shutdown(self)
+        print bool(self._view.windowState() & QtCore.Qt.WindowFullScreen)
         if self._view.windowState() & QtCore.Qt.WindowFullScreen:
             self.__fullScreen = True
         else:

@@ -71,12 +71,12 @@ class QDefaultFormatter(DefaultFormatter):
         """
         msg = msg.replace('<', "&lt;")
         msg = msg.replace('>', "&gt;")
-        msg = msg.replace('\n', "<br>")
+        msg = msg.replace('\n', "<br />")
         msg = msg.replace(' ', "&nbsp;")
         return msg
 
     def format(self, record):
-        msg = super(QDefaultFormatter, self).format(record)
+        msg = DefaultFormatter.format(self, record)
         return self._toHtml(msg)
 
 
@@ -125,7 +125,7 @@ class QColorFormatter(QDefaultFormatter):
         return color + msg + "</font>"
 
     def format(self, record):
-        msg = super(QColorFormatter, self).format(record)
+        msg = QDefaultFormatter.format(self, record)
         return self._toColor(msg, record.levelname)
 
 
@@ -141,11 +141,11 @@ class QSpaceFormatter(QDefaultFormatter):
         le dernier enregistrement émis.
         """
         if time.time() - QSpaceFormatter._lastLogTime > 3600:
-            space = "\n\n\n"
+            space = "<br /><br /><br />"
         elif time.time() - self._lastLogTime > 60:
-            space = "\n\n"
+            space = "<br /><br />"
         elif time.time() - self._lastLogTime > 3:
-            space = "\n"
+            space = "<br />"
         else:
            space = ""
         QSpaceFormatter._lastLogTime = time.time()
@@ -153,7 +153,7 @@ class QSpaceFormatter(QDefaultFormatter):
         return space + msg
 
     def format(self, record):
-        msg = super(QSpaceFormatter, self).format(record)
+        msg = QDefaultFormatter.format(self, record)
         return self._addSpace(msg)
 
 
@@ -161,5 +161,5 @@ class QSpaceColorFormatter(QSpaceFormatter, QColorFormatter):
     """ Formatter avec couleurs et sauts de lignes.
     """
     def format(self, record):
-        msg = super(QSpaceColorFormatter, self).format(record)
-        return QColorFormatter._toColor(self, msg, record.levelname)
+        msg = QSpaceFormatter.format(self, record)
+        return self._toColor(msg, record.levelname)

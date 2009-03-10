@@ -207,7 +207,7 @@ def main():
     except Exception, msg:
         Logger().exception("main()")
         from papywizard.view.messageDialog import ExceptionMessageDialog
-        dialog = ExceptionMessageDialog("Unhandled exception", str(msg))
+        dialog = ExceptionMessageDialog("Unhandled exception", unicode(msg))
         dialog.exec_()
 
 

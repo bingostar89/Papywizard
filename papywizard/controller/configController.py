@@ -71,7 +71,7 @@ class ConfigController(AbstractModalDialogController):
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
         """
-        super(ConfigController, self)._retreiveWidgets()
+        AbstractModalDialogController._retreiveWidgets(self)
 
     def _initWidgets(self):
         pass
@@ -135,15 +135,15 @@ class ConfigController(AbstractModalDialogController):
 
         # Hardware tab
         ConfigManager().set('Preferences', 'HARDWARE_DRIVER', config.DRIVER_INDEX[self._view.driverComboBox.currentIndex()])
-        ConfigManager().set('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS', str(self._view.bluetoothDeviceAddressLineEdit.text()))
-        ConfigManager().set('Preferences', 'HARDWARE_SERIAL_PORT', str(self._view.serialPortLineEdit.text()))
-        ConfigManager().set('Preferences', 'HARDWARE_ETHERNET_HOST', str(self._view.ethernetHostLineEdit.text()))
+        ConfigManager().set('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS', unicode(self._view.bluetoothDeviceAddressLineEdit.text()))
+        ConfigManager().set('Preferences', 'HARDWARE_SERIAL_PORT', unicode(self._view.serialPortLineEdit.text()))
+        ConfigManager().set('Preferences', 'HARDWARE_ETHERNET_HOST', unicode(self._view.ethernetHostLineEdit.text()))
         ConfigManager().setInt('Preferences', 'HARDWARE_ETHERNET_PORT', self._view.ethernetPortSpinBox.value())
         ConfigManager().setBoolean('Preferences', 'HARDWARE_AUTO_CONNECT', self._view.hardwareAutoConnectCheckBox.isChecked())
 
         # Data tab
-        ConfigManager().set('Preferences', 'DATA_STORAGE_DIR', str(self._view.dataStorageDirLineEdit.text()))
-        ConfigManager().set('Preferences', 'DATA_FILE_FORMAT', str(self._view.dataFileFormatLineEdit.text()))
+        ConfigManager().set('Preferences', 'DATA_STORAGE_DIR', unicode(self._view.dataStorageDirLineEdit.text()))
+        ConfigManager().set('Preferences', 'DATA_FILE_FORMAT', unicode(self._view.dataFileFormatLineEdit.text()))
         ConfigManager().setBoolean('Preferences', 'DATA_FILE_ENABLE', bool(self._view.dataFileEnableCheckBox.isChecked()))
         ConfigManager().set('Preferences', 'DATA_TITLE', unicode(self._view.dataTitleLineEdit.text()))
         ConfigManager().set('Preferences', 'DATA_GPS',  unicode(self._view.dataGpsLineEdit.text()))

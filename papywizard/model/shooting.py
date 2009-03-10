@@ -381,7 +381,7 @@ class Shooting(QtCore.QObject):
             self.hardwareConnected(True)
         except HardwareError, message:
             Logger().exception("Shooting.switchToRealHardware()")
-            self.hardwareConnected(False, str(message))
+            self.hardwareConnected(False, unicode(message))
 
     def switchToSimulatedHardware(self):
         """ Use simulated hardware.

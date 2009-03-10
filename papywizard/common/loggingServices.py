@@ -144,7 +144,7 @@ class Logger(object):
         @param message: message to log
         @type message: string
         """
-        self.__logger.log(logging.TRACE, str(message))
+        self.__logger.log(logging.TRACE, unicode(message))
 
     def debug(self, message):
         """ Logs a message with level DEBUG.
@@ -152,7 +152,7 @@ class Logger(object):
         @param message: message to log
         @type message: string
         """
-        self.__logger.debug(str(message))
+        self.__logger.debug(unicode(message))
 
     def info(self, message):
         """ Logs a message with level INFO.
@@ -160,7 +160,7 @@ class Logger(object):
         @param message: message to log
         @type message: string
         """
-        self.__logger.info(str(message))
+        self.__logger.info(unicode(message))
 
     def warning(self, message):
         """ Logs a message with level WARNING.
@@ -168,7 +168,7 @@ class Logger(object):
         @param message: message to log
         @type message: string
         """
-        self.__logger.warning(str(message))
+        self.__logger.warning(unicode(message))
 
     def error(self, message):
         """ Logs a message with level ERROR.
@@ -176,7 +176,7 @@ class Logger(object):
         @param message: message to log
         @type message: string
         """
-        self.__logger.error(str(message))
+        self.__logger.error(unicode(message))
 
     def critical(self, message):
         """ Logs a message with level CRITICAL.
@@ -184,7 +184,7 @@ class Logger(object):
         @param message: message to log
         @type message: string
         """
-        self.__logger.critical(str(message))
+        self.__logger.critical(unicode(message))
 
     def exception(self, message="", debug=False):
         """ Logs a message within an exception.
@@ -202,9 +202,9 @@ class Logger(object):
         message += "\n"+tracebackString.getvalue().strip()
         tracebackString.close()
         if debug:
-            self.debug(str(message))
+            self.debug(unicode(message))
         else:
-            self.log(logging.EXCEPTION, str(message))
+            self.log(logging.EXCEPTION, unicode(message))
 
     def log(self, level, message, *args, **kwargs):
         """ Logs a message with given level.
@@ -215,7 +215,7 @@ class Logger(object):
         @param message: message to log
         @type message: string
         """
-        self.__logger.log(level, str(message), *args, **kwargs)
+        self.__logger.log(level, unicode(message), *args, **kwargs)
 
     def getTraceback(self):
         """ Return the complete traceback.
@@ -226,7 +226,7 @@ class Logger(object):
         traceback.print_exc(file=tracebackString)
         message = tracebackString.getvalue().strip()
         tracebackString.close()
-        return str(message)
+        return unicode(message)
 
     def shutdown(self):
         """ Shutdown the logging service.

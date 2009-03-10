@@ -110,7 +110,7 @@ class BluetoothChooserController(AbstractModalDialogController):
                 self.__refreshStatus = True
             except Exception, msg:
                 Logger().exception("refreshBluetoothList()")
-                self.__refreshErrorMessage = str(msg)
+                self.__refreshErrorMessage = unicode(msg)
                 self.__refreshStatus = False
 
         Logger().info("Scanning available bluetooth devices...")
