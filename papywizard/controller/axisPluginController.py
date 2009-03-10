@@ -54,7 +54,7 @@ __revision__ = "$Id$"
 
 from papywizard.common.orderedDict import OrderedDict
 from papywizard.controller.abstractPluginController import AbstractPluginController
-from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField
+from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField, SliderField
 
 
 class HardwarePluginController(AbstractPluginController):
