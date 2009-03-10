@@ -53,132 +53,109 @@ __revision__ = "$Id$"
 
 import sys
 import os.path
-import ConfigParser
+import shutil
+import sets
+
+from PyQt4 import QtCore
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.helpers import isOdd
 
-if hasattr(sys, "frozen"):
-    path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "common")
-else:
-    path = os.path.dirname(__file__)
+path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "common")
+configManager = None
 
 
-class ConfigManager(object):
-    """ ConfigManager.
+class ConfigManagerObject(QtCore.QObject):
+    """ Configuration manager.
     """
-    __state = {}
-    __init = True
-
-    def __new__(cls, *args, **kwds):
-        """ Implement the Borg pattern.
-        """
-        self = object.__new__(cls, *args, **kwds)
-        self.__dict__ = cls.__state
-        return self
-
     def __init__(self):
         """ Init the object.
         """
-        if ConfigManager.__init:
-            action = 'none'
+        action = 'none'
 
-            # Load dist config.
-            distConfig = ConfigParser.SafeConfigParser()
-            distConfigFile = os.path.join(path, config.CONFIG_FILE)
-            if distConfig.read(distConfigFile) == []:
-                raise IOError("Can't read configuration file (%s)" % distConfigFile)
-            distConfig.set('General', 'CONFIG_VERSION', config.VERSION)
+        # Load dist config.
+        distConfigFile = os.path.join(path, config.CONFIG_FILE)
+        print path
+        distConfig = QtCore.QSettings(distConfigFile, QtCore.QSettings.IniFormat)
+        if not distConfig.contains('CONFIG_VERSION'):
+            raise IOError("Can't read configuration file (%s)" % distConfigFile)
 
-            # Check if user config. exists, or need to be updated/overwriteed
-            #distConfigVersion = distConfig.get('General', 'CONFIG_VERSION').split('.')
-            distConfigVersion = config.VERSION.split('.')
-            userConfig = ConfigParser.SafeConfigParser()
-            if userConfig.read(config.USER_CONFIG_FILE) == []:
-                action = 'install'
-            else:
-                userConfigVersion = userConfig.get('General', 'CONFIG_VERSION').split('.')
-                Logger().debug("ConfigManager.__init__(): versions: dist=%s, user=%s" % (distConfigVersion, userConfigVersion))
+        # Check if user config. exists, or need to be updated/overwritten
+        distConfigVersion = config.VERSION.split('.')
+        userConfig = QtCore.QSettings(config.USER_CONFIG_FILE, QtCore.QSettings.IniFormat)
+        if not userConfig.contains('CONFIG_VERSION'):
+            action = 'install'
+        else:
+            userConfigVersion = unicode(userConfig.value('CONFIG_VERSION').toString()).split('.')
+            Logger().debug("ConfigManager.__init__(): versions: dist=%s, user=%s" % (distConfigVersion, userConfigVersion))
 
-                # Old versioning system
-                if len(userConfigVersion) < 2:
+            # Old versioning system
+            if len(userConfigVersion) < 2:
+                action = 'overwrite'
+
+            # Versions differ
+            elif distConfigVersion != userConfigVersion:
+
+                # Dev. version over any version
+                if isOdd(int(distConfigVersion[1])):
                     action = 'overwrite'
 
-                # Versions differ
-                elif distConfigVersion != userConfigVersion:
+                # Stable version...
+                elif not isOdd(int(distConfigVersion[1])):
 
-                    # Dev. version over any version
-                    if isOdd(int(distConfigVersion[1])):
+                    # ...over dev. version
+                    if isOdd(int(userConfigVersion[1])):
                         action = 'overwrite'
 
-                    # Stable version...
-                    elif not isOdd(int(distConfigVersion[1])):
+                    # ...over stable version
+                    else:
+                        action = 'update'
 
-                        # ...over dev. version
-                        if isOdd(int(userConfigVersion[1])):
-                            action = 'overwrite'
+        if action == 'install':
+            Logger().debug("ConfigManager.__init__(): install user config.")
+            shutil.copy(distConfigFile, config.USER_CONFIG_FILE)
 
-                        # ...over stable version
-                        else:
-                            action = 'update'
+            # Set config. version
+            userConfig.setValue('CONFIG_VERSION', QtCore.QVariant("%s" % '.'.join(distConfigVersion)))
 
-            if action == 'install':
-                Logger().debug("ConfigManager.__init__(): install user config.")
-                distConfig.write(file(config.USER_CONFIG_FILE, 'w'))
-                userConfig.read(config.USER_CONFIG_FILE)
+            # Write user config.
+            userConfig.sync()
 
-            elif action == 'overwrite':
-                Logger().debug("ConfigManager.__init__(): overwrite user config.")
-                distConfig.write(file(config.USER_CONFIG_FILE, 'w'))
-                #userConfig = ConfigParser.SafeConfigParser()
-                userConfig.read(config.USER_CONFIG_FILE)
+        elif action == 'overwrite':
+            Logger().debug("ConfigManager.__init__(): overwrite user config.")
+            shutil.copy(distConfigFile, config.USER_CONFIG_FILE)
 
-            elif action == 'update':
-                Logger().debug("ConfigManager.__init__(): update user config.")
+            # Set config. version
+            userConfig.setValue('CONFIG_VERSION', QtCore.QVariant("%s" % '.'.join(distConfigVersion)))
 
-                # Remove obsolete sections
-                distSections = distConfig.sections()
-                for userSection in userConfig.sections():
-                    if userSection not in distSections:
-                        userConfig.remove_section(userSection)
-                        Logger().debug("ConfigManager.__init__(): Removed [%s] section" % userSection)
+            # Write user config.
+            userConfig.sync()
 
-                # Update all sections
-                for distSection in distSections:
+        elif action == 'update':
+            Logger().debug("ConfigManager.__init__(): update user config.")
+            keys = sets.Set(userConfig.allKeys())
+            keys.update(distConfig.allKeys())
+            for key in keys:
+                if distConfig.contains(key):
+                    if not userConfig.contains(key):
+                        value = distConfig.value(key)
+                        userConfig.setValue(key, value)
+                        Logger().debug("ConfigManager.__init__(): added %s key with %s" % (key, value.toString()))
+                else:
+                    userConfig.remove(key)
+                    Logger().debug("ConfigManager.__init__(): removed %s key" % key)
 
-                    # Create new sections
-                    if not userConfig.has_section(distSection):
-                        userConfig.add_section(distSection)
-                        Logger().debug("ConfigManager.__init__(): Added [%s] section" % distSection)
+            # Set config. version
+            userConfig.setValue('CONFIG_VERSION', QtCore.QVariant("%s" % '.'.join(distConfigVersion)))
 
-                    # Remove obsolete options
-                    for option in userConfig.options(distSection):
-                        if not distConfig.has_option(distSection, option):
-                            userConfig.remove_option(distSection, option)
-                            Logger().debug("ConfigManager.__init__(): Removed [%s] %s option" % (distSection, option))
+            # Write user config.
+            userConfig.sync()
 
-                    # Update the options
-                    for option, value in distConfig.items(distSection):
-                        if not userConfig.has_option(distSection, option) or \
-                        value != userConfig.get(distSection, option) and not distSection.endswith("Preferences"):
-                            if isinstance(value, str):
-                                value = value.replace("%", "%%")
-                            userConfig.set(distSection, option, value)
-                            Logger().debug("ConfigManager.__init__(): Updated [%s] %s option with %s" % (distSection, option, value))
+        elif action == 'none':
+            Logger().debug("ConfigManager.__init__(): user config. is up-to-date")
 
-                    # Set config. version
-                    userConfig.set('General', 'CONFIG_VERSION', "%s" % '.'.join(distConfigVersion))
-
-                # Write user config.
-                userConfig.write(file(config.USER_CONFIG_FILE, 'w'))
-
-            elif action == 'none':
-                Logger().debug("ConfigManager.__init__(): user config. is up-to-date")
-
-            self.__config = userConfig
-
-            ConfigManager.__init = False
+        self.__config = userConfig
 
     def save(self):
         """ Save config.
@@ -186,7 +163,7 @@ class ConfigManager(object):
         Config is saved in user directory. Preferences are first
         set back to config.
         """
-        self.__config.write(file(config.USER_CONFIG_FILE, 'w'))
+        self.__config.sync()
         Logger().info("Configuration saved")
 
     def get(self, section, option):
@@ -198,7 +175,11 @@ class ConfigManager(object):
         @param option: option to get value from
         @type option: str
         """
-        return self.__config.get(section, option, raw=True)
+        if section == 'General':
+            key = option
+        else:
+            key = '%s/%s' % (section, option)
+        return unicode(self.__config.value(key).toString())
 
     def getInt(self, section, option):
         """ Get a value.
@@ -209,7 +190,15 @@ class ConfigManager(object):
         @param option: option to get value from
         @type option: int
         """
-        return self.__config.getint(section, option)
+        if section == 'General':
+            key = option
+        else:
+            key = '%s/%s' % (section, option)
+        value, flag = self.__config.value(key).toInt()
+        if flag:
+            return value
+        else:
+            raise ValueError("ConfigManager.getInt(): can't get %s key as int" % key)
 
     def getFloat(self, section, option):
         """ Get a value.
@@ -220,7 +209,15 @@ class ConfigManager(object):
         @param option: option to get value from
         @type option: float
         """
-        return self.__config.getfloat(section, option)
+        if section == 'General':
+            key = option
+        else:
+            key = '%s/%s' % (section, option)
+        value, flag = self.__config.value(key).toDouble()
+        if flag:
+            return value
+        else:
+            raise ValueError("ConfigManager.getInt(): can't get %s key as float" % key)
 
     def getBoolean(self, section, option):
         """ Get a value.
@@ -231,7 +228,11 @@ class ConfigManager(object):
         @param option: option to get value from
         @type option: bool
         """
-        return self.__config.getboolean(section, option)
+        if section == 'General':
+            key = option
+        else:
+            key = '%s/%s' % (section, option)
+        return self.__config.value(key).toBool()
 
     def set(self, section, option, value):
         """ Set a value.
@@ -245,7 +246,11 @@ class ConfigManager(object):
         @param value: value to set
         @type value: str
         """
-        self.__config.set(section, option, value)
+        if section == 'General':
+            key = option
+        else:
+            key = '%s/%s' % (section, option)
+        self.__config.setValue(key, QtCore.QVariant(value))
 
     def setInt(self, section, option, value):
         """ Set a value as int.
@@ -259,7 +264,11 @@ class ConfigManager(object):
         @param value: value to set
         @type value: int
         """
-        self.__config.set(section, option, "%d" % value)
+        if section == 'General':
+            key = option
+        else:
+            key = '%s/%s' % (section, option)
+        self.__config.setValue(key, QtCore.QVariant(value))
 
     def setFloat(self, section, option, value, prec):
         """ Set a value as float.
@@ -276,7 +285,11 @@ class ConfigManager(object):
         @param prec: precision
         @type prec: int
         """
-        self.__config.set(section, option, ("%(format)s" % {'format': "%%.%df" % prec}) % value)
+        if section == 'General':
+            key = option
+        else:
+            key = '%s/%s' % (section, option)
+        self.__config.setValue(key, QtCore.QVariant(value))
 
     def setBoolean(self, section, option, value):
         """ Set a value.
@@ -290,4 +303,17 @@ class ConfigManager(object):
         @param value: value to set
         @type value: str
         """
-        self.__config.set(section, option, str(value))
+        if section == 'General':
+            key = option
+        else:
+            key = '%s/%s' % (section, option)
+        self.__config.setValue(key, QtCore.QVariant(value))
+
+
+# ConfigManager factory
+def ConfigManager():
+    global configManager
+    if configManager is None:
+        configManager = ConfigManagerObject()
+
+    return configManager
