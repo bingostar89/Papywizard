@@ -935,7 +935,6 @@ class MainController(AbstractController):
 
     def shutdown(self):
         AbstractController.shutdown(self)
-        print bool(self._view.windowState() & QtCore.Qt.WindowFullScreen)
         if self._view.windowState() & QtCore.Qt.WindowFullScreen:
             self.__fullScreen = True
         else:
