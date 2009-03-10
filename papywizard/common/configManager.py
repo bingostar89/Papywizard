@@ -63,7 +63,7 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.helpers import isOdd
 
 if hasattr(sys, "frozen"):
-    path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "controller")
+    path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "common")
 else:
     path = os.path.dirname(__file__)
 configManager = None
