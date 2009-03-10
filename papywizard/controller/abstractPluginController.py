@@ -1,0 +1,134 @@
+# -*- coding: utf-8 -*-
+
+""" Panohead remote control.
+
+License
+=======
+
+ - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
+  - (C) 2007-2009 Frédéric Mantegazza
+
+This software is governed by the B{CeCILL} license under French law and
+abiding by the rules of distribution of free software.  You can  use, 
+modify and/or redistribute the software under the terms of the CeCILL
+license as circulated by CEA, CNRS and INRIA at the following URL
+U{http://www.cecill.info}.
+
+As a counterpart to the access to the source code and  rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty  and the software's author,  the holder of the
+economic rights,  and the successive licensors  have only  limited
+liability. 
+
+In this respect, the user's attention is drawn to the risks associated
+with loading,  using,  modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean  that it is complicated to manipulate,  and  that  also
+therefore means  that it is reserved for developers  and  experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or 
+data to be ensured and,  more generally, to use and operate it in the 
+same conditions as regards security. 
+
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL license and that you accept its terms.
+
+Module purpose
+==============
+
+Plugins architecture
+
+Implements
+==========
+
+- AbstractPluginController
+
+@author: Frédéric Mantegazza
+@copyright: (C) 2007-2009 Frédéric Mantegazza
+@license: CeCILL
+"""
+
+__revision__ = "$Id$"
+
+from PyQt4 import QtCore, QtGui
+
+from papywizard.common.orderedDict import OrderedDict
+from papywizard.common.loggingServices import Logger
+from papywizard.common.configManager import ConfigManager
+from papywizard.controller.abstractController import AbstractModalDialogController
+
+
+class AbstractPluginController(AbstractModalDialogController):
+    """ Plugin controller.
+
+    Used for the configuration dialog of the plugin.
+    The dialog is mainly a tab widget where all options
+    of the plugin are listed, as name/widget list.
+    """
+    def _init(self):
+        self._uiFile = "pluginConfigDialog.ui"
+        self._fields = OrderedDict()
+
+    def _addTab(self, tabName):
+        """ Add a new tab to the tab widget.
+
+        @param tabName: name of the new tab
+        @type tabName: str
+        """
+        self._fields[tabName] = OrderedDict()
+
+    def _addWidget(self, tabName, name, widget):
+        """ Add a new widget.
+
+        @param tabName: name of the tab where to add the widget
+        @type tabName: str
+
+        @name: name of the option
+        @type name: str
+
+        @param widget: widget to use for the option
+        @type:
+        """
+        self._fields[tabName][name] = widget
+
+    def _initWidgets(self):
+        self._view.setWindowTitle("%s %s" % (self._model.name, self._model.capacity))
+
+        # Create the Gui fields
+        self._defineGui()
+
+        # Populate GUI with fields
+        widgets = {}
+        for tabName in self._fields.keys():
+            frame = QtGui.QFrame()
+            formLayout = QtGui.QFormLayout()
+            frame.setLayout(formLayout)
+            self._view.tabWidget.addTab(frame, tabName)
+            Logger().debug("AbstractPluginController.createGui(): created '%s' tab" % tabName)
+            for label, widget in self._fields[tabName].iteritems():
+                widgets[label] = widget
+                widget.setParent(frame)
+                formLayout.addRow(label, widget) # self.tr(label) crashes
+                Logger().debug("AbstractPluginController.createGui(): added '%s' entry" % label)
+
+        self._view.tabWidget.setCurrentIndex(1)
+        self._view.tabWidget.removeTab(0)
+        self._view.adjustSize()
+
+    def _onAccepted(self):
+        """ Ok button has been clicked.
+        """
+        Logger().trace("AbstractPluginController._onAccepted()")
+        #self._saveConfig()
+
+    def _defineGui(self):
+        """ Define the GUI.
+
+        The widgets for the plugin config. dialog are defined here.
+        """
+        self._addTab('General')
+
+    # Interface
+    def refreshView(self):
+        pass
