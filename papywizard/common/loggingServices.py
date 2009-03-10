@@ -58,53 +58,42 @@ import logging.handlers
 import StringIO
 import traceback
 
+from PyQt4 import QtCore
+
 from papywizard.common import config
 from papywizard.common.loggingFormatter import DefaultFormatter, ColorFormatter, \
                                                SpaceFormatter, SpaceColorFormatter
 
+logger = None
 
-class Logger(object):
+
+class LoggerObject(QtCore.QObject):
     """ Logger object.
-
-    Logger is a Borg.
     """
-    __state = {}
-    __init = True
-
-    def __new__(cls, *args, **kwds):
-        """ Create the object.
-        """
-        self = object.__new__(cls, *args, **kwds)
-        self.__dict__ = cls.__state
-        return self
-
     def __init__(self, defaultStream=True):
         """ Init object.
         """
-        if Logger.__init:
-            logging.TRACE = logging.DEBUG - 5
-            logging.EXCEPTION = logging.ERROR + 5
-            logging.raiseExceptions = 0
-            logging.addLevelName(logging.TRACE, "TRACE")
-            logging.addLevelName(logging.EXCEPTION, "EXCEPTION")
+        logging.TRACE = logging.DEBUG - 5
+        logging.EXCEPTION = logging.ERROR + 5
+        logging.raiseExceptions = 0
+        logging.addLevelName(logging.TRACE, "TRACE")
+        logging.addLevelName(logging.EXCEPTION, "EXCEPTION")
 
-            # Formatters
-            #defaultFormatter = DefaultFormatter(config.LOGGER_FORMAT)
-            #colorFormatter = ColorFormatter(config.LOGGER_FORMAT)
-            spaceColorFormatter = SpaceColorFormatter(config.LOGGER_FORMAT)
+        # Formatters
+        #defaultFormatter = DefaultFormatter(config.LOGGER_FORMAT)
+        #colorFormatter = ColorFormatter(config.LOGGER_FORMAT)
+        spaceColorFormatter = SpaceColorFormatter(config.LOGGER_FORMAT)
 
-            # Handlers
-            stdoutStreamHandler = logging.StreamHandler()
-            #stdoutStreamHandler.setFormatter(colorFormatter)
-            stdoutStreamHandler.setFormatter(spaceColorFormatter)
+        # Handlers
+        stdoutStreamHandler = logging.StreamHandler()
+        #stdoutStreamHandler.setFormatter(colorFormatter)
+        stdoutStreamHandler.setFormatter(spaceColorFormatter)
 
-            # Logger
-            self.__logger = logging.getLogger('papywizard')
-            self.__logger.setLevel(logging.TRACE)
-            if defaultStream:
-                self.__logger.addHandler(stdoutStreamHandler)
-
-            Logger.__init = False
+        # Logger
+        self.__logger = logging.getLogger('papywizard')
+        self.__logger.setLevel(logging.TRACE)
+        if defaultStream:
+            self.__logger.addHandler(stdoutStreamHandler)
 
     def addStreamHandler(self, stream, formatter=DefaultFormatter):
         """ Add a new stream handler.
@@ -232,3 +221,12 @@ class Logger(object):
         """ Shutdown the logging service.
         """
         logging.shutdown()
+
+
+# Logger factory
+def Logger(defaultStream=True):
+    global logger
+    if logger is None:
+        logger = LoggerObject(defaultStream)
+
+    return logger

@@ -56,6 +56,8 @@ import sys
 import os.path
 import xml.dom.minidom
 
+from PyQt4 import QtCore
+
 from papywizard.common import config
 from papywizard.common.orderedDict import OrderedDict
 from papywizard.common.loggingServices import Logger
@@ -64,6 +66,7 @@ if hasattr(sys, "frozen"):
     path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "common")
 else:
     path = os.path.dirname(__file__)
+presetManager = None
 
 
 class Preset(object):
@@ -192,38 +195,25 @@ class Presets(object):
         return copy.deepcopy(self.__presets)
 
 
-class PresetManager(object):
+class PresetManagerObject(QtCore.QObject):
     """ Presets manager object.
     """
-    __state = {}
-    __init = True
-
-    def __new__(cls, *args, **kwds):
-        """ Implement the Borg pattern.
-        """
-        self = object.__new__(cls, *args, **kwds)
-        self.__dict__ = cls.__state
-        return self
-
     def __init__(self):
         """ Init the object.
         """
-        if PresetManager.__init:
-            self.__presets = Presets()
+        self.__presets = Presets()
 
-            # Load default presets
-            presetFile = os.path.join(path, config.PRESET_FILE)
-            Logger().info("Loading default presets")
-            self.importPresetFile(presetFile)
+        # Load default presets
+        presetFile = os.path.join(path, config.PRESET_FILE)
+        Logger().info("Loading default presets")
+        self.importPresetFile(presetFile)
 
-            # Load user presets
-            try:
-                Logger().info("Loading user presets")
-                self.importPresetFile(config.USER_PRESET_FILE)
-            except IOError:
-                Logger().warning("No user presets found")
-
-            PresetManager.__init = False
+        # Load user presets
+        try:
+            Logger().info("Loading user presets")
+            self.importPresetFile(config.USER_PRESET_FILE)
+        except IOError:
+            Logger().warning("No user presets found")
 
     def importPresetFile(self, presetFileName):
         """ Importe the presets from given file.
@@ -240,3 +230,12 @@ class PresetManager(object):
         """ return the list of preset.
         """
         return self.__presets
+
+
+# ConfigManager factory
+def PresetManager():
+    global presetManager
+    if presetManager is None:
+        presetManager = PresetManagerObject()
+
+    return presetManager
