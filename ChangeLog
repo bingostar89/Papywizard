@@ -8,7 +8,7 @@ x bug fix
 
 0000-00-00 Version SVN
 
-2009-03-00 Version 1.9.8 (dev)
+2009-03-10 Version 1.9.8 (dev)
     - switched to QSettings
     x clear log buffer now works
     x Qt space formatter fixed
