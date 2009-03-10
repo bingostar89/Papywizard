@@ -59,7 +59,7 @@ __revision__ = "$Id$"
 #from papywizard.common.pluginManager import PluginManager
 from papywizard.controller.axisPluginController import AxisPluginController
 from papywizard.hardware.axisPlugin import AxisPlugin
-from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField
+from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField, SliderField
 
 
 class MerlinAxis(AxisPlugin):
@@ -78,6 +78,8 @@ class MerlinAxisController(AxisPluginController):
         AxisPluginController._defineGui(self)
         self._addWidget('General', "Channel", SpinBoxField(1, 2, 1))
         self._addWidget('General', "Speed", ComboBoxField(['low', 'normal', 'fast'], 'normal'))
+        self._addWidget('General', "Speed2", SliderField(1, 3, 2))
+        self._addWidget('General', "Bla", ComboBoxField(['aaaa', 'bbbb', 'cccc'], 'cccc'))
 
 
 class MerlinYawAxis(MerlinAxis):
