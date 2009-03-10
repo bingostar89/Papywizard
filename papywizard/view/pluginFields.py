@@ -54,7 +54,7 @@ Implements
 
 __revision__ = "$Id$"
 
-from PyQt4 import QtGui
+from PyQt4 import QtGui, QtCore
 
 
 class ComboBoxField(QtGui.QComboBox):
@@ -98,3 +98,17 @@ class CheckBoxField(QtGui.QCheckBox):
         """
         QtGui.QCheckBox.__init__(self)
         self.setChecked(checked)
+
+
+class SliderField(QtGui.QSlider):
+    """
+    """
+    def __init__(self, minimum, maximum, value, tickInterval=1):
+        """
+        """
+        QtGui.QSlider.__init__(self, QtCore.Qt.Horizontal)
+        self.setRange(minimum, maximum)
+        self.setValue(value)
+        self.setTickPosition(QtGui.QSlider.TicksAbove)
+        self.setTickInterval(tickInterval)
+
