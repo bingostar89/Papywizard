@@ -8,8 +8,13 @@ x bug fix
 
 0000-00-00 Version SVN
 
+2009-03-00 Version 1.9.8 (dev)
+    - switched to QSettings
+    x clear log buffer now works
+    x Qt space formatter fixed
+
 2009-03-03 Version 1.9.7 (dev)
-    + added external script call for tethered shooting tests
+    + external script call for tethered shooting tests
 
 2009-02-16 Version 1.9.6 (dev)
     x fixed refresh bug in Spy
