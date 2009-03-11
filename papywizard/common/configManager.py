@@ -79,7 +79,6 @@ class ConfigManagerObject(QtCore.QObject):
 
         # Load dist config.
         distConfigFile = os.path.join(path, config.CONFIG_FILE)
-        print path
         distConfig = QtCore.QSettings(distConfigFile, QtCore.QSettings.IniFormat)
         if not distConfig.contains('CONFIG_VERSION'):
             raise IOError("Can't read configuration file (%s)" % distConfigFile)
@@ -169,118 +168,121 @@ class ConfigManagerObject(QtCore.QObject):
         self.__config.sync()
         Logger().info("Configuration saved")
 
-    def get(self, section, option):
+    def contains(self, group, key):
+        """ Check if the config contains the given section/option.
+
+        @param group: config group
+        @type group: str
+
+        @param key: config key
+        @type key: str
+        """
+        if group != 'General':
+            key = '%s/%s' % (group, key)
+        return self.__config.contains(key)
+
+    def get(self, group, key):
         """ Get a value.
 
-        @param section: section name to use
-        @type section: str
+        @param group: config group
+        @type group: str
 
-        @param option: option to get value from
-        @type option: str
+        @param key: config key
+        @type key: str
         """
-        if section == 'General':
-            key = option
-        else:
-            key = '%s/%s' % (section, option)
+        if group != 'General':
+            key = '%s/%s' % (group, key)
         return unicode(self.__config.value(key).toString())
 
-    def getInt(self, section, option):
+    def getInt(self, group, key):
         """ Get a value.
 
-        @param section: section name to use
-        @type section: str
+        @param group: config group
+        @type group: str
 
-        @param option: option to get value from
-        @type option: int
+        @param key: config key
+        @type key: str
         """
-        if section == 'General':
-            key = option
-        else:
-            key = '%s/%s' % (section, option)
+        if group != 'General':
+            key = '%s/%s' % (group, key)
         value, flag = self.__config.value(key).toInt()
         if flag:
             return value
         else:
             raise ValueError("ConfigManager.getInt(): can't get %s key as int" % key)
 
-    def getFloat(self, section, option):
+    def getFloat(self, group, key):
         """ Get a value.
 
-        @param section: section name to use
-        @type section: str
+        @param group: config group
+        @type group: str
 
-        @param option: option to get value from
-        @type option: float
+        @param key: config key
+        @type key: str
         """
-        if section == 'General':
-            key = option
-        else:
-            key = '%s/%s' % (section, option)
+        if group != 'General':
+            key = '%s/%s' % (group, key)
         value, flag = self.__config.value(key).toDouble()
         if flag:
             return value
         else:
             raise ValueError("ConfigManager.getInt(): can't get %s key as float" % key)
 
-    def getBoolean(self, section, option):
+    def getBoolean(self, group, key):
         """ Get a value.
 
-        @param section: section name to use
-        @type section: str
+        @param group: config group
+        @type group: str
 
-        @param option: option to get value from
-        @type option: bool
+        @param key: config key
+        @type key: str
         """
-        if section == 'General':
-            key = option
-        else:
-            key = '%s/%s' % (section, option)
+        if group != 'General':
+            key = '%s/%s' % (group, key)
         return self.__config.value(key).toBool()
 
-    def set(self, section, option, value):
+    def set(self, group, key, value):
         """ Set a value.
 
-        @param section: section name to use
-        @type section: str
+        @param group: config group
+        @type group: str
 
-        @param option: option to set value to
-        @type option: str
+        @param key: config key
+        @type key: str
 
         @param value: value to set
         @type value: str
         """
-        if section == 'General':
+        if group == 'General':
             key = option
         else:
-            key = '%s/%s' % (section, option)
+            key = '%s/%s' % (group, key)
         self.__config.setValue(key, QtCore.QVariant(value))
 
-    def setInt(self, section, option, value):
+    def setInt(self, group, key, value):
         """ Set a value as int.
 
-        @param section: section name to use
-        @type section: str
+        @param group: config group
+        @type group: str
 
-        @param option: option to set value to
-        @type option: str
+        @param key: config key
+        @type key: str
 
         @param value: value to set
         @type value: int
         """
-        if section == 'General':
-            key = option
-        else:
-            key = '%s/%s' % (section, option)
+        if group != 'General':
+            key = '%s/%s' % (group, key)
         self.__config.setValue(key, QtCore.QVariant(value))
 
-    def setFloat(self, section, option, value, prec):
+    def setFloat(self, group, key, value, prec):
         """ Set a value as float.
 
-        @param section: section name to use
-        @type section: str
+        @param group: config group
+        @type group: str
 
-        @param option: option to set value to
-        @type option: str
+        @param key: config key
+        @type key: str
 
         @param value: value to set
         @type value: float
@@ -288,28 +290,25 @@ class ConfigManagerObject(QtCore.QObject):
         @param prec: precision
         @type prec: int
         """
-        if section == 'General':
-            key = option
-        else:
-            key = '%s/%s' % (section, option)
+        if group != 'General':
+            key = '%s/%s' % (group, key)
+        #value = ("%(format)s" % {'format': "%%.%df" % prec}) % value
         self.__config.setValue(key, QtCore.QVariant(value))
 
-    def setBoolean(self, section, option, value):
+    def setBoolean(self, group, key, value):
         """ Set a value.
 
-        @param section: section name to use
-        @type section: str
+        @param group: config group
+        @type group: str
 
-        @param option: option to set value to
-        @type option: str
+        @param key: config key
+        @type key: str
 
         @param value: value to set
         @type value: str
         """
-        if section == 'General':
-            key = option
-        else:
-            key = '%s/%s' % (section, option)
+        if group != 'General':
+            key = '%s/%s' % (group, key)
         self.__config.setValue(key, QtCore.QVariant(value))
 
 
