@@ -77,7 +77,7 @@ def main():
 
             # Forbid all console outputs
             sys.stderr = BlackHole()
-            Logger(defaultStream=False)
+            Logger(defaultStreamHandler=False)
         else:
             Logger()
 
