@@ -54,12 +54,11 @@ __revision__ = "$Id$"
 import sys
 import os.path
 
-from papywizard.common.loggingServices import Logger
-from papywizard.common.orderedDict import OrderedDict
-
 from PyQt4 import QtCore
 
 from papywizard.common.orderedDict import OrderedDict
+from papywizard.common.loggingServices import Logger
+from papywizard.common.configManager import ConfigManager
 
 
 class AbstractPlugin(QtCore.QObject):
@@ -79,7 +78,8 @@ class AbstractPlugin(QtCore.QObject):
 
         # Plugin specific init
         self._init()
-        #self._loadConfig()
+        self._defineConfig()
+        self._loadConfig()
 
     # Properties
     def __getCapacity():
@@ -87,14 +87,14 @@ class AbstractPlugin(QtCore.QObject):
         """
         return self.__class__.capacity
 
-    capacity = property(__getCapacity)
+    capacity = property(__getCapacity, "Plugin capacity")
 
     def __getName(self):
         """ Return the name of the plugin.
         """
         return self.__class__.name
 
-    name = property(__getName)
+    name = property(__getName, "Plugin name")
 
     # Private methods
     def _init(self):
@@ -102,15 +102,53 @@ class AbstractPlugin(QtCore.QObject):
         """
         raise NotImplementedError("AbstractPlugin._init() must be overidden")
 
+    def _defineConfig(self):
+        """ Define the config for the plugin.
+
+        Config keys defined here must match the ones used in the controller.
+        """
+        self._config = {}
+
+    def _addConfigKey(self, attr, key, default):
+        """ Add a new config key.
+
+        @param attr: attribute to add to the plugin object
+        @type attr: str
+
+        @param key: key to add
+        @type key: str
+
+        @param default: default value for the given key
+        @type default:
+        """
+        #self.__dict__[attr] = default # Find a way to bind to _config[]. Use property?
+        self._config[key] = default
+
     def _loadConfig(self):
         """ Load the plugin config.
         """
-        raise NotImplementedError("AbstractPlugin._loadConfig() must be overidden")
+        Logger().trace("AbstractPlugin._loadConfig()")
+        for key, defaultValue in self._config.iteritems():
+            group = "%s_%s" % (self.name, self.capacity)
+            if ConfigManager().contains(group, key):
+                if isinstance(defaultValue, bool):
+                    self._config[key] = ConfigManager().getBoolean(group, key)
+                elif isinstance(defaultValue, str):
+                    self._config[key] = ConfigManager().get(group, key)
+                elif isinstance(defaultValue, int):
+                    self._config[key] = ConfigManager().getInt(group, key)
+                elif isinstance(defaultValue, float):
+                    self._config[key] = ConfigManager().getFloat(group, key)
+        Logger().debug("AbstractPlugin._loadConfig(): config=%s" % self._config)
 
     def _saveConfig(self):
         """ Save the plugin config.
         """
-        raise NotImplementedError("AbstractPlugin._saveConfig() must be overidden")
+        Logger().trace("AbstractPlugin._saveConfig()")
+        for key, value in self._config.iteritems():
+            group = "%s_%s" % (self.name, self.capacity)
+            ConfigManager().set(group, key, value)
+        ConfigManager().save()
 
     # Common interface
     def activate(self):
@@ -119,5 +157,12 @@ class AbstractPlugin(QtCore.QObject):
         The plugin may need to perform some operations when activated.
         """
         raise NotImplementedError("AbstractPlugin.activate() must be overidden")
+
+    def shutdown(self):
+        """ Shutdown the plugin.
+
+        The plugin may need to perform some operations when desactivated.
+        """
+        raise NotImplementedError("AbstractPlugin.shutdown() must be overidden")
 
     # Plugin specific interface

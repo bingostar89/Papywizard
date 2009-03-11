@@ -78,19 +78,27 @@ class AbstractPluginController(AbstractModalDialogController):
         """
         self._fields[tabName] = OrderedDict()
 
-    def _addWidget(self, tabName, name, widget):
+    def _addWidget(self, tabName, label, widgetClass, widgetParams, configKey):
         """ Add a new widget.
 
         @param tabName: name of the tab where to add the widget
         @type tabName: str
 
-        @name: name of the option
-        @type name: str
+        @param label: associated label of the option
+        @type label: str
 
-        @param widget: widget to use for the option
-        @type:
+        @param widgetClass: widget class to use for the option
+        @type widget: QtGui.QWidget
+
+        @param widgetParams: params to give to the widget
+        @type widgetParams: tuple
+
+        @param configKey: key for the config.
+        @type configKey: str
         """
-        self._fields[tabName][name] = widget
+        self._fields[tabName][label] = {'widget': widgetClass(*widgetParams),
+                                        'configKey': configKey}
+        self._fields[tabName][label]['widget'].setValue(self._model._config[configKey])
 
     def _initWidgets(self):
         self._view.setWindowTitle("%s %s" % (self._model.name, self._model.capacity))
@@ -106,10 +114,10 @@ class AbstractPluginController(AbstractModalDialogController):
             frame.setLayout(formLayout)
             self._view.tabWidget.addTab(frame, tabName)
             Logger().debug("AbstractPluginController.createGui(): created '%s' tab" % tabName)
-            for label, widget in self._fields[tabName].iteritems():
-                widgets[label] = widget
-                widget.setParent(frame)
-                formLayout.addRow(label, widget) # self.tr(label) crashes
+            for label, field in self._fields[tabName].iteritems():
+                widgets[label] = field['widget']
+                field['widget'].setParent(frame)
+                formLayout.addRow(label, field['widget']) # self.tr(label) crashes
                 Logger().debug("AbstractPluginController.createGui(): added '%s' entry" % label)
 
         self._view.tabWidget.setCurrentIndex(1)
@@ -120,13 +128,22 @@ class AbstractPluginController(AbstractModalDialogController):
         """ Ok button has been clicked.
         """
         Logger().trace("AbstractPluginController._onAccepted()")
-        #self._saveConfig()
+        for tabName in self._fields.keys():
+            for label, field in self._fields[tabName].iteritems():
+                value = field['widget'].value()
+                if isinstance(value, QtCore.QString):
+                    value = unicode(value)
+                self._model._config[field['configKey']] = value
+        Logger().debug("AbstractPluginController._onAccepted(): config=%s" % self._model._config)
+        self._model._saveConfig()
 
     def _defineGui(self):
         """ Define the GUI.
 
         The widgets for the plugin config. dialog are defined here.
         """
+
+        # Add a general tab
         self._addTab('General')
 
     # Interface

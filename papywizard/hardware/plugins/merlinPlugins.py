@@ -68,6 +68,13 @@ class MerlinAxis(AxisPlugin):
     def _init(self):
         self._numAxis = None
 
+    def _defineConfig(self):
+        AxisPlugin._defineConfig(self)
+        self._addConfigKey('_channel', 'CHANNEL', default=1)
+        self._addConfigKey('_speed', 'SPEED', default='normal')
+        self._addConfigKey('_speed2', 'SPEED2', default=2)
+        self._addConfigKey('_bla', 'BLA', default='bbbb')
+
     def drive(self, position, speed='normal'):
         # Control axis
         pass
@@ -76,10 +83,10 @@ class MerlinAxis(AxisPlugin):
 class MerlinAxisController(AxisPluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
-        self._addWidget('General', "Channel", SpinBoxField(1, 2, 1))
-        self._addWidget('General', "Speed", ComboBoxField(['low', 'normal', 'fast'], 'normal'))
-        self._addWidget('General', "Speed2", SliderField(1, 3, 2))
-        self._addWidget('General', "Bla", ComboBoxField(['aaaa', 'bbbb', 'cccc'], 'cccc'))
+        self._addWidget('General', "Channel", SpinBoxField, (1, 2), 'CHANNEL')
+        self._addWidget('General', "Speed", ComboBoxField, (['low', 'normal', 'fast'],), 'SPEED')
+        self._addWidget('General', "Speed2", SliderField, (1, 3), 'SPEED2')
+        self._addWidget('General', "Bla", ComboBoxField, (['aaaa', 'bbbb', 'cccc'],), 'BLA')
 
 
 class MerlinYawAxis(MerlinAxis):

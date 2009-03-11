@@ -58,12 +58,19 @@ from papywizard.common.abstractPlugin import AbstractPlugin
 class HardwarePlugin(AbstractPlugin):
     """
     """
-    pass
 
 
 class AxisPlugin(HardwarePlugin):
     """ Plugin for axis.
     """
+    def _defineConfig(self):
+        HardwarePlugin._defineConfig(self)
+        self._addConfigKey('_driver', 'DRIVER', default='bluetooth')
+        self._addConfigKey('_btDevAdd', 'BT_DEVICE_ADDRESS', default="00:50:C2:58:55:B9")
+        self._addConfigKey('_serPort', 'SERIAL_PORT', default="0")
+        self._addConfigKey('_ethHost', 'ETHERNET_HOST', default="localhost")
+        self._addConfigKey('_ethPort', 'ETHERNET_PORT', default=7165)
+        self._addConfigKey('_autoConnect', 'AUTO_CONNECT', default=False)
 
     # Plugin specific interface
     def drive(self, pos, speed='normal'):
@@ -83,7 +90,7 @@ class AxisPlugin(HardwarePlugin):
         raise NotImplementedError("AxisPlugin.read() must be overidden")
 
     def startJog(self, dir_, speed='normal'):
-        """ 
+        """
         """
         raise NotImplementedError("AxisPlugin.startJog() must be overidden")
 

@@ -66,12 +66,12 @@ class HardwarePluginController(AbstractPluginController):
         """
         AbstractPluginController._defineGui(self)
         self._addTab('Com')
-        self._addWidget('Com', "driver", ComboBoxField(['bluetooth', 'serial', 'ethernet'], 'bluetooth'))
-        self._addWidget('Com', "BT device address", LineEditField("00:50:C2:58:55:B9"))
-        self._addWidget('Com', "Serial port", LineEditField("0"))
-        self._addWidget('Com', "Ethernet host", LineEditField("localhost"))
-        self._addWidget('Com', "Ethernet port", SpinBoxField(1024, 65535, 7165))
-        self._addWidget('Com', "Automatic connection", CheckBoxField(False))
+        self._addWidget('Com', "Driver", ComboBoxField, (['bluetooth', 'serial', 'ethernet'],), 'DRIVER')
+        self._addWidget('Com', "BT device address", LineEditField, (), 'BT_DEVICE_ADDRESS')
+        self._addWidget('Com', "Serial port", LineEditField, (), 'SERIAL_PORT')
+        self._addWidget('Com', "Ethernet host", LineEditField, (), 'ETHERNET_HOST')
+        self._addWidget('Com', "Ethernet port", SpinBoxField, (1024, 65535), 'ETHERNET_PORT')
+        self._addWidget('Com', "Automatic connection", CheckBoxField, (), 'AUTO_CONNECT')
 
 
 class AxisPluginController(HardwarePluginController):

@@ -60,55 +60,68 @@ from PyQt4 import QtGui, QtCore
 class ComboBoxField(QtGui.QComboBox):
     """
     """
-    def __init__(self, entries, current):
+    def __init__(self, entries):
         """
         """
         QtGui.QComboBox.__init__(self)
         self.addItems(entries)
-        self.setCurrentIndex(entries.index(current))
+
+    def setValue(self, value):
+        self.setCurrentIndex(self.findText(value))
+
+    def value(self):
+        return self.currentText()
 
 
 class LineEditField(QtGui.QLineEdit):
     """
     """
-    def __init__(self, text):
+    def __init__(self):
         """
         """
-        QtGui.QLineEdit.__init__(self, text)
+        QtGui.QLineEdit.__init__(self)
         self.adjustSize()
+
+    def setValue(self, value):
+        self.setText(value)
+
+    def value(self):
+        return self.text()
 
 
 class SpinBoxField(QtGui.QSpinBox):
     """
     """
-    def __init__(self, minimum, maximum, value):
+    def __init__(self, minimum, maximum):
         """
         """
         QtGui.QSpinBox.__init__(self)
         self.setMinimum(minimum)
         self.setMaximum(maximum)
-        self.setValue(value)
 
 
 class CheckBoxField(QtGui.QCheckBox):
     """
     """
-    def __init__(self, checked):
+    def __init__(self):
         """
         """
         QtGui.QCheckBox.__init__(self)
-        self.setChecked(checked)
+
+    def setValue(self, value):
+        self.setChecked(value)
+
+    def value(self):
+        return self.isChecked()
 
 
 class SliderField(QtGui.QSlider):
     """
     """
-    def __init__(self, minimum, maximum, value, tickInterval=1):
+    def __init__(self, minimum, maximum, tickInterval=1):
         """
         """
         QtGui.QSlider.__init__(self, QtCore.Qt.Horizontal)
         self.setRange(minimum, maximum)
-        self.setValue(value)
         self.setTickPosition(QtGui.QSlider.TicksAbove)
         self.setTickInterval(tickInterval)
-
