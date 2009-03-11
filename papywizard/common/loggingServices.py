@@ -57,6 +57,7 @@ import logging
 import logging.handlers
 import StringIO
 import traceback
+import os.path
 
 from PyQt4 import QtCore
 
@@ -70,7 +71,7 @@ logger = None
 class LoggerObject(QtCore.QObject):
     """ Logger object.
     """
-    def __init__(self, defaultStream=True):
+    def __init__(self, defaultStreamHandler=True, defaultFileHandler=True):
         """ Init object.
         """
         logging.TRACE = logging.DEBUG - 5
@@ -81,19 +82,27 @@ class LoggerObject(QtCore.QObject):
 
         # Formatters
         #defaultFormatter = DefaultFormatter(config.LOGGER_FORMAT)
+        spaceFormatter = SpaceFormatter(config.LOGGER_FORMAT)
         #colorFormatter = ColorFormatter(config.LOGGER_FORMAT)
         spaceColorFormatter = SpaceColorFormatter(config.LOGGER_FORMAT)
-
-        # Handlers
-        stdoutStreamHandler = logging.StreamHandler()
-        #stdoutStreamHandler.setFormatter(colorFormatter)
-        stdoutStreamHandler.setFormatter(spaceColorFormatter)
 
         # Logger
         self.__logger = logging.getLogger('papywizard')
         self.__logger.setLevel(logging.TRACE)
-        if defaultStream:
+
+        # Handlers
+        if defaultStreamHandler:
+            stdoutStreamHandler = logging.StreamHandler()
+            #stdoutStreamHandler.setFormatter(colorFormatter)
+            stdoutStreamHandler.setFormatter(spaceColorFormatter)
             self.__logger.addHandler(stdoutStreamHandler)
+        if defaultFileHandler:
+            loggerFilename = os.path.join(config.DATA_STORAGE_DIR, config.LOGGER_FILENAME)
+            fileHandler = logging.handlers.RotatingFileHandler(loggerFilename, 'w',
+                                                               config.LOGGER_MAX_BYTES,
+                                                               config.LOGGER_BACKUP_COUNT)
+            fileHandler.setFormatter(spaceFormatter)
+            self.__logger.addHandler(fileHandler)
 
     def addStreamHandler(self, stream, formatter=DefaultFormatter):
         """ Add a new stream handler.
@@ -116,8 +125,9 @@ class LoggerObject(QtCore.QObject):
         @param level: new level, in ('trace', 'debug', 'info', 'warning', 'error', 'exception', 'critical')
         @type level: str
         """
-        if level not in ('trace', 'debug', 'info', 'warning', 'error', 'exception', 'critical'):
-            raise ValueError("Logger level must be in ('trace', 'debug', 'info', 'warning', 'error', 'exception', 'critical')")
+        loggerLevels = ('trace', 'debug', 'info', 'warning', 'error', 'exception', 'critical')
+        if level not in loggerLevels:
+            raise ValueError("Logger level must be in %s" % loggerLevels)
         levels = {'trace': logging.TRACE,
                   'debug': logging.DEBUG,
                   'info': logging.INFO,
