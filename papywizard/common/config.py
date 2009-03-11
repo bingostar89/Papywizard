@@ -141,8 +141,10 @@ LOGGER_INDEX = {'trace': 0, 'debug': 1, 'info': 2, 'warning' :3, 'error': 4, 'ex
 
 # Logger
 LOGGER_FORMAT = "%(asctime)s::%(threadName)s::%(levelname)s::%(message)s"
-LOGGER_MAX_COUNT_LINE = 200
-#LOGGER_FILENAME = "papywizard.log"
+LOGGER_MAX_COUNT_LINE = 1000
+LOGGER_FILENAME = "papywizard.log"
+LOGGER_MAX_BYTES = 100 * 1024
+LOGGER_BACKUP_COUNT = 3
 
 # Hardware
 AXIS_NUM_YAW = 1
