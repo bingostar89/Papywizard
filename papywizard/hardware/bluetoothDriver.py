@@ -116,7 +116,7 @@ class BluetoothDriver(BusDriver):
         """
         #Logger().debug("BluetoothDriver.sendCmd(): cmd=%s" % cmd)
         if not self._init:
-            raise HardwareError(_("Bluetooth driver not initialized"))
+            raise HardwareError(self.tr("Bluetooth driver not initialized"))
 
         self.acquireBus()
         try:
@@ -129,13 +129,13 @@ class BluetoothDriver(BusDriver):
                 c = self._sock.recv(1)
                 #Logger().debug("BluetoothDriver.sendCmd(): c=%s" % repr(c))
                 if not c:
-                    raise IOError(_("Timeout while reading on bluetooth bus"))
+                    raise IOError(self.tr("Timeout while reading on bluetooth bus"))
             data = ""
             while True:
                 c = self._sock.recv(1)
                 #Logger().debug("BluetoothDriver.sendCmd(): c=%s, data=%s" % (repr(c), repr(data)))
                 if not c:
-                    raise IOError(_("Timeout while reading on bluetooth bus"))
+                    raise IOError(self.tr("Timeout while reading on bluetooth bus"))
                 elif c == '\r':
                     break
                 data += c
