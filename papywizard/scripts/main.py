@@ -95,7 +95,7 @@ def main():
         # Create the splashscreen
         from papywizard.common import pixmaps
         pixmap = QtGui.QPixmap()
-        pixmap.load(":/pixmaps/%s" % config.SPLASHCREEN_FILE)
+        pixmadp.load(":/pixmaps/%s" % config.SPLASHCREEN_FILE)
         splash = QtGui.QSplashScreen(pixmap, QtCore.Qt.WindowStaysOnTopHint)
         splash.show()
         qtApp.processEvents()
@@ -206,10 +206,8 @@ def main():
 
     except Exception, msg:
         Logger().exception("main()")
-        try:
+        if 'splash' in locals():
             splash.finish(None)
-        except:
-            Logger().exception("main()", debug=True)
         from papywizard.view.messageDialog import ExceptionMessageDialog
         dialog = ExceptionMessageDialog("Unhandled exception", unicode(msg))
         dialog.exec_()
