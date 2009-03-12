@@ -205,11 +205,11 @@ def main():
         Logger().info("Papywizard stopped")
 
     except Exception, msg:
+        Logger().exception("main()")
         try:
             splash.finish(None)
         except:
             Logger().exception("main()", debug=True)
-        Logger().exception("main()")
         from papywizard.view.messageDialog import ExceptionMessageDialog
         dialog = ExceptionMessageDialog("Unhandled exception", unicode(msg))
         dialog.exec_()
