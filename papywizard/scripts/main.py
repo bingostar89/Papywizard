@@ -177,7 +177,7 @@ def main():
         Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
 
         # Terminate splashscreen
-        splash.finish(mainController._view) # !!!
+        splash.finish(mainController._view)
 
         # Enter Qt main loop
         qtApp.exec_()
