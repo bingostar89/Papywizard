@@ -71,7 +71,7 @@ logger = None
 class LoggerObject(QtCore.QObject):
     """ Logger object.
     """
-    def __init__(self, defaultStreamHandler=True, defaultFileHandler=True):
+    def __init__(self, defaultStreamHandler, defaultFileHandler):
         """ Init object.
         """
         logging.TRACE = logging.DEBUG - 5
@@ -234,9 +234,9 @@ class LoggerObject(QtCore.QObject):
 
 
 # Logger factory
-def Logger(defaultStream=True):
+def Logger(defaultStreamHandler=True, defaultFileHandler=True):
     global logger
     if logger is None:
-        logger = LoggerObject(defaultStream)
+        logger = LoggerObject(defaultStreamHandler, defaultFileHandler)
 
     return logger
