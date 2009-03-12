@@ -334,7 +334,7 @@ class Axis(AbstractAxis):
         @param pos: position to reach, in °
         @type pos: float
         """
-        Logger().trace("Axis._drive2()")
+        Logger().trace("Axis._driveWithExternalClosedLoop()")
         self.__driver.acquireBus()
         try:
             self._sendCmd("L")
