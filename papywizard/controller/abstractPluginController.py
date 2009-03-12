@@ -118,7 +118,7 @@ class AbstractPluginController(AbstractModalDialogController):
                 widgets[label] = field['widget']
                 field['widget'].setParent(frame)
                 formLayout.addRow(label, field['widget']) # self.tr(label) crashes
-                Logger().debug("AbstractPluginController.createGui(): added '%s' entry" % label)
+                Logger().debug("AbstractPluginController.createGui(): added '%s' field" % label)
 
         self._view.tabWidget.setCurrentIndex(1)
         self._view.tabWidget.removeTab(0)
@@ -144,7 +144,7 @@ class AbstractPluginController(AbstractModalDialogController):
         """
 
         # Add a general tab
-        self._addTab('General')
+        self._addTab('Main')
 
     # Interface
     def refreshView(self):

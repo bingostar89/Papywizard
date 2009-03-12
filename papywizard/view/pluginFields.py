@@ -92,12 +92,28 @@ class LineEditField(QtGui.QLineEdit):
 class SpinBoxField(QtGui.QSpinBox):
     """
     """
-    def __init__(self, minimum, maximum):
+    def __init__(self, minimum, maximum, prefix="", suffix=""):
         """
         """
         QtGui.QSpinBox.__init__(self)
         self.setMinimum(minimum)
         self.setMaximum(maximum)
+        self.setPrefix(prefix)
+        self.setSuffix(suffix)
+
+
+class DoubleSpinBoxField(QtGui.QDoubleSpinBox):
+    """
+    """
+    def __init__(self, minimum, maximum, decimals=1, prefix="", suffix=""):
+        """
+        """
+        QtGui.QSpinBox.__init__(self)
+        self.setMinimum(minimum)
+        self.setMaximum(maximum)
+        self.setDecimals(decimals)
+        self.setPrefix(prefix)
+        self.setSuffix(suffix)
 
 
 class CheckBoxField(QtGui.QCheckBox):

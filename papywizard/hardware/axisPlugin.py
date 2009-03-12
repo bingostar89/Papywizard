@@ -58,22 +58,40 @@ from papywizard.common.abstractPlugin import AbstractPlugin
 class HardwarePlugin(AbstractPlugin):
     """
     """
-
-
-class AxisPlugin(HardwarePlugin):
-    """ Plugin for axis.
-    """
     def _defineConfig(self):
-        HardwarePlugin._defineConfig(self)
+        AbstractPlugin._defineConfig(self)
         self._addConfigKey('_driver', 'DRIVER', default='bluetooth')
         self._addConfigKey('_btDevAdd', 'BT_DEVICE_ADDRESS', default="00:50:C2:58:55:B9")
         self._addConfigKey('_serPort', 'SERIAL_PORT', default="0")
         self._addConfigKey('_ethHost', 'ETHERNET_HOST', default="localhost")
         self._addConfigKey('_ethPort', 'ETHERNET_PORT', default=7165)
-        self._addConfigKey('_autoConnect', 'AUTO_CONNECT', default=False)
 
     # Plugin specific interface
-    def drive(self, pos, speed='normal'):
+    def connect(self):
+        """ Connect to the hardware.
+        """
+
+    def disconnect(self):
+        """ Disconnect from the hardware.
+        """
+
+
+class AxisPlugin(HardwarePlugin):
+    """ Plugin for axis.
+    """
+
+    # Plugin specific interface
+    def init(self):
+        """ Init the axis.
+        """
+        raise NotImplementedError("AxisPlugin.init() must be overidden")
+
+    def reset(self):
+        """ Reset the axis.
+        """
+        raise NotImplementedError("AxisPlugin.reset() must be overidden")
+
+    def drive(self, pos):
         """ Drive the axis to the given position.
 
         @param pos: position to reach
@@ -89,7 +107,7 @@ class AxisPlugin(HardwarePlugin):
         """
         raise NotImplementedError("AxisPlugin.read() must be overidden")
 
-    def startJog(self, dir_, speed='normal'):
+    def startJog(self, dir_):
         """
         """
         raise NotImplementedError("AxisPlugin.startJog() must be overidden")

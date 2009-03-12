@@ -121,7 +121,7 @@ class AbstractPlugin(QtCore.QObject):
         @param default: default value for the given key
         @type default:
         """
-        #self.__dict__[attr] = default # Find a way to bind to _config[]. Use property?
+        #self.__dict__[attr] = default # Find a way to bind to _config[key]. Use property?
         self._config[key] = default
 
     def _loadConfig(self):

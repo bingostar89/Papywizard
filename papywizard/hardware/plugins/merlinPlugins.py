@@ -57,9 +57,9 @@ Implements
 __revision__ = "$Id$"
 
 #from papywizard.common.pluginManager import PluginManager
-from papywizard.controller.axisPluginController import AxisPluginController
-from papywizard.hardware.axisPlugin import AxisPlugin
-from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField, SliderField
+from papywizard.controller.axisPluginController import HardwarePluginController, AxisPluginController
+from papywizard.hardware.axisPlugin import HardwarePlugin, AxisPlugin
+from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 
 class MerlinAxis(AxisPlugin):
@@ -83,10 +83,38 @@ class MerlinAxis(AxisPlugin):
 class MerlinAxisController(AxisPluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
-        self._addWidget('General', "Channel", SpinBoxField, (1, 2), 'CHANNEL')
-        self._addWidget('General', "Speed", ComboBoxField, (['low', 'normal', 'fast'],), 'SPEED')
-        self._addWidget('General', "Speed2", SliderField, (1, 3), 'SPEED2')
-        self._addWidget('General', "Bla", ComboBoxField, (['aaaa', 'bbbb', 'cccc'],), 'BLA')
+        self._addWidget('Main', "Channel", SpinBoxField, (1, 2), 'CHANNEL')
+        self._addWidget('Main', "Speed", ComboBoxField, (['low', 'normal', 'fast'],), 'SPEED')
+        self._addWidget('Main', "Speed2", SliderField, (1, 3), 'SPEED2')
+        self._addWidget('Main', "Bla", ComboBoxField, (['aaaa', 'bbbb', 'cccc'],), 'BLA')
+
+
+class MerlinShutter(HardwarePlugin):
+    name = "Merlin"
+    capacity = "shutter"
+
+    def _init(self):
+        pass
+
+    def _defineConfig(self):
+        HardwarePlugin._defineConfig(self)
+        self._addConfigKey('_timeValue', 'TIME_VALUE', default=0.5)
+        self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=False)
+        self._addConfigKey('_pulseWidthHigh', 'PULSE_WIDTH_HIGH', default=100)
+        self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=100)
+        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=1)
+        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default='exposure')
+
+
+class MerlinShutterController(HardwarePluginController):
+    def _defineGui(self):
+        HardwarePluginController._defineGui(self)
+        self._addWidget('Main', "Time value", DoubleSpinBoxField, (0.1, 3600, 1, "", " s"), 'TIME_VALUE')
+        self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
+        self._addWidget('Main', "Pulse width high", SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_HIGH')
+        self._addWidget('Main', "Pulse width low", SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_LOW')
+        self._addWidget('Main', "Bracketing nb picts", SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
+        self._addWidget('Main', "Bracketing intent", ComboBoxField, (['exposure', 'focus', 'white balance', 'movement'],), 'BRACKETING_INTENT')
 
 
 class MerlinYawAxis(MerlinAxis):
@@ -122,6 +150,8 @@ def main():
     import sys
     from PyQt4 import QtGui
     app = QtGui.QApplication(sys.argv)
-    plugin = MerlinYawAxis()
-    controller = MerlinYawAxisController(parent=None, model=plugin)
+    #plugin = MerlinYawAxis()
+    #controller = MerlinYawAxisController(parent=None, model=plugin)
+    plugin = MerlinShutter()
+    controller = MerlinShutterController(parent=None, model=plugin)
     controller.exec_()

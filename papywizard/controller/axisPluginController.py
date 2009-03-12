@@ -52,7 +52,6 @@ Implements
 
 __revision__ = "$Id$"
 
-from papywizard.common.orderedDict import OrderedDict
 from papywizard.controller.abstractPluginController import AbstractPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField, SliderField
 
@@ -61,17 +60,13 @@ class HardwarePluginController(AbstractPluginController):
     """ Plugin controller for hardware-based plugins.
     """
     def _defineGui(self):
-        """
-        @todo: use ConfigManager to save values
-        """
         AbstractPluginController._defineGui(self)
-        self._addTab('Com')
-        self._addWidget('Com', "Driver", ComboBoxField, (['bluetooth', 'serial', 'ethernet'],), 'DRIVER')
-        self._addWidget('Com', "BT device address", LineEditField, (), 'BT_DEVICE_ADDRESS')
-        self._addWidget('Com', "Serial port", LineEditField, (), 'SERIAL_PORT')
-        self._addWidget('Com', "Ethernet host", LineEditField, (), 'ETHERNET_HOST')
-        self._addWidget('Com', "Ethernet port", SpinBoxField, (1024, 65535), 'ETHERNET_PORT')
-        self._addWidget('Com', "Automatic connection", CheckBoxField, (), 'AUTO_CONNECT')
+        self._addTab('Hardware')
+        self._addWidget('Hardware', "Driver", ComboBoxField, (['bluetooth', 'serial', 'ethernet'],), 'DRIVER')
+        self._addWidget('Hardware', "BT device address", LineEditField, (), 'BT_DEVICE_ADDRESS')
+        self._addWidget('Hardware', "Serial port", LineEditField, (), 'SERIAL_PORT')
+        self._addWidget('Hardware', "Ethernet host", LineEditField, (), 'ETHERNET_HOST')
+        self._addWidget('Hardware', "Ethernet port", SpinBoxField, (1024, 65535), 'ETHERNET_PORT')
 
 
 class AxisPluginController(HardwarePluginController):
