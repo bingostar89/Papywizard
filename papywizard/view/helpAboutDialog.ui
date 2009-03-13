@@ -207,7 +207,8 @@
             <string>Frédéric Mantegazza (fr)
 Jo Lutum (de)
 Maciej Dworak (pl)
-Antonio Bruno (it)</string>
+Antonio Bruno (it)
+Juan Carlos Andres (es)</string>
            </property>
            <property name="textInteractionFlags" >
             <set>Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
