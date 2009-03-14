@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Papywizard"
-!define PRODUCT_VERSION "1.6.0-1"
+!define PRODUCT_VERSION "2.0.0-1"
 !define PRODUCT_WEB_SITE "http://trac.gbiloba.org/papywizard"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Papywizard.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -41,6 +41,10 @@
 ; Language files
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "French"
+!insertmacro MUI_LANGUAGE "German"
+!insertmacro MUI_LANGUAGE "Italian"
+!insertmacro MUI_LANGUAGE "Spanish"
+!insertmacro MUI_LANGUAGE "Polish"
 
 ; MUI end ------
 
@@ -55,7 +59,7 @@ Function .onInit
   !insertmacro MUI_LANGDLL_DISPLAY
 FunctionEnd
 
-Section "SectionPrincipale" SEC01
+Section "Papywizard" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
   File "dist\w9xpopen.exe"
@@ -78,23 +82,7 @@ Section "SectionPrincipale" SEC01
   File "..\papywizard\common\papywizard.conf"
   File "..\papywizard\common\presets.xml"
   SetOutPath "$INSTDIR\papywizard\view"
-  File "..\papywizard\view\*.glade"
-  File "..\papywizard\view\*.png"
-  SetOutPath "$INSTDIR\share\locale\en\LC_MESSAGES"
-  File "..\locale\en\LC_MESSAGES\papywizard.mo"
-  SetOutPath "$INSTDIR\share\locale\fr\LC_MESSAGES"
-  File "..\locale\fr\LC_MESSAGES\papywizard.mo"
-  SetOutPath "$INSTDIR\share\locale\pl\LC_MESSAGES"
-  File "..\locale\pl\LC_MESSAGES\papywizard.mo"
-  SetOutPath "$INSTDIR\share\locale\de\LC_MESSAGES"
-  File "..\locale\de\LC_MESSAGES\papywizard.mo"
-SectionEnd
-
-Section "GTK+ runtime" SEC02
-  SetOutPath $TEMP
-  File "dist\gtk+-2.10.13-setup.exe"
-  ExecWait '"$TEMP\gtk+-2.10.13-setup.exe" /SP- /SILENT'
-  Delete "$TEMP\gtk+-2.10.13-setup.exe"
+  File "..\papywizard\view\*.ui"
 SectionEnd
 
 Section -AdditionalIcons
@@ -115,18 +103,17 @@ SectionEnd
 
 ; Section descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "Papywizard"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "GTK+ 2.10.13 runtime"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "Papywizard software"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Function un.onUninstSuccess
   HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) a ete desinstalle avec succes de votre ordinateur."
+  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) has been successfully removed from your computer."
 FunctionEnd
 
 Function un.onInit
 !insertmacro MUI_UNGETLANGUAGE
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Etes-vous certains de vouloir desinstaller totalement $(^Name) et tous ses composants ?" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Do you really want to uninstall $(^Name)?" IDYES +2
   Abort
 FunctionEnd
 
@@ -139,7 +126,7 @@ Section Uninstall
   Delete "$INSTDIR\Papywizard-3D.exe"
   Delete "$INSTDIR\Papywizard-Simul.exe"
   Delete "$INSTDIR\w9xpopen.exe"
-  Delete "$INSTDIR\Papywizard.exe.log"
+  Delete "$INSTDIR\*.log"
   Delete "$INSTDIR\papywizard.ico"
   Delete "$SMPROGRAMS\Papywizard\Uninstall.lnk"
   Delete "$SMPROGRAMS\Papywizard\Website.lnk"
@@ -152,23 +139,9 @@ Section Uninstall
   ; Sources
   Delete "$INSTDIR\papywizard\common\*.*"
   Delete "$INSTDIR\papywizard\view\*.*"
-  Delete "$INSTDIR\share\locale\en\LC_MESSAGES\papywizard.mo"
-  Delete "$INSTDIR\share\locale\fr\LC_MESSAGES\papywizard.mo"
-  Delete "$INSTDIR\share\locale\pl\LC_MESSAGES\papywizard.mo"
-  Delete "$INSTDIR\share\locale\de\LC_MESSAGES\papywizard.mo"
   RMDir  "$INSTDIR\papywizard\common"
   RMDir  "$INSTDIR\papywizard\view"
   RMDir  "$INSTDIR\papywizard"
-  RMDir  "$INSTDIR\share\locale\en\LC_MESSAGES"
-  RMDir  "$INSTDIR\share\locale\en"
-  RMDir  "$INSTDIR\share\locale\fr\LC_MESSAGES"
-  RMDir  "$INSTDIR\share\locale\fr"
-  RMDir  "$INSTDIR\share\locale\pl\LC_MESSAGES"
-  RMDir  "$INSTDIR\share\locale\pl"
-  RMDir  "$INSTDIR\share\locale\de\LC_MESSAGES"
-  RMDir  "$INSTDIR\share\locale\de"
-  RMDir  "$INSTDIR\share\locale"
-  RMDir  "$INSTDIR\share"
   RMDir  "$INSTDIR"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
