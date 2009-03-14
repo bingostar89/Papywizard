@@ -8,6 +8,10 @@ x bug fix
 
 0000-00-00 Version SVN
 
+2009-03-15 Version 2.0.0 (stable)
+    (include all 1.9.x entries)
+    x misc bugs correction
+
 2009-03-12 Version 1.9.9 (dev)
     + added default log file handler
 
