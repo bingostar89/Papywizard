@@ -1,8 +1,9 @@
 [Desktop Entry]
 Version=1.0
 Encoding=UTF-8
-Icon=papywizard
 Name=Papywizard
 Exec=/usr/bin/papywizard.sh
+Icon=papywizard
+X-Window-Icon=papywizard
+X-Window-Icon-dimmed=papywizard
 Type=Application
-X-Osso-Type=application/x-executable
