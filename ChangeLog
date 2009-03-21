@@ -7,6 +7,8 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    - log file now in temp dir
+    x icon size on maemo fixed
 
 2009-03-15 Version 2.0.0 (stable)
     (include all 1.9.x entries)

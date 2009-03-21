@@ -51,7 +51,7 @@ import os.path
 
 # Version
 VERSION_MAJOR = 2
-VERSION_MINOR = 0 # Odd means dev. release
+VERSION_MINOR = 1 # Odd means dev. release
 VERSION_UPDATE = 0
 VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 VERSION_XML = "a"
@@ -61,6 +61,7 @@ HOME_DIR = os.path.expanduser("~")
 if sys.platform == 'win32':
     USER_CONFIG_DIR = os.path.join(os.path.expandvars("$APPDATA"), "papywizard2")
     DATA_STORAGE_DIR = HOME_DIR # Find a way to retreive the "My Documents" dir in all languages
+    TMP_DIR = os.path.expandvars("$TEMP")
 else:
     USER_CONFIG_DIR = os.path.join(HOME_DIR, ".config", "papywizard2") # OpenDesktop standard
     try:
@@ -68,6 +69,7 @@ else:
         DATA_STORAGE_DIR = os.path.join(HOME_DIR, "MyDocs")
     except ImportError:
         DATA_STORAGE_DIR = HOME_DIR
+    TMP_DIR = "/tmp"
 try:
     os.makedirs(USER_CONFIG_DIR)
 except OSError, (errno, errmsg):
