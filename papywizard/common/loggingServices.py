@@ -97,7 +97,7 @@ class LoggerObject(QtCore.QObject):
             stdoutStreamHandler.setFormatter(spaceColorFormatter)
             self.__logger.addHandler(stdoutStreamHandler)
         if defaultFileHandler:
-            loggerFilename = os.path.join(config.DATA_STORAGE_DIR, config.LOGGER_FILENAME)
+            loggerFilename = os.path.join(config.TMP_DIR, config.LOGGER_FILENAME)
             fileHandler = logging.handlers.RotatingFileHandler(loggerFilename, 'w',
                                                                config.LOGGER_MAX_BYTES,
                                                                config.LOGGER_BACKUP_COUNT)
