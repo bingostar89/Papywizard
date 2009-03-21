@@ -83,7 +83,10 @@ setup(name="papywizard",
       package_data={'papywizard': ["view/*.ui", "common/papywizard.conf", "common/presets.xml"]},
 
       data_files=[("share/applications/hildon", ["maemo/papywizard.desktop"]),
-                  ('share/icons/hicolor/scalable/hildon/', ["maemo/papywizard.png"])],
+                  ('share/icons/hicolor/26x26/hildon/', ["maemo/icons/26x26/papywizard.png"]),
+                  ('share/icons/hicolor/40x40/hildon/', ["maemo/icons/40x40/papywizard.png"]),
+                  ('share/icons/hicolor/64x64/hildon/', ["maemo/icons/64x64/papywizard.png"]),
+                  ('share/icons/hicolor/scalable/hildon/', ["maemo/icons/scalanle/papywizard.png"])],
 
       # Debian package for maemo
       section="user/graphics",
