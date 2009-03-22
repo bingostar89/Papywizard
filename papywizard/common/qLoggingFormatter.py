@@ -71,8 +71,8 @@ class QDefaultFormatter(DefaultFormatter):
         """
         msg = msg.replace('<', "&lt;")
         msg = msg.replace('>', "&gt;")
-        msg = msg.replace('\n', "<br />")
         msg = msg.replace(' ', "&nbsp;")
+        msg = msg.replace('\n', "<br />")
         return msg
 
     def format(self, record):
