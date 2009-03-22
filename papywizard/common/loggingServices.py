@@ -143,7 +143,7 @@ class LoggerObject(QtCore.QObject):
         @param message: message to log
         @type message: string
         """
-        self.__logger.log(logging.TRACE, unicode(message))
+        self.__logger.log(logging.TRACE, message)
 
     def debug(self, message):
         """ Logs a message with level DEBUG.
@@ -151,7 +151,7 @@ class LoggerObject(QtCore.QObject):
         @param message: message to log
         @type message: string
         """
-        self.__logger.debug(unicode(message))
+        self.__logger.debug(message)
 
     def info(self, message):
         """ Logs a message with level INFO.
@@ -159,7 +159,7 @@ class LoggerObject(QtCore.QObject):
         @param message: message to log
         @type message: string
         """
-        self.__logger.info(unicode(message))
+        self.__logger.info(message)
 
     def warning(self, message):
         """ Logs a message with level WARNING.
@@ -167,7 +167,7 @@ class LoggerObject(QtCore.QObject):
         @param message: message to log
         @type message: string
         """
-        self.__logger.warning(unicode(message))
+        self.__logger.warning(message)
 
     def error(self, message):
         """ Logs a message with level ERROR.
@@ -175,7 +175,7 @@ class LoggerObject(QtCore.QObject):
         @param message: message to log
         @type message: string
         """
-        self.__logger.error(unicode(message))
+        self.__logger.error(message)
 
     def critical(self, message):
         """ Logs a message with level CRITICAL.
@@ -183,7 +183,7 @@ class LoggerObject(QtCore.QObject):
         @param message: message to log
         @type message: string
         """
-        self.__logger.critical(unicode(message))
+        self.__logger.critical(message)
 
     def exception(self, message="", debug=False):
         """ Logs a message within an exception.
@@ -201,9 +201,9 @@ class LoggerObject(QtCore.QObject):
         message += "\n"+tracebackString.getvalue().strip()
         tracebackString.close()
         if debug:
-            self.debug(unicode(message))
+            self.debug(message)
         else:
-            self.log(logging.EXCEPTION, unicode(message))
+            self.log(logging.EXCEPTION, message)
 
     def log(self, level, message, *args, **kwargs):
         """ Logs a message with given level.
@@ -214,7 +214,7 @@ class LoggerObject(QtCore.QObject):
         @param message: message to log
         @type message: string
         """
-        self.__logger.log(level, unicode(message), *args, **kwargs)
+        self.__logger.log(level, message, *args, **kwargs)
 
     def getTraceback(self):
         """ Return the complete traceback.
@@ -225,7 +225,7 @@ class LoggerObject(QtCore.QObject):
         traceback.print_exc(file=tracebackString)
         message = tracebackString.getvalue().strip()
         tracebackString.close()
-        return unicode(message)
+        return message
 
     def shutdown(self):
         """ Shutdown the logging service.
