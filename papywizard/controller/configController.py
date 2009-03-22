@@ -160,6 +160,7 @@ class ConfigController(AbstractModalDialogController):
 
         # Misc tab
         ConfigManager().set('Preferences', 'LOGGER_LEVEL', config.LOGGER_INDEX[self._view.loggerLevelComboBox.currentIndex()])
+        self._model.externalShootingScript = self._view.externalShootingScriptCheckBox.isChecked()
 
         ConfigManager().save()
 
@@ -367,6 +368,7 @@ class ConfigController(AbstractModalDialogController):
         # Misc tab
         loggerIndex = config.LOGGER_INDEX[ConfigManager().get('Preferences', 'LOGGER_LEVEL')]
         self._view.loggerLevelComboBox.setCurrentIndex(loggerIndex)
+        self._view.externalShootingScriptCheckBox.setChecked(self._model.externalShootingScript)
 
     def getSelectedTab(self):
         """ Return the selected tab.
