@@ -223,6 +223,18 @@ class Shooting(QtCore.QObject):
 
     timerEvery = property(__getTimerEvery, __setTimerEvery)
 
+    def __getExternalShootingScript(self):
+        """
+        """
+        return ConfigManager().getBoolean('Preferences', 'EXTERNAL_SHOOTING_SCRIPT')
+
+    def __setExternalShootingScript(self, flag):
+        """
+        """
+        ConfigManager().setBoolean('Preferences', 'EXTERNAL_SHOOTING_SCRIPT', flag)
+
+    externalShootingScript = property(__getExternalShootingScript, __setExternalShootingScript)
+
     def __getScan(self):
         """
         """
@@ -479,6 +491,19 @@ class Shooting(QtCore.QObject):
 
         Logger().info("Start shooting process...")
         try:
+            if self.externalShootingScript:
+                try:
+                    retCode, stdout, stderr = externalShooting.init()
+                    Logger().debug("Shooting.init(): externalShooting.init() return code=%d" % retCode)
+                    if stderr:
+                        Logger().debug("Shooting.start(): externalShooting.init() stderr:\n%s" % stderr)
+                    Logger().debug("Shooting.start(): externalShooting.init() stdout:\n%s" % stdout)
+                except:
+                    Logger().exception("Shooting.start()")
+                    raise HardwareError("External shooting script failed on 'init()'")
+                else:
+                    if retCode:
+                        raise HardwareError("External shooting script failed on 'init()'")
 
             # Timer after
             if self.timerAfterEnable:
@@ -559,21 +584,23 @@ class Shooting(QtCore.QObject):
                             if self.camera.mirrorLockup:
                                 Logger().info("Mirror lockup")
                                 self.sequence('mirror')
-                                try:
-                                    retCode, stdout, stderr = externalShooting.mirrorLockup()
-                                    Logger().debug("Shooting.start(): externalShooting.mirrorLockup() return code=%d" % retCode)
-                                    if stderr:
-                                        Logger().debug("Shooting.start(): externalShooting.mirrorLockup() stderr:\n%s" % stderr)
-                                    Logger().debug("Shooting.start(): externalShooting.mirrorLockup() stdout:\n%s" % stdout)
-                                except (NameError, AttributeError):
-                                    Logger().exception("Shooting.start()", debug=True)
-                                    self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
-                                except:
-                                    Logger().exception("Shooting.start()")
-                                    raise HardwareError("External shooting script failed on 'mirrorLockup()'")
-                                else:
-                                    if retCode:
+                                if self.externalShootingScript:
+                                    try:
+                                        retCode, stdout, stderr = externalShooting.mirrorLockup()
+                                        Logger().debug("Shooting.start(): externalShooting.mirrorLockup() return code=%d" % retCode)
+                                        if stderr:
+                                            Logger().debug("Shooting.start(): externalShooting.mirrorLockup() stderr:\n%s" % stderr)
+                                        Logger().debug("Shooting.start(): externalShooting.mirrorLockup() stdout:\n%s" % stdout)
+                                    except:
+                                        Logger().exception("Shooting.start()")
                                         raise HardwareError("External shooting script failed on 'mirrorLockup()'")
+                                    else:
+                                        if retCode:
+                                            raise HardwareError("External shooting script failed on 'mirrorLockup()'")
+                                else:
+                                    self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
+
+                                self.__LastShootTime = time.time()
 
                             Logger().info("Stabilization")
                             self.sequence('stabilization')
@@ -588,22 +615,24 @@ class Shooting(QtCore.QObject):
                             delay = self.camera.pulseWidthLow / 1000. - (time.time() - self.__LastShootTime)
                             if delay > 0:
                                 time.sleep(delay)
-                            try:
-                                retCode, stdout, stderr = externalShooting.shoot(bracket)
-                                # todo: open log window for external script output
-                                Logger().debug("Shooting.start(): externalShooting.shoot() return code=%d" % retCode)
-                                if stderr:
-                                    Logger().debug("Shooting.start(): externalShooting.shoot() stderr:\n%s" % stderr)
-                                Logger().debug("Shooting.start(): externalShooting.shoot() stdout:\n%s" % stdout)
-                            except (NameError, AttributeError):
-                                Logger().exception("Shooting.start()", debug=True)
-                                self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
-                            except:
-                                Logger().exception("Shooting.start()")
-                                raise HardwareError("External shooting script failed on 'shoot()'")
-                            else:
-                                if retCode:
+
+                            if self.externalShootingScript:
+                                try:
+                                    retCode, stdout, stderr = externalShooting.shoot(bracket)
+                                    # todo: open log window for external script output
+                                    Logger().debug("Shooting.start(): externalShooting.shoot() return code=%d" % retCode)
+                                    if stderr:
+                                        Logger().debug("Shooting.start(): externalShooting.shoot() stderr:\n%s" % stderr)
+                                    Logger().debug("Shooting.start(): externalShooting.shoot() stdout:\n%s" % stdout)
+                                except:
+                                    Logger().exception("Shooting.start()")
                                     raise HardwareError("External shooting script failed on 'shoot()'")
+                                else:
+                                    if retCode:
+                                        raise HardwareError("External shooting script failed on 'shoot()'")
+                            else:
+                                self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
+
                             self.__LastShootTime = time.time()
 
                             # Wait for the end of shutter cycle
