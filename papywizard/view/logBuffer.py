@@ -53,12 +53,9 @@ class LogBuffer(object):
     """ Log buffer storage.
 
     Implement a log buffer, which automatically appends
-    a log at the end, with the right color, and limit the
-    buffer size to a specified value.
-
-    To be used within a gtk.TextView.
+    a record at the end, and limit the size to a specified value.
     """
-    def __init__(self, color='html', *args, **kwargs):
+    def __init__(self):
         """ Init the log buffer.
         """
         self.__buffer = []
@@ -70,7 +67,6 @@ class LogBuffer(object):
         @type logMessage: str
         """
         self.__buffer.append(logMessage)
-        overflow = len(self.__buffer) - config.LOGGER_MAX_COUNT_LINE
         if len(self.__buffer) > config.LOGGER_MAX_COUNT_LINE:
             del self.__buffer[0]
 
@@ -82,7 +78,13 @@ class LogBuffer(object):
         pass
 
     def getHtml(self):
-        return "<br />".join(self.__buffer)
+        text = u""
+        for line in self.__buffer:
+            if isinstance(line, str):
+                text += u"<br />" + line.decode("utf-8")
+            else:
+                text += u"<br />" + line
+        return text
 
     def clear(self):
         """ Clear the buffer.
