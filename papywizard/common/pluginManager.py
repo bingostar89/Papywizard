@@ -49,7 +49,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: pluginManager.py 1571 2009-03-10 10:10:58Z fma $"
+__revision__ = "$Id$"
 
 import sys
 import os
