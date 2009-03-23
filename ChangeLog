@@ -10,7 +10,7 @@ x bug fix
 
 2009-03-23 Version 2.1.0 (dev)
     + flag to use external shooting script
-    + new init() method in shoot.py script
+    + new init() method in external shooting script
     - log file now in temp dir
     x fixed unicode log problems
     x icon size on maemo fixed
