@@ -55,6 +55,7 @@ from PyQt4 import QtCore, QtGui
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.qLoggingFormatter import QSpaceColorFormatter
+from papywizard.common.pluginManager import PluginManager
 from papywizard.view.logBuffer import LogBuffer
 
 
@@ -153,6 +154,11 @@ def main():
         splash.showMessage("Loading configuration...")
         qtApp.processEvents()
         ConfigManager()
+
+        # Load plugins (move to shooting?)
+        Logger().info("Loading plugins...")
+        splash.showMessage("Loading plugins...")
+        PluginManager().load()
 
         # Create model
         Logger().info("Creating model...")
