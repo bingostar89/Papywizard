@@ -60,5 +60,5 @@ class HardwarePluginController(AbstractPluginController):
     """
     def _defineGui(self):
         AbstractPluginController._defineGui(self)
-        self._addTab('Hardware')
-        self._addWidget('Hardware', "Driver", ComboBoxField, (['bluetooth', 'serial', 'ethernet'],), 'DRIVER')
+        self._addTab('Driver')
+        self._addWidget('Driver', "Type", ComboBoxField, (['bluetooth', 'serial', 'ethernet'],), 'DRIVER_TYPE')
