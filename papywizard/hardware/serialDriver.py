@@ -72,10 +72,7 @@ class SerialDriver(BusDriver):
             self._serial = serial.Serial(port=port)
             self._serial.timeout = config.SERIAL_TIMEOUT
             self._serial.baudrate = config.SERIAL_BAUDRATE
-            self._serial.read(self._serial.inWaiting()) # Empty buffer
-        #except ???, msg:
-            #Logger().exception("BluetoothDriver.init()")
-            #raise HardwareError(msg)
+            self._serial.read(self._serial.inWaiting())
         except:
             Logger().exception("SerialDriver._init()")
             raise
