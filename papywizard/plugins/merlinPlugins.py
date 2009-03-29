@@ -42,6 +42,7 @@ Hardware
 Implements
 ==========
 
+- MerlinHardware
 - MerlinAxis
 - MerlinAxisController
 - MerlinYawAxis
