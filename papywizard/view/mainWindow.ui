@@ -929,7 +929,7 @@
      <x>0</x>
      <y>0</y>
      <width>565</width>
-     <height>31</height>
+     <height>35</height>
     </rect>
    </property>
    <property name="font" >
@@ -966,6 +966,8 @@
     <addaction name="separator" />
     <addaction name="actionHardwareGotoReference" />
     <addaction name="actionHardwareGotoInitial" />
+    <addaction name="separator" />
+    <addaction name="actionHardwarePreferences" />
    </widget>
    <widget class="QMenu" name="menuHelp" >
     <property name="title" >
@@ -1122,6 +1124,15 @@
    </property>
    <property name="text" >
     <string>Goto Initial...</string>
+   </property>
+  </action>
+  <action name="actionHardwarePreferences" >
+   <property name="icon" >
+    <iconset resource="icons.qrc" >
+     <normaloff>:/icons/configure.png</normaloff>:/icons/configure.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Preferences...</string>
    </property>
   </action>
  </widget>
