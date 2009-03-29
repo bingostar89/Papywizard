@@ -63,7 +63,7 @@ from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.common.pluginManager import PluginManager
 from papywizard.common.helpers import decodeAxisValue, encodeAxisValue, deg2cod, cod2deg
-from papywizard.hardware.axisPlugin import AxisPlugin
+from papywizard.hardware.abstractAxisPlugin import AbstractAxisPlugin
 from papywizard.hardware.hardwarePlugin import HardwarePlugin
 from papywizard.controller.axisPluginController import AxisPluginController
 from papywizard.controller.hardwarePluginController import HardwarePluginController
@@ -146,19 +146,14 @@ class MerlinHardware:
         return data
 
 
-class MerlinAxis(MerlinHardware, AxisPlugin, HardwarePlugin):
-    #def __init__(self):
-        #AxisPlugin.__init__(self)
-        #MerlinHardware.__init__(self)
-        #HardwarePlugin.__init__(self)
-
+class MerlinAxis(MerlinHardware, AbstractAxisPlugin, HardwarePlugin):
     def _init(self):
         MerlinHardware._init(self)
-        AxisPlugin._init(self)
+        AbstractAxisPlugin._init(self)
         self._manualSpeed = config.MANUAL_SPEED['normal']
 
     def _defineConfig(self):
-        AxisPlugin._defineConfig(self)
+        AbstractAxisPlugin._defineConfig(self)
         HardwarePlugin._defineConfig(self)
 
     def activate(self):
@@ -385,10 +380,6 @@ class MerlinPitchAxisController(MerlinAxisController):
 
 
 class MerlinShutter(MerlinHardware, ShutterPlugin, HardwarePlugin):
-    #def __init__(self, *args, **kwargs):
-        #ShutterPlugin.__init__(self, *args, **kwargs)
-        #HardwarePlugin.__init__(self, *args, **kwargs)
-
     def _getTimeValue(self):
         return self._config["TIME_VALUE"]
 
@@ -445,10 +436,6 @@ class MerlinShutter(MerlinHardware, ShutterPlugin, HardwarePlugin):
 
 
 class MerlinShutterController(ShutterPluginController, HardwarePluginController):
-    #def __init__(self, *args, **kwargs):
-        #HardwarePluginController.__init__(self, *args, **kwargs)
-        #ShutterPluginController.__init__(self, *args, **kwargs)
-
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
