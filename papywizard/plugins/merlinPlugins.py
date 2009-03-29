@@ -76,7 +76,6 @@ class MerlinHardware:
     def _init(self):
         self._numAxis = None
 
-    # Plugin specific methods
     def _sendCmd(self, cmd, param=""):
         """ Send a command to the axis.
 
@@ -122,28 +121,6 @@ class MerlinHardware:
         #Logger().debug("MerlinHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (self._numAxis, cmd, answer))
 
         return answer
-
-    def sendCmd(self, cmd):
-        self.acquireBus()
-        try:
-            self.empty()
-            #self._setCS(0)
-            self.write(":%s\r" % cmd)
-            c = ''
-            while c != '=':
-                c = self.read(1)
-            data = ""
-            while True:
-                c = self.read(1)
-                if c == '\r':
-                    break
-                data += c
-
-        finally:
-            #self._setCS(1)
-            self.releaseBus()
-
-        return data
 
 
 class MerlinAxis(MerlinHardware, AbstractAxisPlugin, HardwarePlugin):
