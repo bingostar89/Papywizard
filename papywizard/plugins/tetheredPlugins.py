@@ -75,7 +75,6 @@ class TetheredShutter(ShutterPlugin):
         return -1
 
     def _getMirrorLockup(self):
-        print self._config['MIRROR_LOCKUP']
         return self._config['MIRROR_LOCKUP']
 
     def _getBracketingNbPicts(self):
@@ -114,8 +113,8 @@ class TetheredShutter(ShutterPlugin):
         # Wait end of execution
         stdout, stderr = p.communicate()
         if stderr:
-            Logger().debug("TetheredShutter.shoot(): externalShooting.shoot() stderr:\n%s" % stderr)
-        Logger().debug("TetheredShutter.shoot(): externalShooting.shoot() stdout:\n%s" % stdout)
+            Logger().debug("TetheredShutter.shoot(): stderr:\n%s" % stderr)
+        Logger().debug("TetheredShutter.shoot(): stdout:\n%s" % stdout)
 
         return p.returncode
 
