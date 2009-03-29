@@ -85,7 +85,7 @@ class AbstractController(QtCore.QObject):
         self._init()
 
         # Build the GUI from ui file
-        uiFile = os.path.join(path, os.path.pardir, "view", self._uiFile)
+        uiFile = os.path.join(path, os.path.pardir, "view", "ui", self._uiFile)
         self._view = PyQt4.uic.loadUi(uiFile)
 
         self._initWidgets()
