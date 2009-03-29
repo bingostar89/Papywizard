@@ -42,19 +42,19 @@ Plugin
 Implements
 ==========
 
-- ShutterPlugin
+- AbstractShutterPlugin
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
 @license: CeCILL
 """
 
-__revision__ = "$Id: axisPlugin.py 1595 2009-03-12 12:39:38Z fma $"
+__revision__ = "$Id$"
 
 from papywizard.common.abstractPlugin import AbstractPlugin
 
 
-class ShutterPlugin(AbstractPlugin):
+class AbstractShutterPlugin(AbstractPlugin):
     capacity = "shutter"
 
     def _init(self):
@@ -63,7 +63,7 @@ class ShutterPlugin(AbstractPlugin):
     def _getTimeValue(self):
         """
         """
-        raise NotImplementedError("ShutterPlugin._getTimeValue() must be overloaded")
+        raise NotImplementedError("AbstractShutterPlugin._getTimeValue() must be overloaded")
 
     def __getTimeValue(self):
         return self._getTimeValue()
@@ -73,7 +73,7 @@ class ShutterPlugin(AbstractPlugin):
     def _getMirrorLockup(self):
         """
         """
-        raise NotImplementedError("ShutterPlugin._getMirrorLockup() must be overloaded")
+        raise NotImplementedError("AbstractShutterPlugin._getMirrorLockup() must be overloaded")
 
     def __getMirrorLockup(self):
         return self._getMirrorLockup()
@@ -83,7 +83,7 @@ class ShutterPlugin(AbstractPlugin):
     def _getBracketingNbPicts(self):
         """
         """
-        raise NotImplementedError("ShutterPlugin._getBracketingNbPicts() must be overloaded")
+        raise NotImplementedError("AbstractShutterPlugin._getBracketingNbPicts() must be overloaded")
 
     def __getBracketingNbPicts(self):
         return self._getBracketingNbPicts()
@@ -93,7 +93,7 @@ class ShutterPlugin(AbstractPlugin):
     def _getBracketingIntent(self):
         """
         """
-        raise NotImplementedError("ShutterPlugin.__getBracketingIntent() must be overloaded")
+        raise NotImplementedError("AbstractShutterPlugin.__getBracketingIntent() must be overloaded")
 
     def __getBracketingIntent(self):
         return self._getBracketingIntent()
@@ -102,13 +102,6 @@ class ShutterPlugin(AbstractPlugin):
 
     def _defineConfig(self):
         pass
-        #HardwarePlugin._defineConfig(self)
-        #self._addConfigKey('_timeValue', 'TIME_VALUE', default=0.5)
-        #self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=False)
-        #self._addConfigKey('_pulseWidthHigh', 'PULSE_WIDTH_HIGH', default=100)
-        #self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=100)
-        #self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=1)
-        #self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default='exposure')
 
     def lockupMirror(self):
         """ Lockup the mirror.
@@ -116,7 +109,7 @@ class ShutterPlugin(AbstractPlugin):
         @return: error code (0 for OK)
         @rtype: int
         """
-        raise NotImplementedError("ShutterPlugin.lockupMirror() must be overloaded")
+        raise NotImplementedError("AbstractShutterPlugin.lockupMirror() must be overloaded")
 
     def shoot(self, bracketNumber):
         """ Shoot.
@@ -127,4 +120,4 @@ class ShutterPlugin(AbstractPlugin):
         @return: error code (0 for OK)
         @rtype: int
         """
-        raise NotImplementedError("ShutterPlugin.shoot() must be overloaded")
+        raise NotImplementedError("AbstractShutterPlugin.shoot() must be overloaded")
