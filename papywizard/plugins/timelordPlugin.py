@@ -60,12 +60,12 @@ from PyQt4 import QtCore
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.pluginManager import PluginManager
-from papywizard.hardware.shutterPlugin import ShutterPlugin
+from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 
-class TimelordShutter(ShutterPlugin):
+class TimelordShutter(AbstractShutterPlugin):
     name = "Timelord"
 
     def _init(self):
@@ -84,7 +84,7 @@ class TimelordShutter(ShutterPlugin):
         return None
 
     def _defineConfig(self):
-        ShutterPlugin._defineConfig(self)
+        AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('Program path', 'PROGRAM_PATH', default="C:\\Program Files\\OxfordEye\\Timelord\\Timelord.exe")
         self._addConfigKey('LRD file path', 'LRD_FILE_PATH', default="C:\\Documents and Settings\\win2k\\My Documents\\timelord.lrd")
 

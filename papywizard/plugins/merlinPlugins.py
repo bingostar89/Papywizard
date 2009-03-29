@@ -65,6 +65,7 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.pluginManager import PluginManager
 from papywizard.common.helpers import decodeAxisValue, encodeAxisValue, deg2cod, cod2deg
 from papywizard.hardware.abstractAxisPlugin import AbstractAxisPlugin
+from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.hardware.hardwarePlugin import HardwarePlugin
 from papywizard.controller.axisPluginController import AxisPluginController
 from papywizard.controller.hardwarePluginController import HardwarePluginController
@@ -357,7 +358,7 @@ class MerlinPitchAxisController(MerlinAxisController):
     pass
 
 
-class MerlinShutter(MerlinHardware, ShutterPlugin, HardwarePlugin):
+class MerlinShutter(MerlinHardware, AbstractShutterPlugin, HardwarePlugin):
     def _getTimeValue(self):
         return self._config["TIME_VALUE"]
 
@@ -374,7 +375,7 @@ class MerlinShutter(MerlinHardware, ShutterPlugin, HardwarePlugin):
         self._numAxis = 1 # shutter contact is connected on axis 1 µ-controller
 
     def _defineConfig(self):
-        ShutterPlugin._defineConfig(self)
+        AbstractShutterPlugin._defineConfig(self)
         HardwarePlugin._defineConfig(self)
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=0.5)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=False)

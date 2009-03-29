@@ -60,12 +60,12 @@ from PyQt4 import QtCore
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.pluginManager import PluginManager
-from papywizard.hardware.shutterPlugin import ShutterPlugin
+from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 
-class TetheredShutter(ShutterPlugin):
+class TetheredShutter(AbstractShutterPlugin):
     name = "Tethered"
 
     def _init(self):
@@ -84,7 +84,7 @@ class TetheredShutter(ShutterPlugin):
         return self._config['BRACKETING_INTENT']
 
     def _defineConfig(self):
-        ShutterPlugin._defineConfig(self)
+        AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=False)
         self._addConfigKey('_mirrorLockupCommand', 'MIRROR_LOCKUP_COMMAND', default="")
         self._addConfigKey('_shootCommand', 'SHOOT_COMMAND', default="")

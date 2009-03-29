@@ -66,24 +66,24 @@ from PyQt4 import QtCore
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.pluginManager import PluginManager
-from papywizard.hardware.axisPlugin import AxisPlugin
-from papywizard.hardware.shutterPlugin import ShutterPlugin
+from papywizard.hardware.abstractAxisPlugin import AbstractAxisPlugin
+from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.controller.axisPluginController import AxisPluginController
 from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 
-class SimulationAxis(AxisPlugin, QtCore.QThread):
+class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
     """ Simulated hardware axis.
     """
     name = "Simulation"
 
     def __init__(self):
-        AxisPlugin.__init__(self)
+        AbstractAxisPlugin.__init__(self)
         QtCore.QThread.__init__(self)
 
     def _init(self):
-        AxisPlugin._init(self)
+        AbstractAxisPlugin._init(self)
         self._manualSpeed = 1.
         self.__pos = 0.
         self.__jog = False
@@ -205,9 +205,6 @@ class SimulationAxis(AxisPlugin, QtCore.QThread):
     def isMoving(self):
         return self.__jog
 
-    #def getStatus(self):
-        #return "000"
-
     def setManualSpeed(self, speed):
         if speed == 'slow':
             self._manualSpeed = .2
@@ -239,7 +236,7 @@ class SimulationPitchAxisController(SimulationAxisController):
     pass
 
 
-class SimulationShutter(ShutterPlugin):
+class SimulationShutter(AbstractShutterPlugin):
     name = "Simulation"
 
     def _init(self):
@@ -258,7 +255,7 @@ class SimulationShutter(ShutterPlugin):
         return self._config['BRACKETING_INTENT']
 
     def _defineConfig(self):
-        ShutterPlugin._defineConfig(self)
+        AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=0.5)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=False)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=1)
@@ -277,7 +274,7 @@ class SimulationShutter(ShutterPlugin):
         time.sleep(.2)
         return 0
 
-    def shoot(self):
+    def shoot(self, bracketNumber):
         """ Shoot.
         """
         Logger().trace("SimulationShutter.shoot()")
