@@ -42,7 +42,7 @@ Plugin
 Implements
 ==========
 
-- AxisPlugin
+- AbstractAxisPlugin
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
@@ -54,8 +54,8 @@ __revision__ = "$Id$"
 from papywizard.common.abstractPlugin import AbstractPlugin
 
 
-class AxisPlugin(AbstractPlugin): # Rename to AbstractAxisPlugin?
-    """ Plugin for axis.
+class AbstractAxisPlugin(AbstractPlugin):
+    """ Abstract plugin for axis.
 
     Common implementation of axis.
     """
@@ -125,7 +125,7 @@ class AxisPlugin(AbstractPlugin): # Rename to AbstractAxisPlugin?
         @return: position, in °
         @rtype: float
         """
-        raise NotImplementedError("AxisPlugin.read() must be overloaded")
+        raise NotImplementedError("AbstractAxisPlugin.read() must be overloaded")
 
     def drive(self, pos, inc=False, useOffset=True, wait=True):
         """ Drive the axis.
@@ -143,12 +143,12 @@ class AxisPlugin(AbstractPlugin): # Rename to AbstractAxisPlugin?
                      returns immediatly otherwise.
         @type wait: boot
         """
-        raise NotImplementedError("AxisPlugin.drive() must be overloaded")
+        raise NotImplementedError("AbstractAxisPlugin.drive() must be overloaded")
 
     def waitEndOfDrive(self):
         """ Wait for end of drive.
         """
-        raise NotImplementedError("AxisPlugin.waitEndOfDrive() must be overloaded")
+        raise NotImplementedError("AbstractAxisPlugin.waitEndOfDrive() must be overloaded")
 
     def startJog(self, dir_):
         """ Start axis in specified direction.
@@ -156,17 +156,17 @@ class AxisPlugin(AbstractPlugin): # Rename to AbstractAxisPlugin?
         @param dir_: direction ('+', '-')
         @type dir_: char
         """
-        raise NotImplementedError("AxisPlugin.startJog() must be overloaded")
+        raise NotImplementedError("AbstractAxisPlugin.startJog() must be overloaded")
 
     def stop(self):
         """ stop drive axis.
         """
-        raise NotImplementedError("AxisPlugin.stop() must be overloaded")
+        raise NotImplementedError("AbstractAxisPlugin.stop() must be overloaded")
 
     def waitStop(self):
         """ Wait until axis does not move anymore (inertia).
         """
-        raise NotImplementedError("AxisPlugin.waitStop() must be overloaded")
+        raise NotImplementedError("AbstractAxisPlugin.waitStop() must be overloaded")
 
     def isMoving(self):
         """ Check if axis is moving.
@@ -174,12 +174,7 @@ class AxisPlugin(AbstractPlugin): # Rename to AbstractAxisPlugin?
         @return: True if moving, False if stopped
         @rtype: bool
         """
-        raise NotImplementedError("AxisPlugin.isMoving() must be overloaded")
-
-    #def getStatus(self):
-        #""" Return the status of the axis.
-        #"""
-        #raise NotImplementedError("AxisPlugin.getStatus() must be overloaded")
+        raise NotImplementedError("AbstractAxisPlugin.isMoving() must be overloaded")
 
     def setManualSpeed(self, speed):
         """ Set manual speed.
@@ -187,12 +182,4 @@ class AxisPlugin(AbstractPlugin): # Rename to AbstractAxisPlugin?
         @param speed: new manual speed, in ('slow', 'normal', 'fast')
         @type speed: str
         """
-        raise NotImplementedError("AxisPlugin.setManualSpeed() must be overloaded")
-
-    #def setMaxSpeed(self, speed): # Internal, through config
-        #""" Set maximum speed.
-
-        #@param speed: new maximum speed, in ('slow', 'normal', 'fast')
-        #@type speed: str
-        #"""
-        #raise NotImplementedError("AxisPlugin.setMaxSpeed() must be overloaded")
+        raise NotImplementedError("AbstractAxisPlugin.setManualSpeed() must be overloaded")
