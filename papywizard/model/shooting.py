@@ -61,35 +61,20 @@ from papywizard.common.helpers import hmsAsStrToS, sToHmsAsStr
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.exception import HardwareError
+from papywizard.common.pluginManager import PluginManager
+from papywizard.hardware.head import Head
 from papywizard.model.camera import Camera
 from papywizard.model.data import MosaicData, PresetData
 from papywizard.model.scan import MosaicScan, PresetScan
-
-# Try to import the 'shoot' module from user config. dir
-try:
-    file, pathname, description = imp.find_module("shoot", [config.USER_CONFIG_DIR])
-    try:
-        externalShooting = imp.load_module('externalShooting', file, pathname, description)
-    finally:
-        file.close()
-except ImportError:
-    Logger().exception("Shooting.start(): loading user external shooting script", debug=True)
-    Logger().warning("No user external shooting script found")
 
 
 class Shooting(QtCore.QObject):
     """ Shooting model.
     """
-    def __init__(self, realHardware, simulatedHardware, parent=None):
+    def __init__(self):
         """ Init the object.
-
-        @param realHardware: real hardware head
-        @type realHardware: {Head}
-
-        @param simulatedHardware: simulated hardware head
-        @type simulatedHardware: {HeadSimulation}
         """
-        QtCore.QObject.__init__(self, parent)
+        QtCore.QObject.__init__(self)
         self.__shooting = False
         self.__pause = False
         self.__paused = False
@@ -99,11 +84,10 @@ class Shooting(QtCore.QObject):
         self.__startTime = None
         self.__pauseTime = None
         self.__totalPausedTime = 0.
-        self.__LastShootTime = time.time()
-        # Hardware
-        self.realHardware = realHardware
-        self.simulatedHardware = simulatedHardware
-        self.hardware = self.simulatedHardware
+        #self.__LastShootTime = time.time()
+        self.head = Head()
+        self.hardware = self.head
+        Logger().warning("Shooting.__init__(): Remove self.hardware compatibility")
 
         # Sub-models
         self.camera = Camera()
@@ -111,129 +95,125 @@ class Shooting(QtCore.QObject):
         self.preset = PresetScan(self)
 
     # Properties
+    def __getShutter(self):
+        """
+        """
+        shutterName = ConfigManager().get('Core/PLUGIN_SHUTTER')
+        return PluginManager().get('shutter', shutterName)[0] # Use getModel()?
+
+    shutter = property(__getShutter)
+
     def __getMode(self):
-        return ConfigManager().get('Main', 'SHOOTING_MODE')
+        return ConfigManager().get('Main/SHOOTING_MODE')
 
     def __setMode(self, mode):
-        ConfigManager().set('Main', 'SHOOTING_MODE', mode)
+        ConfigManager().set('Main/SHOOTING_MODE', mode)
 
     mode = property(__getMode, __setMode)
 
     def __getStabilizationDelay(self):
-        return ConfigManager().getFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY')
+        return ConfigManager().getFloat('Core/SHOOTING_STABILIZATION_DELAY')
 
     def __setStabilizationDelay(self, stabilizationDelay):
-        ConfigManager().setFloat('Preferences', 'SHOOTING_STABILIZATION_DELAY', stabilizationDelay, 1)
+        ConfigManager().setFloat('Core/SHOOTING_STABILIZATION_DELAY', stabilizationDelay, 1)
 
     stabilizationDelay = property(__getStabilizationDelay, __setStabilizationDelay)
 
     def __getHeadOrientation(self):
         """
         """
-        return ConfigManager().get('Preferences', 'SHOOTING_HEAD_ORIENTATION')
+        return ConfigManager().get('Core/SHOOTING_HEAD_ORIENTATION')
 
     def __setHeadOrientation(self, headOrientation):
         """
         """
-        ConfigManager().set('Preferences', 'SHOOTING_HEAD_ORIENTATION', headOrientation)
+        ConfigManager().set('Core/SHOOTING_HEAD_ORIENTATION', headOrientation)
 
     headOrientation = property(__getHeadOrientation, __setHeadOrientation)
 
     def __getCameraOrientation(self):
         """
         """
-        return ConfigManager().get('Preferences', 'SHOOTING_CAMERA_ORIENTATION')
+        return ConfigManager().get('Core/SHOOTING_CAMERA_ORIENTATION')
 
     def __setCameraOrientation(self, cameraOrientation):
         """
         """
-        ConfigManager().set('Preferences', 'SHOOTING_CAMERA_ORIENTATION', cameraOrientation)
+        ConfigManager().set('Core/SHOOTING_CAMERA_ORIENTATION', cameraOrientation)
 
     cameraOrientation = property(__getCameraOrientation, __setCameraOrientation)
 
     def __getCameraRoll(self):
         """
         """
-        return ConfigManager().getFloat('Preferences', 'SHOOTING_CAMERA_ROLL')
+        return ConfigManager().getFloat('Core/SHOOTING_CAMERA_ROLL')
 
     def __setCameraRoll(self, cameraRoll):
         """
         """
-        ConfigManager().setFloat('Preferences', 'SHOOTING_CAMERA_ROLL', cameraRoll, 1)
+        ConfigManager().setFloat('Core/SHOOTING_CAMERA_ROLL', cameraRoll, 1)
 
     cameraRoll = property(__getCameraRoll, __setCameraRoll)
 
     def __getTimerAfter(self):
         """
         """
-        return hmsAsStrToS(ConfigManager().get('Preferences', 'TIMER_AFTER'))
+        return hmsAsStrToS(ConfigManager().get('Core/TIMER_AFTER'))
 
     def __setTimerAfter(self, s):
         """
         """
-        ConfigManager().set('Preferences', 'TIMER_AFTER', sToHmsAsStr(s))
+        ConfigManager().set('Core/TIMER_AFTER', sToHmsAsStr(s))
 
     timerAfter = property(__getTimerAfter, __setTimerAfter)
 
     def __getTimerAfterEnable(self):
         """
         """
-        return ConfigManager().getBoolean('Preferences', 'TIMER_AFTER_ENABLE')
+        return ConfigManager().getBoolean('Core/TIMER_AFTER_ENABLE')
 
     def __setTimerAfterEnable(self, flag):
         """
         """
-        ConfigManager().setBoolean('Preferences', 'TIMER_AFTER_ENABLE', flag)
+        ConfigManager().setBoolean('Core/TIMER_AFTER_ENABLE', flag)
 
     timerAfterEnable = property(__getTimerAfterEnable, __setTimerAfterEnable)
 
     def __getTimerRepeat(self):
         """
         """
-        return ConfigManager().getInt('Preferences', 'TIMER_REPEAT')
+        return ConfigManager().getInt('Core/TIMER_REPEAT')
 
     def __setTimerRepeat(self, repeat):
         """
         """
-        ConfigManager().setInt('Preferences', 'TIMER_REPEAT', repeat)
+        ConfigManager().setInt('Core/TIMER_REPEAT', repeat)
 
     timerRepeat = property(__getTimerRepeat, __setTimerRepeat)
 
     def __getTimerRepeatEnable(self):
         """
         """
-        return ConfigManager().getBoolean('Preferences', 'TIMER_REPEAT_ENABLE')
+        return ConfigManager().getBoolean('Core/TIMER_REPEAT_ENABLE')
 
     def __setTimerRepeatEnable(self, flag):
         """
         """
-        ConfigManager().setBoolean('Preferences', 'TIMER_REPEAT_ENABLE', flag)
+        ConfigManager().setBoolean('Core/TIMER_REPEAT_ENABLE', flag)
 
     timerRepeatEnable = property(__getTimerRepeatEnable, __setTimerRepeatEnable)
 
     def __getTimerEvery(self):
         """
         """
-        return hmsAsStrToS(ConfigManager().get('Preferences', 'TIMER_EVERY'))
+        return hmsAsStrToS(ConfigManager().get('Core/TIMER_EVERY'))
 
     def __setTimerEvery(self, s):
         """
         """
-        ConfigManager().set('Preferences', 'TIMER_EVERY', sToHmsAsStr(s))
+        ConfigManager().set('Core/TIMER_EVERY', sToHmsAsStr(s))
 
     timerEvery = property(__getTimerEvery, __setTimerEvery)
-
-    def __getExternalShootingScript(self):
-        """
-        """
-        return ConfigManager().getBoolean('Preferences', 'EXTERNAL_SHOOTING_SCRIPT')
-
-    def __setExternalShootingScript(self, flag):
-        """
-        """
-        ConfigManager().setBoolean('Preferences', 'EXTERNAL_SHOOTING_SCRIPT', flag)
-
-    externalShootingScript = property(__getExternalShootingScript, __setExternalShootingScript)
 
     def __getScan(self):
         """
@@ -246,16 +226,16 @@ class Shooting(QtCore.QObject):
     scan = property(__getScan)
 
     # Signals
-    def hardwareConnected(self, flag, message=""):
-        """ Hardware connect/disconnect.
+    #def hardwareConnected(self, flag, message=""):
+        #""" Hardware connect/disconnect.
 
-        @param flag: True if connected, false otherwise
-        @type flag: bool
+        #@param flag: True if connected, false otherwise
+        #@type flag: bool
 
-        @param message: optional error message
-        @type message: str
-        """
-        self.emit(QtCore.SIGNAL("hardwareConnected"), flag, message)
+        #@param message: optional error message
+        #@type message: str
+        #"""
+        #self.emit(QtCore.SIGNAL("hardwareConnected"), flag, message)
 
     def started(self):
         """ Shooting started.
@@ -381,31 +361,6 @@ class Shooting(QtCore.QObject):
         self.mosaic.pitchStart = pitchPos - pitchDelta / 2.
         self.mosaic.pitchEnd = pitchPos + pitchDelta / 2.
 
-    def switchToRealHardware(self):
-        """ Use real hardware.
-        """
-        Logger().trace("Shooting.switchToRealHardware()")
-        try:
-            #self.simulatedHardware.shutdown()
-            self.realHardware.init()
-            Logger().debug("Shooting.switchToRealHardware(): realHardware initialized")
-            self.hardware = self.realHardware
-            self.hardwareConnected(True)
-        except HardwareError, message:
-            Logger().exception("Shooting.switchToRealHardware()")
-            self.hardwareConnected(False, unicode(message))
-
-    def switchToSimulatedHardware(self):
-        """ Use simulated hardware.
-        """
-        Logger().trace("Shooting.switchToSimulatedHardware()")
-        try:
-            self.realHardware.shutdown() # Test if init first
-        except:
-            Logger().exception("Shooting.switchToSimulatedHardware()")
-        self.hardware = self.simulatedHardware
-        self.hardware.init()
-
     def setStepByStep(self, flag):
         """ Turn on/off step-by-step shooting.
 
@@ -474,16 +429,16 @@ class Shooting(QtCore.QObject):
             roll = self.cameraRoll
         else:
             raise ValueError("cameraOrientation must be in ('portrait', 'landscape', 'custom'")
-        values = {'title' : ConfigManager().get('Preferences', 'DATA_TITLE'),
-                  'gps': ConfigManager().get('Preferences', 'DATA_GPS'),
-                  'comment': ConfigManager().get('Preferences', 'DATA_COMMENT') % {'version': config.VERSION},
+        values = {'title' : ConfigManager().get('Core/DATA_TITLE'),
+                  'gps': ConfigManager().get('Core/DATA_GPS'),
+                  'comment': ConfigManager().get('Core/DATA_COMMENT') % {'version': config.VERSION},
                   'headOrientation': "up",
                   'cameraOrientation': "%s" % self.cameraOrientation,
                   'roll': "%.1f" % roll,
                   'stabilizationDelay': "%.1f" % self.stabilizationDelay,
-                  'timeValue': "%.1f" % self.camera.timeValue,
-                  'bracketingNbPicts': "%d" % self.camera.bracketingNbPicts,
-                  'bracketingIntent': "%s" % self.camera.bracketingIntent,
+                  'timeValue': "%.1f" % self.shutter.timeValue,
+                  'bracketingNbPicts': "%d" % self.shutter.bracketingNbPicts,
+                  'bracketingIntent': "%s" % self.shutter.bracketingIntent,
                   'sensorCoef': "%.1f" % self.camera.sensorCoef,
                   'sensorRatio': "%s" % self.camera.sensorRatio,
                   'lensType': "%s" % self.camera.lens.type_,
@@ -491,19 +446,6 @@ class Shooting(QtCore.QObject):
 
         Logger().info("Start shooting process...")
         try:
-            if self.externalShootingScript:
-                try:
-                    retCode, stdout, stderr = externalShooting.init()
-                    Logger().debug("Shooting.init(): externalShooting.init() return code=%d" % retCode)
-                    if stderr:
-                        Logger().debug("Shooting.start(): externalShooting.init() stderr:\n%s" % stderr)
-                    Logger().debug("Shooting.start(): externalShooting.init() stdout:\n%s" % stdout)
-                except:
-                    Logger().exception("Shooting.start()")
-                    raise HardwareError("External shooting script failed on 'init()'")
-                else:
-                    if retCode:
-                        raise HardwareError("External shooting script failed on 'init()'")
 
             # Timer after
             if self.timerAfterEnable:
@@ -555,14 +497,14 @@ class Shooting(QtCore.QObject):
                             index_, yawIndex, pitchIndex = index
                         else:
                             index_ = index
-                        Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
+                        Logger().debug("Shooting.start(): pict #%d of %d, index=%s, yaw=%.1f, pitch=%.1f" % (index_, self.scan.totalNbPicts, str(index), yaw, pitch))
                         self.update(index, yaw, pitch, next=True)
 
                         self.__forceNewPosition = False
 
                         Logger().info("Moving")
                         self.sequence('moving')
-                        self.hardware.gotoPosition(yaw, pitch)
+                        self.head.gotoPosition(yaw, pitch)
 
                         # Test step-by-step flag (use a function)
                         if self.__stepByStep and not self.__stop:
@@ -578,27 +520,16 @@ class Shooting(QtCore.QObject):
                             continue
 
                         # Take pictures
-                        for bracket in xrange(1, self.camera.bracketingNbPicts + 1):
+                        for bracket in xrange(1, self.shutter.bracketingNbPicts + 1):
 
                             # Mirror lockup sequence
-                            if self.camera.mirrorLockup:
+                            if self.shutter.mirrorLockup:
                                 Logger().info("Mirror lockup")
                                 self.sequence('mirror')
-                                if self.externalShootingScript:
-                                    try:
-                                        retCode, stdout, stderr = externalShooting.mirrorLockup()
-                                        Logger().debug("Shooting.start(): externalShooting.mirrorLockup() return code=%d" % retCode)
-                                        if stderr:
-                                            Logger().debug("Shooting.start(): externalShooting.mirrorLockup() stderr:\n%s" % stderr)
-                                        Logger().debug("Shooting.start(): externalShooting.mirrorLockup() stdout:\n%s" % stdout)
-                                    except:
-                                        Logger().exception("Shooting.start()")
-                                        raise HardwareError("External shooting script failed on 'mirrorLockup()'")
-                                    else:
-                                        if retCode:
-                                            raise HardwareError("External shooting script failed on 'mirrorLockup()'")
-                                else:
-                                    self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
+                                #self.shutter.shoot(self.shutter.pulseWidthHigh / 1000.)
+                                retCode = self.shutter.lockupMirror()
+                                if retCode:
+                                    raise HardwareError("Shutter failed while mirror locking up")
 
                                 self.__LastShootTime = time.time()
 
@@ -608,36 +539,25 @@ class Shooting(QtCore.QObject):
 
                             # Take pictures
                             Logger().info("Shutter cycle")
-                            Logger().debug("Shooting.start(): pict #%d of %d" % (bracket, self.scan.totalNbPicts))
+                            Logger().debug("Shooting.start(): bracket #%d of %d" % (bracket, self.shutter.bracketingNbPicts))
                             self.sequence('shutter', bracket)
 
                             # Ensure that pulse width low delay has elapsed before last shoot
-                            delay = self.camera.pulseWidthLow / 1000. - (time.time() - self.__LastShootTime)
-                            if delay > 0:
-                                time.sleep(delay)
+                            #delay = self.shutter.pulseWidthLow / 1000. - (time.time() - self.__LastShootTime)
+                            #if delay > 0:
+                                #time.sleep(delay)
 
-                            if self.externalShootingScript:
-                                try:
-                                    retCode, stdout, stderr = externalShooting.shoot(bracket)
-                                    # todo: open log window for external script output
-                                    Logger().debug("Shooting.start(): externalShooting.shoot() return code=%d" % retCode)
-                                    if stderr:
-                                        Logger().debug("Shooting.start(): externalShooting.shoot() stderr:\n%s" % stderr)
-                                    Logger().debug("Shooting.start(): externalShooting.shoot() stdout:\n%s" % stdout)
-                                except:
-                                    Logger().exception("Shooting.start()")
-                                    raise HardwareError("External shooting script failed on 'shoot()'")
-                                else:
-                                    if retCode:
-                                        raise HardwareError("External shooting script failed on 'shoot()'")
-                            else:
-                                self.hardware.shoot(self.camera.pulseWidthHigh / 1000.)
+                            #self.shutter.shoot(self.shutter.pulseWidthHigh / 1000.)
+                            retCode = self.shutter.shoot(bracket)
+                            if retCode:
+                                raise HardwareError("Shutter failed while shooting")
 
                             self.__LastShootTime = time.time()
 
                             # Wait for the end of shutter cycle
-                            if self.camera.timeValue - self.camera.pulseWidthHigh / 1000. > 0:
-                                time.sleep(self.camera.timeValue - self.camera.pulseWidthHigh / 1000.)
+                            #if self.shutter.timeValue - self.shutter.pulseWidthHigh / 1000. > 0:
+                                #time.sleep(self.shutter.timeValue - self.shutter.pulseWidthHigh / 1000.)
+                            #time.sleep(self.shutter.timeValue)
 
                             # Add image to the xml data file
                             data.addPicture(bracket, yaw, pitch, roll)
@@ -645,7 +565,7 @@ class Shooting(QtCore.QObject):
                             checkStop()
 
                     except HardwareError:
-                        self.hardware.stopAxis()
+                        self.head.stopAxis()
                         Logger().exception("Shooting.start()")
                         Logger().warning("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f out of limits" % (index_, yaw, pitch))
                         state = 'error'
@@ -681,9 +601,9 @@ class Shooting(QtCore.QObject):
                         self.update(index, yaw, pitch, next=True)
 
 
-                    # Test manual shooting flag
+                    # Test manual shooting flag.
                     # skipped if timeValue is 0
-                    if self.camera.timeValue and self.__stepByStep and not self.__stop:
+                    if self.shutter.timeValue and self.__stepByStep and not self.__stop:
                         self.__pause = True
                         Logger().info("Wait for manual shooting trigger...")
 
@@ -758,7 +678,7 @@ class Shooting(QtCore.QObject):
         Logger().trace("Shooting.stop()")
         self.__stop = True
         self.__pause = False
-        self.hardware.stopAxis()
+        self.head.stopAxis()
 
     def shutdown(self):
         """ Cleanly terminate the model.
@@ -766,6 +686,7 @@ class Shooting(QtCore.QObject):
         Save values to preferences.
         """
         Logger().trace("Shooting.shutdown()")
-        self.hardware.shutdown()
+        #self.head.shutdown()
+        Logger().warning("Shooting.shutdown(): shutdown plugins here?")
         self.camera.shutdown()
         ConfigManager().save()

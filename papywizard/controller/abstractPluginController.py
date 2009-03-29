@@ -70,6 +70,9 @@ class AbstractPluginController(AbstractModalDialogController):
         self._uiFile = "pluginConfigDialog.ui"
         self._fields = OrderedDict()
 
+        # Add a general tab
+        self._addTab('Main')
+
     def _addTab(self, tabName):
         """ Add a new tab to the tab widget.
 
@@ -113,12 +116,12 @@ class AbstractPluginController(AbstractModalDialogController):
             formLayout = QtGui.QFormLayout()
             frame.setLayout(formLayout)
             self._view.tabWidget.addTab(frame, tabName)
-            Logger().debug("AbstractPluginController.createGui(): created '%s' tab" % tabName)
+            Logger().debug("AbstractPluginController._initWidgets(): created '%s' tab" % tabName)
             for label, field in self._fields[tabName].iteritems():
                 widgets[label] = field['widget']
                 field['widget'].setParent(frame)
                 formLayout.addRow(label, field['widget']) # self.tr(label) crashes
-                Logger().debug("AbstractPluginController.createGui(): added '%s' field" % label)
+                Logger().debug("AbstractPluginController._initWidgets(): added '%s' field" % label)
 
         self._view.tabWidget.setCurrentIndex(1)
         self._view.tabWidget.removeTab(0)
@@ -142,9 +145,7 @@ class AbstractPluginController(AbstractModalDialogController):
 
         The widgets for the plugin config. dialog are defined here.
         """
-
-        # Add a general tab
-        self._addTab('Main')
+        raise NotImplementedError("AbstractPluginController._defineGui() must be overloaded")
 
     # Interface
     def refreshView(self):

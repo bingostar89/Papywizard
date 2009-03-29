@@ -51,7 +51,7 @@ Implements
 
 __revision__ = "$Id$"
 
-import threading
+import sets
 
 from PyQt4 import QtCore
 
@@ -65,36 +65,74 @@ class BusDriver(QtCore.QObject):
         """ Init the object.
         """
         QtCore.QObject.__init__(self)
-        self._init = False
-        self._lock = threading.RLock()
+        self._mutex = QtCore.QMutex(QtCore.QMutex.Recursive)
+        self._connected = sets.Set()
 
-    def init(self):
-        """ Init the driver.
+    def _init(self):
+        """ Init the connection.
         """
-        raise NotImplementedError
+        raise NotImplementedError("BusDriver._init() must be overidden")
 
-    def shutdown(self):
-        """ Shut down the driver.
+    def _shutdown(self):
+        """ Shutdown the connection.
         """
-        raise NotImplementedError
+        raise NotImplementedError("BusDriver._shutdown() must be overidden")
 
-    def sendCmd(self, cmd):
-        """ Send a command over the serial line, and return the answer.
+    def establishConnection(self, obj):
+        """ An object asks a connection to be established.
 
-        @param cmd: command to send
-        @type cmd: str
-
-        @return: answer
-        @rtype: str
+        The connection is established only once.
         """
-        raise NotImplementedError
+        if not len(self._connected):
+            self._init()
+        self._connected.add(obj)
+
+    def shutdownConnection(self, obj):
+        """ An object asks a connection to be established.
+
+        The connection is shutdown once there are no more
+        objects connected.
+        """
+        if obj in self._connected:
+            self._connected.remove(obj)
+        if not self._connected:
+            self._shutdown()
 
     def acquireBus(self):
         """ Acquire and lock the bus.
         """
-        self._lock.acquire()
+        #Logger().trace("BusDriver.acquireBus()")
+        self._mutex.lock()
 
     def releaseBus(self):
         """ Unlock and release the bus.
         """
-        self._lock.release()
+        #Logger().trace("BusDriver.releaseBus()")
+        self._mutex.unlock()
+
+    def empty(self):
+        """ Empty buffer.
+        """
+        raise NotImplementedError("BusDriver.empty() must be overloaded")
+
+    def write(self, data):
+        """ Write data.
+        
+        @param data: data to write
+        @type data: str
+        
+        @return: size of data written
+        @rtype: int
+        """
+        raise NotImplementedError("BusDriver.write() must be overloaded")
+
+    def read(self, size):
+        """ Read data.
+        
+        @param size: size of the data to read
+        @type size: int
+        
+        @return: read data
+        @rtype: str
+        """
+        raise NotImplementedError("BusDriver.read() must be overloaded")

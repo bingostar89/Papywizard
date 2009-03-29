@@ -168,84 +168,69 @@ class ConfigManagerObject(QtCore.QObject):
         self.__config.sync()
         Logger().info("Configuration saved")
 
-    def contains(self, group, key):
+    def contains(self, key):
         """ Check if the config contains the given section/option.
 
-        @param group: config group
-        @type group: str
-
         @param key: config key
         @type key: str
         """
-        if group != 'General':
-            key = '%s/%s' % (group, key)
         return self.__config.contains(key)
 
-    def get(self, group, key):
-        """ Get a value.
-
-        @param group: config group
-        @type group: str
+    def _check(self, key):
+        """ Check if the config contains the given section/option.
 
         @param key: config key
         @type key: str
         """
-        if group != 'General':
-            key = '%s/%s' % (group, key)
+        if not self.contains(key):
+            raise KeyError("ConfigManager does not contain key '%s'" % key)
+
+    def get(self, key):
+        """ Get a str value.
+
+        @param key: config key
+        @type key: str
+        """
+        self._check(key)
         return unicode(self.__config.value(key).toString())
 
-    def getInt(self, group, key):
-        """ Get a value.
-
-        @param group: config group
-        @type group: str
+    def getInt(self, key):
+        """ Get an int value.
 
         @param key: config key
         @type key: str
         """
-        if group != 'General':
-            key = '%s/%s' % (group, key)
+        self._check(key)
         value, flag = self.__config.value(key).toInt()
         if flag:
             return value
         else:
-            raise ValueError("ConfigManager.getInt(): can't get %s key as int" % key)
+            raise ValueError("ConfigManager can't get key '%s' as int" % key)
 
-    def getFloat(self, group, key):
-        """ Get a value.
-
-        @param group: config group
-        @type group: str
+    def getFloat(self, key):
+        """ Get a float value.
 
         @param key: config key
         @type key: str
         """
-        if group != 'General':
-            key = '%s/%s' % (group, key)
+        self._check(key)
         value, flag = self.__config.value(key).toDouble()
         if flag:
             return value
         else:
-            raise ValueError("ConfigManager.getInt(): can't get %s key as float" % key)
+            raise ValueError("ConfigManager can't get key '%s' as float" % key)
 
-    def getBoolean(self, group, key):
-        """ Get a value.
-
-        @param group: config group
-        @type group: str
+    def getBoolean(self, key):
+        """ Get a boolean value.
 
         @param key: config key
         @type key: str
         """
-        if group != 'General':
-            key = '%s/%s' % (group, key)
+        self._check(key)
         return self.__config.value(key).toBool()
 
-    def set(self, group, key, value):
-        """ Set a value.
-
-        @param group: config group
-        @type group: str
+    def set(self, key, value):
+        """ Set a value as str.
 
         @param key: config key
         @type key: str
@@ -253,13 +238,9 @@ class ConfigManagerObject(QtCore.QObject):
         @param value: value to set
         @type value: str
         """
-        if group == 'General':
-            key = option
-        else:
-            key = '%s/%s' % (group, key)
         self.__config.setValue(key, QtCore.QVariant(value))
 
-    def setInt(self, group, key, value):
+    def setInt(self, key, value):
         """ Set a value as int.
 
         @param group: config group
@@ -271,15 +252,10 @@ class ConfigManagerObject(QtCore.QObject):
         @param value: value to set
         @type value: int
         """
-        if group != 'General':
-            key = '%s/%s' % (group, key)
         self.__config.setValue(key, QtCore.QVariant(value))
 
-    def setFloat(self, group, key, value, prec):
+    def setFloat(self, key, value, prec):
         """ Set a value as float.
-
-        @param group: config group
-        @type group: str
 
         @param key: config key
         @type key: str
@@ -290,16 +266,11 @@ class ConfigManagerObject(QtCore.QObject):
         @param prec: precision
         @type prec: int
         """
-        if group != 'General':
-            key = '%s/%s' % (group, key)
         #value = ("%(format)s" % {'format': "%%.%df" % prec}) % value
         self.__config.setValue(key, QtCore.QVariant(value))
 
-    def setBoolean(self, group, key, value):
-        """ Set a value.
-
-        @param group: config group
-        @type group: str
+    def setBoolean(self, key, value):
+        """ Set a value as boolean.
 
         @param key: config key
         @type key: str
@@ -307,8 +278,6 @@ class ConfigManagerObject(QtCore.QObject):
         @param value: value to set
         @type value: str
         """
-        if group != 'General':
-            key = '%s/%s' % (group, key)
         self.__config.setValue(key, QtCore.QVariant(value))
 
 

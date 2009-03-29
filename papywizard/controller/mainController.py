@@ -64,6 +64,7 @@ from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.presetManager import PresetManager
 from papywizard.common.exception import HardwareError
+from papywizard.common.pluginManager import PluginManager
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.helpAboutController import HelpAboutController
@@ -86,8 +87,11 @@ class MainController(AbstractController):
         AbstractController.__init__(self, None, model)
         self.__logStream = logStream
 
+        # Disable widgets
+        self.__disbaleWidgets()
+
         # Try to autoconnect to real hardware
-        if ConfigManager().getBoolean('Preferences', 'HARDWARE_AUTO_CONNECT'):
+        if ConfigManager().getBoolean('Core/HARDWARE_AUTO_CONNECT'):
             self._view.actionHardwareConnect.setChecked(True)
 
     def _init(self):
@@ -178,7 +182,7 @@ class MainController(AbstractController):
         self.connect(self._view.actionHardwareSetLimitPitchPlus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchPlusActivated)
         self.connect(self._view.actionHardwareSetLimitPitchMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchMinusActivated)
         self.connect(self._view.actionHardwareClearLimits, QtCore.SIGNAL("activated()"), self.__onActionHardwareClearLimitsActivated)
-        self.connect(self._view.actionHardwareGotoHome, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoHomeActivated)
+        self.connect(self._view.actionHardwareGotoReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoReferenceActivated)
         self.connect(self._view.actionHardwareGotoInitial, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoInitialActivated)
 
         self.connect(self._view.actionHelpManual, QtCore.SIGNAL("activated()"), self.__onActionHelpManualActivated)
@@ -235,7 +239,7 @@ class MainController(AbstractController):
         self.disconnect(self._view.actionHardwareSetLimitPitchPlus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchPlusActivated)
         self.disconnect(self._view.actionHardwareSetLimitPitchMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchMinusActivated)
         self.disconnect(self._view.actionHardwareClearLimits, QtCore.SIGNAL("activated()"), self.__onActionHardwareClearLimitsActivated)
-        self.disconnect(self._view.actionHardwareGotoHome, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoHomeActivated)
+        self.disconnect(self._view.actionHardwareGotoReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoReferenceActivated)
         self.disconnect(self._view.actionHardwareGotoInitial, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoInitialActivated)
 
         self.disconnect(self._view.actionHelpManual, QtCore.SIGNAL("activated()"), self.__onActionHelpManualActivated)
@@ -281,12 +285,14 @@ class MainController(AbstractController):
     def __getFullScreenFlag(self):
         """
         """
-        return ConfigManager().getBoolean('General', 'FULLSCREEN_FLAG')
+        #return ConfigManager().getBoolean('FULLSCREEN_FLAG')
+        Logger().warning("MainController.__onKeyPressed(): fix fullScreenFlag property!!!")
+        return False
 
     def __setFullScreenFlag(self, flag):
         """
         """
-        ConfigManager().setBoolean('General', 'FULLSCREEN_FLAG', flag)
+        ConfigManager().setBoolean('FULLSCREEN_FLAG', flag)
 
     __fullScreen = property(__getFullScreenFlag, __setFullScreenFlag)
 
@@ -488,9 +494,9 @@ class MainController(AbstractController):
     def __onActionHardwareConnectToggled(self, checked):
         Logger().debug("MainController.__onActionHardwareConnectToggled(%s)" % checked)
         if checked:
-            self.__connectToHardware()
+            self.__establishConnection()
         else:
-            self.__goToSimulationMode()
+            self.__shutdownConnection()
 
     def __onActionHardwareSetLimitYawMinusActivated(self):
         yaw, pitch = self._model.hardware.readPosition()
@@ -521,11 +527,11 @@ class MainController(AbstractController):
         self._model.hardware.clearLimits()
         self.setStatusbarMessage(self.tr("Limits cleared"), 10)
 
-    def __onActionHardwareGotoHomeActivated(self):
-        Logger().trace("MainController.__onActionHardwareGotoHomeActivated()")
-        self.setStatusbarMessage(self.tr("Goto home position..."))
+    def __onActionHardwareGotoReferenceActivated(self):
+        Logger().trace("MainController.__onActionHardwareGotoReferenceActivated()")
+        self.setStatusbarMessage(self.tr("Goto reference position..."))
         self._model.hardware.gotoPosition(0., 0., wait=False)
-        dialog = AbortMessageDialog(self.tr("Goto home position"), self.tr("Please wait..."))
+        dialog = AbortMessageDialog(self.tr("Goto reference position"), self.tr("Please wait..."))
         self._view.releaseKeyboard()
         dialog.show()
         while self._model.hardware.isAxisMoving():
@@ -536,7 +542,7 @@ class MainController(AbstractController):
                 break
             time.sleep(0.01)
         else:
-            self.setStatusbarMessage(self.tr("Home position reached"), 10)
+            self.setStatusbarMessage(self.tr("Reference position reached"), 10)
         dialog.hide()
         self._view.grabKeyboard()
 
@@ -781,7 +787,7 @@ class MainController(AbstractController):
         controller.shutdown()
  
         if response:
-            Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
+            Logger().setLevel(ConfigManager().get('Core/LOGGER_LEVEL'))
             if self.__mosaicInputParam == 'startEnd':
                 pass
             elif self.__mosaicInputParam == 'fov':
@@ -867,22 +873,90 @@ class MainController(AbstractController):
             dialog.exec_()
             self._view.grabKeyboard()
 
-    def __connectToHardware(self):
-        """ Connect to real hardware.
+    def __enableWidgets(self):
+        """ Enable widgets when connected.
+        """
+        self._view.menuSetLimit.setEnabled(True)
+        self._view.actionHardwareClearLimits.setEnabled(True)
+        self._view.actionHardwareGotoReference.setEnabled(True)
+        self._view.actionHardwareGotoInitial.setEnabled(True)
+
+        self._view.setReferenceToolButton.setEnabled(True)
+        self._view.yawMovePlusToolButton.setEnabled(True)
+        self._view.pitchMovePlusToolButton.setEnabled(True)
+        self._view.yawMoveMinusToolButton.setEnabled(True)
+        self._view.pitchMoveMinusToolButton.setEnabled(True)
+
+        self._view.shootPushButton.setEnabled(True)
+
+    def __disbaleWidgets(self):
+        """ Disbale widgets when disconnected.
+        """
+        self._view.menuSetLimit.setEnabled(False)
+        self._view.actionHardwareClearLimits.setEnabled(False)
+        self._view.actionHardwareGotoReference.setEnabled(False)
+        self._view.actionHardwareGotoInitial.setEnabled(False)
+
+        self._view.setReferenceToolButton.setEnabled(False)
+        self._view.yawMovePlusToolButton.setEnabled(False)
+        self._view.pitchMovePlusToolButton.setEnabled(False)
+        self._view.yawMoveMinusToolButton.setEnabled(False)
+        self._view.pitchMoveMinusToolButton.setEnabled(False)
+
+        self._view.shootPushButton.setEnabled(False)
+
+    def __establishConnection(self):
+        """ Establish plugins connections.
 
         # To be redesigned, so it can be canceled, and exceptions can be traced.
         """
-        Logger().info("Connecting to real hardware...")
-        self.setStatusbarMessage(self.tr("Connecting to real hardware..."))
+        def connect():
+            """ Connection function.
+            """
+            connectionStatus = {'yawAxis': True,
+                                'pitchAxis': True,
+                                'shutter': True}
+            try:
+                plugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
+                PluginManager().get('yawAxis', plugin)[0].establishConnection()
+            except AttributeError:
+                Logger().exception("MainController.__establishConnection().connect()", debug=True)
+            except:
+                Logger().exception("MainController.__establishConnection().connect()")
+                connectionStatus['yawAxis'] = False
+            try:
+                plugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
+                PluginManager().get('yawAxis', plugin)[0].establishConnection()
+            except AttributeError:
+                Logger().exception("MainController.__establishConnection().connect()", debug=True)
+            except:
+                Logger().exception("MainController.__establishConnection().connect()")
+                connectionStatus['pitchAxis'] = False
+            try:
+                plugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
+                PluginManager().get('shutter', plugin)[0].establishConnection()
+            except AttributeError:
+                Logger().exception("MainController.__establishConnection().connect()", debug=True)
+            except:
+                Logger().exception("MainController.__establishConnection().connect()")
+                connectionStatus['shutter'] = False
+            if connectionStatus['yawAxis'] and connectionStatus['pitchAxis'] and connectionStatus['shutter']:
+                self.__onHardwareConnected(True, "")
+            else:
+                self.__onHardwareConnected(False, "One or more plugin failed to connect")
+
+        Logger().info("Establishing connection...")
+        self.setStatusbarMessage(self.tr("Establishing connection..."))
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_creating.png").scaled(22, 22))
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         self.__connectStatus = None
 
-        # Launch connexion thread
-        thread.start_new_thread(self._model.switchToRealHardware, ())
+        # Launch connection thread
+        thread.start_new_thread(connect, ()) # Use QThread
 
         # Wait for end of connection
         while self.__connectStatus is None:
+
             QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             time.sleep(0.05)
 
@@ -891,28 +965,65 @@ class MainController(AbstractController):
 
         # Check connection status
         if self.__connectStatus:
+
             Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
+            Spy().resume()
+
             self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_established.png").scaled(22, 22))
-            Logger().info("Now connected to real hardware")
-            self.setStatusbarMessage(self.tr("Now connected to real hardware"), 10)
+            Logger().info("Connection established")
+            self.setStatusbarMessage(self.tr("Connection established"), 10)
+            self.__enableWidgets()
         else:
-            Logger().error("Can't connect to hardware\n%s" % self.__connectErrorMessage)
+            Logger().error("Can't establish connection\n%s" % self.__connectErrorMessage)
             #self._view.connectLabel.setIcon(QtGui.QIcon(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22)))
-            self.setStatusbarMessage(self.tr("Connect to hardware failed"), 10)
-            dialog = ErrorMessageDialog(self.tr("Can't connect to hardware"), self.__connectErrorMessage)
+            self.setStatusbarMessage(self.tr("Connection failed"), 10)
+            dialog = ErrorMessageDialog(self.tr("Can't establish connection"), self.__connectErrorMessage)
             self._view.releaseKeyboard()
             dialog.exec_()
             self._view.grabKeyboard()
             self._view.actionHardwareConnect.setChecked(False)
 
-    def __goToSimulationMode(self):
-        """ Connect to simulated hardware.
+    def __shutdownConnection(self):
+        """ Shutdown plugins connections.
         """
-        Logger().info("Go to simulation mode")
-        self._model.switchToSimulatedHardware()
+        Logger().info("Shuting down connection...")
+        shutdownStatus = {'yawAxis': True,
+                          'pitchAxis': True,
+                          'shutter': True}
+        try:
+            plugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
+            PluginManager().get('yawAxis', plugin)[0].shutdownConnection()
+        except AttributeError:
+            Logger().exception("MainController.__shutdownConnection()", debug=True)
+        except:
+            Logger().exception("MainController.__shutdownConnection()")
+            shutdownStatus['yawAxis'] = False
+        try:
+            plugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
+            PluginManager().get('pitchAxis', plugin)[0].shutdownConnection()
+        except AttributeError:
+            Logger().exception("MainController.__shutdownConnection()", debug=True)
+        except:
+            Logger().exception("MainController.__shutdownConnection()")
+            shutdownStatus['pitchAxis'] = False
+        try:
+            plugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
+            PluginManager().get('shutter', plugin)[0].shutdownConnection()
+        except AttributeError:
+            Logger().exception("MainController.__shutdownConnection()", debug=True)
+        except:
+            Logger().exception("MainController.__shutdownConnection()")
+            shutdownStatus['shutter'] = False
+        if shutdownStatus['yawAxis'] and shutdownStatus['pitchAxis'] and shutdownStatus['shutter']:
+            self.__disbaleWidgets()
+        else:
+            Logger().exception("One or more plugin failed to shutdown")
+
+        # Move in if?
+        Spy().suspend()
         Spy().setRefreshRate(config.SPY_FAST_REFRESH)
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
-        self.setStatusbarMessage(self.tr("Now in simulation mode"), 10)
+        self.setStatusbarMessage(self.tr("Connection shutdown"), 10)
 
     def __onPositionUpdate(self, yaw, pitch):
         """ Refresh position according to new pos.

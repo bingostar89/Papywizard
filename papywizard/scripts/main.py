@@ -108,7 +108,6 @@ def main():
         from papywizard.common import i18n
         from papywizard.common.configManager import ConfigManager
         #from papywizard.common.publisher import Publisher
-        from papywizard.hardware.head import Head, HeadSimulation
         from papywizard.model.shooting import Shooting
         from papywizard.controller.mainController import MainController
         from papywizard.controller.spy import Spy
@@ -156,17 +155,24 @@ def main():
         ConfigManager()
 
         # Load plugins (move to shooting?)
-        Logger().info("Loading plugins...")
-        splash.showMessage("Loading plugins...")
+        Logger().info("Load plugins...")
+        splash.showMessage("Load plugins...")
         PluginManager().load()
+
+        # Activate selected plugins (move to PluginManager?)
+        Logger().info("Activate plugins...")
+        plugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
+        PluginManager().get('yawAxis', plugin)[0].activate()
+        plugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
+        PluginManager().get('yawAxis', plugin)[0].activate()
+        plugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
+        PluginManager().get('shutter', plugin)[0].activate()
 
         # Create model
         Logger().info("Creating model...")
         splash.showMessage("Creating model...")
         qtApp.processEvents()
-        head = Head()
-        headSimulation = HeadSimulation()
-        model = Shooting(head, headSimulation)
+        model = Shooting()
 
         # Create spy thread
         Logger().info("Starting Spy...")
@@ -180,7 +186,7 @@ def main():
         mainController = MainController(model, logStream)
 
         # Set user logger level
-        Logger().setLevel(ConfigManager().get('Preferences', 'LOGGER_LEVEL'))
+        Logger().setLevel(ConfigManager().get('Core/LOGGER_LEVEL'))
 
         # Terminate splashscreen
         splash.finish(mainController._view)
@@ -195,7 +201,7 @@ def main():
         # Stop spy thread
         Logger().info("Shuting down Spy...")
         Spy().stop()
-        Logger().info("Waiting Spy thread to terminate...")
+        Logger().debug("Waiting Spy thread to terminate...")
         Spy().wait()
 
         # Shutdown model

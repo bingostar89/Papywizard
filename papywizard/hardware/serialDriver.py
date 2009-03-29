@@ -63,31 +63,27 @@ from papywizard.hardware.busDriver import BusDriver
 class SerialDriver(BusDriver):
     """ Driver for serial connection.
     """
-    def init(self):
-        if not self._init:
+    def _init(self):
+        try:
             try:
-                try:
-                    port = ConfigManager().getInt('Preferences', 'HARDWARE_SERIAL_PORT')
-                except ValueError:
-                    port = ConfigManager().get('Preferences', 'HARDWARE_SERIAL_PORT')
-                self._serial = serial.Serial(port=port)
-                self._serial.timeout = config.SERIAL_TIMEOUT
-                self._serial.baudrate = config.SERIAL_BAUDRATE
-                self._serial.read(self._serial.inWaiting()) # Empty buffer
-                self._init = True
-            #except ???, msg:
-                #Logger().exception("BluetoothDriver.init()")
-                #raise HardwareError(msg)
-            except:
-                Logger().exception("SerialDriver.init()")
-                raise
+                port = ConfigManager().getInt('Preferences', 'HARDWARE_SERIAL_PORT')
+            except ValueError:
+                port = ConfigManager().get('Preferences', 'HARDWARE_SERIAL_PORT')
+            self._serial = serial.Serial(port=port)
+            self._serial.timeout = config.SERIAL_TIMEOUT
+            self._serial.baudrate = config.SERIAL_BAUDRATE
+            self._serial.read(self._serial.inWaiting()) # Empty buffer
+        #except ???, msg:
+            #Logger().exception("BluetoothDriver.init()")
+            #raise HardwareError(msg)
+        except:
+            Logger().exception("SerialDriver._init()")
+            raise
 
-    def shutdown(self):
-        if self._init:
-            self._serial.close()
-            self._init = False
+    def _shutdown(self):
+        self._serial.close()
 
-    def _setCS(self, level):
+    def setCS(self, level):
         """ Set CS signal to specified level.
 
         @param level: level to set to CS signal
@@ -95,35 +91,18 @@ class SerialDriver(BusDriver):
         """
         #self._serial.setDTR(level)
 
-    def sendCmd(self, cmd):
-        if not self._init:
-            raise HardwareError(self.tr("SerialDriver not initialized"))
+    def empty(self):
+        self.read(self._serial.inWaiting())
 
-        self.acquireBus()
-        try:
-            # Empty buffer
-            self._serial.read(self._serial.inWaiting())
-
-            self._setCS(0)
-            self._serial.write(":%s\r" % cmd)
-            c = ''
-            while c != '=':
-                c = self._serial.read()
-                #Logger().debug("SerialPassiveDriver.sendCmd(): c=%s" % repr(c))
-                if not c:
-                    raise IOError(self.tr("Timeout while reading on serial bus"))
-            data = ""
-            while True:
-                c = self._serial.read()
-                #Logger().debug("SerialPassiveDriver.sendCmd(): c=%s, data=%s" % (repr(c), repr(data)))
-                if not c:
-                    raise IOError(self.tr("Timeout while reading on serial bus"))
-                elif c == '\r':
-                    break
-                data += c
-
-        finally:
-            self._setCS(1)
-            self.releaseBus()
-
-        return data
+    def write(self, data):
+        #Logger().debug("SerialDriver.write(): data=%s" % repr(data))
+        size = self._serial.write(data)
+        return size
+    
+    def read(self, size):
+        data = self._serial.read(size)
+        #Logger().debug("SerialDriver.read(): data=%s" % repr(data))
+        if not data:
+            raise IOError(self.tr("Timeout while reading on serial bus"))
+        else:
+            return data

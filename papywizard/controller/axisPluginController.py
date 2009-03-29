@@ -42,7 +42,6 @@ Controller
 Implements
 ==========
 
-- HardwarePluginController
 - AxisPluginController
 
 @author: Frédéric Mantegazza
@@ -56,19 +55,9 @@ from papywizard.controller.abstractPluginController import AbstractPluginControl
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField, SliderField
 
 
-class HardwarePluginController(AbstractPluginController):
-    """ Plugin controller for hardware-based plugins.
-    """
-    def _defineGui(self):
-        AbstractPluginController._defineGui(self)
-        self._addTab('Hardware')
-        self._addWidget('Hardware', "Driver", ComboBoxField, (['bluetooth', 'serial', 'ethernet'],), 'DRIVER')
-        self._addWidget('Hardware', "BT device address", LineEditField, (), 'BT_DEVICE_ADDRESS')
-        self._addWidget('Hardware', "Serial port", LineEditField, (), 'SERIAL_PORT')
-        self._addWidget('Hardware', "Ethernet host", LineEditField, (), 'ETHERNET_HOST')
-        self._addWidget('Hardware', "Ethernet port", SpinBoxField, (1024, 65535), 'ETHERNET_PORT')
-
-
-class AxisPluginController(HardwarePluginController):
+class AxisPluginController(AbstractPluginController):
     """ Plugin controller for axis.
     """
+    def _defineGui(self):
+        #AbstractPluginController._defineGui(self)
+        self._addWidget('Main', "Maximum speed", ComboBoxField, (['low', 'normal', 'fast'],), 'MAX_SPEED')

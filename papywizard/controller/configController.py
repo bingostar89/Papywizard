@@ -57,6 +57,7 @@ from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.helpers import hmsAsStrToS, hmsToS, sToHms, sToHmsAsStr
 from papywizard.common.loggingServices import Logger
+from papywizard.common.pluginManager import PluginManager
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.controller.bluetoothChooserController import BluetoothChooserController
 from papywizard.view.messageDialog import WarningMessageDialog
@@ -80,20 +81,26 @@ class ConfigController(AbstractModalDialogController):
         AbstractModalDialogController._connectSignals(self)
 
         self.connect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
-        self.connect(self._view.bracketingNbPictsSpinBox, QtCore.SIGNAL("valueChanged(int)"), self.__onBracketingNbPictsSpinBoxValueChanged)
+        #self.connect(self._view.bracketingNbPictsSpinBox, QtCore.SIGNAL("valueChanged(int)"), self.__onBracketingNbPictsSpinBoxValueChanged)
         self.connect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onLensTypeComboBoxCurrentIndexChanged)
-        self.connect(self._view.driverComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onDriverComboBoxCurrentIndexChanged)
+        #self.connect(self._view.driverComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onDriverComboBoxCurrentIndexChanged)
         self.connect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
+        self.connect(self._view.yawAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onYawAxisConfigurePushButtonClicked)
+        self.connect(self._view.pitchAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onPitchAxisConfigurePushButtonClicked)
+        self.connect(self._view.shutterConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onShutterConfigurePushButtonClicked)
         self.connect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
 
     def _disconnectSignals(self):
         AbstractModalDialogController._disconnectSignals(self)
 
         self.disconnect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
-        self.disconnect(self._view.bracketingNbPictsSpinBox, QtCore.SIGNAL("valueChanged(int)"), self.__onBracketingNbPictsSpinBoxValueChanged)
+        #self.disconnect(self._view.bracketingNbPictsSpinBox, QtCore.SIGNAL("valueChanged(int)"), self.__onBracketingNbPictsSpinBoxValueChanged)
         self.disconnect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onLensTypeComboBoxCurrentIndexChanged)
-        self.disconnect(self._view.driverComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onDriverComboBoxCurrentIndexChanged)
+        #self.disconnect(self._view.driverComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onDriverComboBoxCurrentIndexChanged)
         self.disconnect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
+        self.disconnect(self._view.yawAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onYawAxisConfigurePushButtonClicked)
+        self.disconnect(self._view.pitchAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onPitchAxisConfigurePushButtonClicked)
+        self.disconnect(self._view.shutterConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onShutterConfigurePushButtonClicked)
         self.disconnect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
 
     # Callbacks
@@ -117,37 +124,57 @@ class ConfigController(AbstractModalDialogController):
         self._model.mosaic.initialDirection = config.MOSAIC_INITIAL_DIR_INDEX[self._view.initialDirectionComboBox.currentIndex()]
         self._model.mosaic.cr = self._view.crCheckBox.isChecked()
 
-        # Camera tab
-        self._model.camera.timeValue = self._view.timeValueDoubleSpinBox.value()
-        self._model.camera.mirrorLockup = self._view.mirrorLockupCheckBox.isChecked()
-        self._model.camera.pulseWidthHigh = self._view.pulseWidthHighSpinBox.value()
-        self._model.camera.pulseWidthLow = self._view.pulseWidthLowSpinBox.value()
-        self._model.camera.bracketingNbPicts = self._view.bracketingNbPictsSpinBox.value()
-        self._model.camera.bracketingIntent = config.CAMERA_BRACKETING_INTENT_INDEX[self._view.bracketingIntentComboBox.currentIndex()]
+        # Camera/lens tab
+        #self._model.camera.timeValue = self._view.timeValueDoubleSpinBox.value()
+        #self._model.camera.mirrorLockup = self._view.mirrorLockupCheckBox.isChecked()
+        #self._model.camera.pulseWidthHigh = self._view.pulseWidthHighSpinBox.value()
+        #self._model.camera.pulseWidthLow = self._view.pulseWidthLowSpinBox.value()
+        #self._model.camera.bracketingNbPicts = self._view.bracketingNbPictsSpinBox.value()
+        #self._model.camera.bracketingIntent = config.CAMERA_BRACKETING_INTENT_INDEX[self._view.bracketingIntentComboBox.currentIndex()]
         self._model.camera.sensorCoef = self._view.sensorCoefDoubleSpinBox.value()
         self._model.camera.sensorRatio = config.SENSOR_RATIO_INDEX[self._view.sensorRatioComboBox.currentIndex()]
         self._model.camera.sensorResolution = self._view.sensorResolutionDoubleSpinBox.value()
-
-        # Lens tab
         self._model.camera.lens.type_ = config.LENS_TYPE_INDEX[self._view.lensTypeComboBox.currentIndex()]
         self._model.camera.lens.focal = self._view.focalDoubleSpinBox.value()
         self._model.camera.lens.opticalMultiplier = self._view.opticalMultiplierDoubleSpinBox.value()
 
-        # Hardware tab
-        ConfigManager().set('Preferences', 'HARDWARE_DRIVER', config.DRIVER_INDEX[self._view.driverComboBox.currentIndex()])
-        ConfigManager().set('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS', unicode(self._view.bluetoothDeviceAddressLineEdit.text()))
-        ConfigManager().set('Preferences', 'HARDWARE_SERIAL_PORT', unicode(self._view.serialPortLineEdit.text()))
-        ConfigManager().set('Preferences', 'HARDWARE_ETHERNET_HOST', unicode(self._view.ethernetHostLineEdit.text()))
-        ConfigManager().setInt('Preferences', 'HARDWARE_ETHERNET_PORT', self._view.ethernetPortSpinBox.value())
-        ConfigManager().setBoolean('Preferences', 'HARDWARE_AUTO_CONNECT', self._view.hardwareAutoConnectCheckBox.isChecked())
+        # Plugins tab
+        previousPlugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
+        ConfigManager().set('Core/PLUGIN_YAW_AXIS', unicode(self._view.yawAxisComboBox.currentText()))
+        newPlugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
+        if previousPlugin != newPlugin:
+            PluginManager().get('yawAxis', previousPlugin)[0].shutdown()
+            PluginManager().get('yawAxis', newPlugin)[0].activate()
+
+        previousPlugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
+        ConfigManager().set('Core/PLUGIN_PITCH_AXIS', unicode(self._view.pitchAxisComboBox.currentText()))
+        newPlugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
+        if previousPlugin != newPlugin:
+            PluginManager().get('pitchAxis', previousPlugin)[0].shutdown()
+            PluginManager().get('pitchAxis', newPlugin)[0].activate()
+
+        previousPlugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
+        ConfigManager().set('Core/PLUGIN_SHUTTER', unicode(self._view.shutterComboBox.currentText()))
+        newPlugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
+        if previousPlugin != newPlugin:
+            PluginManager().get('shutter', previousPlugin)[0].shutdown()
+            PluginManager().get('shutter', newPlugin)[0].activate()
+
+        # Drivers tab
+        #ConfigManager().set('Core/HARDWARE_DRIVER', config.DRIVER_INDEX[self._view.driverComboBox.currentIndex()])
+        ConfigManager().set('Core/HARDWARE_BLUETOOTH_DEVICE_ADDRESS', unicode(self._view.bluetoothDeviceAddressLineEdit.text()))
+        ConfigManager().set('Core/HARDWARE_SERIAL_PORT', unicode(self._view.serialPortLineEdit.text()))
+        ConfigManager().set('Core/HARDWARE_ETHERNET_HOST', unicode(self._view.ethernetHostLineEdit.text()))
+        ConfigManager().setInt('Core/HARDWARE_ETHERNET_PORT', self._view.ethernetPortSpinBox.value())
+        ConfigManager().setBoolean('Core/HARDWARE_AUTO_CONNECT', self._view.hardwareAutoConnectCheckBox.isChecked())
 
         # Data tab
-        ConfigManager().set('Preferences', 'DATA_STORAGE_DIR', unicode(self._view.dataStorageDirLineEdit.text()))
-        ConfigManager().set('Preferences', 'DATA_FILE_FORMAT', unicode(self._view.dataFileFormatLineEdit.text()))
-        ConfigManager().setBoolean('Preferences', 'DATA_FILE_ENABLE', bool(self._view.dataFileEnableCheckBox.isChecked()))
-        ConfigManager().set('Preferences', 'DATA_TITLE', unicode(self._view.dataTitleLineEdit.text()))
-        ConfigManager().set('Preferences', 'DATA_GPS',  unicode(self._view.dataGpsLineEdit.text()))
-        ConfigManager().set('Preferences', 'DATA_COMMENT',  unicode(self._view.dataCommentLineEdit.text()))
+        ConfigManager().set('Core/DATA_STORAGE_DIR', unicode(self._view.dataStorageDirLineEdit.text()))
+        ConfigManager().set('Core/DATA_FILE_FORMAT', unicode(self._view.dataFileFormatLineEdit.text()))
+        ConfigManager().setBoolean('Core/DATA_FILE_ENABLE', bool(self._view.dataFileEnableCheckBox.isChecked()))
+        ConfigManager().set('Core/DATA_TITLE', unicode(self._view.dataTitleLineEdit.text()))
+        ConfigManager().set('Core/DATA_GPS',  unicode(self._view.dataGpsLineEdit.text()))
+        ConfigManager().set('Core/DATA_COMMENT',  unicode(self._view.dataCommentLineEdit.text()))
 
         # Timer tab
         time_ = self._view.timerAfterTimeEdit.time()
@@ -159,8 +186,8 @@ class ConfigController(AbstractModalDialogController):
         self._model.timerEvery = hmsAsStrToS(time_.toString("hh:mm:ss"))
 
         # Misc tab
-        ConfigManager().set('Preferences', 'LOGGER_LEVEL', config.LOGGER_INDEX[self._view.loggerLevelComboBox.currentIndex()])
-        self._model.externalShootingScript = self._view.externalShootingScriptCheckBox.isChecked()
+        ConfigManager().set('Core/LOGGER_LEVEL', config.LOGGER_INDEX[self._view.loggerLevelComboBox.currentIndex()])
+        #self._model.externalShootingScript = self._view.externalShootingScriptCheckBox.isChecked()
 
         ConfigManager().save()
 
@@ -185,13 +212,13 @@ class ConfigController(AbstractModalDialogController):
                 self._view.cameraRollDoubleSpinBox.setEnabled(True)
                 self._view.cameraRollDoubleSpinBox.setValue(self._model.cameraRoll)
 
-    def __onBracketingNbPictsSpinBoxValueChanged(self, value):
-        """ Bracketing nb picts spin box has change.
+    #def __onBracketingNbPictsSpinBoxValueChanged(self, value):
+        #""" Bracketing nb picts spin box has change.
 
-        Enable/disable bracketing intent combobox.
-        """
-        Logger().debug("ConfigController.__onBracketingNbPictsSpinBoxValueChanged(): value=%d" % value)
-        self._view.bracketingIntentComboBox.setEnabled(value != 1)
+        #Enable/disable bracketing intent combobox.
+        #"""
+        #Logger().debug("ConfigController.__onBracketingNbPictsSpinBoxValueChanged(): value=%d" % value)
+        #self._view.bracketingIntentComboBox.setEnabled(value != 1)
 
     def __onLensTypeComboBoxCurrentIndexChanged(self, index):
         """ Lens type combobox has changed.
@@ -207,12 +234,12 @@ class ConfigController(AbstractModalDialogController):
             self._view.lensTypeComboBox.setCurrentIndex(self._view.lensTypeComboBox.findText('rectilinear'))
         else:
             if type_ == 'rectilinear':
-                self._view.focalLabel.setEnabled(True)
+                #self._view.focalLabel.setEnabled(True)
                 self._view.focalDoubleSpinBox.setEnabled(True)
                 self._view.opticalMultiplierLabel.setEnabled(True)
                 self._view.opticalMultiplierDoubleSpinBox.setEnabled(True)
             else:
-                self._view.focalLabel.setEnabled(False)
+                #self._view.focalLabel.setEnabled(False)
                 self._view.focalDoubleSpinBox.setEnabled(False)
                 self._view.opticalMultiplierLabel.setEnabled(False)
                 self._view.opticalMultiplierDoubleSpinBox.setEnabled(False)
@@ -269,13 +296,40 @@ class ConfigController(AbstractModalDialogController):
             self._view.bluetoothDeviceAddressLineEdit.setText(address)
         controller.shutdown()
 
+    def __onYawAxisConfigurePushButtonClicked(self):
+        """ Yaw axis configure button clicked.
+        """
+        Logger().trace("ConfigController.__onYawAxisConfigurePushButtonClicked()")
+        name = self._view.yawAxisComboBox.currentText()
+        model, controllerClass = PluginManager().get('yawAxis', name)
+        controller = controllerClass(self, model)
+        controller.exec_()
+
+    def __onPitchAxisConfigurePushButtonClicked(self):
+        """ Yaw axis configure button clicked.
+        """
+        Logger().trace("ConfigController.__onPitchAxisConfigurePushButtonClicked()")
+        name = self._view.pitchAxisComboBox.currentText()
+        model, controllerClass = PluginManager().get('pitchAxis', name)
+        controller = controllerClass(self, model)
+        controller.exec_()
+
+    def __onShutterConfigurePushButtonClicked(self):
+        """ Yaw axis configure button clicked.
+        """
+        Logger().trace("ConfigController.__onShutterConfigurePushButtonClicked()")
+        name = self._view.shutterComboBox.currentText()
+        model, controllerClass = PluginManager().get('shutter', name)
+        controller = controllerClass(self, model)
+        controller.exec_()
+
     def __onDataStorageDirPushButtonClicked(self):
         """ Select data storage dir button clicked.
 
         Open a file dialog to select the dir.
         """
         Logger().trace("ConfigController.__onDataStorageDirPushButtonClicked()")
-        dataStorageDir = ConfigManager().get('Preferences', 'DATA_STORAGE_DIR')
+        dataStorageDir = ConfigManager().get('Core/DATA_STORAGE_DIR')
         dirName = QtGui.QFileDialog.getExistingDirectory(self._view,
                                                          self.tr("Choose Data Storage dir"),
                                                          dataStorageDir,
@@ -310,48 +364,66 @@ class ConfigController(AbstractModalDialogController):
         self._view.initialDirectionComboBox.setCurrentIndex(config.MOSAIC_INITIAL_DIR_INDEX[self._model.mosaic.initialDirection])
         self._view.crCheckBox.setChecked(self._model.mosaic.cr)
 
-        # Camera tab
-        self._view.timeValueDoubleSpinBox.setValue(self._model.camera.timeValue)
-        self._view.mirrorLockupCheckBox.setChecked(self._model.camera.mirrorLockup)
-        self._view.pulseWidthHighSpinBox.setValue(self._model.camera.pulseWidthHigh)
-        self._view.pulseWidthLowSpinBox.setValue(self._model.camera.pulseWidthLow)
-        self._view.bracketingNbPictsSpinBox.setValue(self._model.camera.bracketingNbPicts)
-        self._view.bracketingIntentComboBox.setCurrentIndex(config.CAMERA_BRACKETING_INTENT_INDEX[self._model.camera.bracketingIntent])
-        self._view.bracketingIntentComboBox.setEnabled(self._model.camera.bracketingNbPicts != 1)
+        # Camera/lens tab
+        #self._view.timeValueDoubleSpinBox.setValue(self._model.camera.timeValue)
+        #self._view.mirrorLockupCheckBox.setChecked(self._model.camera.mirrorLockup)
+        #self._view.pulseWidthHighSpinBox.setValue(self._model.camera.pulseWidthHigh)
+        #self._view.pulseWidthLowSpinBox.setValue(self._model.camera.pulseWidthLow)
+        #self._view.bracketingNbPictsSpinBox.setValue(self._model.camera.bracketingNbPicts)
+        #self._view.bracketingIntentComboBox.setCurrentIndex(config.CAMERA_BRACKETING_INTENT_INDEX[self._model.camera.bracketingIntent])
+        #self._view.bracketingIntentComboBox.setEnabled(self._model.camera.bracketingNbPicts != 1)
         self._view.sensorCoefDoubleSpinBox.setValue(self._model.camera.sensorCoef)
         self._view.sensorRatioComboBox.setCurrentIndex(config.SENSOR_RATIO_INDEX[self._model.camera.sensorRatio])
         self._view.sensorResolutionDoubleSpinBox.setValue(self._model.camera.sensorResolution)
-
-        # Lens tab
         self._view.lensTypeComboBox.setCurrentIndex(config.LENS_TYPE_INDEX[self._model.camera.lens.type_])
         self._view.focalDoubleSpinBox.setValue(self._model.camera.lens.focal)
         self._view.opticalMultiplierDoubleSpinBox.setValue(self._model.camera.lens.opticalMultiplier)
 
-        # Hardware tab
-        driverIndex = config.DRIVER_INDEX[ConfigManager().get('Preferences', 'HARDWARE_DRIVER')]
-        self._view.driverComboBox.setCurrentIndex(driverIndex)
-        self._view.bluetoothDeviceAddressLineEdit.setText(ConfigManager().get('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS'))
-        self._view.serialPortLineEdit.setText(ConfigManager().get('Preferences', 'HARDWARE_SERIAL_PORT'))
-        self._view.ethernetHostLineEdit.setText(ConfigManager().get('Preferences', 'HARDWARE_ETHERNET_HOST'))
-        self._view.ethernetPortSpinBox.setValue(ConfigManager().getInt('Preferences', 'HARDWARE_ETHERNET_PORT'))
-        self._view.hardwareAutoConnectCheckBox.setChecked(ConfigManager().getBoolean('Preferences', 'HARDWARE_AUTO_CONNECT'))
+        # Plugins tab
+        yawAxisPlugins = PluginManager().getList('yawAxis')
+        if yawAxisPlugins:
+            for model, controller in yawAxisPlugins:
+                self._view.yawAxisComboBox.addItem(model.name)
+            selectedPlugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
+            self._view.yawAxisComboBox.setCurrentIndex(self._view.yawAxisComboBox.findText(selectedPlugin))
+        pitchAxisPlugins = PluginManager().getList('pitchAxis')
+        if pitchAxisPlugins:
+            for model, controller in pitchAxisPlugins:
+                self._view.pitchAxisComboBox.addItem(model.name)
+            selectedPlugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
+            self._view.pitchAxisComboBox.setCurrentIndex(self._view.pitchAxisComboBox.findText(selectedPlugin))
+        shutterPlugins = PluginManager().getList('shutter')
+        if shutterPlugins:
+            for model, controller in shutterPlugins:
+                self._view.shutterComboBox.addItem(model.name)
+            selectedPlugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
+            self._view.shutterComboBox.setCurrentIndex(self._view.shutterComboBox.findText(selectedPlugin))
+
+        # Drivers tab
+        #driverIndex = config.DRIVER_INDEX[ConfigManager().get('Core/HARDWARE_DRIVER')]
+        #self._view.driverComboBox.setCurrentIndex(driverIndex)
+        self._view.bluetoothDeviceAddressLineEdit.setText(ConfigManager().get('Core/HARDWARE_BLUETOOTH_DEVICE_ADDRESS'))
+        self._view.serialPortLineEdit.setText(ConfigManager().get('Core/HARDWARE_SERIAL_PORT'))
+        self._view.ethernetHostLineEdit.setText(ConfigManager().get('Core/HARDWARE_ETHERNET_HOST'))
+        self._view.ethernetPortSpinBox.setValue(ConfigManager().getInt('Core/HARDWARE_ETHERNET_PORT'))
+        self._view.hardwareAutoConnectCheckBox.setChecked(ConfigManager().getBoolean('Core/HARDWARE_AUTO_CONNECT'))
 
         # Data tab
-        dataStorageDir = ConfigManager().get('Preferences', 'DATA_STORAGE_DIR')
+        dataStorageDir = ConfigManager().get('Core/DATA_STORAGE_DIR')
         if not dataStorageDir:
             dataStorageDir = config.DATA_STORAGE_DIR
         self._view.dataStorageDirLineEdit.setText(dataStorageDir)
-        self._view.dataFileFormatLineEdit.setText(ConfigManager().get('Preferences', 'DATA_FILE_FORMAT'))
-        self._view.dataFileEnableCheckBox.setChecked(ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE'))
-        dataTitle = ConfigManager().get('Preferences', 'DATA_TITLE')
+        self._view.dataFileFormatLineEdit.setText(ConfigManager().get('Core/DATA_FILE_FORMAT'))
+        self._view.dataFileEnableCheckBox.setChecked(ConfigManager().getBoolean('Core/DATA_FILE_ENABLE'))
+        dataTitle = ConfigManager().get('Core/DATA_TITLE')
         if not dataTitle:
             dataTitle = self.tr("Here goes the title")
         self._view.dataTitleLineEdit.setText(dataTitle)
-        dataGps = ConfigManager().get('Preferences', 'DATA_GPS')
+        dataGps = ConfigManager().get('Core/DATA_GPS')
         if not dataGps:
             dataGps = self.tr("Here goes the location")
         self._view.dataGpsLineEdit.setText(dataGps)
-        dataComment = ConfigManager().get('Preferences', 'DATA_COMMENT')
+        dataComment = ConfigManager().get('Core/DATA_COMMENT')
         if not dataComment:
             dataComment = self.tr("Generated by Papywizard %(version)s")
         self._view.dataCommentLineEdit.setText(dataComment)
@@ -366,9 +438,9 @@ class ConfigController(AbstractModalDialogController):
         self._view.timerEveryTimeEdit.setTime(time_)
 
         # Misc tab
-        loggerIndex = config.LOGGER_INDEX[ConfigManager().get('Preferences', 'LOGGER_LEVEL')]
+        loggerIndex = config.LOGGER_INDEX[ConfigManager().get('Core/LOGGER_LEVEL')]
         self._view.loggerLevelComboBox.setCurrentIndex(loggerIndex)
-        self._view.externalShootingScriptCheckBox.setChecked(self._model.externalShootingScript)
+        #self._view.externalShootingScriptCheckBox.setChecked(self._model.externalShootingScript)
 
     def getSelectedTab(self):
         """ Return the selected tab.

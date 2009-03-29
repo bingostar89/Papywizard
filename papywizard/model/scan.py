@@ -145,48 +145,48 @@ class MosaicScan(AbstractScan):
     def __getStartFrom(self):
         """
         """
-        return ConfigManager().get('Preferences', 'MOSAIC_START_FROM')
+        return ConfigManager().get('Core/MOSAIC_START_FROM')
 
     def __setStartFrom(self, startFrom):
         """
         """
-        ConfigManager().set('Preferences', 'MOSAIC_START_FROM', startFrom)
+        ConfigManager().set('Core/MOSAIC_START_FROM', startFrom)
 
     startFrom = property(__getStartFrom, __setStartFrom)
 
     def __getInitialDirection(self):
         """
         """
-        return ConfigManager().get('Preferences', 'MOSAIC_INITAL_DIR')
+        return ConfigManager().get('Core/MOSAIC_INITAL_DIR')
 
     def __setInitialDirection(self, initialDirection):
         """
         """
-        ConfigManager().set('Preferences', 'MOSAIC_INITAL_DIR', initialDirection)
+        ConfigManager().set('Core/MOSAIC_INITAL_DIR', initialDirection)
 
     initialDirection = property(__getInitialDirection, __setInitialDirection)
 
     def __getCR(self):
         """
         """
-        return ConfigManager().getBoolean('Preferences', 'MOSAIC_CR')
+        return ConfigManager().getBoolean('Core/MOSAIC_CR')
 
     def __setCR(self, cr):
         """
         """
-        ConfigManager().setBoolean('Preferences', 'MOSAIC_CR', cr)
+        ConfigManager().setBoolean('Core/MOSAIC_CR', cr)
 
     cr = property(__getCR, __setCR)
 
     def __getOverlap(self):
         """
         """
-        return ConfigManager().getFloat('Preferences', 'MOSAIC_OVERLAP')
+        return ConfigManager().getFloat('Core/MOSAIC_OVERLAP')
 
     def __setOverlap(self, overlap):
         """
         """
-        ConfigManager().setFloat('Preferences', 'MOSAIC_OVERLAP', overlap, 2)
+        ConfigManager().setFloat('Core/MOSAIC_OVERLAP', overlap, 2)
 
     overlap = property(__getOverlap, __setOverlap)
 
@@ -365,12 +365,12 @@ class PresetScan(AbstractScan):
     def __getName(self):
         """
         """
-        return ConfigManager().get("Main", "PRESET_NAME")
+        return ConfigManager().get('Main/PRESET_NAME')
 
     def __setName(self, name):
         """
         """
-        ConfigManager().set("Main", "PRESET_NAME", name)
+        ConfigManager().set('Main/PRESET_NAME', name)
 
     name = property(__getName, __setName)
 

@@ -52,22 +52,32 @@ Implements
 __revision__ = "$Id: axisPlugin.py 1595 2009-03-12 12:39:38Z fma $"
 
 from papywizard.common.abstractPlugin import AbstractPlugin
+from papywizard.hardware.driverFactory import DriverFactory
 
 
 class HardwarePlugin(AbstractPlugin):
     """
     """
+    def __getDriver(self):
+        """ Return the associated driver.
+        """
+        return DriverFactory().get(self._config['DRIVER_TYPE'])
+
+    _driver = property(__getDriver)
+
     def _defineConfig(self):
-        AbstractPlugin._defineConfig(self)
-        self._addConfigKey('_driver', 'DRIVER', default='bluetooth')
+        self._addConfigKey('_driverType', 'DRIVER_TYPE', default='bluetooth')
 
-    # Plugin specific interface
-    def openConnection(self):
+    def establishConnection(self):
         """ Establish the connexion with the driver.
-        """
-        pass
 
-    def closeConnection(self):
-        """ Close the connexion with the driver.
+        We pass self, so the driver can keep track of connected hardwares.
         """
-        pass
+        self._driver.establishConnection(self)
+
+    def shutdownConnection(self):
+        """ Shutdown the connexion with the driver.
+
+        We pass self, so the driver can keep track of disconnected hardwares.
+        """
+        self._driver.shutdownConnection(self)

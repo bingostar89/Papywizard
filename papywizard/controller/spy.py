@@ -82,15 +82,17 @@ class SpyObject(QtCore.QThread):
         QtCore.QThread.__init__(self)
         self.__model = model
         self.__run = False
-        self.__suspend = False
+        self.__suspend = True
         self.__refresh = refresh
         self.__sock = None
+        self.__yaw = None
+        self.__pitch = None
 
-        try:
-            self.__yaw, self.__pitch = self.__model.hardware.readPosition()
-            Logger().debug("Spy.__init__(): yaw=%.1f, pitch=%.1f" % (self.__yaw, self.__pitch))
-        except HardwareError:
-            Logger().exception("Spy.run(): can't read position")
+        #try:
+            #self.__yaw, self.__pitch = self.__model.head.readPosition()
+            #Logger().debug("Spy.__init__(): yaw=%.1f, pitch=%.1f" % (self.__yaw, self.__pitch))
+        #except HardwareError:
+            #Logger().exception("Spy.run(): can't read position")
 
     def __publish(self, yaw, pitch):
         """ Publish the position on the UDP socket.
@@ -129,8 +131,8 @@ class SpyObject(QtCore.QThread):
         if config.PUBLISHER_ENABLE:
             self.__sock = QtNetwork.QUdpSocket()
 
-        # Force a first refresh
-        self.refresh(force=True)
+        ## Force a first refresh
+        #self.refresh(force=True)
 
         # Enter main loop
         self.__run = True
@@ -154,8 +156,8 @@ class SpyObject(QtCore.QThread):
         @type force: bool
         """
         try:
-            yaw, pitch = self.__model.hardware.readPosition()
-            if yaw != self.__yaw or pitch != self.__pitch or force:
+            yaw, pitch = self.__model.head.readPosition()
+            if force or yaw != self.__yaw or pitch != self.__pitch:
                 #Logger().debug("Spy.execute(): new yaw=%.1f, new pitch=%.1f" % (yaw, pitch))
                 try:
 
@@ -168,14 +170,14 @@ class SpyObject(QtCore.QThread):
                     Logger().exception("Spy.refresh(): can't emit signal")
                 self.__yaw = yaw
                 self.__pitch = pitch
-        except HardwareError:
+        except: # HardwareError:
             Logger().exception("Spy.refresh(): can't read position")
 
     def stop(self):
         """ Stop the thread.
         """
         self.__run = False
-        self.__suspend = True
+        self.__suspend = False
 
     def suspend(self):
         """ Suspend thread execution.
@@ -185,6 +187,10 @@ class SpyObject(QtCore.QThread):
     def resume(self):
         """ Resume thread execution.
         """
+
+        # Force a refresh
+        #self.refresh(force=True) # Lead to a dead lock...
+
         self.__suspend = False
 
     def setRefreshRate(self, refresh):

@@ -37,12 +37,11 @@ knowledge of the CeCILL license and that you accept its terms.
 Module purpose
 ==============
 
-Hardware plugin
+Plugin
 
 Implements
 ==========
 
-- HardwarePlugin
 - AxisPlugin
 
 @author: Frédéric Mantegazza
@@ -55,64 +54,145 @@ __revision__ = "$Id$"
 from papywizard.common.abstractPlugin import AbstractPlugin
 
 
-class HardwarePlugin(AbstractPlugin):
-    """
-    """
-    def _defineConfig(self):
-        AbstractPlugin._defineConfig(self)
-        self._addConfigKey('_driver', 'DRIVER', default='bluetooth')
-        self._addConfigKey('_btDevAdd', 'BT_DEVICE_ADDRESS', default="00:50:C2:58:55:B9")
-        self._addConfigKey('_serPort', 'SERIAL_PORT', default="0")
-        self._addConfigKey('_ethHost', 'ETHERNET_HOST', default="localhost")
-        self._addConfigKey('_ethPort', 'ETHERNET_PORT', default=7165)
-
-    # Plugin specific interface
-    def connect(self):
-        """ Connect to the hardware.
-        """
-
-    def disconnect(self):
-        """ Disconnect from the hardware.
-        """
-
-
-class AxisPlugin(HardwarePlugin):
+class AxisPlugin(AbstractPlugin): # Rename to AbstractAxisPlugin?
     """ Plugin for axis.
+
+    Common implementation of axis.
     """
+    def _init(self):
+        self._upperLimit = 9999.9
+        self._lowerLimit = -9999.9
+        self._manualSpeed = None
+        self._offset = 0.
 
-    # Plugin specific interface
-    def init(self):
-        """ Init the axis.
-        """
-        raise NotImplementedError("AxisPlugin.init() must be overidden")
+    def _defineConfig(self):
+        self._addConfigKey('_maxSpeed', 'MAX_SPEED', default='normal')
 
-    def reset(self):
-        """ Reset the axis.
-        """
-        raise NotImplementedError("AxisPlugin.reset() must be overidden")
+    def _checkLimits(self, pos):
+        """ Check if position is in axis limits.
 
-    def drive(self, pos):
-        """ Drive the axis to the given position.
-
-        @param pos: position to reach
+        @param pos: position to check
         @type pos: float
         """
-        raise NotImplementedError("AxisPlugin.drive() must be overidden")
+        if not self.isPositionValid(pos):
+            raise HardwareError("Axis %d limit reached: %.1f not in [%.1f:%.1f]" % \
+                                 (self._num, pos, self._lowerLimit, self._upperLimit))
+
+    def isPositionValid(self, pos):
+        """ Check if position is in axis limits.
+
+        Public method to allow the model to check all positions
+        *before* starting the shooting process.
+
+        @param pos: position to check
+        @type pos: float
+        """
+        if self._lowerLimit <= pos <= self._upperLimit:
+           return True
+        else:
+            return False
+
+    def setReference(self):
+        """ Set current axis positions as reference.
+        """
+        self._offset += self.read()
+
+    def setLimit(self, dir_, limit):
+        """ Set the minus limit.
+
+        @param dir_: direction to limit ('+', '-')
+        @type dir_: char
+
+        @param limit: minus limit to set
+        @type limit: float
+        """
+        if dir_ == '+':
+            self._upperLimit = limit
+        elif dir_ == '-':
+            self._lowerLimit = limit
+        else:
+            raise ValueError("dir must be in ('+', '-')")
+
+    def clearLimits(self):
+        """ Clear all limits.
+        """
+        self._upperLimit = 9999.9
+        self._lowerLimit = -9999.9
 
     def read(self):
-        """ Read the axis current position
+        """ Return the current position of axis.
 
-        @return: current position of the axis
+        @return: position, in °
         @rtype: float
         """
-        raise NotImplementedError("AxisPlugin.read() must be overidden")
+        raise NotImplementedError("AxisPlugin.read() must be overloaded")
+
+    def drive(self, pos, inc=False, useOffset=True, wait=True):
+        """ Drive the axis.
+
+        @param pos: position to reach, in °
+        @type pos: float
+
+        @param inc: if True, pos is an increment
+        @type inc: bool
+
+        @param useOffset: flag to use offset or not
+        @type useOffset: bool
+
+        @param wait: if True, wait for end of movement,
+                     returns immediatly otherwise.
+        @type wait: boot
+        """
+        raise NotImplementedError("AxisPlugin.drive() must be overloaded")
+
+    def waitEndOfDrive(self):
+        """ Wait for end of drive.
+        """
+        raise NotImplementedError("AxisPlugin.waitEndOfDrive() must be overloaded")
 
     def startJog(self, dir_):
+        """ Start axis in specified direction.
+
+        @param dir_: direction ('+', '-')
+        @type dir_: char
         """
-        """
-        raise NotImplementedError("AxisPlugin.startJog() must be overidden")
+        raise NotImplementedError("AxisPlugin.startJog() must be overloaded")
 
     def stop(self):
-        """ Stop the axis.
+        """ stop drive axis.
         """
-        raise NotImplementedError("AxisPlugin.stop() must be overidden")
+        raise NotImplementedError("AxisPlugin.stop() must be overloaded")
+
+    def waitStop(self):
+        """ Wait until axis does not move anymore (inertia).
+        """
+        raise NotImplementedError("AxisPlugin.waitStop() must be overloaded")
+
+    def isMoving(self):
+        """ Check if axis is moving.
+
+        @return: True if moving, False if stopped
+        @rtype: bool
+        """
+        raise NotImplementedError("AxisPlugin.isMoving() must be overloaded")
+
+    #def getStatus(self):
+        #""" Return the status of the axis.
+        #"""
+        #raise NotImplementedError("AxisPlugin.getStatus() must be overloaded")
+
+    def setManualSpeed(self, speed):
+        """ Set manual speed.
+
+        @param speed: new manual speed, in ('slow', 'normal', 'fast')
+        @type speed: str
+        """
+        raise NotImplementedError("AxisPlugin.setManualSpeed() must be overloaded")
+
+    #def setMaxSpeed(self, speed): # Internal, through config
+        #""" Set maximum speed.
+
+        #@param speed: new maximum speed, in ('slow', 'normal', 'fast')
+        #@type speed: str
+        #"""
+        #raise NotImplementedError("AxisPlugin.setMaxSpeed() must be overloaded")

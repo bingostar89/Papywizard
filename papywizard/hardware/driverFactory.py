@@ -51,13 +51,24 @@ Implements
 
 __revision__ = "$Id$"
 
+from PyQt4 import QtCore
+
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 
+driverFactory = None
 
-class DriverFactory(object):
-    """ Class for creating hardware driver.
+
+class DriverFactoryObject(QtCore.QObject):
+    """ Class for creating hardware drivers.
     """
+    def __init__(self):
+        """ Init the DriverFactory object.
+        """
+        self.__drivers = {'bluetooth': None,
+                          'serial': None,
+                          'ethernet': None}
+
     def create(self, type_):
         """ create a hardware driver object.
 
@@ -67,17 +78,40 @@ class DriverFactory(object):
         @raise HardwareError: unknown type
         """
         try:
-            if type_ == "bluetooth":
-                from bluetoothDriver import BluetoothDriver
-                return BluetoothDriver()
-            elif type_ == "serial":
-                from serialDriver import SerialDriver
-                return SerialDriver()
-            elif type_ == "ethernet":
-                from ethernetDriver import EthernetDriver
-                return EthernetDriver()
+            # Bluetooth driver
+            if type_ == 'bluetooth':
+                if self.__drivers['bluetooth'] is None:
+                    from bluetoothDriver import BluetoothDriver
+                    self.__drivers['bluetooth'] = BluetoothDriver()
+                return self.__drivers['bluetooth']
+
+            # Serial driver
+            elif type_ == 'serial':
+                if self.__drivers['serial'] is None:
+                    from serialDriver import SerialDriver
+                    self.__drivers['serial'] = SerialDriver()
+                return self.__drivers['serial']
+
+            # Ethernet driver
+            elif type_ == 'ethernet':
+                if self.__drivers['ethernet'] is None:
+                    from ethernetDriver import EthernetDriver
+                    self.__drivers['ethernet'] = EthernetDriver()
+                return self.__drivers['ethernet']
+
             else:
                 raise HardwareError("Unknown '%s' driver type" % type_)
+
         except Exception, msg:
             Logger().exception("DriverFactory.create()")
             raise HardwareError(unicode(msg))
+
+    get = create # compatibility
+
+
+def DriverFactory():
+    global driverFactory
+    if driverFactory is None:
+        driverFactory = DriverFactoryObject()
+
+    return driverFactory

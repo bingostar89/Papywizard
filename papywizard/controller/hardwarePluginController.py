@@ -59,6 +59,6 @@ class HardwarePluginController(AbstractPluginController):
     """ Plugin controller for hardware-based plugins.
     """
     def _defineGui(self):
-        AbstractPluginController._defineGui(self)
+        #AbstractPluginController._defineGui(self)
         self._addTab('Driver')
         self._addWidget('Driver', "Type", ComboBoxField, (['bluetooth', 'serial', 'ethernet'],), 'DRIVER_TYPE')

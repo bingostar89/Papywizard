@@ -37,12 +37,19 @@ knowledge of the CeCILL license and that you accept its terms.
 Module purpose
 ==============
 
-Axis plugin
+Plugins
 
 Implements
 ==========
 
-- AxisPlugin
+- SimulationAxis
+- SimulationAxisController
+- SimulationYawAxis
+- SimulationYawAxisController
+- SimulationPitchAxis
+- SimulationPitchAxisController
+- SimulationShutter
+- SimulationShutterController
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
@@ -51,18 +58,32 @@ Implements
 
 __revision__ = "$Id: axisPlugin.py 1595 2009-03-12 12:39:38Z fma $"
 
+import time
+import threading
+
 from PyQt4 import QtCore
 
+from papywizard.common import config
+from papywizard.common.loggingServices import Logger
+from papywizard.common.pluginManager import PluginManager
 from papywizard.hardware.axisPlugin import AxisPlugin
+from papywizard.hardware.shutterPlugin import ShutterPlugin
+from papywizard.controller.axisPluginController import AxisPluginController
+from papywizard.controller.shutterPluginController import ShutterPluginController
+from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 
 class SimulationAxis(AxisPlugin, QtCore.QThread):
     """ Simulated hardware axis.
     """
-    def _init(self):
-        AbstractAxis.__init__(self, num)
+    name = "Simulation"
+
+    def __init__(self):
+        AxisPlugin.__init__(self)
         QtCore.QThread.__init__(self)
 
+    def _init(self):
+        AxisPlugin._init(self)
         self._manualSpeed = 1.
         self.__pos = 0.
         self.__jog = False
@@ -71,12 +92,26 @@ class SimulationAxis(AxisPlugin, QtCore.QThread):
         self.__dir = None
         self.__time = None
         self.__run = False
-        self.__name = None
+
+    def _defineConfig(self):
+        self._addConfigKey('_maxSpeed', 'MAX_SPEED', default='normal')
+
+    def activate(self):
+        Logger().trace("SimulationAxis.activate()")
+
+        # Start the thread
+        self.start()
+
+    def shutdown(self):
+        Logger().trace("SimulationAxis.shutdown()")
+
+        # Stop the thread
+        self._stopThread()
 
     def run(self):
         """ Main entry of the thread.
         """
-        threading.currentThread().setName(self.__name)
+        threading.currentThread().setName("%s_%s" % (self.name, self.capacity))
         self.__run = True
         while self.__run:
 
@@ -86,7 +121,7 @@ class SimulationAxis(AxisPlugin, QtCore.QThread):
                     self.__time = time.time()
                 else:
                     if self.__drive:
-                        inc = (time.time() - self.__time) * config.AXIS_SPEED
+                        inc = (time.time() - self.__time) * config.AXIS_SPEED # Use plugin config
                     else:
                         inc = (time.time() - self.__time) * config.AXIS_SPEED * self._manualSpeed
                     self.__time = time.time()
@@ -94,13 +129,13 @@ class SimulationAxis(AxisPlugin, QtCore.QThread):
                         self.__pos += inc
                     elif self.__dir == '-':
                         self.__pos -= inc
-                    #Logger().debug("AxisSimulation.run(): axis %d inc=%.1f, new __pos=%.1f" % (self._num, inc, self.__pos))
+                    #Logger().debug("SimulationAxis.run(): '%s' inc=%.1f, new __pos=%.1f" % (self.capacity, inc, self.__pos))
             else:
                 self.__time = None
 
             # Drive command. Check when stop
             if self.__drive:
-                #Logger().trace("AxisSimulation.run(): ax&is %d driving" % self._num)
+                #Logger().trace("SimulationAxis.run(): '%s' driving" % self.capacity)
                 if self.__dir == '+':
                     if self.__pos >= self.__setpoint:
                         self.__jog = False
@@ -114,26 +149,18 @@ class SimulationAxis(AxisPlugin, QtCore.QThread):
 
             self.msleep(config.SPY_FAST_REFRESH)
 
-        Logger().debug("AxisSimulation.run(): axis simulation thread terminated")
+        Logger().debug("SimulationAxis.run(): axis simulation thread terminated")
 
-    def stopThread(self):
+    def _stopThread(self):
         """ Stop the thread.
         """
         self.__run = False
-
-    def init(self):
-        self.__jog = False
-        self.__drive = False
-
-    def reset(self):
-        self.__jog = False
-        self.__drive = False
 
     def read(self):
         return self.__pos - self._offset
 
     def drive(self, pos, inc=False, useOffset=True, wait=True):
-        Logger().debug("AxisSimulation.drive(): axis %d drive to %.1f" % (self._num, pos))
+        Logger().debug("SimulationAxis.drive(): '%s' drive to %.1f" % (self.capacity, pos))
 
         # Compute absolute position from increment if needed
         if inc:
@@ -178,11 +205,8 @@ class SimulationAxis(AxisPlugin, QtCore.QThread):
     def isMoving(self):
         return self.__jog
 
-    def getStatus(self):
-        return "000"
-
-    def setOutput(self, level):
-        Logger().debug("AxisSimulation.setOutput(): axis %d level=%d" % (self._num, level))
+    #def getStatus(self):
+        #return "000"
 
     def setManualSpeed(self, speed):
         if speed == 'slow':
@@ -191,3 +215,88 @@ class SimulationAxis(AxisPlugin, QtCore.QThread):
             self._manualSpeed = 1.
         elif speed == 'fast':
             self._manualSpeed = 2.
+
+
+class SimulationAxisController(AxisPluginController):
+    def _defineGui(self):
+        AxisPluginController._defineGui(self)
+        self._addWidget('Main', "Maximum speed", ComboBoxField, (['slow', 'normal', 'fast'],), 'MAX_SPEED')
+
+
+class SimulationYawAxis(SimulationAxis):
+    capacity = 'yawAxis'
+
+
+class SimulationYawAxisController(SimulationAxisController):
+    pass
+
+
+class SimulationPitchAxis(SimulationAxis):
+    capacity = 'pitchAxis'
+
+
+class SimulationPitchAxisController(SimulationAxisController):
+    pass
+
+
+class SimulationShutter(ShutterPlugin):
+    name = "Simulation"
+
+    def _init(self):
+        pass
+
+    def _getTimeValue(self):
+        return self._config['TIME_VALUE']
+
+    def _getMirrorLockup(self):
+        return self._config['MIRROR_LOCKUP']
+
+    def _getBracketingNbPicts(self):
+        return self._config['BRACKETING_NB_PICTS']
+
+    def _getBracketingIntent(self):
+        return self._config['BRACKETING_INTENT']
+
+    def _defineConfig(self):
+        ShutterPlugin._defineConfig(self)
+        self._addConfigKey('_timeValue', 'TIME_VALUE', default=0.5)
+        self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=False)
+        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=1)
+        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default='exposure')
+
+    def activate(self):
+        pass
+
+    def shutdown(self):
+        pass
+
+    def lockupMirror(self):
+        """ Lockup the mirror.
+        """
+        Logger().trace("SimulationShutter.lockupMirror()")
+        time.sleep(.2)
+        return 0
+
+    def shoot(self):
+        """ Shoot.
+        """
+        Logger().trace("SimulationShutter.shoot()")
+        time.sleep(self.timeValue)
+        return 0
+
+
+class SimulationShutterController(ShutterPluginController):
+    def _defineGui(self):
+        #ShutterPluginController._defineGui(self)
+        self._addWidget('Main', "Time value", DoubleSpinBoxField, (0.1, 3600, 1, "", " s"), 'TIME_VALUE')
+        self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
+        self._addWidget('Main', "Bracketing nb picts", SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
+        self._addWidget('Main', "Bracketing intent", ComboBoxField, (['exposure', 'focus', 'white balance', 'movement'],), 'BRACKETING_INTENT')
+
+
+def register():
+    """ Register plugins.
+    """
+    PluginManager().register(SimulationYawAxis, SimulationYawAxisController)
+    PluginManager().register(SimulationPitchAxis, SimulationPitchAxisController)
+    PluginManager().register(SimulationShutter, SimulationShutterController)

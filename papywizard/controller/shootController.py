@@ -586,7 +586,7 @@ class ShootController(AbstractModalDialogController):
         elif sequence == 'mirror':
             self._view.sequenceLabel.setText(self.tr("Mirror lockup"))
         elif sequence == 'shutter':
-            totalNbPicts = self._model.camera.bracketingNbPicts
+            totalNbPicts = self._model.shutter.bracketingNbPicts
             self._view.sequenceLabel.setText(self.tr("Shutter - Picture") + " %d/%d" % (bracket, totalNbPicts))
 
     def __onPositionUpdate(self, yaw, pitch):
@@ -671,7 +671,7 @@ class ShootController(AbstractModalDialogController):
             self.__thread.wait()
 
     def refreshView(self):
-        dataFlag = ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE')
+        dataFlag = ConfigManager().getBoolean('Core/DATA_FILE_ENABLE')
         if dataFlag:
             self._view.dataPushButton.setIcon(QtGui.QIcon(":/icons/button_ok.png"))
         else:

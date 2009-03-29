@@ -83,7 +83,7 @@ class PluginManagerObject(QtCore.QObject):
 
         # Load default plugins
         Logger().info("Loading default plugins...")
-        pluginDir = os.path.join(path, os.path.pardir, "hardware", "plugins")
+        pluginDir = os.path.join(path, os.path.pardir, "plugins")
         self.parseDir(pluginDir)
 
         # Load user plugins
@@ -105,7 +105,6 @@ class PluginManagerObject(QtCore.QObject):
                 moduleName, ext = os.path.splitext(entry)
                 if ext == '.py' and moduleName != "__init__":
                     file, pathname, description = imp.find_module(moduleName, [pluginDir])
-                    print description
                     Logger().debug("PluginManager.register(): found '%s' module" % moduleName)
                     try:
                         module = imp.load_module('module', file, pathname, description)
@@ -129,7 +128,7 @@ class PluginManagerObject(QtCore.QObject):
         self.__plugins.add((model, pluginControllerClass))
         Logger().debug("PluginManager.register(): added '%s' plugin with capacity '%s'" % (model.name, model.capacity))
 
-    def getPluginList(self, capacity):
+    def getList(self, capacity):
         """ Return the plugins with the given capacity.
 
         @param capacity: capacity
@@ -141,14 +140,16 @@ class PluginManagerObject(QtCore.QObject):
         plugins = []
         for plugin in self.__plugins:
             if plugin[0].capacity == capacity:
-                plugins.add(plugin)
+                plugins.append(plugin)
+        return plugins
 
-    def getPlugin(self, capacity, name):
+    def get(self, capacity, name):
         """ Return the plugin 
         """
-        for model, controllerClass in self.getPluginList():
+        for model, controllerClass in self.getList(capacity):
             if model.capacity == capacity and model.name == name:
                 return model, controllerClass
+        raise ValueError("No plugin named '%s' with capacity '%s'" % (name, capacity))
 
 
 # ConfigManager factory

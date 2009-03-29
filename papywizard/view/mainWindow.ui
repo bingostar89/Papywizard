@@ -964,7 +964,7 @@
     <addaction name="menuSetLimit" />
     <addaction name="actionHardwareClearLimits" />
     <addaction name="separator" />
-    <addaction name="actionHardwareGotoHome" />
+    <addaction name="actionHardwareGotoReference" />
     <addaction name="actionHardwareGotoInitial" />
    </widget>
    <widget class="QMenu" name="menuHelp" >
@@ -1106,13 +1106,13 @@
     <string>Load Style Sheet...</string>
    </property>
   </action>
-  <action name="actionHardwareGotoHome" >
+  <action name="actionHardwareGotoReference" >
    <property name="icon" >
     <iconset resource="icons.qrc" >
      <normaloff>:/icons/goto.png</normaloff>:/icons/goto.png</iconset>
    </property>
    <property name="text" >
-    <string>Goto Home...</string>
+    <string>Goto Reference...</string>
    </property>
   </action>
   <action name="actionHardwareGotoInitial" >

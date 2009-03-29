@@ -64,35 +64,32 @@ class BluetoothDriver(BusDriver):
 
     This driver only uses bluetooth socket.
     """
-    def init(self):
-        if not self._init:
-            address = ConfigManager().get('Preferences', 'HARDWARE_BLUETOOTH_DEVICE_ADDRESS')
-            Logger().debug("BluetoothDriver.init(): trying to connect to %s..." % address)
+    def _init(self):
+        Logger().trace("BluetoothDriver._init()")
+        address = ConfigManager().get('Core/HARDWARE_BLUETOOTH_DEVICE_ADDRESS')
+        Logger().debug("BluetoothDriver._init(): trying to connect to %s..." % address)
+        try:
+            #import time
+            #time.sleep(3)
+            self.setDeviceAddress(address)
+            self._sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+            self._sock.connect((self.__deviceAddress, 1))
             try:
-                #import time
-                #time.sleep(3)
-                self.setDeviceAddress(address)
-                self._sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-                self._sock.connect((self.__deviceAddress, 1))
-                try:
-                    self._sock.settimeout(1.)
-                except NotImplementedError:
-                    Logger().warning("BluetoothDriver.init(): bluetooth stack does not implment settimeout()")
-                self._init = True
-            except bluetooth.BluetoothError, error:
-                Logger().exception("BluetoothDriver.init()")
-                err, msg = eval(error.message)
-                raise HardwareError(msg)
-            except:
-                Logger().exception("BluetoothDriver.init()")
-                raise
-            else:
-                Logger().debug("BluetoothDriver.init(): successfully connected to %s" % address)
+                self._sock.settimeout(1.)
+            except NotImplementedError:
+                Logger().warning("BluetoothDriver._init(): bluetooth stack does not implment settimeout()")
+        except bluetooth.BluetoothError, error:
+            Logger().exception("BluetoothDriver._init()")
+            err, msg = eval(error.message)
+            raise HardwareError(msg)
+        except:
+            Logger().exception("BluetoothDriver._init()")
+            raise
+        else:
+            Logger().debug("BluetoothDriver._init(): successfully connected to %s" % address)
 
-    def shutdown(self):
-        if self._init:
-            self._sock.close()
-            self._init = False
+    def _shutdown(self):
+        self._sock.close()
 
     def setDeviceAddress(self, address):
         """ Set the address of the device to connect to.
@@ -110,37 +107,18 @@ class BluetoothDriver(BusDriver):
         """
         return bluetooth.discover_devices(lookup_names=True)
 
-    def sendCmd(self, cmd):
-        """
-        @todo: see how to empty buffer.
-        """
-        #Logger().debug("BluetoothDriver.sendCmd(): cmd=%s" % cmd)
-        if not self._init:
-            raise HardwareError(self.tr("Bluetooth driver not initialized"))
+    def empty(self):
+        pass
 
-        self.acquireBus()
-        try:
-            # Empty buffer
-            #self._sock.read(self._sock.inWaiting())
-
-            self._sock.send(":%s\r" % cmd)
-            c = ''
-            while c != '=':
-                c = self._sock.recv(1)
-                #Logger().debug("BluetoothDriver.sendCmd(): c=%s" % repr(c))
-                if not c:
-                    raise IOError(self.tr("Timeout while reading on bluetooth bus"))
-            data = ""
-            while True:
-                c = self._sock.recv(1)
-                #Logger().debug("BluetoothDriver.sendCmd(): c=%s, data=%s" % (repr(c), repr(data)))
-                if not c:
-                    raise IOError(self.tr("Timeout while reading on bluetooth bus"))
-                elif c == '\r':
-                    break
-                data += c
-
-        finally:
-            self.releaseBus()
-
-        return data
+    def write(self, data):
+        #Logger().debug("BluetoothDriver.write(): data=%s" % repr(data))
+        size = self._sock.send(data)
+        return size
+    
+    def read(self, size):
+        data = self._sock.recv(size)
+        #Logger().debug("BluetoothDriver.read(): data=%s" % repr(data))
+        if not data:
+            raise IOError(self.tr("Timeout while reading on bluetooth bus"))
+        else:
+            return data

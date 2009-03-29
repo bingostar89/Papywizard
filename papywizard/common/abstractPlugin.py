@@ -61,7 +61,7 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 
 
-class AbstractPlugin(QtCore.QObject):
+class AbstractPlugin: #(QtCore.QObject):
     """ Abstract definition of a plugin.
     """
     capacity = None # in ('yawAxis', 'pitchAxis', 'shutter', analysis', ...)
@@ -70,7 +70,7 @@ class AbstractPlugin(QtCore.QObject):
     def __init__(self):
         """ Init the abstract plugin.
         """
-        QtCore.QObject.__init__(self)
+        #QtCore.QObject.__init__(self)
 
         # Check capacity validity
         if self.capacity not in ('yawAxis', 'pitchAxis', 'shutter', 'analysis'):
@@ -78,6 +78,7 @@ class AbstractPlugin(QtCore.QObject):
 
         # Plugin specific init
         self._init()
+        self._config = {}
         self._defineConfig()
         self._loadConfig()
 
@@ -96,18 +97,17 @@ class AbstractPlugin(QtCore.QObject):
 
     name = property(__getName, "Plugin name")
 
-    # Private methods
     def _init(self):
         """ Additional init of the plugin.
         """
-        raise NotImplementedError("AbstractPlugin._init() must be overidden")
+        raise NotImplementedError("AbstractPlugin._init() must be overloaded")
 
     def _defineConfig(self):
         """ Define the config for the plugin.
 
         Config keys defined here must match the ones used in the controller.
         """
-        self._config = {}
+        raise NotImplementedError("AbstractPlugin._defineConfig() must be overloaded")
 
     def _addConfigKey(self, attr, key, default):
         """ Add a new config key.
@@ -129,17 +129,17 @@ class AbstractPlugin(QtCore.QObject):
         """
         Logger().trace("AbstractPlugin._loadConfig()")
         for key, defaultValue in self._config.iteritems():
-            group = "%s_%s" % (self.name, self.capacity)
-            if ConfigManager().contains(group, key):
+            configKey = "%s_%s/%s" % (self.name, self.capacity, key)
+            if ConfigManager().contains(configKey):
                 if isinstance(defaultValue, bool):
-                    self._config[key] = ConfigManager().getBoolean(group, key)
+                    self._config[key] = ConfigManager().getBoolean(configKey)
                 elif isinstance(defaultValue, str):
-                    self._config[key] = ConfigManager().get(group, key)
+                    self._config[key] = ConfigManager().get(configKey)
                 elif isinstance(defaultValue, int):
-                    self._config[key] = ConfigManager().getInt(group, key)
+                    self._config[key] = ConfigManager().getInt(configKey)
                 elif isinstance(defaultValue, float):
-                    self._config[key] = ConfigManager().getFloat(group, key)
-        Logger().debug("AbstractPlugin._loadConfig(): config=%s" % self._config)
+                    self._config[key] = ConfigManager().getFloat(configKey)
+        #Logger().debug("AbstractPlugin._loadConfig(): config=%s" % self._config)
 
     def _saveConfig(self):
         """ Save the plugin config.
@@ -147,22 +147,20 @@ class AbstractPlugin(QtCore.QObject):
         Logger().trace("AbstractPlugin._saveConfig()")
         for key, value in self._config.iteritems():
             group = "%s_%s" % (self.name, self.capacity)
-            ConfigManager().set(group, key, value)
+            ConfigManager().set('%s/%s' % (group, key), value)
         ConfigManager().save()
 
-    # Common interface
     def activate(self):
         """ Activate the plugin.
 
-        The plugin may need to perform some operations when activated.
+        The plugin may need to perform some operations when activated,
+        like starting a thread or so.
         """
-        raise NotImplementedError("AbstractPlugin.activate() must be overidden")
+        raise NotImplementedError("AbstractPlugin.activate() must be overloaded")
 
     def shutdown(self):
         """ Shutdown the plugin.
 
         The plugin may need to perform some operations when desactivated.
         """
-        raise NotImplementedError("AbstractPlugin.shutdown() must be overidden")
-
-    # Plugin specific interface
+        raise NotImplementedError("AbstractPlugin.shutdown() must be overloaded")

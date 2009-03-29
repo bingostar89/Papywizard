@@ -172,10 +172,10 @@ class AbstractData(object):
     def _serialize(self):
         """ Serialize xml tree to file.
         """
-        if ConfigManager().getBoolean('Preferences', 'DATA_FILE_ENABLE'):
+        if ConfigManager().getBoolean('Core/DATA_FILE_ENABLE'):
             Logger().trace("Data.serialize()")
-            dataFileFormat = "papywizard_%s.xml" % ConfigManager().get('Preferences', 'DATA_FILE_FORMAT')
-            fileName = os.path.join(ConfigManager().get('Preferences', 'DATA_STORAGE_DIR'), dataFileFormat)
+            dataFileFormat = "papywizard_%s.xml" % ConfigManager().get('Core/DATA_FILE_FORMAT')
+            fileName = os.path.join(ConfigManager().get('Core/DATA_STORAGE_DIR'), dataFileFormat)
             xmlFile = file(fileName % self._dataFileFormatDict, 'w')
             self._doc.writexml(xmlFile, addindent="    ", newl='\n', encoding="utf-8")
             xmlFile.close()
