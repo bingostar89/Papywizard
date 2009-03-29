@@ -59,5 +59,4 @@ class AxisPluginController(AbstractPluginController):
     """ Plugin controller for axis.
     """
     def _defineGui(self):
-        #AbstractPluginController._defineGui(self)
         self._addWidget('Main', "Maximum speed", ComboBoxField, (['low', 'normal', 'fast'],), 'MAX_SPEED')
