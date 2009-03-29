@@ -81,9 +81,7 @@ class ConfigController(AbstractModalDialogController):
         AbstractModalDialogController._connectSignals(self)
 
         self.connect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
-        #self.connect(self._view.bracketingNbPictsSpinBox, QtCore.SIGNAL("valueChanged(int)"), self.__onBracketingNbPictsSpinBoxValueChanged)
         self.connect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onLensTypeComboBoxCurrentIndexChanged)
-        #self.connect(self._view.driverComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onDriverComboBoxCurrentIndexChanged)
         self.connect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
         self.connect(self._view.yawAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onYawAxisConfigurePushButtonClicked)
         self.connect(self._view.pitchAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onPitchAxisConfigurePushButtonClicked)
@@ -94,9 +92,7 @@ class ConfigController(AbstractModalDialogController):
         AbstractModalDialogController._disconnectSignals(self)
 
         self.disconnect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
-        #self.disconnect(self._view.bracketingNbPictsSpinBox, QtCore.SIGNAL("valueChanged(int)"), self.__onBracketingNbPictsSpinBoxValueChanged)
         self.disconnect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onLensTypeComboBoxCurrentIndexChanged)
-        #self.disconnect(self._view.driverComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onDriverComboBoxCurrentIndexChanged)
         self.disconnect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
         self.disconnect(self._view.yawAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onYawAxisConfigurePushButtonClicked)
         self.disconnect(self._view.pitchAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onPitchAxisConfigurePushButtonClicked)
@@ -125,12 +121,6 @@ class ConfigController(AbstractModalDialogController):
         self._model.mosaic.cr = self._view.crCheckBox.isChecked()
 
         # Camera/lens tab
-        #self._model.camera.timeValue = self._view.timeValueDoubleSpinBox.value()
-        #self._model.camera.mirrorLockup = self._view.mirrorLockupCheckBox.isChecked()
-        #self._model.camera.pulseWidthHigh = self._view.pulseWidthHighSpinBox.value()
-        #self._model.camera.pulseWidthLow = self._view.pulseWidthLowSpinBox.value()
-        #self._model.camera.bracketingNbPicts = self._view.bracketingNbPictsSpinBox.value()
-        #self._model.camera.bracketingIntent = config.CAMERA_BRACKETING_INTENT_INDEX[self._view.bracketingIntentComboBox.currentIndex()]
         self._model.camera.sensorCoef = self._view.sensorCoefDoubleSpinBox.value()
         self._model.camera.sensorRatio = config.SENSOR_RATIO_INDEX[self._view.sensorRatioComboBox.currentIndex()]
         self._model.camera.sensorResolution = self._view.sensorResolutionDoubleSpinBox.value()
@@ -161,7 +151,6 @@ class ConfigController(AbstractModalDialogController):
             PluginManager().get('shutter', newPlugin)[0].activate()
 
         # Drivers tab
-        #ConfigManager().set('Core/HARDWARE_DRIVER', config.DRIVER_INDEX[self._view.driverComboBox.currentIndex()])
         ConfigManager().set('Core/HARDWARE_BLUETOOTH_DEVICE_ADDRESS', unicode(self._view.bluetoothDeviceAddressLineEdit.text()))
         ConfigManager().set('Core/HARDWARE_SERIAL_PORT', unicode(self._view.serialPortLineEdit.text()))
         ConfigManager().set('Core/HARDWARE_ETHERNET_HOST', unicode(self._view.ethernetHostLineEdit.text()))
@@ -187,7 +176,6 @@ class ConfigController(AbstractModalDialogController):
 
         # Misc tab
         ConfigManager().set('Core/LOGGER_LEVEL', config.LOGGER_INDEX[self._view.loggerLevelComboBox.currentIndex()])
-        #self._model.externalShootingScript = self._view.externalShootingScriptCheckBox.isChecked()
 
         ConfigManager().save()
 
@@ -212,14 +200,6 @@ class ConfigController(AbstractModalDialogController):
                 self._view.cameraRollDoubleSpinBox.setEnabled(True)
                 self._view.cameraRollDoubleSpinBox.setValue(self._model.cameraRoll)
 
-    #def __onBracketingNbPictsSpinBoxValueChanged(self, value):
-        #""" Bracketing nb picts spin box has change.
-
-        #Enable/disable bracketing intent combobox.
-        #"""
-        #Logger().debug("ConfigController.__onBracketingNbPictsSpinBoxValueChanged(): value=%d" % value)
-        #self._view.bracketingIntentComboBox.setEnabled(value != 1)
-
     def __onLensTypeComboBoxCurrentIndexChanged(self, index):
         """ Lens type combobox has changed.
 
@@ -234,51 +214,14 @@ class ConfigController(AbstractModalDialogController):
             self._view.lensTypeComboBox.setCurrentIndex(self._view.lensTypeComboBox.findText('rectilinear'))
         else:
             if type_ == 'rectilinear':
-                #self._view.focalLabel.setEnabled(True)
                 self._view.focalDoubleSpinBox.setEnabled(True)
                 self._view.opticalMultiplierLabel.setEnabled(True)
                 self._view.opticalMultiplierDoubleSpinBox.setEnabled(True)
             else:
-                #self._view.focalLabel.setEnabled(False)
                 self._view.focalDoubleSpinBox.setEnabled(False)
                 self._view.opticalMultiplierLabel.setEnabled(False)
                 self._view.opticalMultiplierDoubleSpinBox.setEnabled(False)
             Logger().debug("ConfigController.__onLensTypeComboBoxCurrentIndexChanged(): lens type set to '%s'" % type_)
-
-    def __onDriverComboBoxCurrentIndexChanged(self, index):
-        """ Driver combobox has changed.
-
-        Enable/disable BT address / serial port.
-        """
-        driver = config.DRIVER_INDEX[index]
-        Logger().debug("ConfigController.__onDriverComboBoxCurrentIndexChanged(): driver=%s" % driver)
-        if driver == 'bluetooth':
-            self._view.bluetoothDeviceAddressLabel.setEnabled(True)
-            self._view.bluetoothDeviceAddressLineEdit.setEnabled(True)
-            self._view.bluetoothChoosePushButton.setEnabled(True)
-            self._view.serialPortLabel.setEnabled(False)
-            self._view.serialPortLineEdit.setEnabled(False)
-            self._view.ethernetHostPortLabel.setEnabled(False)
-            self._view.ethernetHostLineEdit.setEnabled(False)
-            self._view.ethernetPortSpinBox.setEnabled(False)
-        elif driver == 'serial':
-            self._view.bluetoothDeviceAddressLabel.setEnabled(False)
-            self._view.bluetoothDeviceAddressLineEdit.setEnabled(False)
-            self._view.bluetoothChoosePushButton.setEnabled(False)
-            self._view.serialPortLabel.setEnabled(True)
-            self._view.serialPortLineEdit.setEnabled(True)
-            self._view.ethernetHostPortLabel.setEnabled(False)
-            self._view.ethernetHostLineEdit.setEnabled(False)
-            self._view.ethernetPortSpinBox.setEnabled(False)
-        elif driver == 'ethernet':
-            self._view.bluetoothDeviceAddressLabel.setEnabled(False)
-            self._view.bluetoothDeviceAddressLineEdit.setEnabled(False)
-            self._view.bluetoothChoosePushButton.setEnabled(False)
-            self._view.serialPortLabel.setEnabled(False)
-            self._view.serialPortLineEdit.setEnabled(False)
-            self._view.ethernetHostPortLabel.setEnabled(True)
-            self._view.ethernetHostLineEdit.setEnabled(True)
-            self._view.ethernetPortSpinBox.setEnabled(True)
 
     def __onBluetoothChoosePushButtonClicked(self):
         """ Choose bluetooth button clicked.
@@ -365,13 +308,6 @@ class ConfigController(AbstractModalDialogController):
         self._view.crCheckBox.setChecked(self._model.mosaic.cr)
 
         # Camera/lens tab
-        #self._view.timeValueDoubleSpinBox.setValue(self._model.camera.timeValue)
-        #self._view.mirrorLockupCheckBox.setChecked(self._model.camera.mirrorLockup)
-        #self._view.pulseWidthHighSpinBox.setValue(self._model.camera.pulseWidthHigh)
-        #self._view.pulseWidthLowSpinBox.setValue(self._model.camera.pulseWidthLow)
-        #self._view.bracketingNbPictsSpinBox.setValue(self._model.camera.bracketingNbPicts)
-        #self._view.bracketingIntentComboBox.setCurrentIndex(config.CAMERA_BRACKETING_INTENT_INDEX[self._model.camera.bracketingIntent])
-        #self._view.bracketingIntentComboBox.setEnabled(self._model.camera.bracketingNbPicts != 1)
         self._view.sensorCoefDoubleSpinBox.setValue(self._model.camera.sensorCoef)
         self._view.sensorRatioComboBox.setCurrentIndex(config.SENSOR_RATIO_INDEX[self._model.camera.sensorRatio])
         self._view.sensorResolutionDoubleSpinBox.setValue(self._model.camera.sensorResolution)
@@ -400,8 +336,6 @@ class ConfigController(AbstractModalDialogController):
             self._view.shutterComboBox.setCurrentIndex(self._view.shutterComboBox.findText(selectedPlugin))
 
         # Drivers tab
-        #driverIndex = config.DRIVER_INDEX[ConfigManager().get('Core/HARDWARE_DRIVER')]
-        #self._view.driverComboBox.setCurrentIndex(driverIndex)
         self._view.bluetoothDeviceAddressLineEdit.setText(ConfigManager().get('Core/HARDWARE_BLUETOOTH_DEVICE_ADDRESS'))
         self._view.serialPortLineEdit.setText(ConfigManager().get('Core/HARDWARE_SERIAL_PORT'))
         self._view.ethernetHostLineEdit.setText(ConfigManager().get('Core/HARDWARE_ETHERNET_HOST'))
@@ -440,7 +374,6 @@ class ConfigController(AbstractModalDialogController):
         # Misc tab
         loggerIndex = config.LOGGER_INDEX[ConfigManager().get('Core/LOGGER_LEVEL')]
         self._view.loggerLevelComboBox.setCurrentIndex(loggerIndex)
-        #self._view.externalShootingScriptCheckBox.setChecked(self._model.externalShootingScript)
 
     def getSelectedTab(self):
         """ Return the selected tab.
