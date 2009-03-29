@@ -177,7 +177,9 @@ class AbstractData(object):
             dataFileFormat = "papywizard_%s.xml" % ConfigManager().get('Core/DATA_FILE_FORMAT')
             fileName = os.path.join(ConfigManager().get('Core/DATA_STORAGE_DIR'), dataFileFormat)
             xmlFile = file(fileName % self._dataFileFormatDict, 'w')
-            self._doc.writexml(xmlFile, addindent="    ", newl='\n', encoding="utf-8")
+            #Logger().debug("Data.serialize():\n%s" % self._doc.toprettyxml(indent="    ", newl='\n', encoding='utf-8'))
+            #self._doc.writexml(xmlFile, addindent="    ", newl='\n', encoding='utf-8')
+            xmlFile.write(self._doc.toprettyxml(indent="    ", newl='\n', encoding='utf-8'))
             xmlFile.close()
 
     def createHeader(self, values):
