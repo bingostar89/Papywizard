@@ -74,14 +74,13 @@ def main():
         threading.currentThread().setName("MainThread")
 
         # Init the logger
-##        if hasattr(sys, "frozen"):
-##
-##            # Forbid all console outputs
-##            sys.stderr = BlackHole()
-##            Logger(defaultStreamHandler=False)
-##        else:
-##            Logger()
-        Logger()
+        if hasattr(sys, "frozen"):
+
+            # Forbid all console outputs
+            sys.stderr = BlackHole()
+            Logger(defaultStreamHandler=False)
+        else:
+            Logger()
 
         # Create the buffer for GUI log
         logStream = LogBuffer()
