@@ -104,7 +104,7 @@ class TimelordShutter(AbstractShutterPlugin):
         except OSError:
             Logger().exception("TimelordShutter.shoot()")
             return 1
-    
+
         # Wait end of execution
         stdout, stderr = p.communicate()
         if stderr:

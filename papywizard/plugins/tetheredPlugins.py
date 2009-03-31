@@ -109,7 +109,7 @@ class TetheredShutter(AbstractShutterPlugin):
         # Launch external command
         args = self._config['SHOOT_COMMAND'].split()
         p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    
+
         # Wait end of execution
         stdout, stderr = p.communicate()
         if stderr:
