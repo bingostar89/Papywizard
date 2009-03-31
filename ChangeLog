@@ -8,6 +8,9 @@ x bug fix
 
 0000-00-00 Version SVN
 
+2009-03-31 Version 2.1.1 (dev)
+    + hardware plugin architecture
+
 2009-03-23 Version 2.1.0 (dev)
     + flag to use external shooting script
     + new init() method in external shooting script
