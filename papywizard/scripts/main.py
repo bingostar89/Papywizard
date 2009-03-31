@@ -157,6 +157,14 @@ def main():
         # Load plugins (move to shooting?)
         Logger().info("Load plugins...")
         splash.showMessage("Load plugins...")
+        from papywizard.plugins.simulationPlugins import register
+        register()
+        from papywizard.plugins.merlinPlugins import register
+        register()
+        from papywizard.plugins.tetheredPlugins import register
+        register()
+        from papywizard.plugins.timelordPlugins import register
+        register()
         PluginManager().load()
 
         # Activate selected plugins (move to PluginManager?)
