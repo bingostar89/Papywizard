@@ -106,13 +106,13 @@ setup(options={"py2exe": {'compressed': 1,
                       dest_base="Papywizard-Simul")],
       data_files=[("papywizard/common", ["../papywizard/common/papywizard.conf",
                                          "../papywizard/common/presets.xml"]),
-                  ("papywizard/view", ["../papywizard/view/bluetoothChooserDialog.ui",
-                                       "../papywizard/view/configDialog.ui",
-                                       "../papywizard/view/helpAboutDialog.ui",
-                                       "../papywizard/view/loggerDialog.ui",
-                                       "../papywizard/view/mainWindow.ui",
-                                       "../papywizard/view/nbPictsDialog.ui",
-                                       "../papywizard/view/shootDialog.ui",
-                                       "../papywizard/view/totalFovDialog.ui"
-                                       ])]
+                  ("papywizard/view/ui", ["../papywizard/view/ui/bluetoothChooserDialog.ui",
+                                          "../papywizard/view/ui/configDialog.ui",
+                                          "../papywizard/view/ui/helpAboutDialog.ui",
+                                          "../papywizard/view/ui/loggerDialog.ui",
+                                          "../papywizard/view/ui/mainWindow.ui",
+                                          "../papywizard/view/ui/nbPictsDialog.ui",
+                                          "../papywizard/view/ui/shootDialog.ui",
+                                          "../papywizard/view/ui/totalFovDialog.ui"
+                                          ])]
      )
