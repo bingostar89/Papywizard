@@ -56,7 +56,7 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 
 class AxisPluginController(AbstractPluginController):
-    """ Plugin controller for axis.
+    """ Plugin controller for 'yawAxis' and 'pitchAxis' capacities.
     """
     def _defineGui(self):
         self._addWidget('Main', "Maximum speed", ComboBoxField, (['low', 'normal', 'fast'],), 'MAX_SPEED')
