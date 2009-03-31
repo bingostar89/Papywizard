@@ -69,6 +69,7 @@ from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.hardware.hardwarePlugin import HardwarePlugin
 from papywizard.controller.axisPluginController import AxisPluginController
 from papywizard.controller.hardwarePluginController import HardwarePluginController
+from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 
@@ -108,7 +109,7 @@ class MerlinHardware:
                         if c == '\r':
                             break
                         answer += c
-        
+
                 finally:
                     #self._driver.setCS(1)
                     self._driver.releaseBus()
