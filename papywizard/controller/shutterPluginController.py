@@ -56,4 +56,5 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 
 class ShutterPluginController(AbstractPluginController):
-    pass
+    def _defineGui(self):
+        pass
