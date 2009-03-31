@@ -74,13 +74,14 @@ def main():
         threading.currentThread().setName("MainThread")
 
         # Init the logger
-        if hasattr(sys, "frozen"):
-
-            # Forbid all console outputs
-            sys.stderr = BlackHole()
-            Logger(defaultStreamHandler=False)
-        else:
-            Logger()
+##        if hasattr(sys, "frozen"):
+##
+##            # Forbid all console outputs
+##            sys.stderr = BlackHole()
+##            Logger(defaultStreamHandler=False)
+##        else:
+##            Logger()
+        Logger()
 
         # Create the buffer for GUI log
         logStream = LogBuffer()
@@ -221,6 +222,10 @@ def main():
         if 'splash' in locals():
             splash.finish(None)
         from papywizard.view.messageDialog import ExceptionMessageDialog
+        try:
+            msg = msg.message # Windows exception?
+        except AttributeError:
+            pass
         dialog = ExceptionMessageDialog("Unhandled exception", unicode(msg))
         dialog.exec_()
 
