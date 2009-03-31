@@ -62,6 +62,7 @@ from PyQt4 import QtCore
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 
+
 if hasattr(sys, "frozen"):
     path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "common")
 else:
@@ -82,9 +83,9 @@ class PluginManagerObject(QtCore.QObject):
         """
 
         # Load default plugins
-        Logger().info("Loading default plugins...")
-        pluginDir = os.path.join(path, os.path.pardir, "plugins")
-        self.parseDir(pluginDir)
+        #Logger().info("Loading default plugins...")
+        #pluginDir = os.path.join(path, os.path.pardir, "plugins")
+        #self.parseDir(pluginDir)
 
         # Load user plugins
         Logger().info("Loading user plugins...")
