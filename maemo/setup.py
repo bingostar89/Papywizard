@@ -80,7 +80,7 @@ setup(name="papywizard",
       packages=["papywizard", "papywizard.common", "papywizard.model",
                 "papywizard.controller", "papywizard.hardware",
                 "papywizard.view", "papywizard.scripts"],
-      package_data={'papywizard': ["view/*.ui", "common/papywizard.conf", "common/presets.xml"]},
+      package_data={'papywizard': ["view/ui/*.ui", "common/papywizard.conf", "common/presets.xml"]},
 
       data_files=[("share/applications/hildon", ["maemo/papywizard.desktop"]),
                   ('share/icons/hicolor/26x26/hildon/', ["maemo/icons/26x26/papywizard.png"]),
