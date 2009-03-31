@@ -49,7 +49,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: axisPlugin.py 1595 2009-03-12 12:39:38Z fma $"
+__revision__ = "$Id$"
 
 from papywizard.common.abstractPlugin import AbstractPlugin
 from papywizard.hardware.driverFactory import DriverFactory

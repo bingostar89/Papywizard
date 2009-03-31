@@ -49,7 +49,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: axisPluginController.py 1595 2009-03-12 12:39:38Z fma $"
+__revision__ = "$Id$"
 
 from papywizard.controller.abstractPluginController import AbstractPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField, SliderField

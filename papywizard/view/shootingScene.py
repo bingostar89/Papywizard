@@ -52,7 +52,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: shootingScene.py 1308 2009-01-11 16:19:42Z fma $"
+__revision__ = "$Id$"
 
 import math
 
