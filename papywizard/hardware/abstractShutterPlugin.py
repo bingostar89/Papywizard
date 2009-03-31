@@ -61,7 +61,13 @@ class AbstractShutterPlugin(AbstractPlugin):
         pass
 
     def _getTimeValue(self):
-        """
+        """ Get the time value parameter.
+
+        If this parameter is not relevant in the plugin, return -1.
+        This parameter is only used in the xml data file header.
+
+        @return: time value parameter
+        @rtype: int
         """
         raise NotImplementedError("AbstractShutterPlugin._getTimeValue() must be overloaded")
 
@@ -71,7 +77,12 @@ class AbstractShutterPlugin(AbstractPlugin):
     timeValue = property(__getTimeValue)
 
     def _getMirrorLockup(self):
-        """
+        """ Get the mirror lockup flag.
+
+        If this parameter is not relevant in the plugin, return False.
+
+        @return: mirror lockup flag
+        @rtype: bool
         """
         raise NotImplementedError("AbstractShutterPlugin._getMirrorLockup() must be overloaded")
 
@@ -81,7 +92,17 @@ class AbstractShutterPlugin(AbstractPlugin):
     mirrorLockup = property(__getMirrorLockup)
 
     def _getBracketingNbPicts(self):
-        """
+        """ Return the number of bracketed pictures.
+
+        This parameter must be at least >= 1. If it is the responsability of
+        the plugin to determine this value, return 1 here. The drawbackup is
+        that Papywizard won't be able to set the correct number of bracketed
+        pictures in the xml data file.
+
+        This need to be fixed in future releases.
+
+        @return: number of bracketed pictures
+        @rtype: int
         """
         raise NotImplementedError("AbstractShutterPlugin._getBracketingNbPicts() must be overloaded")
 
@@ -91,7 +112,17 @@ class AbstractShutterPlugin(AbstractPlugin):
     bracketingNbPicts = property(__getBracketingNbPicts)
 
     def _getBracketingIntent(self):
-        """
+        """ Return the bracketing intent.
+
+        If this parameter is not relevant in the plugin, returnone of the
+        allowed values.
+        This parameter is only used in the xml data file header.
+
+        Other values will be added in teh future (possibility of having
+        several values).
+
+        @return: bracketing intent ('exposure', 'focus', 'white balance', 'movement')
+        @rtype: str
         """
         raise NotImplementedError("AbstractShutterPlugin.__getBracketingIntent() must be overloaded")
 
@@ -114,7 +145,7 @@ class AbstractShutterPlugin(AbstractPlugin):
     def shoot(self, bracketNumber):
         """ Shoot.
 
-        @param bracketNumber: number of the bracketed picture
+        @param bracketNumber: num. of the current bracketed picture
         @type bracketNumber: int
 
         @return: error code (0 for OK)
