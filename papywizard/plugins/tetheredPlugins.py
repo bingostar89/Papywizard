@@ -55,9 +55,6 @@ __revision__ = "$Id: axisPlugin.py 1595 2009-03-12 12:39:38Z fma $"
 import time
 import subprocess
 
-from PyQt4 import QtCore
-
-from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.pluginManager import PluginManager
 from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
