@@ -137,6 +137,8 @@ class SpyObject(QtCore.QThread):
                 if self.__suspend:
                     while self.__suspend:
                         self.msleep(config.SPY_REFRESH_DELAY)
+                if not self.__run:
+                    break
                 self.refresh()
                 self.msleep(config.SPY_REFRESH_DELAY)
 
