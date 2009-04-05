@@ -164,3 +164,13 @@ class AbstractPlugin: #(QtCore.QObject):
         The plugin may need to perform some operations when desactivated.
         """
         raise NotImplementedError("AbstractPlugin.shutdown() must be overloaded")
+
+    def establishConnection(self):
+        """ Establish the connexion.
+        """
+        raise NotImplementedError("AbstractPlugin.establishConnection() must be overloaded")
+
+    def shutdownConnection(self):
+        """ Shutdown the connexion.
+        """
+        raise NotImplementedError("AbstractPlugin.shutdownConnection() must be overloaded")

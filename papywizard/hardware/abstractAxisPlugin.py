@@ -59,6 +59,12 @@ class AbstractAxisPlugin(AbstractPlugin):
 
     Common implementation of axis.
     """
+    def establishConnection(self):
+        pass
+
+    def shutdownConnection(self):
+        pass
+
     def _init(self):
         self._upperLimit = 9999.9
         self._lowerLimit = -9999.9

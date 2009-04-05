@@ -919,24 +919,18 @@ class MainController(AbstractController):
             try:
                 plugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
                 PluginManager().get('yawAxis', plugin)[0].establishConnection()
-            except AttributeError:
-                Logger().exception("MainController.__establishConnection().connect()", debug=True)
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
                 connectionStatus['yawAxis'] = False
             try:
                 plugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
                 PluginManager().get('yawAxis', plugin)[0].establishConnection()
-            except AttributeError:
-                Logger().exception("MainController.__establishConnection().connect()", debug=True)
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
                 connectionStatus['pitchAxis'] = False
             try:
                 plugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
                 PluginManager().get('shutter', plugin)[0].establishConnection()
-            except AttributeError:
-                Logger().exception("MainController.__establishConnection().connect()", debug=True)
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
                 connectionStatus['shutter'] = False
@@ -966,7 +960,7 @@ class MainController(AbstractController):
         # Check connection status
         if self.__connectStatus:
 
-            Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
+            #Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
             Spy().resume()
 
             self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_established.png").scaled(22, 22))
@@ -993,24 +987,18 @@ class MainController(AbstractController):
         try:
             plugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
             PluginManager().get('yawAxis', plugin)[0].shutdownConnection()
-        except AttributeError:
-            Logger().exception("MainController.__shutdownConnection()", debug=True)
         except:
             Logger().exception("MainController.__shutdownConnection()")
             shutdownStatus['yawAxis'] = False
         try:
             plugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
             PluginManager().get('pitchAxis', plugin)[0].shutdownConnection()
-        except AttributeError:
-            Logger().exception("MainController.__shutdownConnection()", debug=True)
         except:
             Logger().exception("MainController.__shutdownConnection()")
             shutdownStatus['pitchAxis'] = False
         try:
             plugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
             PluginManager().get('shutter', plugin)[0].shutdownConnection()
-        except AttributeError:
-            Logger().exception("MainController.__shutdownConnection()", debug=True)
         except:
             Logger().exception("MainController.__shutdownConnection()")
             shutdownStatus['shutter'] = False
@@ -1021,7 +1009,7 @@ class MainController(AbstractController):
 
         # Move in if?
         Spy().suspend()
-        Spy().setRefreshRate(config.SPY_FAST_REFRESH)
+        #Spy().setRefreshRate(config.SPY_FAST_REFRESH)
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
         self.setStatusbarMessage(self.tr("Connection shutdown"), 10)
 
