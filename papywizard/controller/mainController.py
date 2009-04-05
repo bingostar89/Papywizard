@@ -88,7 +88,7 @@ class MainController(AbstractController):
         self.__logStream = logStream
 
         # Disable widgets
-        self.__disbaleWidgets()
+        self.__disableWidgets()
 
         # Try to autoconnect to real hardware
         if ConfigManager().getBoolean('Core/HARDWARE_AUTO_CONNECT'):
@@ -131,6 +131,7 @@ class MainController(AbstractController):
         self.__mosaicInputParam = 'startEnd'
         self.__manualSpeed = 'normal'
         self.__lastConfigTabSelected = 0
+        self.__connectionStatus = None
 
     def _initWidgets(self):
         def hasHeightForWidth(self):
@@ -889,7 +890,7 @@ class MainController(AbstractController):
 
         self._view.shootPushButton.setEnabled(True)
 
-    def __disbaleWidgets(self):
+    def __disableWidgets(self):
         """ Disbale widgets when disconnected.
         """
         self._view.menuSetLimit.setEnabled(False)
@@ -913,28 +914,32 @@ class MainController(AbstractController):
         def connect():
             """ Connection function.
             """
-            connectionStatus = {'yawAxis': True,
-                                'pitchAxis': True,
-                                'shutter': True}
+            self.__connectionStatus = {'yawAxis': False,
+                                       'pitchAxis': False,
+                                       'shutter': False}
             try:
                 plugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
                 PluginManager().get('yawAxis', plugin)[0].establishConnection()
+                self.__connectionStatus['yawAxis'] = True
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
-                connectionStatus['yawAxis'] = False
             try:
                 plugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
                 PluginManager().get('yawAxis', plugin)[0].establishConnection()
+                self.__connectionStatus['pitchAxis'] = True
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
-                connectionStatus['pitchAxis'] = False
             try:
                 plugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
                 PluginManager().get('shutter', plugin)[0].establishConnection()
+                self.__connectionStatus['shutter'] = True
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
-                connectionStatus['shutter'] = False
-            if connectionStatus['yawAxis'] and connectionStatus['pitchAxis'] and connectionStatus['shutter']:
+
+            # Check connections
+            if self.__connectionStatus['yawAxis'] and \
+               self.__connectionStatus['pitchAxis'] and \
+               self.__connectionStatus['shutter']:
                 self.__onHardwareConnected(True, "")
             else:
                 self.__onHardwareConnected(False, "One or more plugin failed to connect")
@@ -981,29 +986,36 @@ class MainController(AbstractController):
         """ Shutdown plugins connections.
         """
         Logger().info("Shuting down connection...")
-        shutdownStatus = {'yawAxis': True,
-                          'pitchAxis': True,
-                          'shutter': True}
-        try:
-            plugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
-            PluginManager().get('yawAxis', plugin)[0].shutdownConnection()
-        except:
-            Logger().exception("MainController.__shutdownConnection()")
-            shutdownStatus['yawAxis'] = False
-        try:
-            plugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
-            PluginManager().get('pitchAxis', plugin)[0].shutdownConnection()
-        except:
-            Logger().exception("MainController.__shutdownConnection()")
-            shutdownStatus['pitchAxis'] = False
-        try:
-            plugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
-            PluginManager().get('shutter', plugin)[0].shutdownConnection()
-        except:
-            Logger().exception("MainController.__shutdownConnection()")
-            shutdownStatus['shutter'] = False
-        if shutdownStatus['yawAxis'] and shutdownStatus['pitchAxis'] and shutdownStatus['shutter']:
-            self.__disbaleWidgets()
+        shutdownStatus = {'yawAxis': False,
+                          'pitchAxis': False,
+                          'shutter': False}
+        if self.__connectionStatus['yawAxis']:
+            try:
+                plugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
+                PluginManager().get('yawAxis', plugin)[0].shutdownConnection()
+                shutdownStatus['yawAxis'] = True
+            except:
+                Logger().exception("MainController.__shutdownConnection()")
+        if self.__connectionStatus['pitchAxis']:
+            try:
+                plugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
+                PluginManager().get('pitchAxis', plugin)[0].shutdownConnection()
+                shutdownStatus['pitchAxis'] = True
+            except:
+                Logger().exception("MainController.__shutdownConnection()")
+        if self.__connectionStatus['shutter']:
+            try:
+                plugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
+                PluginManager().get('shutter', plugin)[0].shutdownConnection()
+                shutdownStatus['shutter'] = True
+            except:
+                Logger().exception("MainController.__shutdownConnection()")
+            
+        # Check shutdown
+        if (not self.__connectionStatus['yawAxis'] or shutdownStatus['yawAxis']) and \
+           (not self.__connectionStatus['pitchAxis'] or shutdownStatus['pitchAxis']) and \
+           (not self.__connectionStatus['shutter'] or shutdownStatus['shutter']):
+            self.__disableWidgets()
         else:
             Logger().exception("One or more plugin failed to shutdown")
 
