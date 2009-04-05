@@ -59,6 +59,8 @@ Implements
 
 __revision__ = "$Id$"
 
+import time
+
 from papywizard.common import config
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
@@ -102,7 +104,7 @@ class MerlinHardware:
                         c = self._driver.read(1)
                     if c == '!':
                         c = self._driver.read(1) # Get error code
-                        raise IOError("Merlin didn't understand the command (err=%d)" % c)
+                        raise IOError("Merlin didn't understand the command (err=%s)" % c)
                     answer = ""
                     while True:
                         c = self._driver.read(1)
