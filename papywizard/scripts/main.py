@@ -184,8 +184,7 @@ def main():
 
         # Create spy thread
         Logger().info("Starting Spy...")
-        Spy(model, config.SPY_FAST_REFRESH)
-        Spy().start()
+        Spy(model).start()
 
         # Create main controller
         Logger().info("Creating GUI...")

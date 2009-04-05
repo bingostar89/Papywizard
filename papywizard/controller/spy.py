@@ -70,20 +70,16 @@ class SpyObject(QtCore.QThread):
     its position. When a change is detected, it emits
     a signal, passing the new hardware position.
     """
-    def __init__(self, model, refresh):
+    def __init__(self, model):
         """ Init the object.
 
         @param model: model to use
         @type model: {Shooting}
-
-        @param refresh: delay between 2 refreshs (s)
-        @type refresh: int
         """
         QtCore.QThread.__init__(self)
         self.__model = model
         self.__run = False
         self.__suspend = True
-        self.__refresh = refresh
         self.__sock = None
         self.__yaw = None
         self.__pitch = None
@@ -140,9 +136,9 @@ class SpyObject(QtCore.QThread):
             while self.__run:
                 if self.__suspend:
                     while self.__suspend:
-                        self.msleep(self.__refresh)
+                        self.msleep(config.SPY_REFRESH_DELAY)
                 self.refresh()
-                self.msleep(self.__refresh)
+                self.msleep(config.SPY_REFRESH_DELAY)
 
             Logger().info("Spy stopped")
         except:
@@ -213,11 +209,11 @@ class SpyObject(QtCore.QThread):
 
 
 # Spy factory
-def Spy(model=None, refresh=None):
+def Spy(model=None):
     global spy
     if spy is None:
-        if model is None or refresh is None:
+        if model is None:
             raise ValueError("Spy first call must have correct params")
-        spy = SpyObject(model, refresh)
+        spy = SpyObject(model)
 
     return spy
