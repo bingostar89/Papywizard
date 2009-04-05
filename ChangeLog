@@ -7,6 +7,7 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    x misc bug fix in plugins
 
 2009-03-31 Version 2.1.1 (dev)
     + hardware plugin architecture
