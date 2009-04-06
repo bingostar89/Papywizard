@@ -73,6 +73,7 @@ class EthernetDriver(BusDriver):
             self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self._sock.connect((self.__host, self.__port))
             self._sock.settimeout(1.)
+            self.empty()
         except Exception, msg:
             Logger().exception("EthernetDriver._init()")
             raise HardwareError(msg)
