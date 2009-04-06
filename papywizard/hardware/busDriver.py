@@ -92,7 +92,7 @@ class BusDriver(QtCore.QObject):
         self._connected.add(obj)
 
     def shutdownConnection(self, obj):
-        """ An object asks a connection to be established.
+        """ An object asks a connection to be shutdown.
 
         The connection is shutdown once there are no more
         objects connected.
