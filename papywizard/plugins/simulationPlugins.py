@@ -93,9 +93,6 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
         self.__time = None
         self.__run = False
 
-    def _defineConfig(self):
-        self._addConfigKey('_maxSpeed', 'MAX_SPEED', default='normal')
-
     def activate(self):
         Logger().trace("SimulationAxis.activate()")
 
@@ -111,7 +108,9 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
     def run(self):
         """ Main entry of the thread.
         """
-        threading.currentThread().setName("%s_%s" % (self.name, self.capacity))
+        threadName = "%s_%s" % (self.name, self.capacity)
+        Logger().debug("SimulationAxis.run(): start '%s' thread" % threadName)
+        threading.currentThread().setName(threadName)
         self.__run = True
         while self.__run:
 
@@ -121,9 +120,9 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
                     self.__time = time.time()
                 else:
                     if self.__drive:
-                        inc = (time.time() - self.__time) * config.AXIS_SPEED # Use plugin config
+                        inc = (time.time() - self.__time) * self._config['SPEED']
                     else:
-                        inc = (time.time() - self.__time) * config.AXIS_SPEED * self._manualSpeed
+                        inc = (time.time() - self.__time) * self._config['SPEED'] * self._manualSpeed
                     self.__time = time.time()
                     if self.__dir == '+':
                         self.__pos += inc
@@ -147,7 +146,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
                         self.__drive = False
                         self.__pos = self.__setpoint
 
-            self.msleep(config.SPY_FAST_REFRESH)
+            self.msleep(config.SPY_REFRESH_DELAY)
 
         Logger().debug("SimulationAxis.run(): axis simulation thread terminated")
 
@@ -196,6 +195,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
             time.sleep(0.1)
 
     def startJog(self, dir_):
+        #Logger().debug("SimulationAxis.startJog(): '%s' axis dir_=%s" % (self.capacity, dir_))
         self.__dir = dir_
         self.__jog = True
 
@@ -215,9 +215,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
 
 
 class SimulationAxisController(AxisPluginController):
-    def _defineGui(self):
-        AxisPluginController._defineGui(self)
-        self._addWidget('Main', "Maximum speed", ComboBoxField, (['slow', 'normal', 'fast'],), 'MAX_SPEED')
+    pass
 
 
 class SimulationYawAxis(SimulationAxis):
