@@ -9,14 +9,6 @@
     </message>
 </context>
 <context>
-    <name>BluetoothDriver</name>
-    <message>
-        <location filename="papywizard/hardware/bluetoothDriver.py" line="123"/>
-        <source>Timeout while reading on bluetooth bus</source>
-        <translation>Timeout while reading on bluetooth bus</translation>
-    </message>
-</context>
-<context>
     <name>ConfigController</name>
     <message>
         <location filename="papywizard/controller/configController.py" line="156"/>
@@ -622,14 +614,6 @@ Juan Carlos Andres (es)</translation>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1135"/>
         <source>Preferences...</source>
         <translation>Preferences...</translation>
-    </message>
-</context>
-<context>
-    <name>SerialDriver</name>
-    <message>
-        <location filename="papywizard/hardware/serialDriver.py" line="103"/>
-        <source>Timeout while reading on serial bus</source>
-        <translation>Timeout while reading on serial bus</translation>
     </message>
 </context>
 <context>
