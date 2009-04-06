@@ -8,7 +8,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>578</width>
+    <width>513</width>
     <height>289</height>
    </rect>
   </property>
@@ -16,7 +16,7 @@
    <string>Configuration</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="icons.qrc" >
+   <iconset resource="../icons.qrc" >
     <normaloff>:/icons/papywizard.png</normaloff>:/icons/papywizard.png</iconset>
   </property>
   <property name="modal" >
@@ -473,215 +473,6 @@
        </layout>
       </widget>
      </widget>
-     <widget class="QWidget" name="pluginsTab" >
-      <attribute name="title" >
-       <string>Plugins</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_6" >
-       <item>
-        <layout class="QGridLayout" name="gridLayout_5" >
-         <item row="0" column="0" >
-          <widget class="QLabel" name="label_15" >
-           <property name="text" >
-            <string>Yaw axis</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="margin" >
-            <number>5</number>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" >
-          <widget class="QComboBox" name="yawAxisComboBox" >
-           <property name="currentIndex" >
-            <number>-1</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" >
-          <widget class="QLabel" name="label_16" >
-           <property name="text" >
-            <string>Pitch Axis</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="margin" >
-            <number>5</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2" >
-          <widget class="QPushButton" name="pitchAxisConfigurePushButton" >
-           <property name="text" >
-            <string>Configure</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" >
-          <widget class="QLabel" name="label_17" >
-           <property name="enabled" >
-            <bool>true</bool>
-           </property>
-           <property name="text" >
-            <string>Shutter</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="margin" >
-            <number>5</number>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2" >
-          <widget class="QPushButton" name="yawAxisConfigurePushButton" >
-           <property name="text" >
-            <string>Configure</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2" >
-          <widget class="QPushButton" name="shutterConfigurePushButton" >
-           <property name="text" >
-            <string>Configure</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1" >
-          <widget class="QComboBox" name="pitchAxisComboBox" />
-         </item>
-         <item row="2" column="1" >
-          <widget class="QComboBox" name="shutterComboBox" />
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="driversTab" >
-      <attribute name="title" >
-       <string>Drivers</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_4" >
-       <item>
-        <layout class="QGridLayout" name="gridLayout_9" >
-         <item row="0" column="0" >
-          <widget class="QLabel" name="bluetoothDeviceAddressLabel" >
-           <property name="text" >
-            <string>BT device address</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="margin" >
-            <number>5</number>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" >
-          <widget class="QLineEdit" name="bluetoothDeviceAddressLineEdit" >
-           <property name="text" >
-            <string>00:50:C2:58:55:B9</string>
-           </property>
-           <property name="maxLength" >
-            <number>50</number>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2" >
-          <widget class="QPushButton" name="bluetoothChoosePushButton" >
-           <property name="text" >
-            <string>Choose...</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" >
-          <widget class="QLabel" name="serialPortLabel" >
-           <property name="enabled" >
-            <bool>true</bool>
-           </property>
-           <property name="text" >
-            <string>Serial port</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="margin" >
-            <number>5</number>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1" >
-          <widget class="QLineEdit" name="serialPortLineEdit" >
-           <property name="enabled" >
-            <bool>true</bool>
-           </property>
-           <property name="text" >
-            <string>0</string>
-           </property>
-           <property name="maxLength" >
-            <number>50</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" >
-          <widget class="QLabel" name="ethernetHostPortLabel" >
-           <property name="enabled" >
-            <bool>true</bool>
-           </property>
-           <property name="text" >
-            <string>Ethernet host/port</string>
-           </property>
-           <property name="alignment" >
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-           <property name="margin" >
-            <number>5</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1" >
-          <widget class="QLineEdit" name="ethernetHostLineEdit" >
-           <property name="enabled" >
-            <bool>true</bool>
-           </property>
-           <property name="text" >
-            <string>locahost</string>
-           </property>
-           <property name="maxLength" >
-            <number>50</number>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2" >
-          <widget class="QSpinBox" name="ethernetPortSpinBox" >
-           <property name="enabled" >
-            <bool>true</bool>
-           </property>
-           <property name="minimum" >
-            <number>1024</number>
-           </property>
-           <property name="maximum" >
-            <number>65535</number>
-           </property>
-           <property name="value" >
-            <number>7165</number>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1" >
-          <widget class="QCheckBox" name="hardwareAutoConnectCheckBox" >
-           <property name="text" >
-            <string>Auto-connect</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="dataTab" >
       <attribute name="title" >
        <string>Data</string>
@@ -820,7 +611,7 @@
             <string/>
            </property>
            <property name="icon" >
-            <iconset resource="icons.qrc" >
+            <iconset resource="../icons.qrc" >
              <normaloff>:/icons/fileopen.png</normaloff>:/icons/fileopen.png</iconset>
            </property>
           </widget>
@@ -1020,7 +811,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="icons.qrc" />
+  <include location="../icons.qrc" />
  </resources>
  <connections>
   <connection>
