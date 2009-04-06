@@ -917,24 +917,28 @@ class MainController(AbstractController):
             self.__connectionStatus = {'yawAxis': False,
                                        'pitchAxis': False,
                                        'shutter': False}
+            unconnected = []
             try:
                 plugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
                 PluginManager().get('yawAxis', plugin)[0].establishConnection()
                 self.__connectionStatus['yawAxis'] = True
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
+                unconnected.append('yawAxis')
             try:
                 plugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
                 PluginManager().get('yawAxis', plugin)[0].establishConnection()
                 self.__connectionStatus['pitchAxis'] = True
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
+                unconnected.append('pitchAxis')
             try:
                 plugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
                 PluginManager().get('shutter', plugin)[0].establishConnection()
                 self.__connectionStatus['shutter'] = True
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
+                unconnected.append('shutter')
 
             # Check connections
             if self.__connectionStatus['yawAxis'] and \
@@ -942,7 +946,7 @@ class MainController(AbstractController):
                self.__connectionStatus['shutter']:
                 self.__onHardwareConnected(True, "")
             else:
-                self.__onHardwareConnected(False, "One or more plugin failed to connect")
+                self.__onHardwareConnected(False, self.tr("One or more plugin failed to connect:\n%s" % '\n'.join(unconnected)))
 
         Logger().info("Establishing connection...")
         self.setStatusbarMessage(self.tr("Establishing connection..."))
@@ -1017,7 +1021,7 @@ class MainController(AbstractController):
            (not self.__connectionStatus['shutter'] or shutdownStatus['shutter']):
             self.__disableWidgets()
         else:
-            Logger().exception("One or more plugin failed to shutdown")
+            Logger().exception(self.tr("One or more plugin failed to shutdown"))
 
         # Move in if?
         Spy().suspend()
