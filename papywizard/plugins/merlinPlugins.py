@@ -132,6 +132,7 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin, HardwarePlugin):
     def _init(self):
         MerlinHardware._init(self)
         AbstractAxisPlugin._init(self)
+        HardwarePlugin._init(self)
         self._manualSpeed = config.MANUAL_SPEED['normal']
 
     def _defineConfig(self):
@@ -362,6 +363,12 @@ class MerlinPitchAxisController(MerlinAxisController):
 
 
 class MerlinShutter(MerlinHardware, AbstractShutterPlugin, HardwarePlugin):
+    def _init(self):
+        MerlinHardware._init(self)
+        AbstractShutterPlugin._init(self)
+        HardwarePlugin._init(self)
+        self._numAxis = 1
+
     def _getTimeValue(self):
         return self._config["TIME_VALUE"]
 
@@ -392,6 +399,31 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin, HardwarePlugin):
 
     def shutdown(self):
         pass
+
+    def establishConnection(self):
+        HardwarePlugin.establishConnection(self)
+        self._driver.acquireBus()
+        try:
+
+            # Stop axis
+            self._sendCmd("L")
+
+            # Check motor?
+            self._sendCmd("F")
+
+            # Get full circle count
+            value = self._sendCmd("a")
+            Logger().debug("MerlinAxis.establishConnection(): full circle count=%s" % hex(decodeAxisValue(value)))
+
+            # Get
+            value = self._sendCmd("D")
+            Logger().debug("MerlinAxis.establishConnection(): sidereal rate=%s" % hex(decodeAxisValue(value)))
+        finally:
+            self._driver.releaseBus()
+
+    def shutdownConnection(self):
+        self.stop()
+        HardwarePlugin.shutdownConnection(self)
 
     def lockupMirror(self):
         Logger().trace("MerlinShutter.lockupMirror()")
