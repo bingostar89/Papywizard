@@ -994,10 +994,7 @@ class MainController(AbstractController):
 
         # Check connection status
         if self.__connectStatus:
-
-            #Spy().setRefreshRate(config.SPY_SLOW_REFRESH)
             Spy().resume()
-
             self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_established.png").scaled(22, 22))
             Logger().info("Connection established")
             self.setStatusbarMessage(self.tr("Connection established"), 10)
@@ -1019,6 +1016,7 @@ class MainController(AbstractController):
         shutdownStatus = {'yawAxis': False,
                           'pitchAxis': False,
                           'shutter': False}
+        Spy().suspend()
         if self.__connectionStatus['yawAxis']:
             try:
                 plugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
@@ -1050,8 +1048,6 @@ class MainController(AbstractController):
             Logger().exception(self.tr("One or more plugin failed to shutdown"))
 
         # Move in if?
-        Spy().suspend()
-        #Spy().setRefreshRate(config.SPY_FAST_REFRESH)
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
         self.setStatusbarMessage(self.tr("Connection shutdown"), 10)
 
