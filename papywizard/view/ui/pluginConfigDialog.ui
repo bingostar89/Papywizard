@@ -13,7 +13,7 @@
    <string>Plugin dialog</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="icons.qrc" >
+   <iconset resource="../icons.qrc" >
     <normaloff>:/icons/papywizard.png</normaloff>:/icons/papywizard.png</iconset>
   </property>
   <property name="modal" >
@@ -52,7 +52,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="icons.qrc" />
+  <include location="../icons.qrc" />
  </resources>
  <connections>
   <connection>

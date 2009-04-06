@@ -8,15 +8,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>578</width>
-    <height>289</height>
+    <width>411</width>
+    <height>237</height>
    </rect>
   </property>
   <property name="windowTitle" >
    <string>Preferences</string>
   </property>
   <property name="windowIcon" >
-   <iconset resource="icons.qrc" >
+   <iconset resource="../icons.qrc" >
     <normaloff>:/icons/papywizard.png</normaloff>:/icons/papywizard.png</iconset>
   </property>
   <property name="modal" >
@@ -255,7 +255,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="icons.qrc" />
+  <include location="../icons.qrc" />
  </resources>
  <connections>
   <connection>
