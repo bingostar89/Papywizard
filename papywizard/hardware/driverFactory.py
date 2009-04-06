@@ -82,21 +82,24 @@ class DriverFactoryObject(QtCore.QObject):
             if type_ == 'bluetooth':
                 if self.__drivers['bluetooth'] is None:
                     from bluetoothDriver import BluetoothDriver
-                    self.__drivers['bluetooth'] = BluetoothDriver()
+                    mutex = QtCore.QMutex(QtCore.QMutex.Recursive)
+                    self.__drivers['bluetooth'] = BluetoothDriver(mutex)
                 return self.__drivers['bluetooth']
 
             # Serial driver
             elif type_ == 'serial':
                 if self.__drivers['serial'] is None:
                     from serialDriver import SerialDriver
-                    self.__drivers['serial'] = SerialDriver()
+                    mutex = QtCore.QMutex(QtCore.QMutex.Recursive)
+                    self.__drivers['serial'] = SerialDriver(mutex)
                 return self.__drivers['serial']
 
             # Ethernet driver
             elif type_ == 'ethernet':
                 if self.__drivers['ethernet'] is None:
                     from ethernetDriver import EthernetDriver
-                    self.__drivers['ethernet'] = EthernetDriver()
+                    mutex = QtCore.QMutex(QtCore.QMutex.Recursive)
+                    self.__drivers['ethernet'] = EthernetDriver(mutex)
                 return self.__drivers['ethernet']
 
             else:

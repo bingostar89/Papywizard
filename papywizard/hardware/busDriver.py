@@ -61,11 +61,15 @@ from papywizard.common.loggingServices import Logger
 class BusDriver(QtCore.QObject):
     """ Base (abstract) class for bus drivers.
     """
-    def __init__(self):
+    def __init__(self, mutex):
         """ Init the object.
+
+        @param mutex: mutex to lock/unlock the bus
+        @type mutex: {QtCore.QMutex}
+
         """
         QtCore.QObject.__init__(self)
-        self._mutex = QtCore.QMutex(QtCore.QMutex.Recursive)
+        self._mutex = mutex
         self._connected = sets.Set()
 
     def _init(self):
@@ -83,7 +87,7 @@ class BusDriver(QtCore.QObject):
 
         The connection is established only once.
         """
-        if not len(self._connected):
+        if not self._connected:
             self._init()
         self._connected.add(obj)
 
@@ -117,10 +121,10 @@ class BusDriver(QtCore.QObject):
 
     def write(self, data):
         """ Write data.
-        
+
         @param data: data to write
         @type data: str
-        
+
         @return: size of data written
         @rtype: int
         """
@@ -128,10 +132,10 @@ class BusDriver(QtCore.QObject):
 
     def read(self, size):
         """ Read data.
-        
+
         @param size: size of the data to read
         @type size: int
-        
+
         @return: read data
         @rtype: str
         """
