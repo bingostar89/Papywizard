@@ -441,7 +441,7 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin, HardwarePlugin):
         self._driver.acquireBus()
         try:
             self._sendCmd("O", "1")
-            time.sleep(self.config['PULSE_WIDTH_HIGH'] / 1000.)
+            time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
             self._sendCmd("O", "0")
             return 0
         finally:
