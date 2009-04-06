@@ -108,11 +108,12 @@ setup(options={"py2exe": {'compressed': 1,
                                          "../papywizard/common/presets.xml"]),
                   ("papywizard/view/ui", ["../papywizard/view/ui/bluetoothChooserDialog.ui",
                                           "../papywizard/view/ui/configDialog.ui",
-                                          "../papywizard/view/ui/pluginConfigDialog.ui",
                                           "../papywizard/view/ui/helpAboutDialog.ui",
                                           "../papywizard/view/ui/loggerDialog.ui",
                                           "../papywizard/view/ui/mainWindow.ui",
                                           "../papywizard/view/ui/nbPictsDialog.ui",
+                                          "../papywizard/view/ui/pluginConfigDialog.ui",
+                                          "../papywizard/view/ui/preferencesDialog.ui",
                                           "../papywizard/view/ui/shootDialog.ui",
                                           "../papywizard/view/ui/totalFovDialog.ui"
                                           ])]
