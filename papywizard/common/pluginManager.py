@@ -89,9 +89,8 @@ class PluginManagerObject(QtCore.QObject):
 
         # Load user plugins
         Logger().info("Loading user plugins...")
-        pluginDir = os.path.join(config.USER_CONFIG_DIR, "plugins")
-        if os.path.isdir(pluginDir):
-            self.parseDir(pluginDir)
+        if os.path.isdir(config.USER_PLUGINS_DIR):
+            self.parseDir(config.USER_PLUGINS_DIR)
 
     def parseDir(self, pluginDir):
         """ Load plugins from given dir.

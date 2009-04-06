@@ -70,8 +70,10 @@ else:
     except ImportError:
         DATA_STORAGE_DIR = HOME_DIR
     TMP_DIR = "/tmp"
+USER_PLUGINS_DIR = os.path.join(USER_CONFIG_DIR, "plugins")
 try:
-    os.makedirs(USER_CONFIG_DIR)
+    #os.makedirs(USER_CONFIG_DIR)
+    os.makedirs(USER_PLUGINS_DIR)
 except OSError, (errno, errmsg):
     if errno in (17, 183): # dir already exists
         pass
