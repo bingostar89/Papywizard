@@ -52,11 +52,11 @@ Implements
 __revision__ = "$Id$"
 
 from papywizard.controller.abstractPluginController import AbstractPluginController
-from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField, SliderField
+from papywizard.view.pluginFields import ComboBoxField, LineEditField, DoubleSpinBoxField, SpinBoxField, CheckBoxField, SliderField
 
 
 class AxisPluginController(AbstractPluginController):
     """ Plugin controller for 'yawAxis' and 'pitchAxis' capacities.
     """
     def _defineGui(self):
-        self._addWidget('Main', "Maximum speed", ComboBoxField, (['low', 'normal', 'fast'],), 'MAX_SPEED')
+        self._addWidget('Main', "Speed", SpinBoxField, (5, 25, "", " °/s"), 'SPEED')
