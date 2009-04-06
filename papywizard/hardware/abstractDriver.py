@@ -42,7 +42,7 @@ Hardware driver
 Implements
 ==========
 
-- BusDriver
+- AbstractDriver
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
@@ -58,7 +58,7 @@ from PyQt4 import QtCore
 from papywizard.common.loggingServices import Logger
 
 
-class BusDriver(QtCore.QObject):
+class AbstractDriver(QtCore.QObject):
     """ Base (abstract) class for bus drivers.
     """
     def __init__(self, mutex):
@@ -75,12 +75,12 @@ class BusDriver(QtCore.QObject):
     def _init(self):
         """ Init the connection.
         """
-        raise NotImplementedError("BusDriver._init() must be overidden")
+        raise NotImplementedError("AbstractDriver._init() must be overidden")
 
     def _shutdown(self):
         """ Shutdown the connection.
         """
-        raise NotImplementedError("BusDriver._shutdown() must be overidden")
+        raise NotImplementedError("AbstractDriver._shutdown() must be overidden")
 
     def establishConnection(self, obj):
         """ An object asks a connection to be established.
@@ -105,19 +105,19 @@ class BusDriver(QtCore.QObject):
     def acquireBus(self):
         """ Acquire and lock the bus.
         """
-        #Logger().trace("BusDriver.acquireBus()")
+        #Logger().trace("AbstractDriver.acquireBus()")
         self._mutex.lock()
 
     def releaseBus(self):
         """ Unlock and release the bus.
         """
-        #Logger().trace("BusDriver.releaseBus()")
+        #Logger().trace("AbstractDriver.releaseBus()")
         self._mutex.unlock()
 
     def empty(self):
         """ Empty buffer.
         """
-        raise NotImplementedError("BusDriver.empty() must be overloaded")
+        raise NotImplementedError("AbstractDriver.empty() must be overloaded")
 
     def write(self, data):
         """ Write data.
@@ -128,7 +128,7 @@ class BusDriver(QtCore.QObject):
         @return: size of data written
         @rtype: int
         """
-        raise NotImplementedError("BusDriver.write() must be overloaded")
+        raise NotImplementedError("AbstractDriver.write() must be overloaded")
 
     def read(self, size):
         """ Read data.
@@ -139,4 +139,4 @@ class BusDriver(QtCore.QObject):
         @return: read data
         @rtype: str
         """
-        raise NotImplementedError("BusDriver.read() must be overloaded")
+        raise NotImplementedError("AbstractDriver.read() must be overloaded")
