@@ -51,6 +51,8 @@ Implements
 
 __revision__ = "$Id$"
 
+import time
+
 import bluetooth
 
 from papywizard.common.configManager import ConfigManager
@@ -87,6 +89,7 @@ class BluetoothDriver(AbstractDriver):
             Logger().exception("BluetoothDriver._init()")
             raise
         else:
+            time.sleep(8)
             Logger().debug("BluetoothDriver._init(): successfully connected to %s" % address)
 
     def _shutdown(self):
