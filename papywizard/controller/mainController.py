@@ -70,6 +70,7 @@ from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.helpAboutController import HelpAboutController
 from papywizard.controller.totalFovController import TotalFovController
 from papywizard.controller.nbPictsController import NbPictsController
+from papywizard.controller.preferencesController import PreferencesController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.shootController import ShootController
 from papywizard.controller.spy import Spy
@@ -130,6 +131,7 @@ class MainController(AbstractController):
         self.__connectErrorMessage = None
         self.__mosaicInputParam = 'startEnd'
         self.__manualSpeed = 'normal'
+        self.__lastPreferencesTabSelected = 0
         self.__lastConfigTabSelected = 0
         self.__connectionStatus = None
 
@@ -185,6 +187,7 @@ class MainController(AbstractController):
         self.connect(self._view.actionHardwareClearLimits, QtCore.SIGNAL("activated()"), self.__onActionHardwareClearLimitsActivated)
         self.connect(self._view.actionHardwareGotoReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoReferenceActivated)
         self.connect(self._view.actionHardwareGotoInitial, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoInitialActivated)
+        self.connect(self._view.actionHardwarePreferences, QtCore.SIGNAL("activated()"), self.__onActionHardwarePreferencesActivated)
 
         self.connect(self._view.actionHelpManual, QtCore.SIGNAL("activated()"), self.__onActionHelpManualActivated)
         self.connect(self._view.actionHelpViewLog, QtCore.SIGNAL("activated()"), self.__onActionHelpViewLogActivated)
@@ -242,6 +245,7 @@ class MainController(AbstractController):
         self.disconnect(self._view.actionHardwareClearLimits, QtCore.SIGNAL("activated()"), self.__onActionHardwareClearLimitsActivated)
         self.disconnect(self._view.actionHardwareGotoReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoReferenceActivated)
         self.disconnect(self._view.actionHardwareGotoInitial, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoInitialActivated)
+        self.disconnect(self._view.actionHardwarePreferences, QtCore.SIGNAL("activated()"), self.__onActionHardwarePreferencesActivated)
 
         self.disconnect(self._view.actionHelpManual, QtCore.SIGNAL("activated()"), self.__onActionHelpManualActivated)
         self.disconnect(self._view.actionHelpViewLog, QtCore.SIGNAL("activated()"), self.__onActionHelpViewLogActivated)
@@ -567,6 +571,10 @@ class MainController(AbstractController):
         dialog.hide()
         self._view.grabKeyboard()
 
+    def __onActionHardwarePreferencesActivated(self):
+        Logger().trace("MainController.__onActionHardwarePreferencesActivated()")
+        self.__openPreferencesDialog()
+
     def __onActionHelpManualActivated(self):
         Logger().trace("MainController.__onActionHelpManualActivated()")
         webbrowser.open(config.USER_GUIDE_URL)
@@ -766,6 +774,24 @@ class MainController(AbstractController):
             self.__mosaicInputParam = 'nbPicts'
             self.refreshView()
             self.setStatusbarMessage(self.tr("Number of pictures set to user value"), 10)
+
+    def __openPreferencesDialog(self):
+        """ Open the hardware preferences dialog.
+        """
+        try:
+            QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+            self.setStatusbarMessage(self.tr("Opening preferences dialog. Please wait..."))
+            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+            controller = PreferencesController(self, self._model)
+            controller.setSelectedTab(self.__lastPreferencesTabSelected)
+        finally:
+            QtGui.qApp.restoreOverrideCursor()
+            self.clearStatusBar()
+        self._view.releaseKeyboard()
+        response = controller.exec_()
+        self._view.grabKeyboard()
+        self.__lastPreferencesTabSelected = controller.getSelectedTab()
+        controller.shutdown()
 
     def __openConfigDialog(self):
         """ Open the configuration dialog.
