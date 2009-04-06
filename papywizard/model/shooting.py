@@ -529,7 +529,7 @@ class Shooting(QtCore.QObject):
                                 #self.shutter.shoot(self.shutter.pulseWidthHigh / 1000.)
                                 retCode = self.shutter.lockupMirror()
                                 if retCode:
-                                    raise HardwareError("Shutter failed while mirror locking up")
+                                    raise HardwareError(self.tr("Shutter failed while mirror locking up"))
 
                                 self.__LastShootTime = time.time()
 
@@ -550,7 +550,7 @@ class Shooting(QtCore.QObject):
                             #self.shutter.shoot(self.shutter.pulseWidthHigh / 1000.)
                             retCode = self.shutter.shoot(bracket)
                             if retCode:
-                                raise HardwareError("Shutter failed while shooting")
+                                raise HardwareError(self.tr("Shutter failed while shooting"))
 
                             self.__LastShootTime = time.time()
 
@@ -564,10 +564,11 @@ class Shooting(QtCore.QObject):
 
                             checkStop()
 
-                    except HardwareError:
+                    except HardwareError, msg:
                         self.head.stopAxis()
                         Logger().exception("Shooting.start()")
-                        Logger().warning("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f out of limits" % (index_, yaw, pitch))
+                        #Logger().warning("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f out of limits" % (index_, yaw, pitch))
+                        Logger().warning("Shooting.start(): %s" % unicode(msg))
                         state = 'error'
 
                     else:
