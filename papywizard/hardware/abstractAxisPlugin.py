@@ -54,6 +54,9 @@ __revision__ = "$Id$"
 from papywizard.common.abstractPlugin import AbstractPlugin
 
 
+DEFAULT_SPEED = 15. # °/s
+
+
 class AbstractAxisPlugin(AbstractPlugin):
     """ Abstract plugin for axis.
 
@@ -72,7 +75,7 @@ class AbstractAxisPlugin(AbstractPlugin):
         self._offset = 0.
 
     def _defineConfig(self):
-        self._addConfigKey('_maxSpeed', 'MAX_SPEED', default='normal')
+        self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
 
     def _checkLimits(self, pos):
         """ Check if position is in axis limits.
