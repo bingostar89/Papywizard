@@ -172,7 +172,7 @@ def main():
         plugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
         PluginManager().get('yawAxis', plugin)[0].activate()
         plugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
-        PluginManager().get('yawAxis', plugin)[0].activate()
+        PluginManager().get('pitchAxis', plugin)[0].activate()
         plugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
         PluginManager().get('shutter', plugin)[0].activate()
 
