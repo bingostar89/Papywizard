@@ -112,14 +112,14 @@ class BluetoothDriver(AbstractDriver):
         pass
 
     def write(self, data):
-        Logger().debug("BluetoothDriver.write(): data=%s" % repr(data))
+        #Logger().debug("BluetoothDriver.write(): data=%s" % repr(data))
         size = self._sock.send(data)
         return size
 
     def read(self, size):
         data = self._sock.recv(size)
-        Logger().debug("BluetoothDriver.read(): data=%s" % repr(data))
+        #Logger().debug("BluetoothDriver.read(): data=%s" % repr(data))
         if size and not data:
-            raise IOError(self.tr("Timeout while reading on bluetooth bus"))
+            raise IOError("Timeout while reading on bluetooth bus")
         else:
             return data
