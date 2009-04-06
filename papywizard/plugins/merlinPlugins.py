@@ -435,7 +435,7 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin, HardwarePlugin):
         finally:
             self._driver.releaseBus()
 
-    def shoot(self):
+    def shoot(self, bracketNumber):
         # TODO: ensure PULSE_WIDTH_LOW delay
         Logger().trace("MerlinShutter.shoot()")
         self._driver.acquireBus()
