@@ -89,7 +89,7 @@ class MainController(AbstractController):
         self.__logStream = logStream
 
         # Disable widgets
-        self.__disableWidgets()
+        self.__SetDisconnectedWidgetState()
 
         # Try to autoconnect to real hardware
         if ConfigManager().getBoolean('Preferences/HARDWARE_AUTO_CONNECT'):
@@ -900,13 +900,14 @@ class MainController(AbstractController):
             dialog.exec_()
             self._view.grabKeyboard()
 
-    def __enableWidgets(self):
-        """ Enable widgets when connected.
+    def __SetConnectedWidgetState(self):
+        """ Enable/disable widgets when connected.
         """
         self._view.menuSetLimit.setEnabled(True)
         self._view.actionHardwareClearLimits.setEnabled(True)
         self._view.actionHardwareGotoReference.setEnabled(True)
         self._view.actionHardwareGotoInitial.setEnabled(True)
+        self._view.actionHardwarePreferences.setEnabled(False)
 
         self._view.setReferenceToolButton.setEnabled(True)
         self._view.yawMovePlusToolButton.setEnabled(True)
@@ -916,13 +917,14 @@ class MainController(AbstractController):
 
         self._view.shootPushButton.setEnabled(True)
 
-    def __disableWidgets(self):
-        """ Disbale widgets when disconnected.
+    def __SetDisconnectedWidgetState(self):
+        """ Enable/disable widgets when disconnected.
         """
         self._view.menuSetLimit.setEnabled(False)
         self._view.actionHardwareClearLimits.setEnabled(False)
         self._view.actionHardwareGotoReference.setEnabled(False)
         self._view.actionHardwareGotoInitial.setEnabled(False)
+        self._view.actionHardwarePreferences.setEnabled(True)
 
         self._view.setReferenceToolButton.setEnabled(False)
         self._view.yawMovePlusToolButton.setEnabled(False)
@@ -998,7 +1000,7 @@ class MainController(AbstractController):
             self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_established.png").scaled(22, 22))
             Logger().info("Connection established")
             self.setStatusbarMessage(self.tr("Connection established"), 10)
-            self.__enableWidgets()
+            self.__SetConnectedWidgetState()
         else:
             Logger().error("Can't establish connection\n%s" % self.__connectErrorMessage)
             #self._view.connectLabel.setIcon(QtGui.QIcon(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22)))
@@ -1043,7 +1045,7 @@ class MainController(AbstractController):
         if (not self.__connectionStatus['yawAxis'] or shutdownStatus['yawAxis']) and \
            (not self.__connectionStatus['pitchAxis'] or shutdownStatus['pitchAxis']) and \
            (not self.__connectionStatus['shutter'] or shutdownStatus['shutter']):
-            self.__disableWidgets()
+            self.__SetDisconnectedWidgetState()
         else:
             Logger().exception(self.tr("One or more plugin failed to shutdown"))
 
