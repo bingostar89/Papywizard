@@ -92,7 +92,7 @@ class MainController(AbstractController):
         self.__disableWidgets()
 
         # Try to autoconnect to real hardware
-        if ConfigManager().getBoolean('Core/HARDWARE_AUTO_CONNECT'):
+        if ConfigManager().getBoolean('Preferences/HARDWARE_AUTO_CONNECT'):
             self._view.actionHardwareConnect.setChecked(True)
 
     def _init(self):
@@ -290,14 +290,14 @@ class MainController(AbstractController):
     def __getFullScreenFlag(self):
         """
         """
-        #return ConfigManager().getBoolean('FULLSCREEN_FLAG')
+        #return ConfigManager().getBoolean('FULLSCREEN')
         Logger().warning("MainController.__onKeyPressed(): fix fullScreenFlag property!!!")
         return False
 
     def __setFullScreenFlag(self, flag):
         """
         """
-        ConfigManager().setBoolean('FULLSCREEN_FLAG', flag)
+        ConfigManager().setBoolean('FULLSCREEN', flag)
 
     __fullScreen = property(__getFullScreenFlag, __setFullScreenFlag)
 
@@ -814,7 +814,7 @@ class MainController(AbstractController):
         controller.shutdown()
  
         if response:
-            Logger().setLevel(ConfigManager().get('Core/LOGGER_LEVEL'))
+            Logger().setLevel(ConfigManager().get('Configuration/LOGGER_LEVEL'))
             if self.__mosaicInputParam == 'startEnd':
                 pass
             elif self.__mosaicInputParam == 'fov':
@@ -945,21 +945,21 @@ class MainController(AbstractController):
                                        'shutter': False}
             unconnected = []
             try:
-                plugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
+                plugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
                 PluginManager().get('yawAxis', plugin)[0].establishConnection()
                 self.__connectionStatus['yawAxis'] = True
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
                 unconnected.append('yawAxis')
             try:
-                plugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
+                plugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
                 PluginManager().get('yawAxis', plugin)[0].establishConnection()
                 self.__connectionStatus['pitchAxis'] = True
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
                 unconnected.append('pitchAxis')
             try:
-                plugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
+                plugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
                 PluginManager().get('shutter', plugin)[0].establishConnection()
                 self.__connectionStatus['shutter'] = True
             except:
@@ -1021,26 +1021,26 @@ class MainController(AbstractController):
                           'shutter': False}
         if self.__connectionStatus['yawAxis']:
             try:
-                plugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
+                plugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
                 PluginManager().get('yawAxis', plugin)[0].shutdownConnection()
                 shutdownStatus['yawAxis'] = True
             except:
                 Logger().exception("MainController.__shutdownConnection()")
         if self.__connectionStatus['pitchAxis']:
             try:
-                plugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
+                plugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
                 PluginManager().get('pitchAxis', plugin)[0].shutdownConnection()
                 shutdownStatus['pitchAxis'] = True
             except:
                 Logger().exception("MainController.__shutdownConnection()")
         if self.__connectionStatus['shutter']:
             try:
-                plugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
+                plugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
                 PluginManager().get('shutter', plugin)[0].shutdownConnection()
                 shutdownStatus['shutter'] = True
             except:
                 Logger().exception("MainController.__shutdownConnection()")
-            
+
         # Check shutdown
         if (not self.__connectionStatus['yawAxis'] or shutdownStatus['yawAxis']) and \
            (not self.__connectionStatus['pitchAxis'] or shutdownStatus['pitchAxis']) and \

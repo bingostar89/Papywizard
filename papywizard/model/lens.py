@@ -69,36 +69,36 @@ class Lens(object):
     def __getType(self):
         """
         """
-        return ConfigManager().get('Core/LENS_TYPE')
+        return ConfigManager().get('Configuration/LENS_TYPE')
 
     def __setType(self, type_):
         """
         """
-        ConfigManager().set('Core/LENS_TYPE', type_)
+        ConfigManager().set('Configuration/LENS_TYPE', type_)
 
     type_ = property(__getType, __setType)
 
     def __getFocal(self):
         """
         """
-        return ConfigManager().getFloat('Core/LENS_FOCAL')
+        return ConfigManager().getFloat('Configuration/LENS_FOCAL')
 
     def __setFocal(self, focal):
         """
         """
-        ConfigManager().setFloat('Core/LENS_FOCAL', focal, 1)
+        ConfigManager().setFloat('Configuration/LENS_FOCAL', focal, 1)
 
     focal = property(__getFocal, __setFocal)
 
     def __getOpticalMultiplier(self):
         """
         """
-        return ConfigManager().getFloat('Core/LENS_OPTICAL_MULTIPLIER')
+        return ConfigManager().getFloat('Configuration/LENS_OPTICAL_MULTIPLIER')
 
     def __setOpticalMultiplier(self, opticalMultiplier):
         """
         """
-        ConfigManager().setFloat('Core/LENS_OPTICAL_MULTIPLIER', opticalMultiplier, 1)
+        ConfigManager().setFloat('Configuration/LENS_OPTICAL_MULTIPLIER', opticalMultiplier, 1)
 
     opticalMultiplier = property(__getOpticalMultiplier, __setOpticalMultiplier)
 

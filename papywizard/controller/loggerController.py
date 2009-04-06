@@ -100,7 +100,7 @@ class LoggerController(AbstractModalDialogController):
         Logger().trace("LoggerController.__onSaveLogPushButtonClicked()")
         dateTime = time.strftime("%Y-%m-%d_%Hh%Mm%Ss", time.localtime())
         logFileFormat = "papywizard_%s.log" % dateTime
-        logFileName = os.path.join(ConfigManager().get('Core/DATA_STORAGE_DIR'), logFileFormat)
+        logFileName = os.path.join(ConfigManager().get('Configuration/DATA_STORAGE_DIR'), logFileFormat)
         logText = self._view.loggerPlainTextEdit.toPlainText()
         logFile = file(logFileName, 'w')
         logFile.write(logText)

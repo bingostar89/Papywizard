@@ -169,11 +169,11 @@ def main():
 
         # Activate selected plugins (move to PluginManager?)
         Logger().info("Activate plugins...")
-        plugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
+        plugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
         PluginManager().get('yawAxis', plugin)[0].activate()
-        plugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
+        plugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
         PluginManager().get('pitchAxis', plugin)[0].activate()
-        plugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
+        plugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
         PluginManager().get('shutter', plugin)[0].activate()
 
         # Create model
@@ -193,7 +193,7 @@ def main():
         mainController = MainController(model, logStream)
 
         # Set user logger level
-        Logger().setLevel(ConfigManager().get('Core/LOGGER_LEVEL'))
+        Logger().setLevel(ConfigManager().get('Configuration/LOGGER_LEVEL'))
 
         # Terminate splashscreen
         splash.finish(mainController._view)

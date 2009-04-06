@@ -56,7 +56,6 @@ import thread
 
 from PyQt4 import QtCore, QtGui
 
-from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.view.messageDialog import ExceptionMessageDialog

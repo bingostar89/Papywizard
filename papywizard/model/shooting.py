@@ -98,120 +98,120 @@ class Shooting(QtCore.QObject):
     def __getShutter(self):
         """
         """
-        shutterName = ConfigManager().get('Core/PLUGIN_SHUTTER')
+        shutterName = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
         return PluginManager().get('shutter', shutterName)[0] # Use getModel()?
 
     shutter = property(__getShutter)
 
     def __getMode(self):
-        return ConfigManager().get('Main/SHOOTING_MODE')
+        return ConfigManager().get('Core/SHOOTING_MODE')
 
     def __setMode(self, mode):
-        ConfigManager().set('Main/SHOOTING_MODE', mode)
+        ConfigManager().set('Core/SHOOTING_MODE', mode)
 
     mode = property(__getMode, __setMode)
 
     def __getStabilizationDelay(self):
-        return ConfigManager().getFloat('Core/SHOOTING_STABILIZATION_DELAY')
+        return ConfigManager().getFloat('Configuration/SHOOTING_STABILIZATION_DELAY')
 
     def __setStabilizationDelay(self, stabilizationDelay):
-        ConfigManager().setFloat('Core/SHOOTING_STABILIZATION_DELAY', stabilizationDelay, 1)
+        ConfigManager().setFloat('Configuration/SHOOTING_STABILIZATION_DELAY', stabilizationDelay, 1)
 
     stabilizationDelay = property(__getStabilizationDelay, __setStabilizationDelay)
 
     def __getHeadOrientation(self):
         """
         """
-        return ConfigManager().get('Core/SHOOTING_HEAD_ORIENTATION')
+        return ConfigManager().get('Configuration/SHOOTING_HEAD_ORIENTATION')
 
     def __setHeadOrientation(self, headOrientation):
         """
         """
-        ConfigManager().set('Core/SHOOTING_HEAD_ORIENTATION', headOrientation)
+        ConfigManager().set('Configuration/SHOOTING_HEAD_ORIENTATION', headOrientation)
 
     headOrientation = property(__getHeadOrientation, __setHeadOrientation)
 
     def __getCameraOrientation(self):
         """
         """
-        return ConfigManager().get('Core/SHOOTING_CAMERA_ORIENTATION')
+        return ConfigManager().get('Configuration/SHOOTING_CAMERA_ORIENTATION')
 
     def __setCameraOrientation(self, cameraOrientation):
         """
         """
-        ConfigManager().set('Core/SHOOTING_CAMERA_ORIENTATION', cameraOrientation)
+        ConfigManager().set('Configuration/SHOOTING_CAMERA_ORIENTATION', cameraOrientation)
 
     cameraOrientation = property(__getCameraOrientation, __setCameraOrientation)
 
     def __getCameraRoll(self):
         """
         """
-        return ConfigManager().getFloat('Core/SHOOTING_CAMERA_ROLL')
+        return ConfigManager().getFloat('Configuration/SHOOTING_CAMERA_ROLL')
 
     def __setCameraRoll(self, cameraRoll):
         """
         """
-        ConfigManager().setFloat('Core/SHOOTING_CAMERA_ROLL', cameraRoll, 1)
+        ConfigManager().setFloat('Configuration/SHOOTING_CAMERA_ROLL', cameraRoll, 1)
 
     cameraRoll = property(__getCameraRoll, __setCameraRoll)
 
     def __getTimerAfter(self):
         """
         """
-        return hmsAsStrToS(ConfigManager().get('Core/TIMER_AFTER'))
+        return hmsAsStrToS(ConfigManager().get('Configuration/TIMER_AFTER'))
 
     def __setTimerAfter(self, s):
         """
         """
-        ConfigManager().set('Core/TIMER_AFTER', sToHmsAsStr(s))
+        ConfigManager().set('Configuration/TIMER_AFTER', sToHmsAsStr(s))
 
     timerAfter = property(__getTimerAfter, __setTimerAfter)
 
     def __getTimerAfterEnable(self):
         """
         """
-        return ConfigManager().getBoolean('Core/TIMER_AFTER_ENABLE')
+        return ConfigManager().getBoolean('Configuration/TIMER_AFTER_ENABLE')
 
     def __setTimerAfterEnable(self, flag):
         """
         """
-        ConfigManager().setBoolean('Core/TIMER_AFTER_ENABLE', flag)
+        ConfigManager().setBoolean('Configuration/TIMER_AFTER_ENABLE', flag)
 
     timerAfterEnable = property(__getTimerAfterEnable, __setTimerAfterEnable)
 
     def __getTimerRepeat(self):
         """
         """
-        return ConfigManager().getInt('Core/TIMER_REPEAT')
+        return ConfigManager().getInt('Configuration/TIMER_REPEAT')
 
     def __setTimerRepeat(self, repeat):
         """
         """
-        ConfigManager().setInt('Core/TIMER_REPEAT', repeat)
+        ConfigManager().setInt('Configuration/TIMER_REPEAT', repeat)
 
     timerRepeat = property(__getTimerRepeat, __setTimerRepeat)
 
     def __getTimerRepeatEnable(self):
         """
         """
-        return ConfigManager().getBoolean('Core/TIMER_REPEAT_ENABLE')
+        return ConfigManager().getBoolean('Configuration/TIMER_REPEAT_ENABLE')
 
     def __setTimerRepeatEnable(self, flag):
         """
         """
-        ConfigManager().setBoolean('Core/TIMER_REPEAT_ENABLE', flag)
+        ConfigManager().setBoolean('Configuration/TIMER_REPEAT_ENABLE', flag)
 
     timerRepeatEnable = property(__getTimerRepeatEnable, __setTimerRepeatEnable)
 
     def __getTimerEvery(self):
         """
         """
-        return hmsAsStrToS(ConfigManager().get('Core/TIMER_EVERY'))
+        return hmsAsStrToS(ConfigManager().get('Configuration/TIMER_EVERY'))
 
     def __setTimerEvery(self, s):
         """
         """
-        ConfigManager().set('Core/TIMER_EVERY', sToHmsAsStr(s))
+        ConfigManager().set('Configuration/TIMER_EVERY', sToHmsAsStr(s))
 
     timerEvery = property(__getTimerEvery, __setTimerEvery)
 
@@ -429,9 +429,9 @@ class Shooting(QtCore.QObject):
             roll = self.cameraRoll
         else:
             raise ValueError("cameraOrientation must be in ('portrait', 'landscape', 'custom'")
-        values = {'title' : ConfigManager().get('Core/DATA_TITLE'),
-                  'gps': ConfigManager().get('Core/DATA_GPS'),
-                  'comment': ConfigManager().get('Core/DATA_COMMENT') % {'version': config.VERSION},
+        values = {'title' : ConfigManager().get('Configuration/DATA_TITLE'),
+                  'gps': ConfigManager().get('Configuration/DATA_GPS'),
+                  'comment': ConfigManager().get('Configuration/DATA_COMMENT') % {'version': config.VERSION},
                   'headOrientation': "up",
                   'cameraOrientation': "%s" % self.cameraOrientation,
                   'roll': "%.1f" % roll,

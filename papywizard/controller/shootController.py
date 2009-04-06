@@ -671,7 +671,7 @@ class ShootController(AbstractModalDialogController):
             self.__thread.wait()
 
     def refreshView(self):
-        dataFlag = ConfigManager().getBoolean('Core/DATA_FILE_ENABLE')
+        dataFlag = ConfigManager().getBoolean('Configuration/DATA_FILE_ENABLE')
         if dataFlag:
             self._view.dataPushButton.setIcon(QtGui.QIcon(":/icons/button_ok.png"))
         else:

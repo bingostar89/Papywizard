@@ -56,15 +56,15 @@ import socket
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
-from papywizard.hardware.busDriver import BusDriver
+from papywizard.hardware.abstractDriver import AbstractDriver
 
 
-class EthernetDriver(BusDriver):
+class EthernetDriver(AbstractDriver):
     """ Driver for TCP ethernet connection.
     """
     def _init(self):
-        host = ConfigManager().get('Core/HARDWARE_ETHERNET_HOST')
-        port = ConfigManager().getInt('Core/HARDWARE_ETHERNET_PORT')
+        host = ConfigManager().get('Preferences/HARDWARE_ETHERNET_HOST')
+        port = ConfigManager().getInt('Preferences/HARDWARE_ETHERNET_PORT')
         Logger().debug("EthernetDriver._init(): trying to connect to %s:%d..." % (host, port))
         try:
             #import time

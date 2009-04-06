@@ -57,22 +57,22 @@ from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
-from papywizard.hardware.busDriver import BusDriver
+from papywizard.hardware.abstractDriver import AbstractDriver
 
 
-class SerialDriver(BusDriver):
+class SerialDriver(AbstractDriver):
     """ Driver for serial connection.
     """
     def _init(self):
         try:
             try:
-                port = ConfigManager().getInt('Core/HARDWARE_SERIAL_PORT')
+                port = ConfigManager().getInt('Preferences/HARDWARE_SERIAL_PORT')
             except ValueError:
-                port = ConfigManager().get('Core/HARDWARE_SERIAL_PORT')
+                port = ConfigManager().get('Preferences/HARDWARE_SERIAL_PORT')
             self._serial = serial.Serial(port=port)
             self._serial.timeout = config.SERIAL_TIMEOUT
             self._serial.baudrate = config.SERIAL_BAUDRATE
-            self._serial.read(self._serial.inWaiting())
+            self.empty()
         except:
             Logger().exception("SerialDriver._init()")
             raise
@@ -92,14 +92,14 @@ class SerialDriver(BusDriver):
         self.read(self._serial.inWaiting())
 
     def write(self, data):
-        #Logger().debug("SerialDriver.write(): data=%s" % repr(data))
+        Logger().debug("SerialDriver.write(): data=%s" % repr(data))
         size = self._serial.write(data)
         return size
-    
+
     def read(self, size):
         data = self._serial.read(size)
-        #Logger().debug("SerialDriver.read(): data=%s" % repr(data))
-        if not data:
+        Logger().debug("SerialDriver.read(): data=%s" % repr(data))
+        if size and not data:
             raise IOError(self.tr("Timeout while reading on serial bus"))
         else:
             return data

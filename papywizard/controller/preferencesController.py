@@ -101,33 +101,33 @@ class PreferencesController(AbstractModalDialogController):
         Logger().trace("ConfigController._onAccepted()")
 
         # Plugins tab
-        previousPlugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
-        ConfigManager().set('Core/PLUGIN_YAW_AXIS', unicode(self._view.yawAxisComboBox.currentText()))
-        newPlugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
+        previousPlugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
+        ConfigManager().set('Preferences/PLUGIN_YAW_AXIS', unicode(self._view.yawAxisComboBox.currentText()))
+        newPlugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
         if previousPlugin != newPlugin:
             PluginManager().get('yawAxis', previousPlugin)[0].shutdown()
             PluginManager().get('yawAxis', newPlugin)[0].activate()
 
-        previousPlugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
-        ConfigManager().set('Core/PLUGIN_PITCH_AXIS', unicode(self._view.pitchAxisComboBox.currentText()))
-        newPlugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
+        previousPlugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
+        ConfigManager().set('Preferences/PLUGIN_PITCH_AXIS', unicode(self._view.pitchAxisComboBox.currentText()))
+        newPlugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
         if previousPlugin != newPlugin:
             PluginManager().get('pitchAxis', previousPlugin)[0].shutdown()
             PluginManager().get('pitchAxis', newPlugin)[0].activate()
 
-        previousPlugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
-        ConfigManager().set('Core/PLUGIN_SHUTTER', unicode(self._view.shutterComboBox.currentText()))
-        newPlugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
+        previousPlugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
+        ConfigManager().set('Preferences/PLUGIN_SHUTTER', unicode(self._view.shutterComboBox.currentText()))
+        newPlugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
         if previousPlugin != newPlugin:
             PluginManager().get('shutter', previousPlugin)[0].shutdown()
             PluginManager().get('shutter', newPlugin)[0].activate()
 
         # Drivers tab
-        ConfigManager().set('Core/HARDWARE_BLUETOOTH_DEVICE_ADDRESS', unicode(self._view.bluetoothDeviceAddressLineEdit.text()))
-        ConfigManager().set('Core/HARDWARE_SERIAL_PORT', unicode(self._view.serialPortLineEdit.text()))
-        ConfigManager().set('Core/HARDWARE_ETHERNET_HOST', unicode(self._view.ethernetHostLineEdit.text()))
-        ConfigManager().setInt('Core/HARDWARE_ETHERNET_PORT', self._view.ethernetPortSpinBox.value())
-        ConfigManager().setBoolean('Core/HARDWARE_AUTO_CONNECT', self._view.hardwareAutoConnectCheckBox.isChecked())
+        ConfigManager().set('Preferences/HARDWARE_BLUETOOTH_DEVICE_ADDRESS', unicode(self._view.bluetoothDeviceAddressLineEdit.text()))
+        ConfigManager().set('Preferences/HARDWARE_SERIAL_PORT', unicode(self._view.serialPortLineEdit.text()))
+        ConfigManager().set('Preferences/HARDWARE_ETHERNET_HOST', unicode(self._view.ethernetHostLineEdit.text()))
+        ConfigManager().setInt('Preferences/HARDWARE_ETHERNET_PORT', self._view.ethernetPortSpinBox.value())
+        ConfigManager().setBoolean('Preferences/HARDWARE_AUTO_CONNECT', self._view.hardwareAutoConnectCheckBox.isChecked())
 
         ConfigManager().save()
 
@@ -195,27 +195,27 @@ class PreferencesController(AbstractModalDialogController):
         if yawAxisPlugins:
             for model, controller in yawAxisPlugins:
                 self._view.yawAxisComboBox.addItem(model.name)
-            selectedPlugin = ConfigManager().get('Core/PLUGIN_YAW_AXIS')
+            selectedPlugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
             self._view.yawAxisComboBox.setCurrentIndex(self._view.yawAxisComboBox.findText(selectedPlugin))
         pitchAxisPlugins = PluginManager().getList('pitchAxis')
         if pitchAxisPlugins:
             for model, controller in pitchAxisPlugins:
                 self._view.pitchAxisComboBox.addItem(model.name)
-            selectedPlugin = ConfigManager().get('Core/PLUGIN_PITCH_AXIS')
+            selectedPlugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
             self._view.pitchAxisComboBox.setCurrentIndex(self._view.pitchAxisComboBox.findText(selectedPlugin))
         shutterPlugins = PluginManager().getList('shutter')
         if shutterPlugins:
             for model, controller in shutterPlugins:
                 self._view.shutterComboBox.addItem(model.name)
-            selectedPlugin = ConfigManager().get('Core/PLUGIN_SHUTTER')
+            selectedPlugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
             self._view.shutterComboBox.setCurrentIndex(self._view.shutterComboBox.findText(selectedPlugin))
 
         # Drivers tab
-        self._view.bluetoothDeviceAddressLineEdit.setText(ConfigManager().get('Core/HARDWARE_BLUETOOTH_DEVICE_ADDRESS'))
-        self._view.serialPortLineEdit.setText(ConfigManager().get('Core/HARDWARE_SERIAL_PORT'))
-        self._view.ethernetHostLineEdit.setText(ConfigManager().get('Core/HARDWARE_ETHERNET_HOST'))
-        self._view.ethernetPortSpinBox.setValue(ConfigManager().getInt('Core/HARDWARE_ETHERNET_PORT'))
-        self._view.hardwareAutoConnectCheckBox.setChecked(ConfigManager().getBoolean('Core/HARDWARE_AUTO_CONNECT'))
+        self._view.bluetoothDeviceAddressLineEdit.setText(ConfigManager().get('Preferences/HARDWARE_BLUETOOTH_DEVICE_ADDRESS'))
+        self._view.serialPortLineEdit.setText(ConfigManager().get('Preferences/HARDWARE_SERIAL_PORT'))
+        self._view.ethernetHostLineEdit.setText(ConfigManager().get('Preferences/HARDWARE_ETHERNET_HOST'))
+        self._view.ethernetPortSpinBox.setValue(ConfigManager().getInt('Preferences/HARDWARE_ETHERNET_PORT'))
+        self._view.hardwareAutoConnectCheckBox.setChecked(ConfigManager().getBoolean('Preferences/HARDWARE_AUTO_CONNECT'))
 
     def getSelectedTab(self):
         """ Return the selected tab.

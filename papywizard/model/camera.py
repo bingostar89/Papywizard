@@ -69,111 +69,39 @@ class Camera(object):
         """
         self.lens = Lens()
 
-    #def __getTimeValue(self):
-        #"""
-        #"""
-        #return ConfigManager().getFloat('Core/CAMERA_TIME_VALUE')
-
-    #def __setTimeValue(self, timeValue):
-        #"""
-        #"""
-        #ConfigManager().setFloat('Core/CAMERA_TIME_VALUE', timeValue, 1)
-
-    #timeValue = property(__getTimeValue, __setTimeValue)
-
-    #def __getMirrorLockup(self):
-        #"""
-        #"""
-        #return ConfigManager().getBoolean('Core/CAMERA_MIRROR_LOCKUP')
-
-    #def __setMirrorLockup(self, mirrorLockup):
-        #"""
-        #"""
-        #ConfigManager().setBoolean('Core/CAMERA_MIRROR_LOCKUP', mirrorLockup)
-
-    #mirrorLockup = property(__getMirrorLockup, __setMirrorLockup)
-
-    #def __getPulseWidthHigh(self):
-        #"""
-        #"""
-        #return ConfigManager().getInt('Core/CAMERA_PULSE_WIDTH_HIGH')
-
-    #def __setPulseWidthHigh(self, width):
-        #"""
-        #"""
-        #ConfigManager().setInt('Core/CAMERA_PULSE_WIDTH_HIGH', width)
-
-    #pulseWidthHigh = property(__getPulseWidthHigh, __setPulseWidthHigh)
-
-    #def __getPulseWidthLow(self):
-        #"""
-        #"""
-        #return ConfigManager().getInt('Core/CAMERA_PULSE_WIDTH_LOW')
-
-    #def __setPulseWidthLow(self, width):
-        #"""
-        #"""
-        #ConfigManager().setInt('Core/CAMERA_PULSE_WIDTH_Low', width)
-
-    #pulseWidthLow = property(__getPulseWidthLow, __setPulseWidthLow)
-
-    #def __getBracketingNbPicts(self):
-        #"""
-        #"""
-        #return ConfigManager().getInt('Core/CAMERA_BRACKETING_NBPICTS')
-
-    #def __setBracketingNbPicts(self, bracketingNbPicts):
-        #"""
-        #"""
-        #ConfigManager().setInt('Core/CAMERA_BRACKETING_NBPICTS', bracketingNbPicts)
-
-    #bracketingNbPicts = property(__getBracketingNbPicts, __setBracketingNbPicts)
-
-    #def __getBracketingIntent(self):
-        #"""
-        #"""
-        #return ConfigManager().get('Core/CAMERA_BRACKETING_INTENT')
-
-    #def __setBracketingIntent(self, bracketingIntent):
-        #"""
-        #"""
-        #ConfigManager().set('Core/CAMERA_BRACKETING_INTENT', bracketingIntent)
-
-    #bracketingIntent = property(__getBracketingIntent, __setBracketingIntent)
-
     def __getSensorCoef(self):
         """
         """
-        return ConfigManager().getFloat('Core/CAMERA_SENSOR_COEF')
+        return ConfigManager().getFloat('Configuration/CAMERA_SENSOR_COEF')
 
     def __setSensorCoef(self, sensorCoef):
         """
         """
-        ConfigManager().setFloat('Core/CAMERA_SENSOR_COEF', sensorCoef, 1)
+        ConfigManager().setFloat('Configuration/CAMERA_SENSOR_COEF', sensorCoef, 1)
 
     sensorCoef = property(__getSensorCoef, __setSensorCoef)
 
     def __getSensorRatio(self):
         """
         """
-        return ConfigManager().get('Core/CAMERA_SENSOR_RATIO')
+        return ConfigManager().get('Configuration/CAMERA_SENSOR_RATIO')
 
     def __setSensorRatio(self, sensorRatio):
         """
         """
-        ConfigManager().set('Core/CAMERA_SENSOR_RATIO', sensorRatio)
+        ConfigManager().set('Configuration/CAMERA_SENSOR_RATIO', sensorRatio)
 
     sensorRatio = property(__getSensorRatio, __setSensorRatio)
 
     def __getSensorResolution(self):
         """
         """
-        return ConfigManager().getFloat('Core/CAMERA_SENSOR_RESOLUTION')
+        return ConfigManager().getFloat('Configuration/CAMERA_SENSOR_RESOLUTION')
 
     def __setSensorResolution(self, resolution):
         """
         """
-        ConfigManager().setFloat('Core/CAMERA_SENSOR_RESOLUTION', resolution, 1)
+        ConfigManager().setFloat('Configuration/CAMERA_SENSOR_RESOLUTION', resolution, 1)
 
     sensorResolution = property(__getSensorResolution, __setSensorResolution)
 

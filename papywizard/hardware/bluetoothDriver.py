@@ -56,17 +56,17 @@ import bluetooth
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
-from papywizard.hardware.busDriver import BusDriver
+from papywizard.hardware.abstractDriver import AbstractDriver
 
 
-class BluetoothDriver(BusDriver):
+class BluetoothDriver(AbstractDriver):
     """ Driver for bluetooth connection.
 
     This driver only uses bluetooth socket.
     """
     def _init(self):
         Logger().trace("BluetoothDriver._init()")
-        address = ConfigManager().get('Core/HARDWARE_BLUETOOTH_DEVICE_ADDRESS')
+        address = ConfigManager().get('Preferences/HARDWARE_BLUETOOTH_DEVICE_ADDRESS')
         Logger().debug("BluetoothDriver._init(): trying to connect to %s..." % address)
         try:
             #import time
@@ -78,6 +78,7 @@ class BluetoothDriver(BusDriver):
                 self._sock.settimeout(1.)
             except NotImplementedError:
                 Logger().warning("BluetoothDriver._init(): bluetooth stack does not implment settimeout()")
+            self.empty()
         except bluetooth.BluetoothError, error:
             Logger().exception("BluetoothDriver._init()")
             err, msg = eval(error.message)
@@ -111,14 +112,14 @@ class BluetoothDriver(BusDriver):
         pass
 
     def write(self, data):
-        #Logger().debug("BluetoothDriver.write(): data=%s" % repr(data))
+        Logger().debug("BluetoothDriver.write(): data=%s" % repr(data))
         size = self._sock.send(data)
         return size
-    
+
     def read(self, size):
         data = self._sock.recv(size)
-        #Logger().debug("BluetoothDriver.read(): data=%s" % repr(data))
-        if not data:
+        Logger().debug("BluetoothDriver.read(): data=%s" % repr(data))
+        if size and not data:
             raise IOError(self.tr("Timeout while reading on bluetooth bus"))
         else:
             return data
