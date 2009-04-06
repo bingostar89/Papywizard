@@ -58,6 +58,9 @@ from papywizard.hardware.driverFactory import DriverFactory
 class HardwarePlugin(AbstractPlugin):
     """
     """
+    def _init(self):
+        pass
+
     def __getDriver(self):
         """ Return the associated driver.
         """
