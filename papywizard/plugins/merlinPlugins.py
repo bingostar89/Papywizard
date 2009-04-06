@@ -422,7 +422,6 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin, HardwarePlugin):
             self._driver.releaseBus()
 
     def shutdownConnection(self):
-        self.stop()
         HardwarePlugin.shutdownConnection(self)
 
     def lockupMirror(self):
