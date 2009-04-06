@@ -3,23 +3,27 @@
 # $Id$
 
 # Forms
-FORMS += papywizard/view/bluetoothChooserDialog.ui \
-         papywizard/view/configDialog.ui \
-         papywizard/view/helpAboutDialog.ui \
-         papywizard/view/loggerDialog.ui \
-         papywizard/view/mainWindow.ui \
-         papywizard/view/nbPictsDialog.ui \
-         papywizard/view/shootDialog.ui \
-         papywizard/view/totalFovDialog.ui
+FORMS += papywizard/view/ui/bluetoothChooserDialog.ui \
+         papywizard/view/ui/configDialog.ui \
+         papywizard/view/ui/helpAboutDialog.ui \
+         papywizard/view/ui/loggerDialog.ui \
+         papywizard/view/ui/mainWindow.ui \
+         papywizard/view/ui/nbPictsDialog.ui \
+         papywizard/view/ui/pluginConfigDialog.ui \
+         papywizard/view/ui/preferencesDialog.ui \
+         papywizard/view/ui/shootDialog.ui \
+         papywizard/view/ui/totalFovDialog.ui
 
 # Common
-SOURCES += papywizard/common/configManager.py \
+SOURCES +=papywizard/common/abstractPlugin.py \
            papywizard/common/config.py \
+           papywizard/common/configManager.py \
            papywizard/common/exception.py \
            papywizard/common/helpers.py \
            papywizard/common/loggingFormatter.py \
            papywizard/common/loggingServices.py \
            papywizard/common/orderedDict.py \
+           papywizard/common/pluginManager.py \
            papywizard/common/presetManager.py \
            papywizard/common/publisher.py \
            papywizard/common/qLoggingFormatter.py \
@@ -27,25 +31,33 @@ SOURCES += papywizard/common/configManager.py \
 
 # Controllers
 SOURCES += papywizard/controller/abstractController.py \
+           papywizard/controller/abstractPluginController.py \
+           papywizard/controller/axisPluginController.py \
            papywizard/controller/bluetoothChooserController.py \
            papywizard/controller/configController.py \
+           papywizard/controller/hardwarePluginController.py \
            papywizard/controller/helpAboutController.py \
            papywizard/controller/loggerController.py \
            papywizard/controller/mainController.py \
            papywizard/controller/nbPictsController.py \
+           papywizard/controller/preferencesController.py \
            papywizard/controller/shootController.py \
+           papywizard/controller/shutterPluginController.py \
            papywizard/controller/spy.py \
            papywizard/controller/totalFovController.py
 
 # Hardware
-SOURCES += papywizard/hardware/axis.py \
+SOURCES += papywizard/hardware/abstractAxisPlugin.py \
+           papywizard/hardware/abstractDriver.py \
+           papywizard/hardware/abstractShutterPlugin.py \
+           papywizard/hardware/axis.py \
            papywizard/hardware/bluetoothDriver.py \
-           papywizard/hardware/busDriver.py \
            papywizard/hardware/driverFactory.py \
            papywizard/hardware/ethernetDriver.py \
            papywizard/hardware/hardwareFactory.py \
+           papywizard/hardware/hardwarePlugin.py \
            papywizard/hardware/head.py \
-           papywizard/hardware/serialDriver.py\
+           papywizard/hardware/serialDriver.py \
            papywizard/hardware/simulator.py \
            papywizard/hardware/usbDriver.py
 
@@ -70,6 +82,7 @@ SOURCES += papywizard/scripts/main3D.py \
            papywizard/view/logBuffer.py \
            papywizard/view/messageDialog.py \
            papywizard/view/pictureItem.py \
+           papywizard/view/pluginFields.py \
            papywizard/view/shootingScene.py
 
 # i18n
