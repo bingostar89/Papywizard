@@ -92,14 +92,14 @@ class SerialDriver(AbstractDriver):
         self.read(self._serial.inWaiting())
 
     def write(self, data):
-        Logger().debug("SerialDriver.write(): data=%s" % repr(data))
+        #Logger().debug("SerialDriver.write(): data=%s" % repr(data))
         size = self._serial.write(data)
         return size
 
     def read(self, size):
         data = self._serial.read(size)
-        Logger().debug("SerialDriver.read(): data=%s" % repr(data))
+        #Logger().debug("SerialDriver.read(): data=%s" % repr(data))
         if size and not data:
-            raise IOError(self.tr("Timeout while reading on serial bus"))
+            raise IOError("Timeout while reading on serial bus")
         else:
             return data

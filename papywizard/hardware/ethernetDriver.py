@@ -120,6 +120,6 @@ class EthernetDriver(AbstractDriver):
             else:
                 return data
         except socket.timeout:
-            raise IOError("Timeout while reading on ethernet")
+            raise IOError("Timeout while reading on ethernet bus")
         except socket.error, msg:
             raise IOError(msg)
