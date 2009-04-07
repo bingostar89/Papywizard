@@ -7,8 +7,10 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+
+2009-04-06 Version 2.1.2 (dev)
     + separate menu/dialog for hardware preferences
-    x misc bug fix in plugins
+    x several bug fix in plugins
 
 2009-03-31 Version 2.1.1 (dev)
     + hardware plugin architecture
