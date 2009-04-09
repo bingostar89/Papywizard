@@ -94,27 +94,20 @@ class MerlinHardware:
         for nbTry in xrange(3):
             try:
                 answer = ""
-                self._driver.acquireBus()
-                try:
-                    self._driver.empty()
-                    #self._driver.setCS(0)
-                    self._driver.write(":%s\r" % cmd)
-                    c = ''
-                    while c not in ('=', '!'):
-                        c = self._driver.read(1)
-                    if c == '!':
-                        c = self._driver.read(1) # Get error code
-                        raise IOError("Merlin didn't understand the command (err=%s)" % c)
-                    answer = ""
-                    while True:
-                        c = self._driver.read(1)
-                        if c == '\r':
-                            break
-                        answer += c
-
-                finally:
-                    #self._driver.setCS(1)
-                    self._driver.releaseBus()
+                self._driver.empty()
+                self._driver.write(":%s\r" % cmd)
+                c = ''
+                while c not in ('=', '!'):
+                    c = self._driver.read(1)
+                if c == '!':
+                    c = self._driver.read(1) # Get error code
+                    raise IOError("Merlin didn't understand the command (err=%s)" % c)
+                answer = ""
+                while True:
+                    c = self._driver.read(1)
+                    if c == '\r':
+                        break
+                    answer += c
 
             except IOError:
                 Logger().exception("MerlinHardware._sendCmd")
@@ -195,7 +188,7 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin, HardwarePlugin):
 
         # Choose between default (hardware) method or external closed-loop method
         # Not yet implemented (need to use a thread; see below)
-        if pos - currentPos < 6.:
+        if pos - currentPos < 7.:
             #self._driveWithExternalClosedLoo(pos)
             self._driveWithInternalClosedLoop(pos)
         else:
@@ -212,7 +205,7 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin, HardwarePlugin):
         @param pos: position to reach, in °
         @type pos: float
         """
-        Logger().trace("Axis._drive1()")
+        Logger().trace("Axis._driveWithInternalClosedLoop()")
         strValue = encodeAxisValue(deg2cod(pos))
         self._driver.acquireBus()
         try:
