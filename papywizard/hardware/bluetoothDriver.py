@@ -89,7 +89,7 @@ class BluetoothDriver(AbstractDriver):
             Logger().exception("BluetoothDriver._init()")
             raise
         else:
-            time.sleep(8)
+            time.sleep(5)
             Logger().debug("BluetoothDriver._init(): successfully connected to %s" % address)
 
     def _shutdown(self):
