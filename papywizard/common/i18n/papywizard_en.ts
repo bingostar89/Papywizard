@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="1.1" language="en">
+<defaultcodec></defaultcodec>
 <context>
     <name>BluetoothChooserController</name>
     <message>
@@ -369,31 +370,22 @@ Juan Carlos Andres (es)</translation>
         <translation>Opening preferences dialog. Please wait...</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="975"/>
-        <source>One or more plugin failed to connect:
-%s
-</source>
-        <translation>One or more plugin failed to connect:
-%s
-</translation>
-    </message>
-    <message>
-        <location filename="papywizard/controller/mainController.py" line="978"/>
+        <location filename="papywizard/controller/mainController.py" line="980"/>
         <source>Establishing connection...</source>
         <translation>Establishing connection...</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1003"/>
+        <location filename="papywizard/controller/mainController.py" line="1002"/>
         <source>Connection established</source>
         <translation>Connection established</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1008"/>
+        <location filename="papywizard/controller/mainController.py" line="1007"/>
         <source>Connection failed</source>
         <translation>Connection failed</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1009"/>
+        <location filename="papywizard/controller/mainController.py" line="1008"/>
         <source>Can&apos;t establish connection</source>
         <translation>Can&apos;t establish connection</translation>
     </message>
@@ -403,9 +395,16 @@ Juan Carlos Andres (es)</translation>
         <translation>One or more plugin failed to shutdown</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1056"/>
+        <location filename="papywizard/controller/mainController.py" line="1054"/>
         <source>Connection shutdown</source>
         <translation>Connection shutdown</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="977"/>
+        <source>One or more plugin failed to connect:
+%s</source>
+        <translation>One or more plugin failed to connect:
+%s</translation>
     </message>
 </context>
 <context>

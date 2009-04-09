@@ -365,29 +365,22 @@ Juan Carlos Andres (es)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="975"/>
-        <source>One or more plugin failed to connect:
-%s
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="papywizard/controller/mainController.py" line="978"/>
+        <location filename="papywizard/controller/mainController.py" line="980"/>
         <source>Establishing connection...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1003"/>
+        <location filename="papywizard/controller/mainController.py" line="1002"/>
         <source>Connection established</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1008"/>
+        <location filename="papywizard/controller/mainController.py" line="1007"/>
         <source>Connection failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1009"/>
+        <location filename="papywizard/controller/mainController.py" line="1008"/>
         <source>Can&apos;t establish connection</source>
         <translation type="unfinished"></translation>
     </message>
@@ -397,8 +390,14 @@ Juan Carlos Andres (es)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1056"/>
+        <location filename="papywizard/controller/mainController.py" line="1054"/>
         <source>Connection shutdown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="977"/>
+        <source>One or more plugin failed to connect:
+%s</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -370,30 +370,22 @@ Juan Carlos Andres (es)</translation>
         <translation>Ouverture de la fenêtre de préférences. Patienter...</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="975"/>
-        <source>One or more plugin failed to connect:
-%s
-</source>
-        <translation>Un ou plusieurs plugins n&apos;ont pas pu se connecter :
-%s</translation>
-    </message>
-    <message>
-        <location filename="papywizard/controller/mainController.py" line="978"/>
+        <location filename="papywizard/controller/mainController.py" line="980"/>
         <source>Establishing connection...</source>
         <translation>Établissement de la connexion...</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1003"/>
+        <location filename="papywizard/controller/mainController.py" line="1002"/>
         <source>Connection established</source>
         <translation>Connexion établie</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1008"/>
+        <location filename="papywizard/controller/mainController.py" line="1007"/>
         <source>Connection failed</source>
         <translation>La connection a échoué</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1009"/>
+        <location filename="papywizard/controller/mainController.py" line="1008"/>
         <source>Can&apos;t establish connection</source>
         <translation>Impossible d&apos;établir la connexion</translation>
     </message>
@@ -404,9 +396,16 @@ Juan Carlos Andres (es)</translation>
 %s</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1056"/>
+        <location filename="papywizard/controller/mainController.py" line="1054"/>
         <source>Connection shutdown</source>
         <translation>Connexion terminée</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="977"/>
+        <source>One or more plugin failed to connect:
+%s</source>
+        <translation>Un ou plusieurs plugins n&apos;ont pas pu se connecter :
+%s</translation>
     </message>
 </context>
 <context>
