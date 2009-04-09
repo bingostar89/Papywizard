@@ -974,7 +974,7 @@ class MainController(AbstractController):
                self.__connectionStatus['shutter']:
                 self.__onHardwareConnected(True, "")
             else:
-                self.__onHardwareConnected(False, self.tr("One or more plugin failed to connect:\n%s" % '\n'.join(unconnected)))
+                self.__onHardwareConnected(False, unicode(self.tr("One or more plugin failed to connect:\n%s")) % '\n'.join(unconnected))
 
         Logger().info("Establishing connection...")
         self.setStatusbarMessage(self.tr("Establishing connection..."))
