@@ -1051,6 +1051,7 @@ class MainController(AbstractController):
 
         # Move in if?
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
+        Logger().info("Connection shutdown")
         self.setStatusbarMessage(self.tr("Connection shutdown"), 10)
 
     def __onPositionUpdate(self, yaw, pitch):
