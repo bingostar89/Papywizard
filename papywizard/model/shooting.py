@@ -84,7 +84,6 @@ class Shooting(QtCore.QObject):
         self.__startTime = None
         self.__pauseTime = None
         self.__totalPausedTime = 0.
-        #self.__LastShootTime = time.time()
         self.head = Head()
         self.hardware = self.head
         Logger().warning("Shooting.__init__(): Remove self.hardware compatibility")
@@ -526,7 +525,6 @@ class Shooting(QtCore.QObject):
                             if self.shutter.mirrorLockup:
                                 Logger().info("Mirror lockup")
                                 self.sequence('mirror')
-                                #self.shutter.shoot(self.shutter.pulseWidthHigh / 1000.)
                                 retCode = self.shutter.lockupMirror()
                                 if retCode:
                                     raise HardwareError(self.tr("Shutter failed while mirror locking up"))
@@ -542,22 +540,9 @@ class Shooting(QtCore.QObject):
                             Logger().debug("Shooting.start(): bracket #%d of %d" % (bracket, self.shutter.bracketingNbPicts))
                             self.sequence('shutter', bracket)
 
-                            # Ensure that pulse width low delay has elapsed before last shoot
-                            #delay = self.shutter.pulseWidthLow / 1000. - (time.time() - self.__LastShootTime)
-                            #if delay > 0:
-                                #time.sleep(delay)
-
-                            #self.shutter.shoot(self.shutter.pulseWidthHigh / 1000.)
                             retCode = self.shutter.shoot(bracket)
                             if retCode:
                                 raise HardwareError(self.tr("Shutter failed while shooting"))
-
-                            self.__LastShootTime = time.time()
-
-                            # Wait for the end of shutter cycle
-                            #if self.shutter.timeValue - self.shutter.pulseWidthHigh / 1000. > 0:
-                                #time.sleep(self.shutter.timeValue - self.shutter.pulseWidthHigh / 1000.)
-                            #time.sleep(self.shutter.timeValue)
 
                             # Add image to the xml data file
                             data.addPicture(bracket, yaw, pitch, roll)
