@@ -76,7 +76,7 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
     """ Simulated hardware axis.
     """
-    name = "Simulation"
+    _name = "Simulation"
 
     def __init__(self):
         AbstractAxisPlugin.__init__(self)
@@ -219,7 +219,7 @@ class SimulationAxisController(AxisPluginController):
 
 
 class SimulationYawAxis(SimulationAxis):
-    capacity = 'yawAxis'
+    _capacity = 'yawAxis'
 
 
 class SimulationYawAxisController(SimulationAxisController):
@@ -227,7 +227,7 @@ class SimulationYawAxisController(SimulationAxisController):
 
 
 class SimulationPitchAxis(SimulationAxis):
-    capacity = 'pitchAxis'
+    _capacity = 'pitchAxis'
 
 
 class SimulationPitchAxisController(SimulationAxisController):
@@ -235,7 +235,7 @@ class SimulationPitchAxisController(SimulationAxisController):
 
 
 class SimulationShutter(AbstractShutterPlugin):
-    name = "Simulation"
+    _name = "Simulation"
 
     def _init(self):
         pass

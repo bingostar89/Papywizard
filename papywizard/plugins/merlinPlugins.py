@@ -75,10 +75,12 @@ from papywizard.controller.shutterPluginController import ShutterPluginControlle
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 
-class MerlinHardware:
-    name = "Merlin"
+class MerlinHardware(HardwarePlugin):
+    _name = "Merlin"
+    _initMerlinFlag = False
 
     def _init(self):
+        HardwarePlugin._init(self)
         self._numAxis = None
 
     def _sendCmd(self, cmd, param=""):
@@ -120,12 +122,39 @@ class MerlinHardware:
 
         return answer
 
+    def _initMerlin(self):
+        """ Init the Merlin hardware.
 
-class MerlinAxis(MerlinHardware, AbstractAxisPlugin, HardwarePlugin):
+        Done only once.
+        """
+        if not MerlinHardware._initMerlinFlag:
+            self._driver.acquireBus()
+            try:
+
+                # Stop axis
+                self._sendCmd("L")
+
+                # Check motor?
+                self._sendCmd("F")
+
+                # Get full circle count
+                value = self._sendCmd("a")
+                Logger().debug("MerlinHardware._initMerlin(): full circle count=%s" % hex(decodeAxisValue(value)))
+
+                # Get
+                value = self._sendCmd("D")
+                Logger().debug("MerlinHardware._initMerlin(): sidereal rate=%s" % hex(decodeAxisValue(value)))
+
+                MerlinHardware._initMerlinFlag = True
+            finally:
+                self._driver.releaseBus()
+
+
+class MerlinAxis(MerlinHardware, AbstractAxisPlugin): #, HardwarePlugin):
     def _init(self):
         MerlinHardware._init(self)
         AbstractAxisPlugin._init(self)
-        HardwarePlugin._init(self)
+        #HardwarePlugin._init(self)
         self._manualSpeed = config.MANUAL_SPEED['normal']
 
     def _defineConfig(self):
@@ -139,29 +168,14 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin, HardwarePlugin):
         Logger().trace("MerlinHardware.shutdown()")
 
     def establishConnection(self):
-        HardwarePlugin.establishConnection(self)
-        self._driver.acquireBus()
-        try:
-
-            # Stop axis
-            self._sendCmd("L")
-
-            # Check motor?
-            self._sendCmd("F")
-
-            # Get full circle count
-            value = self._sendCmd("a")
-            Logger().debug("MerlinAxis.establishConnection(): full circle count=%s" % hex(decodeAxisValue(value)))
-
-            # Get
-            value = self._sendCmd("D")
-            Logger().debug("MerlinAxis.establishConnection(): sidereal rate=%s" % hex(decodeAxisValue(value)))
-        finally:
-            self._driver.releaseBus()
+        #HardwarePlugin.establishConnection(self)
+        MerlinHardware.establishConnection(self)
+        self._initMerlin()
 
     def shutdownConnection(self):
         self.stop()
-        HardwarePlugin.shutdownConnection(self)
+        #HardwarePlugin.shutdownConnection(self)
+        MerlinHardware.shutdownConnection(self)
 
     def read(self):
         self._driver.acquireBus()
@@ -231,7 +245,7 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin, HardwarePlugin):
         #@param pos: position to reach, in °
         #@type pos: float
         #"""
-        #Logger().trace("Axis._driveWithExternalClosedLoop()")
+        #Logger().trace("MerlinAxis._driveWithExternalClosedLoop()")
         #self._driver.acquireBus()
         #try:
             #self._sendCmd("L")
@@ -311,18 +325,18 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin, HardwarePlugin):
         else:
             return False
 
-    def setOutput(self, level):
-        self._driver.acquireBus()
-        try:
-            if level:
-                self._sendCmd("O", "1")
-            else:
-                self._sendCmd("O", "0")
-        finally:
-            self._driver.releaseBus()
+    #def setOutput(self, level):
+        #self._driver.acquireBus()
+        #try:
+            #if level:
+                #self._sendCmd("O", "1")
+            #else:
+                #self._sendCmd("O", "0")
+        #finally:
+            #self._driver.releaseBus()
 
     def setManualSpeed(self, speed):
-        self._manualSpeed = config.MANUAL_SPEED[speed]
+        self._manualSpeed = self._config.MANUAL_SPEED[speed]
 
 
 class MerlinAxisController(AxisPluginController, HardwarePluginController):
@@ -332,7 +346,7 @@ class MerlinAxisController(AxisPluginController, HardwarePluginController):
 
 
 class MerlinYawAxis(MerlinAxis):
-    capacity = 'yawAxis'
+    _capacity = 'yawAxis'
 
     def _init(self):
         MerlinAxis._init(self)
@@ -344,7 +358,7 @@ class MerlinYawAxisController(MerlinAxisController):
 
 
 class MerlinPitchAxis(MerlinAxis):
-    capacity = 'pitchAxis'
+    _capacity = 'pitchAxis'
 
     def _init(self):
         MerlinAxis._init(self)
@@ -355,11 +369,11 @@ class MerlinPitchAxisController(MerlinAxisController):
     pass
 
 
-class MerlinShutter(MerlinHardware, AbstractShutterPlugin, HardwarePlugin):
+class MerlinShutter(MerlinHardware, AbstractShutterPlugin): #, HardwarePlugin):
     def _init(self):
         MerlinHardware._init(self)
         AbstractShutterPlugin._init(self)
-        HardwarePlugin._init(self)
+        #HardwarePlugin._init(self)
         self._numAxis = 1
 
     def _getTimeValue(self):
@@ -375,11 +389,13 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin, HardwarePlugin):
         return self._config["BRACKETING_INTENT"]
 
     def _init(self):
-        self._numAxis = 1 # shutter contact is connected on axis 1 µ-controller
+        self._numAxis = 1 # shutter contact is connected on axis
+        self.__LastShootTime = time.time()
 
     def _defineConfig(self):
+        MerlinHardware._defineConfig(self)
         AbstractShutterPlugin._defineConfig(self)
-        HardwarePlugin._defineConfig(self)
+        #HardwarePlugin._defineConfig(self)
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=0.5)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=False)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=1)
@@ -394,28 +410,13 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin, HardwarePlugin):
         pass
 
     def establishConnection(self):
-        HardwarePlugin.establishConnection(self)
-        self._driver.acquireBus()
-        try:
-
-            # Stop axis
-            self._sendCmd("L")
-
-            # Check motor?
-            self._sendCmd("F")
-
-            # Get full circle count
-            value = self._sendCmd("a")
-            Logger().debug("MerlinAxis.establishConnection(): full circle count=%s" % hex(decodeAxisValue(value)))
-
-            # Get
-            value = self._sendCmd("D")
-            Logger().debug("MerlinAxis.establishConnection(): sidereal rate=%s" % hex(decodeAxisValue(value)))
-        finally:
-            self._driver.releaseBus()
+        #HardwarePlugin.establishConnection(self)
+        MerlinHardware.establishConnection(self)
+        self._initMerlin()
 
     def shutdownConnection(self):
-        HardwarePlugin.shutdownConnection(self)
+        #HardwarePlugin.shutdownConnection(self)
+        MerlinHardware.shutdownConnection(self)
 
     def lockupMirror(self):
         Logger().trace("MerlinShutter.lockupMirror()")
@@ -429,13 +430,27 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin, HardwarePlugin):
             self._driver.releaseBus()
 
     def shoot(self, bracketNumber):
-        # TODO: ensure PULSE_WIDTH_LOW delay
+
+        # Ensure that PULSE_WIDTH_LOW delay has elapsed before last shoot
+        delay = self._config['PULSE_WIDTH_LOW'] / 1000. - (time.time() - self.__LastShootTime)
+        if delay > 0:
+            time.sleep(delay)
         Logger().trace("MerlinShutter.shoot()")
         self._driver.acquireBus()
+
         try:
+
+            # Trigger
             self._sendCmd("O", "1")
             time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
             self._sendCmd("O", "0")
+
+            # Wait for the end of shutter cycle
+            delay = self._config['TIME_VALUE'] - self._config['PULSE_WIDTH_HIGH'] / 1000.
+            if delay > 0:
+                time.sleep(delay)
+
+            self.__LastShootTime = time.time()
             return 0
         finally:
             self._driver.releaseBus()

@@ -66,7 +66,7 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 
 class TimelordShutter(AbstractShutterPlugin):
-    name = "Timelord"
+    _name = "Timelord"
 
     def _init(self):
         pass

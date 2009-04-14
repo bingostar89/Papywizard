@@ -61,11 +61,11 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 
 
-class AbstractPlugin: #(QtCore.QObject):
+class AbstractPlugin(object): #(QtCore.QObject):
     """ Abstract definition of a plugin.
     """
-    capacity = None # in ('yawAxis', 'pitchAxis', 'shutter', analysis', ...)
-    name = None
+    _capacity = None # in ('yawAxis', 'pitchAxis', 'shutter', analysis', ...)
+    _name = None
 
     def __init__(self):
         """ Init the abstract plugin.
@@ -74,7 +74,9 @@ class AbstractPlugin: #(QtCore.QObject):
 
         # Check capacity validity
         if self.capacity not in ('yawAxis', 'pitchAxis', 'shutter', 'analysis'):
-            raise RuntimeError("Unknown plugin capacity (%d)" % self.capacity)
+            raise RuntimeError("Unknown plugin capacity (%s)" % self.capacity)
+        if self.name is None:
+            raise RuntimeError("Plugin name undefined")
 
         # Plugin specific init
         self._init()
@@ -83,17 +85,17 @@ class AbstractPlugin: #(QtCore.QObject):
         self._loadConfig()
 
     # Properties
-    def __getCapacity():
+    def __getCapacity(self):
         """ Return the capacity of the plugin.
         """
-        return self.__class__.capacity
+        return self.__class__._capacity
 
     capacity = property(__getCapacity, "Plugin capacity")
 
     def __getName(self):
         """ Return the name of the plugin.
         """
-        return self.__class__.name
+        return self.__class__._name
 
     name = property(__getName, "Plugin name")
 

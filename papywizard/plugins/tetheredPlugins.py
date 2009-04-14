@@ -63,7 +63,7 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 
 class TetheredShutter(AbstractShutterPlugin):
-    name = "Tethered"
+    _name = "Tethered"
 
     def _init(self):
         pass
