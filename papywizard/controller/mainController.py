@@ -955,7 +955,7 @@ class MainController(AbstractController):
                 unconnected.append('yawAxis')
             try:
                 plugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
-                PluginManager().get('yawAxis', plugin)[0].establishConnection()
+                PluginManager().get('pitchAxis', plugin)[0].establishConnection()
                 self.__connectionStatus['pitchAxis'] = True
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
