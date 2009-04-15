@@ -77,9 +77,10 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 class MerlinHardware(HardwarePlugin):
     _name = "Merlin"
-    _initMerlinFlag = False
+    _initMerlinFlag = [False, False]
 
     def _init(self):
+        Logger().trace("MerlinHardware._init()")
         HardwarePlugin._init(self)
         self._numAxis = None
 
@@ -103,7 +104,7 @@ class MerlinHardware(HardwarePlugin):
                     c = self._driver.read(1)
                 if c == '!':
                     c = self._driver.read(1) # Get error code
-                    raise IOError("Merlin didn't understand the command (err=%s)" % c)
+                    raise IOError("Merlin didn't understand the command '%s' (err=%s)" % (cmd, c))
                 answer = ""
                 while True:
                     c = self._driver.read(1)
@@ -113,11 +114,11 @@ class MerlinHardware(HardwarePlugin):
 
             except IOError:
                 Logger().exception("MerlinHardware._sendCmd")
-                Logger().warning("MerlinHardware._sendCmd(): axis %d can't sent command. Retrying..." % self._numAxis)
+                Logger().warning("MerlinHardware._sendCmd(): axis %d can't sent command '%s'. Retrying..." % (self._numAxis, cmd))
             else:
                 break
         else:
-            raise HardwareError("Merlin axis %d can't send command" % self._numAxis)
+            raise HardwareError("Merlin axis %d can't send command '%s'" % (self._numAxis, cmd))
         #Logger().debug("MerlinHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (self._numAxis, cmd, answer))
 
         return answer
@@ -125,9 +126,9 @@ class MerlinHardware(HardwarePlugin):
     def _initMerlin(self):
         """ Init the Merlin hardware.
 
-        Done only once.
+        Done only once per axis.
         """
-        if not MerlinHardware._initMerlinFlag:
+        if not MerlinHardware._initMerlinFlag[self._numAxis - 1]:
             self._driver.acquireBus()
             try:
 
@@ -141,20 +142,20 @@ class MerlinHardware(HardwarePlugin):
                 value = self._sendCmd("a")
                 Logger().debug("MerlinHardware._initMerlin(): full circle count=%s" % hex(decodeAxisValue(value)))
 
-                # Get
+                # Get sidereal rate
                 value = self._sendCmd("D")
                 Logger().debug("MerlinHardware._initMerlin(): sidereal rate=%s" % hex(decodeAxisValue(value)))
 
-                MerlinHardware._initMerlinFlag = True
+                MerlinHardware._initMerlinFlag[self._numAxis - 1] = True
             finally:
                 self._driver.releaseBus()
 
 
-class MerlinAxis(MerlinHardware, AbstractAxisPlugin): #, HardwarePlugin):
+class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
     def _init(self):
+        Logger().trace("MerlinAxis._init()")
         MerlinHardware._init(self)
         AbstractAxisPlugin._init(self)
-        #HardwarePlugin._init(self)
         self._manualSpeed = config.MANUAL_SPEED['normal']
 
     def _defineConfig(self):
@@ -168,13 +169,13 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin): #, HardwarePlugin):
         Logger().trace("MerlinHardware.shutdown()")
 
     def establishConnection(self):
-        #HardwarePlugin.establishConnection(self)
+        Logger().trace("MerlinAxis.establishConnection()")
         MerlinHardware.establishConnection(self)
         self._initMerlin()
 
     def shutdownConnection(self):
+        Logger().trace("MerlinAxis.shutdownConnection()")
         self.stop()
-        #HardwarePlugin.shutdownConnection(self)
         MerlinHardware.shutdownConnection(self)
 
     def read(self):
@@ -349,6 +350,7 @@ class MerlinYawAxis(MerlinAxis):
     _capacity = 'yawAxis'
 
     def _init(self):
+        Logger().trace("MerlinYawAxis._init()")
         MerlinAxis._init(self)
         self._numAxis = 1
 
@@ -361,6 +363,7 @@ class MerlinPitchAxis(MerlinAxis):
     _capacity = 'pitchAxis'
 
     def _init(self):
+        Logger().trace("MerlinPitchAxis._init()")
         MerlinAxis._init(self)
         self._numAxis = 2
 
@@ -369,12 +372,13 @@ class MerlinPitchAxisController(MerlinAxisController):
     pass
 
 
-class MerlinShutter(MerlinHardware, AbstractShutterPlugin): #, HardwarePlugin):
+class MerlinShutter(MerlinHardware, AbstractShutterPlugin):
     def _init(self):
+        Logger().trace("MerlinShutter._init()")
         MerlinHardware._init(self)
         AbstractShutterPlugin._init(self)
-        #HardwarePlugin._init(self)
-        self._numAxis = 1
+        self._numAxis = 1 # shutter contact is connected on axis
+        self.__LastShootTime = time.time()
 
     def _getTimeValue(self):
         return self._config["TIME_VALUE"]
@@ -388,14 +392,9 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin): #, HardwarePlugin):
     def _getBracketingIntent(self):
         return self._config["BRACKETING_INTENT"]
 
-    def _init(self):
-        self._numAxis = 1 # shutter contact is connected on axis
-        self.__LastShootTime = time.time()
-
     def _defineConfig(self):
         MerlinHardware._defineConfig(self)
         AbstractShutterPlugin._defineConfig(self)
-        #HardwarePlugin._defineConfig(self)
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=0.5)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=False)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=1)
@@ -404,18 +403,18 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin): #, HardwarePlugin):
         self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=100)
 
     def activate(self):
-        pass
+        Logger().trace("MerlinShutter.activate()")
 
     def shutdown(self):
-        pass
+        Logger().trace("MerlinShutter.shutdown()")
 
     def establishConnection(self):
-        #HardwarePlugin.establishConnection(self)
+        Logger().trace("MerlinShutter.establishConnection()")
         MerlinHardware.establishConnection(self)
         self._initMerlin()
 
     def shutdownConnection(self):
-        #HardwarePlugin.shutdownConnection(self)
+        Logger().trace("MerlinShutter.establishConnection()")
         MerlinHardware.shutdownConnection(self)
 
     def lockupMirror(self):
