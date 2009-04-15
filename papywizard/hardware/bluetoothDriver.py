@@ -80,7 +80,6 @@ class BluetoothDriver(AbstractDriver):
                 self._sock.settimeout(1.)
             except NotImplementedError:
                 Logger().warning("BluetoothDriver._init(): bluetooth stack does not implment settimeout()")
-            self.empty()
         except bluetooth.BluetoothError, error:
             Logger().exception("BluetoothDriver._init()")
             err, msg = eval(error.message)
@@ -89,7 +88,8 @@ class BluetoothDriver(AbstractDriver):
             Logger().exception("BluetoothDriver._init()")
             raise
         else:
-            time.sleep(5)
+            time.sleep(8)
+            self.empty()
             Logger().debug("BluetoothDriver._init(): successfully connected to %s" % address)
 
     def _shutdown(self):
