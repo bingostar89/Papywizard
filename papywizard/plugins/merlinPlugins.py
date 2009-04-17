@@ -128,9 +128,9 @@ class MerlinHardware(HardwarePlugin):
 
         Done only once per axis.
         """
-        if not MerlinHardware._initMerlinFlag[self._numAxis - 1]:
-            self._driver.acquireBus()
-            try:
+        self._driver.acquireBus()
+        try:
+            if not MerlinHardware._initMerlinFlag[self._numAxis - 1]:
 
                 # Stop axis
                 self._sendCmd("L")
@@ -147,8 +147,8 @@ class MerlinHardware(HardwarePlugin):
                 Logger().debug("MerlinHardware._initMerlin(): sidereal rate=%s" % hex(decodeAxisValue(value)))
 
                 MerlinHardware._initMerlinFlag[self._numAxis - 1] = True
-            finally:
-                self._driver.releaseBus()
+        finally:
+            self._driver.releaseBus()
 
 
 class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
