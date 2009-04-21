@@ -59,4 +59,7 @@ class AxisPluginController(AbstractPluginController):
     """ Plugin controller for 'yawAxis' and 'pitchAxis' capacities.
     """
     def _defineGui(self):
-        self._addWidget('Main', "Speed", SpinBoxField, (5, 25, "", " °/s"), 'SPEED')
+        """ Add high/low limits
+        """
+        self._addWidget('Main', "Low limit", DoubleSpinBoxField, (-9999.9, 9999.9), 'LOW_LIMIT')
+        self._addWidget('Main', "High limit", DoubleSpinBoxField, (-9999.9, 9999.9), 'HIGH_LIMIT')
