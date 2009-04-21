@@ -105,13 +105,14 @@ class SpinBoxField(QtGui.QSpinBox):
 class DoubleSpinBoxField(QtGui.QDoubleSpinBox):
     """
     """
-    def __init__(self, minimum, maximum, decimals=1, prefix="", suffix=""):
+    def __init__(self, minimum, maximum, decimals=1, singleStep=0.1, prefix="", suffix=""):
         """
         """
         QtGui.QSpinBox.__init__(self)
         self.setMinimum(minimum)
         self.setMaximum(maximum)
         self.setDecimals(decimals)
+        self.setSingleStep(singleStep)
         self.setPrefix(prefix)
         self.setSuffix(suffix)
 
