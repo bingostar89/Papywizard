@@ -53,8 +53,8 @@ __revision__ = "$Id$"
 
 from papywizard.common.abstractPlugin import AbstractPlugin
 
-
-DEFAULT_SPEED = 15. # °/s
+DEFAULT_LOW_LIMIT = -360.
+DEFAULT_HIGH_LIMIT = 360.
 
 
 class AbstractAxisPlugin(AbstractPlugin):
@@ -69,34 +69,37 @@ class AbstractAxisPlugin(AbstractPlugin):
         pass
 
     def _init(self):
-        self._upperLimit = 9999.9
-        self._lowerLimit = -9999.9
-        self._manualSpeed = None
+        #self._config['HIGH_LIMIT'] = 9999.9
+        #self._config['LOW_LIMIT'] = -9999.9
+        self._manualSpeed = 'normal'
         self._offset = 0.
 
     def _defineConfig(self):
-        self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
+        """ Add high/low limits
+        """
+        self._addConfigKey('_lowLimit', 'LOW_LIMIT', default=DEFAULT_LOW_LIMIT)
+        self._addConfigKey('_highLimit', 'HIGH_LIMIT', default=DEFAULT_HIGH_LIMIT)
 
-    def _checkLimits(self, pos):
+    def _checkLimits(self, position):
         """ Check if position is in axis limits.
 
-        @param pos: position to check
-        @type pos: float
+        @param position: position to check
+        @type position: float
         """
-        if not self.isPositionValid(pos):
-            raise HardwareError("Axis %d limit reached: %.1f not in [%.1f:%.1f]" % \
-                                 (self._num, pos, self._lowerLimit, self._upperLimit))
+        if not self.isPositionValid(position):
+            raise HardwareError("Axis limit reached: %.1f not in [%.1f:%.1f]" % \
+                                 (position, self._config['LOW_LIMIT'], self._config['HIGH_LIMIT']))
 
-    def isPositionValid(self, pos):
+    def isPositionValid(self, position):
         """ Check if position is in axis limits.
 
         Public method to allow the model to check all positions
         *before* starting the shooting process.
 
-        @param pos: position to check
-        @type pos: float
+        @param position: position to check
+        @type position: float
         """
-        if self._lowerLimit <= pos <= self._upperLimit:
+        if self._config['LOW_LIMIT'] <= position <= self._config['HIGH_LIMIT']:
            return True
         else:
             return False
@@ -106,27 +109,27 @@ class AbstractAxisPlugin(AbstractPlugin):
         """
         self._offset += self.read()
 
-    def setLimit(self, dir_, limit):
-        """ Set the minus limit.
+    #def setLimit(self, dir_, limit):
+        #""" Set the minus limit.
 
-        @param dir_: direction to limit ('+', '-')
-        @type dir_: char
+        #@param dir_: direction to limit ('+', '-')
+        #@type dir_: char
 
-        @param limit: minus limit to set
-        @type limit: float
-        """
-        if dir_ == '+':
-            self._upperLimit = limit
-        elif dir_ == '-':
-            self._lowerLimit = limit
-        else:
-            raise ValueError("dir must be in ('+', '-')")
+        #@param limit: minus limit to set
+        #@type limit: float
+        #"""
+        #if dir_ == '+':
+            #self._config['HIGH_LIMIT'] = limit
+        #elif dir_ == '-':
+            #self._config['LOW_LIMIT'] = limit
+        #else:
+            #raise ValueError("dir must be in ('+', '-')")
 
-    def clearLimits(self):
-        """ Clear all limits.
-        """
-        self._upperLimit = 9999.9
-        self._lowerLimit = -9999.9
+    #def clearLimits(self):
+        #""" Clear all limits.
+        #"""
+        #self._config['HIGH_LIMIT'] = 9999.9
+        #self._config['LOW_LIMIT'] = -9999.9
 
     def read(self):
         """ Return the current position of axis.
