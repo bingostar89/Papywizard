@@ -158,9 +158,6 @@ SHOOT_PULSE = 0.2 # s
 BLUETOOTH_DRIVER_CONNECT_DELAY = 8.
 ENCODER_360 = 0x0E6600
 ENCODER_ZERO = 0x800000
-MANUAL_SPEED = {'slow': 170,  # "aa0000"  / 5
-                'normal': 34, # "220000"
-                'fast': 17}   # "110000"  * 2
 
 AXIS_SPEED = 15. # °/s
 SERIAL_BAUDRATE = 9600
