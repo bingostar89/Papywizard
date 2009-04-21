@@ -74,11 +74,15 @@ from papywizard.controller.hardwarePluginController import HardwarePluginControl
 from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
-DEFAULT_SPEED = 63 # Medium speed
-DEFAULT_DIRECTION = 'forward'
 MANUAL_SPEED = {'slow': 127,
                 'normal': 63,
                 'fast': 0}
+DEFAULT_SPEED = 63 # Medium speed
+DEFAULT_DIRECTION = 'forward'
+DEFAULT_MIN_VALUE = 1000
+DEFAULT_MAX_VALUE = 4000
+DEFAULT_MIN_ANGLE = -180.
+DEFAULT_MAX_ANGLE = 180.
 
 
 class PololuServoHardware(HardwarePlugin):
@@ -225,12 +229,15 @@ class PololuServoHardware(HardwarePlugin):
         finally:
             self._driver.releaseBus()
 
-    def _initPololuServo(self):
+    def _initPololuServo(self, direction='forward'):
         """ Turn on servo power.
+
+        @param direction: direction of rotation, in ('forward', 'reverse')
+        @type diretion: str
         """
         self._driver.acquireBus()
         try:
-            self._setParameters(on=True, direction=self._config['DIRECTION'])
+            self._setParameters(on=True, direction=direction) # range_=...
         finally:
             self._driver.releaseBus()
 
@@ -239,7 +246,7 @@ class PololuServoHardware(HardwarePlugin):
         """
         self._driver.acquireBus()
         try:
-            self._setParameters(on=False, direction=self._config['DIRECTION'])
+            self._setParameters(on=False)
         finally:
             self._driver.releaseBus()
 
@@ -256,7 +263,10 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         HardwarePlugin._defineConfig(self)
         self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
         self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION)
-        self._addConfigKey('_ratio', 'RATIO', default=1.)
+        self._addConfigKey('_minValue', 'MIN_VALUE', default=DEFAULT_MIN_VALUE)
+        self._addConfigKey('_maxValue', 'MAX_VALUE', default=DEFAULT_MAX_VALUE)
+        self._addConfigKey('_minAngle', 'MIN_ANGLE', default=DEFAULT_MIN_ANGLE)
+        self._addConfigKey('_maxAngle', 'MAX_ANGLE', default=DEFAULT_MAX_ANGLE)
 
     def activate(self):
         Logger().trace("PololuServoHardware.activate()")
@@ -267,7 +277,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
     def establishConnection(self):
         Logger().trace("PololuServoAxis.establishConnection()")
         PololuServoHardware.establishConnection(self)
-        self._initPololuServo()
+        self._initPololuServo(self._config['DIRECTION'])
         self._position = 0.
 
     def shutdownConnection(self):
@@ -302,21 +312,24 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         if wait:
             self.waitEndOfDrive()
 
-    def _drive(self, pos):
+    def _drive(self, position):
         """ Real drive.
 
-        @param pos: position to reach, in °
-        @type pos: float
+        @param position: position to reach, in °
+        @type position: float
         """
-        if not -90. <= pos <= 90.:
+        if not -90. <= position <= 90.:
             raise HardwareError("Position must be in [-90-90]")
-        value = int(pos * (4000 - 1000) / (90. - (-90.)) + (4000 + 1000) / 2)
+        coef = (self._config['MAX_VALUE'] - self._config['MIN_VALUE']) / \
+               (self._config['MAX_ANGLE'] - self._config['MIN_ANGLE'])
+        offset = (self._config['MAX_VALUE'] + self._config['MIN_VALUE']) / 2
+        value = int(coef * position + offset)
         self._driver.acquireBus()
         try:
             self._setPositionAbsolute(value)
         finally:
             self._driver.releaseBus()
-        self._position = pos
+        self._position = position
 
     def stop(self):
         pass
@@ -363,7 +376,10 @@ class PololuServoAxisController(AxisPluginController, HardwarePluginController):
         self._addTab('Servo')
         self._addWidget('Servo', "Speed", SpinBoxField, (1, 127), 'SPEED')
         self._addWidget('Servo', "Direction", ComboBoxField, (['forward', 'reverse'],), 'DIRECTION')
-        self._addWidget('Servo', "Ratio", DoubleSpinBoxField, (0.1, 9.9), 'RATIO')
+        self._addWidget('Servo', 'Minimum value', SpinBoxField, (500, 5500), 'MIN_VALUE')
+        self._addWidget('Servo', 'Maximum value', SpinBoxField, (500, 5500), 'MAX_VALUE')
+        self._addWidget('Servo', 'Minimum angle', DoubleSpinBoxField, (-180., 180., 1., 0.1, "", " deg"), 'MIN_ANGLE')
+        self._addWidget('Servo', 'Maximum angle', DoubleSpinBoxField, (-180., 180., 1., 0.1, "", " deg"), 'MAX_ANGLE')
 
 
 class PololuServoYawAxis(PololuServoAxis):
