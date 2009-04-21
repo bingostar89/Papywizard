@@ -57,7 +57,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: merlinPlugins.py 1743 2009-04-17 17:46:43Z fma $"
+__revision__ = "$Id$"
 
 import time
 import struct
