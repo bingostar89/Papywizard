@@ -72,6 +72,15 @@ from papywizard.controller.axisPluginController import AxisPluginController
 from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
+DEFAULT_SPEED = 15. # deg/s
+DEFAULT_TIME_VALUE = 0.5 # s
+DEFAULT_MIRROR_LOCKUP = False
+DEFAULT_BRACKETING_NBPICTS = 1
+DEFAULT_BRACKETING_INTENT = 'exposure'
+MANUAL_SPEED = {'slow': .2,
+                'normal': 1.,
+                'fast': 2.}
+
 
 class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
     """ Simulated hardware axis.
@@ -84,7 +93,6 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
 
     def _init(self):
         AbstractAxisPlugin._init(self)
-        self._manualSpeed = 1.
         self.__pos = 0.
         self.__jog = False
         self.__drive = False
@@ -92,6 +100,10 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
         self.__dir = None
         self.__time = None
         self.__run = False
+
+    def _defineConfig(self):
+        AbstractAxisPlugin._defineConfig(self)
+        self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
 
     def activate(self):
         Logger().trace("SimulationAxis.activate()")
@@ -122,7 +134,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
                     if self.__drive:
                         inc = (time.time() - self.__time) * self._config['SPEED']
                     else:
-                        inc = (time.time() - self.__time) * self._config['SPEED'] * self._manualSpeed
+                        inc = (time.time() - self.__time) * self._config['SPEED'] * MANUAL_SPEED[self._manualSpeed]
                     self.__time = time.time()
                     if self.__dir == '+':
                         self.__pos += inc
@@ -206,16 +218,13 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
         return self.__jog
 
     def setManualSpeed(self, speed):
-        if speed == 'slow':
-            self._manualSpeed = .2
-        elif speed == 'normal':
-            self._manualSpeed = 1.
-        elif speed == 'fast':
-            self._manualSpeed = 2.
+        self._manualSpeed = speed
 
 
 class SimulationAxisController(AxisPluginController):
-    pass
+    def _defineGui(self):
+        AxisPluginController._defineGui(self)
+        self._addWidget('Main', "Speed", SpinBoxField, (5, 25, "", " deg/s"), 'SPEED')
 
 
 class SimulationYawAxis(SimulationAxis):
@@ -254,10 +263,10 @@ class SimulationShutter(AbstractShutterPlugin):
 
     def _defineConfig(self):
         AbstractShutterPlugin._defineConfig(self)
-        self._addConfigKey('_timeValue', 'TIME_VALUE', default=0.5)
-        self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=False)
-        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=1)
-        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default='exposure')
+        self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
+        self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
+        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
+        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
 
     def activate(self):
         pass
@@ -282,8 +291,8 @@ class SimulationShutter(AbstractShutterPlugin):
 
 class SimulationShutterController(ShutterPluginController):
     def _defineGui(self):
-        #ShutterPluginController._defineGui(self)
-        self._addWidget('Main', "Time value", DoubleSpinBoxField, (0.1, 3600, 1, "", " s"), 'TIME_VALUE')
+        ShutterPluginController._defineGui(self)
+        self._addWidget('Main', "Time value", DoubleSpinBoxField, (0.1, 3600, 1, 0.1, "", " s"), 'TIME_VALUE')
         self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', "Bracketing nb picts", SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
         self._addWidget('Main', "Bracketing intent", ComboBoxField, (['exposure', 'focus', 'white balance', 'movement'],), 'BRACKETING_INTENT')

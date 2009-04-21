@@ -61,6 +61,12 @@ from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
+DEFAULT_MIRROR_LOCKUP = False
+DEFAULT_MIRROR_LOCKUP_COMMAND = "gphoto2 --capture-image"
+DEFAULT_SHOOT_COMMAND = "gphoto2 --capture-image"
+DEFAULT_BRACKETING_NBPICTS = 1
+DEFAULT_BRACKETING_INTENT = 'exposure'
+
 
 class TetheredShutter(AbstractShutterPlugin):
     _name = "Tethered"
@@ -82,11 +88,11 @@ class TetheredShutter(AbstractShutterPlugin):
 
     def _defineConfig(self):
         AbstractShutterPlugin._defineConfig(self)
-        self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=False)
-        self._addConfigKey('_mirrorLockupCommand', 'MIRROR_LOCKUP_COMMAND', default="")
-        self._addConfigKey('_shootCommand', 'SHOOT_COMMAND', default="")
-        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=1)
-        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default='exposure')
+        self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
+        self._addConfigKey('_mirrorLockupCommand', 'MIRROR_LOCKUP_COMMAND', default=DEFAULT_MIRROR_LOCKUP_COMMAND)
+        self._addConfigKey('_shootCommand', 'SHOOT_COMMAND', default=DEFAULT_SHOOT_COMMAND)
+        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
+        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
 
     def activate(self):
         Logger().trace("TetheredShutter.activate()")

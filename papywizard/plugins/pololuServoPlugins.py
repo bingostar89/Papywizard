@@ -60,12 +60,12 @@ Implements
 __revision__ = "$Id: merlinPlugins.py 1743 2009-04-17 17:46:43Z fma $"
 
 import time
+import struct
 
 from papywizard.common import config
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.common.pluginManager import PluginManager
-from papywizard.common.helpers import decodeAxisValue, encodeAxisValue, deg2cod, cod2deg
 from papywizard.hardware.abstractAxisPlugin import AbstractAxisPlugin
 from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.hardware.hardwarePlugin import HardwarePlugin
@@ -74,79 +74,172 @@ from papywizard.controller.hardwarePluginController import HardwarePluginControl
 from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
+DEFAULT_SPEED = 63 # Medium speed
+DEFAULT_DIRECTION = 'forward'
+MANUAL_SPEED = {'slow': 127,
+                'normal': 63,
+                'fast': 0}
+
 
 class PololuServoHardware(HardwarePlugin):
     _name = "PololuServo"
-    _initPololuServoFlag = [False, False]
 
     def _init(self):
         Logger().trace("PololuServoHardware._init()")
         HardwarePlugin._init(self)
         self._numAxis = None
+        #self._serial.setRTS(0)
+        #self._serial.setDTR(0)
 
-    def _sendCmd(self, cmd, param=""):
-        """ Send a command to the axis.
+    def _sendCmd(self, command, data1, data2=None):
+        """ Send a command to Pololu controller.
 
-        @param cmd: command to send
-        @type cmd: str
+        @param command: id of the command, in [0-5]
+        @type command: int
 
-        @return: answer
-        @rtype: str
+        @param data1: first data byte, in [0-127]
+        @type data1: int
+
+        @param data2: second data byte, in [0-127]
+        @type data2: int
         """
-        cmd = "%s%d%s" % (cmd, self._numAxis, param)
-        for nbTry in xrange(3):
-            try:
-                answer = ""
-                self._driver.empty()
-                self._driver.write(":%s\r" % cmd)
-                c = ''
-                while c not in ('=', '!'):
-                    c = self._driver.read(1)
-                if c == '!':
-                    c = self._driver.read(1) # Get error code
-                    raise IOError("PololuServo didn't understand the command '%s' (err=%s)" % (cmd, c))
-                answer = ""
-                while True:
-                    c = self._driver.read(1)
-                    if c == '\r':
-                        break
-                    answer += c
-
-            except IOError:
-                Logger().exception("PololuServoHardware._sendCmd")
-                Logger().warning("PololuServoHardware._sendCmd(): axis %d can't sent command '%s'. Retrying..." % (self._numAxis, cmd))
-            else:
-                break
+        if data2 is not None:
+           data2Str = hex(data2)
         else:
-            raise HardwareError("PololuServo axis %d can't send command '%s'" % (self._numAxis, cmd))
-        #Logger().debug("PololuServoHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (self._numAxis, cmd, answer))
+           data2Str = 'None'
+        Logger().debug("PololuServoHardware._sendCmd: command=%d, servo=%d, data1=%s, data2=%s" % (command, self._numAxis, hex(data1), data2Str))
+        if command in (0, 1, 2):
+            if data2 is not None:
+                raise ValueError("Command %d takes only 1 data parameter" % command)
+            else:
+                self._driver.write(struct.pack("BBBBB", 0x80, 0x01, command, self._numAxis, data1))
+                size = 5
+        elif command in (3, 4, 5):
+            if data2 is None:
+                raise ValueError("Command %d takes 2 data parameters" % command)
+            else:
+                self._driver.write(struct.pack("BBBBBB", 0x80, 0x01, command, self._numAxis, data1, data2))
+                size = 6
+        else:
+            raise ValueError("Command must be in [0-5]")
 
-        return answer
+        # Purge buffer
+        Logger().debug("PololuServoHardware._sendCmd: pololu returned: %s" % repr(self._driver.read(size)))
+
+    def _setParameters(self, on=True, direction='forward', range_=15):
+        """ Set servo parameters.
+
+        @param on: if True, turn on servo power
+        @type on: bool
+
+        @param direction: direction of rotation, in ('forward', 'reverse')
+        @type diretion: str
+
+        @param range: range for 7/8 bits positionning functions, in [0-31]
+        @type range: int
+        """
+        if direction not in ('forward', 'reverse'):
+            raise ValueError("direction parameter must be in ('forward', 'reverse')")
+        if not 0 <= range_ <= 31:
+            raise ValueError("range parameter must be in [0-31]")
+        data1 = on << 6 | (direction != 'forward') << 5 | (range_ & 31)
+        self._driver.acquireBus()
+        try:
+            self._sendCmd(0, data1)
+        finally:
+            self._driver.releaseBus()
+
+    def _setSpeed(self, speed):
+        """ Set servo speed.
+
+        @param speed: servo speed, in [0-127]
+        @type speed: int
+        """
+        if not 0 <= speed <= 127:
+            raise ValueError("speed must be in [0-127] (%d)" % speed)
+        self._driver.acquireBus()
+        try:
+            self._sendCmd(1, speed)
+        finally:
+            self._driver.releaseBus()
+
+    def _setPosition7bits(self, position):
+        """ Set servo position (7 bits).
+
+        @param position: servo position, in [0-127]
+        @type position: int
+        """
+        if not 0 <= position <= 127:
+            raise ValueError("position must be in [0-127] (%d)" % position)
+        self._driver.acquireBus()
+        try:
+            self._sendCmd(2, position)
+        finally:
+            self._driver.releaseBus()
+
+    def _setPosition8bits(self, position):
+        """ Set servo position (8 bits).
+
+        @param position: servo position, in [0-255]
+        @type position: int
+        """
+        if not 0 <= position <= 255:
+            raise ValueError("position must be in [0-255] (%d)" % position)
+        data1 = position / 128
+        data2 = position % 128
+        self._driver.acquireBus()
+        try:
+            self._sendCmd(3, data1, data2)
+        finally:
+            self._driver.releaseBus()
+
+    def _setPositionAbsolute(self, position):
+        """ Set servo position.
+
+        @param position: servo position, in [500-5500]
+        @type position: int
+        """
+        if not 500 <= position <= 5500:
+            raise ValueError("position must be in [500-5500] (%d)" % position)
+        data1 = position / 128
+        data2 = position % 128
+        self._driver.acquireBus()
+        try:
+            self._sendCmd(4, data1, data2)
+        finally:
+            self._driver.releaseBus()
+
+    def _setNeutral(self, position):
+        """ Set servo neutral position.
+
+        @param position: servo neutral position, in [500-5500]
+        @type position: int
+        """
+        if not 500 <= position <= 5500:
+            raise ValueError("position must be in [500-5500] (%d)" % position)
+        data1 = position / 128
+        data2 = position % 128
+        self._driver.acquireBus()
+        try:
+            self._sendCmd(5, data1, data2)
+        finally:
+            self._driver.releaseBus()
 
     def _initPololuServo(self):
-        """ Init the PololuServo hardware.
-
-        Done only once per axis.
+        """ Turn on servo power.
         """
         self._driver.acquireBus()
         try:
-            if not PololuServoHardware._initPololuServoFlag[self._numAxis - 1]:
+            self._setParameters(on=True, direction=self._config['DIRECTION'])
+        finally:
+            self._driver.releaseBus()
 
-                # Stop axis
-                self._sendCmd("L")
-
-                # Check motor?
-                self._sendCmd("F")
-
-                # Get full circle count
-                value = self._sendCmd("a")
-                Logger().debug("PololuServoHardware._initPololuServo(): full circle count=%s" % hex(decodeAxisValue(value)))
-
-                # Get sidereal rate
-                value = self._sendCmd("D")
-                Logger().debug("PololuServoHardware._initPololuServo(): sidereal rate=%s" % hex(decodeAxisValue(value)))
-
-                PololuServoHardware._initPololuServoFlag[self._numAxis - 1] = True
+    def _shutdownPololuServo(self):
+        """ Turn off servo power.
+        """
+        self._driver.acquireBus()
+        try:
+            self._setParameters(on=False, direction=self._config['DIRECTION'])
         finally:
             self._driver.releaseBus()
 
@@ -156,11 +249,14 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         Logger().trace("PololuServoAxis._init()")
         PololuServoHardware._init(self)
         AbstractAxisPlugin._init(self)
-        self._manualSpeed = config.MANUAL_SPEED['normal']
+        self._position = None
 
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
         HardwarePlugin._defineConfig(self)
+        self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
+        self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION)
+        self._addConfigKey('_ratio', 'RATIO', default=1.)
 
     def activate(self):
         Logger().trace("PololuServoHardware.activate()")
@@ -172,116 +268,58 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         Logger().trace("PololuServoAxis.establishConnection()")
         PololuServoHardware.establishConnection(self)
         self._initPololuServo()
+        self._position = 0.
 
     def shutdownConnection(self):
         Logger().trace("PololuServoAxis.shutdownConnection()")
-        self.stop()
+        #self.stop()
+        self._shutdownPololuServo()
         PololuServoHardware.shutdownConnection(self)
 
     def read(self):
-        self._driver.acquireBus()
-        try:
-            value = self._sendCmd("j")
-        finally:
-            self._driver.releaseBus()
-        pos = cod2deg(decodeAxisValue(value))
-        pos -= self._offset
+        return self._position - self._offset
 
-        return pos
-
-    def drive(self, pos, inc=False, useOffset=True, wait=True):
+    def drive(self, position, inc=False, useOffset=True, wait=True):
         currentPos = self.read()
 
         # Compute absolute position from increment if needed
         if inc:
-            pos = currentPos + inc
+            position = currentPos + inc
         else:
             if useOffset:
-                pos += self._offset
+                position += self._offset
 
-        self._checkLimits(pos)
-
-        # Choose between default (hardware) method or external closed-loop method
-        # Not yet implemented (need to use a thread; see below)
-        if pos - currentPos < 7.:
-            #self._driveWithExternalClosedLoo(pos)
-            self._driveWithInternalClosedLoop(pos)
-        else:
-            self._driveWithInternalClosedLoop(pos)
+        self._checkLimits(position)
+        self._driver.acquireBus()
+        try:
+            self._setSpeed(self._config['SPEED'])
+            self._drive(position)
+        finally:
+            self._driver.releaseBus()
 
         # Wait end of movement
         # Does not work for external closed-loop drive. Need to execute drive in a thread.
         if wait:
             self.waitEndOfDrive()
 
-    def _driveWithInternalClosedLoop(self, pos):
-        """ Default (hardware) drive.
+    def _drive(self, pos):
+        """ Real drive.
 
         @param pos: position to reach, in °
         @type pos: float
         """
-        Logger().trace("Axis._driveWithInternalClosedLoop()")
-        strValue = encodeAxisValue(deg2cod(pos))
+        if not -90. <= pos <= 90.:
+            raise HardwareError("Position must be in [-90-90]")
+        value = int(pos * (4000 - 1000) / (90. - (-90.)) + (4000 + 1000) / 2)
         self._driver.acquireBus()
         try:
-            self._sendCmd("L")
-            self._sendCmd("G", "00")
-            self._sendCmd("S", strValue)
-            #self._sendCmd("I", encodeAxisValue(self._manualSpeed))
-            self._sendCmd("J")
+            self._setPositionAbsolute(value)
         finally:
             self._driver.releaseBus()
-
-    #def _driveWithExternalClosedLoop(self, pos):
-        #""" External closed-loop drive.
-
-        #This method implements an external closed-loop regulation.
-        #It is faster for angles < 6-7°, because in this case, the
-        #head does not accelerate to full speed, but rather stays at
-        #very low speed.
-
-        #Problem: this drive can't be stopped, neither run concurrently
-        #on both axis without big modifications in multi-threading stuff.
-
-        #@param pos: position to reach, in °
-        #@type pos: float
-        #"""
-        #Logger().trace("PololuServoAxis._driveWithExternalClosedLoop()")
-        #self._driver.acquireBus()
-        #try:
-            #self._sendCmd("L")
-            #initialPos = self.read()
-
-            ## Compute direction
-            #if pos > initialPos:
-                #self._sendCmd("G", "30")
-            #else:
-                #self._sendCmd("G", "31")
-
-            ## Load speed
-            #self._sendCmd("I", "500000") # Use manual speed
-
-            ## Start move
-            #self._sendCmd("J")
-        #finally:
-            #self._driver.releaseBus()
-
-        ## Closed-loop drive
-        #stopRequest = False
-        #while abs(pos - self.read()) > .5: # optimal delta depends on speed/inertia
-
-            ## Test if a stop request has been sent
-            #if not self.isMoving():
-                #break
-            #time.sleep(0.1)
-        #self.stop()
-
-        ## Final drive (auto) if needed
-        #if abs(pos - self.read()) > config.AXIS_ACCURACY and not stopRequest:
-            #self._drive1(pos)
+        self._position = pos
 
     def stop(self):
-        self._sendCmd("L")
+        pass
         self.waitStop()
 
     def waitEndOfDrive(self):
@@ -292,58 +330,40 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         self.waitStop()
 
     def startJog(self, dir_):
+        """ Need to be run in a thread.
+        """
+        pos = self._position + self._offset
+        if dir_ == '+':
+            pos += 0.5
+        else:
+            pos -= 0.5
+        self._checkLimits(pos)
         self._driver.acquireBus()
         try:
-            self._sendCmd("L")
-            if dir_ == '+':
-                self._sendCmd("G", "30")
-            elif dir_ == '-':
-                self._sendCmd("G", "31")
-            else:
-                raise ValueError("Axis %d dir. must be in ('+', '-')" % self._numAxis)
-
-            self._sendCmd("I", encodeAxisValue(self._manualSpeed))
-            self._sendCmd("J")
+            self._setSpeed(MANUAL_SPEED[self._manualSpeed])
+            self._drive(pos)
         finally:
             self._driver.releaseBus()
+        self._position = pos
 
     def waitStop(self):
-        pos = self.read()
-        time.sleep(0.05)
-        while True:
-            if round(abs(pos - self.read()), 1) == 0:
-                break
-            pos = self.read()
-            time.sleep(0.05)
-
-    def _getStatus(self):
-        return self._sendCmd("f")
+        pass
 
     def isMoving(self):
-        status = self._getStatus()
-        if status[1] != '0':
-            return True
-        else:
-            return False
-
-    #def setOutput(self, level):
-        #self._driver.acquireBus()
-        #try:
-            #if level:
-                #self._sendCmd("O", "1")
-            #else:
-                #self._sendCmd("O", "0")
-        #finally:
-            #self._driver.releaseBus()
+        return False
 
     def setManualSpeed(self, speed):
-        self._manualSpeed = self._config.MANUAL_SPEED[speed]
+        self._manualSpeed = speed
 
 
 class PololuServoAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
+        self._addTab('Servo')
+        self._addWidget('Servo', "Speed", SpinBoxField, (1, 127), 'SPEED')
+        self._addWidget('Servo', "Direction", ComboBoxField, (['forward', 'reverse'],), 'DIRECTION')
+        self._addWidget('Servo', "Ratio", DoubleSpinBoxField, (0.1, 9.9), 'RATIO')
 
 
 class PololuServoYawAxis(PololuServoAxis):
@@ -377,7 +397,7 @@ class PololuServoShutter(PololuServoHardware, AbstractShutterPlugin):
         Logger().trace("PololuServoShutter._init()")
         PololuServoHardware._init(self)
         AbstractShutterPlugin._init(self)
-        self._numAxis = 1 # shutter contact is connected on axis
+        self._numAxis = 0
         self.__LastShootTime = time.time()
 
     def _getTimeValue(self):
@@ -412,18 +432,20 @@ class PololuServoShutter(PololuServoHardware, AbstractShutterPlugin):
         Logger().trace("PololuServoShutter.establishConnection()")
         PololuServoHardware.establishConnection(self)
         self._initPololuServo()
+        self._position = 0.
 
     def shutdownConnection(self):
         Logger().trace("PololuServoShutter.establishConnection()")
+        self._shutdownPololuServo()
         PololuServoHardware.shutdownConnection(self)
 
     def lockupMirror(self):
         Logger().trace("PololuServoShutter.lockupMirror()")
         self._driver.acquireBus()
         try:
-            self._sendCmd("O", "1")
+            self._setPosition7bits(127)
             time.sleep(self.config['PULSE_WIDTH_HIGH'] / 1000.)
-            self._sendCmd("O", "0")
+            self._setPosition7bits(0)
             return 0
         finally:
             self._driver.releaseBus()
@@ -440,9 +462,9 @@ class PololuServoShutter(PololuServoHardware, AbstractShutterPlugin):
         try:
 
             # Trigger
-            self._sendCmd("O", "1")
+            self._setPosition7bits(127)
             time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
-            self._sendCmd("O", "0")
+            self._setPosition7bits(0)
 
             # Wait for the end of shutter cycle
             delay = self._config['TIME_VALUE'] - self._config['PULSE_WIDTH_HIGH'] / 1000.
@@ -459,7 +481,7 @@ class PololuServoShutterController(ShutterPluginController, HardwarePluginContro
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Main', "Time value", DoubleSpinBoxField, (0.1, 3600, 1, "", " s"), 'TIME_VALUE')
+        self._addWidget('Main', "Time value", DoubleSpinBoxField, (0.1, 3600, 1, 0.1, "", " s"), 'TIME_VALUE')
         self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', "Bracketing nb picts", SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
         self._addWidget('Main', "Bracketing intent", ComboBoxField, (['exposure', 'focus', 'white balance', 'movement'],), 'BRACKETING_INTENT')

@@ -55,6 +55,7 @@ Implements
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
 @license: CeCILL
+@todo: add private methods to MerlinHardware for sending commands to Merlin
 """
 
 __revision__ = "$Id$"
@@ -73,6 +74,16 @@ from papywizard.controller.axisPluginController import AxisPluginController
 from papywizard.controller.hardwarePluginController import HardwarePluginController
 from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
+
+DEFAULT_TIME_VALUE = 0.5 # s
+DEFAULT_MIRROR_LOCKUP = False
+DEFAULT_BRACKETING_NBPICTS = 1
+DEFAULT_BRACKETING_INTENT = 'exposure'
+DEFAULT_PULSE_WIDTH_HIGH = 100 # ms
+DEFAULT_PULSE_WIDTH_LOW = 100 # ms
+MANUAL_SPEED = {'slow': 170,  # "aa0000"  / 5
+                'normal': 34, # "220000"
+                'fast': 17}   # "110000"  * 2
 
 
 class MerlinHardware(HardwarePlugin):
@@ -156,7 +167,6 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
         Logger().trace("MerlinAxis._init()")
         MerlinHardware._init(self)
         AbstractAxisPlugin._init(self)
-        self._manualSpeed = config.MANUAL_SPEED['normal']
 
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
@@ -220,14 +230,14 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
         @param pos: position to reach, in °
         @type pos: float
         """
-        Logger().trace("Axis._driveWithInternalClosedLoop()")
+        Logger().trace("MerlinAxis._driveWithInternalClosedLoop()")
         strValue = encodeAxisValue(deg2cod(pos))
         self._driver.acquireBus()
         try:
             self._sendCmd("L")
             self._sendCmd("G", "00")
             self._sendCmd("S", strValue)
-            #self._sendCmd("I", encodeAxisValue(self._manualSpeed))
+            #self._sendCmd("I", encodeAxisValue(MANUAL_SPEED[self._manualSpeed]))
             self._sendCmd("J")
         finally:
             self._driver.releaseBus()
@@ -302,7 +312,7 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
             else:
                 raise ValueError("Axis %d dir. must be in ('+', '-')" % self._numAxis)
 
-            self._sendCmd("I", encodeAxisValue(self._manualSpeed))
+            self._sendCmd("I", encodeAxisValue(MANUAL_SPEED[self._manualSpeed]))
             self._sendCmd("J")
         finally:
             self._driver.releaseBus()
@@ -337,7 +347,7 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
             #self._driver.releaseBus()
 
     def setManualSpeed(self, speed):
-        self._manualSpeed = self._config.MANUAL_SPEED[speed]
+        self._manualSpeed = speed
 
 
 class MerlinAxisController(AxisPluginController, HardwarePluginController):
@@ -395,12 +405,12 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin):
     def _defineConfig(self):
         MerlinHardware._defineConfig(self)
         AbstractShutterPlugin._defineConfig(self)
-        self._addConfigKey('_timeValue', 'TIME_VALUE', default=0.5)
-        self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=False)
-        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=1)
-        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default='exposure')
-        self._addConfigKey('_pulseWidthHigh', 'PULSE_WIDTH_HIGH', default=100)
-        self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=100)
+        self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
+        self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
+        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
+        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
+        self._addConfigKey('_pulseWidthHigh', 'PULSE_WIDTH_HIGH', default=DEFAULT_PULSE_WIDTH_HIGH)
+        self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=DEFAULT_PULSE_WIDTH_LOW)
 
     def activate(self):
         Logger().trace("MerlinShutter.activate()")
@@ -436,7 +446,6 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin):
             time.sleep(delay)
         Logger().trace("MerlinShutter.shoot()")
         self._driver.acquireBus()
-
         try:
 
             # Trigger
@@ -459,7 +468,7 @@ class MerlinShutterController(ShutterPluginController, HardwarePluginController)
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Main', "Time value", DoubleSpinBoxField, (0.1, 3600, 1, "", " s"), 'TIME_VALUE')
+        self._addWidget('Main', "Time value", DoubleSpinBoxField, (0.1, 3600, 1, 0.1, "", " s"), 'TIME_VALUE')
         self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', "Bracketing nb picts", SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
         self._addWidget('Main', "Bracketing intent", ComboBoxField, (['exposure', 'focus', 'white balance', 'movement'],), 'BRACKETING_INTENT')

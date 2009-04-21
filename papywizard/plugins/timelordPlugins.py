@@ -64,6 +64,9 @@ from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
+DEFAULT_PROGRAM_PATH = "C:\\Program Files\\OxfordEye\\Timelord\\Timelord.exe"
+DEFAULT_LRD_FILE_PATH = "C:\\Documents and Settings\\win2k\\My Documents\\timelord.lrd"
+
 
 class TimelordShutter(AbstractShutterPlugin):
     _name = "Timelord"
@@ -85,8 +88,8 @@ class TimelordShutter(AbstractShutterPlugin):
 
     def _defineConfig(self):
         AbstractShutterPlugin._defineConfig(self)
-        self._addConfigKey('Program path', 'PROGRAM_PATH', default="C:\\Program Files\\OxfordEye\\Timelord\\Timelord.exe")
-        self._addConfigKey('LRD file path', 'LRD_FILE_PATH', default="C:\\Documents and Settings\\win2k\\My Documents\\timelord.lrd")
+        self._addConfigKey('Program path', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
+        self._addConfigKey('LRD file path', 'LRD_FILE_PATH', default=DEFAULT_LRD_FILE_PATH)
 
     def activate(self):
         Logger().trace("TimelordShutter.activate()")
