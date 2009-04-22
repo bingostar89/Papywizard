@@ -79,10 +79,8 @@ MANUAL_SPEED = {'slow': 127,
                 'fast': 0}
 DEFAULT_SPEED = 63 # Medium speed
 DEFAULT_DIRECTION = 'forward'
-DEFAULT_MIN_VALUE = 1000
-DEFAULT_MAX_VALUE = 4000
-DEFAULT_MIN_ANGLE = -180.
-DEFAULT_MAX_ANGLE = 180.
+DEFAULT_NEUTRAL_POSITION = 3000
+DEFAULT_COEFFICIENT = 10.
 
 
 class PololuServoHardware(HardwarePlugin):
@@ -116,19 +114,20 @@ class PololuServoHardware(HardwarePlugin):
             if data2 is not None:
                 raise ValueError("Command %d takes only 1 data parameter" % command)
             else:
-                self._driver.write(struct.pack("BBBBB", 0x80, 0x01, command, self._numAxis, data1))
+                #self._driver.write(struct.pack("BBBBB", 0x80, 0x01, command, self._numAxis, data1))
                 size = 5
         elif command in (3, 4, 5):
             if data2 is None:
                 raise ValueError("Command %d takes 2 data parameters" % command)
             else:
-                self._driver.write(struct.pack("BBBBBB", 0x80, 0x01, command, self._numAxis, data1, data2))
+                #self._driver.write(struct.pack("BBBBBB", 0x80, 0x01, command, self._numAxis, data1, data2))
                 size = 6
         else:
             raise ValueError("Command must be in [0-5]")
 
         # Purge buffer
-        Logger().debug("PololuServoHardware._sendCmd: pololu returned: %s" % repr(self._driver.read(size)))
+        #data = self._driver.read(size)
+        #Logger().debug("PololuServoHardware._sendCmd: pololu returned: %s" % repr(data))
 
     def _setParameters(self, on=True, direction='forward', range_=15):
         """ Set servo parameters.
@@ -237,7 +236,7 @@ class PololuServoHardware(HardwarePlugin):
         """
         self._driver.acquireBus()
         try:
-            self._setParameters(on=True, direction=direction) # range_=...
+            self._setParameters(on=True, direction=direction) # Add range_?
         finally:
             self._driver.releaseBus()
 
@@ -261,12 +260,23 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
         HardwarePlugin._defineConfig(self)
+        #self._addConfigKey('_channel', 'CHANNEL', default=DEFAULT_CHANNEL)
         self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
         self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION)
-        self._addConfigKey('_minValue', 'MIN_VALUE', default=DEFAULT_MIN_VALUE)
-        self._addConfigKey('_maxValue', 'MAX_VALUE', default=DEFAULT_MAX_VALUE)
-        self._addConfigKey('_minAngle', 'MIN_ANGLE', default=DEFAULT_MIN_ANGLE)
-        self._addConfigKey('_maxAngle', 'MAX_ANGLE', default=DEFAULT_MAX_ANGLE)
+        self._addConfigKey('_neutralPos', 'NEUTRAL_POSITION', default=DEFAULT_NEUTRAL_POSITION)
+        self._addConfigKey('_coef', 'COEFFICIENT', default=DEFAULT_COEFFICIENT)
+
+    def _checkLimits(self, position):
+        """ Check if the position can be reached.
+
+        First check if the position in degres is in the user limits
+        (done in parent class), then check if the servo can mechanically
+        reach the position.
+        """
+        AbstractAxisPlugin._checkLimits(self, position)
+        value = int(self._config['COEFFICIENT'] * position + self._config['NEUTRAL_POSITION'])
+        if not 500 <= value <= 5500:
+            raise HardwareError("Servo limit reached: %.d not in [500-5500]" % value)
 
     def activate(self):
         Logger().trace("PololuServoHardware.activate()")
@@ -294,7 +304,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
 
         # Compute absolute position from increment if needed
         if inc:
-            position = currentPos + inc
+            position += currentPos
         else:
             if useOffset:
                 position += self._offset
@@ -303,33 +313,13 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         self._driver.acquireBus()
         try:
             self._setSpeed(self._config['SPEED'])
-            self._drive(position)
-        finally:
-            self._driver.releaseBus()
-
-        # Wait end of movement
-        # Does not work for external closed-loop drive. Need to execute drive in a thread.
-        if wait:
-            self.waitEndOfDrive()
-
-    def _drive(self, position):
-        """ Real drive.
-
-        @param position: position to reach, in °
-        @type position: float
-        """
-        if not -90. <= position <= 90.:
-            raise HardwareError("Position must be in [-90-90]")
-        coef = (self._config['MAX_VALUE'] - self._config['MIN_VALUE']) / \
-               (self._config['MAX_ANGLE'] - self._config['MIN_ANGLE'])
-        offset = (self._config['MAX_VALUE'] + self._config['MIN_VALUE']) / 2
-        value = int(coef * position + offset)
-        self._driver.acquireBus()
-        try:
+            value = int(self._config['COEFFICIENT'] * position + self._config['NEUTRAL_POSITION'])
             self._setPositionAbsolute(value)
+            self._position = position
+            if wait:
+                self.waitEndOfDrive()
         finally:
             self._driver.releaseBus()
-        self._position = position
 
     def stop(self):
         pass
@@ -374,12 +364,11 @@ class PololuServoAxisController(AxisPluginController, HardwarePluginController):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
         self._addTab('Servo')
+        #self._addWidget('Servo', "Channel", SpinBoxField, (0, 7), 'CHANNEL')
         self._addWidget('Servo', "Speed", SpinBoxField, (1, 127), 'SPEED')
         self._addWidget('Servo', "Direction", ComboBoxField, (['forward', 'reverse'],), 'DIRECTION')
-        self._addWidget('Servo', 'Minimum value', SpinBoxField, (500, 5500), 'MIN_VALUE')
-        self._addWidget('Servo', 'Maximum value', SpinBoxField, (500, 5500), 'MAX_VALUE')
-        self._addWidget('Servo', 'Minimum angle', DoubleSpinBoxField, (-180., 180., 1., 0.1, "", " deg"), 'MIN_ANGLE')
-        self._addWidget('Servo', 'Maximum angle', DoubleSpinBoxField, (-180., 180., 1., 0.1, "", " deg"), 'MAX_ANGLE')
+        self._addWidget('Servo', 'Neutral position', SpinBoxField, (500, 5500), 'NEUTRAL_POSITION')
+        self._addWidget('Servo', 'Coefficient', DoubleSpinBoxField, (0.01, 100., 2., 0.1), 'COEFFICIENT')
 
 
 class PololuServoYawAxis(PololuServoAxis):
