@@ -204,7 +204,7 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
 
         # Compute absolute position from increment if needed
         if inc:
-            pos = currentPos + inc
+            pos += currentPos
         else:
             if useOffset:
                 pos += self._offset
