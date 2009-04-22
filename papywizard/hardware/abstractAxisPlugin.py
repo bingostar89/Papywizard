@@ -51,6 +51,7 @@ Implements
 
 __revision__ = "$Id$"
 
+from papywizard.common.exception import HardwareError
 from papywizard.common.abstractPlugin import AbstractPlugin
 
 DEFAULT_LOW_LIMIT = -360.
@@ -86,7 +87,7 @@ class AbstractAxisPlugin(AbstractPlugin):
         @param position: position to check
         @type position: float
         """
-        if not self.isPositionValid(position):
+        if not self._config['LOW_LIMIT'] <= position <= self._config['HIGH_LIMIT']:
             raise HardwareError("Axis limit reached: %.1f not in [%.1f:%.1f]" % \
                                  (position, self._config['LOW_LIMIT'], self._config['HIGH_LIMIT']))
 
@@ -99,9 +100,10 @@ class AbstractAxisPlugin(AbstractPlugin):
         @param position: position to check
         @type position: float
         """
-        if self._config['LOW_LIMIT'] <= position <= self._config['HIGH_LIMIT']:
-           return True
-        else:
+        try:
+            self._checkLimits()
+            return True
+        except HardwareError:
             return False
 
     def setReference(self):
