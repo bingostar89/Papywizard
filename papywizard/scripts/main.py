@@ -167,6 +167,8 @@ def main():
         register()
         from papywizard.plugins.pololuServoPlugins import register
         register()
+        from papywizard.plugins.eosUtilityPlugins import register
+        register()
         PluginManager().load()
 
         # Activate selected plugins (move to PluginManager?)
