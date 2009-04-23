@@ -74,24 +74,30 @@ from papywizard.controller.hardwarePluginController import HardwarePluginControl
 from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
-MANUAL_SPEED = {'slow': 127,
-                'normal': 63,
-                'fast': 0}
-DEFAULT_SPEED = 63 # Medium speed
+DEFAULT_SPEED = 63
 DEFAULT_DIRECTION = 'forward'
 DEFAULT_NEUTRAL_POSITION = 3000
 DEFAULT_COEFFICIENT = 10.
+DEFAULT_TIME_VALUE = 0.5 # s
+DEFAULT_MIRROR_LOCKUP = False
+DEFAULT_BRACKETING_NBPICTS = 1
+DEFAULT_BRACKETING_INTENT = 'exposure'
+DEFAULT_PULSE_WIDTH_HIGH = 100 # ms
+DEFAULT_PULSE_WIDTH_LOW = 100 # ms
+DEFAULT_VALUE_OFF = 0
+DEFAULT_VALUE_ON = 127
+MANUAL_SPEED_INDEX = {'slow': .5,
+                      'normal': 2.,
+                      'fast': 5.}
 
 
 class PololuServoHardware(HardwarePlugin):
-    _name = "PololuServo"
+    _name = "Pololu Servo"
 
     def _init(self):
         Logger().trace("PololuServoHardware._init()")
         HardwarePlugin._init(self)
-        self._numAxis = None
-        #self._serial.setRTS(0)
-        #self._serial.setDTR(0)
+        self._channel = None
 
     def _sendCmd(self, command, data1, data2=None):
         """ Send a command to Pololu controller.
@@ -109,25 +115,35 @@ class PololuServoHardware(HardwarePlugin):
            data2Str = hex(data2)
         else:
            data2Str = 'None'
-        Logger().debug("PololuServoHardware._sendCmd: command=%d, servo=%d, data1=%s, data2=%s" % (command, self._numAxis, hex(data1), data2Str))
+        Logger().debug("PololuServoHardware._sendCmd: command=%d, servo=%d, data1=%s, data2=%s" % (command, self._channel, hex(data1), data2Str))
         if command in (0, 1, 2):
             if data2 is not None:
                 raise ValueError("Command %d takes only 1 data parameter" % command)
             else:
-                #self._driver.write(struct.pack("BBBBB", 0x80, 0x01, command, self._numAxis, data1))
+                self._driver.write(struct.pack("BBBBB", 0x80, 0x01, command, self._channel, data1))
                 size = 5
         elif command in (3, 4, 5):
             if data2 is None:
                 raise ValueError("Command %d takes 2 data parameters" % command)
             else:
-                #self._driver.write(struct.pack("BBBBBB", 0x80, 0x01, command, self._numAxis, data1, data2))
+                self._driver.write(struct.pack("BBBBBB", 0x80, 0x01, command, self._channel, data1, data2))
                 size = 6
         else:
             raise ValueError("Command must be in [0-5]")
 
         # Purge buffer
-        #data = self._driver.read(size)
-        #Logger().debug("PololuServoHardware._sendCmd: pololu returned: %s" % repr(data))
+        data = self._driver.read(size)
+        Logger().debug("PololuServoHardware._sendCmd: pololu returned: %s" % repr(data))
+
+    def _reset(self):
+        """ Reset the controller.
+
+        How to do this with all drivers?
+        """
+        #self._serial.setRTS(1)
+        #self._serial.setDTR(1)
+        #self._serial.setRTS(0)
+        #self._serial.setDTR(0)
 
     def _setParameters(self, on=True, direction='forward', range_=15):
         """ Set servo parameters.
@@ -135,11 +151,11 @@ class PololuServoHardware(HardwarePlugin):
         @param on: if True, turn on servo power
         @type on: bool
 
-        @param direction: direction of rotation, in ('forward', 'reverse')
-        @type diretion: str
+        @param direction: direction for 7/8 bits positionning function, in ('forward', 'reverse')
+        @type direction: str
 
-        @param range: range for 7/8 bits positionning functions, in [0-31]
-        @type range: int
+        @param range_: range for 7/8 bits positionning functions, in [0-31]
+        @type range_: int
         """
         if direction not in ('forward', 'reverse'):
             raise ValueError("direction parameter must be in ('forward', 'reverse')")
@@ -204,6 +220,7 @@ class PololuServoHardware(HardwarePlugin):
         """
         if not 500 <= position <= 5500:
             raise ValueError("position must be in [500-5500] (%d)" % position)
+        print position
         data1 = position / 128
         data2 = position % 128
         self._driver.acquireBus()
@@ -228,7 +245,7 @@ class PololuServoHardware(HardwarePlugin):
         finally:
             self._driver.releaseBus()
 
-    def _initPololuServo(self, direction='forward'):
+    def _initPololuServo(self, speed=0, direction='forward'):
         """ Turn on servo power.
 
         @param direction: direction of rotation, in ('forward', 'reverse')
@@ -236,6 +253,8 @@ class PololuServoHardware(HardwarePlugin):
         """
         self._driver.acquireBus()
         try:
+            #self._reset()
+            self._setSpeed(speed)
             self._setParameters(on=True, direction=direction) # Add range_?
         finally:
             self._driver.releaseBus()
@@ -287,8 +306,9 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
     def establishConnection(self):
         Logger().trace("PololuServoAxis.establishConnection()")
         PololuServoHardware.establishConnection(self)
-        self._initPololuServo(self._config['DIRECTION'])
+        self._initPololuServo(self._config['SPEED'], self._config['DIRECTION'])
         self._position = 0.
+        self.drive(0.)
 
     def shutdownConnection(self):
         Logger().trace("PololuServoAxis.shutdownConnection()")
@@ -312,10 +332,13 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         self._checkLimits(position)
         self._driver.acquireBus()
         try:
-            self._setSpeed(self._config['SPEED'])
-            value = int(self._config['COEFFICIENT'] * position + self._config['NEUTRAL_POSITION'])
+            if self._config['DIRECTION'] == 'forward':
+                dir_ = 1
+            else:
+                dir_ = -1
+            value = int(dir_ * self._config['COEFFICIENT'] * position + self._config['NEUTRAL_POSITION'])
             self._setPositionAbsolute(value)
-            self._position = position
+            self._position = position # offset?
             if wait:
                 self.waitEndOfDrive()
         finally:
@@ -335,22 +358,26 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
     def startJog(self, dir_):
         """ Need to be run in a thread.
         """
-        pos = self._position + self._offset
+        position = self._position + self._offset
         if dir_ == '+':
-            pos += 0.5
+            position += MANUAL_SPEED_INDEX[self._manualSpeed]
         else:
-            pos -= 0.5
-        self._checkLimits(pos)
+            position -= MANUAL_SPEED_INDEX[self._manualSpeed]
+        self._checkLimits(position)
         self._driver.acquireBus()
         try:
-            self._setSpeed(MANUAL_SPEED[self._manualSpeed])
-            self._drive(pos)
+            if self._config['DIRECTION'] == 'forward':
+                dir_ = 1
+            else:
+                dir_ = -1
+            value = int(dir_ * self._config['COEFFICIENT'] * position + self._config['NEUTRAL_POSITION'])
+            self._setPositionAbsolute(value)
+            self._position = position # offset?
         finally:
             self._driver.releaseBus()
-        self._position = pos
 
     def waitStop(self):
-        pass
+        time.sleep(.5)
 
     def isMoving(self):
         return False
@@ -377,7 +404,7 @@ class PololuServoYawAxis(PololuServoAxis):
     def _init(self):
         Logger().trace("PololuServoYawAxis._init()")
         PololuServoAxis._init(self)
-        self._numAxis = 1
+        self._channel = 1
 
 
 class PololuServoYawAxisController(PololuServoAxisController):
@@ -390,7 +417,7 @@ class PololuServoPitchAxis(PololuServoAxis):
     def _init(self):
         Logger().trace("PololuServoPitchAxis._init()")
         PololuServoAxis._init(self)
-        self._numAxis = 2
+        self._channel = 2
 
 
 class PololuServoPitchAxisController(PololuServoAxisController):
@@ -402,7 +429,7 @@ class PololuServoShutter(PololuServoHardware, AbstractShutterPlugin):
         Logger().trace("PololuServoShutter._init()")
         PololuServoHardware._init(self)
         AbstractShutterPlugin._init(self)
-        self._numAxis = 0
+        self._channel = 0
         self.__LastShootTime = time.time()
 
     def _getTimeValue(self):
@@ -420,12 +447,14 @@ class PololuServoShutter(PololuServoHardware, AbstractShutterPlugin):
     def _defineConfig(self):
         PololuServoHardware._defineConfig(self)
         AbstractShutterPlugin._defineConfig(self)
-        self._addConfigKey('_timeValue', 'TIME_VALUE', default=0.5)
-        self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=False)
-        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=1)
-        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default='exposure')
-        self._addConfigKey('_pulseWidthHigh', 'PULSE_WIDTH_HIGH', default=100)
-        self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=100)
+        self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
+        self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
+        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
+        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
+        self._addConfigKey('_pulseWidthHigh', 'PULSE_WIDTH_HIGH', default=DEFAULT_PULSE_WIDTH_HIGH)
+        self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=DEFAULT_PULSE_WIDTH_LOW)
+        self._addConfigKey('_valueOff', 'VALUE_OFF', default=DEFAULT_VALUE_OFF)
+        self._addConfigKey('_valueOn', 'VALUE_ON', default=DEFAULT_VALUE_ON)
 
     def activate(self):
         Logger().trace("PololuServoShutter.activate()")
@@ -492,6 +521,9 @@ class PololuServoShutterController(ShutterPluginController, HardwarePluginContro
         self._addWidget('Main', "Bracketing intent", ComboBoxField, (['exposure', 'focus', 'white balance', 'movement'],), 'BRACKETING_INTENT')
         self._addWidget('Main', "Pulse width high", SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_HIGH')
         self._addWidget('Main', "Pulse width low", SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_LOW')
+        self._addTab('Servo')
+        self._addWidget('Servo', "Value off", SpinBoxField, (0, 127), 'VALUE_OFF')
+        self._addWidget('Servo', "Value on", SpinBoxField, (0, 127), 'VALUE_ON')
 
 
 def register():
