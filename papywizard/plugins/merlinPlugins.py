@@ -81,9 +81,9 @@ DEFAULT_BRACKETING_NBPICTS = 1
 DEFAULT_BRACKETING_INTENT = 'exposure'
 DEFAULT_PULSE_WIDTH_HIGH = 100 # ms
 DEFAULT_PULSE_WIDTH_LOW = 100 # ms
-MANUAL_SPEED = {'slow': 170,  # "aa0000"  / 5
-                'normal': 34, # "220000"
-                'fast': 17}   # "110000"  * 2
+MANUAL_SPEED_INDEX = {'slow': 170,  # "aa0000"  / 5
+                      'normal': 34, # "220000"
+                      'fast': 17}   # "110000"  * 2
 
 
 class MerlinHardware(HardwarePlugin):
@@ -237,7 +237,7 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
             self._sendCmd("L")
             self._sendCmd("G", "00")
             self._sendCmd("S", strValue)
-            #self._sendCmd("I", encodeAxisValue(MANUAL_SPEED[self._manualSpeed]))
+            #self._sendCmd("I", encodeAxisValue(MANUAL_SPEED_INDEX[self._manualSpeed]))
             self._sendCmd("J")
         finally:
             self._driver.releaseBus()
@@ -312,7 +312,7 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
             else:
                 raise ValueError("Axis %d dir. must be in ('+', '-')" % self._numAxis)
 
-            self._sendCmd("I", encodeAxisValue(MANUAL_SPEED[self._manualSpeed]))
+            self._sendCmd("I", encodeAxisValue(MANUAL_SPEED_INDEX[self._manualSpeed]))
             self._sendCmd("J")
         finally:
             self._driver.releaseBus()
