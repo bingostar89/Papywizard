@@ -336,16 +336,6 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
         else:
             return False
 
-    #def setOutput(self, level):
-        #self._driver.acquireBus()
-        #try:
-            #if level:
-                #self._sendCmd("O", "1")
-            #else:
-                #self._sendCmd("O", "0")
-        #finally:
-            #self._driver.releaseBus()
-
     def setManualSpeed(self, speed):
         self._manualSpeed = speed
 
