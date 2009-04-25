@@ -8,6 +8,10 @@ x bug fix
 
 0000-00-00 Version SVN
 
+2009-04-24 Version 2.1.3 (dev)
+    + 'Pololu Servo' plugin
+    + 'EOS Utility' plugin (sjhenry contribution)
+
 2009-04-06 Version 2.1.2 (dev)
     + separate menu/dialog for hardware preferences
     x several bug fix in plugins
