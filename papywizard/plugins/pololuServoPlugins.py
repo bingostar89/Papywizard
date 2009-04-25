@@ -131,9 +131,9 @@ class PololuServoHardware(HardwarePlugin):
         else:
             raise ValueError("Command must be in [0-5]")
 
-        # Purge buffer
-        data = self._driver.read(size)
-        Logger().debug("PololuServoHardware._sendCmd: pololu returned: %s" % repr(data))
+        # Purge buffer (does not work anymore!)
+        #data = self._driver.read(size)
+        #Logger().debug("PololuServoHardware._sendCmd: pololu returned: %s" % repr(data))
 
     def _reset(self):
         """ Reset the controller.
@@ -161,7 +161,7 @@ class PololuServoHardware(HardwarePlugin):
             raise ValueError("direction parameter must be in ('forward', 'reverse')")
         if not 0 <= range_ <= 31:
             raise ValueError("range parameter must be in [0-31]")
-        data1 = on << 6 | (direction != 'forward') << 5 | (range_ & 31)
+        data1 = (on << 6) | ((direction != 'forward') << 5) | range_
         self._driver.acquireBus()
         try:
             self._sendCmd(0, data1)
@@ -248,14 +248,17 @@ class PololuServoHardware(HardwarePlugin):
     def _initPololuServo(self, speed=0, direction='forward'):
         """ Turn on servo power.
 
+        @param speed: rotation speed
+        @type speed: int
+
         @param direction: direction of rotation, in ('forward', 'reverse')
         @type diretion: str
         """
         self._driver.acquireBus()
         try:
             #self._reset()
-            self._setSpeed(speed)
             self._setParameters(on=True, direction=direction) # Add range_?
+            self._setSpeed(speed)
         finally:
             self._driver.releaseBus()
 
@@ -306,7 +309,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
     def establishConnection(self):
         Logger().trace("PololuServoAxis.establishConnection()")
         PololuServoHardware.establishConnection(self)
-        self._initPololuServo(self._config['SPEED'], self._config['DIRECTION'])
+        self._initPololuServo(speed=self._config['SPEED'], direction=self._config['DIRECTION'])
         self._position = 0.
         self.drive(0.)
 
@@ -318,6 +321,22 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
 
     def read(self):
         return self._position - self._offset
+
+    def __computeValue(self, position):
+        """ Compute servo value from position.
+        
+        @param position: position, in °
+        @type position: float
+        
+        @return: value to send to servo controller
+        @rtype: int
+        """
+        if self._config['DIRECTION'] == 'forward':
+            dir_ = 1
+        else:
+            dir_ = -1
+        value = int(dir_ * self._config['COEFFICIENT'] * position + self._config['NEUTRAL_POSITION'])
+        return value
 
     def drive(self, position, inc=False, useOffset=True, wait=True):
         currentPos = self.read()
@@ -332,11 +351,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         self._checkLimits(position)
         self._driver.acquireBus()
         try:
-            if self._config['DIRECTION'] == 'forward':
-                dir_ = 1
-            else:
-                dir_ = -1
-            value = int(dir_ * self._config['COEFFICIENT'] * position + self._config['NEUTRAL_POSITION'])
+            value = self.__computeValue(position)
             self._setPositionAbsolute(value)
             self._position = position # offset?
             if wait:
@@ -366,18 +381,15 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         self._checkLimits(position)
         self._driver.acquireBus()
         try:
-            if self._config['DIRECTION'] == 'forward':
-                dir_ = 1
-            else:
-                dir_ = -1
-            value = int(dir_ * self._config['COEFFICIENT'] * position + self._config['NEUTRAL_POSITION'])
+            value = self.__computeValue(position)
             self._setPositionAbsolute(value)
             self._position = position # offset?
         finally:
             self._driver.releaseBus()
 
     def waitStop(self):
-        time.sleep(.5)
+        pass
+        #time.sleep(.5)
 
     def isMoving(self):
         return False
