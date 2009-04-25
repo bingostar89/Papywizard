@@ -89,7 +89,8 @@ class SerialDriver(AbstractDriver):
         #self._serial.setDTR(level)
 
     def empty(self):
-        self.read(self._serial.inWaiting())
+        if hasattr(self._serial, "inWaiting"):
+            self.read(self._serial.inWaiting())
 
     def write(self, data):
         #Logger().debug("SerialDriver.write(): data=%s" % repr(data))
