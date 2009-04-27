@@ -91,10 +91,6 @@ class MainController(AbstractController):
         # Disable widgets
         self.__SetDisconnectedWidgetState()
 
-        # Try to autoconnect to real hardware
-        if ConfigManager().getBoolean('Preferences/HARDWARE_AUTO_CONNECT'):
-            self._view.actionHardwareConnect.setChecked(True)
-
     def _init(self):
         self._uiFile = "mainWindow.ui"
 

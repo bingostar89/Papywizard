@@ -78,19 +78,17 @@ class PreferencesController(AbstractModalDialogController):
 
     def _connectSignals(self):
         AbstractModalDialogController._connectSignals(self)
-
-        self.connect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
         self.connect(self._view.yawAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onYawAxisConfigurePushButtonClicked)
         self.connect(self._view.pitchAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onPitchAxisConfigurePushButtonClicked)
         self.connect(self._view.shutterConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onShutterConfigurePushButtonClicked)
+        self.connect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
 
     def _disconnectSignals(self):
         AbstractModalDialogController._disconnectSignals(self)
-
-        self.disconnect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
         self.disconnect(self._view.yawAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onYawAxisConfigurePushButtonClicked)
         self.disconnect(self._view.pitchAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onPitchAxisConfigurePushButtonClicked)
         self.disconnect(self._view.shutterConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onShutterConfigurePushButtonClicked)
+        self.disconnect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
 
     # Callbacks
     def _onAccepted(self):
@@ -127,7 +125,6 @@ class PreferencesController(AbstractModalDialogController):
         ConfigManager().set('Preferences/HARDWARE_SERIAL_PORT', unicode(self._view.serialPortLineEdit.text()))
         ConfigManager().set('Preferences/HARDWARE_ETHERNET_HOST', unicode(self._view.ethernetHostLineEdit.text()))
         ConfigManager().setInt('Preferences/HARDWARE_ETHERNET_PORT', self._view.ethernetPortSpinBox.value())
-        ConfigManager().setBoolean('Preferences/HARDWARE_AUTO_CONNECT', self._view.hardwareAutoConnectCheckBox.isChecked())
 
         ConfigManager().save()
 
@@ -215,7 +212,6 @@ class PreferencesController(AbstractModalDialogController):
         self._view.serialPortLineEdit.setText(ConfigManager().get('Preferences/HARDWARE_SERIAL_PORT'))
         self._view.ethernetHostLineEdit.setText(ConfigManager().get('Preferences/HARDWARE_ETHERNET_HOST'))
         self._view.ethernetPortSpinBox.setValue(ConfigManager().getInt('Preferences/HARDWARE_ETHERNET_PORT'))
-        self._view.hardwareAutoConnectCheckBox.setChecked(ConfigManager().getBoolean('Preferences/HARDWARE_AUTO_CONNECT'))
 
     def getSelectedTab(self):
         """ Return the selected tab.
