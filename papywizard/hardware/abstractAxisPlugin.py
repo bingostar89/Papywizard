@@ -88,7 +88,7 @@ class AbstractAxisPlugin(AbstractPlugin):
         @type position: float
         """
         if not self._config['LOW_LIMIT'] <= position <= self._config['HIGH_LIMIT']:
-            raise HardwareError("Axis limit reached: %.1f not in [%.1f:%.1f]" % \
+            raise HardwareError("Axis limit reached: %.1f not in [%.1f-%.1f]" % \
                                  (position, self._config['LOW_LIMIT'], self._config['HIGH_LIMIT']))
 
     def isPositionValid(self, position):

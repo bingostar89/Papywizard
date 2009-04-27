@@ -220,7 +220,6 @@ class PololuServoHardware(HardwarePlugin):
         """
         if not 500 <= position <= 5500:
             raise ValueError("position must be in [500-5500] (%d)" % position)
-        print position
         data1 = position / 128
         data2 = position % 128
         self._driver.acquireBus()
@@ -259,6 +258,7 @@ class PololuServoHardware(HardwarePlugin):
             #self._reset()
             self._setParameters(on=True, direction=direction) # Add range_?
             self._setSpeed(speed)
+            # Goto initial position?
         finally:
             self._driver.releaseBus()
 
