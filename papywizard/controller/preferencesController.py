@@ -49,7 +49,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: configController.py 1645 2009-03-29 21:44:05Z fma $"
+__revision__ = "$Id$"
 
 from PyQt4 import QtCore, QtGui
 
