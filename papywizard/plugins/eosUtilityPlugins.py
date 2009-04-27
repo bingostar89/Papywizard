@@ -64,7 +64,7 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 DEFAULT_PROGRAM_PATH = "C:\\Program Files\\Papywizard\\EOSBracket.exe"
 DEFAULT_EOSUTILITY_TYPE = 'new'
 DEFAULT_EXPOSURE_BRACKETING_STOPS = '1'
-DEFAULT_EXPOSURE_BRACKETING_TYPE = '3' #use string and index
+DEFAULT_EXPOSURE_BRACKETING_TYPE = '-0+'
 DEFAULT_EXPOSURE_BRACKETING_NBPICTS = 1
 DEFAULT_SHOOT_PICTURES = False
 DEFAULT_BULB_MODE = False
@@ -74,6 +74,10 @@ DEFAULT_FOCUS_DIRECTION = 'far'
 DEFAULT_FOCUS_STEP = 'medium'
 DEFAULT_FOCUS_STEP_COUNT = 1
 DEFAULT_FOCUS_BRACKETING_NBPICTS = 1
+EXPOSURE_BRACKETING_TYPE_INDEX = {'0--': '1',
+                                  '0++': '2',
+                                  '0-+': '3'}
+
 
 class EOSUtilityShutter(AbstractShutterPlugin):
     _name = "EOS Utility"
@@ -137,40 +141,39 @@ class EOSUtilityShutter(AbstractShutterPlugin):
         args = []
         args.append(self._config['PROGRAM_PATH'])
         args.append("CL")
-        args.append(self._config['EOSUTILITY_TYPE'].upper())
+        args.append(self._config['EOSUTILITY_TYPE'])
         args.append(self._config['EXPOSURE_BRACKETING_STOPS'])
-        args.append(self._config['EXPOSURE_BRACKETING_TYPE'])
+        args.append(EXPOSURE_BRACKETING_TYPE_INDEX[self._config['EXPOSURE_BRACKETING_TYPE']])
         args.append(str(self._config['EXPOSURE_BRACKETING_NBPICTS']))
         if self._config['SHOOT_PICTURES']:
-            args.append("Y")
+            args.append("y")
         else:
             args.append("N")
         if self._config['BULB_MODE']:
-            args.append("Y")
+            args.append("y")
         else:
-            args.append("N")
+            args.append("n")
         args.append(str(self._config['BASE_BULB_EXPOSURE']))
         if self._config['FOCUS_MODE']:
-            args.append("Y")
+            args.append("y")
         else:
-            args.append("N")
-        args.append(self._config['FOCUS_DIRECTION'].upper())
-        args.append(self._config['FOCUS_STEP'].upper())
+            args.append("n")
+        args.append(self._config['FOCUS_DIRECTION'])
+        args.append(self._config['FOCUS_STEP'])
         args.append(str(self._config['FOCUS_STEP_COUNT']))
         args.append(str(self._config['FOCUS_BRACKETING_NBPICTS']))
         Logger().debug("EOSUtilityShutter.shoot(): cmdLineArgs '%s'..." % ' '.join(args))
 
         # Launch external command
-        #p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        ## Wait end of execution
-        #stdout, stderr = p.communicate()
-        #if stderr:
-            #Logger().debug("EOSUtilityShutter.shoot(): stderr:\n%s" % stderr)
-        #Logger().debug("EOSUtilityShutter.shoot(): stdout:\n%s" % stdout)
+        # Wait end of execution
+        stdout, stderr = p.communicate()
+        if stderr:
+            Logger().debug("EOSUtilityShutter.shoot(): stderr:\n%s" % stderr)
+        Logger().debug("EOSUtilityShutter.shoot(): stdout:\n%s" % stdout)
 
-        #return p.returncode
-        return 0
+        return p.returncode
 
 
 class EOSUtilityShutterController(ShutterPluginController):
@@ -179,7 +182,7 @@ class EOSUtilityShutterController(ShutterPluginController):
         self._addWidget('Main', "EOS Bracket path", LineEditField, (), 'PROGRAM_PATH')
         self._addWidget('Main', "EOS Utility Type", ComboBoxField, (['old', 'new'],), 'EOSUTILITY_TYPE')
         self._addWidget('Main', "Exposure Bracketing Stops", ComboBoxField, (['1/3', '2/3', '1', '1 1/3', '1 2/3', '2', '2 1/3', '2 2/3', '3', '3 1/3', '3 2/3', '4', '4 1/3', '4 2/3', '5', '5 1/3', '5 2/3', '6'],), 'EXPOSURE_BRACKETING_STOPS')
-        self._addWidget('Main', "Exposure Bracketing Type", ComboBoxField, (['1', '2', '3'],), 'EXPOSURE_BRACKETING_TYPE')
+        self._addWidget('Main', "Exposure Bracketing Type", ComboBoxField, (EXPOSURE_BRACKETING_TYPE_INDEX.keys(),), 'EXPOSURE_BRACKETING_TYPE')
         self._addWidget('Main', "Exposure Bracketing Picture Count", SpinBoxField, (1, 99), 'EXPOSURE_BRACKETING_NBPICTS')
         self._addWidget('Main', "Shoot Pictures", CheckBoxField, (), 'SHOOT_PICTURES')
         self._addTab('Bulb')
