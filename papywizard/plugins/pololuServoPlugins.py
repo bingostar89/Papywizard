@@ -258,7 +258,7 @@ class PololuServoHardware(HardwarePlugin):
             #self._reset()
             self._setParameters(on=True, direction=direction) # Add range_?
             self._setSpeed(speed)
-            # Goto initial position?
+            # Goto reference position?
         finally:
             self._driver.releaseBus()
 
@@ -267,6 +267,7 @@ class PololuServoHardware(HardwarePlugin):
         """
         self._driver.acquireBus()
         try:
+            # Goto initial position?
             self._setParameters(on=False)
         finally:
             self._driver.releaseBus()
@@ -298,7 +299,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         AbstractAxisPlugin._checkLimits(self, position)
         value = int(self._config['COEFFICIENT'] * position + self._config['NEUTRAL_POSITION'])
         if not 500 <= value <= 5500:
-            raise HardwareError("Servo limit reached: %.d not in [500-5500]" % value)
+            raise HardwareError("Servo limit reached: %d not in [500-5500]" % value)
 
     def activate(self):
         Logger().trace("PololuServoHardware.activate()")
@@ -324,10 +325,10 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
 
     def __computeValue(self, position):
         """ Compute servo value from position.
-        
+
         @param position: position, in °
         @type position: float
-        
+
         @return: value to send to servo controller
         @rtype: int
         """
