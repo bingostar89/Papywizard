@@ -74,10 +74,11 @@ from papywizard.controller.hardwarePluginController import HardwarePluginControl
 from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
-DEFAULT_SPEED = 63
+from PyQt4 import QtCore
+
+DEFAULT_SPEED = 5 # deg/s
 DEFAULT_DIRECTION = 'forward'
-DEFAULT_NEUTRAL_POSITION = 3000
-DEFAULT_COEFFICIENT = 10.
+DEFAULT_RATIO = 1
 DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
@@ -86,10 +87,17 @@ DEFAULT_PULSE_WIDTH_HIGH = 100 # ms
 DEFAULT_PULSE_WIDTH_LOW = 100 # ms
 DEFAULT_VALUE_OFF = 0
 DEFAULT_VALUE_ON = 127
+
+SPEED_COEF = 0.18 # deg. (angle for 1µs)
+POSITION_COEF = 0.09 # deg. (angle for 1 controller unit)
+NEUTRAL_POSITION = 3000 # controller value for neutral position (1.5ms)
+DIRECTION_INDEX = {'forward': 1,
+                   'reverse': -1}
 MANUAL_SPEED_INDEX = {'slow': .5,
                       'normal': 2.,
                       'fast': 5.}
-
+DIRECTION_INDEX = {'forward': 0, 'reverse': 1,
+                   0: 'forward', 1: 'reverse'}
 
 class PololuServoHardware(HardwarePlugin):
     _name = "Pololu Servo"
@@ -120,13 +128,13 @@ class PololuServoHardware(HardwarePlugin):
             if data2 is not None:
                 raise ValueError("Command %d takes only 1 data parameter" % command)
             else:
-                self._driver.write(struct.pack("BBBBB", 0x80, 0x01, command, self._channel, data1))
+                #self._driver.write(struct.pack("BBBBB", 0x80, 0x01, command, self._channel, data1))
                 size = 5
         elif command in (3, 4, 5):
             if data2 is None:
                 raise ValueError("Command %d takes 2 data parameters" % command)
             else:
-                self._driver.write(struct.pack("BBBBBB", 0x80, 0x01, command, self._channel, data1, data2))
+                #self._driver.write(struct.pack("BBBBBB", 0x80, 0x01, command, self._channel, data1, data2))
                 size = 6
         else:
             raise ValueError("Command must be in [0-5]")
@@ -220,6 +228,7 @@ class PololuServoHardware(HardwarePlugin):
         """
         if not 500 <= position <= 5500:
             raise ValueError("position must be in [500-5500] (%d)" % position)
+        Logger().debug("PololuServoHardware._setPositionAbsolute(): position=%d" % position)
         data1 = position / 128
         data2 = position % 128
         self._driver.acquireBus()
@@ -258,7 +267,6 @@ class PololuServoHardware(HardwarePlugin):
             #self._reset()
             self._setParameters(on=True, direction=direction) # Add range_?
             self._setSpeed(speed)
-            # Goto reference position?
         finally:
             self._driver.releaseBus()
 
@@ -267,7 +275,6 @@ class PololuServoHardware(HardwarePlugin):
         """
         self._driver.acquireBus()
         try:
-            # Goto initial position?
             self._setParameters(on=False)
         finally:
             self._driver.releaseBus()
@@ -279,6 +286,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         PololuServoHardware._init(self)
         AbstractAxisPlugin._init(self)
         self._position = None
+        self._endDrive = None
 
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
@@ -286,8 +294,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         #self._addConfigKey('_channel', 'CHANNEL', default=DEFAULT_CHANNEL)
         self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
         self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION)
-        self._addConfigKey('_neutralPos', 'NEUTRAL_POSITION', default=DEFAULT_NEUTRAL_POSITION)
-        self._addConfigKey('_coef', 'COEFFICIENT', default=DEFAULT_COEFFICIENT)
+        self._addConfigKey('_ratio', 'RATIO', default=DEFAULT_RATIO)
 
     def _checkLimits(self, position):
         """ Check if the position can be reached.
@@ -297,7 +304,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         reach the position.
         """
         AbstractAxisPlugin._checkLimits(self, position)
-        value = int(self._config['COEFFICIENT'] * position + self._config['NEUTRAL_POSITION'])
+        value = self._computeServoPosition(position)
         if not 500 <= value <= 5500:
             raise HardwareError("Servo limit reached: %d not in [500-5500]" % value)
 
@@ -310,21 +317,34 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
     def establishConnection(self):
         Logger().trace("PololuServoAxis.establishConnection()")
         PololuServoHardware.establishConnection(self)
-        self._initPololuServo(speed=self._config['SPEED'], direction=self._config['DIRECTION'])
+        speed = self._computeServoSpeed(self._config['SPEED'])
+        self._initPololuServo(speed, self._config['DIRECTION'])
         self._position = 0.
-        self.drive(0.)
+        self._endDrive = 0
 
     def shutdownConnection(self):
         Logger().trace("PololuServoAxis.shutdownConnection()")
-        #self.stop()
+        self.stop()
         self._shutdownPololuServo()
         PololuServoHardware.shutdownConnection(self)
 
     def read(self):
         return self._position - self._offset
 
-    def __computeValue(self, position):
-        """ Compute servo value from position.
+    def _computeServoSpeed(self, speed):
+        """ Compute controller servo value from position.
+
+        @param speed: speed, in °/s
+        @type speed: float
+
+        @return: value to send to servo controller
+        @rtype: int
+        """
+        servoSpeed = int(speed * self._config['RATIO'] / SPEED_COEF)
+        return servoSpeed
+
+    def _computeServoPosition(self, position):
+        """ Compute controller servo value from position.
 
         @param position: position, in °
         @type position: float
@@ -332,14 +352,13 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         @return: value to send to servo controller
         @rtype: int
         """
-        if self._config['DIRECTION'] == 'forward':
-            dir_ = 1
-        else:
-            dir_ = -1
-        value = int(dir_ * self._config['COEFFICIENT'] * position + self._config['NEUTRAL_POSITION'])
-        return value
+        dir_ = DIRECTION_INDEX[self._config['DIRECTION']]
+        servoPosition = int(NEUTRAL_POSITION + dir_ * position / (self._config['RATIO'] * POSITION_COEF))
+        return servoPosition
 
     def drive(self, position, inc=False, useOffset=True, wait=True):
+        """ @todo: use thread.
+        """
         currentPos = self.read()
 
         # Compute absolute position from increment if needed
@@ -352,23 +371,23 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         self._checkLimits(position)
         self._driver.acquireBus()
         try:
-            value = self.__computeValue(position)
+            value = self._computeServoPosition(position)
             self._setPositionAbsolute(value)
-            self._position = position # offset?
+            self._endDrive = time.time() + abs(position - self._position) / self._config['SPEED']
             if wait:
                 self.waitEndOfDrive()
+            self._position = position
         finally:
             self._driver.releaseBus()
 
     def stop(self):
-        pass
         self.waitStop()
 
     def waitEndOfDrive(self):
-        while True:
-            if not self.isMoving():
-                break
-            time.sleep(0.1)
+        remaingTimeToWait = self._endDrive - time.time()
+        Logger().debug("PololuServoAxis.waitEndOfDrive(): remaing time to wait %d" % remaingTimeToWait)
+        if remaingTimeToWait > 0:
+            time.sleep(remaingTimeToWait)
         self.waitStop()
 
     def startJog(self, dir_):
@@ -379,37 +398,37 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
             position += MANUAL_SPEED_INDEX[self._manualSpeed]
         else:
             position -= MANUAL_SPEED_INDEX[self._manualSpeed]
+
+        # Call self.drive() ???
+
         self._checkLimits(position)
         self._driver.acquireBus()
         try:
-            value = self.__computeValue(position)
+            value = self._computeServoPosition(position)
             self._setPositionAbsolute(value)
-            self._position = position # offset?
+            self._position = position
         finally:
             self._driver.releaseBus()
 
     def waitStop(self):
         pass
-        #time.sleep(.5)
 
     def isMoving(self):
-        return False
-
-    def setManualSpeed(self, speed):
-        self._manualSpeed = speed
+        if self._endDrive >= time.time():
+            return False
+        else:
+            return True
 
 
 class PololuServoAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
+        self._addWidget('Main', "Speed", SpinBoxField, (1, 25, "", " deg/s"), 'SPEED')
         self._addTab('Servo')
         #self._addWidget('Servo', "Channel", SpinBoxField, (0, 7), 'CHANNEL')
-        self._addWidget('Servo', "Speed", SpinBoxField, (1, 127), 'SPEED')
         self._addWidget('Servo', "Direction", ComboBoxField, (['forward', 'reverse'],), 'DIRECTION')
-        self._addWidget('Servo', 'Neutral position', SpinBoxField, (500, 5500), 'NEUTRAL_POSITION')
-        self._addWidget('Servo', 'Coefficient', DoubleSpinBoxField, (0.01, 100., 2., 0.1), 'COEFFICIENT')
-
+        self._addWidget('Servo', "Ratio", DoubleSpinBoxField, (0.01, 10., 2., 0.01), 'RATIO')
 
 class PololuServoYawAxis(PololuServoAxis):
     _capacity = 'yawAxis'
@@ -471,6 +490,7 @@ class PololuServoShutter(PololuServoHardware, AbstractShutterPlugin):
 
     def activate(self):
         Logger().trace("PololuServoShutter.activate()")
+        self._initialPosition = self._config['VALUE_OFF']
 
     def shutdown(self):
         Logger().trace("PololuServoShutter.shutdown()")
