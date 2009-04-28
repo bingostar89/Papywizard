@@ -15,9 +15,9 @@ FORMS += papywizard/view/ui/bluetoothChooserDialog.ui \
          papywizard/view/ui/totalFovDialog.ui
 
 # Common
-SOURCES +=papywizard/common/abstractPlugin.py \
-           papywizard/common/config.py \
+SOURCES += papywizard/common/abstractPlugin.py \
            papywizard/common/configManager.py \
+           papywizard/common/config.py \
            papywizard/common/exception.py \
            papywizard/common/helpers.py \
            papywizard/common/loggingFormatter.py \
@@ -73,12 +73,20 @@ SOURCES += papywizard/scripts/main3D.py \
            papywizard/scripts/main.py \
            papywizard/scripts/mainSimul.py
 
+# Plugins
+SOURCES += papywizard/plugins/eosUtilityPlugins.py \
+           papywizard/plugins/merlinPlugins.py \
+           papywizard/plugins/pololuServoPlugins.py \
+           papywizard/plugins/simulationPlugins.py \
+           papywizard/plugins/tetheredPlugins.py \
+           papywizard/plugins/timelordPlugins.py
+
 # View 3D
-           papywizard/view3D/povexport.py \
+SOURCES += papywizard/view3D/povexport.py \
            papywizard/view3D/view3D.py
 
 # Views
-           papywizard/view/icons.py \
+SOURCES += papywizard/view/icons.py \
            papywizard/view/logBuffer.py \
            papywizard/view/messageDialog.py \
            papywizard/view/pictureItem.py \
@@ -92,3 +100,4 @@ TRANSLATIONS += papywizard/common/i18n/papywizard_en.ts \
                 papywizard/common/i18n/papywizard_de.ts \
                 papywizard/common/i18n/papywizard_it.ts \
                 papywizard/common/i18n/papywizard_es.ts
+
