@@ -217,14 +217,11 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
     def isMoving(self):
         return self.__jog
 
-    def setManualSpeed(self, speed):
-        self._manualSpeed = speed
-
 
 class SimulationAxisController(AxisPluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
-        self._addWidget('Main', "Speed", SpinBoxField, (5, 25, "", " deg/s"), 'SPEED')
+        self._addWidget('Main', "Speed", SpinBoxField, (1, 25, "", " deg/s"), 'SPEED')
 
 
 class SimulationYawAxis(SimulationAxis):

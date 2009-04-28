@@ -81,6 +81,7 @@ DEFAULT_BRACKETING_NBPICTS = 1
 DEFAULT_BRACKETING_INTENT = 'exposure'
 DEFAULT_PULSE_WIDTH_HIGH = 100 # ms
 DEFAULT_PULSE_WIDTH_LOW = 100 # ms
+
 MANUAL_SPEED_INDEX = {'slow': 170,  # "aa0000"  / 5
                       'normal': 34, # "220000"
                       'fast': 17}   # "110000"  * 2
@@ -335,9 +336,6 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
             return True
         else:
             return False
-
-    def setManualSpeed(self, speed):
-        self._manualSpeed = speed
 
 
 class MerlinAxisController(AxisPluginController, HardwarePluginController):

@@ -196,4 +196,4 @@ class AbstractAxisPlugin(AbstractPlugin):
         @param speed: new manual speed, in ('slow', 'normal', 'fast')
         @type speed: str
         """
-        raise NotImplementedError("AbstractAxisPlugin.setManualSpeed() must be overloaded")
+        self._manualSpeed = speed
