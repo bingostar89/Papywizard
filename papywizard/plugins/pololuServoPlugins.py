@@ -128,13 +128,13 @@ class PololuServoHardware(HardwarePlugin):
             if data2 is not None:
                 raise ValueError("Command %d takes only 1 data parameter" % command)
             else:
-                #self._driver.write(struct.pack("BBBBB", 0x80, 0x01, command, self._channel, data1))
+                self._driver.write(struct.pack("BBBBB", 0x80, 0x01, command, self._channel, data1))
                 size = 5
         elif command in (3, 4, 5):
             if data2 is None:
                 raise ValueError("Command %d takes 2 data parameters" % command)
             else:
-                #self._driver.write(struct.pack("BBBBBB", 0x80, 0x01, command, self._channel, data1, data2))
+                self._driver.write(struct.pack("BBBBBB", 0x80, 0x01, command, self._channel, data1, data2))
                 size = 6
         else:
             raise ValueError("Command must be in [0-5]")
