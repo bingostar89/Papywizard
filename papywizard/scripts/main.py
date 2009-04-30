@@ -159,7 +159,7 @@ def main():
         splash.showMessage("Load plugins...")
         from papywizard.plugins.simulationPlugins import register
         register()
-        from papywizard.plugins.merlinPlugins import register
+        from papywizard.plugins.merlinOrionPlugins import register
         register()
         from papywizard.plugins.tetheredPlugins import register
         register()

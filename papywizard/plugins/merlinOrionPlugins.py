@@ -42,20 +42,20 @@ Hardware
 Implements
 ==========
 
-- MerlinHardware
-- MerlinAxis
-- MerlinAxisController
-- MerlinYawAxis
-- MerlinYawAxisController
-- MerlinPitchAxis
-- MerlinPitchAxisController
-- MerlinShutter
-- MerlinShutterController
+- MerlinOrionHardware
+- MerlinOrionAxis
+- MerlinOrionAxisController
+- MerlinOrionYawAxis
+- MerlinOrionYawAxisController
+- MerlinOrionPitchAxis
+- MerlinOrionPitchAxisController
+- MerlinOrionShutter
+- MerlinOrionShutterController
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
 @license: CeCILL
-@todo: add private methods to MerlinHardware for sending commands to Merlin
+@todo: add private methods to MerlinOrionHardware for sending commands to MerlinOrion
 """
 
 __revision__ = "$Id$"
@@ -88,12 +88,12 @@ MANUAL_SPEED_INDEX = {'slow': 170,  # "aa0000"  / 5
                       'fast': 17}   # "110000"  * 2
 
 
-class MerlinHardware(HardwarePlugin):
-    _name = "Merlin"
-    _initMerlinFlag = [False, False]
+class MerlinOrionHardware(HardwarePlugin):
+    _name = "Merlin/Orion"
+    _initMerlinOrionFlag = [False, False]
 
     def _init(self):
-        Logger().trace("MerlinHardware._init()")
+        Logger().trace("MerlinOrionHardware._init()")
         HardwarePlugin._init(self)
         self._numAxis = None
 
@@ -117,7 +117,7 @@ class MerlinHardware(HardwarePlugin):
                     c = self._driver.read(1)
                 if c == '!':
                     c = self._driver.read(1) # Get error code
-                    raise IOError("Merlin didn't understand the command '%s' (err=%s)" % (cmd, c))
+                    raise IOError("MerlinOrion didn't understand the command '%s' (err=%s)" % (cmd, c))
                 answer = ""
                 while True:
                     c = self._driver.read(1)
@@ -126,24 +126,24 @@ class MerlinHardware(HardwarePlugin):
                     answer += c
 
             except IOError:
-                Logger().exception("MerlinHardware._sendCmd")
-                Logger().warning("MerlinHardware._sendCmd(): axis %d can't sent command '%s'. Retrying..." % (self._numAxis, cmd))
+                Logger().exception("MerlinOrionHardware._sendCmd")
+                Logger().warning("MerlinOrionHardware._sendCmd(): axis %d can't sent command '%s'. Retrying..." % (self._numAxis, cmd))
             else:
                 break
         else:
-            raise HardwareError("Merlin axis %d can't send command '%s'" % (self._numAxis, cmd))
-        #Logger().debug("MerlinHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (self._numAxis, cmd, answer))
+            raise HardwareError("MerlinOrion axis %d can't send command '%s'" % (self._numAxis, cmd))
+        #Logger().debug("MerlinOrionHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (self._numAxis, cmd, answer))
 
         return answer
 
-    def _initMerlin(self):
-        """ Init the Merlin hardware.
+    def _initMerlinOrion(self):
+        """ Init the MerlinOrion hardware.
 
         Done only once per axis.
         """
         self._driver.acquireBus()
         try:
-            if not MerlinHardware._initMerlinFlag[self._numAxis - 1]:
+            if not MerlinOrionHardware._initMerlinOrionFlag[self._numAxis - 1]:
 
                 # Stop axis
                 self._sendCmd("L")
@@ -153,21 +153,21 @@ class MerlinHardware(HardwarePlugin):
 
                 # Get full circle count
                 value = self._sendCmd("a")
-                Logger().debug("MerlinHardware._initMerlin(): full circle count=%s" % hex(decodeAxisValue(value)))
+                Logger().debug("MerlinOrionHardware._initMerlinOrion(): full circle count=%s" % hex(decodeAxisValue(value)))
 
                 # Get sidereal rate
                 value = self._sendCmd("D")
-                Logger().debug("MerlinHardware._initMerlin(): sidereal rate=%s" % hex(decodeAxisValue(value)))
+                Logger().debug("MerlinOrionHardware._initMerlinOrion(): sidereal rate=%s" % hex(decodeAxisValue(value)))
 
-                MerlinHardware._initMerlinFlag[self._numAxis - 1] = True
+                MerlinOrionHardware._initMerlinOrionFlag[self._numAxis - 1] = True
         finally:
             self._driver.releaseBus()
 
 
-class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
+class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
     def _init(self):
-        Logger().trace("MerlinAxis._init()")
-        MerlinHardware._init(self)
+        Logger().trace("MerlinOrionAxis._init()")
+        MerlinOrionHardware._init(self)
         AbstractAxisPlugin._init(self)
 
     def _defineConfig(self):
@@ -175,20 +175,20 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
         HardwarePlugin._defineConfig(self)
 
     def activate(self):
-        Logger().trace("MerlinHardware.activate()")
+        Logger().trace("MerlinOrionHardware.activate()")
 
     def shutdown(self):
-        Logger().trace("MerlinHardware.shutdown()")
+        Logger().trace("MerlinOrionHardware.shutdown()")
 
     def establishConnection(self):
-        Logger().trace("MerlinAxis.establishConnection()")
-        MerlinHardware.establishConnection(self)
-        self._initMerlin()
+        Logger().trace("MerlinOrionAxis.establishConnection()")
+        MerlinOrionHardware.establishConnection(self)
+        self._initMerlinOrion()
 
     def shutdownConnection(self):
-        Logger().trace("MerlinAxis.shutdownConnection()")
+        Logger().trace("MerlinOrionAxis.shutdownConnection()")
         self.stop()
-        MerlinHardware.shutdownConnection(self)
+        MerlinOrionHardware.shutdownConnection(self)
 
     def read(self):
         self._driver.acquireBus()
@@ -232,7 +232,7 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
         @param pos: position to reach, in °
         @type pos: float
         """
-        Logger().trace("MerlinAxis._driveWithInternalClosedLoop()")
+        Logger().trace("MerlinOrionAxis._driveWithInternalClosedLoop()")
         strValue = encodeAxisValue(deg2cod(pos))
         self._driver.acquireBus()
         try:
@@ -258,7 +258,7 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
         #@param pos: position to reach, in °
         #@type pos: float
         #"""
-        #Logger().trace("MerlinAxis._driveWithExternalClosedLoop()")
+        #Logger().trace("MerlinOrionAxis._driveWithExternalClosedLoop()")
         #self._driver.acquireBus()
         #try:
             #self._sendCmd("L")
@@ -347,42 +347,42 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
             return False
 
 
-class MerlinAxisController(AxisPluginController, HardwarePluginController):
+class MerlinOrionAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
 
 
-class MerlinYawAxis(MerlinAxis):
+class MerlinOrionYawAxis(MerlinOrionAxis):
     _capacity = 'yawAxis'
 
     def _init(self):
-        Logger().trace("MerlinYawAxis._init()")
-        MerlinAxis._init(self)
+        Logger().trace("MerlinOrionYawAxis._init()")
+        MerlinOrionAxis._init(self)
         self._numAxis = 1
 
 
-class MerlinYawAxisController(MerlinAxisController):
+class MerlinOrionYawAxisController(MerlinOrionAxisController):
     pass
 
 
-class MerlinPitchAxis(MerlinAxis):
+class MerlinOrionPitchAxis(MerlinOrionAxis):
     _capacity = 'pitchAxis'
 
     def _init(self):
-        Logger().trace("MerlinPitchAxis._init()")
-        MerlinAxis._init(self)
+        Logger().trace("MerlinOrionPitchAxis._init()")
+        MerlinOrionAxis._init(self)
         self._numAxis = 2
 
 
-class MerlinPitchAxisController(MerlinAxisController):
+class MerlinOrionPitchAxisController(MerlinOrionAxisController):
     pass
 
 
-class MerlinShutter(MerlinHardware, AbstractShutterPlugin):
+class MerlinOrionShutter(MerlinOrionHardware, AbstractShutterPlugin):
     def _init(self):
-        Logger().trace("MerlinShutter._init()")
-        MerlinHardware._init(self)
+        Logger().trace("MerlinOrionShutter._init()")
+        MerlinOrionHardware._init(self)
         AbstractShutterPlugin._init(self)
         self._numAxis = 1 # shutter contact is connected on axis
         self.__LastShootTime = time.time()
@@ -400,7 +400,7 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin):
         return self._config["BRACKETING_INTENT"]
 
     def _defineConfig(self):
-        MerlinHardware._defineConfig(self)
+        MerlinOrionHardware._defineConfig(self)
         AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
@@ -410,22 +410,22 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin):
         self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=DEFAULT_PULSE_WIDTH_LOW)
 
     def activate(self):
-        Logger().trace("MerlinShutter.activate()")
+        Logger().trace("MerlinOrionShutter.activate()")
 
     def shutdown(self):
-        Logger().trace("MerlinShutter.shutdown()")
+        Logger().trace("MerlinOrionShutter.shutdown()")
 
     def establishConnection(self):
-        Logger().trace("MerlinShutter.establishConnection()")
-        MerlinHardware.establishConnection(self)
-        self._initMerlin()
+        Logger().trace("MerlinOrionShutter.establishConnection()")
+        MerlinOrionHardware.establishConnection(self)
+        self._initMerlinOrion()
 
     def shutdownConnection(self):
-        Logger().trace("MerlinShutter.establishConnection()")
-        MerlinHardware.shutdownConnection(self)
+        Logger().trace("MerlinOrionShutter.establishConnection()")
+        MerlinOrionHardware.shutdownConnection(self)
 
     def lockupMirror(self):
-        Logger().trace("MerlinShutter.lockupMirror()")
+        Logger().trace("MerlinOrionShutter.lockupMirror()")
         self._driver.acquireBus()
         try:
             self._sendCmd("O", "1")
@@ -441,7 +441,7 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin):
         delay = self._config['PULSE_WIDTH_LOW'] / 1000. - (time.time() - self.__LastShootTime)
         if delay > 0:
             time.sleep(delay)
-        Logger().trace("MerlinShutter.shoot()")
+        Logger().trace("MerlinOrionShutter.shoot()")
         self._driver.acquireBus()
         try:
 
@@ -461,7 +461,7 @@ class MerlinShutter(MerlinHardware, AbstractShutterPlugin):
             self._driver.releaseBus()
 
 
-class MerlinShutterController(ShutterPluginController, HardwarePluginController):
+class MerlinOrionShutterController(ShutterPluginController, HardwarePluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
@@ -476,6 +476,6 @@ class MerlinShutterController(ShutterPluginController, HardwarePluginController)
 def register():
     """ Register plugins.
     """
-    PluginManager().register(MerlinYawAxis, MerlinYawAxisController)
-    PluginManager().register(MerlinPitchAxis, MerlinPitchAxisController)
-    PluginManager().register(MerlinShutter, MerlinShutterController)
+    PluginManager().register(MerlinOrionYawAxis, MerlinOrionYawAxisController)
+    PluginManager().register(MerlinOrionPitchAxis, MerlinOrionPitchAxisController)
+    PluginManager().register(MerlinOrionShutter, MerlinOrionShutterController)
