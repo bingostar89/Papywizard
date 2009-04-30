@@ -61,6 +61,7 @@ Implements
 __revision__ = "$Id$"
 
 import time
+import sys
 
 from papywizard.common import config
 from papywizard.common.exception import HardwareError
@@ -292,8 +293,12 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
             #self._drive1(pos)
 
     def stop(self):
-        self._sendCmd("L")
-        self.waitStop()
+        self._driver.acquireBus()
+        try:
+            self._sendCmd("L")
+            self.waitStop()
+        finally:
+            self._driver.releaseBus()
 
     def waitEndOfDrive(self):
         while True:
@@ -328,7 +333,11 @@ class MerlinAxis(MerlinHardware, AbstractAxisPlugin):
             time.sleep(0.05)
 
     def _getStatus(self):
-        return self._sendCmd("f")
+        self._driver.acquireBus()
+        try:
+            return self._sendCmd("f")
+        finally:
+            self._driver.releaseBus()
 
     def isMoving(self):
         status = self._getStatus()
