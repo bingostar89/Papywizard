@@ -75,7 +75,7 @@ SOURCES += papywizard/scripts/main3D.py \
 
 # Plugins
 SOURCES += papywizard/plugins/eosUtilityPlugins.py \
-           papywizard/plugins/merlinPlugins.py \
+           papywizard/plugins/merlinOrionPlugins.py \
            papywizard/plugins/pololuServoPlugins.py \
            papywizard/plugins/simulationPlugins.py \
            papywizard/plugins/tetheredPlugins.py \
