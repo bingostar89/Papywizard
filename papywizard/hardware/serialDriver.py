@@ -101,6 +101,6 @@ class SerialDriver(AbstractDriver):
         data = self._serial.read(size)
         #Logger().debug("SerialDriver.read(): data=%s" % repr(data))
         if size and not data:
-            raise IOError("Timeout while reading on serial bus")
+            raise IOError("Timeout while reading on serial bus (size=%d, data=%s)" % (size, repr(data)))
         else:
             return data
