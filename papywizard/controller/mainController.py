@@ -300,6 +300,7 @@ class MainController(AbstractController):
     # Callbacks
     def _onCloseEvent(self, event):
         Logger().trace("MainController._onCloseEvent()")
+        self.__shutdownConnection()
         QtGui.QApplication.quit()
 
     def __onKeyPressed(self, event):
@@ -422,6 +423,7 @@ class MainController(AbstractController):
             response = dialog.exec_()
             self._view.grabKeyboard()
             if response == QtGui.QMessageBox.Yes:
+                self.__shutdownConnection()
                 QtGui.QApplication.quit()
             event.ignore()
 
@@ -1015,40 +1017,41 @@ class MainController(AbstractController):
                           'pitchAxis': False,
                           'shutter': False}
         Spy().suspend()
-        if self.__connectionStatus['yawAxis']:
-            try:
-                plugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
-                PluginManager().get('yawAxis', plugin)[0].shutdownConnection()
-                shutdownStatus['yawAxis'] = True
-            except:
-                Logger().exception("MainController.__shutdownConnection()")
-        if self.__connectionStatus['pitchAxis']:
-            try:
-                plugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
-                PluginManager().get('pitchAxis', plugin)[0].shutdownConnection()
-                shutdownStatus['pitchAxis'] = True
-            except:
-                Logger().exception("MainController.__shutdownConnection()")
-        if self.__connectionStatus['shutter']:
-            try:
-                plugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
-                PluginManager().get('shutter', plugin)[0].shutdownConnection()
-                shutdownStatus['shutter'] = True
-            except:
-                Logger().exception("MainController.__shutdownConnection()")
-
-        # Check shutdown
-        if (not self.__connectionStatus['yawAxis'] or shutdownStatus['yawAxis']) and \
-           (not self.__connectionStatus['pitchAxis'] or shutdownStatus['pitchAxis']) and \
-           (not self.__connectionStatus['shutter'] or shutdownStatus['shutter']):
-            self.__SetDisconnectedWidgetState()
-        else:
-            Logger().exception(self.tr("One or more plugin failed to shutdown"))
-
-        # Move in if?
-        self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
-        Logger().info("Connection shutdown")
-        self.setStatusbarMessage(self.tr("Connection shutdown"), 10)
+        if self.__connectionStatus is not None:
+            if self.__connectionStatus['yawAxis']:
+                try:
+                    plugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
+                    PluginManager().get('yawAxis', plugin)[0].shutdownConnection()
+                    shutdownStatus['yawAxis'] = True
+                except:
+                    Logger().exception("MainController.__shutdownConnection()")
+            if self.__connectionStatus['pitchAxis']:
+                try:
+                    plugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
+                    PluginManager().get('pitchAxis', plugin)[0].shutdownConnection()
+                    shutdownStatus['pitchAxis'] = True
+                except:
+                    Logger().exception("MainController.__shutdownConnection()")
+            if self.__connectionStatus['shutter']:
+                try:
+                    plugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
+                    PluginManager().get('shutter', plugin)[0].shutdownConnection()
+                    shutdownStatus['shutter'] = True
+                except:
+                    Logger().exception("MainController.__shutdownConnection()")
+    
+            # Check shutdown
+            if (not self.__connectionStatus['yawAxis'] or shutdownStatus['yawAxis']) and \
+               (not self.__connectionStatus['pitchAxis'] or shutdownStatus['pitchAxis']) and \
+               (not self.__connectionStatus['shutter'] or shutdownStatus['shutter']):
+                self.__SetDisconnectedWidgetState()
+            else:
+                Logger().exception(self.tr("One or more plugin failed to shutdown"))
+    
+            # Move in if?
+            self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
+            Logger().info("Connection shutdown")
+            self.setStatusbarMessage(self.tr("Connection shutdown"), 10)
 
     def __onPositionUpdate(self, yaw, pitch):
         """ Refresh position according to new pos.
