@@ -88,16 +88,15 @@ DEFAULT_PULSE_WIDTH_LOW = 100 # ms
 DEFAULT_VALUE_OFF = 0
 DEFAULT_VALUE_ON = 127
 
-SPEED_COEF = 0.18 # deg. (angle for 1µs)
-POSITION_COEF = 0.09 # deg. (angle for 1 controller unit)
+SPEED_COEF = 9 # deg. (angle for 50µs, which is 1 servo speed unit)
+POSITION_COEF = 0.045 # deg. (angle for 1 controller unit)
 NEUTRAL_POSITION = 3000 # controller value for neutral position (1.5ms)
 DIRECTION_INDEX = {'forward': 1,
                    'reverse': -1}
 MANUAL_SPEED_INDEX = {'slow': .5,
                       'normal': 2.,
                       'fast': 5.}
-DIRECTION_INDEX = {'forward': 0, 'reverse': 1,
-                   0: 'forward', 1: 'reverse'}
+
 
 class PololuServoHardware(HardwarePlugin):
     _name = "Pololu Servo"
@@ -265,6 +264,7 @@ class PololuServoHardware(HardwarePlugin):
         self._driver.acquireBus()
         try:
             #self._reset()
+            self._setPositionAbsolute(NEUTRAL_POSITION)
             self._setParameters(on=True, direction=direction) # Add range_?
             self._setSpeed(speed)
         finally:
@@ -340,8 +340,9 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         @return: value to send to servo controller
         @rtype: int
         """
-        servoSpeed = int(speed * self._config['RATIO'] / SPEED_COEF)
-        return servoSpeed
+        #servoSpeed = int(speed * self._config['RATIO'] / SPEED_COEF)
+        #return servoSpeed
+        return speed
 
     def _computeServoPosition(self, position):
         """ Compute controller servo value from position.
@@ -414,7 +415,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         pass
 
     def isMoving(self):
-        if self._endDrive >= time.time():
+        if self._endDrive < time.time():
             return False
         else:
             return True
