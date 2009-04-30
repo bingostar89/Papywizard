@@ -7,6 +7,11 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    - 'Pololu Servo' plugin params revisited
+    - removed auto-connect param
+    x fixed bug in 'Merlin' plugin
+    x activate 'EOS Utility' plugin
+    x misc bugs fix
 
 2009-04-24 Version 2.1.3 (dev)
     + 'Pololu Servo' plugin
