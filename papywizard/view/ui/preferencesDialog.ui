@@ -9,9 +9,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>411</width>
+    <width>421</width>
     <height>237</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Preferences</string>
@@ -42,7 +48,7 @@
          <item row="0" column="0">
           <widget class="QLabel" name="label_15">
            <property name="text">
-            <string>Yaw axis</string>
+            <string>Yaw</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -62,7 +68,7 @@
          <item row="1" column="0">
           <widget class="QLabel" name="label_16">
            <property name="text">
-            <string>Pitch Axis</string>
+            <string>Pitch</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -76,6 +82,10 @@
           <widget class="QPushButton" name="pitchAxisConfigurePushButton">
            <property name="text">
             <string>Configure...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icons.qrc">
+             <normaloff>:/icons/configure.png</normaloff>:/icons/configure.png</iconset>
            </property>
           </widget>
          </item>
@@ -100,12 +110,20 @@
            <property name="text">
             <string>Configure...</string>
            </property>
+           <property name="icon">
+            <iconset resource="../icons.qrc">
+             <normaloff>:/icons/configure.png</normaloff>:/icons/configure.png</iconset>
+           </property>
           </widget>
          </item>
          <item row="2" column="2">
           <widget class="QPushButton" name="shutterConfigurePushButton">
            <property name="text">
             <string>Configure...</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../icons.qrc">
+             <normaloff>:/icons/configure.png</normaloff>:/icons/configure.png</iconset>
            </property>
           </widget>
          </item>
@@ -141,6 +159,18 @@
          </item>
          <item row="0" column="1">
           <widget class="QLineEdit" name="bluetoothDeviceAddressLineEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>00:50:C2:58:55:B9</string>
            </property>

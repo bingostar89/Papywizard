@@ -1152,7 +1152,7 @@ Juan Carlos Andres (es)</translation>
     <message>
         <location filename="papywizard/view/ui/preferencesDialog.ui" line="194"/>
         <source>Ethernet host/port</source>
-        <translation>Hôte/IP ethernet</translation>
+        <translation>Ethernet hôte/port</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/preferencesDialog.ui" line="210"/>
