@@ -52,8 +52,13 @@ Implements
 __revision__ = "$Id$"
 
 import time
+import sys
 
-import bluetooth
+if sys.platform == "darwin":
+    import lightblue as bluetooth
+    bluetooth.BluetoothSocket = bluetooth.socket
+else:
+    import bluetooth
 
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
@@ -71,8 +76,6 @@ class BluetoothDriver(AbstractDriver):
         address = ConfigManager().get('Preferences/HARDWARE_BLUETOOTH_DEVICE_ADDRESS')
         Logger().debug("BluetoothDriver._init(): trying to connect to %s..." % address)
         try:
-            #import time
-            #time.sleep(3)
             self.setDeviceAddress(address)
             self._sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
             self._sock.connect((self.__deviceAddress, 1))
