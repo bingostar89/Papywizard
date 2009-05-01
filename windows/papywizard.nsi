@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Papywizard"
-!define PRODUCT_VERSION "2.0.0-1"
+!define PRODUCT_VERSION "2.1.4-1"
 !define PRODUCT_WEB_SITE "http://trac.gbiloba.org/papywizard"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Papywizard.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -65,13 +65,9 @@ Section "Papywizard" SEC01
   File "dist\w9xpopen.exe"
   CreateDirectory "$SMPROGRAMS\Papywizard"
   CreateShortCut  "$SMPROGRAMS\Papywizard\Papywizard.lnk" "$INSTDIR\Papywizard.exe" "$INSTDIR\papywizard.ico"
-  CreateShortCut  "$SMPROGRAMS\Papywizard\Papywizard-3D.lnk" "$INSTDIR\Papywizard-3D.exe" "$INSTDIR\papywizard.ico"
-  CreateShortCut  "$SMPROGRAMS\Papywizard\Papywizard-Simul.lnk" "$INSTDIR\Papywizard-Simul.exe" "$INSTDIR\papywizard.ico"
   CreateShortCut  "$DESKTOP\Papywizard.lnk" "$INSTDIR\Papywizard.exe" "$INSTDIR\papywizard.ico"
 ; File "dist\python25.dll" ; already included in library.zip
   File "dist\Papywizard.exe"
-  File "dist\Papywizard-3D.exe"
-  File "dist\Papywizard-Simul.exe"
   File "dist\msvcr71.dll"
   File "dist\library.zip"
   File "papywizard.ico"
@@ -81,8 +77,8 @@ Section "Papywizard" SEC01
   SetOutPath "$INSTDIR\papywizard\common"
   File "..\papywizard\common\papywizard.conf"
   File "..\papywizard\common\presets.xml"
-  SetOutPath "$INSTDIR\papywizard\view"
-  File "..\papywizard\view\*.ui"
+  SetOutPath "$INSTDIR\papywizard\view\ui"
+  File "..\papywizard\view\ui\*.ui"
 SectionEnd
 
 Section -AdditionalIcons
@@ -123,8 +119,6 @@ Section Uninstall
   Delete "$INSTDIR\library.zip"
   Delete "$INSTDIR\msvcr71.dll"
   Delete "$INSTDIR\Papywizard.exe"
-  Delete "$INSTDIR\Papywizard-3D.exe"
-  Delete "$INSTDIR\Papywizard-Simul.exe"
   Delete "$INSTDIR\w9xpopen.exe"
   Delete "$INSTDIR\*.log"
   Delete "$INSTDIR\papywizard.ico"
@@ -138,8 +132,10 @@ Section Uninstall
 
   ; Sources
   Delete "$INSTDIR\papywizard\common\*.*"
+  Delete "$INSTDIR\papywizard\view\ui\*.*"
   Delete "$INSTDIR\papywizard\view\*.*"
   RMDir  "$INSTDIR\papywizard\common"
+  RMDir  "$INSTDIR\papywizard\view\ui"
   RMDir  "$INSTDIR\papywizard\view"
   RMDir  "$INSTDIR\papywizard"
   RMDir  "$INSTDIR"
