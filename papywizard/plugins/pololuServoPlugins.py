@@ -78,7 +78,7 @@ from PyQt4 import QtCore
 
 DEFAULT_SPEED = 5 # deg/s
 DEFAULT_DIRECTION = 'forward'
-DEFAULT_RATIO = 1
+DEFAULT_ANGLE_1MS = 120. # def. (angle for 1ms, which is 2 servo units)
 DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
@@ -88,8 +88,6 @@ DEFAULT_PULSE_WIDTH_LOW = 100 # ms
 DEFAULT_VALUE_OFF = 0
 DEFAULT_VALUE_ON = 127
 
-SPEED_COEF = 9 # deg. (angle for 50µs, which is 1 servo speed unit)
-POSITION_COEF = 0.045 # deg. (angle for 1 controller unit)
 NEUTRAL_POSITION = 3000 # controller value for neutral position (1.5ms)
 DIRECTION_INDEX = {'forward': 1,
                    'reverse': -1}
@@ -294,7 +292,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         #self._addConfigKey('_channel', 'CHANNEL', default=DEFAULT_CHANNEL)
         self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
         self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION)
-        self._addConfigKey('_ratio', 'RATIO', default=DEFAULT_RATIO)
+        self._addConfigKey('_angle1ms', 'ANGLE_1MS', default=DEFAULT_ANGLE_1MS)
 
     def _checkLimits(self, position):
         """ Check if the position can be reached.
@@ -340,9 +338,8 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         @return: value to send to servo controller
         @rtype: int
         """
-        #servoSpeed = int(speed * self._config['RATIO'] / SPEED_COEF)
-        #return servoSpeed
-        return speed
+        servoSpeed = int(speed * 1000 / self._config['ANGLE_1MS'] / 50)
+        return servoSpeed
 
     def _computeServoPosition(self, position):
         """ Compute controller servo value from position.
@@ -354,7 +351,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         @rtype: int
         """
         dir_ = DIRECTION_INDEX[self._config['DIRECTION']]
-        servoPosition = int(NEUTRAL_POSITION + dir_ * position / (self._config['RATIO'] * POSITION_COEF))
+        servoPosition = int(NEUTRAL_POSITION + dir_ * position / self._config['ANGLE_1MS'] * 2000)
         return servoPosition
 
     def drive(self, position, inc=False, useOffset=True, wait=True):
@@ -429,7 +426,7 @@ class PololuServoAxisController(AxisPluginController, HardwarePluginController):
         self._addTab('Servo')
         #self._addWidget('Servo', "Channel", SpinBoxField, (0, 7), 'CHANNEL')
         self._addWidget('Servo', "Direction", ComboBoxField, (['forward', 'reverse'],), 'DIRECTION')
-        self._addWidget('Servo', "Ratio", DoubleSpinBoxField, (0.01, 10., 2., 0.01), 'RATIO')
+        self._addWidget('Servo', "Angle for 1ms", DoubleSpinBoxField, (1., 999., 1., 0.1, "", " deg"), 'ANGLE_1MS')
 
 class PololuServoYawAxis(PololuServoAxis):
     _capacity = 'yawAxis'
