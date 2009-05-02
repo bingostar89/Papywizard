@@ -76,6 +76,9 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 from PyQt4 import QtCore
 
+DEFAULT_CHANNEL = {'yawAxis': 1,
+                   'pitchAxis': 2,
+                   'shutter': 0}
 DEFAULT_SPEED = 50 # deg/s
 DEFAULT_DIRECTION = 'forward'
 DEFAULT_ANGLE_1MS = 120. # angle for 1ms, which is 2 servo units (deg)
@@ -262,8 +265,8 @@ class PololuServoHardware(HardwarePlugin):
         self._driver.acquireBus()
         try:
             #self._reset()
-            self._setParameters(on=True, direction=direction) # Add range_?
             self._setSpeed(speed)
+            self._setParameters(on=True, direction=direction) # Add range_?
         finally:
             self._driver.releaseBus()
 
@@ -288,11 +291,12 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
         HardwarePlugin._defineConfig(self)
-        #self._addConfigKey('_channel', 'CHANNEL', default=DEFAULT_CHANNEL)
+        self._addConfigKey('_channel', 'CHANNEL', default=DEFAULT_CHANNEL[self.capacity])
         self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
         self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION)
         self._addConfigKey('_angle1ms', 'ANGLE_1MS', default=DEFAULT_ANGLE_1MS)
         self._addConfigKey('_neutralPos', 'NEUTRAL_POSITION', default=DEFAULT_NEUTRAL_POSITION)
+        self._channel = self._config['CHANNEL']
 
     def _checkLimits(self, position):
         """ Check if the position can be reached.
@@ -425,7 +429,7 @@ class PololuServoAxisController(AxisPluginController, HardwarePluginController):
         HardwarePluginController._defineGui(self)
         self._addWidget('Main', "Speed", SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
         self._addTab('Servo')
-        #self._addWidget('Servo', "Channel", SpinBoxField, (0, 7), 'CHANNEL')
+        self._addWidget('Servo', "Channel", SpinBoxField, (0, 7), 'CHANNEL')
         self._addWidget('Servo', "Direction", ComboBoxField, (['forward', 'reverse'],), 'DIRECTION')
         self._addWidget('Servo', "Angle for 1ms", DoubleSpinBoxField, (1., 999., 1., 0.1, "", " deg"), 'ANGLE_1MS')
         self._addWidget('Servo', "Neutral position", SpinBoxField, (500, 5500), 'NEUTRAL_POSITION')
@@ -437,7 +441,6 @@ class PololuServoYawAxis(PololuServoAxis):
     def _init(self):
         Logger().trace("PololuServoYawAxis._init()")
         PololuServoAxis._init(self)
-        self._channel = 1
 
 
 class PololuServoYawAxisController(PololuServoAxisController):
@@ -450,7 +453,6 @@ class PololuServoPitchAxis(PololuServoAxis):
     def _init(self):
         Logger().trace("PololuServoPitchAxis._init()")
         PololuServoAxis._init(self)
-        self._channel = 2
 
 
 class PololuServoPitchAxisController(PololuServoAxisController):
@@ -462,7 +464,6 @@ class PololuServoShutter(PololuServoHardware, AbstractShutterPlugin):
         Logger().trace("PololuServoShutter._init()")
         PololuServoHardware._init(self)
         AbstractShutterPlugin._init(self)
-        self._channel = 0
         self.__LastShootTime = time.time()
 
     def _getTimeValue(self):
@@ -480,6 +481,7 @@ class PololuServoShutter(PololuServoHardware, AbstractShutterPlugin):
     def _defineConfig(self):
         PololuServoHardware._defineConfig(self)
         AbstractShutterPlugin._defineConfig(self)
+        self._addConfigKey('_channel', 'CHANNEL', default=DEFAULT_CHANNEL[self.capacity])
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
@@ -488,6 +490,7 @@ class PololuServoShutter(PololuServoHardware, AbstractShutterPlugin):
         self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=DEFAULT_PULSE_WIDTH_LOW)
         self._addConfigKey('_valueOff', 'VALUE_OFF', default=DEFAULT_VALUE_OFF)
         self._addConfigKey('_valueOn', 'VALUE_ON', default=DEFAULT_VALUE_ON)
+        self._channel = self._config['CHANNEL']
 
     def _triggerShutter(self):
         """ Trigger the shutter contact.
@@ -557,6 +560,7 @@ class PololuServoShutterController(ShutterPluginController, HardwarePluginContro
         self._addWidget('Main', "Pulse width high", SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_HIGH')
         self._addWidget('Main', "Pulse width low", SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_LOW')
         self._addTab('Servo')
+        self._addWidget('Servo', "Channel", SpinBoxField, (0, 7), 'CHANNEL')
         self._addWidget('Servo', "Value off", SpinBoxField, (0, 127), 'VALUE_OFF')
         self._addWidget('Servo', "Value on", SpinBoxField, (0, 127), 'VALUE_ON')
 
