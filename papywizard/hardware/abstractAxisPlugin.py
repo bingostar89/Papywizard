@@ -52,6 +52,7 @@ Implements
 __revision__ = "$Id$"
 
 from papywizard.common.exception import HardwareError
+from papywizard.common.configManager import ConfigManager
 from papywizard.common.abstractPlugin import AbstractPlugin
 
 DEFAULT_LOW_LIMIT = -360.
@@ -70,8 +71,6 @@ class AbstractAxisPlugin(AbstractPlugin):
         pass
 
     def _init(self):
-        #self._config['HIGH_LIMIT'] = 9999.9
-        #self._config['LOW_LIMIT'] = -9999.9
         self._manualSpeed = 'normal'
         self._offset = 0.
 
@@ -111,27 +110,29 @@ class AbstractAxisPlugin(AbstractPlugin):
         """
         self._offset += self.read()
 
-    #def setLimit(self, dir_, limit):
-        #""" Set the minus limit.
+    def setLimit(self, dir_, limit):
+        """ Set the minus limit.
 
-        #@param dir_: direction to limit ('+', '-')
-        #@type dir_: char
+        @param dir_: direction to limit ('+', '-')
+        @type dir_: char
 
-        #@param limit: minus limit to set
-        #@type limit: float
-        #"""
-        #if dir_ == '+':
-            #self._config['HIGH_LIMIT'] = limit
-        #elif dir_ == '-':
-            #self._config['LOW_LIMIT'] = limit
-        #else:
-            #raise ValueError("dir must be in ('+', '-')")
+        @param limit: minus limit to set
+        @type limit: float
+        """
+        if dir_ == '+':
+            self._config['HIGH_LIMIT'] = limit
+        elif dir_ == '-':
+            self._config['LOW_LIMIT'] = limit
+        else:
+            raise ValueError("dir must be in ('+', '-')")
+        ConfigManager().save()
 
-    #def clearLimits(self):
-        #""" Clear all limits.
-        #"""
-        #self._config['HIGH_LIMIT'] = 9999.9
-        #self._config['LOW_LIMIT'] = -9999.9
+    def clearLimits(self):
+        """ Clear all limits.
+        """
+        self._config['HIGH_LIMIT'] = DEFAULT_HIGH_LIMIT
+        self._config['LOW_LIMIT'] = DEFAULT_LOW_LIMIT
+        ConfigManager().save()
 
     def read(self):
         """ Return the current position of axis.
