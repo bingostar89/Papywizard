@@ -263,6 +263,7 @@ class PololuServoHardware(HardwarePlugin):
         try:
             #self._reset()
             self._setParameters(on=True, direction=direction) # Add range_?
+            self._setSpeed(speed)
         finally:
             self._driver.releaseBus()
 
