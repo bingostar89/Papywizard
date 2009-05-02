@@ -76,9 +76,10 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 from PyQt4 import QtCore
 
-DEFAULT_SPEED = 5 # deg/s
+DEFAULT_SPEED = 50 # deg/s
 DEFAULT_DIRECTION = 'forward'
-DEFAULT_ANGLE_1MS = 120. # def. (angle for 1ms, which is 2 servo units)
+DEFAULT_ANGLE_1MS = 120. # angle for 1ms, which is 2 servo units (deg)
+DEFAULT_NEUTRAL_POSITION = 3000 # controller value for neutral position
 DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
@@ -88,7 +89,6 @@ DEFAULT_PULSE_WIDTH_LOW = 100 # ms
 DEFAULT_VALUE_OFF = 0
 DEFAULT_VALUE_ON = 127
 
-NEUTRAL_POSITION = 3000 # controller value for neutral position (1.5ms)
 DIRECTION_INDEX = {'forward': 1,
                    'reverse': -1}
 MANUAL_SPEED_INDEX = {'slow': .5,
@@ -262,9 +262,7 @@ class PololuServoHardware(HardwarePlugin):
         self._driver.acquireBus()
         try:
             #self._reset()
-            self._setPositionAbsolute(NEUTRAL_POSITION)
             self._setParameters(on=True, direction=direction) # Add range_?
-            self._setSpeed(speed)
         finally:
             self._driver.releaseBus()
 
@@ -293,6 +291,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
         self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION)
         self._addConfigKey('_angle1ms', 'ANGLE_1MS', default=DEFAULT_ANGLE_1MS)
+        self._addConfigKey('_neutralPos', 'NEUTRAL_POSITION', default=DEFAULT_NEUTRAL_POSITION)
 
     def _checkLimits(self, position):
         """ Check if the position can be reached.
@@ -315,6 +314,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
     def establishConnection(self):
         Logger().trace("PololuServoAxis.establishConnection()")
         PololuServoHardware.establishConnection(self)
+        self._setPositionAbsolute(self._config['NEUTRAL_POSITION'])
         speed = self._computeServoSpeed(self._config['SPEED'])
         self._initPololuServo(speed, self._config['DIRECTION'])
         self._position = 0.
@@ -351,7 +351,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         @rtype: int
         """
         dir_ = DIRECTION_INDEX[self._config['DIRECTION']]
-        servoPosition = int(NEUTRAL_POSITION + dir_ * position / self._config['ANGLE_1MS'] * 2000)
+        servoPosition = int(self._config['NEUTRAL_POSITION'] + dir_ * position / self._config['ANGLE_1MS'] * 2000)
         return servoPosition
 
     def drive(self, position, inc=False, useOffset=True, wait=True):
@@ -422,11 +422,13 @@ class PololuServoAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Main', "Speed", SpinBoxField, (1, 25, "", " deg/s"), 'SPEED')
+        self._addWidget('Main', "Speed", SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
         self._addTab('Servo')
         #self._addWidget('Servo', "Channel", SpinBoxField, (0, 7), 'CHANNEL')
         self._addWidget('Servo', "Direction", ComboBoxField, (['forward', 'reverse'],), 'DIRECTION')
         self._addWidget('Servo', "Angle for 1ms", DoubleSpinBoxField, (1., 999., 1., 0.1, "", " deg"), 'ANGLE_1MS')
+        self._addWidget('Servo', "Neutral position", SpinBoxField, (500, 5500), 'NEUTRAL_POSITION')
+
 
 class PololuServoYawAxis(PololuServoAxis):
     _capacity = 'yawAxis'
@@ -486,6 +488,13 @@ class PololuServoShutter(PololuServoHardware, AbstractShutterPlugin):
         self._addConfigKey('_valueOff', 'VALUE_OFF', default=DEFAULT_VALUE_OFF)
         self._addConfigKey('_valueOn', 'VALUE_ON', default=DEFAULT_VALUE_ON)
 
+    def _triggerShutter(self):
+        """ Trigger the shutter contact.
+        """
+        self._setPosition7bits(self._config['VALUE_ON'])
+        time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
+        self._setPosition7bits(self._config['VALUE_OFF'])
+
     def activate(self):
         Logger().trace("PololuServoShutter.activate()")
         self._initialPosition = self._config['VALUE_OFF']
@@ -508,9 +517,7 @@ class PololuServoShutter(PololuServoHardware, AbstractShutterPlugin):
         Logger().trace("PololuServoShutter.lockupMirror()")
         self._driver.acquireBus()
         try:
-            self._setPosition7bits(127)
-            time.sleep(self.config['PULSE_WIDTH_HIGH'] / 1000.)
-            self._setPosition7bits(0)
+            self._triggerShutter()
             return 0
         finally:
             self._driver.releaseBus()
@@ -525,11 +532,7 @@ class PololuServoShutter(PololuServoHardware, AbstractShutterPlugin):
         self._driver.acquireBus()
 
         try:
-
-            # Trigger
-            self._setPosition7bits(127)
-            time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
-            self._setPosition7bits(0)
+            self._triggerShutter()
 
             # Wait for the end of shutter cycle
             delay = self._config['TIME_VALUE'] - self._config['PULSE_WIDTH_HIGH'] / 1000.
