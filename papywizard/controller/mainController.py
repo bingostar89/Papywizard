@@ -1013,41 +1013,47 @@ class MainController(AbstractController):
         """ Shutdown plugins connections.
         """
         Logger().info("Shuting down connection...")
-        shutdownStatus = {'yawAxis': False,
-                          'pitchAxis': False,
-                          'shutter': False}
         Spy().suspend()
+        connected = []
         if self.__connectionStatus is not None:
             if self.__connectionStatus['yawAxis']:
                 try:
                     plugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
                     PluginManager().get('yawAxis', plugin)[0].shutdownConnection()
-                    shutdownStatus['yawAxis'] = True
+                    self.__connectionStatus['yawAxis'] = False
                 except:
                     Logger().exception("MainController.__shutdownConnection()")
+                    connected.append('yawAxis')
             if self.__connectionStatus['pitchAxis']:
                 try:
                     plugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
                     PluginManager().get('pitchAxis', plugin)[0].shutdownConnection()
-                    shutdownStatus['pitchAxis'] = True
+                    self.__connectionStatus['pitchAxis'] = False
                 except:
                     Logger().exception("MainController.__shutdownConnection()")
+                    connected.append('pitchAxis')
             if self.__connectionStatus['shutter']:
                 try:
                     plugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
                     PluginManager().get('shutter', plugin)[0].shutdownConnection()
-                    shutdownStatus['shutter'] = True
+                    self.__connectionStatus['shutter'] = False
                 except:
                     Logger().exception("MainController.__shutdownConnection()")
+                    connected.append('shutter')
     
             # Check shutdown
-            if (not self.__connectionStatus['yawAxis'] or shutdownStatus['yawAxis']) and \
-               (not self.__connectionStatus['pitchAxis'] or shutdownStatus['pitchAxis']) and \
-               (not self.__connectionStatus['shutter'] or shutdownStatus['shutter']):
+            if not self.__connectionStatus['yawAxis'] and \
+               not self.__connectionStatus['pitchAxis'] and \
+               not self.__connectionStatus['shutter']:
                 self.__SetDisconnectedWidgetState()
             else:
                 Logger().exception(self.tr("One or more plugin failed to shutdown"))
-    
+                shutdownErrorMessage = unicode(self.tr("One or more plugin failed to shutdown:\n%s")) % '\n'.join(connected)
+                dialog = ErrorMessageDialog(self.tr("Can't shutdown connection"), shutdownErrorMessage)
+                self._view.releaseKeyboard()
+                dialog.exec_()
+                self._view.grabKeyboard()
+
             # Move in if?
             self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
             Logger().info("Connection shutdown")
