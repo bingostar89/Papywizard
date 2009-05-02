@@ -7,6 +7,12 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+
+2009-05-02 Version 2.1.5 (dev)
+    + bluetooth support on MacOS
+    - 'Pololu Servo' plugin params revisited
+
+2009-05-01 Version 2.1.4 (dev)
     - 'Pololu Servo' plugin params revisited
     - removed auto-connect param
     x fixed bug in 'Merlin' plugin
