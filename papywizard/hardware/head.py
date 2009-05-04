@@ -61,7 +61,6 @@ from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.pluginManager import PluginManager
-from papywizard.hardware.axis import Axis, AxisSimulation
 from papywizard.hardware.driverFactory import DriverFactory
 
 
@@ -88,6 +87,21 @@ class Head(QtCore.QObject):
         return PluginManager().get('pitchAxis', pitchAxisPlugin)[0]
 
     pitchAxis = property(__getPitchAxis)
+
+    def isPositionValid(self, yaw, pitch):
+        """ Check if position is in axis limits.
+
+        Public method to allow the model to check all positions
+        *before* starting the shooting process.
+
+        @param yaw: yaw position to check
+        @type yaw: float
+
+        @param pitch: pitch position to check
+        @type pitch: float
+        """
+        return self.yawAxis.isPositionValid(yaw) and \
+               self.pitchAxis.isPositionValid(pitch)
 
     def setReference(self):
         """ Set current axis positions as reference.
