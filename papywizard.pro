@@ -16,8 +16,9 @@ FORMS += papywizard/view/ui/bluetoothChooserDialog.ui \
 
 # Common
 SOURCES += papywizard/common/abstractPlugin.py \
-           papywizard/common/configManager.py \
+           papywizard/common/bluetoothTransport.py \
            papywizard/common/config.py \
+           papywizard/common/configManager.py \
            papywizard/common/exception.py \
            papywizard/common/helpers.py \
            papywizard/common/loggingFormatter.py \
