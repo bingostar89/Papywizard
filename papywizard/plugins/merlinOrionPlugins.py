@@ -67,7 +67,6 @@ from papywizard.common import config
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.common.pluginManager import PluginManager
-from papywizard.common.helpers import decodeAxisValue, encodeAxisValue, deg2cod, cod2deg
 from papywizard.hardware.abstractAxisPlugin import AbstractAxisPlugin
 from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.hardware.hardwarePlugin import HardwarePlugin
@@ -76,6 +75,8 @@ from papywizard.controller.hardwarePluginController import HardwarePluginControl
 from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
+DEFAULT_ALTERNATE_DRIVE = True
+DEFAULT_INERTIA_ANGLE = 1. # °
 DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
@@ -83,6 +84,9 @@ DEFAULT_BRACKETING_INTENT = 'exposure'
 DEFAULT_PULSE_WIDTH_HIGH = 100 # ms
 DEFAULT_PULSE_WIDTH_LOW = 100 # ms
 
+ENCODER_360 = 0x0E6600
+ENCODER_ZERO = 0x800000
+AXIS_ACCURACY = 0.1 # °
 MANUAL_SPEED_INDEX = {'slow': 170,  # "aa0000"  / 5
                       'normal': 34, # "220000"
                       'fast': 17}   # "110000"  * 2
@@ -96,6 +100,71 @@ class MerlinOrionHardware(HardwarePlugin):
         Logger().trace("MerlinOrionHardware._init()")
         HardwarePlugin._init(self)
         self._numAxis = None
+
+    def _decodeAxisValue(self, strValue):
+        """ Decode value from axis.
+    
+        Values (position, speed...) returned by axis are
+        32bits-encoded strings, low byte first.
+    
+        @param strValue: value returned by axis
+        @type strValue: str
+    
+        @return: value
+        @rtype: int
+    
+        @todo: put in merlinHelpers?
+        """
+        value = 0
+        for i in xrange(3):
+            value += eval("0x%s" % strValue[i*2:i*2+2]) * 2 ** (i * 8)
+    
+        return value
+
+    def _encodeAxisValue(self, value):
+        """ Encode value for axis.
+    
+        Values (position, speed...) to send to axis must be
+        32bits-encoded strings, low byte first.
+    
+        @param value: value
+        @type value: int
+    
+        @return: value to send to axis
+        @rtype: str
+    
+        @todo: put in merlinHelpers?
+        """
+        strHexValue = "000000%s" % hex(value)[2:]
+        strValue = strHexValue[-2:] + strHexValue[-4:-2] + strHexValue[-6:-4]
+    
+        return strValue.upper()
+
+    def _encoderToAngle(self, codPos):
+        """ Convert encoder value to degres.
+    
+        @param codPos: encoder position
+        @type codPos: int
+    
+        @return: position, in °
+        @rtype: float
+    
+        @todo: put in merlinHelpers?
+        """
+        return (codPos - ENCODER_ZERO) * 360. / ENCODER_360
+
+    def _angleToEncoder(self, pos):
+        """ Convert degres to encoder value.
+    
+        @param pos: position, in °
+        @type pos: float
+    
+        @return: encoder position
+        @rtype: int
+    
+        @todo: put in merlinHelpers?
+        """
+        return int(pos * ENCODER_360 / 360. + ENCODER_ZERO)
 
     def _sendCmd(self, cmd, param=""):
         """ Send a command to the axis.
@@ -153,11 +222,11 @@ class MerlinOrionHardware(HardwarePlugin):
 
                 # Get full circle count
                 value = self._sendCmd("a")
-                Logger().debug("MerlinOrionHardware._initMerlinOrion(): full circle count=%s" % hex(decodeAxisValue(value)))
+                Logger().debug("MerlinOrionHardware._initMerlinOrion(): full circle count=%s" % hex(self._decodeAxisValue(value)))
 
                 # Get sidereal rate
                 value = self._sendCmd("D")
-                Logger().debug("MerlinOrionHardware._initMerlinOrion(): sidereal rate=%s" % hex(decodeAxisValue(value)))
+                Logger().debug("MerlinOrionHardware._initMerlinOrion(): sidereal rate=%s" % hex(self._decodeAxisValue(value)))
 
                 MerlinOrionHardware._initMerlinOrionFlag[self._numAxis - 1] = True
         finally:
@@ -173,6 +242,8 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
         HardwarePlugin._defineConfig(self)
+        self._addConfigKey('_alternateDrive', 'ALTERNATE_DRIVE', default=DEFAULT_ALTERNATE_DRIVE)
+        self._addConfigKey('_inertiaAngle', 'INERTIA_ANGLE', default=DEFAULT_INERTIA_ANGLE)
 
     def activate(self):
         Logger().trace("MerlinOrionHardware.activate()")
@@ -196,7 +267,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
             value = self._sendCmd("j")
         finally:
             self._driver.releaseBus()
-        pos = cod2deg(decodeAxisValue(value))
+        pos = self._encoderToAngle(self._decodeAxisValue(value))
         pos -= self._offset
 
         return pos
@@ -215,82 +286,84 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
 
         # Choose between default (hardware) method or external closed-loop method
         # Not yet implemented (need to use a thread; see below)
-        if pos - currentPos < 7.:
-            #self._driveWithExternalClosedLoo(pos)
-            self._driveWithInternalClosedLoop(pos)
+        if abs(pos - currentPos) < 7. and self._config['ALTERNATE_DRIVE']:
+            self._driveWithPapywizardClosedLoop(pos)
         else:
-            self._driveWithInternalClosedLoop(pos)
+            self._driveWithMerlinOrionClosedLoop(pos)
 
         # Wait end of movement
         # Does not work for external closed-loop drive. Need to execute drive in a thread.
         if wait:
             self.waitEndOfDrive()
 
-    def _driveWithInternalClosedLoop(self, pos):
+    def _driveWithMerlinOrionClosedLoop(self, pos):
         """ Default (hardware) drive.
 
         @param pos: position to reach, in °
         @type pos: float
         """
-        Logger().trace("MerlinOrionAxis._driveWithInternalClosedLoop()")
-        strValue = encodeAxisValue(deg2cod(pos))
+        Logger().trace("MerlinOrionAxis._driveWithMerlinOrionClosedLoop()")
+        strValue = self._encodeAxisValue(self._angleToEncoder(pos))
         self._driver.acquireBus()
         try:
             self._sendCmd("L")
             self._sendCmd("G", "00")
             self._sendCmd("S", strValue)
-            #self._sendCmd("I", encodeAxisValue(MANUAL_SPEED_INDEX[self._manualSpeed]))
+            #self._sendCmd("I", self._encodeAxisValue(MANUAL_SPEED_INDEX[self._manualSpeed]))
             self._sendCmd("J")
         finally:
             self._driver.releaseBus()
 
-    #def _driveWithExternalClosedLoop(self, pos):
-        #""" External closed-loop drive.
+    def _driveWithPapywizardClosedLoop(self, pos):
+        """ External closed-loop drive.
 
-        #This method implements an external closed-loop regulation.
-        #It is faster for angles < 6-7°, because in this case, the
-        #head does not accelerate to full speed, but rather stays at
-        #very low speed.
+        This method implements an external closed-loop regulation.
+        It is faster for angles < 6-7°, because in this case, the
+        head does not accelerate to full speed, but rather stays at
+        very low speed.
 
-        #Problem: this drive can't be stopped, neither run concurrently
-        #on both axis without big modifications in multi-threading stuff.
+        Problem: this drive can't be stopped, neither run concurrently
+        on both axis without big modifications in multi-threading stuff.
 
-        #@param pos: position to reach, in °
-        #@type pos: float
-        #"""
-        #Logger().trace("MerlinOrionAxis._driveWithExternalClosedLoop()")
-        #self._driver.acquireBus()
-        #try:
-            #self._sendCmd("L")
-            #initialPos = self.read()
+        @param pos: position to reach, in °
+        @type pos: float
+        """
+        Logger().trace("MerlinOrionAxis._driveWithPapywizardClosedLoop()")
+        self._driver.acquireBus()
+        try:
+            self._sendCmd("L")
+            initialPos = self.read()
 
-            ## Compute direction
-            #if pos > initialPos:
-                #self._sendCmd("G", "30")
-            #else:
-                #self._sendCmd("G", "31")
+            # Compute direction
+            if pos > initialPos:
+                self._sendCmd("G", "30")
+            else:
+                self._sendCmd("G", "31")
 
-            ## Load speed
-            #self._sendCmd("I", "500000") # Use manual speed
+            # Load speed
+            self._sendCmd("I", "500000")
+            #self._sendCmd("I", self._encodeAxisValue(MANUAL_SPEED_INDEX[self._manualSpeed]))
 
-            ## Start move
-            #self._sendCmd("J")
-        #finally:
-            #self._driver.releaseBus()
+            # Start move
+            self._sendCmd("J")
+        finally:
+            self._driver.releaseBus()
 
-        ## Closed-loop drive
-        #stopRequest = False
-        #while abs(pos - self.read()) > .5: # optimal delta depends on speed/inertia
+        # Closed-loop drive
+        stopRequest = False
+        while abs(pos - self.read()) > self._config['INERTIA_ANGLE']: # optimal delta depends on speed/inertia
+                                                                      # adjust it while moving?
 
-            ## Test if a stop request has been sent
-            #if not self.isMoving():
-                #break
-            #time.sleep(0.1)
-        #self.stop()
+            # Test if a stop request has been sent
+            if not self.isMoving(): # ???!!!???
+                stopRequest = True
+                break
+            time.sleep(0.1)
+        self.stop()
 
-        ## Final drive (auto) if needed
-        #if abs(pos - self.read()) > config.AXIS_ACCURACY and not stopRequest:
-            #self._drive1(pos)
+        # Final drive (auto) if needed
+        if abs(pos - self.read()) > AXIS_ACCURACY and not stopRequest:
+            self._driveWithMerlinOrionClosedLoop(pos)
 
     def stop(self):
         self._driver.acquireBus()
@@ -318,7 +391,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
             else:
                 raise ValueError("Axis %d dir. must be in ('+', '-')" % self._numAxis)
 
-            self._sendCmd("I", encodeAxisValue(MANUAL_SPEED_INDEX[self._manualSpeed]))
+            self._sendCmd("I", self._encodeAxisValue(MANUAL_SPEED_INDEX[self._manualSpeed]))
             self._sendCmd("J")
         finally:
             self._driver.releaseBus()
@@ -351,6 +424,9 @@ class MerlinOrionAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
+        self._addTab('Misc') # Find a better name
+        self._addWidget('Misc', "Alternate drive", CheckBoxField, (), 'ALTERNATE_DRIVE')
+        self._addWidget('Misc', "Inertia angle", DoubleSpinBoxField, (0.1, 1.9, 1, .1, "", " deg"), 'INERTIA_ANGLE')
 
 
 class MerlinOrionYawAxis(MerlinOrionAxis):
