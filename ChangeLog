@@ -7,6 +7,8 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+
+2009-05-04 Version 2.1.6 (dev)
     + preview invalid positions
     + alternate drive for 'Merlin/Orion' plugin
     + set/clear limits from menu now active
