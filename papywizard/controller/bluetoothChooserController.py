@@ -51,12 +51,14 @@ Implements
 
 __revision__ = "$Id$"
 
+import sys
 import time
 import thread
 
 from PyQt4 import QtCore, QtGui
 
 from papywizard.common.loggingServices import Logger
+from papywizard.common.bluetoothTransport import discoverDevices
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.view.messageDialog import ExceptionMessageDialog
 
@@ -102,10 +104,7 @@ class BluetoothChooserController(AbstractModalDialogController):
             """ Scan bluetooth and refresh the bluetooth devices list.
             """
             try:
-
-                # Move to model
-                import bluetooth
-                self.__bluetoothDevices = bluetooth.discover_devices(lookup_names=True)
+                self.__bluetoothDevices = discoverDevices()
                 self.__refreshStatus = True
             except Exception, msg:
                 Logger().exception("refreshBluetoothList()")
@@ -132,7 +131,7 @@ class BluetoothChooserController(AbstractModalDialogController):
             for address, name in self.__bluetoothDevices:
                 self._view.bluetoothAddressComboBox.addItem("%s -- %s" % (address, name))
             self._view.bluetoothAddressComboBox.setCurrentIndex(0)
-            Logger().info("Bluetooth available devices: %s" % self.__bluetoothDevices)
+            Logger().debug("Bluetooth available devices: %s" % self.__bluetoothDevices)
         else:
             Logger().error("Can't scan bluetooth\n%s" % self.__refreshErrorMessage)
             dialog = ExceptionMessageDialog(self.tr("Can't scan bluetooth"), self.__refreshErrorMessage)

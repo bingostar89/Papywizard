@@ -52,17 +52,11 @@ Implements
 __revision__ = "$Id$"
 
 import time
-import sys
-
-if sys.platform == "darwin":
-    import lightblue as bluetooth
-    bluetooth.BluetoothSocket = bluetooth.socket
-else:
-    import bluetooth
 
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
+from papywizard.common.bluetoothTransport import BluetoothSocket, BluetoothError, RFCOMM
 from papywizard.common.exception import HardwareError
 from papywizard.hardware.abstractDriver import AbstractDriver
 
@@ -77,14 +71,13 @@ class BluetoothDriver(AbstractDriver):
         address = ConfigManager().get('Preferences/HARDWARE_BLUETOOTH_DEVICE_ADDRESS')
         Logger().debug("BluetoothDriver._init(): trying to connect to %s..." % address)
         try:
-            self.setDeviceAddress(address)
-            self._sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-            self._sock.connect((self.__deviceAddress, 1))
+            self._sock = BluetoothSocket(RFCOMM)
+            self._sock.connect((address, 1))
             try:
                 self._sock.settimeout(1.)
             except NotImplementedError:
                 Logger().warning("BluetoothDriver._init(): bluetooth stack does not implment settimeout()")
-        except bluetooth.BluetoothError, error:
+        except BluetoothError, error:
             Logger().exception("BluetoothDriver._init()")
             err, msg = eval(error.message)
             raise HardwareError(msg)
@@ -98,22 +91,6 @@ class BluetoothDriver(AbstractDriver):
 
     def _shutdown(self):
         self._sock.close()
-
-    def setDeviceAddress(self, address):
-        """ Set the address of the device to connect to.
-
-        @param address: address of the device
-        @type address: str
-        """
-        self.__deviceAddress = address
-
-    def discoverDevices(self):
-        """ Discover bluetooth devices.
-
-        @return: devices addresses and names
-        @rtype: list of tuple
-        """
-        return bluetooth.discover_devices(lookup_names=True)
 
     def empty(self):
         pass
