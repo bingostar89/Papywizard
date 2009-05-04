@@ -60,7 +60,7 @@ from papywizard.common import config
 from papywizard.common.helpers import hmsAsStrToS, sToHmsAsStr
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
-from papywizard.common.exception import HardwareError
+from papywizard.common.exception import HardwareError, OutOfLimitsError
 from papywizard.common.pluginManager import PluginManager
 from papywizard.hardware.head import Head
 from papywizard.model.camera import Camera
@@ -549,11 +549,15 @@ class Shooting(QtCore.QObject):
 
                             checkStop()
 
+                    except OutOfLimitsError, msg:
+                        self.head.stopAxis()
+                        Logger().warning("Shooting.start(): %s" % unicode(msg))
+                        state = 'invalid'
+
                     except HardwareError, msg:
                         self.head.stopAxis()
                         Logger().exception("Shooting.start()")
                         #Logger().warning("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f out of limits" % (index_, yaw, pitch))
-                        Logger().warning("Shooting.start(): %s" % unicode(msg))
                         state = 'error'
 
                     else:
