@@ -72,7 +72,7 @@ from papywizard.controller.axisPluginController import AxisPluginController
 from papywizard.controller.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
-DEFAULT_SPEED = 15. # deg/s
+DEFAULT_SPEED = 30. # deg/s
 DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
@@ -221,7 +221,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
 class SimulationAxisController(AxisPluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
-        self._addWidget('Main', "Speed", SpinBoxField, (1, 25, "", " deg/s"), 'SPEED')
+        self._addWidget('Main', "Speed", SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
 
 
 class SimulationYawAxis(SimulationAxis):
