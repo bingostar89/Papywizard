@@ -143,7 +143,10 @@ class ShootController(AbstractModalDialogController):
                 index, (yaw, pitch) = self._model.scan.getCurrentPosition()
                 if isinstance(index, tuple):
                     index, yawIndex, pitchIndex = index
-                self.__shootingScene.addPicture(index, yaw, pitch, 'preview')
+                if self._model.head.isPositionValid(yaw, pitch):
+                    self.__shootingScene.addPicture(index, yaw, pitch, 'preview')
+                else:
+                    self.__shootingScene.addPicture(index, yaw, pitch, 'invalid')
                 self._model.scan.index += 1
             except IndexError:
                 Logger().exception("ShootController._initWidgets()", debug=True)
