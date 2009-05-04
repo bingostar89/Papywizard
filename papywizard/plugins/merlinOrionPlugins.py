@@ -87,6 +87,7 @@ DEFAULT_PULSE_WIDTH_LOW = 100 # ms
 ENCODER_360 = 0x0E6600
 ENCODER_ZERO = 0x800000
 AXIS_ACCURACY = 0.1 # °
+ALTERNATE_DRIVE_SPEED = 80 # "500000"
 MANUAL_SPEED_INDEX = {'slow': 170,  # "aa0000"  / 5
                       'normal': 34, # "220000"
                       'fast': 17}   # "110000"  * 2
@@ -103,65 +104,65 @@ class MerlinOrionHardware(HardwarePlugin):
 
     def _decodeAxisValue(self, strValue):
         """ Decode value from axis.
-    
+
         Values (position, speed...) returned by axis are
         32bits-encoded strings, low byte first.
-    
+
         @param strValue: value returned by axis
         @type strValue: str
-    
+
         @return: value
         @rtype: int
-    
+
         @todo: put in merlinHelpers?
         """
         value = 0
         for i in xrange(3):
             value += eval("0x%s" % strValue[i*2:i*2+2]) * 2 ** (i * 8)
-    
+
         return value
 
     def _encodeAxisValue(self, value):
         """ Encode value for axis.
-    
+
         Values (position, speed...) to send to axis must be
         32bits-encoded strings, low byte first.
-    
+
         @param value: value
         @type value: int
-    
+
         @return: value to send to axis
         @rtype: str
-    
+
         @todo: put in merlinHelpers?
         """
         strHexValue = "000000%s" % hex(value)[2:]
         strValue = strHexValue[-2:] + strHexValue[-4:-2] + strHexValue[-6:-4]
-    
+
         return strValue.upper()
 
     def _encoderToAngle(self, codPos):
         """ Convert encoder value to degres.
-    
+
         @param codPos: encoder position
         @type codPos: int
-    
+
         @return: position, in °
         @rtype: float
-    
+
         @todo: put in merlinHelpers?
         """
         return (codPos - ENCODER_ZERO) * 360. / ENCODER_360
 
     def _angleToEncoder(self, pos):
         """ Convert degres to encoder value.
-    
+
         @param pos: position, in °
         @type pos: float
-    
+
         @return: encoder position
         @rtype: int
-    
+
         @todo: put in merlinHelpers?
         """
         return int(pos * ENCODER_360 / 360. + ENCODER_ZERO)
@@ -284,25 +285,24 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
 
         self._checkLimits(pos)
 
-        # Choose between default (hardware) method or external closed-loop method
-        # Not yet implemented (need to use a thread; see below)
+        # Choose alternate drie if needed
         if abs(pos - currentPos) < 7. and self._config['ALTERNATE_DRIVE']:
-            self._driveWithPapywizardClosedLoop(pos)
+            self._alternateDrive(pos)
         else:
-            self._driveWithMerlinOrionClosedLoop(pos)
+            self._defaultDrive(pos)
 
         # Wait end of movement
         # Does not work for external closed-loop drive. Need to execute drive in a thread.
         if wait:
             self.waitEndOfDrive()
 
-    def _driveWithMerlinOrionClosedLoop(self, pos):
+    def _defaultDrive(self, pos):
         """ Default (hardware) drive.
 
         @param pos: position to reach, in °
         @type pos: float
         """
-        Logger().trace("MerlinOrionAxis._driveWithMerlinOrionClosedLoop()")
+        Logger().trace("MerlinOrionAxis._defaultDrive()")
         strValue = self._encodeAxisValue(self._angleToEncoder(pos))
         self._driver.acquireBus()
         try:
@@ -314,21 +314,20 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
         finally:
             self._driver.releaseBus()
 
-    def _driveWithPapywizardClosedLoop(self, pos):
-        """ External closed-loop drive.
+    def _alternateDrive(self, pos):
+        """ Alternate drive.
 
         This method implements an external closed-loop regulation.
         It is faster for angles < 6-7°, because in this case, the
         head does not accelerate to full speed, but rather stays at
         very low speed.
 
-        Problem: this drive can't be stopped, neither run concurrently
-        on both axis without big modifications in multi-threading stuff.
+        Problem: this drive can't be run concurrently without threads
 
         @param pos: position to reach, in °
         @type pos: float
         """
-        Logger().trace("MerlinOrionAxis._driveWithPapywizardClosedLoop()")
+        Logger().trace("MerlinOrionAxis._alternateDrive()")
         self._driver.acquireBus()
         try:
             self._sendCmd("L")
@@ -341,8 +340,8 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
                 self._sendCmd("G", "31")
 
             # Load speed
-            self._sendCmd("I", "500000")
-            #self._sendCmd("I", self._encodeAxisValue(MANUAL_SPEED_INDEX[self._manualSpeed]))
+            #self._sendCmd("I", "500000")
+            self._sendCmd("I", self._encodeAxisValue(ALTERNATE_DRIVE_SPEED))
 
             # Start move
             self._sendCmd("J")
@@ -355,15 +354,15 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
                                                                       # adjust it while moving?
 
             # Test if a stop request has been sent
-            if not self.isMoving(): # ???!!!???
+            if not self.isMoving():
                 stopRequest = True
                 break
             time.sleep(0.1)
         self.stop()
 
-        # Final drive (auto) if needed
+        # Final (default) drive if needed
         if abs(pos - self.read()) > AXIS_ACCURACY and not stopRequest:
-            self._driveWithMerlinOrionClosedLoop(pos)
+            self._defaultDrive(pos)
 
     def stop(self):
         self._driver.acquireBus()
