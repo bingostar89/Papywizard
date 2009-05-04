@@ -60,6 +60,7 @@ if sys.platform == "darwin":
 else:
     import bluetooth
 
+from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
@@ -91,7 +92,7 @@ class BluetoothDriver(AbstractDriver):
             Logger().exception("BluetoothDriver._init()")
             raise
         else:
-            time.sleep(8)
+            time.sleep(config.BLUETOOTH_DRIVER_CONNECT_DELAY)
             self.empty()
             Logger().debug("BluetoothDriver._init(): successfully connected to %s" % address)
 
