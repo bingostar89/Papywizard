@@ -52,7 +52,7 @@ import os.path
 # Version
 VERSION_MAJOR = 2
 VERSION_MINOR = 1 # Odd means dev. release
-VERSION_UPDATE = 5
+VERSION_UPDATE = 6
 VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 VERSION_XML = "a"
 
@@ -103,6 +103,9 @@ SHOOTING_COLOR_SCHEME = {'default': {'background': (224, 224, 224, 255),
                                      'ok': (0, 255, 0, ALPHA),
                                      'ok-next': (255, 255, 0, ALPHA),
                                      'ok-toshoot': (160, 255, 160, ALPHA),
+                                     'invalid': (160, 0, 255, ALPHA),
+                                     'invalid-next': (255, 255, 0, ALPHA),
+                                     'invalid-toshoot': (255, 160, 255, ALPHA),
                                      'error': (255, 0, 0, ALPHA),
                                      'error-next': (255, 255, 0, ALPHA),
                                      'error-toshoot': (255, 160, 160, ALPHA),
@@ -116,6 +119,9 @@ SHOOTING_COLOR_SCHEME = {'default': {'background': (224, 224, 224, 255),
                                   'ok': (0, 128, 0, ALPHA),
                                   'ok-next': (128, 128, 0, ALPHA),
                                   'ok-toshoot': (96, 160, 96, ALPHA),
+                                  'invalid': (96, 0, 160, ALPHA),
+                                  'invalid-next': (128, 64, 255, ALPHA),
+                                  'invalid-toshoot': (128, 96, 0, ALPHA),
                                   'error': (160, 0, 0, ALPHA),
                                   'error-next': (128, 128, 0, ALPHA),
                                   'error-toshoot': (128, 96, 96, ALPHA),
@@ -151,20 +157,14 @@ LOGGER_MAX_BYTES = 100 * 1024
 LOGGER_BACKUP_COUNT = 3
 
 # Hardware
-AXIS_NUM_YAW = 1
-AXIS_NUM_PITCH = 2
-AXIS_ACCURACY = 0.1 # °
-SHOOT_PULSE = 0.2 # s
 BLUETOOTH_DRIVER_CONNECT_DELAY = 8.
-ENCODER_360 = 0x0E6600
-ENCODER_ZERO = 0x800000
 
 AXIS_SPEED = 15. # °/s
 SERIAL_BAUDRATE = 9600
 SERIAL_TIMEOUT = 0.2 # s
 
 # Spy
-SPY_REFRESH_DELAY = 250 # ms
+SPY_REFRESH_DELAY = 200 # ms
 
 # View3D
 VIEW3D_HEAD_HFOV = 30. # °
