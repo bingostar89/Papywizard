@@ -51,7 +51,7 @@ Implements
 
 __revision__ = "$Id$"
 
-from papywizard.common.exception import HardwareError
+from papywizard.common.exception import HardwareError, OutOfLimitsError
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.abstractPlugin import AbstractPlugin
 
@@ -87,8 +87,8 @@ class AbstractAxisPlugin(AbstractPlugin):
         @type position: float
         """
         if not self._config['LOW_LIMIT'] <= position <= self._config['HIGH_LIMIT']:
-            raise HardwareError("Axis limit reached: %.1f not in [%.1f-%.1f]" % \
-                                 (position, self._config['LOW_LIMIT'], self._config['HIGH_LIMIT']))
+            raise OutOfLimitsError("Axis limit reached: %.1f not in [%.1f-%.1f]" % \
+                                   (position, self._config['LOW_LIMIT'], self._config['HIGH_LIMIT']))
 
     def isPositionValid(self, position):
         """ Check if position is in axis limits.
@@ -100,7 +100,7 @@ class AbstractAxisPlugin(AbstractPlugin):
         @type position: float
         """
         try:
-            self._checkLimits()
+            self._checkLimits(position)
             return True
         except HardwareError:
             return False
