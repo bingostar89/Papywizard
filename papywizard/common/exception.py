@@ -62,3 +62,7 @@ class HardwareError(PapywizardError):
     """ A hardware error occured.
     """
 
+
+class OutOfLimitsError(HardwareError):
+    """ Out of limits.
+    """
