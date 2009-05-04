@@ -69,9 +69,7 @@ SOURCES += papywizard/model/camera.py \
            papywizard/model/shooting.py
 
 # Scripts
-SOURCES += papywizard/scripts/main3D.py \
-           papywizard/scripts/main.py \
-           papywizard/scripts/mainSimul.py
+SOURCES += papywizard/scripts/main.py
 
 # Plugins
 SOURCES += papywizard/plugins/eosUtilityPlugins.py \
@@ -80,10 +78,6 @@ SOURCES += papywizard/plugins/eosUtilityPlugins.py \
            papywizard/plugins/simulationPlugins.py \
            papywizard/plugins/tetheredPlugins.py \
            papywizard/plugins/timelordPlugins.py
-
-# View 3D
-SOURCES += papywizard/view3D/povexport.py \
-           papywizard/view3D/view3D.py
 
 # Views
 SOURCES += papywizard/view/icons.py \

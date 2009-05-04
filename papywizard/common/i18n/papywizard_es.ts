@@ -62,79 +62,79 @@
 <context encoding="UTF-8">
     <name>Dialog</name>
     <message>
-        <location filename="papywizard/view/ui/bluetoothChooserDialog.ui" line="13"/>
+        <location filename="papywizard/view/ui/bluetoothChooserDialog.ui" line="14"/>
         <source>Bluetooth chooser</source>
         <translation type="unfinished">Elegir Bluetooth</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="13"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="14"/>
         <source>About Papywizard</source>
         <translation type="unfinished">Acerca de Papywizard</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="30"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="31"/>
         <source>General</source>
         <translation type="unfinished">General</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="71"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="72"/>
         <source>Papywizard x.x.x</source>
         <translation type="unfinished">Papywizard x.x.x</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="83"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="84"/>
         <source>Papywizard is a panohead control software, mainly developped for the Merlin/Orion astronomic mount but usable for other panoheads.</source>
         <translation type="unfinished">Papywizard es un software para controlar una pano-cabeza, desarrollado principalmente para la montura astronomica Merlin/Orion, pero utilizable para otras pano-cabezas.</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="107"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="108"/>
         <source>© 2007-2009 Frédéric Mantegazza</source>
         <translation type="unfinished">© 2007-2009 Frédéric Mantegazza</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="129"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="130"/>
         <source>http://trac.gbiloba.org/papywizard</source>
         <translation type="unfinished">http://trac.gbiloba.org/papywizard</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="145"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="146"/>
         <source>Credits</source>
         <translation type="unfinished">Creditos</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="153"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="154"/>
         <source>Written by</source>
         <translation type="unfinished">Escrito por</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="178"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="179"/>
         <source>Frédéric Mantegazza</source>
         <translation type="unfinished">Frédéric Mantegazza</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="188"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="189"/>
         <source>Translated by</source>
         <translation type="unfinished">Traducido por</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="221"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="222"/>
         <source>Graphics by</source>
         <translation type="unfinished">Grafica por</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="240"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="241"/>
         <source>Hubert Pawlowski
 Frédéric Mantegazza</source>
         <translation type="unfinished">Hubert Pawlowski
 Frédéric Mantegazza</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="254"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="255"/>
         <source>License</source>
         <translation type="unfinished">Licencia</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="260"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="261"/>
         <source>This software is governed by the CeCILL license under French law and abiding by the rules of distribution of free software. You can  use, modify and/or redistribute the software under the terms of the CeCILL license as circulated by CEA, CNRS and INRIA at the following URL http://www.cecill.info.
 
 As a counterpart to the access to the source code and  rights to copy, modify and redistribute granted by the license, users are provided only with a limited warranty  and the software&apos;s author,  the holder of the economic rights,  and the successive licensors  have only  limited liability.
@@ -171,7 +171,7 @@ The fact that you are presently reading this means that you have had knowledge o
         <translation type="unfinished"> °</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="207"/>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="208"/>
         <source>Frédéric Mantegazza (fr)
 Jo Lutum (de)
 Maciej Dworak (pl)
@@ -207,229 +207,240 @@ Juan Carlos Andres (es)</source>
 <context>
     <name>MainController</name>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="364"/>
+        <location filename="papywizard/controller/mainController.py" line="365"/>
         <source>Manual speed set to slow</source>
         <translation>Velocidad manual fijada en lenta</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="382"/>
+        <location filename="papywizard/controller/mainController.py" line="383"/>
         <source>Manual speed set to normal</source>
         <translation>Velocidad manual fijada en normal</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="385"/>
+        <location filename="papywizard/controller/mainController.py" line="386"/>
         <source>Fast manual speed</source>
         <translation>Velocidad manual rapida</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="385"/>
+        <location filename="papywizard/controller/mainController.py" line="386"/>
         <source>This can be dangerous for the hardware!</source>
         <translation>¡Esto puede ser peligroso para el hardware!</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="392"/>
+        <location filename="papywizard/controller/mainController.py" line="393"/>
         <source>Manual speed set to fast</source>
         <translation>Velocidad manual fijada en rapida</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="421"/>
+        <location filename="papywizard/controller/mainController.py" line="422"/>
         <source>About to Quit</source>
         <translation>Acerca de como salir</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="421"/>
+        <location filename="papywizard/controller/mainController.py" line="422"/>
         <source>Are you sure you want to quit Papywizard?</source>
         <translation>¿Estas seguro de que quieres salir de Papywizard?</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="480"/>
+        <location filename="papywizard/controller/mainController.py" line="482"/>
         <source>Import Preset File</source>
         <translation>Importar Preset</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="482"/>
+        <location filename="papywizard/controller/mainController.py" line="484"/>
         <source>XML files (*.xml);;All files (*)</source>
         <translation>Archivos XML (*.xml);;Todos los archivos (*)</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="489"/>
+        <location filename="papywizard/controller/mainController.py" line="491"/>
         <source>Load Style Sheet</source>
         <translation>Cargar hoja de estilo</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="491"/>
+        <location filename="papywizard/controller/mainController.py" line="493"/>
         <source>CSS files (*.css);;All files (*)</source>
         <translation>Archivos CSS (*.css);;Todos los archivos (*)</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="506"/>
+        <location filename="papywizard/controller/mainController.py" line="508"/>
         <source>Yaw - limit set</source>
         <translation>Yaw - limite fijado</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="512"/>
+        <location filename="papywizard/controller/mainController.py" line="514"/>
         <source>Yaw + limit set</source>
         <translation>Yaw + limite fijado</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="518"/>
+        <location filename="papywizard/controller/mainController.py" line="520"/>
         <source>Pitch + limit set</source>
         <translation>Pitch + limite fijado</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="524"/>
+        <location filename="papywizard/controller/mainController.py" line="526"/>
         <source>Pitch - limit set</source>
         <translation>Pitch - limite fijado</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="529"/>
+        <location filename="papywizard/controller/mainController.py" line="531"/>
         <source>Limits cleared</source>
         <translation>Límites borrados</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="562"/>
+        <location filename="papywizard/controller/mainController.py" line="564"/>
         <source>Operation aborted</source>
         <translation>Operacion cancelada</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="552"/>
+        <location filename="papywizard/controller/mainController.py" line="554"/>
         <source>Goto initial position...</source>
         <translation>Ir a la posicion inicial...</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="566"/>
+        <location filename="papywizard/controller/mainController.py" line="568"/>
         <source>Initial position reached</source>
         <translation>Initial position reached</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="619"/>
+        <location filename="papywizard/controller/mainController.py" line="621"/>
         <source>Yaw start set from current position</source>
         <translation>Yaw origen fijado desde actual posicion</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="626"/>
+        <location filename="papywizard/controller/mainController.py" line="628"/>
         <source>Pitch start set from current position</source>
         <translation>Pitch-origen fijado desde la posicion actual</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="633"/>
+        <location filename="papywizard/controller/mainController.py" line="635"/>
         <source>Yaw end set from current position</source>
         <translation>Yaw final fijado desde actual posicion</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="640"/>
+        <location filename="papywizard/controller/mainController.py" line="642"/>
         <source>Pitch end set from current position</source>
         <translation>Pitch-final fijado desde la posicion actual</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="672"/>
+        <location filename="papywizard/controller/mainController.py" line="674"/>
         <source>Reference set at current position</source>
         <translation>Referencia fijada a la posicion actual</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="738"/>
+        <location filename="papywizard/controller/mainController.py" line="740"/>
         <source>Yaw/pitch start set from current position</source>
         <translation>Yaw/pitch origen fijado desde actual posicion</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="746"/>
+        <location filename="papywizard/controller/mainController.py" line="748"/>
         <source>Yaw/pitch end set from current position</source>
         <translation>Yaw/pitch final fijado desde actual posicion</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="759"/>
+        <location filename="papywizard/controller/mainController.py" line="761"/>
         <source>Field of view set to user value</source>
         <translation>Campo visual fijado en valor de usuario</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="772"/>
+        <location filename="papywizard/controller/mainController.py" line="774"/>
         <source>Number of pictures set to user value</source>
         <translation>Numero de imagenes fijado en valor del usuario</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="798"/>
+        <location filename="papywizard/controller/mainController.py" line="800"/>
         <source>Opening configuration dialog. Please wait...</source>
         <translation>Abriendo dialogo de configuracion. Por favor, espere...</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="833"/>
+        <location filename="papywizard/controller/mainController.py" line="835"/>
         <source>Opening shoot dialog. Please wait...</source>
         <translation>Abriendo dialogo de disparo. Por favor, espere...</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="877"/>
+        <location filename="papywizard/controller/mainController.py" line="879"/>
         <source>Can&apos;t import preset file</source>
         <translation>No se puede importar el archivo preset</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="895"/>
+        <location filename="papywizard/controller/mainController.py" line="897"/>
         <source>Can&apos;t load style sheet</source>
         <translation>No puede cargar la hoja de estilo</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="555"/>
+        <location filename="papywizard/controller/mainController.py" line="557"/>
         <source>Please wait...</source>
         <translation>Por favor, espere...</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="555"/>
+        <location filename="papywizard/controller/mainController.py" line="557"/>
         <source>Goto initial position</source>
         <translation>Ir a la posicion inicial</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="533"/>
+        <location filename="papywizard/controller/mainController.py" line="535"/>
         <source>Goto reference position...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="535"/>
+        <location filename="papywizard/controller/mainController.py" line="537"/>
         <source>Goto reference position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="546"/>
+        <location filename="papywizard/controller/mainController.py" line="548"/>
         <source>Reference position reached</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="779"/>
+        <location filename="papywizard/controller/mainController.py" line="781"/>
         <source>Opening preferences dialog. Please wait...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="976"/>
+        <location filename="papywizard/controller/mainController.py" line="978"/>
         <source>Establishing connection...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="998"/>
+        <location filename="papywizard/controller/mainController.py" line="1000"/>
         <source>Connection established</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1003"/>
+        <location filename="papywizard/controller/mainController.py" line="1005"/>
         <source>Connection failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1004"/>
+        <location filename="papywizard/controller/mainController.py" line="1006"/>
         <source>Can&apos;t establish connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1046"/>
+        <location filename="papywizard/controller/mainController.py" line="1050"/>
         <source>One or more plugin failed to shutdown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="1051"/>
+        <location filename="papywizard/controller/mainController.py" line="1060"/>
         <source>Connection shutdown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/mainController.py" line="973"/>
+        <location filename="papywizard/controller/mainController.py" line="975"/>
         <source>One or more plugin failed to connect:
 %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="1051"/>
+        <source>One or more plugin failed to shutdown:
+%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/mainController.py" line="1052"/>
+        <source>Can&apos;t shutdown connection</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -644,62 +655,62 @@ Juan Carlos Andres (es)</source>
 <context>
     <name>ShootController</name>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="404"/>
+        <location filename="papywizard/controller/shootController.py" line="407"/>
         <source>Step</source>
         <translation>Paso</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="499"/>
+        <location filename="papywizard/controller/shootController.py" line="502"/>
         <source>Resume</source>
         <translation>Resume</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="512"/>
+        <location filename="papywizard/controller/shootController.py" line="515"/>
         <source>Pause</source>
         <translation>Parar</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="503"/>
+        <location filename="papywizard/controller/shootController.py" line="506"/>
         <source>Paused</source>
         <translation>Parado</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="524"/>
+        <location filename="papywizard/controller/shootController.py" line="527"/>
         <source>Finished</source>
         <translation>Terminado</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="526"/>
+        <location filename="papywizard/controller/shootController.py" line="529"/>
         <source>Canceled</source>
         <translation>Cancelado</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="528"/>
+        <location filename="papywizard/controller/shootController.py" line="531"/>
         <source>Failed</source>
         <translation>Fallo</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="538"/>
+        <location filename="papywizard/controller/shootController.py" line="541"/>
         <source>Waiting</source>
         <translation>Esperando</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="583"/>
+        <location filename="papywizard/controller/shootController.py" line="586"/>
         <source>Moving</source>
         <translation>Moviendo</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="585"/>
+        <location filename="papywizard/controller/shootController.py" line="588"/>
         <source>Stabilization</source>
         <translation>Estabilizando</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="587"/>
+        <location filename="papywizard/controller/shootController.py" line="590"/>
         <source>Mirror lockup</source>
         <translation>Levantar espejo</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="590"/>
+        <location filename="papywizard/controller/shootController.py" line="593"/>
         <source>Shutter - Picture</source>
         <translation>Disparo - Imagen</translation>
     </message>
@@ -736,302 +747,302 @@ Juan Carlos Andres (es)</source>
 <context>
     <name>configDialog</name>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="16"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="17"/>
         <source>Configuration</source>
         <translation type="unfinished">Configuracion</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="36"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="37"/>
         <source>Shooting</source>
         <translation type="unfinished">Disparando</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="44"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="45"/>
         <source>Head orientation</source>
         <translation type="unfinished">Orientacion cabeza</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="61"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="62"/>
         <source>up</source>
         <translation type="unfinished">arriba</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="66"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="67"/>
         <source>left</source>
         <translation type="unfinished">izquierda</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="71"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="72"/>
         <source>right</source>
         <translation type="unfinished">derecha</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="76"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="77"/>
         <source>down</source>
         <translation type="unfinished">abajo</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="84"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="85"/>
         <source>Camera orientation</source>
         <translation type="unfinished">Camera orientation</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="101"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="102"/>
         <source>portrait</source>
         <translation type="unfinished">retrato</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="106"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="107"/>
         <source>landscape</source>
         <translation type="unfinished">paisaje</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="111"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="112"/>
         <source>custom</source>
         <translation type="unfinished">a medida</translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/configDialog.ui" line="122"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="123"/>
         <source> °</source>
         <translation type="unfinished"> °</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="138"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="139"/>
         <source>Stabilization delay</source>
         <translation type="unfinished">Retardo estabilizacion</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="151"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="152"/>
         <source> s</source>
         <translation type="unfinished"> s</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="173"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="174"/>
         <source>Mosaic</source>
         <translation type="unfinished">Mosaic</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="181"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="182"/>
         <source>Overlap</source>
         <translation type="unfinished">Superposicion</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="194"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="195"/>
         <source> %</source>
         <translation type="unfinished"> %</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="213"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="214"/>
         <source>Start from</source>
         <translation type="unfinished">Empezar desde</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="230"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="231"/>
         <source>start</source>
         <translation type="unfinished">empezar</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="235"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="236"/>
         <source>end</source>
         <translation type="unfinished">final</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="243"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="244"/>
         <source>Initial direction</source>
         <translation type="unfinished">Direccion inicial</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="260"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="261"/>
         <source>yaw</source>
         <translation type="unfinished">yaw</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="265"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="266"/>
         <source>pitch</source>
         <translation type="unfinished">pitch</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="273"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="274"/>
         <source>CR</source>
         <translation type="unfinished">CR</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="376"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="370"/>
         <source>Sensor (coef, ratio)</source>
         <translation type="unfinished">Sensor (coef, ratio)</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="454"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="448"/>
         <source> x</source>
         <translation type="unfinished"> x</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="393"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="387"/>
         <source>3:2</source>
         <translation type="unfinished">3:2</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="398"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="392"/>
         <source>4:3</source>
         <translation type="unfinished">4:3</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="403"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="397"/>
         <source>5:4</source>
         <translation type="unfinished">5:4</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="408"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="402"/>
         <source>16:9</source>
         <translation type="unfinished">16:9</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="416"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="410"/>
         <source> Mpx</source>
         <translation type="unfinished"> Mpx</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="341"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="335"/>
         <source>Sensor resolution</source>
         <translation type="unfinished">Resolucion del sensor</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="315"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="309"/>
         <source>rectilinear</source>
         <translation type="unfinished">rectilinea</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="320"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="314"/>
         <source>fisheye</source>
         <translation type="unfinished">fisheye</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="432"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="426"/>
         <source> mm</source>
         <translation type="unfinished"> mm</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="328"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="322"/>
         <source>Optical multiplier</source>
         <translation type="unfinished">Multip. optica</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="478"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="473"/>
         <source>Data</source>
         <translation type="unfinished">Datos</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="486"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="481"/>
         <source>Data directory</source>
         <translation type="unfinished">Directorio de datos</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="499"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="494"/>
         <source>Data file</source>
         <translation type="unfinished">Archivo de datos</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="512"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="507"/>
         <source>%(date_time)s_%(mode)s</source>
         <translation type="unfinished">%(date_time)s_%(mode)s</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="676"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="671"/>
         <source>Enable</source>
         <translation type="unfinished">Permitir</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="529"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="524"/>
         <source>Title</source>
         <translation type="unfinished">Titulo</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="552"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="547"/>
         <source>GPS</source>
         <translation type="unfinished">GPS</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="575"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="570"/>
         <source>Comment</source>
         <translation type="unfinished">Comentario</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="625"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="620"/>
         <source>Timer</source>
         <translation type="unfinished">Tiempo</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="633"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="628"/>
         <source>Start after</source>
         <translation type="unfinished">Empezar despues</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="653"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="648"/>
         <source>Repeat</source>
         <translation type="unfinished">Repetir</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="683"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="678"/>
         <source>Repeat every</source>
         <translation type="unfinished">Repetir cada</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="722"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="717"/>
         <source>HH:mm:ss</source>
         <translation type="unfinished">HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="735"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="730"/>
         <source>Misc</source>
         <translation type="unfinished">Misc</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="743"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="738"/>
         <source>Logger level</source>
         <translation type="unfinished">Logger level</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="760"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="755"/>
         <source>trace</source>
         <translation type="unfinished">rastro</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="765"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="760"/>
         <source>debug</source>
         <translation type="unfinished">elimine errores</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="770"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="765"/>
         <source>info</source>
         <translation type="unfinished">info</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="775"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="770"/>
         <source>warning</source>
         <translation type="unfinished">peligro</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="780"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="775"/>
         <source>error</source>
         <translation type="unfinished">error</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="785"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="780"/>
         <source>exception</source>
         <translation type="unfinished">excepcion</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="790"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="785"/>
         <source>critical</source>
         <translation type="unfinished">critico</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="283"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="284"/>
         <source>Camera/lens</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="298"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="292"/>
         <source>Lens (type, focal)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1088,73 +1099,73 @@ Juan Carlos Andres (es)</source>
 <context>
     <name>preferencesDialog</name>
     <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="17"/>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="23"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="37"/>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="43"/>
         <source>Plugins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="45"/>
-        <source>Yaw axis</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="65"/>
-        <source>Pitch Axis</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="88"/>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="98"/>
         <source>Shutter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="124"/>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="142"/>
         <source>Drivers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="132"/>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="150"/>
         <source>BT device address</source>
         <translation type="unfinished">Direccion dispositivo BT</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="145"/>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="175"/>
         <source>00:50:C2:58:55:B9</source>
         <translation type="unfinished">00:50:C2:58:55:B9</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="155"/>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="185"/>
         <source>Choose...</source>
         <translation type="unfinished">Elegir...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="165"/>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="195"/>
         <source>Serial port</source>
         <translation type="unfinished">Serial port</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="181"/>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="211"/>
         <source>0</source>
         <translation type="unfinished">0</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="194"/>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="224"/>
         <source>Ethernet host/port</source>
         <translation type="unfinished">Ethernet host/port</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="210"/>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="240"/>
         <source>locahost</source>
         <translation type="unfinished">locahost</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/preferencesDialog.ui" line="108"/>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="122"/>
         <source>Configure...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="51"/>
+        <source>Yaw</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/preferencesDialog.ui" line="71"/>
+        <source>Pitch</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
