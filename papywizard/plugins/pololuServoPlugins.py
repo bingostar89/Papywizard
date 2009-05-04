@@ -79,7 +79,7 @@ from PyQt4 import QtCore
 DEFAULT_CHANNEL = {'yawAxis': 1,
                    'pitchAxis': 2,
                    'shutter': 0}
-DEFAULT_SPEED = 50 # deg/s
+DEFAULT_SPEED = 30 # deg/s
 DEFAULT_DIRECTION = 'forward'
 DEFAULT_ANGLE_1MS = 120. # angle for 1ms, which is 2 servo units (deg)
 DEFAULT_NEUTRAL_POSITION = 3000 # controller value for neutral position
@@ -431,7 +431,7 @@ class PololuServoAxisController(AxisPluginController, HardwarePluginController):
         self._addTab('Servo')
         self._addWidget('Servo', "Channel", SpinBoxField, (0, 7), 'CHANNEL')
         self._addWidget('Servo', "Direction", ComboBoxField, (['forward', 'reverse'],), 'DIRECTION')
-        self._addWidget('Servo', "Angle for 1ms", DoubleSpinBoxField, (1., 999., 1., 0.1, "", " deg"), 'ANGLE_1MS')
+        self._addWidget('Servo', "Angle for 1ms", DoubleSpinBoxField, (1., 999., 1, 0.1, "", " deg"), 'ANGLE_1MS')
         self._addWidget('Servo', "Neutral position", SpinBoxField, (500, 5500), 'NEUTRAL_POSITION')
 
 
