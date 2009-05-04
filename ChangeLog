@@ -7,6 +7,10 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + preview invalid positions
+    + alternate drive for 'Merlin/Orion' plugin
+    + set/clear limits from menu now active
+    + added channel param to 'Pololu Servo' plugin
 
 2009-05-02 Version 2.1.5 (dev)
     + bluetooth support on MacOS
