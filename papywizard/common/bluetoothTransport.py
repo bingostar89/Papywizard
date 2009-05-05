@@ -66,7 +66,7 @@ if sys.platform == "darwin":
 
     def discoverDevices():
         devices = []
-        foundDevices = lightblue.finddevices(getnames=True, length=5)
+        foundDevices = lightblue.finddevices(getnames=True)
         for address, name, class_ in foundDevices:
             devices.append((address, name))
         return devices
@@ -80,7 +80,7 @@ elif sys.platform == "win32":
     RFCOMM = bluetooth.RFCOMM
 
     def discoverDevices():
-        return bluetooth.discover_devices(duration=5, lookup_names=True)
+        return bluetooth.discover_devices(lookup_names=True)
 
 # Linux platform
 elif sys.platform == "linux2":
@@ -91,7 +91,7 @@ elif sys.platform == "linux2":
     RFCOMM = bluetooth.RFCOMM
 
     def discoverDevices():
-        return bluetooth.discover_devices(duration=5, lookup_names=True)
+        return bluetooth.discover_devices(lookup_names=True)
 
 # Others
 else:
