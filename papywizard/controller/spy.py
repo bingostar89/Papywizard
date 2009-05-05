@@ -80,29 +80,8 @@ class SpyObject(QtCore.QThread):
         self.__model = model
         self.__run = False
         self.__suspend = True
-        self.__sock = None
         self.__yaw = None
         self.__pitch = None
-
-        #try:
-            #self.__yaw, self.__pitch = self.__model.head.readPosition()
-            #Logger().debug("Spy.__init__(): yaw=%.1f, pitch=%.1f" % (self.__yaw, self.__pitch))
-        #except HardwareError:
-            #Logger().exception("Spy.run(): can't read position")
-
-    def __publish(self, yaw, pitch):
-        """ Publish the position on the UDP socket.
-
-        @param yaw: position yaw
-        @type yaw: float
-
-        @param pitch: position pitch
-        @type pitch: float
-
-        @todo: use an external object connected to the updated signal
-        """
-        if self.__sock is not None:
-            self.__sock.writeDatagram("%f,%f" % (yaw, pitch), QtNetwork.QHostAddress(config.PUBLISHER_HOST), config.PUBLISHER_PORT)
 
     # Signals
     def update(self, yaw, pitch):
@@ -122,13 +101,6 @@ class SpyObject(QtCore.QThread):
         """
         threading.currentThread().setName("Spy")
         Logger().info("Starting Spy...")
-
-        # Create UDB socket
-        if config.PUBLISHER_ENABLE:
-            self.__sock = QtNetwork.QUdpSocket()
-
-        ## Force a first refresh
-        #self.refresh(force=True)
 
         # Enter main loop
         self.__run = True
@@ -161,9 +133,6 @@ class SpyObject(QtCore.QThread):
 
                     # Emit Qt signal
                     self.update(yaw, pitch)
-
-                    # Also publish the position on the UDP socket
-                    self.__publish(yaw, pitch)
                 except:
                     Logger().exception("Spy.refresh(): can't emit signal")
                 self.__yaw = yaw
@@ -190,14 +159,6 @@ class SpyObject(QtCore.QThread):
         #self.refresh(force=True) # Lead to a dead lock...
 
         self.__suspend = False
-
-    def setRefreshRate(self, refresh):
-        """ Set the refresh rate.
-
-        @param refresh: refresh rate
-        @type refresh: float
-        """
-        self.__refresh = refresh
 
     def isRunning(self):
         """ Test if spy is running.
