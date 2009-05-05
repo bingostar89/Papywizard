@@ -44,7 +44,7 @@ Implements
 
 - BluetoothSocket
 - BluetoothError
-- 
+- discoverDevices
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
