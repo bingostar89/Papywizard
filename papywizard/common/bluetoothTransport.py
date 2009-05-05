@@ -65,7 +65,11 @@ if sys.platform == "darwin":
     RFCOMM = lightblue.RFCOMM
 
     def discoverDevices():
-        return lightblue.finddevices(getnames=True, length=5)[0:1]
+        devices = []
+        foundDevices = lightblue.finddevices(getnames=True, length=5)
+        for address, name, class_ in foundDevices:
+            devices.append((address, class_))
+        return devices
 
 # Windows platform
 elif sys.platform == "win32":
