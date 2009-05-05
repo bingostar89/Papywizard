@@ -51,7 +51,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: bluetoothTransport.py 1811 2009-05-04 08:36:50Z fma $"
+__revision__ = "$Id$"
 
 import sys
 
