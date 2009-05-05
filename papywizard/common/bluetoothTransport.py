@@ -68,7 +68,7 @@ if sys.platform == "darwin":
         devices = []
         foundDevices = lightblue.finddevices(getnames=True, length=5)
         for address, name, class_ in foundDevices:
-            devices.append((address, class_))
+            devices.append((address, name))
         return devices
 
 # Windows platform
