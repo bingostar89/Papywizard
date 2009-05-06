@@ -139,9 +139,9 @@ class PololuServoHardware(HardwarePlugin):
         else:
             raise ValueError("Command must be in [0-5]")
 
-        # Purge buffer (does not work anymore!)
-        #data = self._driver.read(size)
-        #Logger().debug("PololuServoHardware._sendCmd: pololu returned: %s" % repr(data))
+        # Check controller answer
+        data = self._driver.read(size)
+        Logger().debug("PololuServoHardware._sendCmd: pololu returned: %s" % repr(data))
 
     def _reset(self):
         """ Reset the controller.
