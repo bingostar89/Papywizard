@@ -62,6 +62,9 @@ __revision__ = "$Id$"
 
 import time
 import sys
+import threading
+
+from PyQt4 import QtCore
 
 from papywizard.common import config
 from papywizard.common.exception import HardwareError
@@ -87,10 +90,11 @@ DEFAULT_PULSE_WIDTH_LOW = 100 # ms
 ENCODER_360 = 0x0E6600
 ENCODER_ZERO = 0x800000
 AXIS_ACCURACY = 0.1 # °
-ALTERNATE_DRIVE_SPEED = 80 # "500000"
-MANUAL_SPEED_INDEX = {'slow': 170,  # "aa0000"  / 5
-                      'normal': 34, # "220000"
-                      'fast': 17}   # "110000"  * 2
+SPEED_INDEX = {'ridiculous': 500, #????
+               'slow': 170,  # "aa0000"  / 5
+               'alternate': 80, # "500000"
+               'normal': 34, # "220000"
+               'fast': 17}   # "110000"  * 2
 
 
 class MerlinOrionHardware(HardwarePlugin):
@@ -233,12 +237,96 @@ class MerlinOrionHardware(HardwarePlugin):
         finally:
             self._driver.releaseBus()
 
+    def _read(self):
+        """ Read the axis position.
+        
+        @return: axis position, in °
+        @rtype: float
+        """
+        self._driver.acquireBus()
+        try:
+            value = self._sendCmd("j")
+        finally:
+            self._driver.releaseBus()
+        pos = self._encoderToAngle(self._decodeAxisValue(value))
+        return pos
 
-class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
+    def _drive(self, pos):
+        """ Drive the axis.
+        
+        @param pos: position to reach, in °
+        @type pos: float
+        """
+        strValue = self._encodeAxisValue(self._angleToEncoder(pos))
+        self._driver.acquireBus()
+        try:
+            self._sendCmd("L")
+            self._sendCmd("G", "00")
+            self._sendCmd("S", strValue)
+            #self._sendCmd("I", self._encodeAxisValue(SPEED_INDEX[self._manualSpeed]))
+            self._sendCmd("J")
+        finally:
+            self._driver.releaseBus()
+
+    def _stop(self):
+        """ Stop the axis.
+        """
+        self._driver.acquireBus()
+        try:
+            self._sendCmd("L")
+        finally:
+            self._driver.releaseBus()
+
+    def _startJog(self, dir_, speed):
+        """ Start the axis.
+        
+        @param dir_: direction ('+', '-')
+        @type dir_: str
+        
+        @param speed: speed
+        @type speed: int
+        """
+        self._driver.acquireBus()
+        try:
+            self._sendCmd("L")
+            if dir_ == '+':
+                self._sendCmd("G", "30")
+            elif dir_ == '-':
+                self._sendCmd("G", "31")
+            else:
+                raise ValueError("Axis %d dir. must be in ('+', '-')" % self._numAxis)
+            self._sendCmd("I", self._encodeAxisValue(speed))
+            self._sendCmd("J")
+        finally:
+            self._driver.releaseBus()
+
+    def _getStatus(self):
+        """ Get axis status.
+        
+        @return: axis status
+        @rtype: str
+        """
+        self._driver.acquireBus()
+        try:
+            return self._sendCmd("f")
+        finally:
+            self._driver.releaseBus()
+
+
+class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
+    def __init__(self):
+        MerlinOrionHardware.__init__(self)
+        AbstractAxisPlugin.__init__(self)
+        QtCore.QThread.__init__(self)
+
     def _init(self):
         Logger().trace("MerlinOrionAxis._init()")
         MerlinOrionHardware._init(self)
         AbstractAxisPlugin._init(self)
+        self.__run = False
+        self.__driveFlag = False
+        self.__setPoint = None
+        #self.__jog = False
 
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
@@ -249,8 +337,14 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
     def activate(self):
         Logger().trace("MerlinOrionHardware.activate()")
 
+        # Start the thread
+        self.start()
+
     def shutdown(self):
         Logger().trace("MerlinOrionHardware.shutdown()")
+
+        # Stop the thread
+        self._stopThread()
 
     def establishConnection(self):
         Logger().trace("MerlinOrionAxis.establishConnection()")
@@ -262,15 +356,37 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
         self.stop()
         MerlinOrionHardware.shutdownConnection(self)
 
-    def read(self):
-        self._driver.acquireBus()
-        try:
-            value = self._sendCmd("j")
-        finally:
-            self._driver.releaseBus()
-        pos = self._encoderToAngle(self._decodeAxisValue(value))
-        pos -= self._offset
+    def run(self):
+        """ Main entry of the thread.
+        """
+        threadName = "%s_%s" % (self.name, self.capacity)
+        Logger().debug("MerlinOrionAxis.run(): start '%s' thread" % threadName)
+        threading.currentThread().setName(threadName)
+        self.__run = True
+        while self.__run:
+            if self.__driveFlag: # Use condition
 
+                # Choose alternate drive if needed
+                currentPos = self.read()
+                if self._config['ALTERNATE_DRIVE'] and \
+                   1.1 * self._config['INERTIA_ANGLE'] < abs(self.__setPoint - currentPos) < 7.:
+                    self._alternateDrive(self.__setPoint)
+                else:
+                    self._directDrive(self.__setPoint)
+                self.__driveFlag = False
+                self.waitEndOfDrive()
+
+            self.msleep(config.SPY_REFRESH_DELAY)
+
+        Logger().debug("MerlinOrionAxis.run(): '%s' thread terminated" % threadName)
+
+    def _stopThread(self):
+        """ Stop the thread.
+        """
+        self.__run = False
+
+    def read(self):
+        pos = self._read() - self._offset
         return pos
 
     def drive(self, pos, inc=False, useOffset=True, wait=True):
@@ -285,34 +401,23 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
 
         self._checkLimits(pos)
 
-        # Choose alternate drie if needed
-        if abs(pos - currentPos) < 7. and self._config['ALTERNATE_DRIVE']:
-            self._alternateDrive(pos)
-        else:
-            self._defaultDrive(pos)
+        # Only move if needed
+        if abs(pos - currentPos) > AXIS_ACCURACY:
+            self.__setPoint = pos
+            self.__driveFlag = True # Start thread action (use condition)
 
-        # Wait end of movement
-        # Does not work for external closed-loop drive. Need to execute drive in a thread.
-        if wait:
-            self.waitEndOfDrive()
+            # Wait end of movement
+            if wait:
+                self.waitEndOfDrive()
 
-    def _defaultDrive(self, pos):
+    def _directDrive(self, pos):
         """ Default (hardware) drive.
 
         @param pos: position to reach, in °
         @type pos: float
         """
-        Logger().trace("MerlinOrionAxis._defaultDrive()")
-        strValue = self._encodeAxisValue(self._angleToEncoder(pos))
-        self._driver.acquireBus()
-        try:
-            self._sendCmd("L")
-            self._sendCmd("G", "00")
-            self._sendCmd("S", strValue)
-            #self._sendCmd("I", self._encodeAxisValue(MANUAL_SPEED_INDEX[self._manualSpeed]))
-            self._sendCmd("J")
-        finally:
-            self._driver.releaseBus()
+        Logger().trace("MerlinOrionAxis._directDrive()")
+        self._drive(pos)
 
     def _alternateDrive(self, pos):
         """ Alternate drive.
@@ -322,55 +427,43 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
         head does not accelerate to full speed, but rather stays at
         very low speed.
 
-        Problem: this drive can't be run concurrently without threads
-
         @param pos: position to reach, in °
         @type pos: float
         """
         Logger().trace("MerlinOrionAxis._alternateDrive()")
-        self._driver.acquireBus()
-        try:
-            self._sendCmd("L")
-            initialPos = self.read()
 
-            # Compute direction
-            if pos > initialPos:
-                self._sendCmd("G", "30")
-            else:
-                self._sendCmd("G", "31")
-
-            # Load speed
-            #self._sendCmd("I", "500000")
-            self._sendCmd("I", self._encodeAxisValue(ALTERNATE_DRIVE_SPEED))
-
-            # Start move
-            self._sendCmd("J")
-        finally:
-            self._driver.releaseBus()
-
-        # Closed-loop drive
+        # Compute initial direction
+        currentPos = self.read()
+        if pos > currentPos:
+            dir_ = '+'
+        else:
+            dir_ = '-'
         stopRequest = False
-        while abs(pos - self.read()) > self._config['INERTIA_ANGLE']: # optimal delta depends on speed/inertia
-                                                                      # adjust it while moving?
 
-            # Test if a stop request has been sent
-            if not self.isMoving():
-                stopRequest = True
-                break
-            time.sleep(0.1)
-        self.stop()
+        # Alternate speed move
+        if 1.1 * self._config['INERTIA_ANGLE'] < abs(pos - currentPos) < 7. and not stopRequest:
+            Logger().debug("MerlinOrionAxis._alternateDrive(): alternate speed move")
+            self._startJog(dir_, SPEED_INDEX['alternate'])
 
-        # Final (default) drive if needed
+            # Check when stop
+            while abs(pos - self.read()) > self._config['INERTIA_ANGLE']: # adjust inertia while moving?
+
+                # Test if a stop request has been sent
+                if not self.isMoving():
+                    stopRequest = True
+                    break
+                time.sleep(0.1)
+            self._stop()
+
+        # Final move
         if abs(pos - self.read()) > AXIS_ACCURACY and not stopRequest:
-            self._defaultDrive(pos)
+            Logger().debug("MerlinOrionAxis._alternateDrive(): final move")
+            self._drive(pos)
 
     def stop(self):
-        self._driver.acquireBus()
-        try:
-            self._sendCmd("L")
-            self.waitStop()
-        finally:
-            self._driver.releaseBus()
+        self.__driveFlag = False
+        self._stop()
+        self.waitStop()
 
     def waitEndOfDrive(self):
         while True:
@@ -380,20 +473,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
         self.waitStop()
 
     def startJog(self, dir_):
-        self._driver.acquireBus()
-        try:
-            self._sendCmd("L")
-            if dir_ == '+':
-                self._sendCmd("G", "30")
-            elif dir_ == '-':
-                self._sendCmd("G", "31")
-            else:
-                raise ValueError("Axis %d dir. must be in ('+', '-')" % self._numAxis)
-
-            self._sendCmd("I", self._encodeAxisValue(MANUAL_SPEED_INDEX[self._manualSpeed]))
-            self._sendCmd("J")
-        finally:
-            self._driver.releaseBus()
+        self._startJog(dir_, SPEED_INDEX[self._manualSpeed])
 
     def waitStop(self):
         pos = self.read()
@@ -404,16 +484,9 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin):
             pos = self.read()
             time.sleep(0.05)
 
-    def _getStatus(self):
-        self._driver.acquireBus()
-        try:
-            return self._sendCmd("f")
-        finally:
-            self._driver.releaseBus()
-
     def isMoving(self):
         status = self._getStatus()
-        if status[1] != '0':
+        if status[1] != '0' or self.__driveFlag:
             return True
         else:
             return False
@@ -423,10 +496,9 @@ class MerlinOrionAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addTab('Misc') # Find a better name
-        self._addWidget('Misc', "Alternate drive", CheckBoxField, (), 'ALTERNATE_DRIVE')
-        self._addWidget('Misc', "Inertia angle", DoubleSpinBoxField, (0.1, 1.9, 1, .1, "", " deg"), 'INERTIA_ANGLE')
-
+        self._addTab('Hard')
+        self._addWidget('Hard', "Alternate drive", CheckBoxField, (), 'ALTERNATE_DRIVE')
+        self._addWidget('Hard', "Inertia angle", DoubleSpinBoxField, (0.1, 9.9, 1, .1, "", " deg"), 'INERTIA_ANGLE')
 
 class MerlinOrionYawAxis(MerlinOrionAxis):
     _capacity = 'yawAxis'
@@ -544,9 +616,9 @@ class MerlinOrionShutterController(ShutterPluginController, HardwarePluginContro
         self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', "Bracketing nb picts", SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
         self._addWidget('Main', "Bracketing intent", ComboBoxField, (['exposure', 'focus', 'white balance', 'movement'],), 'BRACKETING_INTENT')
-        self._addTab('Misc') # Find a better name
-        self._addWidget('Misc', "Pulse width high", SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_HIGH')
-        self._addWidget('Misc', "Pulse width low", SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_LOW')
+        self._addTab('Hard')
+        self._addWidget('Hard', "Pulse width high", SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_HIGH')
+        self._addWidget('Hard', "Pulse width low", SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_LOW')
 
 
 def register():
