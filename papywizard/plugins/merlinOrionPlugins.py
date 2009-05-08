@@ -87,13 +87,13 @@ DEFAULT_BRACKETING_INTENT = 'exposure'
 DEFAULT_PULSE_WIDTH_HIGH = 100 # ms
 DEFAULT_PULSE_WIDTH_LOW = 100 # ms
 
+ALTERNATE_DRIVE_ANGLE = 7. # °
 ENCODER_360 = 0x0E6600
 ENCODER_ZERO = 0x800000
 AXIS_ACCURACY = 0.1 # °
-SPEED_INDEX = {'ridiculous': 500, #????
-               'slow': 170,  # "aa0000"  / 5
+SPEED_INDEX = {'slow': 170,  # "AA0000"  / 5
                'alternate': 80, # "500000"
-               'normal': 34, # "220000"
+               'normal': 34, # "220000" nominal
                'fast': 17}   # "110000"  * 2
 
 
@@ -239,7 +239,7 @@ class MerlinOrionHardware(HardwarePlugin):
 
     def _read(self):
         """ Read the axis position.
-        
+
         @return: axis position, in °
         @rtype: float
         """
@@ -253,7 +253,7 @@ class MerlinOrionHardware(HardwarePlugin):
 
     def _drive(self, pos):
         """ Drive the axis.
-        
+
         @param pos: position to reach, in °
         @type pos: float
         """
@@ -279,10 +279,10 @@ class MerlinOrionHardware(HardwarePlugin):
 
     def _startJog(self, dir_, speed):
         """ Start the axis.
-        
+
         @param dir_: direction ('+', '-')
         @type dir_: str
-        
+
         @param speed: speed
         @type speed: int
         """
@@ -302,7 +302,7 @@ class MerlinOrionHardware(HardwarePlugin):
 
     def _getStatus(self):
         """ Get axis status.
-        
+
         @return: axis status
         @rtype: str
         """
@@ -326,7 +326,6 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
         self.__run = False
         self.__driveFlag = False
         self.__setPoint = None
-        #self.__jog = False
 
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
@@ -364,12 +363,12 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
         threading.currentThread().setName(threadName)
         self.__run = True
         while self.__run:
-            if self.__driveFlag: # Use condition
+            if self.__driveFlag:
 
                 # Choose alternate drive if needed
                 currentPos = self.read()
                 if self._config['ALTERNATE_DRIVE'] and \
-                   1.1 * self._config['INERTIA_ANGLE'] < abs(self.__setPoint - currentPos) < 7.:
+                   1.1 * self._config['INERTIA_ANGLE'] < abs(self.__setPoint - currentPos) < ALTERNATE_DRIVE_ANGLE:
                     self._alternateDrive(self.__setPoint)
                 else:
                     self._directDrive(self.__setPoint)
@@ -404,7 +403,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
         # Only move if needed
         if abs(pos - currentPos) > AXIS_ACCURACY:
             self.__setPoint = pos
-            self.__driveFlag = True # Start thread action (use condition)
+            self.__driveFlag = True # Start thread action
 
             # Wait end of movement
             if wait:
@@ -441,19 +440,18 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
         stopRequest = False
 
         # Alternate speed move
-        if 1.1 * self._config['INERTIA_ANGLE'] < abs(pos - currentPos) < 7. and not stopRequest:
-            Logger().debug("MerlinOrionAxis._alternateDrive(): alternate speed move")
-            self._startJog(dir_, SPEED_INDEX['alternate'])
+        Logger().debug("MerlinOrionAxis._alternateDrive(): alternate speed move")
+        self._startJog(dir_, SPEED_INDEX['alternate'])
 
-            # Check when stop
-            while abs(pos - self.read()) > self._config['INERTIA_ANGLE']: # adjust inertia while moving?
+        # Check when stop
+        while abs(pos - self.read()) > self._config['INERTIA_ANGLE']: # adjust inertia while moving?
 
-                # Test if a stop request has been sent
-                if not self.isMoving():
-                    stopRequest = True
-                    break
-                time.sleep(0.1)
-            self._stop()
+            # Test if a stop request has been sent
+            if not self.isMoving():
+                stopRequest = True
+                break
+            time.sleep(0.1)
+        self._stop()
 
         # Final move
         if abs(pos - self.read()) > AXIS_ACCURACY and not stopRequest:
