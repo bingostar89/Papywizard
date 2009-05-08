@@ -130,6 +130,7 @@ class MainController(AbstractController):
         self.__lastPreferencesTabSelected = 0
         self.__lastConfigTabSelected = 0
         self.__connectionStatus = None
+        self.__connected = False
 
     def _initWidgets(self):
         def hasHeightForWidth(self):
@@ -318,7 +319,7 @@ class MainController(AbstractController):
             event.ignore()
 
         # 'Right' key
-        if event.key() == self.__key['Right'] and not event.isAutoRepeat():
+        if event.key() == self.__key['Right'] and not event.isAutoRepeat() and self.__connected:
             if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
                 Logger().debug("MainController.__onKeyPressed(): 'Right' key pressed; start 'yaw' axis dir '+'")
                 self.__keyPressedDict['Right'] = True
@@ -327,7 +328,7 @@ class MainController(AbstractController):
             event.ignore()
 
         # 'Left' key
-        elif event.key() == self.__key['Left'] and not event.isAutoRepeat():
+        elif event.key() == self.__key['Left'] and not event.isAutoRepeat() and self.__connected:
             if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
                 Logger().debug("MainController.__onKeyPressed(): 'Left' key pressed; start 'yaw' axis dir '-'")
                 self.__keyPressedDict['Left'] = True
@@ -336,7 +337,7 @@ class MainController(AbstractController):
             event.ignore()
 
         # 'Up' key
-        elif event.key() == self.__key['Up'] and not event.isAutoRepeat():
+        elif event.key() == self.__key['Up'] and not event.isAutoRepeat() and self.__connected:
             if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
                 Logger().debug("MainController.__onKeyPressed(): 'Up' key pressed; start 'pitch' axis dir '+'")
                 self.__keyPressedDict['Up'] = True
@@ -345,7 +346,7 @@ class MainController(AbstractController):
             event.ignore()
 
         # 'Down' key
-        elif event.key() == self.__key['Down'] and not event.isAutoRepeat():
+        elif event.key() == self.__key['Down'] and not event.isAutoRepeat() and self.__connected:
             if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
                 Logger().debug("MainController.__onKeyPressed(): 'Down' key pressed; start 'pitch' axis dir '-'")
                 self.__keyPressedDict['Down'] = True
@@ -382,10 +383,10 @@ class MainController(AbstractController):
                     self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_fwd.png").scaled(22, 22))
                     self.setStatusbarMessage(self.tr("Manual speed set to normal"), 10)
                 elif self.__manualSpeed == 'normal':
-                    self._view.releaseKeyboard()
-                    dialog = WarningMessageDialog(self.tr("Fast manual speed"), self.tr("This can be dangerous for the hardware!"))
-                    dialog.exec_()
-                    self._view.grabKeyboard()
+                    #self._view.releaseKeyboard()
+                    #dialog = WarningMessageDialog(self.tr("Fast manual speed"), self.tr("This can be dangerous for the hardware!"))
+                    #dialog.exec_()
+                    #self._view.grabKeyboard()
                     self.__manualSpeed = 'fast'
                     Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select fast speed")
                     self._model.hardware.setManualSpeed('fast')
@@ -410,7 +411,7 @@ class MainController(AbstractController):
             #event.accept()
 
         # 'Return' key
-        elif event.key() == self.__key['Return'] and not event.isAutoRepeat():
+        elif event.key() == self.__key['Return'] and not event.isAutoRepeat() and self.__connected:
             Logger().debug("MainController.__onKeyPressed(): 'Return' key pressed; open shoot dialog")
             self.__openShootdialog()
             event.ignore()
@@ -434,7 +435,7 @@ class MainController(AbstractController):
         #Logger().debug("MainController.__onKeyReleased(): key='%s" % event.key())
 
         # 'Right' key
-        if event.key() == self.__key['Right'] and not event.isAutoRepeat():
+        if event.key() == self.__key['Right'] and not event.isAutoRepeat() and self.__connected:
             if self.__keyPressedDict['Right']:
                 Logger().debug("MainController.__onKeyReleased(): 'Right' key released; stop 'yaw' axis")
                 self._model.hardware.stopAxis('yaw')
@@ -444,7 +445,7 @@ class MainController(AbstractController):
             event.accept()
 
         # 'Left' key
-        elif event.key() == self.__key['Left'] and not event.isAutoRepeat():
+        elif event.key() == self.__key['Left'] and not event.isAutoRepeat() and self.__connected:
             if self.__keyPressedDict['Left']:
                 Logger().debug("MainController.__onKeyReleased(): 'Left' key released; stop 'yaw' axis")
                 self._model.hardware.stopAxis('yaw')
@@ -454,7 +455,7 @@ class MainController(AbstractController):
             event.accept()
 
         # 'Up' key
-        elif event.key() == self.__key['Up'] and not event.isAutoRepeat():
+        elif event.key() == self.__key['Up'] and not event.isAutoRepeat() and self.__connected:
             if self.__keyPressedDict['Up']:
                 Logger().debug("MainController.__onKeyReleased(): 'Up' key released; stop 'pitch' axis")
                 self._model.hardware.stopAxis('pitch')
@@ -464,7 +465,7 @@ class MainController(AbstractController):
             event.accept()
 
         # 'Down' key
-        elif event.key() == self.__key['Down'] and not event.isAutoRepeat():
+        elif event.key() == self.__key['Down'] and not event.isAutoRepeat() and self.__connected:
             if self.__keyPressedDict['Down']:
                 Logger().debug("MainController.__onKeyReleased(): 'Down' key released; stop 'pitch' axis")
                 self._model.hardware.stopAxis('pitch')
@@ -999,6 +1000,7 @@ class MainController(AbstractController):
             Logger().info("Connection established")
             self.setStatusbarMessage(self.tr("Connection established"), 10)
             self.__SetConnectedWidgetState()
+            self.__connected = True
         else:
             Logger().error("Can't establish connection\n%s" % self.__connectErrorMessage)
             #self._view.connectLabel.setIcon(QtGui.QIcon(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22)))
@@ -1046,6 +1048,7 @@ class MainController(AbstractController):
                not self.__connectionStatus['pitchAxis'] and \
                not self.__connectionStatus['shutter']:
                 self.__SetDisconnectedWidgetState()
+                self.__connected = False
             else:
                 Logger().exception(self.tr("One or more plugin failed to shutdown"))
                 shutdownErrorMessage = unicode(self.tr("One or more plugin failed to shutdown:\n%s")) % '\n'.join(connected)
