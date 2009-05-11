@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Papywizard"
-!define PRODUCT_VERSION "2.1.4-1"
+!define PRODUCT_VERSION "2.1.7-1"
 !define PRODUCT_WEB_SITE "http://trac.gbiloba.org/papywizard"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Papywizard.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -125,7 +125,6 @@ Section Uninstall
   Delete "$SMPROGRAMS\Papywizard\Uninstall.lnk"
   Delete "$SMPROGRAMS\Papywizard\Website.lnk"
   Delete "$SMPROGRAMS\Papywizard\Papywizard.lnk"
-  Delete "$SMPROGRAMS\Papywizard\Papywizard-3D.lnk"
   Delete "$SMPROGRAMS\Papywizard\Papywizard-Simul.lnk"
   RMDir  "$SMPROGRAMS\Papywizard"
   Delete "$DESKTOP\Papywizard.lnk"
