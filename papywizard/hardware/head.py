@@ -75,7 +75,7 @@ class Head(QtCore.QObject):
     def __getYawAxis(self):
         """
         """
-        yawAxisPlugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
+        yawAxisPlugin = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
         return PluginManager().get('yawAxis', yawAxisPlugin)[0] # Use getModel()?
 
     yawAxis = property(__getYawAxis)
@@ -83,7 +83,7 @@ class Head(QtCore.QObject):
     def __getPitchAxis(self):
         """
         """
-        pitchAxisPlugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
+        pitchAxisPlugin = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
         return PluginManager().get('pitchAxis', pitchAxisPlugin)[0]
 
     pitchAxis = property(__getPitchAxis)

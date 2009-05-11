@@ -98,7 +98,7 @@ SPEED_INDEX = {'slow': 170,  # "AA0000"  / 5
 
 
 class MerlinOrionHardware(HardwarePlugin):
-    _name = "Merlin/Orion"
+    _name = "Merlin-Orion"
     _initMerlinOrionFlag = [False, False]
 
     def _init(self):
@@ -344,6 +344,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
 
         # Stop the thread
         self._stopThread()
+        self.wait()
 
     def establishConnection(self):
         Logger().trace("MerlinOrionAxis.establishConnection()")

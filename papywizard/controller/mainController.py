@@ -70,7 +70,7 @@ from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.helpAboutController import HelpAboutController
 from papywizard.controller.totalFovController import TotalFovController
 from papywizard.controller.nbPictsController import NbPictsController
-from papywizard.controller.preferencesController import PreferencesController
+from papywizard.controller.pluginsController import PluginsController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.shootController import ShootController
 from papywizard.controller.spy import Spy
@@ -127,7 +127,7 @@ class MainController(AbstractController):
         self.__connectErrorMessage = None
         self.__mosaicInputParam = 'startEnd'
         self.__manualSpeed = 'normal'
-        self.__lastPreferencesTabSelected = 0
+        self.__lastPluginsTabSelected = 0
         self.__lastConfigTabSelected = 0
         self.__connectionStatus = None
         self.__connected = False
@@ -184,7 +184,7 @@ class MainController(AbstractController):
         self.connect(self._view.actionHardwareClearLimits, QtCore.SIGNAL("activated()"), self.__onActionHardwareClearLimitsActivated)
         self.connect(self._view.actionHardwareGotoReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoReferenceActivated)
         self.connect(self._view.actionHardwareGotoInitial, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoInitialActivated)
-        self.connect(self._view.actionHardwarePreferences, QtCore.SIGNAL("activated()"), self.__onActionHardwarePreferencesActivated)
+        self.connect(self._view.actionHardwarePlugins, QtCore.SIGNAL("activated()"), self.__onActionHardwarePluginsActivated)
 
         self.connect(self._view.actionHelpManual, QtCore.SIGNAL("activated()"), self.__onActionHelpManualActivated)
         self.connect(self._view.actionHelpViewLog, QtCore.SIGNAL("activated()"), self.__onActionHelpViewLogActivated)
@@ -242,7 +242,7 @@ class MainController(AbstractController):
         self.disconnect(self._view.actionHardwareClearLimits, QtCore.SIGNAL("activated()"), self.__onActionHardwareClearLimitsActivated)
         self.disconnect(self._view.actionHardwareGotoReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoReferenceActivated)
         self.disconnect(self._view.actionHardwareGotoInitial, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoInitialActivated)
-        self.disconnect(self._view.actionHardwarePreferences, QtCore.SIGNAL("activated()"), self.__onActionHardwarePreferencesActivated)
+        self.disconnect(self._view.actionHardwarePlugins, QtCore.SIGNAL("activated()"), self.__onActionHardwarePluginsActivated)
 
         self.disconnect(self._view.actionHelpManual, QtCore.SIGNAL("activated()"), self.__onActionHelpManualActivated)
         self.disconnect(self._view.actionHelpViewLog, QtCore.SIGNAL("activated()"), self.__onActionHelpViewLogActivated)
@@ -570,9 +570,9 @@ class MainController(AbstractController):
         dialog.hide()
         self._view.grabKeyboard()
 
-    def __onActionHardwarePreferencesActivated(self):
-        Logger().trace("MainController.__onActionHardwarePreferencesActivated()")
-        self.__openPreferencesDialog()
+    def __onActionHardwarePluginsActivated(self):
+        Logger().trace("MainController.__onActionHardwarePluginsActivated()")
+        self.__openPluginsDialog()
 
     def __onActionHelpManualActivated(self):
         Logger().trace("MainController.__onActionHelpManualActivated()")
@@ -774,22 +774,22 @@ class MainController(AbstractController):
             self.refreshView()
             self.setStatusbarMessage(self.tr("Number of pictures set to user value"), 10)
 
-    def __openPreferencesDialog(self):
-        """ Open the hardware preferences dialog.
+    def __openPluginsDialog(self):
+        """ Open the plugins dialog.
         """
         try:
             QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-            self.setStatusbarMessage(self.tr("Opening preferences dialog. Please wait..."))
+            self.setStatusbarMessage(self.tr("Opening plugins dialog. Please wait..."))
             QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-            controller = PreferencesController(self, self._model)
-            controller.setSelectedTab(self.__lastPreferencesTabSelected)
+            controller = PluginsController(self, self._model)
+            controller.setSelectedTab(self.__lastPluginsTabSelected)
         finally:
             QtGui.qApp.restoreOverrideCursor()
             self.clearStatusBar()
         self._view.releaseKeyboard()
         response = controller.exec_()
         self._view.grabKeyboard()
-        self.__lastPreferencesTabSelected = controller.getSelectedTab()
+        self.__lastPluginsTabSelected = controller.getSelectedTab()
         controller.shutdown()
 
     def __openConfigDialog(self):
@@ -906,7 +906,7 @@ class MainController(AbstractController):
         self._view.actionHardwareClearLimits.setEnabled(True)
         self._view.actionHardwareGotoReference.setEnabled(True)
         self._view.actionHardwareGotoInitial.setEnabled(True)
-        self._view.actionHardwarePreferences.setEnabled(False)
+        self._view.actionHardwarePlugins.setEnabled(False)
 
         self._view.setReferenceToolButton.setEnabled(True)
         self._view.yawMovePlusToolButton.setEnabled(True)
@@ -923,7 +923,7 @@ class MainController(AbstractController):
         self._view.actionHardwareClearLimits.setEnabled(False)
         self._view.actionHardwareGotoReference.setEnabled(False)
         self._view.actionHardwareGotoInitial.setEnabled(False)
-        self._view.actionHardwarePreferences.setEnabled(True)
+        self._view.actionHardwarePlugins.setEnabled(True)
 
         self._view.setReferenceToolButton.setEnabled(False)
         self._view.yawMovePlusToolButton.setEnabled(False)
@@ -946,21 +946,21 @@ class MainController(AbstractController):
                                        'shutter': False}
             unconnected = []
             try:
-                plugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
+                plugin = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
                 PluginManager().get('yawAxis', plugin)[0].establishConnection()
                 self.__connectionStatus['yawAxis'] = True
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
                 unconnected.append('yawAxis')
             try:
-                plugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
+                plugin = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
                 PluginManager().get('pitchAxis', plugin)[0].establishConnection()
                 self.__connectionStatus['pitchAxis'] = True
             except:
                 Logger().exception("MainController.__establishConnection().connect()")
                 unconnected.append('pitchAxis')
             try:
-                plugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
+                plugin = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
                 PluginManager().get('shutter', plugin)[0].establishConnection()
                 self.__connectionStatus['shutter'] = True
             except:
@@ -1020,7 +1020,7 @@ class MainController(AbstractController):
         if self.__connectionStatus is not None:
             if self.__connectionStatus['yawAxis']:
                 try:
-                    plugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
+                    plugin = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
                     PluginManager().get('yawAxis', plugin)[0].shutdownConnection()
                     self.__connectionStatus['yawAxis'] = False
                 except:
@@ -1028,7 +1028,7 @@ class MainController(AbstractController):
                     connected.append('yawAxis')
             if self.__connectionStatus['pitchAxis']:
                 try:
-                    plugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
+                    plugin = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
                     PluginManager().get('pitchAxis', plugin)[0].shutdownConnection()
                     self.__connectionStatus['pitchAxis'] = False
                 except:
@@ -1036,7 +1036,7 @@ class MainController(AbstractController):
                     connected.append('pitchAxis')
             if self.__connectionStatus['shutter']:
                 try:
-                    plugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
+                    plugin = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
                     PluginManager().get('shutter', plugin)[0].shutdownConnection()
                     self.__connectionStatus['shutter'] = False
                 except:

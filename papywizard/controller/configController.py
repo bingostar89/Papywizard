@@ -57,6 +57,7 @@ from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.helpers import hmsAsStrToS, hmsToS, sToHms, sToHmsAsStr
 from papywizard.common.loggingServices import Logger
+from papywizard.common.pluginManager import PluginManager
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.view.messageDialog import WarningMessageDialog
 
@@ -80,6 +81,11 @@ class ConfigController(AbstractModalDialogController):
 
         self.connect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
         self.connect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onLensTypeComboBoxCurrentIndexChanged)
+
+        self.connect(self._view.yawAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onYawAxisConfigurePushButtonClicked)
+        self.connect(self._view.pitchAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onPitchAxisConfigurePushButtonClicked)
+        self.connect(self._view.shutterConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onShutterConfigurePushButtonClicked)
+
         self.connect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
 
     def _disconnectSignals(self):
@@ -87,6 +93,11 @@ class ConfigController(AbstractModalDialogController):
 
         self.disconnect(self._view.cameraOrientationComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onCameraOrientationComboBoxCurrentIndexChanged)
         self.disconnect(self._view.lensTypeComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onLensTypeComboBoxCurrentIndexChanged)
+
+        self.disconnect(self._view.yawAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onYawAxisConfigurePushButtonClicked)
+        self.disconnect(self._view.pitchAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onPitchAxisConfigurePushButtonClicked)
+        self.disconnect(self._view.shutterConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onShutterConfigurePushButtonClicked)
+
         self.disconnect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
 
     # Callbacks
@@ -184,6 +195,30 @@ class ConfigController(AbstractModalDialogController):
                 self._view.opticalMultiplierDoubleSpinBox.setEnabled(False)
             Logger().debug("ConfigController.__onLensTypeComboBoxCurrentIndexChanged(): lens type set to '%s'" % type_)
 
+    def __onYawAxisConfigurePushButtonClicked(self):
+        """
+        """
+        selectedPluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
+        model, controllerClass = PluginManager().get('yawAxis', selectedPluginName)
+        controller = controllerClass(self, model)
+        controller.exec_()
+
+    def __onPitchAxisConfigurePushButtonClicked(self):
+        """
+        """
+        selectedPluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
+        model, controllerClass = PluginManager().get('pitchAxis', selectedPluginName)
+        controller = controllerClass(self, model)
+        controller.exec_()
+
+    def __onShutterConfigurePushButtonClicked(self):
+        """
+        """
+        selectedPluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
+        model, controllerClass = PluginManager().get('shutter', selectedPluginName)
+        controller = controllerClass(self, model)
+        controller.exec_()
+
     def __onDataStorageDirPushButtonClicked(self):
         """ Select data storage dir button clicked.
 
@@ -232,6 +267,14 @@ class ConfigController(AbstractModalDialogController):
         self._view.lensTypeComboBox.setCurrentIndex(config.LENS_TYPE_INDEX[self._model.camera.lens.type_])
         self._view.focalDoubleSpinBox.setValue(self._model.camera.lens.focal)
         self._view.opticalMultiplierDoubleSpinBox.setValue(self._model.camera.lens.opticalMultiplier)
+
+        # Plugins tab
+        pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
+        self._view.yawAxisPluginNameLineEdit.setText(pluginName)
+        pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
+        self._view.pitchAxisPluginNameLineEdit.setText(pluginName)
+        pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
+        self._view.shutterPluginNameLineEdit.setText(pluginName)
 
         # Data tab
         dataStorageDir = ConfigManager().get('Configuration/DATA_STORAGE_DIR')

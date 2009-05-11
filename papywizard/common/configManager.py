@@ -166,7 +166,7 @@ class ConfigManagerObject(QtCore.QObject):
         set back to config.
         """
         self.__config.sync()
-        Logger().info("Configuration saved")
+        Logger().debug("Configuration saved")
 
     def contains(self, key):
         """ Check if the config contains the given section/option.

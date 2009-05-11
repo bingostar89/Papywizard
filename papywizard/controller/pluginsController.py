@@ -62,11 +62,11 @@ from papywizard.controller.bluetoothChooserController import BluetoothChooserCon
 from papywizard.view.messageDialog import WarningMessageDialog
 
 
-class PreferencesController(AbstractModalDialogController):
-    """ Hardware preferences controller object.
+class PluginsController(AbstractModalDialogController):
+    """ Plugins controller object.
     """
     def _init(self):
-        self._uiFile = "preferencesDialog.ui"
+        self._uiFile = "pluginsDialog.ui"
 
     def _retreiveWidgets(self):
         """ Get widgets from widget tree.
@@ -78,16 +78,16 @@ class PreferencesController(AbstractModalDialogController):
 
     def _connectSignals(self):
         AbstractModalDialogController._connectSignals(self)
-        self.connect(self._view.yawAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onYawAxisConfigurePushButtonClicked)
-        self.connect(self._view.pitchAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onPitchAxisConfigurePushButtonClicked)
-        self.connect(self._view.shutterConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onShutterConfigurePushButtonClicked)
+        self.connect(self._view.yawAxisComboBox, QtCore.SIGNAL("activated(const QString&)"), self.__onYawAxisComboBoxActivated)
+        self.connect(self._view.pitchAxisComboBox, QtCore.SIGNAL("activated(const QString&)"), self.__onPitchAxisComboBoxActivated)
+        self.connect(self._view.shutterComboBox, QtCore.SIGNAL("activated(const QString&)"), self.__onShutterComboBoxActivated)
         self.connect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
 
     def _disconnectSignals(self):
         AbstractModalDialogController._disconnectSignals(self)
-        self.disconnect(self._view.yawAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onYawAxisConfigurePushButtonClicked)
-        self.disconnect(self._view.pitchAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onPitchAxisConfigurePushButtonClicked)
-        self.disconnect(self._view.shutterConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onShutterConfigurePushButtonClicked)
+        self.disconnect(self._view.yawAxisComboBox, QtCore.SIGNAL("activated(const QString&)"), self.__onYawAxisComboBoxActivated)
+        self.disconnect(self._view.pitchAxisComboBox, QtCore.SIGNAL("activated(const QString&)"), self.__onPitchAxisComboBoxActivated)
+        self.disconnect(self._view.shutterComboBox, QtCore.SIGNAL("activated(const QString&)"), self.__onShutterComboBoxActivated)
         self.disconnect(self._view.bluetoothChoosePushButton, QtCore.SIGNAL("clicked()"), self.__onBluetoothChoosePushButtonClicked)
 
     # Callbacks
@@ -96,80 +96,103 @@ class PreferencesController(AbstractModalDialogController):
 
         Save back values to model.
         """
-        Logger().trace("ConfigController._onAccepted()")
+        Logger().trace("PluginsController._onAccepted()")
 
         # Plugins tab
-        previousPlugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
-        ConfigManager().set('Preferences/PLUGIN_YAW_AXIS', unicode(self._view.yawAxisComboBox.currentText()))
-        newPlugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
-        if previousPlugin != newPlugin:
-            PluginManager().get('yawAxis', previousPlugin)[0].shutdown()
-            PluginManager().get('yawAxis', newPlugin)[0].activate()
+        previousPluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
+        ConfigManager().set('Plugins/PLUGIN_YAW_AXIS', unicode(self._view.yawAxisComboBox.currentText()))
+        newPluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
+        newPlugin = PluginManager().get('yawAxis', newPluginName)[0]
+        if previousPluginName != newPluginName:
+            previousPlugin = PluginManager().get('yawAxis', previousPluginName)[0]
+            previousPlugin.shutdown()
+            newPlugin._saveConfig()
+        newPlugin._config['DRIVER_TYPE'] = self._view.yawAxisDriverComboBox.currentText()
+        # todo: set config in a callback
+        newPlugin.activate()
 
-        previousPlugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
-        ConfigManager().set('Preferences/PLUGIN_PITCH_AXIS', unicode(self._view.pitchAxisComboBox.currentText()))
-        newPlugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
-        if previousPlugin != newPlugin:
-            PluginManager().get('pitchAxis', previousPlugin)[0].shutdown()
-            PluginManager().get('pitchAxis', newPlugin)[0].activate()
+        previousPluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
+        ConfigManager().set('Plugins/PLUGIN_PITCH_AXIS', unicode(self._view.pitchAxisComboBox.currentText()))
+        newPluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
+        newPlugin = PluginManager().get('pitchAxis', newPluginName)[0]
+        if previousPluginName != newPluginName:
+            previousPlugin = PluginManager().get('pitchAxis', previousPluginName)[0]
+            previousPlugin.shutdown()
+            newPlugin.activate()
+        newPlugin._config['DRIVER_TYPE'] = self._view.pitchAxisDriverComboBox.currentText()
+        # todo: set config in a callback
+        newPlugin._saveConfig()
 
-        previousPlugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
-        ConfigManager().set('Preferences/PLUGIN_SHUTTER', unicode(self._view.shutterComboBox.currentText()))
-        newPlugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
-        if previousPlugin != newPlugin:
-            PluginManager().get('shutter', previousPlugin)[0].shutdown()
-            PluginManager().get('shutter', newPlugin)[0].activate()
+        previousPluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
+        ConfigManager().set('Plugins/PLUGIN_SHUTTER', unicode(self._view.shutterComboBox.currentText()))
+        newPluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
+        newPlugin = PluginManager().get('shutter', newPluginName)[0]
+        if previousPluginName != newPluginName:
+            previousPlugin = PluginManager().get('shutter', previousPluginName)[0]
+            previousPlugin.shutdown()
+            newPlugin.activate()
+        newPlugin._config['DRIVER_TYPE'] = self._view.shutterDriverComboBox.currentText()
+        # todo: set config in a callback
+        newPlugin._saveConfig()
 
         # Drivers tab
-        ConfigManager().set('Preferences/HARDWARE_BLUETOOTH_DEVICE_ADDRESS', unicode(self._view.bluetoothDeviceAddressLineEdit.text()))
-        ConfigManager().set('Preferences/HARDWARE_SERIAL_PORT', unicode(self._view.serialPortLineEdit.text()))
-        ConfigManager().set('Preferences/HARDWARE_ETHERNET_HOST', unicode(self._view.ethernetHostLineEdit.text()))
-        ConfigManager().setInt('Preferences/HARDWARE_ETHERNET_PORT', self._view.ethernetPortSpinBox.value())
-
+        ConfigManager().set('Plugins/HARDWARE_BLUETOOTH_DEVICE_ADDRESS', unicode(self._view.bluetoothDeviceAddressLineEdit.text()))
+        ConfigManager().set('Plugins/HARDWARE_SERIAL_PORT', unicode(self._view.serialPortLineEdit.text()))
+        ConfigManager().set('Plugins/HARDWARE_ETHERNET_HOST', unicode(self._view.ethernetHostLineEdit.text()))
+        ConfigManager().setInt('Plugins/HARDWARE_ETHERNET_PORT', self._view.ethernetPortSpinBox.value())
         ConfigManager().save()
+
+    def __onYawAxisComboBoxActivated(self, pluginName):
+        """ Yaw axis combo box.
+        """
+        Logger().debug("PluginsController.__onYawAxisComboBoxActivated(): plugin=%s" % pluginName)
+        model, controllerClass = PluginManager().get('yawAxis', pluginName)
+        if hasattr(model, '_driver'):
+            self._view.yawAxisDriverComboBox.setEnabled(True)
+            self._view.yawAxisDriverComboBox.setCurrentIndex(self._view.yawAxisDriverComboBox.findText(model._config['DRIVER_TYPE']))
+        else:
+            self._view.yawAxisDriverComboBox.setEnabled(False)
+            #self._view.yawAxisDriverComboBox.setCurrentIndex(-1)
+
+    def __onPitchAxisComboBoxActivated(self, pluginName):
+        """ Yaw axis combo box.
+        """
+        Logger().debug("PluginsController.__onPitchAxisComboBoxActivated(): plugin=%s" % pluginName)
+        model, controllerClass = PluginManager().get('pitchAxis', pluginName)
+        if hasattr(model, '_driver'):
+            self._view.pitchAxisDriverComboBox.setEnabled(True)
+            self._view.pitchAxisDriverComboBox.setCurrentIndex(self._view.pitchAxisDriverComboBox.findText(model._config['DRIVER_TYPE']))
+        else:
+            self._view.pitchAxisDriverComboBox.setEnabled(False)
+            #self._view.pitchAxisDriverComboBox.setCurrentIndex(-1)
+
+    def __onShutterComboBoxActivated(self, pluginName):
+        """ Yaw axis combo box.
+        """
+        Logger().debug("PluginsController.__onShutterComboBoxActivated(): plugin=%s" % pluginName)
+        model, controllerClass = PluginManager().get('shutter', pluginName)
+        if hasattr(model, '_driver'):
+            self._view.shutterDriverComboBox.setEnabled(True)
+            self._view.shutterDriverComboBox.setCurrentIndex(self._view.shutterDriverComboBox.findText(model._config['DRIVER_TYPE']))
+        else:
+            self._view.shutterDriverComboBox.setEnabled(False)
+            #self._view.shutterDriverComboBox.setCurrentIndex(-1)
 
     def __onBluetoothChoosePushButtonClicked(self):
         """ Choose bluetooth button clicked.
 
         Open the bluetooth chooser dialog.
         """
-        Logger().trace("ConfigController.__onBluetoothChoosePushButtonClicked()")
+        Logger().trace("PluginsController.__onBluetoothChoosePushButtonClicked()")
         controller = BluetoothChooserController(self, self._model)
         controller.show()
         controller.refreshBluetoothList()
         response = controller.exec_()
         if response:
             address, name = controller.getSelectedBluetoothAddress()
-            Logger().debug("ConfigController.__onChooseBluetoothButtonClicked(): address=%s, name=%s" % (address, name))
+            Logger().debug("PluginsController.__onChooseBluetoothButtonClicked(): address=%s, name=%s" % (address, name))
             self._view.bluetoothDeviceAddressLineEdit.setText(address)
         controller.shutdown()
-
-    def __onYawAxisConfigurePushButtonClicked(self):
-        """ Yaw axis configure button clicked.
-        """
-        Logger().trace("ConfigController.__onYawAxisConfigurePushButtonClicked()")
-        name = self._view.yawAxisComboBox.currentText()
-        model, controllerClass = PluginManager().get('yawAxis', name)
-        controller = controllerClass(self, model)
-        controller.exec_()
-
-    def __onPitchAxisConfigurePushButtonClicked(self):
-        """ Yaw axis configure button clicked.
-        """
-        Logger().trace("ConfigController.__onPitchAxisConfigurePushButtonClicked()")
-        name = self._view.pitchAxisComboBox.currentText()
-        model, controllerClass = PluginManager().get('pitchAxis', name)
-        controller = controllerClass(self, model)
-        controller.exec_()
-
-    def __onShutterConfigurePushButtonClicked(self):
-        """ Yaw axis configure button clicked.
-        """
-        Logger().trace("ConfigController.__onShutterConfigurePushButtonClicked()")
-        name = self._view.shutterComboBox.currentText()
-        model, controllerClass = PluginManager().get('shutter', name)
-        controller = controllerClass(self, model)
-        controller.exec_()
 
     # Interface
     def selectTab(self, tabIndex, disable=False):
@@ -192,26 +215,52 @@ class PreferencesController(AbstractModalDialogController):
         if yawAxisPlugins:
             for model, controller in yawAxisPlugins:
                 self._view.yawAxisComboBox.addItem(model.name)
-            selectedPlugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
-            self._view.yawAxisComboBox.setCurrentIndex(self._view.yawAxisComboBox.findText(selectedPlugin))
+            selectedPluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
+            self._view.yawAxisComboBox.setCurrentIndex(self._view.yawAxisComboBox.findText(selectedPluginName))
+            selectedPlugin = PluginManager().get('yawAxis', selectedPluginName)[0]
+            if hasattr(selectedPlugin, '_driver'):
+                self._view.pitchAxisDriverComboBox.setEnabled(True)
+                driverType = selectedPlugin._config['DRIVER_TYPE']
+                self._view.yawAxisDriverComboBox.setCurrentIndex(self._view.yawAxisDriverComboBox.findText(driverType))
+            else:
+                self._view.yawAxisDriverComboBox.setEnabled(False)
+                #self._view.yawAxisDriverComboBox.setCurrentIndex(-1)
+
         pitchAxisPlugins = PluginManager().getList('pitchAxis')
         if pitchAxisPlugins:
             for model, controller in pitchAxisPlugins:
                 self._view.pitchAxisComboBox.addItem(model.name)
-            selectedPlugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
-            self._view.pitchAxisComboBox.setCurrentIndex(self._view.pitchAxisComboBox.findText(selectedPlugin))
+            selectedPluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
+            self._view.pitchAxisComboBox.setCurrentIndex(self._view.pitchAxisComboBox.findText(selectedPluginName))
+            selectedPlugin = PluginManager().get('pitchAxis', selectedPluginName)[0]
+            if hasattr(selectedPlugin, '_driver'):
+                self._view.pitchAxisDriverComboBox.setEnabled(True)
+                driverType = selectedPlugin._config['DRIVER_TYPE']
+                self._view.pitchAxisDriverComboBox.setCurrentIndex(self._view.pitchAxisDriverComboBox.findText(driverType))
+            else:
+                self._view.pitchAxisDriverComboBox.setEnabled(False)
+                #self._view.pitchAxisDriverComboBox.setCurrentIndex(-1)
+
         shutterPlugins = PluginManager().getList('shutter')
         if shutterPlugins:
             for model, controller in shutterPlugins:
                 self._view.shutterComboBox.addItem(model.name)
-            selectedPlugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
-            self._view.shutterComboBox.setCurrentIndex(self._view.shutterComboBox.findText(selectedPlugin))
+            selectedPluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
+            self._view.shutterComboBox.setCurrentIndex(self._view.shutterComboBox.findText(selectedPluginName))
+            selectedPlugin = PluginManager().get('shutter', selectedPluginName)[0]
+            if hasattr(selectedPlugin, '_driver'):
+                self._view.shutterDriverComboBox.setEnabled(True)
+                driverType = selectedPlugin._config['DRIVER_TYPE']
+                self._view.shutterDriverComboBox.setCurrentIndex(self._view.shutterDriverComboBox.findText(driverType))
+            else:
+                self._view.shutterDriverComboBox.setEnabled(False)
+                #self._view.shutterDriverComboBox.setCurrentIndex(-1)
 
         # Drivers tab
-        self._view.bluetoothDeviceAddressLineEdit.setText(ConfigManager().get('Preferences/HARDWARE_BLUETOOTH_DEVICE_ADDRESS'))
-        self._view.serialPortLineEdit.setText(ConfigManager().get('Preferences/HARDWARE_SERIAL_PORT'))
-        self._view.ethernetHostLineEdit.setText(ConfigManager().get('Preferences/HARDWARE_ETHERNET_HOST'))
-        self._view.ethernetPortSpinBox.setValue(ConfigManager().getInt('Preferences/HARDWARE_ETHERNET_PORT'))
+        self._view.bluetoothDeviceAddressLineEdit.setText(ConfigManager().get('Plugins/HARDWARE_BLUETOOTH_DEVICE_ADDRESS'))
+        self._view.serialPortLineEdit.setText(ConfigManager().get('Plugins/HARDWARE_SERIAL_PORT'))
+        self._view.ethernetHostLineEdit.setText(ConfigManager().get('Plugins/HARDWARE_ETHERNET_HOST'))
+        self._view.ethernetPortSpinBox.setValue(ConfigManager().getInt('Plugins/HARDWARE_ETHERNET_PORT'))
 
     def getSelectedTab(self):
         """ Return the selected tab.

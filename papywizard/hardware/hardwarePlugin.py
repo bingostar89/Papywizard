@@ -54,6 +54,7 @@ __revision__ = "$Id$"
 from papywizard.common.abstractPlugin import AbstractPlugin
 from papywizard.hardware.driverFactory import DriverFactory
 
+DEFAULT_DRIVER_TYPE = 'bluetooth'
 
 class HardwarePlugin(AbstractPlugin):
     """
@@ -69,7 +70,7 @@ class HardwarePlugin(AbstractPlugin):
     _driver = property(__getDriver)
 
     def _defineConfig(self):
-        self._addConfigKey('_driverType', 'DRIVER_TYPE', default='bluetooth')
+        self._addConfigKey('_driverType', 'DRIVER_TYPE', default=DEFAULT_DRIVER_TYPE)
 
     def establishConnection(self):
         """ Establish the connexion with the driver.

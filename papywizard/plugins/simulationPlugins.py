@@ -116,6 +116,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
 
         # Stop the thread
         self._stopThread()
+        self.wait()
 
     def run(self):
         """ Main entry of the thread.

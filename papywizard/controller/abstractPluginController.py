@@ -67,7 +67,7 @@ class AbstractPluginController(AbstractModalDialogController):
     of the plugin are listed, as name/widget list.
     """
     def _init(self):
-        self._uiFile = "pluginConfigDialog.ui"
+        self._uiFile = "pluginsConfigDialog.ui"
         self._fields = OrderedDict()
 
         # Add a general tab

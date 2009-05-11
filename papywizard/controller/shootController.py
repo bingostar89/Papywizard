@@ -380,7 +380,7 @@ class ShootController(AbstractModalDialogController):
     def __onDataPushButtonClicked(self):
         Logger().trace("ShootController.__onDataPushButtonClicked()")
         controller = ConfigController(self, self._model)
-        controller.selectTab(3, disable=True)
+        controller.selectTab(4, disable=True)
         self._view.releaseKeyboard()
         controller.exec_()
         self._view.grabKeyboard()
@@ -389,7 +389,7 @@ class ShootController(AbstractModalDialogController):
     def __onTimerPushButtonClicked(self):
         Logger().trace("ShootController.__onTimerPushButtonClicked()")
         controller = ConfigController(self, self._model)
-        controller.selectTab(4, disable=True)
+        controller.selectTab(5, disable=True)
         self._view.releaseKeyboard()
         controller.exec_()
         self._view.grabKeyboard()
