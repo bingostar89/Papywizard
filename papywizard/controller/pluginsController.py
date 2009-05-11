@@ -155,7 +155,7 @@ class PluginsController(AbstractModalDialogController):
             #self._view.yawAxisDriverComboBox.setCurrentIndex(-1)
 
     def __onPitchAxisComboBoxActivated(self, pluginName):
-        """ Yaw axis combo box.
+        """ Pitch axis combo box.
         """
         Logger().debug("PluginsController.__onPitchAxisComboBoxActivated(): plugin=%s" % pluginName)
         model, controllerClass = PluginManager().get('pitchAxis', pluginName)
@@ -167,7 +167,7 @@ class PluginsController(AbstractModalDialogController):
             #self._view.pitchAxisDriverComboBox.setCurrentIndex(-1)
 
     def __onShutterComboBoxActivated(self, pluginName):
-        """ Yaw axis combo box.
+        """ Shutter combo box.
         """
         Logger().debug("PluginsController.__onShutterComboBoxActivated(): plugin=%s" % pluginName)
         model, controllerClass = PluginManager().get('shutter', pluginName)
