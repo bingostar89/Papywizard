@@ -68,7 +68,7 @@ class BluetoothDriver(AbstractDriver):
     """
     def _init(self):
         Logger().trace("BluetoothDriver._init()")
-        address = ConfigManager().get('Preferences/HARDWARE_BLUETOOTH_DEVICE_ADDRESS')
+        address = ConfigManager().get('Plugins/HARDWARE_BLUETOOTH_DEVICE_ADDRESS')
         Logger().debug("BluetoothDriver._init(): trying to connect to %s..." % address)
         try:
             self._sock = BluetoothSocket(RFCOMM)

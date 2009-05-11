@@ -63,8 +63,8 @@ class EthernetDriver(AbstractDriver):
     """ Driver for TCP ethernet connection.
     """
     def _init(self):
-        host = ConfigManager().get('Preferences/HARDWARE_ETHERNET_HOST')
-        port = ConfigManager().getInt('Preferences/HARDWARE_ETHERNET_PORT')
+        host = ConfigManager().get('Plugins/HARDWARE_ETHERNET_HOST')
+        port = ConfigManager().getInt('Plugins/HARDWARE_ETHERNET_PORT')
         Logger().debug("EthernetDriver._init(): trying to connect to %s:%d..." % (host, port))
         try:
             #import time

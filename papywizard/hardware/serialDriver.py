@@ -66,9 +66,9 @@ class SerialDriver(AbstractDriver):
     def _init(self):
         try:
             try:
-                port = ConfigManager().getInt('Preferences/HARDWARE_SERIAL_PORT')
+                port = ConfigManager().getInt('Plugins/HARDWARE_SERIAL_PORT')
             except ValueError:
-                port = ConfigManager().get('Preferences/HARDWARE_SERIAL_PORT')
+                port = ConfigManager().get('Plugins/HARDWARE_SERIAL_PORT')
             self._serial = serial.Serial(port=port)
             self._serial.timeout = config.SERIAL_TIMEOUT
             self._serial.baudrate = config.SERIAL_BAUDRATE

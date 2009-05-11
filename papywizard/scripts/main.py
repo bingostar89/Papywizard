@@ -173,11 +173,11 @@ def main():
 
         # Activate selected plugins (move to PluginManager?)
         Logger().info("Activate plugins...")
-        plugin = ConfigManager().get('Preferences/PLUGIN_YAW_AXIS')
+        plugin = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
         PluginManager().get('yawAxis', plugin)[0].activate()
-        plugin = ConfigManager().get('Preferences/PLUGIN_PITCH_AXIS')
+        plugin = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
         PluginManager().get('pitchAxis', plugin)[0].activate()
-        plugin = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
+        plugin = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
         PluginManager().get('shutter', plugin)[0].activate()
 
         # Create model
