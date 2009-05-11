@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Preferences</string>
+   <string>Plugins</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../icons.qrc">
@@ -78,17 +78,6 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
-          <widget class="QPushButton" name="pitchAxisConfigurePushButton">
-           <property name="text">
-            <string>Configure...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../icons.qrc">
-             <normaloff>:/icons/configure.png</normaloff>:/icons/configure.png</iconset>
-           </property>
-          </widget>
-         </item>
          <item row="2" column="0">
           <widget class="QLabel" name="label_17">
            <property name="enabled">
@@ -105,33 +94,68 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="yawAxisConfigurePushButton">
-           <property name="text">
-            <string>Configure...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../icons.qrc">
-             <normaloff>:/icons/configure.png</normaloff>:/icons/configure.png</iconset>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QPushButton" name="shutterConfigurePushButton">
-           <property name="text">
-            <string>Configure...</string>
-           </property>
-           <property name="icon">
-            <iconset resource="../icons.qrc">
-             <normaloff>:/icons/configure.png</normaloff>:/icons/configure.png</iconset>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="1">
           <widget class="QComboBox" name="pitchAxisComboBox"/>
          </item>
          <item row="2" column="1">
           <widget class="QComboBox" name="shutterComboBox"/>
+         </item>
+         <item row="0" column="2">
+          <widget class="QComboBox" name="yawAxisDriverComboBox">
+           <item>
+            <property name="text">
+             <string>bluetooth</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>serial</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>ethernet</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QComboBox" name="pitchAxisDriverComboBox">
+           <item>
+            <property name="text">
+             <string>bluetooth</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>serial</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>ethernet</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QComboBox" name="shutterDriverComboBox">
+           <item>
+            <property name="text">
+             <string>bluetooth</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>serial</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>ethernet</string>
+            </property>
+           </item>
+          </widget>
          </item>
         </layout>
        </item>
