@@ -9,8 +9,8 @@ FORMS += papywizard/view/ui/bluetoothChooserDialog.ui \
          papywizard/view/ui/loggerDialog.ui \
          papywizard/view/ui/mainWindow.ui \
          papywizard/view/ui/nbPictsDialog.ui \
-         papywizard/view/ui/pluginConfigDialog.ui \
-         papywizard/view/ui/preferencesDialog.ui \
+         papywizard/view/ui/pluginsConfigDialog.ui \
+         papywizard/view/ui/pluginsDialog.ui \
          papywizard/view/ui/shootDialog.ui \
          papywizard/view/ui/totalFovDialog.ui
 
@@ -41,7 +41,7 @@ SOURCES += papywizard/controller/abstractController.py \
            papywizard/controller/loggerController.py \
            papywizard/controller/mainController.py \
            papywizard/controller/nbPictsController.py \
-           papywizard/controller/preferencesController.py \
+           papywizard/controller/pluginsController.py \
            papywizard/controller/shootController.py \
            papywizard/controller/shutterPluginController.py \
            papywizard/controller/spy.py \
