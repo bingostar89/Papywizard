@@ -105,7 +105,7 @@ class Preset(object):
             self.__positions.append((float(yaw), float(pitch)))
 
     def __repr__(self):
-        return "<Preset name=%s>" % self.__name.decode("utf-8")
+        return "<Preset name=%s>" % self.__name.decode(sys.getfilesystemencoding())
 
     def getName(self):
         """ Return the preset name.
