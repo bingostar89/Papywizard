@@ -97,7 +97,7 @@ class Shooting(QtCore.QObject):
     def __getShutter(self):
         """
         """
-        shutterName = ConfigManager().get('Preferences/PLUGIN_SHUTTER')
+        shutterName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
         return PluginManager().get('shutter', shutterName)[0] # Use getModel()?
 
     shutter = property(__getShutter)
