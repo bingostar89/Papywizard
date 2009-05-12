@@ -46,6 +46,8 @@ View.
 
 __revision__ = "$Id$"
 
+import sys
+
 from papywizard.common import config
 
 
@@ -81,7 +83,7 @@ class LogBuffer(object):
         text = u""
         for line in self.__buffer:
             if isinstance(line, str):
-                text += u"<br />" + line.decode("utf-8")
+                text += u"<br />" + line.decode(sys.getfilesystemencoding())
             else:
                 text += u"<br />" + line
         return text
