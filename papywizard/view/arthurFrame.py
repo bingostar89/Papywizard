@@ -44,7 +44,7 @@ View.
 @license: CeCILL
 """
 
-__revision__ = "$Id: logBuffer.py 1856 2009-05-12 09:26:42Z fma $"
+__revision__ = "$Id$"
 
 from PyQt4 import QtCore, QtGui
 
