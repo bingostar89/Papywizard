@@ -75,9 +75,14 @@ class ConfigManagerObject(QtCore.QObject):
     def __init__(self):
         """ Init the object.
         """
-        action = 'none'
+        self.__action = 'none'
+        self.__saved = False
 
-        # Load dist config.
+    def load(self):
+        """ Load configuration.
+        """
+
+        #Load dist config.
         distConfigFile = os.path.join(path, config.CONFIG_FILE)
         distConfig = QtCore.QSettings(distConfigFile, QtCore.QSettings.IniFormat)
         if not distConfig.contains('CONFIG_VERSION'):
@@ -87,34 +92,34 @@ class ConfigManagerObject(QtCore.QObject):
         distConfigVersion = config.VERSION.split('.')
         userConfig = QtCore.QSettings(config.USER_CONFIG_FILE, QtCore.QSettings.IniFormat)
         if not userConfig.contains('CONFIG_VERSION'):
-            action = 'install'
+            self.__action = 'install'
         else:
             userConfigVersion = unicode(userConfig.value('CONFIG_VERSION').toString()).split('.')
             Logger().debug("ConfigManager.__init__(): versions: dist=%s, user=%s" % (distConfigVersion, userConfigVersion))
 
             # Old versioning system
             if len(userConfigVersion) < 2:
-                action = 'overwrite'
+                self.__action = 'overwrite'
 
             # Versions differ
             elif distConfigVersion != userConfigVersion:
 
                 # Dev. version over any version
                 if isOdd(int(distConfigVersion[1])):
-                    action = 'overwrite'
+                    self.__action = 'overwrite'
 
                 # Stable version...
                 elif not isOdd(int(distConfigVersion[1])):
 
                     # ...over dev. version
                     if isOdd(int(userConfigVersion[1])):
-                        action = 'overwrite'
+                        self.__action = 'overwrite'
 
                     # ...over stable version
                     else:
-                        action = 'update'
+                        self.__action = 'update'
 
-        if action == 'install':
+        if self.__action == 'install':
             Logger().debug("ConfigManager.__init__(): install user config.")
             shutil.copy(distConfigFile, config.USER_CONFIG_FILE)
 
@@ -124,7 +129,7 @@ class ConfigManagerObject(QtCore.QObject):
             # Write user config.
             userConfig.sync()
 
-        elif action == 'overwrite':
+        elif self.__action == 'overwrite':
             Logger().debug("ConfigManager.__init__(): overwrite user config.")
             shutil.copy(distConfigFile, config.USER_CONFIG_FILE)
 
@@ -134,7 +139,7 @@ class ConfigManagerObject(QtCore.QObject):
             # Write user config.
             userConfig.sync()
 
-        elif action == 'update':
+        elif self.__action == 'update':
             Logger().debug("ConfigManager.__init__(): update user config.")
             keys = sets.Set(userConfig.allKeys())
             keys.update(distConfig.allKeys())
@@ -154,7 +159,7 @@ class ConfigManagerObject(QtCore.QObject):
             # Write user config.
             userConfig.sync()
 
-        elif action == 'none':
+        elif self.__action == 'none':
             Logger().debug("ConfigManager.__init__(): user config. is up-to-date")
 
         self.__config = userConfig
@@ -166,7 +171,16 @@ class ConfigManagerObject(QtCore.QObject):
         set back to config.
         """
         self.__config.sync()
+        self.__saved = True
         Logger().debug("Configuration saved")
+
+    def isConfigured(self):
+        """ Check if configuration has been set by user.
+        """
+        if self.__saved or self.__action in ('none', 'update'):
+            return True
+        else:
+            return False
 
     def contains(self, key):
         """ Check if the config contains the given section/option.
@@ -239,6 +253,7 @@ class ConfigManagerObject(QtCore.QObject):
         @type value: str
         """
         self.__config.setValue(key, QtCore.QVariant(value))
+        self.__saved = False
 
     def setInt(self, key, value):
         """ Set a value as int.
@@ -253,6 +268,7 @@ class ConfigManagerObject(QtCore.QObject):
         @type value: int
         """
         self.__config.setValue(key, QtCore.QVariant(value))
+        self.__saved = False
 
     def setFloat(self, key, value, prec):
         """ Set a value as float.
@@ -268,6 +284,7 @@ class ConfigManagerObject(QtCore.QObject):
         """
         #value = ("%(format)s" % {'format': "%%.%df" % prec}) % value
         self.__config.setValue(key, QtCore.QVariant(value))
+        self.__saved = False
 
     def setBoolean(self, key, value):
         """ Set a value as boolean.
@@ -279,6 +296,7 @@ class ConfigManagerObject(QtCore.QObject):
         @type value: str
         """
         self.__config.setValue(key, QtCore.QVariant(value))
+        self.__saved = False
 
 
 # ConfigManager factory
