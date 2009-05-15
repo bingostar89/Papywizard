@@ -152,7 +152,7 @@ def main():
         Logger().info("Loading configuration...")
         splash.showMessage("Loading configuration...")
         qtApp.processEvents()
-        ConfigManager()
+        ConfigManager().load()
 
         # Load plugins (move to shooting?)
         Logger().info("Load plugins...")
@@ -201,6 +201,17 @@ def main():
 
         # Terminate splashscreen
         splash.finish(mainController._view)
+
+        # Check if teh configuration is set
+        if not ConfigManager().isConfigured():
+            from papywizard.view.messageDialog import WarningMessageDialog
+            dialog = WarningMessageDialog(QtCore.QObject().tr("Configuration"),
+                                          QtCore.QObject().tr("Papywizard needs to be configured"))
+            dialog.exec_()
+            from papywizard.controller.pluginsController import PluginsController
+            controller = PluginsController(None, model)
+            controller.exec_()
+            controller.shutdown()
 
         # Enter Qt main loop
         qtApp.exec_()
