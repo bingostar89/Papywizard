@@ -107,7 +107,8 @@ class PluginsController(AbstractModalDialogController):
             previousPlugin = PluginManager().get('yawAxis', previousPluginName)[0]
             previousPlugin.shutdown()
             newPlugin._saveConfig()
-        newPlugin._config['DRIVER_TYPE'] = self._view.yawAxisDriverComboBox.currentText()
+        if hasattr(newPlugin, '_driver'):
+            newPlugin._config['DRIVER_TYPE'] = self._view.yawAxisDriverComboBox.currentText()
         # todo: set config in a callback
         newPlugin.activate()
 
@@ -119,7 +120,8 @@ class PluginsController(AbstractModalDialogController):
             previousPlugin = PluginManager().get('pitchAxis', previousPluginName)[0]
             previousPlugin.shutdown()
             newPlugin.activate()
-        newPlugin._config['DRIVER_TYPE'] = self._view.pitchAxisDriverComboBox.currentText()
+        if hasattr(newPlugin, '_driver'):
+            newPlugin._config['DRIVER_TYPE'] = self._view.pitchAxisDriverComboBox.currentText()
         # todo: set config in a callback
         newPlugin._saveConfig()
 
@@ -131,7 +133,8 @@ class PluginsController(AbstractModalDialogController):
             previousPlugin = PluginManager().get('shutter', previousPluginName)[0]
             previousPlugin.shutdown()
             newPlugin.activate()
-        newPlugin._config['DRIVER_TYPE'] = self._view.shutterDriverComboBox.currentText()
+        if hasattr(newPlugin, '_driver'):
+            newPlugin._config['DRIVER_TYPE'] = self._view.shutterDriverComboBox.currentText()
         # todo: set config in a callback
         newPlugin._saveConfig()
 
