@@ -161,7 +161,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
 
             self.msleep(config.SPY_REFRESH_DELAY)
 
-        Logger().debug("SimulationAxis.run(): axis simulation thread terminated")
+        Logger().debug("SimulationAxis.run(): thread '%s' terminated" % threadName)
 
     def _stopThread(self):
         """ Stop the thread.
