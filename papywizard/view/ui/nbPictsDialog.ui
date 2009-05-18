@@ -1,82 +1,96 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>nbPictsDialog</class>
- <widget class="QDialog" name="nbPictsDialog" >
-  <property name="geometry" >
+ <widget class="QDialog" name="nbPictsDialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>201</width>
-    <height>115</height>
+    <width>262</width>
+    <height>122</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Nb Picts</string>
   </property>
-  <property name="windowIcon" >
-   <iconset resource="../icons.qrc" >
+  <property name="windowIcon">
+   <iconset resource="../icons.qrc">
     <normaloff>:/icons/papywizard.png</normaloff>:/icons/papywizard.png</iconset>
   </property>
-  <property name="modal" >
+  <property name="modal">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" >
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QGridLayout" name="gridLayout" >
-     <item row="0" column="1" >
-      <widget class="QLabel" name="label" >
-       <property name="text" >
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="1">
+      <widget class="QLabel" name="label">
+       <property name="text">
         <string>Yaw</string>
        </property>
-       <property name="alignment" >
+       <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-     <item row="0" column="2" >
-      <widget class="QLabel" name="label_3" >
-       <property name="text" >
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
         <string>Pitch</string>
        </property>
-       <property name="alignment" >
+       <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
-     <item row="1" column="0" >
-      <widget class="QLabel" name="label_2" >
-       <property name="text" >
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
         <string>Nb Picts</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1" >
-      <widget class="QSpinBox" name="yawNbPictsSpinBox" >
-       <property name="minimum" >
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="yawNbPictsSpinBox">
+       <property name="minimum">
         <number>1</number>
        </property>
-       <property name="maximum" >
-        <number>100</number>
+       <property name="maximum">
+        <number>999</number>
        </property>
       </widget>
      </item>
-     <item row="1" column="2" >
-      <widget class="QSpinBox" name="pitchNbPictsSpinBox" >
-       <property name="minimum" >
+     <item row="1" column="2">
+      <widget class="QSpinBox" name="pitchNbPictsSpinBox">
+       <property name="minimum">
         <number>1</number>
        </property>
-       <property name="maximum" >
-        <number>50</number>
+       <property name="maximum">
+        <number>999</number>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="orientation" >
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="standardButtons" >
+     <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
@@ -84,7 +98,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../icons.qrc" />
+  <include location="../icons.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -93,11 +107,11 @@
    <receiver>nbPictsDialog</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>248</x>
      <y>254</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>157</x>
      <y>274</y>
     </hint>
@@ -109,11 +123,11 @@
    <receiver>nbPictsDialog</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>316</x>
      <y>260</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
     </hint>
