@@ -8,13 +8,18 @@ x bug fix
 
 0000-00-00 Version SVN
 
+2009-05-19 Version 2.1.8 (dev)
+    + open plugins dialog at startup if needed
+    - mosaic nb picts limits are now yaw=200, pitch=200
+    x fixed bug in unicode decoding strings
+
 2009-05-11 Version 2.1.7 (dev)
     - use a bluetoothTransport module for all platforms
     - new plugins config layout
 
 2009-05-04 Version 2.1.6 (dev)
     + preview invalid positions
-    + alternate drive for 'Merlin/Orion' plugin
+    + alternate drive for 'Merlin-Orion' plugin
     + set/clear limits from menu now active
     + added channel param to 'Pololu Servo' plugin
 
