@@ -133,11 +133,6 @@ class MainController(AbstractController):
         self.__connected = False
 
     def _initWidgets(self):
-        def hasHeightForWidth(self):
-            return True
-
-        def heightForWidth(self, width):
-            return width
 
         # Status bar
         # Manual speed and connect button
@@ -151,10 +146,6 @@ class MainController(AbstractController):
 
         # Presets
         self.__populatePresetComboBox()
-
-        # Force arrows layout as square (does not work)
-        self._view.moveArrowsGridLayout.heightForWidth = types.MethodType(heightForWidth, self._view.moveArrowsGridLayout)
-        self._view.moveArrowsGridLayout.hasHeightForWidth = types.MethodType(hasHeightForWidth, self._view.moveArrowsGridLayout)
 
         # Disable 'timelapse' tab
         self._view.tabWidget.setTabEnabled(2, False)
