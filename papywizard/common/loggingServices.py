@@ -110,7 +110,7 @@ class LoggerObject(QtCore.QObject):
         Can be used to register a new GUI handler.
 
         @param stream: open stream where to write logs
-        @type: stream: ???
+        @type stream: ???
 
         @param formatter: associated formatter
         @type formatter: L{DefaultFormatter<common.loggingFormatter>}

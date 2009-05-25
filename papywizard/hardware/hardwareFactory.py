@@ -52,7 +52,7 @@ Implements
 __revision__ = "$Id$"
 
 from papywizard.common.exception import HardwareError
-from papywizard.hardware.head import Head, HeadSimulation
+from papywizard.hardware.head import Head
 
 
 class HardwareFactory(object):

@@ -258,9 +258,6 @@ class ConfigManagerObject(QtCore.QObject):
     def setInt(self, key, value):
         """ Set a value as int.
 
-        @param group: config group
-        @type group: str
-
         @param key: config key
         @type key: str
 

@@ -91,7 +91,7 @@ class AbstractPluginController(AbstractModalDialogController):
         @type label: str
 
         @param widgetClass: widget class to use for the option
-        @type widget: QtGui.QWidget
+        @type widgetClass: QtGui.QWidget
 
         @param widgetParams: params to give to the widget
         @type widgetParams: tuple

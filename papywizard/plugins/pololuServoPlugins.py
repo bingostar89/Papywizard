@@ -260,7 +260,7 @@ class PololuServoHardware(HardwarePlugin):
         @type speed: int
 
         @param direction: direction of rotation, in ('forward', 'reverse')
-        @type diretion: str
+        @type direction: str
         """
         self._driver.acquireBus()
         try:

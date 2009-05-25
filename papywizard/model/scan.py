@@ -115,9 +115,6 @@ class AbstractScan(object):
 
     def getCurrentPosition(self):
         """ Get the current position.
-
-        @param index: index of the next position
-        @type index: int
         """
         raise NotImplementedError
 

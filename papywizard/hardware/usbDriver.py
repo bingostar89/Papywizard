@@ -52,10 +52,10 @@ Implements
 __revision__ = "$Id$"
 
 from papywizard.common.loggingServices import Logger
-from papywizard.hardware.busDriver import BusDriver
+from papywizard.hardware.abstractDriver import AbstractDriver
 
 
-class USBDriver(BusDriver):
+class USBDriver(AbstractDriver):
     """ Driver for USB connection.
     """
     pass

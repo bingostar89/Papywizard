@@ -122,7 +122,7 @@ class PluginManagerObject(QtCore.QObject):
         @type pluginClass: {AbstractPlugin<common.abstractPlugin>}
 
         @param pluginControllerClass: class of the plugin controller
-        @type pluginClassController: {AbstractPluginController<controller.abstractPluginController>}
+        @type pluginControllerClass: {AbstractPluginController<controller.abstractPluginController>}
         """
         model = pluginClass()
         self.__plugins.add((model, pluginControllerClass))
@@ -132,7 +132,7 @@ class PluginManagerObject(QtCore.QObject):
         """ Return the plugins with the given capacity.
 
         @param capacity: capacity
-        @type: str
+        @type capacity: str
 
         @return: plugins with given capacity (model + controller)
         @rtype: list of tuple
