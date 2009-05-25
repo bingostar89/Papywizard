@@ -51,7 +51,6 @@ SOURCES += papywizard/controller/abstractController.py \
 SOURCES += papywizard/hardware/abstractAxisPlugin.py \
            papywizard/hardware/abstractDriver.py \
            papywizard/hardware/abstractShutterPlugin.py \
-           papywizard/hardware/axis.py \
            papywizard/hardware/bluetoothDriver.py \
            papywizard/hardware/driverFactory.py \
            papywizard/hardware/ethernetDriver.py \
