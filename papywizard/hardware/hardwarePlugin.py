@@ -56,6 +56,7 @@ from papywizard.hardware.driverFactory import DriverFactory
 
 DEFAULT_DRIVER_TYPE = 'bluetooth'
 
+
 class HardwarePlugin(AbstractPlugin):
     """
     """
