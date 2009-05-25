@@ -132,6 +132,7 @@ class AbstractPlugin(object): #(QtCore.QObject):
         Logger().trace("AbstractPlugin._loadConfig()")
         for key, defaultValue in self._config.iteritems():
             configKey = "%s_%s/%s" % (self.name, self.capacity, key)
+            #Logger().debug("AbstractPlugin._loadConfig(): key=%s" % configKey)
             if ConfigManager().contains(configKey):
                 if isinstance(defaultValue, bool):
                     self._config[key] = ConfigManager().getBoolean(configKey)
