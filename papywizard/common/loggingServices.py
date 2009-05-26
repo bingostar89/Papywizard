@@ -137,55 +137,55 @@ class LoggerObject(QtCore.QObject):
                   'critical': logging.CRITICAL}
         self.__logger.setLevel(levels[level])
 
-    def trace(self, message):
+    def trace(self, message, *args, **kwargs):
         """ Logs a message with level TRACE.
 
         @param message: message to log
         @type message: string
         """
-        self.__logger.log(logging.TRACE, message)
+        self.__logger.log(logging.TRACE, message, *args, **kwargs)
 
-    def debug(self, message):
+    def debug(self, message, *args, **kwargs):
         """ Logs a message with level DEBUG.
 
         @param message: message to log
         @type message: string
         """
-        self.__logger.debug(message)
+        self.__logger.debug(message, *args, **kwargs)
 
-    def info(self, message):
+    def info(self, message, *args, **kwargs):
         """ Logs a message with level INFO.
 
         @param message: message to log
         @type message: string
         """
-        self.__logger.info(message)
+        self.__logger.info(message, *args, **kwargs)
 
-    def warning(self, message):
+    def warning(self, message, *args, **kwargs):
         """ Logs a message with level WARNING.
 
         @param message: message to log
         @type message: string
         """
-        self.__logger.warning(message)
+        self.__logger.warning(message, *args, **kwargs)
 
-    def error(self, message):
+    def error(self, message, *args, **kwargs):
         """ Logs a message with level ERROR.
 
         @param message: message to log
         @type message: string
         """
-        self.__logger.error(message)
+        self.__logger.error(message, *args, **kwargs)
 
-    def critical(self, message):
+    def critical(self, message, *args, **kwargs):
         """ Logs a message with level CRITICAL.
 
         @param message: message to log
         @type message: string
         """
-        self.__logger.critical(message)
+        self.__logger.critical(message, *args, **kwargs)
 
-    def exception(self, message="", debug=False):
+    def exception(self, message, debug=False, *args, **kwargs):
         """ Logs a message within an exception.
 
         @param message: message to log
@@ -194,16 +194,11 @@ class LoggerObject(QtCore.QObject):
         @param debug: flag to log exception on DEBUG level instead of EXCEPTION one
         @type debug: bool
         """
-        #self.__logger.exception(message)
-
-        tracebackString = StringIO.StringIO()
-        traceback.print_exc(file=tracebackString)
-        message += "\n"+tracebackString.getvalue().strip()
-        tracebackString.close()
+        kwargs['exc_info'] = True
         if debug:
-            self.debug(message)
+            self.debug(message, *args, **kwargs)
         else:
-            self.log(logging.EXCEPTION, message)
+            self.log(logging.EXCEPTION, message, *args, **kwargs)
 
     def log(self, level, message, *args, **kwargs):
         """ Logs a message with given level.
