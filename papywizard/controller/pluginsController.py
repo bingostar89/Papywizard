@@ -106,11 +106,11 @@ class PluginsController(AbstractModalDialogController):
         if previousPluginName != newPluginName:
             previousPlugin = PluginManager().get('yawAxis', previousPluginName)[0]
             previousPlugin.shutdown()
-            newPlugin._saveConfig()
+            newPlugin.activate()
         if hasattr(newPlugin, '_driver'):
             newPlugin._config['DRIVER_TYPE'] = self._view.yawAxisDriverComboBox.currentText()
         # todo: set config in a callback
-        newPlugin.activate()
+        newPlugin._saveConfig()
 
         previousPluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
         ConfigManager().set('Plugins/PLUGIN_PITCH_AXIS', unicode(self._view.pitchAxisComboBox.currentText()))
@@ -222,7 +222,7 @@ class PluginsController(AbstractModalDialogController):
             self._view.yawAxisComboBox.setCurrentIndex(self._view.yawAxisComboBox.findText(selectedPluginName))
             selectedPlugin = PluginManager().get('yawAxis', selectedPluginName)[0]
             if hasattr(selectedPlugin, '_driver'):
-                self._view.pitchAxisDriverComboBox.setEnabled(True)
+                self._view.yawAxisDriverComboBox.setEnabled(True)
                 driverType = selectedPlugin._config['DRIVER_TYPE']
                 self._view.yawAxisDriverComboBox.setCurrentIndex(self._view.yawAxisDriverComboBox.findText(driverType))
             else:
