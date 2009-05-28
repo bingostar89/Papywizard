@@ -150,6 +150,7 @@ class AbstractPlugin(object): #(QtCore.QObject):
         Logger().trace("AbstractPlugin._saveConfig()")
         for key, value in self._config.iteritems():
             group = "%s_%s" % (self.name, self.capacity)
+            #Logger().debug("AbstractPlugin._saveConfig(): %s/%s=%s" % (group, key, value))
             ConfigManager().set('%s/%s' % (group, key), value)
         ConfigManager().save()
 
