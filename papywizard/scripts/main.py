@@ -70,10 +70,6 @@ class BlackHole:
 
 def main():
     try:
-        1/0
-    except:
-        Logger().debug("Test log + exception", exc_info=True)
-    try:
         # Give a name to the main trhead
         threading.currentThread().setName("MainThread")
 
