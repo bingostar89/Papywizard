@@ -80,6 +80,8 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 DEFAULT_ALTERNATE_DRIVE = True
 DEFAULT_INERTIA_ANGLE = 1. # °
+#DEFAULT_ALTERNATE_FULL_CIRCLE = False
+#DEFAULT_ENCODER_FULL_CIRCLE = 0xE62D3
 DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
@@ -88,8 +90,8 @@ DEFAULT_PULSE_WIDTH_HIGH = 200 # ms
 DEFAULT_PULSE_WIDTH_LOW = 200 # ms
 
 ALTERNATE_DRIVE_ANGLE = 7. # °
-ENCODER_360 = 0x0E6600
 ENCODER_ZERO = 0x800000
+ENCODER_FULL_CIRCLE = 0xE62D3
 AXIS_ACCURACY = 0.1 # °
 SPEED_INDEX = {'slow': 170,  # "AA0000"  / 5
                'alternate': 80, # "500000"
@@ -156,7 +158,7 @@ class MerlinOrionHardware(HardwarePlugin):
 
         @todo: put in merlinHelpers?
         """
-        return (codPos - ENCODER_ZERO) * 360. / ENCODER_360
+        return (codPos - ENCODER_ZERO) * 360. / ENCODER_FULL_CIRCLE
 
     def _angleToEncoder(self, pos):
         """ Convert degres to encoder value.
@@ -169,7 +171,7 @@ class MerlinOrionHardware(HardwarePlugin):
 
         @todo: put in merlinHelpers?
         """
-        return int(pos * ENCODER_360 / 360. + ENCODER_ZERO)
+        return int(pos * ENCODER_FULL_CIRCLE / 360. + ENCODER_ZERO)
 
     def _sendCmd(self, cmd, param=""):
         """ Send a command to the axis.
@@ -332,6 +334,8 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
         HardwarePlugin._defineConfig(self)
         self._addConfigKey('_alternateDrive', 'ALTERNATE_DRIVE', default=DEFAULT_ALTERNATE_DRIVE)
         self._addConfigKey('_inertiaAngle', 'INERTIA_ANGLE', default=DEFAULT_INERTIA_ANGLE)
+        #self._addConfigKey('_alternateEncoder360', 'ALTERNATE_FULL_CIRCLE', default=DEFAULT_ALTERNATE_FULL_CIRCLE)
+        #self._addConfigKey('_encoder360', 'ENCODER_FULL_CIRCLE', default=DEFAULT_ENCODER_FULL_CIRCLE)
 
     def activate(self):
         Logger().trace("MerlinOrionHardware.activate()")
@@ -498,6 +502,8 @@ class MerlinOrionAxisController(AxisPluginController, HardwarePluginController):
         self._addTab('Hard')
         self._addWidget('Hard', "Alternate drive", CheckBoxField, (), 'ALTERNATE_DRIVE')
         self._addWidget('Hard', "Inertia angle", DoubleSpinBoxField, (0.1, 9.9, 1, .1, "", " deg"), 'INERTIA_ANGLE')
+        #self._addWidget('Hard', "Alternate full circle", CheckBoxField, (), 'ALTERNATE_FULL_CIRCLE')
+        #self._addWidget('Hard', "Encoder full circle", SpinBoxField, (0x080000, 0x380000, "", " units/turn"), 'ENCODER_FULL_CIRCLE')
 
 class MerlinOrionYawAxis(MerlinOrionAxis):
     _capacity = 'yawAxis'
