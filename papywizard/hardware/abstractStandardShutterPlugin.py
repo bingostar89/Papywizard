@@ -49,7 +49,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: abstractShutterPlugin.py 1739 2009-04-14 14:39:35Z fma $"
+__revision__ = "$Id$"
 
 import time
 
