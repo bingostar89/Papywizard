@@ -52,11 +52,10 @@ Implements
 __revision__ = "$Id$"
 
 from papywizard.controller.abstractPluginController import AbstractPluginController
-from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField, SliderField
 
 
 class ShutterPluginController(AbstractPluginController):
     """ Plugin controller for shutter 'capacity'.
     """
-    def _defineGui(self):
-        pass
+    #def _defineGui(self):
+        #pass

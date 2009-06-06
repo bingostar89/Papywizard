@@ -71,23 +71,17 @@ from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.common.pluginManager import PluginManager
 from papywizard.hardware.abstractAxisPlugin import AbstractAxisPlugin
-from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
+from papywizard.hardware.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
 from papywizard.hardware.hardwarePlugin import HardwarePlugin
 from papywizard.controller.axisPluginController import AxisPluginController
 from papywizard.controller.hardwarePluginController import HardwarePluginController
-from papywizard.controller.shutterPluginController import ShutterPluginController
+from papywizard.controller.standardShutterPluginController import StandardShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 DEFAULT_ALTERNATE_DRIVE = True
 DEFAULT_INERTIA_ANGLE = 1. # °
 #DEFAULT_ALTERNATE_FULL_CIRCLE = False
 #DEFAULT_ENCODER_FULL_CIRCLE = 0xE62D3
-DEFAULT_TIME_VALUE = 0.5 # s
-DEFAULT_MIRROR_LOCKUP = False
-DEFAULT_BRACKETING_NBPICTS = 1
-DEFAULT_BRACKETING_INTENT = 'exposure'
-DEFAULT_PULSE_WIDTH_HIGH = 200 # ms
-DEFAULT_PULSE_WIDTH_LOW = 200 # ms
 
 ALTERNATE_DRIVE_ANGLE = 7. # °
 ENCODER_ZERO = 0x800000
@@ -463,11 +457,6 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
             Logger().debug("MerlinOrionAxis._alternateDrive(): final move")
             self._drive(pos)
 
-    def stop(self):
-        self.__driveFlag = False
-        self._stop()
-        self.waitStop()
-
     def waitEndOfDrive(self):
         while True:
             if not self.isMoving():
@@ -477,6 +466,11 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
 
     def startJog(self, dir_):
         self._startJog(dir_, SPEED_INDEX[self._manualSpeed])
+
+    def stop(self):
+        self.__driveFlag = False
+        self._stop()
+        self.waitStop()
 
     def waitStop(self):
         pos = self.read()
@@ -531,35 +525,24 @@ class MerlinOrionPitchAxisController(MerlinOrionAxisController):
     pass
 
 
-class MerlinOrionShutter(MerlinOrionHardware, AbstractShutterPlugin):
+class MerlinOrionShutter(MerlinOrionHardware, AbstractStandardShutterPlugin):
     def _init(self):
         Logger().trace("MerlinOrionShutter._init()")
         MerlinOrionHardware._init(self)
-        AbstractShutterPlugin._init(self)
+        AbstractStandardShutterPlugin._init(self)
         self._numAxis = 1 # shutter contact is connected on axis
-        self.__LastShootTime = time.time()
-
-    def _getTimeValue(self):
-        return self._config["TIME_VALUE"]
-
-    def _getMirrorLockup(self):
-        return self._config["MIRROR_LOCKUP"]
-
-    def _getBracketingNbPicts(self):
-        return self._config["BRACKETING_NB_PICTS"]
-
-    def _getBracketingIntent(self):
-        return self._config["BRACKETING_INTENT"]
 
     def _defineConfig(self):
         MerlinOrionHardware._defineConfig(self)
-        AbstractShutterPlugin._defineConfig(self)
-        self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
-        self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
-        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
-        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
-        self._addConfigKey('_pulseWidthHigh', 'PULSE_WIDTH_HIGH', default=DEFAULT_PULSE_WIDTH_HIGH)
-        self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=DEFAULT_PULSE_WIDTH_LOW)
+        AbstractStandardShutterPlugin._defineConfig(self)
+
+    def _triggerShutter(self):
+        """ Trigger the shutter contact.
+        """
+        self._sendCmd("O", "1")
+        time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
+        self._sendCmd("O", "0")
+        self.__LastShootTime = time.time()
 
     def activate(self):
         Logger().trace("MerlinOrionShutter.activate()")
@@ -578,52 +561,35 @@ class MerlinOrionShutter(MerlinOrionHardware, AbstractShutterPlugin):
 
     def lockupMirror(self):
         Logger().trace("MerlinOrionShutter.lockupMirror()")
+        self._ensurePulseWidthLowDelay()
         self._driver.acquireBus()
         try:
-            self._sendCmd("O", "1")
-            time.sleep(self.config['PULSE_WIDTH_HIGH'] / 1000.)
-            self._sendCmd("O", "0")
+            self._triggerShutter()
             return 0
         finally:
             self._driver.releaseBus()
 
     def shoot(self, bracketNumber):
-
-        # Ensure that PULSE_WIDTH_LOW delay has elapsed before last shoot
-        delay = self._config['PULSE_WIDTH_LOW'] / 1000. - (time.time() - self.__LastShootTime)
-        if delay > 0:
-            time.sleep(delay)
         Logger().trace("MerlinOrionShutter.shoot()")
+        self._ensurePulseWidthLowDelay()
         self._driver.acquireBus()
         try:
-
-            # Trigger
-            self._sendCmd("O", "1")
-            time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
-            self._sendCmd("O", "0")
+            self._triggerShutter()
 
             # Wait for the end of shutter cycle
             delay = self._config['TIME_VALUE'] - self._config['PULSE_WIDTH_HIGH'] / 1000.
             if delay > 0:
                 time.sleep(delay)
 
-            self.__LastShootTime = time.time()
             return 0
         finally:
             self._driver.releaseBus()
 
 
-class MerlinOrionShutterController(ShutterPluginController, HardwarePluginController):
+class MerlinOrionShutterController(StandardShutterPluginController, HardwarePluginController):
     def _defineGui(self):
-        ShutterPluginController._defineGui(self)
+        StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Main', "Time value", DoubleSpinBoxField, (0.1, 3600, 1, 0.1, "", " s"), 'TIME_VALUE')
-        self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', "Bracketing nb picts", SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
-        self._addWidget('Main', "Bracketing intent", ComboBoxField, (['exposure', 'focus', 'white balance', 'movement'],), 'BRACKETING_INTENT')
-        self._addTab('Hard')
-        self._addWidget('Hard', "Pulse width high", SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_HIGH')
-        self._addWidget('Hard', "Pulse width low", SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_LOW')
 
 
 def register():

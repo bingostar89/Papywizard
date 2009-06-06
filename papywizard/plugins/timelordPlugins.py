@@ -87,7 +87,7 @@ class TimelordShutter(AbstractShutterPlugin):
         return None
 
     def _defineConfig(self):
-        AbstractShutterPlugin._defineConfig(self)
+        #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('Program path', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
         self._addConfigKey('LRD file path', 'LRD_FILE_PATH', default=DEFAULT_LRD_FILE_PATH)
 
@@ -96,6 +96,12 @@ class TimelordShutter(AbstractShutterPlugin):
 
     def shutdown(self):
         Logger().trace("TimelordShutter.shutdown()")
+
+    def establishConnection(self):
+        pass
+
+    def shutdownConnection(self):
+        pass
 
     def shoot(self, bracketNumber):
         Logger().debug("TimelordShutter.shoot(): execute command '%s %s'..." % (self._config['PROGRAM_PATH'], self._config['LRD_FILE_PATH']))
@@ -119,7 +125,7 @@ class TimelordShutter(AbstractShutterPlugin):
 
 class TimelordShutterController(ShutterPluginController):
     def _defineGui(self):
-        ShutterPluginController._defineGui(self)
+        #ShutterPluginController._defineGui(self)
         self._addWidget('Main', "Program path", LineEditField, (), 'PROGRAM_PATH')
         self._addWidget('Main', "LRD file path", LineEditField, (), 'LRD_FILE_PATH')
 

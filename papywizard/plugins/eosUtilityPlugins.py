@@ -100,7 +100,7 @@ class EOSUtilityShutter(AbstractShutterPlugin):
         return 'exposure'
 
     def _defineConfig(self):
-        AbstractShutterPlugin._defineConfig(self)
+        #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_eosBracketPath', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
         self._addConfigKey('_eosUtilityType', 'EOSUTILITY_TYPE', default=DEFAULT_EOSUTILITY_TYPE)
         self._addConfigKey('_exposureBracketingStops', 'EXPOSURE_BRACKETING_STOPS', default=DEFAULT_EXPOSURE_BRACKETING_STOPS)
@@ -120,6 +120,12 @@ class EOSUtilityShutter(AbstractShutterPlugin):
 
     def shutdown(self):
         Logger().trace("EOSUtilityShutter.shutdown()")
+
+    def establishConnection(self):
+        pass
+
+    def shutdownConnection(self):
+        pass
 
     def lockupMirror(self):
         Logger().debug("EOSUtilityShutter.lockupMirror(): Not possible with EOS Utility")
@@ -180,7 +186,7 @@ class EOSUtilityShutter(AbstractShutterPlugin):
 
 class EOSUtilityShutterController(ShutterPluginController):
     def _defineGui(self):
-        ShutterPluginController._defineGui(self)
+        #ShutterPluginController._defineGui(self)
         self._addWidget('Main', "EOS Bracket path", LineEditField, (), 'PROGRAM_PATH')
         self._addWidget('Main', "EOS Utility Type", ComboBoxField, (['old', 'new'],), 'EOSUTILITY_TYPE')
         self._addWidget('Main', "Exposure Bracketing Stops", ComboBoxField, (['1/3', '2/3', '1', '1 1/3', '1 2/3', '2', '2 1/3', '2 2/3', '3', '3 1/3', '3 2/3', '4', '4 1/3', '4 2/3', '5', '5 1/3', '5 2/3', '6'],), 'EXPOSURE_BRACKETING_STOPS')

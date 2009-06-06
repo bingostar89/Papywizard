@@ -118,6 +118,12 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
         self._stopThread()
         self.wait()
 
+    def establishConnection(self):
+        pass
+
+    def shutdownConnection(self):
+        pass
+
     def run(self):
         """ Main entry of the thread.
         """
@@ -260,7 +266,7 @@ class SimulationShutter(AbstractShutterPlugin):
         return self._config['BRACKETING_INTENT']
 
     def _defineConfig(self):
-        AbstractShutterPlugin._defineConfig(self)
+        #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
@@ -270,6 +276,12 @@ class SimulationShutter(AbstractShutterPlugin):
         pass
 
     def shutdown(self):
+        pass
+
+    def establishConnection(self):
+        pass
+
+    def shutdownConnection(self):
         pass
 
     def lockupMirror(self):

@@ -80,13 +80,21 @@ class SerialDriver(AbstractDriver):
     def _shutdown(self):
         self._serial.close()
 
-    def setCS(self, level):
-        """ Set CS signal to specified level.
+    def setRTS(self, level):
+        """ Set RTS signal to specified level.
 
-        @param level: level to set to CS signal
+        @param level: level to set to RTS signal
         @type level: int
         """
-        #self._serial.setDTR(level)
+        self._serial.setRTS(level)
+
+    def setDTR(self, level):
+        """ Set DTR signal to specified level.
+
+        @param level: level to set to DTR signal
+        @type level: int
+        """
+        self._serial.setDTR(level)
 
     def empty(self):
         if hasattr(self._serial, "inWaiting"):

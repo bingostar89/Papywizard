@@ -87,7 +87,7 @@ class TetheredShutter(AbstractShutterPlugin):
         return self._config['BRACKETING_INTENT']
 
     def _defineConfig(self):
-        AbstractShutterPlugin._defineConfig(self)
+        #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_mirrorLockupCommand', 'MIRROR_LOCKUP_COMMAND', default=DEFAULT_MIRROR_LOCKUP_COMMAND)
         self._addConfigKey('_shootCommand', 'SHOOT_COMMAND', default=DEFAULT_SHOOT_COMMAND)
@@ -100,7 +100,14 @@ class TetheredShutter(AbstractShutterPlugin):
     def shutdown(self):
         Logger().trace("TetheredShutter.shutdown()")
 
+    def establishConnection(self):
+        pass
+
+    def shutdownConnection(self):
+        pass
+
     def lockupMirror(self):
+        # @todo: implement mirror lockup command
         Logger().debug("TetheredShutter.lockupMirror(): execute command '%s'..." % self._config['MIRROR_LOCKUP_COMMAND'])
         time.sleep(1)
         Logger().debug("TetheredShutter.lockupMirror(): command over")
@@ -116,15 +123,15 @@ class TetheredShutter(AbstractShutterPlugin):
         # Wait end of execution
         stdout, stderr = p.communicate()
         if stderr:
-            Logger().debug("TetheredShutter.shoot(): stderr:\n%s" % stderr)
-        Logger().debug("TetheredShutter.shoot(): stdout:\n%s" % stdout)
+            Logger().error("TetheredShutter.shoot(): stderr:\n%s" % stderr.strip())
+        Logger().debug("TetheredShutter.shoot(): stdout:\n%s" % stdout.strip())
 
         return p.returncode
 
 
 class TetheredShutterController(ShutterPluginController):
     def _defineGui(self):
-        ShutterPluginController._defineGui(self)
+        #ShutterPluginController._defineGui(self)
         self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', "Mirror lockup command", LineEditField, (), 'MIRROR_LOCKUP_COMMAND')
         self._addWidget('Main', "Shoot command", LineEditField, (), 'SHOOT_COMMAND')

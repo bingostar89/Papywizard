@@ -89,21 +89,6 @@ class  AbstractStandardShutterPlugin(AbstractShutterPlugin):
         self._addConfigKey('_pulseWidthHigh', 'PULSE_WIDTH_HIGH', default=DEFAULT_PULSE_WIDTH_HIGH)
         self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=DEFAULT_PULSE_WIDTH_LOW)
 
-    #def activate(self):
-        #Logger().trace("AbstractStandardShutterPlugin.activate()")
-
-    #def shutdown(self):
-        #Logger().trace("AbstractStandardShutterPlugin.shutdown()")
-
-    #def establishConnection(self):
-        #Logger().trace("AbstractStandardShutterPlugin.establishConnection()")
-        #MerlinOrionHardware.establishConnection(self)
-        #self._initMerlinOrion()
-
-    #def shutdownConnection(self):
-        #Logger().trace("AbstractStandardShutterPlugin.establishConnection()")
-        #MerlinOrionHardware.shutdownConnection(self)
-
     def _ensurePulseWidthLowDelay(self):
         """ Ensure that PULSE_WIDTH_LOW delay has elapsed before last trigger.
         """
