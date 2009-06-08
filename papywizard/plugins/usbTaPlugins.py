@@ -42,20 +42,12 @@ Hardware
 Implements
 ==========
 
-- UsbTaHardware
-- UsbTaAxis
-- UsbTaAxisController
-- UsbTaYawAxis
-- UsbTaYawAxisController
-- UsbTaPitchAxis
-- UsbTaPitchAxisController
 - UsbTaShutter
 - UsbTaShutterController
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
 @license: CeCILL
-@todo: add private methods to UsbTaHardware for sending commands to UsbTa
 """
 
 __revision__ = "$Id: merlinOrionPlugins.py 1888 2009-05-30 08:24:37Z fma $"
