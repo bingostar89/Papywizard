@@ -9,9 +9,9 @@ x bug fix
 0000-00-00 Version SVN
 
 2009-06-07 Version 2.1.9 (dev)
+    + new shutter plugin for USB TA interface
     - updated startup plugins dialog
     - plugins refactoring
-    - new shutter plugin for USB TA interface
     x fixed encoder counts-per-turn value
 
 2009-05-19 Version 2.1.8 (dev)
