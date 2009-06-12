@@ -58,7 +58,7 @@ import thread
 from PyQt4 import QtCore, QtGui
 
 from papywizard.common.loggingServices import Logger
-from papywizard.common.bluetoothTransport import discoverDevices
+from papywizard.common.bluetoothTransport import BluetoothScanner, discoverDevices
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.view.messageDialog import ExceptionMessageDialog
 
@@ -81,7 +81,7 @@ class BluetoothChooserController(AbstractModalDialogController):
 
         self.connect(self._view.refreshPushButton, QtCore.SIGNAL("clicked()"), self.__onRefreshPushButtonClicked)
 
-    def _disconnectSignales(self):
+    def _disconnectSignals(self):
         AbstractModalDialogController._disconnectSignals(self)
 
         self.disconnect(self._view.refreshPushButton, QtCore.SIGNAL("clicked()"), self.__onRefreshPushButtonClicked)
@@ -103,38 +103,47 @@ class BluetoothChooserController(AbstractModalDialogController):
         def refreshBluetoothList():
             """ Scan bluetooth and refresh the bluetooth devices list.
             """
+            self.__refreshStatus = None
             try:
                 self.__bluetoothDevices = discoverDevices()
-                self.__refreshStatus = True
             except Exception, msg:
                 Logger().exception("refreshBluetoothList()")
                 self.__refreshErrorMessage = unicode(msg)
                 self.__refreshStatus = False
+            else:
+                self.__refreshStatus = True
 
         Logger().info("Scanning available bluetooth devices...")
-        self.__refreshStatus = None
         self._view.refreshPushButton.setEnabled(False)
         QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
         # Launch refresh thread
         #thread.start_new_thread(self._model.refreshBluetoothList, ())
-        thread.start_new_thread(refreshBluetoothList, ())
+##        thread.start_new_thread(refreshBluetoothList, ())
+##        scanner = BluetoothScanner()
+##        scanner.start()
+        refreshBluetoothList()
 
         # Wait for end of connection
-        while self.__refreshStatus is None:
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-            time.sleep(0.05)
+##        while self.__refreshStatus is None:
+####        while scanner.getStatus() is None:
+##            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+##            time.sleep(0.05)
+##        scanner.wait()
 
         # Check connection status
         if self.__refreshStatus:
+##        if scanner.getStatus():
             self._view.bluetoothAddressComboBox.clear()
             for address, name in self.__bluetoothDevices:
                 self._view.bluetoothAddressComboBox.addItem("%s -- %s" % (address, name))
             self._view.bluetoothAddressComboBox.setCurrentIndex(0)
             Logger().debug("Bluetooth available devices: %s" % self.__bluetoothDevices)
         else:
-            Logger().error("Can't scan bluetooth\n%s" % self.__refreshErrorMessage)
-            dialog = ExceptionMessageDialog(self.tr("Can't scan bluetooth"), self.__refreshErrorMessage)
+            errorMessage = self.__refreshErrorMessage
+##            errorMessage = scanner.geterrorMessage()
+            Logger().error("Can't scan bluetooth\n%s" % erroMessage)
+            dialog = ExceptionMessageDialog(self.tr("Can't scan bluetooth"), refreshErrorMessage)
             dialog.exec_()
         self._view.refreshPushButton.setEnabled(True)
         QtGui.qApp.restoreOverrideCursor()

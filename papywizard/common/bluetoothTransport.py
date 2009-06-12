@@ -55,6 +55,10 @@ __revision__ = "$Id$"
 
 import sys
 
+from PyQt4 import QtCore
+
+from papywizard.common.loggingServices import Logger
+
 
 # MacOS platform
 if sys.platform == "darwin":
@@ -96,3 +100,52 @@ elif sys.platform == "linux2":
 # Others
 else:
     raise NotImplementedError("This platform (%s) does not support bluetooth transport" % sys.platform)
+
+
+class BluetoothScanner(QtCore.QThread):
+    """ Bluetooth devices scanner.
+    """
+    def __init__(self):
+        QtCore.QThread.__init__(self)
+        self.__devices = []
+        self.__status = False
+        self.__errorMessage = None
+
+    def getDevices(self):
+        """ Get bluetooth scanned devices.
+
+        @return: bluetooth scanned devices, as address/name pairs
+        @rtype: list of tupple
+        """
+        return self.__devices
+
+    def getStatus(self):
+        """ Get scan status.
+
+        @return: scan status
+        @rtype: bool
+        """
+        return self.__status
+
+    def getErrorMessage(self):
+        """ Get error message.
+
+        @return: error message
+        @rtype: str
+        """
+        return self.__errorMessage
+
+    def run(self):
+        """ Main entry of the thread.
+
+        Scan bluetooth and refresh the bluetooth devices list.
+        """
+        try:
+            self.__devices = discoverDevices()
+            self.__status = True
+
+        except Exception, msg:
+            Logger().exception("BluetoothScanner.run()")
+            self.__errorMessage = unicode(msg)
+            self.__status = False
+
