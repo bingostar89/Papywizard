@@ -70,87 +70,31 @@ class BluetoothChooserController(AbstractModalDialogController):
         self._uiFile = "bluetoothChooserDialog.ui"
 
         self.__bluetoothDevices = []
-        self.__refreshStatus = None
-        self.__refreshErrorMessage = None
+
+        # Scan bluetooth devices
+        try:
+            self.__bluetoothDevices = discoverDevices()
+        except Exception, msg:
+            Logger().exception("refreshBluetoothList()")
+            Logger().error("Can't scan bluetooth\n%s" % unicode(msg))
+            dialog = ExceptionMessageDialog(self.tr("Can't scan bluetooth"), unicode(msg))
+            dialog.exec_()
 
     def _initWidgets(self):
         pass
 
-    def _connectSignals(self):
-        AbstractModalDialogController._connectSignals(self)
+    #def _connectSignals(self):
+        #AbstractModalDialogController._connectSignals(self)
 
-        self.connect(self._view.refreshPushButton, QtCore.SIGNAL("clicked()"), self.__onRefreshPushButtonClicked)
+    #def _disconnectSignals(self):
+        #AbstractModalDialogController._disconnectSignals(self)
 
-    def _disconnectSignals(self):
-        AbstractModalDialogController._disconnectSignals(self)
-
-        self.disconnect(self._view.refreshPushButton, QtCore.SIGNAL("clicked()"), self.__onRefreshPushButtonClicked)
-
-    # Callbacks
-    def __onRefreshPushButtonClicked(self):
-        """ Refresh button has been clicked.
-
-        Refresh bluetooth device list.
-        """
-        Logger().trace("BluetoothChooserController.__onRefreshPushButtonClicked()")
-        self.refreshBluetoothList()
-
-    def refreshBluetoothList(self):
-        """ Connect to real hardware.
-
-        @todo: put sub-functions in an object (make abstract object first)
-        """
-        def refreshBluetoothList():
-            """ Scan bluetooth and refresh the bluetooth devices list.
-            """
-            self.__refreshStatus = None
-            try:
-                self.__bluetoothDevices = discoverDevices()
-            except Exception, msg:
-                Logger().exception("refreshBluetoothList()")
-                self.__refreshErrorMessage = unicode(msg)
-                self.__refreshStatus = False
-            else:
-                self.__refreshStatus = True
-
-        Logger().info("Scanning available bluetooth devices...")
-        self._view.refreshPushButton.setEnabled(False)
-        QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-
-        # Launch refresh thread
-        #thread.start_new_thread(self._model.refreshBluetoothList, ())
-##        thread.start_new_thread(refreshBluetoothList, ())
-##        scanner = BluetoothScanner()
-##        scanner.start()
-        refreshBluetoothList()
-
-        # Wait for end of connection
-##        while self.__refreshStatus is None:
-####        while scanner.getStatus() is None:
-##            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-##            time.sleep(0.05)
-##        scanner.wait()
-
-        # Check connection status
-        if self.__refreshStatus:
-##        if scanner.getStatus():
-            self._view.bluetoothAddressComboBox.clear()
-            for address, name in self.__bluetoothDevices:
-                self._view.bluetoothAddressComboBox.addItem("%s -- %s" % (address, name))
-            self._view.bluetoothAddressComboBox.setCurrentIndex(0)
-            Logger().debug("Bluetooth available devices: %s" % self.__bluetoothDevices)
-        else:
-            errorMessage = self.__refreshErrorMessage
-##            errorMessage = scanner.geterrorMessage()
-            Logger().error("Can't scan bluetooth\n%s" % erroMessage)
-            dialog = ExceptionMessageDialog(self.tr("Can't scan bluetooth"), refreshErrorMessage)
-            dialog.exec_()
-        self._view.refreshPushButton.setEnabled(True)
-        QtGui.qApp.restoreOverrideCursor()
-
+    # Interface
     def refreshView(self):
-        pass
+        self._view.bluetoothAddressComboBox.clear()
+        for address, name in self.__bluetoothDevices:
+            self._view.bluetoothAddressComboBox.addItem("%s -- %s" % (address, name))
+        self._view.bluetoothAddressComboBox.setCurrentIndex(0)
 
-    # Real work
     def getSelectedBluetoothAddress(self):
         return self._view.bluetoothAddressComboBox.currentText().split(" -- ")
