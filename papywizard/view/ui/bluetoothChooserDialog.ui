@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>416</width>
+    <width>342</width>
     <height>92</height>
    </rect>
   </property>
@@ -25,23 +25,6 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QComboBox" name="bluetoothAddressComboBox"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="refreshPushButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="../icons.qrc">
-         <normaloff>:/icons/reload.png</normaloff>:/icons/reload.png</iconset>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
