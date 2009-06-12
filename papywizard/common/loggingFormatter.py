@@ -67,7 +67,7 @@ class DefaultFormatter(logging.Formatter):
 class ColorFormatter(DefaultFormatter):
     """ Formatage avec couleurs.
     """
-    if sys.platform == 'linux2':
+    if sys.platform in ('linux2', 'darwin'):
         colors = {'trace':"\033[0;36;40;22m",     # cyan/noir, normal
                   'debug':"\033[0;36;40;1m",      # cyan/noir, gras
                   'info':"\033[0;37;40;1m",       # blanc/noir, gras
