@@ -7,6 +7,8 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    - removed refresh bluetooth button
+    x bluetooth scan works on MacOS
 
 2009-06-07 Version 2.1.9 (dev)
     + new shutter plugin for USB TA interface
