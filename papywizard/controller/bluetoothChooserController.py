@@ -58,7 +58,7 @@ import thread
 from PyQt4 import QtCore, QtGui
 
 from papywizard.common.loggingServices import Logger
-from papywizard.common.bluetoothTransport import BluetoothScanner, discoverDevices
+from papywizard.common.bluetoothTransport import discoverDevices
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.view.messageDialog import ExceptionMessageDialog
 
