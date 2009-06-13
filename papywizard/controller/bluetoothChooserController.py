@@ -72,13 +72,17 @@ class BluetoothChooserController(AbstractModalDialogController):
         self.__bluetoothDevices = []
 
         # Scan bluetooth devices
+        QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         try:
             self.__bluetoothDevices = discoverDevices()
         except Exception, msg:
+            QtGui.qApp.restoreOverrideCursor()
             Logger().exception("refreshBluetoothList()")
             Logger().error("Can't scan bluetooth\n%s" % unicode(msg))
             dialog = ExceptionMessageDialog(self.tr("Can't scan bluetooth"), unicode(msg))
             dialog.exec_()
+        else:
+            QtGui.qApp.restoreOverrideCursor()
 
     def _initWidgets(self):
         pass

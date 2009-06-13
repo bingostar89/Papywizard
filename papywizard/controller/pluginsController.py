@@ -187,11 +187,9 @@ class PluginsController(AbstractModalDialogController):
         Open the bluetooth chooser dialog.
         """
         Logger().trace("PluginsController.__onBluetoothChoosePushButtonClicked()")
-        QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         while QtGui.QApplication.hasPendingEvents():
             QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
         controller = BluetoothChooserController(self, self._model)
-        QtGui.qApp.restoreOverrideCursor()
         response = controller.exec_()
         if response:
             address, name = controller.getSelectedBluetoothAddress()
