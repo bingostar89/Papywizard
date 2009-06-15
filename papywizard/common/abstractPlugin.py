@@ -162,19 +162,36 @@ class AbstractPlugin(object): #(QtCore.QObject):
         """
         raise NotImplementedError("AbstractPlugin.activate() must be overloaded")
 
-    def shutdown(self):
+    def deactivate(self):
         """ Shutdown the plugin.
 
         The plugin may need to perform some operations when desactivated.
         """
-        raise NotImplementedError("AbstractPlugin.shutdown() must be overloaded")
+        raise NotImplementedError("AbstractPlugin.deactivate() must be overloaded")
 
     def establishConnection(self):
         """ Establish the connexion.
         """
         raise NotImplementedError("AbstractPlugin.establishConnection() must be overloaded")
 
-    def shutdownConnection(self):
-        """ Shutdown the connexion.
+    def stopConnection(self):
+        """ Stop the connexion.
         """
-        raise NotImplementedError("AbstractPlugin.shutdownConnection() must be overloaded")
+        raise NotImplementedError("AbstractPlugin.stopConnection() must be overloaded")
+
+
+    def init(self):
+        """ Init the plugin.
+
+        This method is called after the connection is established.
+        Can be used to make some low-level init operations.
+        """
+        raise NotImplementedError("AbstractPlugin.init() must be overloaded")
+
+    def shutdown(self):
+        """ Shutdown the plugin.
+
+        This method is called before the connection is stopped.
+        Can be used to make some low-level shotdown operations.
+        """
+        raise NotImplementedError("AbstractPlugin.shutdown() must be overloaded")
