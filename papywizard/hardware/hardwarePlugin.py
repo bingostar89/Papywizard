@@ -80,7 +80,7 @@ class HardwarePlugin(AbstractPlugin):
         """
         self._driver.establishConnection(self)
 
-    def shutdownConnection(self):
+    def stopConnection(self):
         """ Shutdown the connexion with the driver.
 
         We pass self, so the driver can keep track of disconnected hardwares.

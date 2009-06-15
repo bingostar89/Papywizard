@@ -337,20 +337,19 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
         # Start the thread
         self.start()
 
-    def shutdown(self):
-        Logger().trace("MerlinOrionHardware.shutdown()")
+    def deactivate(self):
+        Logger().trace("MerlinOrionHardware.deactivate()")
 
         # Stop the thread
         self._stopThread()
         self.wait()
 
-    def establishConnection(self):
-        Logger().trace("MerlinOrionAxis.establishConnection()")
-        MerlinOrionHardware.establishConnection(self)
-        self._initMerlinOrion()
+    def init(self):
+        Logger().trace("MerlinOrionAxis.init()")
+        self._initMerlinOrion()        
 
-    def shutdownConnection(self):
-        Logger().trace("MerlinOrionAxis.shutdownConnection()")
+    def shutdown(self):
+        Logger().trace("MerlinOrionAxis.shutdown()")
         self.stop()
         MerlinOrionHardware.shutdownConnection(self)
 
@@ -547,17 +546,16 @@ class MerlinOrionShutter(MerlinOrionHardware, AbstractStandardShutterPlugin):
     def activate(self):
         Logger().trace("MerlinOrionShutter.activate()")
 
-    def shutdown(self):
-        Logger().trace("MerlinOrionShutter.shutdown()")
+    def deactivate(self):
+        Logger().trace("MerlinOrionShutter.deactivate()")
 
-    def establishConnection(self):
-        Logger().trace("MerlinOrionShutter.establishConnection()")
-        MerlinOrionHardware.establishConnection(self)
+    def init(self):
+        Logger().trace("MerlinOrionShutter.init()")
         self._initMerlinOrion()
 
-    def shutdownConnection(self):
-        Logger().trace("MerlinOrionShutter.establishConnection()")
-        MerlinOrionHardware.shutdownConnection(self)
+    def shutdown(self):
+        Logger().trace("MerlinOrionShutter.shutdown()")
+        self._sendCmd("O", "0")
 
     def lockupMirror(self):
         Logger().trace("MerlinOrionShutter.lockupMirror()")

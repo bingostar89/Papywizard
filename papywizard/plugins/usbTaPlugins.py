@@ -66,8 +66,6 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 DEFAULT_LINE = 'RTS'
 DEFAULT_LINE_INVERTED = False
 
-lineMethod = {'RTS': "setRTS",
-              'DTR': "setDTR"}
 lineLevel = {False: {'on': 1, 'off': 0},
              True: {'on': 0, 'off': 1}}
 
@@ -83,30 +81,36 @@ class UsbTaShutter(HardwarePlugin, AbstractStandardShutterPlugin):
     def _defineConfig(self):
         HardwarePlugin._defineConfig(self)
         AbstractStandardShutterPlugin._defineConfig(self)
-        self._addConfigKey('_line', 'LINE', default=DEFAULT_LINE)
         self._addConfigKey('_lineInverted', 'LINE_INVERTED', default=DEFAULT_LINE_INVERTED)
 
     def _triggerShutter(self):
         """ Trigger the shutter contact.
 
-        @todo: allow usage of DTR
-        @todo: allow inverted signal
+        @raise AttributeError: the driver does not support this method
         """
-        try:
-            method = getattr(self._driver, lineMethod[self._config['LINE']])
-        except AttributeError:
-            Logger().exception("UsbTaShutter._triggerShutter", debug=True)
-        else:
-            method(lineLevel[self._config['LINE_INVERTED']]['on'])
-            time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
-            method(lineLevel[self._config['LINE_INVERTED']]['off'])
-            self.__LastShootTime = time.time()
+        self._driver.setRTS(lineLevel[self._config['LINE_INVERTED']]['on'])
+        self._driver.setDTR(lineLevel[self._config['LINE_INVERTED']]['on'])
+        time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
+        self._driver.setRTS(lineLevel[self._config['LINE_INVERTED']]['off'])
+        self._driver.setDTR(lineLevel[self._config['LINE_INVERTED']]['off'])
+        self.__LastShootTime = time.time()
 
     def activate(self):
         Logger().trace("UsbTaShutter.activate()")
 
+    def deactivate(self):
+        Logger().trace("UsbTaShutter.deactivate()")
+
+    def init(self):
+        Logger().trace("UsbTaShutter.init()")
+
     def shutdown(self):
         Logger().trace("UsbTaShutter.shutdown()")
+        try:
+            self._driver.setRTS(lineLevel[self._config['LINE_INVERTED']]['off'])
+            self._driver.setDTR(lineLevel[self._config['LINE_INVERTED']]['off'])
+        except AttributeError:
+            Logger().exception("UsbTaShutter.shutdown", debug=True)
 
     def lockupMirror(self):
         Logger().trace("UsbTaShutter.lockupMirror()")
@@ -139,7 +143,6 @@ class UsbTaShutterController(StandardShutterPluginController, HardwarePluginCont
     def _defineGui(self):
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Hard', "Line", ComboBoxField, (['RTS', 'DTR'],), 'LINE')
         self._addWidget('Hard', "Line inverted", CheckBoxField, (), 'LINE_INVERTED')
 
 

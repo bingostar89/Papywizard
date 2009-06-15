@@ -87,6 +87,7 @@ class AbstractDriver(QtCore.QObject):
 
         The connection is established only once.
         """
+        Logger().trace("AbstractDriver.establishConnection()")
         if not self._connected:
             self._init()
         self._connected.add(obj)
@@ -97,8 +98,10 @@ class AbstractDriver(QtCore.QObject):
         The connection is shutdown once there are no more
         objects connected.
         """
+        Logger().trace("AbstractDriver.shutdownConnection()")
         if obj in self._connected:
             self._connected.remove(obj)
+        Logger().debug("AbstractDriver.shutdownConnection(): _connected=%s" % self._connected)
         if not self._connected:
             self._shutdown()
 

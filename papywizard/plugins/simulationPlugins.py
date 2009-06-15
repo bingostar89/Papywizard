@@ -111,18 +111,24 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
         # Start the thread
         self.start()
 
-    def shutdown(self):
-        Logger().trace("SimulationAxis.shutdown()")
+    def deactivate(self):
+        Logger().trace("SimulationAxis.deactivate()")
 
         # Stop the thread
         self._stopThread()
         self.wait()
 
     def establishConnection(self):
-        pass
+        Logger().trace("SimulationAxis.establishConnection()")
 
-    def shutdownConnection(self):
-        pass
+    def stopConnection(self):
+        Logger().trace("SimulationAxis.stopConnection()")
+
+    def init(self):
+        Logger().trace("SimulationAxis.init()")
+
+    def shutdown(self):
+        Logger().trace("SimulationAxis.shutdown()")
 
     def run(self):
         """ Main entry of the thread.
@@ -273,16 +279,22 @@ class SimulationShutter(AbstractShutterPlugin):
         self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
 
     def activate(self):
-        pass
+        Logger().trace("SimulationShutter.activate()")
 
-    def shutdown(self):
-        pass
+    def deactivate(self):
+        Logger().trace("SimulationShutter.deactivate()")
 
     def establishConnection(self):
-        pass
+        Logger().trace("SimulationShutter.establishConnection()")
 
-    def shutdownConnection(self):
-        pass
+    def stopConnection(self):
+        Logger().trace("SimulationShutter.stopConnection()")
+
+    def init(self):
+        Logger().trace("SimulationShutter.init()")
+
+    def shutdown(self):
+        Logger().trace("SimulationShutter.shutdown()")
 
     def lockupMirror(self):
         """ Lockup the mirror.

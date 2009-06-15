@@ -118,14 +118,20 @@ class EOSUtilityShutter(AbstractShutterPlugin):
     def activate(self):
         Logger().trace("EOSUtilityShutter.activate()")
 
-    def shutdown(self):
-        Logger().trace("EOSUtilityShutter.shutdown()")
+    def deactivate(self):
+        Logger().trace("EOSUtilityShutter.deactivate()")
 
     def establishConnection(self):
-        pass
+        Logger().trace("EOSUtilityShutter.establishConnection()")
 
-    def shutdownConnection(self):
-        pass
+    def stopConnection(self):
+        Logger().trace("EOSUtilityShutter.stopConnection()")
+
+    def init(self):
+        Logger().trace("EOSUtilityShutter.init()")
+
+    def shutdown(self):
+        Logger().trace("EOSUtilityShutter.shutdown()")
 
     def lockupMirror(self):
         Logger().debug("EOSUtilityShutter.lockupMirror(): Not possible with EOS Utility")

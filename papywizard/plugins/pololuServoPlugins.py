@@ -142,10 +142,13 @@ class PololuServoHardware(HardwarePlugin):
 
         How to do this with all drivers?
         """
-        #self._serial.setRTS(1)
-        #self._serial.setDTR(1)
-        #self._serial.setRTS(0)
-        #self._serial.setDTR(0)
+        try:
+            self._driver.setRTS(1)
+            self._driver.setDTR(1)
+            self._driver.setRTS(0)
+            self._driver.setDTR(0)
+        except AttributeError:
+            Logger().exception("PololuServoHardware._reset()", debug=True)
 
     def _setParameters(self, on=True, direction='forward', range_=15):
         """ Set servo parameters.
@@ -258,7 +261,7 @@ class PololuServoHardware(HardwarePlugin):
         """
         self._driver.acquireBus()
         try:
-            #self._reset()
+            self._reset()
             self._setSpeed(speed)
             self._setParameters(on=True, direction=direction) # Add range_?
         finally:
@@ -307,23 +310,19 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
     def activate(self):
         Logger().trace("PololuServoHardware.activate()")
 
-    def shutdown(self):
+    def deactivate(self):
         Logger().trace("PololuServoHardware.shutdown()")
 
-    def establishConnection(self):
-        Logger().trace("PololuServoAxis.establishConnection()")
-        PololuServoHardware.establishConnection(self)
+    def init(self):
         self._setPositionAbsolute(self._config['NEUTRAL_POSITION'])
         speed = self._computeServoSpeed(self._config['SPEED'])
         self._initPololuServo(speed, self._config['DIRECTION'])
         self._position = 0.
         self._endDrive = 0
 
-    def shutdownConnection(self):
-        Logger().trace("PololuServoAxis.shutdownConnection()")
+    def shutdown(self):
         self.stop()
         self._shutdownPololuServo()
-        PololuServoHardware.shutdownConnection(self)
 
     def read(self):
         return self._position - self._offset
@@ -479,19 +478,17 @@ class PololuServoShutter(PololuServoHardware, AbstractStandardShutterPlugin):
         Logger().trace("PololuServoShutter.activate()")
         self._initialPosition = self._config['VALUE_OFF']
 
+    def deactivate(self):
+        Logger().trace("PololuServoShutter.deactivate()")
+
+    def init(self):
+        Logger().trace("PololuServoShutter.init()")
+        self._initPololuServo()
+##        self._position = 0.  # ???
+
     def shutdown(self):
         Logger().trace("PololuServoShutter.shutdown()")
-
-    def establishConnection(self):
-        Logger().trace("PololuServoShutter.establishConnection()")
-        PololuServoHardware.establishConnection(self)
-        self._initPololuServo()
-        self._position = 0.
-
-    def shutdownConnection(self):
-        Logger().trace("PololuServoShutter.establishConnection()")
         self._shutdownPololuServo()
-        PololuServoHardware.shutdownConnection(self)
 
     def lockupMirror(self):
         Logger().trace("PololuServoShutter.lockupMirror()")

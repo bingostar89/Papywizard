@@ -97,14 +97,20 @@ class TetheredShutter(AbstractShutterPlugin):
     def activate(self):
         Logger().trace("TetheredShutter.activate()")
 
-    def shutdown(self):
-        Logger().trace("TetheredShutter.shutdown()")
+    def deactivate(self):
+        Logger().trace("TetheredShutter.deactivate()")
 
     def establishConnection(self):
-        pass
+        Logger().trace("TetheredShutter.establishConnection()")
 
-    def shutdownConnection(self):
-        pass
+    def stopConnection(self):
+        Logger().trace("TetheredShutter.stopConnection()")
+
+    def init(self):
+        Logger().trace("TetheredShutter.init()")
+
+    def shutdown(self):
+        Logger().trace("TetheredShutter.shutdown()")
 
     def lockupMirror(self):
         # @todo: implement mirror lockup command

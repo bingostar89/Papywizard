@@ -94,14 +94,20 @@ class TimelordShutter(AbstractShutterPlugin):
     def activate(self):
         Logger().trace("TimelordShutter.activate()")
 
-    def shutdown(self):
-        Logger().trace("TimelordShutter.shutdown()")
+    def deactivate(self):
+        Logger().trace("TimelordShutter.deactivate()")
 
     def establishConnection(self):
-        pass
+        Logger().trace("TimelordShutter.establishConnection()")
 
-    def shutdownConnection(self):
-        pass
+    def stopConnection(self):
+        Logger().trace("TimelordShutter.stopConnection()")
+
+    def init(self):
+        Logger().trace("TimelordShutter.init()")
+
+    def shutdown(self):
+        Logger().trace("TimelordShutter.shutdown()")
 
     def shoot(self, bracketNumber):
         Logger().debug("TimelordShutter.shoot(): execute command '%s %s'..." % (self._config['PROGRAM_PATH'], self._config['LRD_FILE_PATH']))

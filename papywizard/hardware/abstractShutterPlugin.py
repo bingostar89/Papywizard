@@ -131,15 +131,6 @@ class AbstractShutterPlugin(AbstractPlugin):
 
     bracketingIntent = property(__getBracketingIntent)
 
-    #def _defineConfig(self):
-        #pass
-
-    #def establishConnection(self):
-        #pass
-
-    #def shutdownConnection(self):
-        #pass
-
     def lockupMirror(self):
         """ Lockup the mirror.
 
