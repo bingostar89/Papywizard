@@ -51,10 +51,6 @@ Implements
 
 __revision__ = "$Id$"
 
-import sys
-import time
-import thread
-
 from PyQt4 import QtCore, QtGui
 
 from papywizard.common.loggingServices import Logger
@@ -86,12 +82,6 @@ class BluetoothChooserController(AbstractModalDialogController):
 
     def _initWidgets(self):
         pass
-
-    #def _connectSignals(self):
-        #AbstractModalDialogController._connectSignals(self)
-
-    #def _disconnectSignals(self):
-        #AbstractModalDialogController._disconnectSignals(self)
 
     # Interface
     def refreshView(self):
