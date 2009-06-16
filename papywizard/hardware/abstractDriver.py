@@ -101,7 +101,7 @@ class AbstractDriver(QtCore.QObject):
         Logger().trace("AbstractDriver.shutdownConnection()")
         if obj in self._connected:
             self._connected.remove(obj)
-        Logger().debug("AbstractDriver.shutdownConnection(): _connected=%s" % self._connected)
+        #Logger().debug("AbstractDriver.shutdownConnection(): _connected=%s" % self._connected)
         if not self._connected:
             self._shutdown()
 
