@@ -208,7 +208,6 @@ class MainController(AbstractController):
         self.connect(self._view.shootPushButton, QtCore.SIGNAL("clicked()"), self.__onShootPushButtonClicked)
 
         self.connect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate, QtCore.Qt.BlockingQueuedConnection)
-        self.connect(self._model, QtCore.SIGNAL("hardwareConnected"), self.__onHardwareConnected, QtCore.Qt.BlockingQueuedConnection)
 
         self._view.grabKeyboard()
         self._view._originalKeyPressEvent = self._view.keyPressEvent
@@ -266,7 +265,6 @@ class MainController(AbstractController):
         self.disconnect(self._view.shootPushButton, QtCore.SIGNAL("clicked()"), self.__onShootPushButtonClicked)
 
         self.disconnect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate)
-        self.disconnect(self._model, QtCore.SIGNAL("hardwareConnected"), self.__onHardwareConnected)
 
         self._view.releaseKeyboard()
         self._view.keyPressEvent = self._view._originalKeyPressEvent
@@ -290,7 +288,7 @@ class MainController(AbstractController):
     # Callbacks
     def _onCloseEvent(self, event):
         Logger().trace("MainController._onCloseEvent()")
-        self.__stopConnection()
+        self.__disconnect()
         QtGui.QApplication.quit()
 
     def __onKeyPressed(self, event):
@@ -413,7 +411,7 @@ class MainController(AbstractController):
             response = dialog.exec_()
             self._view.grabKeyboard()
             if response == QtGui.QMessageBox.Yes:
-                self.__stopConnection()
+                self.__disconnect()
                 QtGui.QApplication.quit()
             event.ignore()
 
@@ -487,9 +485,9 @@ class MainController(AbstractController):
     def __onActionHardwareConnectToggled(self, checked):
         Logger().debug("MainController.__onActionHardwareConnectToggled(%s)" % checked)
         if checked:
-            self.__establishConnection()
+            self.__connect()
         else:
-            self.__stopConnection()
+            self.__disconnect()
 
     def __onActionHardwareSetLimitYawMinusActivated(self):
         yaw, pitch = self._model.hardware.readPosition()
@@ -715,11 +713,6 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onShootPushButtonClicked()")
         self.__openShootdialog()
 
-    def __onHardwareConnected(self, flag, message=""):
-        Logger().debug("MainController.__onHardwareConnected(): flag=%s" % flag)
-        self.__connectStatus = flag
-        self.__connectErrorMessage = message
-
     # Helpers
     def __setYawPitchStartPosition(self):
         """ Set yaw/pitch end from current position.
@@ -922,7 +915,7 @@ class MainController(AbstractController):
 
         self._view.shootPushButton.setEnabled(False)
 
-    def __establishConnection(self):
+    def __connect(self):
         """ Connect to plugins.
         """
         Logger().info("Connecting to plugins...")
@@ -946,14 +939,14 @@ class MainController(AbstractController):
         try:
             plugin.establishConnection()
         except:
-            Logger().exception("MainController.__establishConnection().connect()")
+            Logger().exception("MainController.__connect()")
             connectedFailed.append('yawAxis')
         else:
             self.__pluginsStatus['yawAxis']['connect'] = True
             try:
                 plugin.init()
             except:
-                Logger().exception("MainController.__establishConnection().connect()")
+                Logger().exception("MainController.__connect()")
                 connectedFailed.append('yawAxis')
             else:
                 self.__pluginsStatus['yawAxis']['init'] = True
@@ -964,14 +957,14 @@ class MainController(AbstractController):
         try:
             plugin.establishConnection()
         except:
-            Logger().exception("MainController.__establishConnection().connect()")
+            Logger().exception("MainController.__connect()")
             connectedFailed.append('pitchAxis')
         else:
             self.__pluginsStatus['pitchAxis']['connect'] = True
             try:
                 plugin.init()
             except:
-                Logger().exception("MainController.__establishConnection().connect()")
+                Logger().exception("MainController.__connect()")
                 connectedFailed.append('pitchAxis')
             else:
                 self.__pluginsStatus['pitchAxis']['init'] = True
@@ -982,14 +975,14 @@ class MainController(AbstractController):
         try:
             plugin.establishConnection()
         except:
-            Logger().exception("MainController.__establishConnection().connect()")
+            Logger().exception("MainController.__connect().connect()")
             connectedFailed.append('shutter')
         else:
             self.__pluginsStatus['shutter']['connect'] = True
             try:
                 plugin.init()
             except:
-                Logger().exception("MainController.__establishConnection().connect()")
+                Logger().exception("MainController.__connect()")
                 connectedFailed.append('shutter')
             else:
                 self.__pluginsStatus['shutter']['init'] = True
@@ -1019,7 +1012,7 @@ class MainController(AbstractController):
             self._view.grabKeyboard()
             self._view.actionHardwareConnect.setChecked(False)
 
-    def __stopConnection(self):
+    def __disconnect(self):
         """ Disconnect from plugins.
         """
         Logger().info("Disconnecting from plugins...")
@@ -1041,7 +1034,7 @@ class MainController(AbstractController):
             try:
                 plugin.shutdown()
             except:
-                Logger().exception("MainController.__stopConnection()")
+                Logger().exception("MainController.__disconnect()")
                 disconnectedFailed.append('yawAxis')
             else:
                 self.__pluginsStatus['yawAxis']['init'] = False
@@ -1049,7 +1042,7 @@ class MainController(AbstractController):
             try:
                 plugin.stopConnection()
             except:
-                Logger().exception("MainController.__stopConnection()")
+                Logger().exception("MainController.__disconnect()")
                 disconnectedFailed.append('yawAxis')
             else:
                 self.__pluginsStatus['yawAxis']['connect'] = False
@@ -1061,7 +1054,7 @@ class MainController(AbstractController):
             try:
                 plugin.shutdown()
             except:
-                Logger().exception("MainController.__stopConnection()")
+                Logger().exception("MainController.__disconnect()")
                 disconnectedFailed.append('pitchAxis')
             else:
                 self.__pluginsStatus['pitchAxis']['init'] = False
@@ -1069,7 +1062,7 @@ class MainController(AbstractController):
             try:
                 plugin.stopConnection()
             except:
-                Logger().exception("MainController.__stopConnection()")
+                Logger().exception("MainController.__disconnect()")
                 disconnectedFailed.append('pitchAxis')
             else:
                 self.__pluginsStatus['pitchAxis']['connect'] = False
@@ -1081,7 +1074,7 @@ class MainController(AbstractController):
             try:
                 plugin.shutdown()
             except:
-                Logger().exception("MainController.__stopConnection()")
+                Logger().exception("MainController.__disconnect()")
                 disconnectedFailed.append('shutter')
             else:
                 self.__pluginsStatus['shutter']['init'] = False
@@ -1089,7 +1082,7 @@ class MainController(AbstractController):
             try:
                 plugin.stopConnection()
             except:
-                Logger().exception("MainController.__stopConnection()")
+                Logger().exception("MainController.__disconnect()")
                 disconnectedFailed.append('shutter')
             else:
                 self.__pluginsStatus['shutter']['connect'] = False

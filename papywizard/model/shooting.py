@@ -225,17 +225,6 @@ class Shooting(QtCore.QObject):
     scan = property(__getScan)
 
     # Signals
-    #def hardwareConnected(self, flag, message=""):
-        #""" Hardware connect/disconnect.
-
-        #@param flag: True if connected, false otherwise
-        #@type flag: bool
-
-        #@param message: optional error message
-        #@type message: str
-        #"""
-        #self.emit(QtCore.SIGNAL("hardwareConnected"), flag, message)
-
     def started(self):
         """ Shooting started.
         """
