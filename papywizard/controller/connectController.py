@@ -89,77 +89,90 @@ class ConnectController(AbstractModalDialogController):
         # Connect 'yawAxis' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
         plugin = PluginManager().get('yawAxis', pluginName)[0]
-        item = QtGui.QTreeWidgetItem(["'yawAxis' establish connection...", ""])
-        self._view.pluginsStatusTreeWidget.addTopLevelItem(item)
+        item = QtGui.QListWidgetItem("'yawAxis' establish connection...")
+        self._view.pluginsStatusListWidget.addItem(item)
         try:
             plugin.establishConnection()
         except:
             Logger().exception("MainController.__connect()")
-            item.setText(1, "Failed")
+            item.setText(item.text() + "  Failed")
+            item.setTextColor(QtGui.QColor("red"))
         else:
-            item.setText(1, "Ok")
+            item.setText(item.text()  + "  Ok")
+            item.setTextColor(QtGui.QColor("green"))
             pluginsStatus['yawAxis']['connect'] = True
-            item = QtGui.QTreeWidgetItem(["'yawAxis' init...", ""])
-            self._view.pluginsStatusTreeWidget.addTopLevelItem(item)
+            item = QtGui.QListWidgetItem("'yawAxis' init...")
+            self._view.pluginsStatusListWidget.addItem(item)
             try:
                 plugin.init()
             except:
                 Logger().exception("MainController.__connect()")
-                item.setText(1, "Failed")
+                item.setText(item.text() + "  Failed")
+                item.setTextColor(QtGui.QColor("red"))
             else:
-                item.setText(1, "Ok")
+                item.setText(item.text() + "  Ok")
+                item.setTextColor(QtGui.QColor("green"))
                 pluginsStatus['yawAxis']['init'] = True
 
         # Connect 'pitchAxis' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
         plugin = PluginManager().get('pitchAxis', pluginName)[0]
-        item = QtGui.QTreeWidgetItem(["'pitchAxis' establish connection...", ""])
-        self._view.pluginsStatusTreeWidget.addTopLevelItem(item)
+        item = QtGui.QListWidgetItem("'pitchAxis' establish connection...")
+        self._view.pluginsStatusListWidget.addItem(item)
         try:
             plugin.establishConnection()
         except:
             Logger().exception("MainController.__connect()")
-            item.setText(1, "Failed")
+            item.setText(item.text() + "  Failed")
+            item.setTextColor(QtGui.QColor("red"))
         else:
-            item.setText(1, "Ok")
+            item.setText(item.text() + "  Ok")
+            item.setTextColor(QtGui.QColor("green"))
             pluginsStatus['pitchAxis']['connect'] = True
-            item = QtGui.QTreeWidgetItem(["'pitchAxis' init...", ""])
-            self._view.pluginsStatusTreeWidget.addTopLevelItem(item)
+            item = QtGui.QListWidgetItem("'pitchAxis' init...")
+            self._view.pluginsStatusListWidget.addItem(item)
             try:
                 plugin.init()
             except:
                 Logger().exception("MainController.__connect()")
-                item.setText(1, "Failed")
+                item.setText(item.text() + "  Failed")
+                item.setTextColor(QtGui.QColor("red"))
             else:
-                item.setText(1, "Ok")
+                item.setText(item.text() + "  Ok")
+                item.setTextColor(QtGui.QColor("green"))
                 pluginsStatus['pitchAxis']['init'] = True
 
         # Connect 'shutter' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
         plugin = PluginManager().get('shutter', pluginName)[0]
-        item = QtGui.QTreeWidgetItem(["'shutter' establish connection...", ""])
-        self._view.pluginsStatusTreeWidget.addTopLevelItem(item)
+        item = QtGui.QListWidgetItem("'shutter' establish connection...")
+        self._view.pluginsStatusListWidget.addItem(item)
         try:
             plugin.establishConnection()
         except:
             Logger().exception("MainController.__connect()")
-            item.setText(1, "Failed")
+            item.setText(item.text() + "  Failed")
+            item.setTextColor(QtGui.QColor("red"))
         else:
-            item.setText(1, "Ok")
+            item.setTextColor(QtGui.QColor("green"))
+            item.setText(item.text() + "  Ok")
             pluginsStatus['shutter']['connect'] = True
-            item = QtGui.QTreeWidgetItem(["'shutter' init...", ""])
-            self._view.pluginsStatusTreeWidget.addTopLevelItem(item)
+            item = QtGui.QListWidgetItem("'shutter' init...")
+            self._view.pluginsStatusListWidget.addItem(item)
             try:
                 plugin.init()
             except:
                 Logger().exception("MainController.__connect()")
-                item.setText(1, "Failed")
+                item.setText(item.text() + "  Failed")
+                item.setTextColor(QtGui.QColor("red"))
             else:
-                item.setText(1, "Ok")
+                item.setText(item.text() + "  Ok")
+                item.setTextColor(QtGui.QColor("green"))
                 pluginsStatus['shutter']['init'] = True
 
-        # Restore cursor
+        # Restore cursor and buttons
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        self._view.buttonBox.setEnabled(True)
 
         return pluginsStatus
 

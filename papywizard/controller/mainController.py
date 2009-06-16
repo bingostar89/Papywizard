@@ -60,12 +60,13 @@ import types
 from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
-from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
+from papywizard.common.configManager import ConfigManager
 from papywizard.common.presetManager import PresetManager
 from papywizard.common.exception import HardwareError
 from papywizard.common.pluginManager import PluginManager
 from papywizard.controller.abstractController import AbstractController
+from papywizard.controller.connectController import ConnectController
 from papywizard.controller.loggerController import LoggerController
 from papywizard.controller.helpAboutController import HelpAboutController
 from papywizard.controller.totalFovController import TotalFovController
@@ -918,99 +919,128 @@ class MainController(AbstractController):
     def __connect(self):
         """ Connect to plugins.
         """
-        Logger().info("Connecting to plugins...")
-        self.setStatusbarMessage(self.tr("Connecting to plugins..."))
+        Logger().info("Connecting...")
+        self.setStatusbarMessage(self.tr("Connecting..."))
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_creating.png").scaled(22, 22))
 
-        connectedFailed = []
-        self.__pluginsStatus = {'yawAxis': {'connect': False, 'init': False},
-                                'pitchAxis': {'connect': False, 'init': False},
-                                'shutter': {'connect': False, 'init': False}
-                                }
-
-        # Wait cursor
-        self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        while QtGui.QApplication.hasPendingEvents():
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-
-        # Connect to 'yawAxis' plugin
-        pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
-        plugin = PluginManager().get('yawAxis', pluginName)[0]
-        try:
-            plugin.establishConnection()
-        except:
-            Logger().exception("MainController.__connect()")
-            connectedFailed.append('yawAxis')
-        else:
-            self.__pluginsStatus['yawAxis']['connect'] = True
-            try:
-                plugin.init()
-            except:
-                Logger().exception("MainController.__connect()")
-                connectedFailed.append('yawAxis')
-            else:
-                self.__pluginsStatus['yawAxis']['init'] = True
-
-        # Connect to 'pitchAxis' plugin
-        pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
-        plugin = PluginManager().get('pitchAxis', pluginName)[0]
-        try:
-            plugin.establishConnection()
-        except:
-            Logger().exception("MainController.__connect()")
-            connectedFailed.append('pitchAxis')
-        else:
-            self.__pluginsStatus['pitchAxis']['connect'] = True
-            try:
-                plugin.init()
-            except:
-                Logger().exception("MainController.__connect()")
-                connectedFailed.append('pitchAxis')
-            else:
-                self.__pluginsStatus['pitchAxis']['init'] = True
-
-        # Connect to 'shutter' plugin
-        pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
-        plugin = PluginManager().get('shutter', pluginName)[0]
-        try:
-            plugin.establishConnection()
-        except:
-            Logger().exception("MainController.__connect().connect()")
-            connectedFailed.append('shutter')
-        else:
-            self.__pluginsStatus['shutter']['connect'] = True
-            try:
-                plugin.init()
-            except:
-                Logger().exception("MainController.__connect()")
-                connectedFailed.append('shutter')
-            else:
-                self.__pluginsStatus['shutter']['init'] = True
-
-        # Restore cursor
-        self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        while QtGui.QApplication.hasPendingEvents():
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+        controller = ConnectController(self, self._model)
+        self._view.releaseKeyboard()
+        controller.show()
+        self.__pluginsStatus = controller.connectToPlugins()
+        controller.exec_()
+        self._view.grabKeyboard()
+        controller.shutdown()
 
         # Check connection status
         if self.__pluginsStatus['yawAxis']['init'] and \
            self.__pluginsStatus['pitchAxis']['init'] and \
            self.__pluginsStatus['shutter']['init']:
             Spy().resume()
-            self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_established.png").scaled(22, 22))
             Logger().info("Connection established")
             self.setStatusbarMessage(self.tr("Connection established"), 10)
             self.__SetConnectedWidgetState()
             self.__pluginsConnected = True
         else:
-            errorMessage = unicode(self.tr("One or more plugin failed to connect (%s)")) % ", ".join(connectedFailed)
-            Logger().error("Connection failed\n%s" % errorMessage)
+            Logger().error("Connection failed")
             self.setStatusbarMessage(self.tr("Connection failed"), 10)
-            dialog = ErrorMessageDialog(self.tr("Can't connect to plugins"), errorMessage)
-            self._view.releaseKeyboard()
-            dialog.exec_()
-            self._view.grabKeyboard()
             self._view.actionHardwareConnect.setChecked(False)
+
+##    def __connect(self):
+##        """ Connect to plugins.
+##        """
+##        Logger().info("Connecting to plugins...")
+##        self.setStatusbarMessage(self.tr("Connecting to plugins..."))
+##        self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_creating.png").scaled(22, 22))
+##
+##        connectedFailed = []
+##        self.__pluginsStatus = {'yawAxis': {'connect': False, 'init': False},
+##                                'pitchAxis': {'connect': False, 'init': False},
+##                                'shutter': {'connect': False, 'init': False}
+##                                }
+##
+##        # Wait cursor
+##        self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+##        while QtGui.QApplication.hasPendingEvents():
+##            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+##
+##        # Connect to 'yawAxis' plugin
+##        pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
+##        plugin = PluginManager().get('yawAxis', pluginName)[0]
+##        try:
+##            plugin.establishConnection()
+##        except:
+##            Logger().exception("MainController.__connect()")
+##            connectedFailed.append('yawAxis')
+##        else:
+##            self.__pluginsStatus['yawAxis']['connect'] = True
+##            try:
+##                plugin.init()
+##            except:
+##                Logger().exception("MainController.__connect()")
+##                connectedFailed.append('yawAxis')
+##            else:
+##                self.__pluginsStatus['yawAxis']['init'] = True
+##
+##        # Connect to 'pitchAxis' plugin
+##        pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
+##        plugin = PluginManager().get('pitchAxis', pluginName)[0]
+##        try:
+##            plugin.establishConnection()
+##        except:
+##            Logger().exception("MainController.__connect()")
+##            connectedFailed.append('pitchAxis')
+##        else:
+##            self.__pluginsStatus['pitchAxis']['connect'] = True
+##            try:
+##                plugin.init()
+##            except:
+##                Logger().exception("MainController.__connect()")
+##                connectedFailed.append('pitchAxis')
+##            else:
+##                self.__pluginsStatus['pitchAxis']['init'] = True
+##
+##        # Connect to 'shutter' plugin
+##        pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
+##        plugin = PluginManager().get('shutter', pluginName)[0]
+##        try:
+##            plugin.establishConnection()
+##        except:
+##            Logger().exception("MainController.__connect().connect()")
+##            connectedFailed.append('shutter')
+##        else:
+##            self.__pluginsStatus['shutter']['connect'] = True
+##            try:
+##                plugin.init()
+##            except:
+##                Logger().exception("MainController.__connect()")
+##                connectedFailed.append('shutter')
+##            else:
+##                self.__pluginsStatus['shutter']['init'] = True
+##
+##        # Restore cursor
+##        self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+##        while QtGui.QApplication.hasPendingEvents():
+##            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+##
+##        # Check connection status
+##        if self.__pluginsStatus['yawAxis']['init'] and \
+##           self.__pluginsStatus['pitchAxis']['init'] and \
+##           self.__pluginsStatus['shutter']['init']:
+##            Spy().resume()
+##            self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_established.png").scaled(22, 22))
+##            Logger().info("Connection established")
+##            self.setStatusbarMessage(self.tr("Connection established"), 10)
+##            self.__SetConnectedWidgetState()
+##            self.__pluginsConnected = True
+##        else:
+##            errorMessage = unicode(self.tr("One or more plugin failed to connect (%s)")) % ", ".join(connectedFailed)
+##            Logger().error("Connection failed\n%s" % errorMessage)
+##            self.setStatusbarMessage(self.tr("Connection failed"), 10)
+##            dialog = ErrorMessageDialog(self.tr("Can't connect to plugins"), errorMessage)
+##            self._view.releaseKeyboard()
+##            dialog.exec_()
+##            self._view.grabKeyboard()
+##            self._view.actionHardwareConnect.setChecked(False)
 
     def __disconnect(self):
         """ Disconnect from plugins.
@@ -1024,8 +1054,8 @@ class MainController(AbstractController):
 
         # Wait cursor
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        while QtGui.QApplication.hasPendingEvents():
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+##        while QtGui.QApplication.hasPendingEvents():
+##            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
 
         # Shut down 'yawAxis' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
@@ -1089,8 +1119,8 @@ class MainController(AbstractController):
 
         # Restore cursor
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        while QtGui.QApplication.hasPendingEvents():
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+##        while QtGui.QApplication.hasPendingEvents():
+##            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
 
         # Check disconnection status
         if not self.__pluginsStatus['yawAxis']['connect'] and \
@@ -1109,6 +1139,104 @@ class MainController(AbstractController):
             self._view.releaseKeyboard()
             dialog.exec_()
             self._view.grabKeyboard()
+
+##    def __disconnect(self):
+##        """ Disconnect from plugins.
+##        """
+##        Logger().info("Disconnecting from plugins...")
+##        self.setStatusbarMessage(self.tr("Disconnecting from plugins..."))
+##        self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_creating.png").scaled(22, 22))
+##
+##        Spy().suspend()
+##        disconnectedFailed = []
+##
+##        # Wait cursor
+##        self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+##        while QtGui.QApplication.hasPendingEvents():
+##            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+##
+##        # Shut down 'yawAxis' plugin
+##        pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
+##        plugin = PluginManager().get('yawAxis', pluginName)[0]
+##        if self.__pluginsStatus['yawAxis']['init']:
+##            try:
+##                plugin.shutdown()
+##            except:
+##                Logger().exception("MainController.__disconnect()")
+##                disconnectedFailed.append('yawAxis')
+##            else:
+##                self.__pluginsStatus['yawAxis']['init'] = False
+##        if self.__pluginsStatus['yawAxis']['connect']:
+##            try:
+##                plugin.stopConnection()
+##            except:
+##                Logger().exception("MainController.__disconnect()")
+##                disconnectedFailed.append('yawAxis')
+##            else:
+##                self.__pluginsStatus['yawAxis']['connect'] = False
+##        
+##        # Shut down 'pitchAxis' plugin
+##        pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
+##        plugin = PluginManager().get('pitchAxis', pluginName)[0]
+##        if self.__pluginsStatus['pitchAxis']['init']:
+##            try:
+##                plugin.shutdown()
+##            except:
+##                Logger().exception("MainController.__disconnect()")
+##                disconnectedFailed.append('pitchAxis')
+##            else:
+##                self.__pluginsStatus['pitchAxis']['init'] = False
+##        if self.__pluginsStatus['pitchAxis']['connect']:
+##            try:
+##                plugin.stopConnection()
+##            except:
+##                Logger().exception("MainController.__disconnect()")
+##                disconnectedFailed.append('pitchAxis')
+##            else:
+##                self.__pluginsStatus['pitchAxis']['connect'] = False
+##
+##        # Shut down 'shutter' plugin
+##        pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
+##        plugin = PluginManager().get('shutter', pluginName)[0]
+##        if self.__pluginsStatus['shutter']['init']:
+##            try:
+##                plugin.shutdown()
+##            except:
+##                Logger().exception("MainController.__disconnect()")
+##                disconnectedFailed.append('shutter')
+##            else:
+##                self.__pluginsStatus['shutter']['init'] = False
+##        if self.__pluginsStatus['shutter']['connect']:
+##            try:
+##                plugin.stopConnection()
+##            except:
+##                Logger().exception("MainController.__disconnect()")
+##                disconnectedFailed.append('shutter')
+##            else:
+##                self.__pluginsStatus['shutter']['connect'] = False
+##
+##        # Restore cursor
+##        self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+##        while QtGui.QApplication.hasPendingEvents():
+##            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+##
+##        # Check disconnection status
+##        if not self.__pluginsStatus['yawAxis']['connect'] and \
+##           not self.__pluginsStatus['pitchAxis']['connect'] and \
+##           not self.__pluginsStatus['shutter']['connect']:
+##            self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
+##            Logger().info("Plugins connection stopped")
+##            self.setStatusbarMessage(self.tr("Plugin connection stopped"), 10)
+##            self.__SetDisconnectedWidgetState()
+##            self.__pluginsConnected = False
+##        else:
+##            errorMessage = unicode(self.tr("One or more plugin failed to disconnect (%s)")) % ", ".join(disconnectedFailed)
+##            Logger().error("Disconnection failed\n%s" % errorMessage)
+##            self.setStatusbarMessage(self.tr("Disconnection failed"), 10)
+##            dialog = ErrorMessageDialog(self.tr("Can't disconnect from plugins"), errorMessage)
+##            self._view.releaseKeyboard()
+##            dialog.exec_()
+##            self._view.grabKeyboard()
 
     def __onPositionUpdate(self, yaw, pitch):
         """ Refresh position according to new pos.
