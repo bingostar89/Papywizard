@@ -55,8 +55,8 @@ from papywizard.plugins.abstractPlugin import AbstractPlugin
 
 
 class AbstractShutterPlugin(AbstractPlugin):
-    _capacity = "shutter"
-
+    """ Abstract class for shutter plugins.
+    """
     def _init(self):
         pass
 

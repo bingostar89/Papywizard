@@ -72,6 +72,8 @@ from papywizard.plugins.axisPluginController import AxisPluginController
 from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
+NAME = "Simulation"
+
 DEFAULT_SPEED = 30. # deg/s
 DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
@@ -85,10 +87,8 @@ MANUAL_SPEED_INDEX = {'slow': .2,
 class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
     """ Simulated hardware axis.
     """
-    _name = "Simulation"
-
-    def __init__(self):
-        AbstractAxisPlugin.__init__(self)
+    def __init__(self, *args, **kwargs):
+        AbstractAxisPlugin.__init__(self, *args, **kwargs)
         QtCore.QThread.__init__(self)
 
     def _init(self):
@@ -237,25 +237,25 @@ class SimulationAxisController(AxisPluginController):
         self._addWidget('Main', "Speed", SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
 
 
-class SimulationYawAxis(SimulationAxis):
-    _capacity = 'yawAxis'
+#class SimulationYawAxis(SimulationAxis):
+    #_capacity = 'yawAxis'
 
 
-class SimulationYawAxisController(SimulationAxisController):
-    pass
+#class SimulationYawAxisController(SimulationAxisController):
+    #pass
 
 
-class SimulationPitchAxis(SimulationAxis):
-    _capacity = 'pitchAxis'
+#class SimulationPitchAxis(SimulationAxis):
+    #_capacity = 'pitchAxis'
 
 
-class SimulationPitchAxisController(SimulationAxisController):
-    pass
+#class SimulationPitchAxisController(SimulationAxisController):
+    #pass
 
 
 class SimulationShutter(AbstractShutterPlugin):
-    _name = "Simulation"
-
+    """
+    """
     def _init(self):
         pass
 
@@ -313,7 +313,7 @@ class SimulationShutter(AbstractShutterPlugin):
 
 class SimulationShutterController(ShutterPluginController):
     def _defineGui(self):
-        #ShutterPluginController._defineGui(self)
+        ShutterPluginController._defineGui(self)
         self._addWidget('Main', "Time value", DoubleSpinBoxField, (0.1, 3600, 1, 0.1, "", " s"), 'TIME_VALUE')
         self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', "Bracketing nb picts", SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
@@ -323,6 +323,6 @@ class SimulationShutterController(ShutterPluginController):
 def register():
     """ Register plugins.
     """
-    PluginsManager ().register(SimulationYawAxis, SimulationYawAxisController)
-    PluginsManager ().register(SimulationPitchAxis, SimulationPitchAxisController)
-    PluginsManager ().register(SimulationShutter, SimulationShutterController)
+    PluginsManager ().register(SimulationAxis, SimulationAxisController, capacity='yawAxis', name=NAME)
+    PluginsManager ().register(SimulationAxis, SimulationAxisController, capacity='pitchAxis', name=NAME)
+    PluginsManager ().register(SimulationShutter, SimulationShutterController, capacity='shutter', name=NAME)

@@ -63,6 +63,8 @@ from papywizard.plugins.hardwarePluginController import HardwarePluginController
 from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
+NAME = "USB TA"
+
 DEFAULT_LINE = 'RTS'
 DEFAULT_LINE_INVERTED = False
 
@@ -71,8 +73,8 @@ lineLevel = {False: {'on': 1, 'off': 0},
 
 
 class UsbTaShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
-    _name = "USB TA"
-
+    """
+    """
     def _init(self):
         Logger().trace("UsbTaShutter._init()")
         AbstractHardwarePlugin._init(self)
@@ -146,8 +148,7 @@ class UsbTaShutterController(StandardShutterPluginController, HardwarePluginCont
         self._addWidget('Hard', "Line inverted", CheckBoxField, (), 'LINE_INVERTED')
 
 
-
 def register():
     """ Register plugins.
     """
-    PluginsManager ().register(UsbTaShutter, UsbTaShutterController)
+    PluginsManager ().register(UsbTaShutter, UsbTaShutterController, capacity='shutter', name=NAME)

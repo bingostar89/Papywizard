@@ -76,6 +76,8 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 from PyQt4 import QtCore
 
+NAME = "Pololu Servo"
+
 DEFAULT_CHANNEL = {'yawAxis': 1,
                    'pitchAxis': 2,
                    'shutter': 0}
@@ -94,8 +96,8 @@ MANUAL_SPEED_INDEX = {'slow': .5,
 
 
 class PololuServoHardware(AbstractHardwarePlugin):
-    _name = "Pololu Servo"
-
+    """
+    """
     def _init(self):
         Logger().trace("PololuServoHardware._init()")
         AbstractHardwarePlugin._init(self)
@@ -428,30 +430,6 @@ class PololuServoAxisController(AxisPluginController, HardwarePluginController):
         self._addWidget('Servo', "Neutral position", SpinBoxField, (500, 5500), 'NEUTRAL_POSITION')
 
 
-class PololuServoYawAxis(PololuServoAxis):
-    _capacity = 'yawAxis'
-
-    def _init(self):
-        Logger().trace("PololuServoYawAxis._init()")
-        PololuServoAxis._init(self)
-
-
-class PololuServoYawAxisController(PololuServoAxisController):
-    pass
-
-
-class PololuServoPitchAxis(PololuServoAxis):
-    _capacity = 'pitchAxis'
-
-    def _init(self):
-        Logger().trace("PololuServoPitchAxis._init()")
-        PololuServoAxis._init(self)
-
-
-class PololuServoPitchAxisController(PololuServoAxisController):
-    pass
-
-
 class PololuServoShutter(PololuServoHardware, AbstractStandardShutterPlugin):
     def _init(self):
         Logger().trace("PololuServoShutter._init()")
@@ -531,6 +509,6 @@ class PololuServoShutterController(StandardShutterPluginController, HardwarePlug
 def register():
     """ Register plugins.
     """
-    PluginsManager ().register(PololuServoYawAxis, PololuServoYawAxisController)
-    PluginsManager ().register(PololuServoPitchAxis, PololuServoPitchAxisController)
-    PluginsManager ().register(PololuServoShutter, PololuServoShutterController)
+    PluginsManager().register(PololuServoAxis, PololuServoAxisController, capacity='yawAxis', name=NAME)
+    PluginsManager().register(PololuServoAxis, PololuServoAxisController, capacity='pitchAxis', name=NAME)
+    PluginsManager().register(PololuServoShutter, PololuServoShutterController, capacity='shutter', name=NAME)

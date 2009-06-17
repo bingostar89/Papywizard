@@ -64,13 +64,15 @@ from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
+NAME = "Timelord"
+
 DEFAULT_PROGRAM_PATH = "C:\\Program Files\\OxfordEye\\Timelord\\Timelord.exe"
 DEFAULT_LRD_FILE_PATH = "C:\\Documents and Settings\\win2k\\My Documents\\timelord.lrd"
 
 
 class TimelordShutter(AbstractShutterPlugin):
-    _name = "Timelord"
-
+    """
+    """
     def _init(self):
         pass
 
@@ -131,7 +133,7 @@ class TimelordShutter(AbstractShutterPlugin):
 
 class TimelordShutterController(ShutterPluginController):
     def _defineGui(self):
-        #ShutterPluginController._defineGui(self)
+        ShutterPluginController._defineGui(self)
         self._addWidget('Main', "Program path", LineEditField, (), 'PROGRAM_PATH')
         self._addWidget('Main', "LRD file path", LineEditField, (), 'LRD_FILE_PATH')
 
@@ -139,4 +141,4 @@ class TimelordShutterController(ShutterPluginController):
 def register():
     """ Register plugins.
     """
-    PluginsManager ().register(TimelordShutter, TimelordShutterController)
+    PluginsManager ().register(TimelordShutter, TimelordShutterController, capacity='shutter', name=NAME)

@@ -78,6 +78,8 @@ from papywizard.plugins.hardwarePluginController import HardwarePluginController
 from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
+NAME = "Merlin-Orion"
+
 DEFAULT_ALTERNATE_DRIVE = True
 DEFAULT_INERTIA_ANGLE = 1. # °
 #DEFAULT_ALTERNATE_FULL_CIRCLE = False
@@ -87,6 +89,9 @@ ALTERNATE_DRIVE_ANGLE = 7. # °
 ENCODER_ZERO = 0x800000
 ENCODER_FULL_CIRCLE = 0xE62D3
 AXIS_ACCURACY = 0.1 # °
+NUM_AXIS = {'yawAxis': 1,
+            'pitchAxis': 2,
+            'shutter': 1}
 SPEED_INDEX = {'slow': 170,  # "AA0000"  / 5
                'alternate': 80, # "500000"
                'normal': 34, # "220000" nominal
@@ -94,13 +99,12 @@ SPEED_INDEX = {'slow': 170,  # "AA0000"  / 5
 
 
 class MerlinOrionHardware(AbstractHardwarePlugin):
-    _name = "Merlin-Orion"
     _initMerlinOrionFlag = [False, False]
 
     def _init(self):
         Logger().trace("MerlinOrionHardware._init()")
         AbstractHardwarePlugin._init(self)
-        self._numAxis = None
+        #self._numAxis = None
 
     def _decodeAxisValue(self, strValue):
         """ Decode value from axis.
@@ -176,7 +180,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
         @return: answer
         @rtype: str
         """
-        cmd = "%s%d%s" % (cmd, self._numAxis, param)
+        cmd = "%s%d%s" % (cmd, NUM_AXIS[self.name], param)
         for nbTry in xrange(3):
             try:
                 answer = ""
@@ -197,12 +201,12 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
 
             except IOError:
                 Logger().exception("MerlinOrionHardware._sendCmd")
-                Logger().warning("MerlinOrionHardware._sendCmd(): axis %d can't sent command '%s'. Retrying..." % (self._numAxis, cmd))
+                Logger().warning("MerlinOrionHardware._sendCmd(): axis %d can't sent command '%s'. Retrying..." % (NUM_AXIS[self.name], cmd))
             else:
                 break
         else:
-            raise HardwareError("MerlinOrion axis %d can't send command '%s'" % (self._numAxis, cmd))
-        #Logger().debug("MerlinOrionHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (self._numAxis, cmd, answer))
+            raise HardwareError("MerlinOrion axis %d can't send command '%s'" % (NUM_AXIS[self.name], cmd))
+        #Logger().debug("MerlinOrionHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (NUM_AXIS[self.name], cmd, answer))
 
         return answer
 
@@ -213,7 +217,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
         """
         self._driver.acquireBus()
         try:
-            if not MerlinOrionHardware._initMerlinOrionFlag[self._numAxis - 1]:
+            if not MerlinOrionHardware._initMerlinOrionFlag[NUM_AXIS[self.name] - 1]:
 
                 # Stop axis
                 self._sendCmd("L")
@@ -229,7 +233,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
                 value = self._sendCmd("D")
                 Logger().debug("MerlinOrionHardware._initMerlinOrion(): sidereal rate=%s" % hex(self._decodeAxisValue(value)))
 
-                MerlinOrionHardware._initMerlinOrionFlag[self._numAxis - 1] = True
+                MerlinOrionHardware._initMerlinOrionFlag[NUM_AXIS[self.name] - 1] = True
         finally:
             self._driver.releaseBus()
 
@@ -290,7 +294,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
             elif dir_ == '-':
                 self._sendCmd("G", "31")
             else:
-                raise ValueError("Axis %d dir. must be in ('+', '-')" % self._numAxis)
+                raise ValueError("Axis %d dir. must be in ('+', '-')" % NUM_AXIS[self.name])
             self._sendCmd("I", self._encodeAxisValue(speed))
             self._sendCmd("J")
         finally:
@@ -310,9 +314,9 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
 
 
 class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
-    def __init__(self):
-        MerlinOrionHardware.__init__(self)
-        AbstractAxisPlugin.__init__(self)
+    def __init__(self, *args, **kwargs):
+        MerlinOrionHardware.__init__(self, *args, **kwargs)
+        AbstractAxisPlugin.__init__(self, *args, **kwargs)
         QtCore.QThread.__init__(self)
 
     def _init(self):
@@ -497,31 +501,6 @@ class MerlinOrionAxisController(AxisPluginController, HardwarePluginController):
         #self._addWidget('Hard', "Alternate full circle", CheckBoxField, (), 'ALTERNATE_FULL_CIRCLE')
         #self._addWidget('Hard', "Encoder full circle", SpinBoxField, (0x080000, 0x380000, "", " units/turn"), 'ENCODER_FULL_CIRCLE')
 
-class MerlinOrionYawAxis(MerlinOrionAxis):
-    _capacity = 'yawAxis'
-
-    def _init(self):
-        Logger().trace("MerlinOrionYawAxis._init()")
-        MerlinOrionAxis._init(self)
-        self._numAxis = 1
-
-
-class MerlinOrionYawAxisController(MerlinOrionAxisController):
-    pass
-
-
-class MerlinOrionPitchAxis(MerlinOrionAxis):
-    _capacity = 'pitchAxis'
-
-    def _init(self):
-        Logger().trace("MerlinOrionPitchAxis._init()")
-        MerlinOrionAxis._init(self)
-        self._numAxis = 2
-
-
-class MerlinOrionPitchAxisController(MerlinOrionAxisController):
-    pass
-
 
 class MerlinOrionShutter(MerlinOrionHardware, AbstractStandardShutterPlugin):
     def _init(self):
@@ -592,6 +571,6 @@ class MerlinOrionShutterController(StandardShutterPluginController, HardwarePlug
 def register():
     """ Register plugins.
     """
-    PluginsManager ().register(MerlinOrionYawAxis, MerlinOrionYawAxisController)
-    PluginsManager ().register(MerlinOrionPitchAxis, MerlinOrionPitchAxisController)
-    PluginsManager ().register(MerlinOrionShutter, MerlinOrionShutterController)
+    PluginsManager().register(MerlinOrionAxis, MerlinOrionAxisController, capacity='yawAxis', name=NAME)
+    PluginsManager().register(MerlinOrionAxis, MerlinOrionAxisController, capacity='pitchAxis', name=NAME)
+    PluginsManager().register(MerlinOrionShutter, MerlinOrionShutterController, capacity='shutter', name=NAME)

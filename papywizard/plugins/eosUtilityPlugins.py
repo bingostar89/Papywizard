@@ -63,6 +63,8 @@ from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField
 
+NAME = "EOS Utility"
+
 DEFAULT_PROGRAM_PATH = "C:\\Program Files\\Papywizard\\EOSBracket.exe"
 DEFAULT_EOSUTILITY_TYPE = 'new'
 DEFAULT_EXPOSURE_BRACKETING_STOPS = '1'
@@ -82,8 +84,8 @@ EXPOSURE_BRACKETING_TYPE_INDEX = {'0--': '1',
 
 
 class EOSUtilityShutter(AbstractShutterPlugin):
-    _name = "EOS Utility"
-
+    """ Plugin for the EOS Utility triggering program.
+    """
     def _init(self):
         pass
 
@@ -192,7 +194,7 @@ class EOSUtilityShutter(AbstractShutterPlugin):
 
 class EOSUtilityShutterController(ShutterPluginController):
     def _defineGui(self):
-        #ShutterPluginController._defineGui(self)
+        ShutterPluginController._defineGui(self)
         self._addWidget('Main', "EOS Bracket path", LineEditField, (), 'PROGRAM_PATH')
         self._addWidget('Main', "EOS Utility Type", ComboBoxField, (['old', 'new'],), 'EOSUTILITY_TYPE')
         self._addWidget('Main', "Exposure Bracketing Stops", ComboBoxField, (['1/3', '2/3', '1', '1 1/3', '1 2/3', '2', '2 1/3', '2 2/3', '3', '3 1/3', '3 2/3', '4', '4 1/3', '4 2/3', '5', '5 1/3', '5 2/3', '6'],), 'EXPOSURE_BRACKETING_STOPS')
@@ -212,4 +214,4 @@ class EOSUtilityShutterController(ShutterPluginController):
 def register():
     """ Register plugins.
     """
-    PluginsManager().register(EOSUtilityShutter, EOSUtilityShutterController)
+    PluginsManager().register(EOSUtilityShutter, EOSUtilityShutterController, capacity='shutter', name=NAME)

@@ -64,21 +64,20 @@ from papywizard.common.configManager import ConfigManager
 class AbstractPlugin(object): #(QtCore.QObject):
     """ Abstract definition of a plugin.
     """
-    _capacity = None # in ('yawAxis', 'pitchAxis', 'shutter', analysis', ...)
-    _name = None
-
-    def __init__(self):
+    def __init__(self, capacity, name):
         """ Init the abstract plugin.
+
+        @param capacity: capacity of the plugin, in ('yawAxis', 'pitchAxis', 'shutter')
+        @type capacity: str
+
+        @param name: name of the plugin
+        @type name: str
         """
         #QtCore.QObject.__init__(self)
 
-        # Check capacity validity
-        if self.capacity not in ('yawAxis', 'pitchAxis', 'shutter', 'analysis'):
-            raise RuntimeError("Unknown plugin capacity (%s)" % self.capacity)
-        if self.name is None:
-            raise RuntimeError("Plugin name undefined")
-
         # Plugin specific init
+        self._capacity = capacity
+        self._name = name
         self._init()
         self._config = {}
         self._defineConfig()
@@ -88,14 +87,14 @@ class AbstractPlugin(object): #(QtCore.QObject):
     def __getCapacity(self):
         """ Return the capacity of the plugin.
         """
-        return self.__class__._capacity
+        return self._capacity
 
     capacity = property(__getCapacity, "Plugin capacity")
 
     def __getName(self):
         """ Return the name of the plugin.
         """
-        return self.__class__._name
+        return self._name
 
     name = property(__getName, "Plugin name")
 

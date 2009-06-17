@@ -116,7 +116,7 @@ class PluginsManagerObject(QtCore.QObject):
                     finally:
                         file.close()
 
-    def register(self, pluginClass, pluginControllerClass):
+    def register(self, pluginClass, pluginControllerClass, capacity, name):
         """ Register a new plugin.
 
         @param pluginClass: class of the plugin model
@@ -125,7 +125,7 @@ class PluginsManagerObject(QtCore.QObject):
         @param pluginControllerClass: class of the plugin controller
         @type pluginControllerClass: {AbstractPluginController<controller.abstractPluginController>}
         """
-        model = pluginClass()
+        model = pluginClass(capacity, name)
         self.__plugins.add((model, pluginControllerClass))
         Logger().debug("PluginsManager.register(): added '%s' plugin with capacity '%s'" % (model.name, model.capacity))
 

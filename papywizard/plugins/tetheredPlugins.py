@@ -61,6 +61,8 @@ from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
+NAME = "Tethered"
+
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_MIRROR_LOCKUP_COMMAND = "gphoto2 --capture-image"
 DEFAULT_SHOOT_COMMAND = "gphoto2 --capture-image"
@@ -69,8 +71,8 @@ DEFAULT_BRACKETING_INTENT = 'exposure'
 
 
 class TetheredShutter(AbstractShutterPlugin):
-    _name = "Tethered"
-
+    """
+    """
     def _init(self):
         pass
 
@@ -137,7 +139,7 @@ class TetheredShutter(AbstractShutterPlugin):
 
 class TetheredShutterController(ShutterPluginController):
     def _defineGui(self):
-        #ShutterPluginController._defineGui(self)
+        ShutterPluginController._defineGui(self)
         self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', "Mirror lockup command", LineEditField, (), 'MIRROR_LOCKUP_COMMAND')
         self._addWidget('Main', "Shoot command", LineEditField, (), 'SHOOT_COMMAND')
@@ -148,4 +150,4 @@ class TetheredShutterController(ShutterPluginController):
 def register():
     """ Register plugins.
     """
-    PluginsManager ().register(TetheredShutter, TetheredShutterController)
+    PluginsManager ().register(TetheredShutter, TetheredShutterController, capacity='shutter', name=NAME)

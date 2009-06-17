@@ -57,5 +57,5 @@ from papywizard.plugins.abstractPluginController import AbstractPluginController
 class ShutterPluginController(AbstractPluginController):
     """ Plugin controller for shutter 'capacity'.
     """
-    #def _defineGui(self):
-        #pass
+    def _defineGui(self):
+        pass
