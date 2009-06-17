@@ -346,12 +346,11 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
 
     def init(self):
         Logger().trace("MerlinOrionAxis.init()")
-        self._initMerlinOrion()        
+        self._initMerlinOrion()
 
     def shutdown(self):
         Logger().trace("MerlinOrionAxis.shutdown()")
         self.stop()
-        MerlinOrionHardware.shutdownConnection(self)
 
     def run(self):
         """ Main entry of the thread.
