@@ -579,7 +579,6 @@ class Shooting(QtCore.QObject):
                         Logger().debug("Shooting.start(): position index=%s, yaw=%.1f, pitch=%.1f" % (str(index), yaw, pitch))
                         self.update(index, yaw, pitch, next=True)
 
-
                     # Test manual shooting flag.
                     # skipped if timeValue is 0
                     if self.shutter.timeValue and self.__stepByStep and not self.__stop:
