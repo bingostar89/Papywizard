@@ -91,27 +91,37 @@ class ConnectController(AbstractModalDialogController):
         plugin = PluginManager().get('yawAxis', pluginName)[0]
         item = QtGui.QListWidgetItem("'yawAxis' establish connection...")
         self._view.pluginsStatusListWidget.addItem(item)
+        for i in xrange(5000):
+            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
         try:
             plugin.establishConnection()
         except:
             Logger().exception("MainController.__connect()")
             item.setText(item.text() + "  Failed")
             item.setTextColor(QtGui.QColor("red"))
+            for i in xrange(5000):
+                QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
         else:
             item.setText(item.text()  + "  Ok")
             item.setTextColor(QtGui.QColor("green"))
             pluginsStatus['yawAxis']['connect'] = True
             item = QtGui.QListWidgetItem("'yawAxis' init...")
             self._view.pluginsStatusListWidget.addItem(item)
+            for i in xrange(5000):
+                QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             try:
                 plugin.init()
             except:
                 Logger().exception("MainController.__connect()")
                 item.setText(item.text() + "  Failed")
                 item.setTextColor(QtGui.QColor("red"))
+                for i in xrange(5000):
+                    QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             else:
                 item.setText(item.text() + "  Ok")
                 item.setTextColor(QtGui.QColor("green"))
+                for i in xrange(5000):
+                    QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
                 pluginsStatus['yawAxis']['init'] = True
 
         # Connect 'pitchAxis' plugin
@@ -119,27 +129,37 @@ class ConnectController(AbstractModalDialogController):
         plugin = PluginManager().get('pitchAxis', pluginName)[0]
         item = QtGui.QListWidgetItem("'pitchAxis' establish connection...")
         self._view.pluginsStatusListWidget.addItem(item)
+        for i in xrange(5000):
+            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
         try:
             plugin.establishConnection()
         except:
             Logger().exception("MainController.__connect()")
             item.setText(item.text() + "  Failed")
             item.setTextColor(QtGui.QColor("red"))
+            for i in xrange(5000):
+                QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
         else:
             item.setText(item.text() + "  Ok")
             item.setTextColor(QtGui.QColor("green"))
             pluginsStatus['pitchAxis']['connect'] = True
             item = QtGui.QListWidgetItem("'pitchAxis' init...")
             self._view.pluginsStatusListWidget.addItem(item)
+            for i in xrange(5000):
+                QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             try:
                 plugin.init()
             except:
                 Logger().exception("MainController.__connect()")
                 item.setText(item.text() + "  Failed")
                 item.setTextColor(QtGui.QColor("red"))
+                for i in xrange(5000):
+                    QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             else:
                 item.setText(item.text() + "  Ok")
                 item.setTextColor(QtGui.QColor("green"))
+                for i in xrange(5000):
+                    QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
                 pluginsStatus['pitchAxis']['init'] = True
 
         # Connect 'shutter' plugin
@@ -147,27 +167,37 @@ class ConnectController(AbstractModalDialogController):
         plugin = PluginManager().get('shutter', pluginName)[0]
         item = QtGui.QListWidgetItem("'shutter' establish connection...")
         self._view.pluginsStatusListWidget.addItem(item)
+        for i in xrange(5000):
+            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
         try:
             plugin.establishConnection()
         except:
             Logger().exception("MainController.__connect()")
             item.setText(item.text() + "  Failed")
             item.setTextColor(QtGui.QColor("red"))
+            for i in xrange(5000):
+                QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
         else:
             item.setTextColor(QtGui.QColor("green"))
             item.setText(item.text() + "  Ok")
             pluginsStatus['shutter']['connect'] = True
             item = QtGui.QListWidgetItem("'shutter' init...")
             self._view.pluginsStatusListWidget.addItem(item)
+            for i in xrange(5000):
+                QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             try:
                 plugin.init()
             except:
                 Logger().exception("MainController.__connect()")
                 item.setText(item.text() + "  Failed")
                 item.setTextColor(QtGui.QColor("red"))
+                for i in xrange(5000):
+                    QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             else:
                 item.setText(item.text() + "  Ok")
                 item.setTextColor(QtGui.QColor("green"))
+                for i in xrange(5000):
+                    QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
                 pluginsStatus['shutter']['init'] = True
 
         # Restore cursor and buttons

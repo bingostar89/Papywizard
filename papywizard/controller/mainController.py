@@ -926,6 +926,8 @@ class MainController(AbstractController):
         controller = ConnectController(self, self._model)
         self._view.releaseKeyboard()
         controller.show()
+        for i in xrange(5000):
+            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
         self.__pluginsStatus = controller.connectToPlugins()
         controller.exec_()
         self._view.grabKeyboard()
