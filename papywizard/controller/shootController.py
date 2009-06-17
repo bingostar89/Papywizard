@@ -412,7 +412,7 @@ class ShootController(AbstractModalDialogController):
             self._view.stepByStepPushButton.setIcon(QtGui.QIcon(":/icons/button_cancel.png"))
             if self._model.isShooting():
                 self._view.pauseResumeStepPushButton.setEnabled(True) # Should not be enabled if
-                                                                  # a pause request has been asked
+                                                                      # a pause request has been asked
             if self._model.isPaused():
                 self._view.pauseResumeStepPushButton.setText(self.tr("Resume"))
                 self._view.pauseResumeStepPushButton.setIcon(QtGui.QIcon(":/icons/player_pause.png"))
