@@ -99,8 +99,8 @@ SPEED_INDEX = {'slow': 170,  # "AA0000"  / 5
 
 
 class MerlinOrionHardware(AbstractHardwarePlugin):
-    _initMerlinOrionFlag = [False, False]
-
+    """
+    """
     def _init(self):
         Logger().trace("MerlinOrionHardware._init()")
         AbstractHardwarePlugin._init(self)
@@ -217,23 +217,21 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
         """
         self._driver.acquireBus()
         try:
-            if not MerlinOrionHardware._initMerlinOrionFlag[NUM_AXIS[self.capacity] - 1]:
 
-                # Stop axis
-                self._sendCmd("L")
+            # Stop axis
+            self._sendCmd("L")
 
-                # Check motor?
-                self._sendCmd("F")
+            # Check motor?
+            self._sendCmd("F")
 
-                # Get full circle count
-                value = self._sendCmd("a")
-                Logger().debug("MerlinOrionHardware._initMerlinOrion(): full circle count=%s" % hex(self._decodeAxisValue(value)))
+            # Get full circle count
+            value = self._sendCmd("a")
+            Logger().debug("MerlinOrionHardware._initMerlinOrion(): full circle count=%s" % hex(self._decodeAxisValue(value)))
 
-                # Get sidereal rate
-                value = self._sendCmd("D")
-                Logger().debug("MerlinOrionHardware._initMerlinOrion(): sidereal rate=%s" % hex(self._decodeAxisValue(value)))
+            # Get sidereal rate
+            value = self._sendCmd("D")
+            Logger().debug("MerlinOrionHardware._initMerlinOrion(): sidereal rate=%s" % hex(self._decodeAxisValue(value)))
 
-                MerlinOrionHardware._initMerlinOrionFlag[NUM_AXIS[self.capacity] - 1] = True
         finally:
             self._driver.releaseBus()
 

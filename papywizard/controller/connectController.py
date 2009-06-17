@@ -51,14 +51,13 @@ Implements
 
 __revision__ = "$Id: ConnectController.py 1914 2009-06-13 17:50:11Z fma $"
 
+import time
+import threading
+
 from PyQt4 import QtCore, QtGui
 
 from papywizard.common.loggingServices import Logger
-from papywizard.common.configManager import ConfigManager
-from papywizard.plugins.pluginsManager  import PluginsManager
-from papywizard.controller.spy import Spy
 from papywizard.controller.abstractController import AbstractModalDialogController
-from papywizard.view.messageDialog import ExceptionMessageDialog
 
 
 class ConnectController(AbstractModalDialogController):
@@ -67,227 +66,92 @@ class ConnectController(AbstractModalDialogController):
     def _init(self):
         self._uiFile = "connectDialog.ui"
 
-        self.__plugins = ['yawAxis', 'pitchAxis', 'shutter']
+        self.__connectorThread = PluginsConnectorThread(self._model)
+        #self.__connectorThread.start()  # The signals are not yet connected!
 
     def _initWidgets(self):
-        pass
-
-    def connectToPlugins(self):
-        """ Connect to plugins.
-
-        @return: plugins connection status
-        @rtype: dict
-        """
-        Logger().info("Connecting...")
-
-        pluginsStatus = {'yawAxis': {'connect': False, 'init': False},
-                         'pitchAxis': {'connect': False, 'init': False},
-                         'shutter': {'connect': False, 'init': False}
-                         }
-
-        # Wait cursor
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
-        # Connect 'yawAxis' plugin
-        pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
-        plugin = PluginsManager ().get('yawAxis', pluginName)[0]
-        item = QtGui.QListWidgetItem("'yawAxis' establish connection...")
-        self._view.pluginsStatusListWidget.addItem(item)
-        for i in xrange(5000):
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-        try:
-            plugin.establishConnection()
-        except:
-            Logger().exception("MainController.__connect()")
-            item.setText(item.text() + "  Failed")
-            item.setTextColor(QtGui.QColor("red"))
-            for i in xrange(5000):
-                QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+    def _connectSignals(self):
+        AbstractModalDialogController._connectSignals(self)
+
+        self.connect(self._model, QtCore.SIGNAL("currentStep"), self.__onCurrentStep, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("stepStatus"), self.__onStepStatus, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self.__connectorThread, QtCore.SIGNAL("finished()"), self.__onFinished, QtCore.Qt.BlockingQueuedConnection)
+
+        self.__connectorThread.start()  # Hugly!
+
+    def _disconnectSignals(self):
+        AbstractModalDialogController._disconnectSignals(self)
+
+        self.disconnect(self._model, QtCore.SIGNAL("currentStep"), self.__onCurrentStep)
+        self.disconnect(self._model, QtCore.SIGNAL("stepStatus"), self.__onStepStatus)
+        self.disconnect(self.__connectorThread, QtCore.SIGNAL("finished()"), self.__onFinished)
+
+    # Callbacks Qt
+    def _onCloseEvent(self, event):
+        Logger().trace("ConnectController._onCloseEvent()")
+        if self._view.buttonBox.isEnabled():
+            event.accept()
         else:
-            item.setText(item.text()  + "  Ok")
-            item.setTextColor(QtGui.QColor("green"))
-            pluginsStatus['yawAxis']['connect'] = True
-            item = QtGui.QListWidgetItem("'yawAxis' init...")
-            self._view.pluginsStatusListWidget.addItem(item)
-            for i in xrange(5000):
-                QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-            try:
-                plugin.init()
-            except:
-                Logger().exception("MainController.__connect()")
-                item.setText(item.text() + "  Failed")
-                item.setTextColor(QtGui.QColor("red"))
-                for i in xrange(5000):
-                    QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-            else:
-                item.setText(item.text() + "  Ok")
-                item.setTextColor(QtGui.QColor("green"))
-                for i in xrange(5000):
-                    QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-                pluginsStatus['yawAxis']['init'] = True
+            event.ignore()
 
-        # Connect 'pitchAxis' plugin
-        pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
-        plugin = PluginsManager ().get('pitchAxis', pluginName)[0]
-        item = QtGui.QListWidgetItem("'pitchAxis' establish connection...")
-        self._view.pluginsStatusListWidget.addItem(item)
-        for i in xrange(5000):
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-        try:
-            plugin.establishConnection()
-        except:
-            Logger().exception("MainController.__connect()")
-            item.setText(item.text() + "  Failed")
-            item.setTextColor(QtGui.QColor("red"))
-            for i in xrange(5000):
-                QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-        else:
-            item.setText(item.text() + "  Ok")
-            item.setTextColor(QtGui.QColor("green"))
-            pluginsStatus['pitchAxis']['connect'] = True
-            item = QtGui.QListWidgetItem("'pitchAxis' init...")
-            self._view.pluginsStatusListWidget.addItem(item)
-            for i in xrange(5000):
-                QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-            try:
-                plugin.init()
-            except:
-                Logger().exception("MainController.__connect()")
-                item.setText(item.text() + "  Failed")
-                item.setTextColor(QtGui.QColor("red"))
-                for i in xrange(5000):
-                    QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-            else:
-                item.setText(item.text() + "  Ok")
-                item.setTextColor(QtGui.QColor("green"))
-                for i in xrange(5000):
-                    QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-                pluginsStatus['pitchAxis']['init'] = True
+    def _onAccepted(self):
+        Logger().trace("ConnectController._onAccepted()")
 
-        # Connect 'shutter' plugin
-        pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
-        plugin = PluginsManager ().get('shutter', pluginName)[0]
-        item = QtGui.QListWidgetItem("'shutter' establish connection...")
-        self._view.pluginsStatusListWidget.addItem(item)
-        for i in xrange(5000):
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-        try:
-            plugin.establishConnection()
-        except:
-            Logger().exception("MainController.__connect()")
-            item.setText(item.text() + "  Failed")
-            item.setTextColor(QtGui.QColor("red"))
-            for i in xrange(5000):
-                QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-        else:
-            item.setTextColor(QtGui.QColor("green"))
-            item.setText(item.text() + "  Ok")
-            pluginsStatus['shutter']['connect'] = True
-            item = QtGui.QListWidgetItem("'shutter' init...")
-            self._view.pluginsStatusListWidget.addItem(item)
-            for i in xrange(5000):
-                QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-            try:
-                plugin.init()
-            except:
-                Logger().exception("MainController.__connect()")
-                item.setText(item.text() + "  Failed")
-                item.setTextColor(QtGui.QColor("red"))
-                for i in xrange(5000):
-                    QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-            else:
-                item.setText(item.text() + "  Ok")
-                item.setTextColor(QtGui.QColor("green"))
-                for i in xrange(5000):
-                    QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-                pluginsStatus['shutter']['init'] = True
+    def _onRejected(self):
+        Logger().trace("ConnectController._onRejected()")
 
-        # Restore cursor and buttons
-        self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-        self._view.buttonBox.setEnabled(True)
+    def __onCurrentStep(self, step):
+        """ A new current step is available.
 
-        return pluginsStatus
-
-    def disconnectFromPlugins(self, pluginStatus):
-        """ Disconnect from plugins.
-
-        @param pluginsStatus: plugins connection status
-        @type pluginsStatus: dict
+        @param step: new current step
+        @type step: str
         """
-        Logger().info("Disconnecting...")
+        Logger().debug("ConnectController.__onCurrentStep(): step=%s" % step)
+        self._view.pluginsStatusTextEdit.insertHtml(step)
 
-        Spy().suspend()
-
-        # Wait cursor
-        self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-
-        # Disconnect 'yawAxis' plugin
-        pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
-        plugin = PluginsManager ().get('yawAxis', pluginName)[0]
-        if pluginsStatus['yawAxis']['init']:
-            try:
-                plugin.shutdown()
-            except:
-                Logger().exception("MainController.__disconnect()")
-            else:
-                pluginsStatus['yawAxis']['init'] = False
-        if pluginsStatus['yawAxis']['connect']:
-            try:
-                plugin.stopConnection()
-            except:
-                Logger().exception("MainController.__disconnect()")
-            else:
-                pluginsStatus['yawAxis']['connect'] = False
+    def __onStepStatus(self, status):
+        """ Set the status of the current step.
         
-        # Disconnect 'pitchAxis' plugin
-        pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
-        plugin = PluginsManager ().get('pitchAxis', pluginName)[0]
-        if pluginsStatus['pitchAxis']['init']:
-            try:
-                plugin.shutdown()
-            except:
-                Logger().exception("MainController.__disconnect()")
-            else:
-                pluginsStatus['pitchAxis']['init'] = False
-        if pluginsStatus['pitchAxis']['connect']:
-            try:
-                plugin.stopConnection()
-            except:
-                Logger().exception("MainController.__disconnect()")
-            else:
-                pluginsStatus['pitchAxis']['connect'] = False
+        @param status: step status, in ('Ok', 'Failed')
+        @type status: str
+        """
+        Logger().debug("ConnectController.__onStepStatus(): status=%s" % status)
+        if status == 'Ok':
+            self._view.pluginsStatusTextEdit.insertHtml("&nbsp;&nbsp;<span style='color:#005500;'>[%s]</span><br />" % status)
+        else:
+            self._view.pluginsStatusTextEdit.insertHtml("&nbsp;&nbsp;<span style='color:#550000;'>[%s]</span><br />" % status)
 
-        # Disconnect 'shutter' plugin
-        pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
-        plugin = PluginsManager ().get('shutter', pluginName)[0]
-        if pluginsStatus['shutter']['init']:
-            try:
-                plugin.shutdown()
-            except:
-                Logger().exception("MainController.__disconnect()")
-            else:
-                pluginsStatus['shutter']['init'] = False
-        if pluginsStatus['shutter']['connect']:
-            try:
-                plugin.stopConnection()
-            except:
-                Logger().exception("MainController.__disconnect()")
-            else:
-                pluginsStatus['shutter']['connect'] = False
-
-        # Restore cursor
+    def __onFinished(self):
+        """ Pb: not called!
+        """
+        Logger().trace("ConnectController.__onFinished()")
+        self._view.buttonBox.setEnabled(True)
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
 
-        # Check disconnection status
-        if not pluginsStatus['yawAxis']['connect'] and \
-           not pluginsStatus['pitchAxis']['connect'] and \
-           not pluginsStatus['shutter']['connect']:
-            Logger().info("Disconnected")
-            return True
-        else:
-            Logger().error("Disconnection failed")
-            return False
+        # Check connection status
+        pluginsStatus = self._model.getPluginsStatus()
+        if pluginsStatus['yawAxis']['init'] and \
+           pluginsStatus['pitchAxis']['init'] and \
+           pluginsStatus['shutter']['init']:
+            time.sleep(1)
+            self._view.accept()
 
     # Interface
     def refreshView(self):
         pass
+
+
+class PluginsConnectorThread(QtCore.QThread):
+    """ Special thread starting connector.
+    """
+    def __init__(self, connector):
+        """ Init the connector thread.
+        """
+        QtCore.QThread.__init__(self)
+        self.__connector = connector
+
+    def run(self):
+        threading.currentThread().setName("Connector")
+        self.__connector.connectPlugins()
