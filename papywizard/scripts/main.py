@@ -71,7 +71,7 @@ class BlackHole:
 def main():
     try:
         # Give a name to the main trhead
-        threading.currentThread().setName("MainThread")
+        threading.currentThread().setName("Main")
 
         # Init the logger
         if hasattr(sys, "frozen"):
