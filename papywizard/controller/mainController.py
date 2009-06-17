@@ -64,7 +64,7 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.presetManager import PresetManager
 from papywizard.common.exception import HardwareError
-from papywizard.common.pluginManager import PluginManager
+from papywizard.plugins.pluginsManager  import PluginsManager 
 from papywizard.controller.abstractController import AbstractController
 from papywizard.controller.connectController import ConnectController
 from papywizard.controller.loggerController import LoggerController
@@ -967,7 +967,7 @@ class MainController(AbstractController):
 ##
 ##        # Connect to 'yawAxis' plugin
 ##        pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
-##        plugin = PluginManager().get('yawAxis', pluginName)[0]
+##        plugin = PluginsManager ().get('yawAxis', pluginName)[0]
 ##        try:
 ##            plugin.establishConnection()
 ##        except:
@@ -985,7 +985,7 @@ class MainController(AbstractController):
 ##
 ##        # Connect to 'pitchAxis' plugin
 ##        pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
-##        plugin = PluginManager().get('pitchAxis', pluginName)[0]
+##        plugin = PluginsManager ().get('pitchAxis', pluginName)[0]
 ##        try:
 ##            plugin.establishConnection()
 ##        except:
@@ -1003,7 +1003,7 @@ class MainController(AbstractController):
 ##
 ##        # Connect to 'shutter' plugin
 ##        pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
-##        plugin = PluginManager().get('shutter', pluginName)[0]
+##        plugin = PluginsManager ().get('shutter', pluginName)[0]
 ##        try:
 ##            plugin.establishConnection()
 ##        except:
@@ -1061,7 +1061,7 @@ class MainController(AbstractController):
 
         # Shut down 'yawAxis' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
-        plugin = PluginManager().get('yawAxis', pluginName)[0]
+        plugin = PluginsManager ().get('yawAxis', pluginName)[0]
         if self.__pluginsStatus['yawAxis']['init']:
             try:
                 plugin.shutdown()
@@ -1081,7 +1081,7 @@ class MainController(AbstractController):
         
         # Shut down 'pitchAxis' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
-        plugin = PluginManager().get('pitchAxis', pluginName)[0]
+        plugin = PluginsManager ().get('pitchAxis', pluginName)[0]
         if self.__pluginsStatus['pitchAxis']['init']:
             try:
                 plugin.shutdown()
@@ -1101,7 +1101,7 @@ class MainController(AbstractController):
 
         # Shut down 'shutter' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
-        plugin = PluginManager().get('shutter', pluginName)[0]
+        plugin = PluginsManager ().get('shutter', pluginName)[0]
         if self.__pluginsStatus['shutter']['init']:
             try:
                 plugin.shutdown()
@@ -1159,7 +1159,7 @@ class MainController(AbstractController):
 ##
 ##        # Shut down 'yawAxis' plugin
 ##        pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
-##        plugin = PluginManager().get('yawAxis', pluginName)[0]
+##        plugin = PluginsManager ().get('yawAxis', pluginName)[0]
 ##        if self.__pluginsStatus['yawAxis']['init']:
 ##            try:
 ##                plugin.shutdown()
@@ -1179,7 +1179,7 @@ class MainController(AbstractController):
 ##        
 ##        # Shut down 'pitchAxis' plugin
 ##        pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
-##        plugin = PluginManager().get('pitchAxis', pluginName)[0]
+##        plugin = PluginsManager ().get('pitchAxis', pluginName)[0]
 ##        if self.__pluginsStatus['pitchAxis']['init']:
 ##            try:
 ##                plugin.shutdown()
@@ -1199,7 +1199,7 @@ class MainController(AbstractController):
 ##
 ##        # Shut down 'shutter' plugin
 ##        pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
-##        plugin = PluginManager().get('shutter', pluginName)[0]
+##        plugin = PluginsManager ().get('shutter', pluginName)[0]
 ##        if self.__pluginsStatus['shutter']['init']:
 ##            try:
 ##                plugin.shutdown()

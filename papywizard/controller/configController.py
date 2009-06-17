@@ -57,7 +57,7 @@ from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.helpers import hmsAsStrToS, hmsToS, sToHms, sToHmsAsStr
 from papywizard.common.loggingServices import Logger
-from papywizard.common.pluginManager import PluginManager
+from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.view.messageDialog import WarningMessageDialog
 
@@ -199,7 +199,7 @@ class ConfigController(AbstractModalDialogController):
         """
         """
         selectedPluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
-        model, controllerClass = PluginManager().get('yawAxis', selectedPluginName)
+        model, controllerClass = PluginsManager ().get('yawAxis', selectedPluginName)
         controller = controllerClass(self, model)
         controller.exec_()
 
@@ -207,7 +207,7 @@ class ConfigController(AbstractModalDialogController):
         """
         """
         selectedPluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
-        model, controllerClass = PluginManager().get('pitchAxis', selectedPluginName)
+        model, controllerClass = PluginsManager ().get('pitchAxis', selectedPluginName)
         controller = controllerClass(self, model)
         controller.exec_()
 
@@ -215,7 +215,7 @@ class ConfigController(AbstractModalDialogController):
         """
         """
         selectedPluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
-        model, controllerClass = PluginManager().get('shutter', selectedPluginName)
+        model, controllerClass = PluginsManager ().get('shutter', selectedPluginName)
         controller = controllerClass(self, model)
         controller.exec_()
 

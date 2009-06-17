@@ -54,7 +54,8 @@ __revision__ = "$Id$"
 import time
 
 from papywizard.common.loggingServices import Logger
-from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
+from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
+
 DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1

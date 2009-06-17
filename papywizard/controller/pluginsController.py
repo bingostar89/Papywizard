@@ -56,7 +56,7 @@ from PyQt4 import QtCore, QtGui
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
-from papywizard.common.pluginManager import PluginManager
+from papywizard.plugins.pluginsManager  import PluginsManager 
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.controller.bluetoothChooserController import BluetoothChooserController
 from papywizard.view.messageDialog import WarningMessageDialog
@@ -102,9 +102,9 @@ class PluginsController(AbstractModalDialogController):
         previousPluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
         ConfigManager().set('Plugins/PLUGIN_YAW_AXIS', unicode(self._view.yawAxisComboBox.currentText()))
         newPluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
-        newPlugin = PluginManager().get('yawAxis', newPluginName)[0]
+        newPlugin = PluginsManager ().get('yawAxis', newPluginName)[0]
         if previousPluginName != newPluginName:
-            previousPlugin = PluginManager().get('yawAxis', previousPluginName)[0]
+            previousPlugin = PluginsManager ().get('yawAxis', previousPluginName)[0]
             previousPlugin.deactivate()
             newPlugin.activate()
         if hasattr(newPlugin, '_driver'):
@@ -115,9 +115,9 @@ class PluginsController(AbstractModalDialogController):
         previousPluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
         ConfigManager().set('Plugins/PLUGIN_PITCH_AXIS', unicode(self._view.pitchAxisComboBox.currentText()))
         newPluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
-        newPlugin = PluginManager().get('pitchAxis', newPluginName)[0]
+        newPlugin = PluginsManager ().get('pitchAxis', newPluginName)[0]
         if previousPluginName != newPluginName:
-            previousPlugin = PluginManager().get('pitchAxis', previousPluginName)[0]
+            previousPlugin = PluginsManager ().get('pitchAxis', previousPluginName)[0]
             previousPlugin.deactivate()
             newPlugin.activate()
         if hasattr(newPlugin, '_driver'):
@@ -128,9 +128,9 @@ class PluginsController(AbstractModalDialogController):
         previousPluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
         ConfigManager().set('Plugins/PLUGIN_SHUTTER', unicode(self._view.shutterComboBox.currentText()))
         newPluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
-        newPlugin = PluginManager().get('shutter', newPluginName)[0]
+        newPlugin = PluginsManager ().get('shutter', newPluginName)[0]
         if previousPluginName != newPluginName:
-            previousPlugin = PluginManager().get('shutter', previousPluginName)[0]
+            previousPlugin = PluginsManager ().get('shutter', previousPluginName)[0]
             previousPlugin.deactivate()
             newPlugin.activate()
         if hasattr(newPlugin, '_driver'):
@@ -149,7 +149,7 @@ class PluginsController(AbstractModalDialogController):
         """ Yaw axis combo box.
         """
         Logger().debug("PluginsController.__onYawAxisComboBoxActivated(): plugin=%s" % pluginName)
-        model, controllerClass = PluginManager().get('yawAxis', pluginName)
+        model, controllerClass = PluginsManager ().get('yawAxis', pluginName)
         if hasattr(model, '_driver'):
             self._view.yawAxisDriverComboBox.setEnabled(True)
             self._view.yawAxisDriverComboBox.setCurrentIndex(self._view.yawAxisDriverComboBox.findText(model._config['DRIVER_TYPE']))
@@ -161,7 +161,7 @@ class PluginsController(AbstractModalDialogController):
         """ Pitch axis combo box.
         """
         Logger().debug("PluginsController.__onPitchAxisComboBoxActivated(): plugin=%s" % pluginName)
-        model, controllerClass = PluginManager().get('pitchAxis', pluginName)
+        model, controllerClass = PluginsManager ().get('pitchAxis', pluginName)
         if hasattr(model, '_driver'):
             self._view.pitchAxisDriverComboBox.setEnabled(True)
             self._view.pitchAxisDriverComboBox.setCurrentIndex(self._view.pitchAxisDriverComboBox.findText(model._config['DRIVER_TYPE']))
@@ -173,7 +173,7 @@ class PluginsController(AbstractModalDialogController):
         """ Shutter combo box.
         """
         Logger().debug("PluginsController.__onShutterComboBoxActivated(): plugin=%s" % pluginName)
-        model, controllerClass = PluginManager().get('shutter', pluginName)
+        model, controllerClass = PluginsManager ().get('shutter', pluginName)
         if hasattr(model, '_driver'):
             self._view.shutterDriverComboBox.setEnabled(True)
             self._view.shutterDriverComboBox.setCurrentIndex(self._view.shutterDriverComboBox.findText(model._config['DRIVER_TYPE']))
@@ -214,13 +214,13 @@ class PluginsController(AbstractModalDialogController):
     def refreshView(self):
 
         # Plugins tab
-        yawAxisPlugins = PluginManager().getList('yawAxis')
+        yawAxisPlugins = PluginsManager ().getList('yawAxis')
         if yawAxisPlugins:
             for model, controller in yawAxisPlugins:
                 self._view.yawAxisComboBox.addItem(model.name)
             selectedPluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
             self._view.yawAxisComboBox.setCurrentIndex(self._view.yawAxisComboBox.findText(selectedPluginName))
-            selectedPlugin = PluginManager().get('yawAxis', selectedPluginName)[0]
+            selectedPlugin = PluginsManager ().get('yawAxis', selectedPluginName)[0]
             if hasattr(selectedPlugin, '_driver'):
                 self._view.yawAxisDriverComboBox.setEnabled(True)
                 driverType = selectedPlugin._config['DRIVER_TYPE']
@@ -229,13 +229,13 @@ class PluginsController(AbstractModalDialogController):
                 self._view.yawAxisDriverComboBox.setEnabled(False)
                 #self._view.yawAxisDriverComboBox.setCurrentIndex(-1)
 
-        pitchAxisPlugins = PluginManager().getList('pitchAxis')
+        pitchAxisPlugins = PluginsManager ().getList('pitchAxis')
         if pitchAxisPlugins:
             for model, controller in pitchAxisPlugins:
                 self._view.pitchAxisComboBox.addItem(model.name)
             selectedPluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
             self._view.pitchAxisComboBox.setCurrentIndex(self._view.pitchAxisComboBox.findText(selectedPluginName))
-            selectedPlugin = PluginManager().get('pitchAxis', selectedPluginName)[0]
+            selectedPlugin = PluginsManager ().get('pitchAxis', selectedPluginName)[0]
             if hasattr(selectedPlugin, '_driver'):
                 self._view.pitchAxisDriverComboBox.setEnabled(True)
                 driverType = selectedPlugin._config['DRIVER_TYPE']
@@ -244,13 +244,13 @@ class PluginsController(AbstractModalDialogController):
                 self._view.pitchAxisDriverComboBox.setEnabled(False)
                 #self._view.pitchAxisDriverComboBox.setCurrentIndex(-1)
 
-        shutterPlugins = PluginManager().getList('shutter')
+        shutterPlugins = PluginsManager ().getList('shutter')
         if shutterPlugins:
             for model, controller in shutterPlugins:
                 self._view.shutterComboBox.addItem(model.name)
             selectedPluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
             self._view.shutterComboBox.setCurrentIndex(self._view.shutterComboBox.findText(selectedPluginName))
-            selectedPlugin = PluginManager().get('shutter', selectedPluginName)[0]
+            selectedPlugin = PluginsManager ().get('shutter', selectedPluginName)[0]
             if hasattr(selectedPlugin, '_driver'):
                 self._view.shutterDriverComboBox.setEnabled(True)
                 driverType = selectedPlugin._config['DRIVER_TYPE']

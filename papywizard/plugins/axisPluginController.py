@@ -51,7 +51,7 @@ Implements
 
 __revision__ = "$Id$"
 
-from papywizard.controller.abstractPluginController import AbstractPluginController
+from papywizard.plugins.abstractPluginController import AbstractPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, DoubleSpinBoxField, SpinBoxField, CheckBoxField, SliderField
 
 

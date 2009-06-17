@@ -56,11 +56,11 @@ import time
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
-from papywizard.common.pluginManager import PluginManager
-from papywizard.hardware.hardwarePlugin import HardwarePlugin
-from papywizard.hardware.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
-from papywizard.controller.hardwarePluginController import HardwarePluginController
-from papywizard.controller.standardShutterPluginController import StandardShutterPluginController
+from papywizard.plugins.pluginsManager  import PluginsManager
+from papywizard.plugins.abstractHardwarePlugin import AbstractHardwarePlugin
+from papywizard.plugins.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
+from papywizard.plugins.hardwarePluginController import HardwarePluginController
+from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 DEFAULT_LINE = 'RTS'
@@ -70,16 +70,16 @@ lineLevel = {False: {'on': 1, 'off': 0},
              True: {'on': 0, 'off': 1}}
 
 
-class UsbTaShutter(HardwarePlugin, AbstractStandardShutterPlugin):
+class UsbTaShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
     _name = "USB TA"
 
     def _init(self):
         Logger().trace("UsbTaShutter._init()")
-        HardwarePlugin._init(self)
+        AbstractHardwarePlugin._init(self)
         AbstractStandardShutterPlugin._init(self)
 
     def _defineConfig(self):
-        HardwarePlugin._defineConfig(self)
+        AbstractHardwarePlugin._defineConfig(self)
         AbstractStandardShutterPlugin._defineConfig(self)
         self._addConfigKey('_lineInverted', 'LINE_INVERTED', default=DEFAULT_LINE_INVERTED)
 
@@ -150,4 +150,4 @@ class UsbTaShutterController(StandardShutterPluginController, HardwarePluginCont
 def register():
     """ Register plugins.
     """
-    PluginManager().register(UsbTaShutter, UsbTaShutterController)
+    PluginsManager ().register(UsbTaShutter, UsbTaShutterController)

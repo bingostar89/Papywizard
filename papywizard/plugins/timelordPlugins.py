@@ -59,9 +59,9 @@ from PyQt4 import QtCore
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
-from papywizard.common.pluginManager import PluginManager
-from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
-from papywizard.controller.shutterPluginController import ShutterPluginController
+from papywizard.plugins.pluginsManager  import PluginsManager
+from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
+from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 DEFAULT_PROGRAM_PATH = "C:\\Program Files\\OxfordEye\\Timelord\\Timelord.exe"
@@ -139,4 +139,4 @@ class TimelordShutterController(ShutterPluginController):
 def register():
     """ Register plugins.
     """
-    PluginManager().register(TimelordShutter, TimelordShutterController)
+    PluginsManager ().register(TimelordShutter, TimelordShutterController)

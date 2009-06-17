@@ -51,7 +51,7 @@ Implements
 
 __revision__ = "$Id$"
 
-from papywizard.controller.shutterPluginController import ShutterPluginController
+from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 

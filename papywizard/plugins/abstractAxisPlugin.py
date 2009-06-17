@@ -53,7 +53,7 @@ __revision__ = "$Id$"
 
 from papywizard.common.exception import HardwareError, OutOfLimitsError
 from papywizard.common.configManager import ConfigManager
-from papywizard.common.abstractPlugin import AbstractPlugin
+from papywizard.plugins.abstractPlugin import AbstractPlugin
 
 DEFAULT_LOW_LIMIT = -360.
 DEFAULT_HIGH_LIMIT = 360.

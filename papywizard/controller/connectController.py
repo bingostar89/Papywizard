@@ -55,7 +55,7 @@ from PyQt4 import QtCore, QtGui
 
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
-from papywizard.common.pluginManager import PluginManager
+from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.controller.spy import Spy
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.view.messageDialog import ExceptionMessageDialog
@@ -66,6 +66,8 @@ class ConnectController(AbstractModalDialogController):
     """
     def _init(self):
         self._uiFile = "connectDialog.ui"
+
+        self.__plugins = ['yawAxis', 'pitchAxis', 'shutter']
 
     def _initWidgets(self):
         pass
@@ -88,7 +90,7 @@ class ConnectController(AbstractModalDialogController):
 
         # Connect 'yawAxis' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
-        plugin = PluginManager().get('yawAxis', pluginName)[0]
+        plugin = PluginsManager ().get('yawAxis', pluginName)[0]
         item = QtGui.QListWidgetItem("'yawAxis' establish connection...")
         self._view.pluginsStatusListWidget.addItem(item)
         for i in xrange(5000):
@@ -126,7 +128,7 @@ class ConnectController(AbstractModalDialogController):
 
         # Connect 'pitchAxis' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
-        plugin = PluginManager().get('pitchAxis', pluginName)[0]
+        plugin = PluginsManager ().get('pitchAxis', pluginName)[0]
         item = QtGui.QListWidgetItem("'pitchAxis' establish connection...")
         self._view.pluginsStatusListWidget.addItem(item)
         for i in xrange(5000):
@@ -164,7 +166,7 @@ class ConnectController(AbstractModalDialogController):
 
         # Connect 'shutter' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
-        plugin = PluginManager().get('shutter', pluginName)[0]
+        plugin = PluginsManager ().get('shutter', pluginName)[0]
         item = QtGui.QListWidgetItem("'shutter' establish connection...")
         self._view.pluginsStatusListWidget.addItem(item)
         for i in xrange(5000):
@@ -221,7 +223,7 @@ class ConnectController(AbstractModalDialogController):
 
         # Disconnect 'yawAxis' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
-        plugin = PluginManager().get('yawAxis', pluginName)[0]
+        plugin = PluginsManager ().get('yawAxis', pluginName)[0]
         if pluginsStatus['yawAxis']['init']:
             try:
                 plugin.shutdown()
@@ -239,7 +241,7 @@ class ConnectController(AbstractModalDialogController):
         
         # Disconnect 'pitchAxis' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
-        plugin = PluginManager().get('pitchAxis', pluginName)[0]
+        plugin = PluginsManager ().get('pitchAxis', pluginName)[0]
         if pluginsStatus['pitchAxis']['init']:
             try:
                 plugin.shutdown()
@@ -257,7 +259,7 @@ class ConnectController(AbstractModalDialogController):
 
         # Disconnect 'shutter' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
-        plugin = PluginManager().get('shutter', pluginName)[0]
+        plugin = PluginsManager ().get('shutter', pluginName)[0]
         if pluginsStatus['shutter']['init']:
             try:
                 plugin.shutdown()

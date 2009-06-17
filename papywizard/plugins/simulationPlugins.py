@@ -65,11 +65,11 @@ from PyQt4 import QtCore
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
-from papywizard.common.pluginManager import PluginManager
-from papywizard.hardware.abstractAxisPlugin import AbstractAxisPlugin
-from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
-from papywizard.controller.axisPluginController import AxisPluginController
-from papywizard.controller.shutterPluginController import ShutterPluginController
+from papywizard.plugins.pluginsManager  import PluginsManager 
+from papywizard.plugins.abstractAxisPlugin import AbstractAxisPlugin
+from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
+from papywizard.plugins.axisPluginController import AxisPluginController
+from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 DEFAULT_SPEED = 30. # deg/s
@@ -323,6 +323,6 @@ class SimulationShutterController(ShutterPluginController):
 def register():
     """ Register plugins.
     """
-    PluginManager().register(SimulationYawAxis, SimulationYawAxisController)
-    PluginManager().register(SimulationPitchAxis, SimulationPitchAxisController)
-    PluginManager().register(SimulationShutter, SimulationShutterController)
+    PluginsManager ().register(SimulationYawAxis, SimulationYawAxisController)
+    PluginsManager ().register(SimulationPitchAxis, SimulationPitchAxisController)
+    PluginsManager ().register(SimulationShutter, SimulationShutterController)

@@ -51,7 +51,7 @@ Implements
 
 __revision__ = "$Id$"
 
-from papywizard.common.abstractPlugin import AbstractPlugin
+from papywizard.plugins.abstractPlugin import AbstractPlugin
 
 
 class AbstractShutterPlugin(AbstractPlugin):

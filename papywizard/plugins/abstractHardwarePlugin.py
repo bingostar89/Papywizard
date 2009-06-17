@@ -42,7 +42,7 @@ Hardware plugin
 Implements
 ==========
 
-- HardwarePlugin
+- AbstractHardwarePlugin
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
@@ -51,13 +51,13 @@ Implements
 
 __revision__ = "$Id$"
 
-from papywizard.common.abstractPlugin import AbstractPlugin
+from papywizard.plugins.abstractPlugin import AbstractPlugin
 from papywizard.hardware.driverFactory import DriverFactory
 
 DEFAULT_DRIVER_TYPE = 'bluetooth'
 
 
-class HardwarePlugin(AbstractPlugin):
+class AbstractHardwarePlugin(AbstractPlugin):
     """
     """
     def _init(self):

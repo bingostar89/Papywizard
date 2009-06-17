@@ -58,9 +58,9 @@ import time
 import subprocess
 
 from papywizard.common.loggingServices import Logger
-from papywizard.common.pluginManager import PluginManager
-from papywizard.hardware.abstractShutterPlugin import AbstractShutterPlugin
-from papywizard.controller.shutterPluginController import ShutterPluginController
+from papywizard.plugins.pluginsManager import PluginsManager
+from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
+from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField
 
 DEFAULT_PROGRAM_PATH = "C:\\Program Files\\Papywizard\\EOSBracket.exe"
@@ -212,4 +212,4 @@ class EOSUtilityShutterController(ShutterPluginController):
 def register():
     """ Register plugins.
     """
-    PluginManager().register(EOSUtilityShutter, EOSUtilityShutterController)
+    PluginsManager().register(EOSUtilityShutter, EOSUtilityShutterController)

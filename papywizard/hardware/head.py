@@ -60,7 +60,7 @@ from papywizard.common import config
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
-from papywizard.common.pluginManager import PluginManager
+from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.hardware.driverFactory import DriverFactory
 
 
@@ -76,7 +76,7 @@ class Head(QtCore.QObject):
         """
         """
         yawAxisPlugin = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
-        return PluginManager().get('yawAxis', yawAxisPlugin)[0] # Use getModel()?
+        return PluginsManager ().get('yawAxis', yawAxisPlugin)[0] # Use getModel()?
 
     yawAxis = property(__getYawAxis)
 
@@ -84,7 +84,7 @@ class Head(QtCore.QObject):
         """
         """
         pitchAxisPlugin = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
-        return PluginManager().get('pitchAxis', pitchAxisPlugin)[0]
+        return PluginsManager ().get('pitchAxis', pitchAxisPlugin)[0]
 
     pitchAxis = property(__getPitchAxis)
 

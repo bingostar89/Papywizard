@@ -55,7 +55,7 @@ from PyQt4 import QtCore, QtGui
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.qLoggingFormatter import QSpaceColorFormatter
-from papywizard.common.pluginManager import PluginManager
+from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.view.logBuffer import LogBuffer
 
 
@@ -171,16 +171,16 @@ def main():
         register()
         from papywizard.plugins.usbTaPlugins import register
         register()
-        PluginManager().load()
+        PluginsManager ().load()
 
-        # Activate selected plugins (move to PluginManager?)
+        # Activate selected plugins (move to PluginsManager ?)
         Logger().info("Activate plugins...")
         plugin = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
-        PluginManager().get('yawAxis', plugin)[0].activate()
+        PluginsManager ().get('yawAxis', plugin)[0].activate()
         plugin = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
-        PluginManager().get('pitchAxis', plugin)[0].activate()
+        PluginsManager ().get('pitchAxis', plugin)[0].activate()
         plugin = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
-        PluginManager().get('shutter', plugin)[0].activate()
+        PluginsManager ().get('shutter', plugin)[0].activate()
 
         # Create model
         Logger().info("Creating model...")

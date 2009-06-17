@@ -61,7 +61,7 @@ from papywizard.common.helpers import hmsAsStrToS, sToHmsAsStr
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.exception import HardwareError, OutOfLimitsError
-from papywizard.common.pluginManager import PluginManager
+from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.hardware.head import Head
 from papywizard.model.camera import Camera
 from papywizard.model.data import MosaicData, PresetData
@@ -98,7 +98,7 @@ class Shooting(QtCore.QObject):
         """
         """
         shutterName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
-        return PluginManager().get('shutter', shutterName)[0] # Use getModel()?
+        return PluginsManager ().get('shutter', shutterName)[0] # Use getModel()?
 
     shutter = property(__getShutter)
 

@@ -65,13 +65,13 @@ import struct
 from papywizard.common import config
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
-from papywizard.common.pluginManager import PluginManager
-from papywizard.hardware.abstractAxisPlugin import AbstractAxisPlugin
-from papywizard.hardware.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
-from papywizard.hardware.hardwarePlugin import HardwarePlugin
-from papywizard.controller.axisPluginController import AxisPluginController
-from papywizard.controller.hardwarePluginController import HardwarePluginController
-from papywizard.controller.standardShutterPluginController import StandardShutterPluginController
+from papywizard.plugins.pluginsManager  import PluginsManager
+from papywizard.plugins.abstractAxisPlugin import AbstractAxisPlugin
+from papywizard.plugins.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
+from papywizard.plugins.abstractHardwarePlugin import AbstractHardwarePlugin
+from papywizard.plugins.axisPluginController import AxisPluginController
+from papywizard.plugins.hardwarePluginController import HardwarePluginController
+from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 from PyQt4 import QtCore
@@ -93,12 +93,12 @@ MANUAL_SPEED_INDEX = {'slow': .5,
                       'fast': 5.}
 
 
-class PololuServoHardware(HardwarePlugin):
+class PololuServoHardware(AbstractHardwarePlugin):
     _name = "Pololu Servo"
 
     def _init(self):
         Logger().trace("PololuServoHardware._init()")
-        HardwarePlugin._init(self)
+        AbstractHardwarePlugin._init(self)
         self._channel = None
 
     def _sendCmd(self, command, data1, data2=None):
@@ -287,7 +287,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
 
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
-        HardwarePlugin._defineConfig(self)
+        AbstractHardwarePlugin._defineConfig(self)
         self._addConfigKey('_channel', 'CHANNEL', default=DEFAULT_CHANNEL[self.capacity])
         self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
         self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION)
@@ -531,6 +531,6 @@ class PololuServoShutterController(StandardShutterPluginController, HardwarePlug
 def register():
     """ Register plugins.
     """
-    PluginManager().register(PololuServoYawAxis, PololuServoYawAxisController)
-    PluginManager().register(PololuServoPitchAxis, PololuServoPitchAxisController)
-    PluginManager().register(PololuServoShutter, PololuServoShutterController)
+    PluginsManager ().register(PololuServoYawAxis, PololuServoYawAxisController)
+    PluginsManager ().register(PololuServoPitchAxis, PololuServoPitchAxisController)
+    PluginsManager ().register(PololuServoShutter, PololuServoShutterController)

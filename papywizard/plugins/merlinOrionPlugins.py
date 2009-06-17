@@ -69,13 +69,13 @@ from PyQt4 import QtCore
 from papywizard.common import config
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
-from papywizard.common.pluginManager import PluginManager
-from papywizard.hardware.abstractAxisPlugin import AbstractAxisPlugin
-from papywizard.hardware.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
-from papywizard.hardware.hardwarePlugin import HardwarePlugin
-from papywizard.controller.axisPluginController import AxisPluginController
-from papywizard.controller.hardwarePluginController import HardwarePluginController
-from papywizard.controller.standardShutterPluginController import StandardShutterPluginController
+from papywizard.plugins.pluginsManager  import PluginsManager
+from papywizard.plugins.abstractAxisPlugin import AbstractAxisPlugin
+from papywizard.plugins.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
+from papywizard.plugins.abstractHardwarePlugin import AbstractHardwarePlugin
+from papywizard.plugins.axisPluginController import AxisPluginController
+from papywizard.plugins.hardwarePluginController import HardwarePluginController
+from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 DEFAULT_ALTERNATE_DRIVE = True
@@ -93,13 +93,13 @@ SPEED_INDEX = {'slow': 170,  # "AA0000"  / 5
                'fast': 17}   # "110000"  * 2
 
 
-class MerlinOrionHardware(HardwarePlugin):
+class MerlinOrionHardware(AbstractHardwarePlugin):
     _name = "Merlin-Orion"
     _initMerlinOrionFlag = [False, False]
 
     def _init(self):
         Logger().trace("MerlinOrionHardware._init()")
-        HardwarePlugin._init(self)
+        AbstractHardwarePlugin._init(self)
         self._numAxis = None
 
     def _decodeAxisValue(self, strValue):
@@ -325,7 +325,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
 
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
-        HardwarePlugin._defineConfig(self)
+        AbstractHardwarePlugin._defineConfig(self)
         self._addConfigKey('_alternateDrive', 'ALTERNATE_DRIVE', default=DEFAULT_ALTERNATE_DRIVE)
         self._addConfigKey('_inertiaAngle', 'INERTIA_ANGLE', default=DEFAULT_INERTIA_ANGLE)
         #self._addConfigKey('_alternateEncoder360', 'ALTERNATE_FULL_CIRCLE', default=DEFAULT_ALTERNATE_FULL_CIRCLE)
@@ -592,6 +592,6 @@ class MerlinOrionShutterController(StandardShutterPluginController, HardwarePlug
 def register():
     """ Register plugins.
     """
-    PluginManager().register(MerlinOrionYawAxis, MerlinOrionYawAxisController)
-    PluginManager().register(MerlinOrionPitchAxis, MerlinOrionPitchAxisController)
-    PluginManager().register(MerlinOrionShutter, MerlinOrionShutterController)
+    PluginsManager ().register(MerlinOrionYawAxis, MerlinOrionYawAxisController)
+    PluginsManager ().register(MerlinOrionPitchAxis, MerlinOrionPitchAxisController)
+    PluginsManager ().register(MerlinOrionShutter, MerlinOrionShutterController)

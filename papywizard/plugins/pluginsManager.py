@@ -42,7 +42,8 @@ Plugin architecture
 Implements
 ==========
 
-- PluginManagerObject
+- PluginsManagerObject
+- PluginsManager
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
@@ -67,10 +68,10 @@ if hasattr(sys, "frozen"):
     path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "common")
 else:
     path = os.path.dirname(__file__)
-pluginManager = None
+pluginsManager = None
 
 
-class PluginManagerObject(QtCore.QObject):
+class PluginsManagerObject(QtCore.QObject):
     """ Plugins manager object.
     """
     def __init__(self):
@@ -98,19 +99,19 @@ class PluginManagerObject(QtCore.QObject):
         @param pluginDir: dir where to search plugins
         @type pluginDir: str
         """
-        Logger().debug("PluginManager.register(): parsing '%s' dir..." % pluginDir)
+        Logger().debug("PluginsManager.register(): parsing '%s' dir..." % pluginDir)
         for entry in os.listdir(pluginDir):
-            #Logger().debug("PluginManager.register(): entry=%s" % entry)
+            #Logger().debug("PluginsManager.register(): entry=%s" % entry)
             if os.path.isfile(os.path.join(pluginDir, entry)):
                 moduleName, ext = os.path.splitext(entry)
                 if ext == '.py' and moduleName != "__init__":
                     file, pathname, description = imp.find_module(moduleName, [pluginDir])
-                    Logger().debug("PluginManager.register(): found '%s' module" % moduleName)
+                    Logger().debug("PluginsManager.register(): found '%s' module" % moduleName)
                     try:
                         module = imp.load_module('module', file, pathname, description)
                         module.register()
                     except AttributeError:
-                        Logger().exception("PluginManager.register()", debug=True)
+                        Logger().exception("PluginsManager.register()", debug=True)
                         Logger().warning("Plugin module '%s' does not have a register function" % pathname)
                     finally:
                         file.close()
@@ -126,7 +127,7 @@ class PluginManagerObject(QtCore.QObject):
         """
         model = pluginClass()
         self.__plugins.add((model, pluginControllerClass))
-        Logger().debug("PluginManager.register(): added '%s' plugin with capacity '%s'" % (model.name, model.capacity))
+        Logger().debug("PluginsManager.register(): added '%s' plugin with capacity '%s'" % (model.name, model.capacity))
 
     def getList(self, capacity):
         """ Return the plugins with the given capacity.
@@ -153,9 +154,9 @@ class PluginManagerObject(QtCore.QObject):
 
 
 # ConfigManager factory
-def PluginManager():
-    global pluginManager
-    if pluginManager is None:
-        pluginManager = PluginManagerObject()
+def PluginsManager():
+    global pluginsManager
+    if pluginsManager is None:
+        pluginsManager = PluginsManagerObject()
 
-    return pluginManager
+    return pluginsManager
