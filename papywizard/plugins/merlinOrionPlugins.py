@@ -180,7 +180,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
         @return: answer
         @rtype: str
         """
-        cmd = "%s%d%s" % (cmd, NUM_AXIS[self.name], param)
+        cmd = "%s%d%s" % (cmd, NUM_AXIS[self.capacity], param)
         for nbTry in xrange(3):
             try:
                 answer = ""
@@ -201,12 +201,12 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
 
             except IOError:
                 Logger().exception("MerlinOrionHardware._sendCmd")
-                Logger().warning("MerlinOrionHardware._sendCmd(): axis %d can't sent command '%s'. Retrying..." % (NUM_AXIS[self.name], cmd))
+                Logger().warning("MerlinOrionHardware._sendCmd(): axis %d can't sent command '%s'. Retrying..." % (NUM_AXIS[self.capacity], cmd))
             else:
                 break
         else:
-            raise HardwareError("MerlinOrion axis %d can't send command '%s'" % (NUM_AXIS[self.name], cmd))
-        #Logger().debug("MerlinOrionHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (NUM_AXIS[self.name], cmd, answer))
+            raise HardwareError("MerlinOrion axis %d can't send command '%s'" % (NUM_AXIS[self.capacity], cmd))
+        #Logger().debug("MerlinOrionHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (NUM_AXIS[self.capacity], cmd, answer))
 
         return answer
 
@@ -217,7 +217,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
         """
         self._driver.acquireBus()
         try:
-            if not MerlinOrionHardware._initMerlinOrionFlag[NUM_AXIS[self.name] - 1]:
+            if not MerlinOrionHardware._initMerlinOrionFlag[NUM_AXIS[self.capacity] - 1]:
 
                 # Stop axis
                 self._sendCmd("L")
@@ -233,7 +233,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
                 value = self._sendCmd("D")
                 Logger().debug("MerlinOrionHardware._initMerlinOrion(): sidereal rate=%s" % hex(self._decodeAxisValue(value)))
 
-                MerlinOrionHardware._initMerlinOrionFlag[NUM_AXIS[self.name] - 1] = True
+                MerlinOrionHardware._initMerlinOrionFlag[NUM_AXIS[self.capacity] - 1] = True
         finally:
             self._driver.releaseBus()
 
@@ -294,7 +294,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
             elif dir_ == '-':
                 self._sendCmd("G", "31")
             else:
-                raise ValueError("Axis %d dir. must be in ('+', '-')" % NUM_AXIS[self.name])
+                raise ValueError("Axis %d dir. must be in ('+', '-')" % NUM_AXIS[self.capacity])
             self._sendCmd("I", self._encodeAxisValue(speed))
             self._sendCmd("J")
         finally:
