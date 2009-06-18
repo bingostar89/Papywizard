@@ -5,7 +5,6 @@
 # Forms
 FORMS += papywizard/view/ui/bluetoothChooserDialog.ui \
          papywizard/view/ui/configDialog.ui \
-         papywizard/view/ui/connectDialog.ui \
          papywizard/view/ui/helpAboutDialog.ui \
          papywizard/view/ui/loggerDialog.ui \
          papywizard/view/ui/mainWindow.ui \
@@ -34,7 +33,6 @@ SOURCES += papywizard/common/bluetoothTransport.py \
 SOURCES += papywizard/controller/abstractController.py \
            papywizard/controller/bluetoothChooserController.py \
            papywizard/controller/configController.py \
-           papywizard/controller/connectController.py \
            papywizard/controller/helpAboutController.py \
            papywizard/controller/loggerController.py \
            papywizard/controller/mainController.py \
