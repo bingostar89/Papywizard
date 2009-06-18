@@ -122,7 +122,7 @@ class AbstractController(QtCore.QObject):
 
         @todo: make abstract, and overload in sub-classes
         """
-        pass
+        #raise NotImplementedError("AbstractController._lateInit() must be overloaded")
 
     # Callbacks Qt
     def _onCloseEvent(self, event):
