@@ -131,6 +131,7 @@ class ConnectController(AbstractModalDialogController):
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
 
         # Check connection status
+        # If all is Ok, automatically close the dialog
         pluginsStatus = self._model.getPluginsStatus()
         if pluginsStatus['yawAxis']['init'] and \
            pluginsStatus['pitchAxis']['init'] and \
