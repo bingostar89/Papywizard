@@ -52,6 +52,7 @@ Implements
 __revision__ = "$Id$"
 
 import sys
+import types
 import os.path
 
 import PyQt4.uic
@@ -90,18 +91,18 @@ class AbstractController(QtCore.QObject):
 
         self._initWidgets()
         self._connectSignals()
+        self._lateInit()
         self.refreshView()
-        self._startModel()
 
     def _init(self):
         """ Misc. init.
         """
-        raise NotImplementedError
+        raise NotImplementedError("AbstractController._init() must be overloaded")
 
     def _initWidgets(self):
         """ Init widgets.
         """
-        raise NotImplementedError
+        raise NotImplementedError("AbstractController._initWidgets() must be overloaded")
 
     def _connectSignals(self):
         """ Connect widgets signals.
@@ -114,8 +115,12 @@ class AbstractController(QtCore.QObject):
         """
         self._view.closeEvent = self._view._originalCloseEvent
 
-    def _startModel(self):
-        """ Start the model.
+    def _lateInit(self):
+        """ Late init.
+
+        Can be used to init things *after* the GUI is setup.
+
+        @todo: make abstract, and overload in sub-classes
         """
         pass
 
@@ -131,12 +136,12 @@ class AbstractController(QtCore.QObject):
         """ Shutdown the controller.
         """
         self._disconnectSignals()
-        #del self._view # ???!!???
+        #del self._view
 
     def refreshView(self):
         """ Refresh the view widgets according to model values.
         """
-        raise NotImplementedError
+        raise NotImplementedError("AbstractController.refreshView() must be overloaded")
 
 
 class AbstractModalDialogController(AbstractController):

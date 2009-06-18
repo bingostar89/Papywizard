@@ -51,7 +51,6 @@ Implements
 
 __revision__ = "$Id: ConnectController.py 1914 2009-06-13 17:50:11Z fma $"
 
-import sys
 import time
 import threading
 
@@ -67,10 +66,7 @@ class ConnectController(AbstractModalDialogController):
     def _init(self):
         self._uiFile = "connectDialog.ui"
 
-        if sys.platform == 'darwin':
-            self.__pluginsConnector = self._model
-        else:
-            self.__pluginsConnector = PluginsConnectorThread(self._model)
+        self.__pluginsConnector = PluginsConnectorThread(self._model)
 
     def _initWidgets(self):
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -89,7 +85,7 @@ class ConnectController(AbstractModalDialogController):
         self.disconnect(self._model, QtCore.SIGNAL("stepStatus"), self.__onStepStatus)
         self.disconnect(self.__pluginsConnector, QtCore.SIGNAL("finished()"), self.__onFinished)
 
-    def _startModel(self):
+    def _lateInit(self):
         self.__pluginsConnector.start()
 
     # Callbacks Qt
@@ -155,8 +151,9 @@ class PluginsConnectorThread(QtCore.QThread):
         """ Init the connector thread.
         """
         QtCore.QThread.__init__(self)
-        self.__pluginsConnector = connector
+        self.__connector = connector
 
     def run(self):
         threading.currentThread().setName("Connector")
-        self.__pluginsConnector.start()
+        #time.sleep(1)
+        self.__connector.start()

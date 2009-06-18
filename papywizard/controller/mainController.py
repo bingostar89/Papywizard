@@ -56,6 +56,7 @@ import thread
 import os.path
 import webbrowser
 import types
+import sys
 
 from PyQt4 import QtCore, QtGui
 
@@ -935,11 +936,14 @@ class MainController(AbstractController):
 
         # Create plugins connector and open connect controller
         pluginsConnector = PluginsConnector()
-        controller = ConnectController(self, model=pluginsConnector)
-        self._view.releaseKeyboard()
-        controller.exec_()
-        self._view.grabKeyboard()
-        controller.shutdown()
+        if sys.platform == 'darwin':
+            pluginsConnector.start()
+        else:
+            controller = ConnectController(parent=self, model=pluginsConnector)
+            self._view.releaseKeyboard()
+            controller.exec_()
+            self._view.grabKeyboard()
+            controller.shutdown()
 
         # Check connection status
         self.__pluginsStatus = pluginsConnector.getPluginsStatus()
