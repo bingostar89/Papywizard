@@ -65,108 +65,134 @@ class PluginsConnector(QtCore.QObject):
     def __init__(self):
         QtCore.QObject.__init__(self)
 
-        self.__pluginsStatus = {'yawAxis': {'connect': False, 'init': False},
-                                'pitchAxis': {'connect': False, 'init': False},
-                                'shutter': {'connect': False, 'init': False}
-                                }
-
-    # Signals
-    def currentStep(self, step):
-        """ The connector starts a new step.
-
-        @param step: new current step
-        @type step: str
-        """
-        self.emit(QtCore.SIGNAL("currentStep"), step)
-
-    def stepStatus(self, status):
-        """
-        """
-        self.emit(QtCore.SIGNAL("stepStatus"), status)
-
-    def finished(self):
-        """
-        """
-        self.emit(QtCore.SIGNAL("finished"))
-
     # Interface
     def start(self):
         """ Start connection.
         """
+        pluginsStatus = {'yawAxis': {'connect': False, 'init': False},
+                         'pitchAxis': {'connect': False, 'init': False},
+                         'shutter': {'connect': False, 'init': False}
+                         }
 
-        # Connect 'yawAxis' plugin
+        # Start 'yawAxis' plugin connection
         pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
         plugin = PluginsManager ().get('yawAxis', pluginName)[0]
-        self.currentStep(self.tr("'yawAxis' connection..."))
+        Logger().debug("PluginsConnector.start(): 'yawAxis' establish connection")
         try:
             plugin.establishConnection()
         except:
             Logger().exception("PluginsConnector.connectPlugins()")
-            self.stepStatus('Failed')
         else:
-            self.__pluginsStatus['yawAxis']['connect'] = True
-            self.stepStatus('Ok')
-            self.currentStep(self.tr("'yawAxis' init..."))
+            pluginsStatus['yawAxis']['connect'] = True
+            Logger().debug("PluginsConnector.start(): 'yawAxis' init")
             try:
                 plugin.init()
             except:
                 Logger().exception("PluginsConnector.connectPlugins()")
-                self.stepStatus('Failed')
             else:
-                self.__pluginsStatus['yawAxis']['init'] = True
-                self.stepStatus('Ok')
+                pluginsStatus['yawAxis']['init'] = True
 
-        # Connect 'pitchAxis' plugin
+        # Start 'pitchAxis' plugin connection
         pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
         plugin = PluginsManager ().get('pitchAxis', pluginName)[0]
-        self.currentStep(self.tr("'pitchAxis' connection..."))
+        Logger().debug("PluginsConnector.start(): 'pitchAxis' establish connection")
         try:
             plugin.establishConnection()
         except:
             Logger().exception("PluginsConnector.connectPlugins()")
-            self.__pluginsStatus['pitchAxis']['connect'] = False
-            self.stepStatus('Failed')
+            pluginsStatus['pitchAxis']['connect'] = False
         else:
-            self.__pluginsStatus['pitchAxis']['connect'] = True
-            self.stepStatus('Ok')
-            self.currentStep(self.tr("'pitchAxis' init..."))
+            pluginsStatus['pitchAxis']['connect'] = True
+            Logger().debug("PluginsConnector.start(): 'pitchAxis' init")
             try:
                 plugin.init()
             except:
                 Logger().exception("PluginsConnector.connectPlugins()")
-                self.stepStatus('Failed')
             else:
-                self.__pluginsStatus['pitchAxis']['init'] = True
-                self.stepStatus('Ok')
+                pluginsStatus['pitchAxis']['init'] = True
 
-        # Connect 'shutter' plugin
+        # Start 'shutter' plugin connection
         pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
         plugin = PluginsManager ().get('shutter', pluginName)[0]
-        self.currentStep(self.tr("'shutter' connection..."))
+        Logger().debug("PluginsConnector.start(): 'shutter' establish connection")
         try:
             plugin.establishConnection()
         except:
             Logger().exception("PluginsConnector.connectPlugins()")
-            self.stepStatus('Failed')
         else:
-            self.__pluginsStatus['shutter']['connect'] = True
-            self.stepStatus('Ok')
-            self.currentStep(self.tr("'shutter' init..."))
+            pluginsStatus['shutter']['connect'] = True
+            Logger().debug("PluginsConnector.start(): 'shutter' init")
             try:
                 plugin.init()
             except:
                 Logger().exception("PluginsConnector.connectPlugins()")
-                self.stepStatus('Failed')
             else:
-                self.__pluginsStatus['shutter']['init'] = True
-                self.stepStatus('Ok')
+                pluginsStatus['shutter']['init'] = True
+                
+        return pluginsStatus
 
-        self.finished()
-
-    def getPluginsStatus(self):
-        """ Get the plugins status.
-
-        @return: plugins status
-        @rtype: dict
+    def stop(self, pluginsStatus):
+        """ Stop connection.
         """
-        return self.__pluginsStatus
+
+        # Stop 'yawAxis' plugin connection
+        pluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
+        plugin = PluginsManager ().get('yawAxis', pluginName)[0]
+        if pluginsStatus['yawAxis']['init']:
+            Logger().debug("PluginsConnector.start(): 'yawAxis' shutdown")
+            try:
+                plugin.shutdown()
+            except:
+                Logger().exception("MainController.__stopConnection()")
+            else:
+                pluginsStatus['yawAxis']['init'] = False
+        if pluginsStatus['yawAxis']['connect']:
+            Logger().debug("PluginsConnector.start(): 'yawAxis' stop connection")
+            try:
+                plugin.stopConnection()
+            except:
+                Logger().exception("MainController.__stopConnection()")
+            else:
+                pluginsStatus['yawAxis']['connect'] = False
+
+        # Stop 'pitchAxis' plugin connection
+        pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
+        plugin = PluginsManager ().get('pitchAxis', pluginName)[0]
+        if pluginsStatus['pitchAxis']['init']:
+            Logger().debug("PluginsConnector.start(): 'pitchAxis' shutdown")
+            try:
+                plugin.shutdown()
+            except:
+                Logger().exception("MainController.__stopConnection()")
+            else:
+                pluginsStatus['pitchAxis']['init'] = False
+        if pluginsStatus['pitchAxis']['connect']:
+            Logger().debug("PluginsConnector.start(): 'pitchAxis' stop connection")
+            try:
+                plugin.stopConnection()
+            except:
+                Logger().exception("MainController.__stopConnection()")
+            else:
+                pluginsStatus['pitchAxis']['connect'] = False
+
+        # Stop 'shutter' plugin connection
+        pluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
+        plugin = PluginsManager ().get('shutter', pluginName)[0]
+        if pluginsStatus['shutter']['init']:
+            Logger().debug("PluginsConnector.start(): 'shutter' shutdown")
+            try:
+                plugin.shutdown()
+            except:
+                Logger().exception("MainController.__stopConnection()")
+            else:
+                pluginsStatus['shutter']['init'] = False
+        if pluginsStatus['shutter']['connect']:
+            Logger().debug("PluginsConnector.start(): 'shutter' stop connection")
+            try:
+                plugin.stopConnection()
+            except:
+                Logger().exception("MainController.__stopConnection()")
+            else:
+                pluginsStatus['shutter']['connect'] = False
+
+        return pluginsStatus

@@ -56,10 +56,11 @@ from PyQt4 import QtCore, QtGui
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
+from papywizard.common.bluetoothTransport import BluetoothTransport
 from papywizard.plugins.pluginsManager  import PluginsManager 
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.controller.bluetoothChooserController import BluetoothChooserController
-from papywizard.view.messageDialog import WarningMessageDialog
+from papywizard.view.messageDialog import WarningMessageDialog, ExceptionMessageDialog
 
 
 class PluginsController(AbstractModalDialogController):
@@ -187,15 +188,26 @@ class PluginsController(AbstractModalDialogController):
         Open the bluetooth chooser dialog.
         """
         Logger().trace("PluginsController.__onBluetoothChoosePushButtonClicked()")
-        while QtGui.QApplication.hasPendingEvents():
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
-        controller = BluetoothChooserController(self, self._model)
-        response = controller.exec_()
-        if response:
-            address, name = controller.getSelectedBluetoothAddress()
-            Logger().debug("PluginsController.__onChooseBluetoothButtonClicked(): address=%s, name=%s" % (address, name))
-            self._view.bluetoothDeviceAddressLineEdit.setText(address)
-        controller.shutdown()
+
+        QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        try:
+            bluetoothTransport = BluetoothTransport()
+            bluetoothDevices = bluetoothTransport.discoverDevices()
+        except Exception, msg:
+            QtGui.qApp.restoreOverrideCursor()
+            Logger().exception("PluginsController.__onBluetoothChoosePushButtonClicked()")
+            Logger().error("Can't scan bluetooth\n%s" % unicode(msg))
+            dialog = ExceptionMessageDialog(self.tr("Can't scan bluetooth"), unicode(msg))
+            dialog.exec_()
+        else:
+            QtGui.qApp.restoreOverrideCursor()
+            controller = BluetoothChooserController(self, model=bluetoothDevices)
+            response = controller.exec_()
+            if response:
+                address, name = controller.getSelectedBluetoothAddress()
+                Logger().debug("PluginsController.__onChooseBluetoothButtonClicked(): address=%s, name=%s" % (address, name))
+                self._view.bluetoothDeviceAddressLineEdit.setText(address)
+            controller.shutdown()
 
     # Interface
     def selectTab(self, tabIndex, disable=False):

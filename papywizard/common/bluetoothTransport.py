@@ -55,6 +55,10 @@ __revision__ = "$Id$"
 
 import sys
 
+from PyQt4 import QtCore
+
+from papywizard.common.loggingServices import Logger
+
 
 # MacOS platform
 if sys.platform == "darwin":
@@ -96,3 +100,22 @@ elif sys.platform == "linux2":
 # Others
 else:
     raise NotImplementedError("This platform (%s) does not support bluetooth transport" % sys.platform)
+
+
+class BluetoothTransport(QtCore.QObject):
+    """ Bluetooth transport class.
+    """
+    def __init__(self):
+        """ Init object.
+        """
+        QtCore.QObject.__init__(self)
+        
+    def discoverDevices(self):
+        """ Lookup for available devices.
+        
+        @return: availabe devices, as address/name pairs
+        @rtype: list of tuple
+        """
+        devices = discoverDevices()
+        Logger().debug("BluetoothTransport.discoverDevices(): devices=%s" % devices)
+        return devices
