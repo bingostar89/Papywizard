@@ -51,6 +51,7 @@ Implements
 
 __revision__ = "$Id: ConnectController.py 1914 2009-06-13 17:50:11Z fma $"
 
+import sys
 import time
 import threading
 
@@ -66,8 +67,10 @@ class ConnectController(AbstractModalDialogController):
     def _init(self):
         self._uiFile = "connectDialog.ui"
 
-        self.__connectorThread = PluginsConnectorThread(self._model)
-        #self.__connectorThread.start()  # The signals are not yet connected!
+        if sys.platform == 'darwin':
+            self.__pluginsConnector = self._model
+        else:
+            self.__pluginsConnector = PluginsConnectorThread(self._model)
 
     def _initWidgets(self):
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
@@ -77,16 +80,17 @@ class ConnectController(AbstractModalDialogController):
 
         self.connect(self._model, QtCore.SIGNAL("currentStep"), self.__onCurrentStep, QtCore.Qt.BlockingQueuedConnection)
         self.connect(self._model, QtCore.SIGNAL("stepStatus"), self.__onStepStatus, QtCore.Qt.BlockingQueuedConnection)
-        self.connect(self.__connectorThread, QtCore.SIGNAL("finished()"), self.__onFinished, QtCore.Qt.BlockingQueuedConnection)
-
-        self.__connectorThread.start()  # Hugly!
+        self.connect(self.__pluginsConnector, QtCore.SIGNAL("finished()"), self.__onFinished, QtCore.Qt.BlockingQueuedConnection)
 
     def _disconnectSignals(self):
         AbstractModalDialogController._disconnectSignals(self)
 
         self.disconnect(self._model, QtCore.SIGNAL("currentStep"), self.__onCurrentStep)
         self.disconnect(self._model, QtCore.SIGNAL("stepStatus"), self.__onStepStatus)
-        self.disconnect(self.__connectorThread, QtCore.SIGNAL("finished()"), self.__onFinished)
+        self.disconnect(self.__pluginsConnector, QtCore.SIGNAL("finished()"), self.__onFinished)
+
+    def _startModel(self):
+        self.__pluginsConnector.start()
 
     # Callbacks Qt
     def _onCloseEvent(self, event):
@@ -113,7 +117,7 @@ class ConnectController(AbstractModalDialogController):
 
     def __onStepStatus(self, status):
         """ Set the status of the current step.
-        
+
         @param status: step status, in ('Ok', 'Failed')
         @type status: str
         """
@@ -151,8 +155,8 @@ class PluginsConnectorThread(QtCore.QThread):
         """ Init the connector thread.
         """
         QtCore.QThread.__init__(self)
-        self.__connector = connector
+        self.__pluginsConnector = connector
 
     def run(self):
         threading.currentThread().setName("Connector")
-        self.__connector.connectPlugins()
+        self.__pluginsConnector.start()

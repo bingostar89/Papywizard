@@ -91,6 +91,7 @@ class AbstractController(QtCore.QObject):
         self._initWidgets()
         self._connectSignals()
         self.refreshView()
+        self._startModel()
 
     def _init(self):
         """ Misc. init.
@@ -112,6 +113,11 @@ class AbstractController(QtCore.QObject):
         """ Disconnect widgets signals.
         """
         self._view.closeEvent = self._view._originalCloseEvent
+
+    def _startModel(self):
+        """ Start the model.
+        """
+        pass
 
     # Callbacks Qt
     def _onCloseEvent(self, event):

@@ -84,9 +84,14 @@ class PluginsConnector(QtCore.QObject):
         """
         self.emit(QtCore.SIGNAL("stepStatus"), status)
 
+    def finished(self):
+        """
+        """
+        self.emit(QtCore.SIGNAL("finished"))
+
     # Interface
-    def connectPlugins(self):
-        """ Connect to plugins.
+    def start(self):
+        """ Start connection.
         """
 
         # Connect 'yawAxis' plugin
@@ -155,6 +160,8 @@ class PluginsConnector(QtCore.QObject):
             else:
                 self.__pluginsStatus['shutter']['init'] = True
                 self.stepStatus('Ok')
+
+        self.finished()
 
     def getPluginsStatus(self):
         """ Get the plugins status.
