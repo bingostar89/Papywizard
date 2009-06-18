@@ -933,11 +933,15 @@ class MainController(AbstractController):
         Logger().info("Connecting...")
         self.setStatusbarMessage(self.tr("Connecting..."))
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_creating.png").scaled(22, 22))
+        while QtGui.QApplication.hasPendingEvents():
+            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
 
         # Create plugins connector and open connect controller
         pluginsConnector = PluginsConnector()
         if sys.platform == 'darwin':
+            self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
             pluginsConnector.start()
+            self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         else:
             controller = ConnectController(parent=self, model=pluginsConnector)
             self._view.releaseKeyboard()
@@ -995,7 +999,7 @@ class MainController(AbstractController):
                 disconnectedFailed.append('yawAxis')
             else:
                 self.__pluginsStatus['yawAxis']['connect'] = False
-        
+
         # Disconnect 'pitchAxis' plugin
         pluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
         plugin = PluginsManager ().get('pitchAxis', pluginName)[0]
