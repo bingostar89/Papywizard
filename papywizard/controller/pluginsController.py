@@ -188,10 +188,12 @@ class PluginsController(AbstractModalDialogController):
         Open the bluetooth chooser dialog.
         """
         Logger().trace("PluginsController.__onBluetoothChoosePushButtonClicked()")
-
         QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        while QtGui.QApplication.hasPendingEvents():
+            QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
+
+        bluetoothTransport = BluetoothTransport()
         try:
-            bluetoothTransport = BluetoothTransport()
             bluetoothDevices = bluetoothTransport.discoverDevices()
         except Exception, msg:
             QtGui.qApp.restoreOverrideCursor()
