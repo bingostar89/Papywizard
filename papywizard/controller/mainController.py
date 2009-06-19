@@ -537,7 +537,7 @@ class MainController(AbstractController):
         self._view.releaseKeyboard()
         dialog.show()
         while self._model.hardware.isAxisMoving():
-            QtGui.QApplication.processEvents() #QtCore.QEventLoop.ExcludeUserInputEvents)
+            QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
             if dialog.result() == QtGui.QMessageBox.Abort:
                 self._model.hardware.stopAxis()
                 self.setStatusbarMessage(self.tr("Operation aborted"), 10)
@@ -551,13 +551,14 @@ class MainController(AbstractController):
     def __onActionHardwareGotoInitialActivated(self):
         Logger().trace("MainController.__onActionHardwareGotoInitialActivated()")
         self.setStatusbarMessage(self.tr("Goto initial position..."))
-        QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+        while QtGui.QApplication.hasPendingEvents():
+            QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
         self._model.hardware.gotoPosition(0., 0., useOffset=False, wait=False)
         dialog = AbortMessageDialog(self.tr("Goto initial position"), self.tr("Please wait..."))
         self._view.releaseKeyboard()
         dialog.show()
         while self._model.hardware.isAxisMoving():
-            QtGui.QApplication.processEvents() #QtCore.QEventLoop.ExcludeUserInputEvents)
+            QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
             if dialog.result() == QtGui.QMessageBox.Abort:
                 self._model.hardware.stopAxis()
                 self.setStatusbarMessage(self.tr("Operation aborted"), 10)
@@ -770,10 +771,11 @@ class MainController(AbstractController):
     def __openPluginsDialog(self):
         """ Open the plugins dialog.
         """
+        self.setStatusbarMessage(self.tr("Opening plugins dialog. Please wait..."))
+        while QtGui.QApplication.hasPendingEvents():
+            QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
+        QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         try:
-            QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-            self.setStatusbarMessage(self.tr("Opening plugins dialog. Please wait..."))
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             controller = PluginsController(self, self._model)
             controller.setSelectedTab(self.__lastPluginsTabSelected)
         finally:
@@ -788,11 +790,12 @@ class MainController(AbstractController):
     def __openConfigDialog(self):
         """ Open the configuration dialog.
         """
+        self.setStatusbarMessage(self.tr("Opening configuration dialog. Please wait..."))
+        while QtGui.QApplication.hasPendingEvents():
+            QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
+        QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         try:
             #self._view.configPushButton.setEnabled(False)
-            QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-            self.setStatusbarMessage(self.tr("Opening configuration dialog. Please wait..."))
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             controller = ConfigController(self, self._model)
             controller.setSelectedTab(self.__lastConfigTabSelected)
         finally:
@@ -804,7 +807,7 @@ class MainController(AbstractController):
         self._view.grabKeyboard()
         self.__lastConfigTabSelected = controller.getSelectedTab()
         controller.shutdown()
- 
+
         if response:
             Logger().setLevel(ConfigManager().get('Configuration/LOGGER_LEVEL'))
             if self.__mosaicInputParam == 'startEnd':
@@ -822,12 +825,13 @@ class MainController(AbstractController):
     def __openShootdialog(self):
         """ Open teh shooting dialog.
         """
+        self.setStatusbarMessage(self.tr("Opening shoot dialog. Please wait..."))
         self._model.setStepByStep(False)
+        QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        while QtGui.QApplication.hasPendingEvents():
+            QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
         try:
             #self._view.shootPushButton.setEnabled(False)
-            QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-            self.setStatusbarMessage(self.tr("Opening shoot dialog. Please wait..."))
-            QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
             controller = ShootController(self, self._model)
             if self._view.windowState() & QtCore.Qt.WindowFullScreen:
                 controller._view.showFullScreen()
@@ -932,11 +936,15 @@ class MainController(AbstractController):
         Logger().info("Starting connection. Please wait...")
         self.setStatusbarMessage(self.tr("Starting connection. Please wait..."))
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_creating.png").scaled(22, 22))
+        self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        while QtGui.QApplication.hasPendingEvents():
+            QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
 
         pluginsConnector = PluginsConnector()
-        self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        self.__pluginsStatus = pluginsConnector.start()
-        self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        try:
+            self.__pluginsStatus = pluginsConnector.start()
+        finally:
+            self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
 
         # Check connection status
         if self.__pluginsStatus['yawAxis']['init'] and \
@@ -951,20 +959,26 @@ class MainController(AbstractController):
         else:
             Logger().error("Connection failed to start")
             self.setStatusbarMessage(self.tr("Connection failed to start"), 10)
+            # @todo: show error dialog
             self._view.actionHardwareConnect.setChecked(False)
 
     def __stopConnection(self):
         """ Disconnect from plugins.
         """
         Logger().info("Stopping connection. Please wait...")
+        #if self.__pluginsConnected:
         self.setStatusbarMessage(self.tr("Stopping connection. Please wait..."))
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_creating.png").scaled(22, 22))
+        self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        while QtGui.QApplication.hasPendingEvents():
+            QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
 
         Spy().suspend()
         pluginsConnector = PluginsConnector()
-        self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        self.__pluginsStatus = pluginsConnector.stop(self.__pluginsStatus)
-        self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+        try:
+            self.__pluginsStatus = pluginsConnector.stop(self.__pluginsStatus)
+        finally:
+            self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
 
         # Check connection status
         if not self.__pluginsStatus['yawAxis']['connect'] and \
@@ -978,6 +992,7 @@ class MainController(AbstractController):
         else:
             Logger().error("Connection failed to stop")
             self.setStatusbarMessage(self.tr("Connection failed to stop"), 10)
+            # @todo: show error dialog
 
     def __onPositionUpdate(self, yaw, pitch):
         """ Refresh position according to new pos.
@@ -1024,18 +1039,18 @@ class MainController(AbstractController):
         self._view.statusBar().clearMessage()
 
     def _refreshMosaicPage(self):
-            self._view.setYawStartPushButton.setText("%.1f" % self._model.mosaic.yawStart)
-            self._view.setPitchStartPushButton.setText("%.1f" % self._model.mosaic.pitchStart)
-            self._view.setYawEndPushButton.setText("%.1f" % self._model.mosaic.yawEnd)
-            self._view.setPitchEndPushButton.setText("%.1f" % self._model.mosaic.pitchEnd)
-            self._view.yawFovLabel.setText("%.1f" % self._model.mosaic.yawFov)
-            self._view.pitchFovLabel.setText("%.1f" % self._model.mosaic.pitchFov)
-            self._view.yawNbPictsLabel.setText("%d" % self._model.mosaic.yawNbPicts)
-            self._view.pitchNbPictsLabel.setText("%d" % self._model.mosaic.pitchNbPicts)
-            self._view.yawRealOverlapLabel.setText("%d" % int(round(100 * self._model.mosaic.yawRealOverlap)))
-            self._view.pitchRealOverlapLabel.setText("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
-            self._view.yawResolutionLabel.setText("%d" % round(self._model.mosaic.getYawResolution()))
-            self._view.pitchResolutionLabel.setText("%d" % round(self._model.mosaic.getPitchResolution()))
+        self._view.setYawStartPushButton.setText("%.1f" % self._model.mosaic.yawStart)
+        self._view.setPitchStartPushButton.setText("%.1f" % self._model.mosaic.pitchStart)
+        self._view.setYawEndPushButton.setText("%.1f" % self._model.mosaic.yawEnd)
+        self._view.setPitchEndPushButton.setText("%.1f" % self._model.mosaic.pitchEnd)
+        self._view.yawFovLabel.setText("%.1f" % self._model.mosaic.yawFov)
+        self._view.pitchFovLabel.setText("%.1f" % self._model.mosaic.pitchFov)
+        self._view.yawNbPictsLabel.setText("%d" % self._model.mosaic.yawNbPicts)
+        self._view.pitchNbPictsLabel.setText("%d" % self._model.mosaic.pitchNbPicts)
+        self._view.yawRealOverlapLabel.setText("%d" % int(round(100 * self._model.mosaic.yawRealOverlap)))
+        self._view.pitchRealOverlapLabel.setText("%d" % int(round(100 * self._model.mosaic.pitchRealOverlap)))
+        self._view.yawResolutionLabel.setText("%d" % round(self._model.mosaic.getYawResolution()))
+        self._view.pitchResolutionLabel.setText("%d" % round(self._model.mosaic.getPitchResolution()))
 
     def refreshView(self):
         if self._model.mode == 'mosaic':
