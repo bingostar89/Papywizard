@@ -74,6 +74,7 @@ from papywizard.controller.nbPictsController import NbPictsController
 from papywizard.controller.pluginsController import PluginsController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.shootController import ShootController
+from papywizard.controller.pluginsStatusController import PluginsStatusController
 from papywizard.plugins.pluginsConnector import PluginsConnector
 from papywizard.controller.spy import Spy
 from papywizard.view.messageDialog import WarningMessageDialog, ErrorMessageDialog, \
@@ -959,15 +960,19 @@ class MainController(AbstractController):
         else:
             Logger().error("Connection failed to start")
             self.setStatusbarMessage(self.tr("Connection failed to start"), 10)
-            # @todo: show error dialog
+            controller = PluginsStatusController(self, self.__pluginsStatus)
+            self._view.releaseKeyboard()
+            controller.exec_()
+            self._view.grabKeyboard()
+            controller.shutdown()
             self._view.actionHardwareConnect.setChecked(False)
 
     def __stopConnection(self):
         """ Disconnect from plugins.
         """
-        Logger().info("Stopping connection. Please wait...")
-        #if self.__pluginsConnected:
-        self.setStatusbarMessage(self.tr("Stopping connection. Please wait..."))
+        if self.__pluginsConnected:
+            Logger().info("Stopping connection. Please wait...")
+            self.setStatusbarMessage(self.tr("Stopping connection. Please wait..."))
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_creating.png").scaled(22, 22))
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         while QtGui.QApplication.hasPendingEvents():
@@ -976,23 +981,38 @@ class MainController(AbstractController):
         Spy().suspend()
         pluginsConnector = PluginsConnector()
         try:
-            self.__pluginsStatus = pluginsConnector.stop(self.__pluginsStatus)
+            #self.__pluginsStatus = pluginsConnector.stop(self.__pluginsStatus)
+            pluginsConnector.stop(self.__pluginsStatus)
         finally:
             self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
 
-        # Check connection status
-        if not self.__pluginsStatus['yawAxis']['connect'] and \
-           not self.__pluginsStatus['pitchAxis']['connect'] and \
-           not self.__pluginsStatus['shutter']['connect']:
-            self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
+        ## Check connection status
+        #if not self.__pluginsStatus['yawAxis']['init'] and not self.__pluginsStatus['yawAxis']['connect'] and \
+           #not self.__pluginsStatus['pitchAxis']['init'] and not self.__pluginsStatus['pitchAxis']['connect'] and \
+           #not self.__pluginsStatus['shutter']['init'] and not self.__pluginsStatus['shutter']['connect']:
+            #self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
+            #if self.__pluginsConnected:
+                #Logger().info("Connection stopped")
+                #self.setStatusbarMessage(self.tr("Connection stopped"), 10)
+        #else:
+            #if self.__pluginsConnected:
+                #Logger().error("Connection failed to stop")
+                #self.setStatusbarMessage(self.tr("Connection failed to stop"), 10)
+                #controller = PluginsStatusController(self, self.__pluginsStatus)
+                #self._view.releaseKeyboard()
+                #controller.exec_()
+                #self._view.grabKeyboard()
+                #controller.shutdown()
+        #self.__SetDisconnectedWidgetState()
+        #self.__pluginsConnected = False
+
+        if self.__pluginsConnected:
             Logger().info("Connection stopped")
             self.setStatusbarMessage(self.tr("Connection stopped"), 10)
-            self.__SetDisconnectedWidgetState()
-            self.__pluginsConnected = False
-        else:
-            Logger().error("Connection failed to stop")
-            self.setStatusbarMessage(self.tr("Connection failed to stop"), 10)
-            # @todo: show error dialog
+
+        self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
+        self.__SetDisconnectedWidgetState()
+        self.__pluginsConnected = False
 
     def __onPositionUpdate(self, yaw, pitch):
         """ Refresh position according to new pos.
