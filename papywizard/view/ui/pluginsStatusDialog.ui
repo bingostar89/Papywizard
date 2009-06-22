@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>266</width>
-    <height>171</height>
+    <width>226</width>
+    <height>155</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,13 +57,12 @@
       <widget class="QLabel" name="label_2">
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>80</width>
          <height>0</height>
         </size>
        </property>
        <property name="text">
-        <string>Init
-Shutdown</string>
+        <string>Init</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -74,13 +73,12 @@ Shutdown</string>
       <widget class="QLabel" name="label">
        <property name="minimumSize">
         <size>
-         <width>100</width>
+         <width>80</width>
          <height>0</height>
         </size>
        </property>
        <property name="text">
-        <string>Connect
-Disconnect</string>
+        <string>Connect</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -210,6 +208,9 @@ Disconnect</string>
        </property>
        <property name="focusPolicy">
         <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="text">
+        <string/>
        </property>
        <property name="maxLength">
         <number>10</number>
