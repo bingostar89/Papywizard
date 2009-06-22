@@ -237,22 +237,6 @@ class SimulationAxisController(AxisPluginController):
         self._addWidget('Main', "Speed", SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
 
 
-#class SimulationYawAxis(SimulationAxis):
-    #_capacity = 'yawAxis'
-
-
-#class SimulationYawAxisController(SimulationAxisController):
-    #pass
-
-
-#class SimulationPitchAxis(SimulationAxis):
-    #_capacity = 'pitchAxis'
-
-
-#class SimulationPitchAxisController(SimulationAxisController):
-    #pass
-
-
 class SimulationShutter(AbstractShutterPlugin):
     """
     """
