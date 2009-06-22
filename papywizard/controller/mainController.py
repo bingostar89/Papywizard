@@ -130,7 +130,7 @@ class MainController(AbstractController):
         self.__manualSpeed = 'normal'
         self.__lastPluginsTabSelected = 0
         self.__lastConfigTabSelected = 0
-        self.__pluginsStatus = {}
+        self.__pluginsStatus = None
         self.__pluginsConnected = False
 
     def _initWidgets(self):
@@ -979,32 +979,12 @@ class MainController(AbstractController):
             QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
 
         Spy().suspend()
-        pluginsConnector = PluginsConnector()
-        try:
-            #self.__pluginsStatus = pluginsConnector.stop(self.__pluginsStatus)
-            pluginsConnector.stop(self.__pluginsStatus)
-        finally:
-            self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
-
-        ## Check connection status
-        #if not self.__pluginsStatus['yawAxis']['init'] and not self.__pluginsStatus['yawAxis']['connect'] and \
-           #not self.__pluginsStatus['pitchAxis']['init'] and not self.__pluginsStatus['pitchAxis']['connect'] and \
-           #not self.__pluginsStatus['shutter']['init'] and not self.__pluginsStatus['shutter']['connect']:
-            #self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
-            #if self.__pluginsConnected:
-                #Logger().info("Connection stopped")
-                #self.setStatusbarMessage(self.tr("Connection stopped"), 10)
-        #else:
-            #if self.__pluginsConnected:
-                #Logger().error("Connection failed to stop")
-                #self.setStatusbarMessage(self.tr("Connection failed to stop"), 10)
-                #controller = PluginsStatusController(self, self.__pluginsStatus)
-                #self._view.releaseKeyboard()
-                #controller.exec_()
-                #self._view.grabKeyboard()
-                #controller.shutdown()
-        #self.__SetDisconnectedWidgetState()
-        #self.__pluginsConnected = False
+        if self.__pluginsStatus is not None:
+            pluginsConnector = PluginsConnector()
+            try:
+                pluginsConnector.stop(self.__pluginsStatus)
+            finally:
+                self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
 
         if self.__pluginsConnected:
             Logger().info("Connection stopped")
