@@ -53,7 +53,7 @@ Implements
 
 __revision__ = "$Id: setup.py 1895 2009-06-06 21:02:22Z fma $"
 
-from distutils.core import setup
+from setuptools import setup
 
 from papywizard.common import config
 
