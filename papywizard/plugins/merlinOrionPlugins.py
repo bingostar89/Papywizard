@@ -358,8 +358,8 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
         """ Main entry of the thread.
         """
         threadName = "%s_%s" % (self.name, self.capacity)
-        Logger().debug("MerlinOrionAxis.run(): start '%s' thread" % threadName)
         threading.currentThread().setName(threadName)
+        Logger().debug("MerlinOrionAxis.run(): start thread")
         self.__run = True
         while self.__run:
             if self.__driveFlag:
@@ -376,7 +376,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
 
             self.msleep(config.SPY_REFRESH_DELAY)
 
-        Logger().debug("MerlinOrionAxis.run(): '%s' thread terminated" % threadName)
+        Logger().debug("MerlinOrionAxis.run(): thread terminated")
 
     def _stopThread(self):
         """ Stop the thread.

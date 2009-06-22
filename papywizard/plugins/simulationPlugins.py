@@ -134,8 +134,8 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
         """ Main entry of the thread.
         """
         threadName = "%s_%s" % (self.name, self.capacity)
-        Logger().debug("SimulationAxis.run(): start '%s' thread" % threadName)
         threading.currentThread().setName(threadName)
+        Logger().debug("SimulationAxis.run(): start thread")
         self.__run = True
         while self.__run:
 
@@ -173,7 +173,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
 
             self.msleep(config.SPY_REFRESH_DELAY)
 
-        Logger().debug("SimulationAxis.run(): thread '%s' terminated" % threadName)
+        Logger().debug("SimulationAxis.run(): thread terminated")
 
     def _stopThread(self):
         """ Stop the thread.
