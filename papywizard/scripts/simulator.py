@@ -53,6 +53,7 @@ import optparse
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
+from papywizard.lowLevelSimulator.merlinOrionCommandDispatcher import MerlinOrionCommandDispatcher
 from papywizard.lowLevelSimulator.merlinOrionSimulator import MerlinOrionEthernetSimulator, MerlinOrionSerialSimulator
 
 
@@ -99,5 +100,7 @@ def main():
 
     Logger().setLevel(option.loggerLevel)
     Logger().info("Starting Papywizard simulator...")
+    MerlinOrionCommandDispatcher().activate()
     simulator.run()
     Logger().info("Papywizard simulator stopped")
+    MerlinOrionCommandDispatcher().deactivate()

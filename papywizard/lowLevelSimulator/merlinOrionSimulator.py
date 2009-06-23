@@ -44,9 +44,8 @@ between Papywizard and the head.
 Implements
 ==========
 
-- MerlinOrionBaseHandler
-- MerlinOrionEthernetHandler
 - MerlinOrionSerialHandler
+- MerlinOrionEthernetHandler
 - MerlinOrionBaseSimulator
 - SimulatorTCPServer
 - MerlinOrionEthernetSimulator
@@ -59,7 +58,7 @@ Implements
 
 __revision__ = "$Id$"
 
-import SocketServer
+import SocketServer  # Use Qt classes
 
 import serial
 from PyQt4 import QtCore
@@ -67,206 +66,15 @@ from PyQt4 import QtCore
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
+from papywizard.lowLevelSimulator.merlinOrionCommandDispatcher import MerlinOrionCommandDispatcher
 from papywizard.plugins.simulationPlugins import SimulationAxis
 
 
-def decodeAxisValue(strValue):
-    """ Decode value from axis.
-
-    Values (position, speed...) returned by axis are
-    32bits-encoded strings, low byte first.
-
-    @param strValue: value returned by axis
-    @type strValue: str
-
-    @return: value
-    @rtype: int
-    """
-    value = 0
-    for i in xrange(3):
-        value += eval("0x%s" % strValue[i*2:i*2+2]) * 2 ** (i * 8)
-
-    return value
-
-
-def encodeAxisValue(alue):
-    """ Encode value for axis.
-
-    Values (position, speed...) to send to axis must be
-    32bits-encoded strings, low byte first.
-
-    @param value: value
-    @type value: int
-
-    @return: value to send to axis
-    @rtype: str
-    """
-    strHexValue = "000000%s" % hex(value)[2:]
-    strValue = strHexValue[-2:] + strHexValue[-4:-2] + strHexValue[-6:-4]
-
-    return strValue.upper()
-
-
-def encoderToAngle(codPos):
-    """ Convert encoder value to degres.
-
-    @param codPos: encoder position
-    @type codPos: int
-
-    @return: position, in °
-    @rtype: float
-    """
-    return (codPos - ENCODER_ZERO) * 360. / ENCODER_FULL_CIRCLE
-
-
-def angleToEncoder(pos):
-    """ Convert degres to encoder value.
-
-    @param pos: position, in °
-    @type pos: float
-
-    @return: encoder position
-    @rtype: int
-    """
-    return int(pos * ENCODER_FULL_CIRCLE / 360. + ENCODER_ZERO)
-
-
-class MerlinOrionBaseHandler(QtCore.QObject):
-    """ Abstract handler for Merlin/Orion commands set.
-    """
-    def __init__(self):
-        """ Init the abstract handler.
-        """
-        QtCore.QObject.__init__(self)
-        yawAxis = SimulationAxis('yawAxis', "Simulation")
-        pitchAxis = SimulationAxis('pitchAxis', "Simulation")
-        self._axis = {1: yawAxis,
-                      2: pitchAxis}
-        self._axisCmd = {}
-        self._axisDir = {}
-        self._axisSpeed = {}
-        self._axisPos = {}
-
-    def _handleCmd(self, cmdStr):
-        """ Handle a command.
-
-        @param cmdStr: command to simulate
-        @type cmdStr: str
-
-        @return: response
-        @rtype: str
-
-        raise HardwareError: wrong command
-        """
-        if not cmdStr.startswith(':'):
-            raise HardwareError("Invalid command format (%s)" % repr(cmdStr))
-
-        # Split cmdStr
-        cmd = cmdStr[1]
-        numAxis = int(cmdStr[2])
-        if numAxis not in (1, 2):
-            raise HardwareError("Invalid axis number (%d)" % numAxis)
-        param = cmdStr[3:-1]
-        Logger().debug("MerlinOrionBaseHandler._handleCmd(): cmdStr=%s, cmd=%s, numAxis=%d, param=%s" % (repr(cmdStr), cmd, numAxis, param))
-
-        # Compute command response
-        response = ""
-
-        # Stop command
-        if cmd == 'L':
-            Logger().trace("MerlinOrionBaseHandler._handleCmd(): stop")
-            self._axis[numAxis].stop()
-            response = ""
-
-        # ??? command
-        elif cmd == 'F':
-            Logger().trace("MerlinOrionBaseHandler._handleCmd(): ???")
-
-        # ??? command
-        elif cmd == 'a':
-            Logger().trace("MerlinOrionBaseHandler._handleCmd(): ???")
-
-        # ??? command
-        elif cmd == 'D':
-            Logger().trace("MerlinOrionBaseHandler._handleCmd(): ???")
-            response = "F90600"
-
-        # read command
-        elif cmd == 'j':
-            Logger().trace("MerlinOrionBaseHandler._handleCmd(): read")
-            pos = self._axis[numAxis].read()
-            response = encodeAxisValue(angleToEncoder(pos))
-
-        # status command
-        elif cmd == 'f':
-            Logger().trace("MerlinOrionBaseHandler._handleCmd(): status")
-            if self._axis[numAxis].isMoving():
-                response = "-1-"
-            else:
-                response = "-0-"
-
-        # command command
-        elif cmd == 'G':
-            Logger().trace("MerlinOrionBaseHandler._handleCmd(): command")
-            if param[0] == '0':
-                self._axisCmd[numAxis] = 'drive'
-            elif param[0] == '3':
-                self._axisCmd[numAxis] = 'jog'
-                if param[1] == '0':
-                    self._axisDir[numAxis] = '+'
-                elif param[1] == '1':
-                    self._axisDir[numAxis] = '-'
-                else:
-                    raise HardwareError("Invalid param")
-                Logger().debug("MerlinOrionBaseHandler._handleCmd(): axis %d direction=%s" % (numAxis, self._axisDir[numAxis]))
-            else:
-                raise NotImplementedError
-
-        # speed command
-        elif cmd == 'I':
-            Logger().trace("MerlinOrionBaseHandler._handleCmd(): speed")
-            try:
-                speed = decodeAxisValue(param)
-                Logger().debug("MerlinOrionBaseHandler._handleCmd(): axis %d speed=%d" % (numAxis, speed))
-                self._axisSpeed[numAxis] = speed
-            except KeyError:
-                raise HardwareError("No direction has been set")
-
-        # position command
-        elif cmd == 'S':
-            Logger().trace("MerlinOrionBaseHandler._handleCmd(): position")
-            self._axisPos[numAxis] = encoderToAngle(decodeAxisValue(param))
-
-        # run command
-        elif cmd == 'J':
-            Logger().trace("MerlinOrionBaseHandler._handleCmd(): run")
-            try:
-                if self._axisCmd[numAxis] == 'jog':
-                    dir_ = self._axisDir[numAxis]
-                    speed = self._axisSpeed[numAxis]
-                    self._axis[numAxis].startJog(dir_)
-                elif self._axisCmd[numAxis] == 'drive':
-                    pos = self._axisPos[numAxis]
-                    self._axis[numAxis].drive(pos, wait=False)
-            except KeyError:
-                raise HardwareError("Missing one axis cmd/direction/speed value")
-
-        # shutter command
-        elif cmd == 'O':
-            Logger().trace("MerlinOrionBaseHandler._handleCmd(): shutter")
-
-        # Invalid command
-        else:
-            raise HardwareError("Invalid command")
-
-        return "=%s\r" % response
-
-
-class MerlinOrionSerialHandler(MerlinOrionBaseHandler):
+class MerlinOrionSerialHandler(QtCore.QObject):
     """ Serial-based handler.
     """
     def __init__(self, serial):
-        MerlinOrionBaseHandler.__init__(self)
+        QtCore.Qobject.__init__(self)
         self.serial = serial
 
     def handle(self):
@@ -282,7 +90,7 @@ class MerlinOrionSerialHandler(MerlinOrionBaseHandler):
                         break
                     cmd += data
                 if cmd:
-                    response = self._handleCmd(cmd)
+                    response = MerlinOrionCommandDispatcher().handleCmd(cmd)
                     Logger().debug("MerlinOrionSerialHandler.handle(): response=%s" % repr(response))
                     self.serial.write(response)
                 else:
@@ -298,13 +106,9 @@ class MerlinOrionSerialHandler(MerlinOrionBaseHandler):
                 Logger().exception("MerlinOrionSerialHandler.handle()")
 
 
-class MerlinOrionEthernetHandler(MerlinOrionBaseHandler, SocketServer.BaseRequestHandler):
+class MerlinOrionEthernetHandler(SocketServer.BaseRequestHandler):
     """ Ethernet-based handler.
     """
-    def __init__(self, *args, **kwargs):
-        MerlinOrionBaseHandler.__init__(self)
-        SocketServer.BaseRequestHandler.__init__(self, *args, **kwargs)
-
     def handle(self):
         Logger().debug("MerlinOrionEthernetHandler.handle(): connection request from ('%s', %d)" % self.client_address)
         Logger().info("New ethernet connection established")
@@ -318,7 +122,7 @@ class MerlinOrionEthernetHandler(MerlinOrionBaseHandler, SocketServer.BaseReques
                         break
                     cmd += data
                 if cmd:
-                    response = self._handleCmd(cmd)
+                    response = MerlinOrionCommandDispatcher().handleCmd(cmd)
                     Logger().debug("MerlinOrionEthernetHandler.handle(): response=%s" % repr(response))
                     self.request.sendall(response)
                 else:
