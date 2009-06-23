@@ -237,7 +237,7 @@ class MerlinOrionCommandDispatcherObject(QtCore.QObject):
         elif cmd == 'I':
             Logger().trace("MerlinOrionBaseHandler.handleCmd(): speed")
             try:
-                speed = _decodeAxisValue(param)
+                speed = self._decodeAxisValue(param)
                 Logger().debug("MerlinOrionBaseHandler.handleCmd(): axis %d speed=%d" % (numAxis, speed))
                 self._axisSpeed[numAxis] = speed
             except KeyError:
