@@ -70,7 +70,7 @@ from papywizard.common.exception import HardwareError
 from papywizard.plugins.simulationPlugins import SimulationAxis
 
 
-def _decodeAxisValue(strValue):
+def decodeAxisValue(strValue):
     """ Decode value from axis.
 
     Values (position, speed...) returned by axis are
@@ -89,7 +89,7 @@ def _decodeAxisValue(strValue):
     return value
 
 
-def _encodeAxisValue(alue):
+def encodeAxisValue(alue):
     """ Encode value for axis.
 
     Values (position, speed...) to send to axis must be
