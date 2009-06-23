@@ -57,7 +57,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: merlinOrionSimulator.py 1984 2009-06-23 08:51:50Z fma $"
+__revision__ = "$Id$"
 
 from PyQt4 import QtCore
 
