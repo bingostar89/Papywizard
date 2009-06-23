@@ -74,7 +74,7 @@ class MerlinOrionSerialHandler(QtCore.QObject):
     """ Serial-based handler.
     """
     def __init__(self, serial):
-        QtCore.Qobject.__init__(self)
+        QtCore.QObject.__init__(self)
         self.serial = serial
 
     def handle(self):
