@@ -105,7 +105,7 @@ class PluginsManagerObject(QtCore.QObject):
             if os.path.isfile(os.path.join(pluginDir, entry)):
                 moduleName, ext = os.path.splitext(entry)
                 if ext == '.py' and moduleName != "__init__":
-                    file, pathname, description = imp.find_module(moduleName, [pluginDir])
+                    file_, pathname, description = imp.find_module(moduleName, [pluginDir])
                     Logger().debug("PluginsManager.register(): found '%s' module" % moduleName)
                     try:
                         module = imp.load_module('module', file, pathname, description)
@@ -113,8 +113,7 @@ class PluginsManagerObject(QtCore.QObject):
                     except AttributeError:
                         Logger().exception("PluginsManager.register()", debug=True)
                         Logger().warning("Plugin module '%s' does not have a register function" % pathname)
-                    finally:
-                        file.close()
+                    file_.close()
 
     def register(self, pluginClass, pluginControllerClass, capacity, name):
         """ Register a new plugin.
