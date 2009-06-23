@@ -195,7 +195,7 @@ class MerlinOrionBaseHandler(QtCore.QObject):
         elif cmd == 'j':
             Logger().trace("MerlinOrionBaseHandler._handleCmd(): read")
             pos = self._axis[numAxis].read()
-            response = encodeAxisValue(deg2cod(pos))
+            response = encodeAxisValue(angleToEncoder(pos))
 
         # status command
         elif cmd == 'f':
@@ -235,7 +235,7 @@ class MerlinOrionBaseHandler(QtCore.QObject):
         # position command
         elif cmd == 'S':
             Logger().trace("MerlinOrionBaseHandler._handleCmd(): position")
-            self._axisPos[numAxis] = cod2deg(decodeAxisValue(param))
+            self._axisPos[numAxis] = encoderToAngle(decodeAxisValue(param))
 
         # run command
         elif cmd == 'J':
