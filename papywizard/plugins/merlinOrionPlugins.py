@@ -113,8 +113,6 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
 
         @return: value
         @rtype: int
-
-        @todo: put in merlinHelpers?
         """
         value = 0
         for i in xrange(3):
@@ -133,8 +131,6 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
 
         @return: value to send to axis
         @rtype: str
-
-        @todo: put in merlinHelpers?
         """
         strHexValue = "000000%s" % hex(value)[2:]
         strValue = strHexValue[-2:] + strHexValue[-4:-2] + strHexValue[-6:-4]
@@ -149,8 +145,6 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
 
         @return: position, in °
         @rtype: float
-
-        @todo: put in merlinHelpers?
         """
         return (codPos - ENCODER_ZERO) * 360. / ENCODER_FULL_CIRCLE
 
@@ -162,8 +156,6 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
 
         @return: encoder position
         @rtype: int
-
-        @todo: put in merlinHelpers?
         """
         return int(pos * ENCODER_FULL_CIRCLE / 360. + ENCODER_ZERO)
 
