@@ -358,9 +358,9 @@ class MerlinOrionSerialSimulator(MerlinOrionBaseSimulator):
     """ Serial-based simulator.
     """
     def __init__(self, port):
-        MerlinOrionBaseSimulator.__init__(self)
         Logger().debug("MerlinOrionSerialSimulator.__init__(): port=%s" % port)
         self.__port = port
+        MerlinOrionBaseSimulator.__init__(self)
 
     def _init(self):
         self.__serial = serial.Serial(self.__port)
@@ -392,9 +392,9 @@ class MerlinOrionEthernetSimulator(MerlinOrionBaseSimulator):
     """ Ethernet-based simulator.
     """
     def __init__(self, host, port):
-        MerlinOrionBaseSimulator.__init__(self)
         self.__host = host
         self.__port = port
+        MerlinOrionBaseSimulator.__init__(self)
 
     def _init(self):
         self.__server = SimulatorTCPServer((self.__host, self.__port), MerlinOrionEthernetHandler)
