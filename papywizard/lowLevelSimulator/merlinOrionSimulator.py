@@ -62,7 +62,7 @@ __revision__ = "$Id$"
 import SocketServer
 
 import serial
-#import bluetooth
+from PyQt4 import QtCore
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
@@ -131,15 +131,15 @@ def angleToEncoder(pos):
     return int(pos * ENCODER_FULL_CIRCLE / 360. + ENCODER_ZERO)
 
 
-class MerlinOrionBaseHandler(object):
+class MerlinOrionBaseHandler(QtCore.QObject):
     """ Abstract handler for Merlin/Orion commands set.
     """
     def __init__(self):
         """ Init the abstract handler.
         """
-        super(MerlinOrionBaseHandler, self).__init__()
-        yawAxis = MerlinOrionAxis('yawAxis', "Simulation")
-        pitchAxis = MerlinOrionAxis('pitchAxis', "Simulation")
+        QtCore.QObject.__init__(self)
+        yawAxis = SimulationAxis('yawAxis', "Simulation")
+        pitchAxis = SimulationAxis('pitchAxis', "Simulation")
         self._axis = {1: yawAxis,
                       2: pitchAxis}
         self._axisCmd = {}
@@ -262,18 +262,11 @@ class MerlinOrionBaseHandler(object):
         return "=%s\r" % response
 
 
-class MerlinOrionBluetoothHandler(MerlinOrionBaseHandler):
-    """ Bluetooth-based handler.
-    """
-    def __init__(self, serial):
-        raise NotImplementedError
-
-
 class MerlinOrionSerialHandler(MerlinOrionBaseHandler):
     """ Serial-based handler.
     """
     def __init__(self, serial):
-        super(MerlinOrionSerialHandler, self).__init__()
+        MerlinOrionBaseHandler.__init__(self)
         self.serial = serial
 
     def handle(self):
@@ -341,13 +334,13 @@ class MerlinOrionEthernetHandler(MerlinOrionBaseHandler, SocketServer.BaseReques
                 Logger().exception("MerlinOrionEthernetHandler.handle()")
 
 
-class MerlinOrionBaseSimulator(object):
+class MerlinOrionBaseSimulator(QtCore.QObject):
     """ Abstract Merlin/Orion simulator.
     """
     def __init__(self):
         """ Init the Merlin/Orion base simulator.
         """
-        super(MerlinOrionBaseSimulator, self).__init__()
+        QtCore.QObject.__init__(self)
         self._init()
 
     def _init(self):
@@ -361,19 +354,13 @@ class MerlinOrionBaseSimulator(object):
         raise NotImplementedError
 
 
-class MerlinOrionBluetoothSimulator(MerlinOrionBaseSimulator):
-    """ Bluetooth-based simulator.
-    """
-    def __init__(self):
-        raise NotImplementedError
-
-
 class MerlinOrionSerialSimulator(MerlinOrionBaseSimulator):
     """ Serial-based simulator.
     """
     def __init__(self, port):
+        MerlinOrionBaseSimulator.__init__(self)
+        Logger().debug("MerlinOrionSerialSimulator.__init__(): port=%s" % port)
         self.__port = port
-        super(MerlinOrionSerialSimulator, self).__init__()
 
     def _init(self):
         self.__serial = serial.Serial(self.__port)
@@ -405,9 +392,9 @@ class MerlinOrionEthernetSimulator(MerlinOrionBaseSimulator):
     """ Ethernet-based simulator.
     """
     def __init__(self, host, port):
+        MerlinOrionBaseSimulator.__init__(self)
         self.__host = host
         self.__port = port
-        super(MerlinOrionEthernetSimulator, self).__init__()
 
     def _init(self):
         self.__server = SimulatorTCPServer((self.__host, self.__port), MerlinOrionEthernetHandler)
