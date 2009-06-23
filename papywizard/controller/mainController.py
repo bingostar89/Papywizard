@@ -966,6 +966,7 @@ class MainController(AbstractController):
             self._view.grabKeyboard()
             controller.shutdown()
             self._view.actionHardwareConnect.setChecked(False)
+            #self._view.actionHardwareConnect.emit(QtCore.SIGNAL("toggled(bool)"), False)
 
     def __stopConnection(self):
         """ Disconnect from plugins.
@@ -973,23 +974,21 @@ class MainController(AbstractController):
         if self.__pluginsConnected:
             Logger().info("Stopping connection. Please wait...")
             self.setStatusbarMessage(self.tr("Stopping connection. Please wait..."))
-        self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_creating.png").scaled(22, 22))
+            self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_creating.png").scaled(22, 22))
+            while QtGui.QApplication.hasPendingEvents():
+                QtGui.QApplication.processEvents()
+            Spy().suspend()
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        while QtGui.QApplication.hasPendingEvents():
-            QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
 
-        Spy().suspend()
         if self.__pluginsStatus is not None:
             pluginsConnector = PluginsConnector()
-            try:
-                pluginsConnector.stop(self.__pluginsStatus)
-            finally:
-                self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
+            pluginsConnector.stop(self.__pluginsStatus)
 
         if self.__pluginsConnected:
             Logger().info("Connection stopped")
             self.setStatusbarMessage(self.tr("Connection stopped"), 10)
 
+        self._view.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_no.png").scaled(22, 22))
         self.__SetDisconnectedWidgetState()
         self.__pluginsConnected = False
