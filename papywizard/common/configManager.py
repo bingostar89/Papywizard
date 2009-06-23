@@ -75,6 +75,7 @@ class ConfigManagerObject(QtCore.QObject):
     def __init__(self):
         """ Init the object.
         """
+        self.__config = None
         self.__action = 'none'
         self.__saved = False
 
