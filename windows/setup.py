@@ -106,6 +106,7 @@ setup(options={"py2exe": {'compressed': 1,
                                           "../papywizard/view/ui/nbPictsDialog.ui",
                                           "../papywizard/view/ui/pluginsConfigDialog.ui",
                                           "../papywizard/view/ui/pluginsDialog.ui",
+                                          "../papywizard/view/ui/pluginsStatusDialog.ui",
                                           "../papywizard/view/ui/shootDialog.ui",
                                           "../papywizard/view/ui/totalFovDialog.ui"
                                           ])]
