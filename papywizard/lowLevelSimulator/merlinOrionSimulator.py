@@ -67,8 +67,68 @@ import serial
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
-#from papywizard.common.helpers import decodeAxisValue, encodeAxisValue, deg2cod, cod2deg
 from papywizard.plugins.simulationPlugins import SimulationAxis
+
+
+def _decodeAxisValue(strValue):
+    """ Decode value from axis.
+
+    Values (position, speed...) returned by axis are
+    32bits-encoded strings, low byte first.
+
+    @param strValue: value returned by axis
+    @type strValue: str
+
+    @return: value
+    @rtype: int
+    """
+    value = 0
+    for i in xrange(3):
+        value += eval("0x%s" % strValue[i*2:i*2+2]) * 2 ** (i * 8)
+
+    return value
+
+
+def _encodeAxisValue(alue):
+    """ Encode value for axis.
+
+    Values (position, speed...) to send to axis must be
+    32bits-encoded strings, low byte first.
+
+    @param value: value
+    @type value: int
+
+    @return: value to send to axis
+    @rtype: str
+    """
+    strHexValue = "000000%s" % hex(value)[2:]
+    strValue = strHexValue[-2:] + strHexValue[-4:-2] + strHexValue[-6:-4]
+
+    return strValue.upper()
+
+
+def encoderToAngle(codPos):
+    """ Convert encoder value to degres.
+
+    @param codPos: encoder position
+    @type codPos: int
+
+    @return: position, in °
+    @rtype: float
+    """
+    return (codPos - ENCODER_ZERO) * 360. / ENCODER_FULL_CIRCLE
+
+
+def angleToEncoder(pos):
+    """ Convert degres to encoder value.
+
+    @param pos: position, in °
+    @type pos: float
+
+    @return: encoder position
+    @rtype: int
+    """
+    return int(pos * ENCODER_FULL_CIRCLE / 360. + ENCODER_ZERO)
 
 
 class MerlinOrionBaseHandler(object):
