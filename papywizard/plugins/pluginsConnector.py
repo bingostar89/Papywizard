@@ -50,7 +50,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: ConnectController.py 1914 2009-06-13 17:50:11Z fma $"
+__revision__ = "$Id$"
 
 from PyQt4 import QtCore
 

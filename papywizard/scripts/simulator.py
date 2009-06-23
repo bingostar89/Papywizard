@@ -45,7 +45,7 @@ Main script for simulator
 @license: CeCILL
 """
 
-__revision__ = "$Id: mainSimul.py 1308 2009-01-11 16:19:42Z fma $"
+__revision__ = "$Id$"
 
 import sys
 import optparse

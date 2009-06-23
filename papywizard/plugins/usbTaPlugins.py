@@ -50,7 +50,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: merlinOrionPlugins.py 1888 2009-05-30 08:24:37Z fma $"
+__revision__ = "$Id$"
 
 import time
 
