@@ -44,10 +44,6 @@ Implements
 
 - SimulationAxis
 - SimulationAxisController
-- SimulationYawAxis
-- SimulationYawAxisController
-- SimulationPitchAxis
-- SimulationPitchAxisController
 - SimulationShutter
 - SimulationShutterController
 

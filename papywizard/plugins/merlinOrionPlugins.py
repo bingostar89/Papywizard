@@ -45,10 +45,6 @@ Implements
 - MerlinOrionHardware
 - MerlinOrionAxis
 - MerlinOrionAxisController
-- MerlinOrionYawAxis
-- MerlinOrionYawAxisController
-- MerlinOrionPitchAxis
-- MerlinOrionPitchAxisController
 - MerlinOrionShutter
 - MerlinOrionShutterController
 

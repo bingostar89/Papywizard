@@ -45,10 +45,6 @@ Implements
 - PololuServoHardware
 - PololuServoAxis
 - PololuServoAxisController
-- PololuServoYawAxis
-- PololuServoYawAxisController
-- PololuServoPitchAxis
-- PololuServoPitchAxisController
 - PololuServoShutter
 - PololuServoShutterController
 
