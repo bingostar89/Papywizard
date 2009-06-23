@@ -57,6 +57,9 @@ from papywizard.lowLevelSimulator.merlinOrionSimulator import MerlinOrionEtherne
 
 
 def main():
+    Logger("Simulator")
+    ConfigManager().load()
+
     usage = "Usage: %prog bluetooth|serial|ethernet [options]"
     version = "%%prog %s" % config.VERSION
     parser = optparse.OptionParser(usage=usage, version=version)
@@ -98,9 +101,3 @@ def main():
     Logger().info("Starting Papywizard simulator...")
     simulator.run()
     Logger().info("Papywizard simulator stopped")
-
-
-if __name__ == "__main__":
-    Logger("Simulator")
-    ConfigManager().load()
-    main()
