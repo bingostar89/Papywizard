@@ -169,7 +169,7 @@ def main():
         register()
         from papywizard.plugins.eosUtilityPlugins import register
         register()
-        from papywizard.plugins.usbTaPlugins import register
+        from papywizard.plugins.ursaMinorPlugins import register
         register()
         PluginsManager ().load()
 
