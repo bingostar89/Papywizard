@@ -61,7 +61,7 @@ def main():
     Logger("Simulator")
     ConfigManager().load()
 
-    usage = "Usage: %prog bluetooth|serial|ethernet [options]"
+    usage = "Usage: %prog [options]"
     version = "%%prog %s" % config.VERSION
     parser = optparse.OptionParser(usage=usage, version=version)
     parser.set_defaults(connexion=config.SIMUL_DEFAULT_CONNEXION)
