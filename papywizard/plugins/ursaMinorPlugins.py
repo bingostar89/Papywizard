@@ -42,8 +42,8 @@ Hardware
 Implements
 ==========
 
-- UsbTaShutter
-- UsbTaShutterController
+- UrsaMinorUsbShutter
+- UrsaMinorUsbShutterController
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
@@ -63,7 +63,7 @@ from papywizard.plugins.hardwarePluginController import HardwarePluginController
 from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
-NAME = "USB TA"
+NAME = "Ursa Minor USB"
 
 DEFAULT_LINE = 'RTS'
 DEFAULT_LINE_INVERTED = False
@@ -72,11 +72,11 @@ lineLevel = {False: {'on': 1, 'off': 0},
              True: {'on': 0, 'off': 1}}
 
 
-class UsbTaShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
+class UrsaMinorUsbShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
     """
     """
     def _init(self):
-        Logger().trace("UsbTaShutter._init()")
+        Logger().trace("UrsaMinorUsbShutter._init()")
         AbstractHardwarePlugin._init(self)
         AbstractStandardShutterPlugin._init(self)
 
@@ -98,24 +98,24 @@ class UsbTaShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
         self.__LastShootTime = time.time()
 
     def activate(self):
-        Logger().trace("UsbTaShutter.activate()")
+        Logger().trace("UrsaMinorUsbShutter.activate()")
 
     def deactivate(self):
-        Logger().trace("UsbTaShutter.deactivate()")
+        Logger().trace("UrsaMinorUsbShutter.deactivate()")
 
     def init(self):
-        Logger().trace("UsbTaShutter.init()")
+        Logger().trace("UrsaMinorUsbShutter.init()")
 
     def shutdown(self):
-        Logger().trace("UsbTaShutter.shutdown()")
+        Logger().trace("UrsaMinorUsbShutter.shutdown()")
         try:
             self._driver.setRTS(lineLevel[self._config['LINE_INVERTED']]['off'])
             self._driver.setDTR(lineLevel[self._config['LINE_INVERTED']]['off'])
         except AttributeError:
-            Logger().exception("UsbTaShutter.shutdown", debug=True)
+            Logger().exception("UrsaMinorUsbShutter.shutdown", debug=True)
 
     def lockupMirror(self):
-        Logger().trace("UsbTaShutter.lockupMirror()")
+        Logger().trace("UrsaMinorUsbShutter.lockupMirror()")
         self._ensurePulseWidthLowDelay()
         self._driver.acquireBus()
         try:
@@ -125,7 +125,7 @@ class UsbTaShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
             self._driver.releaseBus()
 
     def shoot(self, bracketNumber):
-        Logger().trace("UsbTaShutter.shoot()")
+        Logger().trace("UrsaMinorUsbShutter.shoot()")
         self._ensurePulseWidthLowDelay()
         self._driver.acquireBus()
         try:
@@ -141,7 +141,7 @@ class UsbTaShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
             self._driver.releaseBus()
 
 
-class UsbTaShutterController(StandardShutterPluginController, HardwarePluginController):
+class UrsaMinorUsbShutterController(StandardShutterPluginController, HardwarePluginController):
     def _defineGui(self):
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
@@ -151,4 +151,4 @@ class UsbTaShutterController(StandardShutterPluginController, HardwarePluginCont
 def register():
     """ Register plugins.
     """
-    PluginsManager ().register(UsbTaShutter, UsbTaShutterController, capacity='shutter', name=NAME)
+    PluginsManager ().register(UrsaMinorUsbShutter, UrsaMinorUsbShutterController, capacity='shutter', name=NAME)
