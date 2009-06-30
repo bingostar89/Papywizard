@@ -42,8 +42,8 @@ Plugins
 Implements
 ==========
 
-- TetheredShutter
-- TetheredShutterController
+- GenericTetheredShutter
+- GenericTetheredShutterController
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
@@ -61,7 +61,7 @@ from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
-NAME = "Tethered"
+NAME = "Generic Tethered"
 
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_MIRROR_LOCKUP_COMMAND = "gphoto2 --capture-image"
@@ -70,7 +70,7 @@ DEFAULT_BRACKETING_NBPICTS = 1
 DEFAULT_BRACKETING_INTENT = 'exposure'
 
 
-class TetheredShutter(AbstractShutterPlugin):
+class GenericTetheredShutter(AbstractShutterPlugin):
     """
     """
     def _init(self):
@@ -97,32 +97,32 @@ class TetheredShutter(AbstractShutterPlugin):
         self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
 
     def activate(self):
-        Logger().trace("TetheredShutter.activate()")
+        Logger().trace("GenericTetheredShutter.activate()")
 
     def deactivate(self):
-        Logger().trace("TetheredShutter.deactivate()")
+        Logger().trace("GenericTetheredShutter.deactivate()")
 
     def establishConnection(self):
-        Logger().trace("TetheredShutter.establishConnection()")
+        Logger().trace("GenericTetheredShutter.establishConnection()")
 
     def stopConnection(self):
-        Logger().trace("TetheredShutter.stopConnection()")
+        Logger().trace("GenericTetheredShutter.stopConnection()")
 
     def init(self):
-        Logger().trace("TetheredShutter.init()")
+        Logger().trace("GenericTetheredShutter.init()")
 
     def shutdown(self):
-        Logger().trace("TetheredShutter.shutdown()")
+        Logger().trace("GenericTetheredShutter.shutdown()")
 
     def lockupMirror(self):
         # @todo: implement mirror lockup command
-        Logger().debug("TetheredShutter.lockupMirror(): execute command '%s'..." % self._config['MIRROR_LOCKUP_COMMAND'])
+        Logger().debug("GenericTetheredShutter.lockupMirror(): execute command '%s'..." % self._config['MIRROR_LOCKUP_COMMAND'])
         time.sleep(1)
-        Logger().debug("TetheredShutter.lockupMirror(): command over")
+        Logger().debug("GenericTetheredShutter.lockupMirror(): command over")
         return 0
 
     def shoot(self, bracketNumber):
-        Logger().debug("TetheredShutter.shoot(): execute command '%s'..." % self._config['SHOOT_COMMAND'])
+        Logger().debug("GenericTetheredShutter.shoot(): execute command '%s'..." % self._config['SHOOT_COMMAND'])
 
         # Launch external command
         args = self._config['SHOOT_COMMAND'].split()
@@ -131,13 +131,13 @@ class TetheredShutter(AbstractShutterPlugin):
         # Wait end of execution
         stdout, stderr = p.communicate()
         if stderr:
-            Logger().error("TetheredShutter.shoot(): stderr:\n%s" % stderr.strip())
-        Logger().debug("TetheredShutter.shoot(): stdout:\n%s" % stdout.strip())
+            Logger().error("GenericTetheredShutter.shoot(): stderr:\n%s" % stderr.strip())
+        Logger().debug("GenericTetheredShutter.shoot(): stdout:\n%s" % stdout.strip())
 
         return p.returncode
 
 
-class TetheredShutterController(ShutterPluginController):
+class GenericTetheredShutterController(ShutterPluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
         self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
@@ -150,4 +150,4 @@ class TetheredShutterController(ShutterPluginController):
 def register():
     """ Register plugins.
     """
-    PluginsManager ().register(TetheredShutter, TetheredShutterController, capacity='shutter', name=NAME)
+    PluginsManager ().register(GenericTetheredShutter, GenericTetheredShutterController, capacity='shutter', name=NAME)
