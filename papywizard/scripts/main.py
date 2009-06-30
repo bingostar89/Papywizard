@@ -161,7 +161,7 @@ def main():
         register()
         from papywizard.plugins.merlinOrionPlugins import register
         register()
-        from papywizard.plugins.tetheredPlugins import register
+        from papywizard.plugins.genericTetheredPlugins import register
         register()
         from papywizard.plugins.timelordPlugins import register
         register()
@@ -169,7 +169,7 @@ def main():
         register()
         from papywizard.plugins.eosUtilityPlugins import register
         register()
-        from papywizard.plugins.ursaMinorPlugins import register
+        from papywizard.plugins.ursaMinorUsbPlugins import register
         register()
         PluginsManager ().load()
 
