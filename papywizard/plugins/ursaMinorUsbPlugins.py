@@ -68,8 +68,8 @@ NAME = "Ursa Minor USB"
 DEFAULT_TRIGGER_LINE = 'RTS'
 DEFAULT_TRIGGER_LINE_INVERTED = False
 
-lineLevel = {False: {'on': 1, 'off': 0},
-             True: {'on': 0, 'off': 1}}
+TRIGGER_LINE_LEVELS = {False: {'on': 1, 'off': 0},
+                       True: {'on': 0, 'off': 1}}
 
 
 class UrsaMinorUsbShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
@@ -90,13 +90,13 @@ class UrsaMinorUsbShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin)
         """ Set the shutter on.
         """
         method = getattr(self._driver, "set%s" % self._config['TRIGGER_LINE'])
-        method(lineLevel[self._config['TRIGGER_LINE_INVERTED']]['on'])
+        method(TRIGGER_LINE_LEVELS[self._config['TRIGGER_LINE_INVERTED']]['on'])
 
     def _triggerOffShutter(self):
         """ Set the shutter off.
         """
         method = getattr(self._driver, "set%s" % self._config['TRIGGER_LINE'])
-        method(lineLevel[self._config['TRIGGER_LINE_INVERTED']]['off'])
+        method(TRIGGER_LINE_LEVELS[self._config['TRIGGER_LINE_INVERTED']]['off'])
 
     def activate(self):
         Logger().trace("UrsaMinorUsbShutter.activate()")
