@@ -68,7 +68,7 @@ class  AbstractStandardShutterPlugin(AbstractShutterPlugin):
     def _init(self):
         Logger().trace("AbstractStandardShutterPlugin._init()")
         AbstractShutterPlugin._init(self)
-        self.__LastShootTime = time.time()
+        self._LastShootTime = time.time()
 
     def _getTimeValue(self):
         return self._config["TIME_VALUE"]
@@ -90,9 +90,52 @@ class  AbstractStandardShutterPlugin(AbstractShutterPlugin):
         self._addConfigKey('_pulseWidthHigh', 'PULSE_WIDTH_HIGH', default=DEFAULT_PULSE_WIDTH_HIGH)
         self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=DEFAULT_PULSE_WIDTH_LOW)
 
+    def _triggerOnShutter(self):
+        """ Set the shutter on.
+        """
+        raise NotImplementedError("AbstractStandardShutterPlugin._triggerOnShutter() must be overloaded")
+
+    def _triggerOffShutter(self):
+        """ Set the shutter off.
+        """
+        raise NotImplementedError("AbstractStandardShutterPlugin._triggerOffShutter() must be overloaded")
+
+    def _triggerShutter(self):
+        """ Trigger the shutter contact.
+        """
+        self._triggerOnShutter()
+        time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
+        self._triggerOffShutter()
+        self._LastShootTime = time.time()
+
     def _ensurePulseWidthLowDelay(self):
         """ Ensure that PULSE_WIDTH_LOW delay has elapsed before last trigger.
         """
-        delay = self._config['PULSE_WIDTH_LOW'] / 1000. - (time.time() - self.__LastShootTime)
+        delay = self._config['PULSE_WIDTH_LOW'] / 1000. - (time.time() - self._LastShootTime)
         if delay > 0:
             time.sleep(delay)
+
+    def lockupMirror(self):
+        Logger().trace("AbstractStandardShutterPlugin.lockupMirror()")
+        self._ensurePulseWidthLowDelay()
+        self._driver.acquireBus()
+        try:
+            self._triggerShutter()
+            return 0
+        finally:
+            self._driver.releaseBus()
+
+    def shoot(self, bracketNumber):
+        Logger().trace("AbstractStandardShutterPlugin.shoot()")
+        self._ensurePulseWidthLowDelay()
+        self._driver.acquireBus()
+        try:
+            self._triggerShutter()
+
+            # Wait for the end of shutter cycle
+            delay = self._config['TIME_VALUE'] - self._config['PULSE_WIDTH_HIGH'] / 1000.
+            if delay > 0:
+                time.sleep(delay)
+            return 0
+        finally:
+            self._driver.releaseBus()

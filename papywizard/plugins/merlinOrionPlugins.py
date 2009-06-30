@@ -499,13 +499,15 @@ class MerlinOrionShutter(MerlinOrionHardware, AbstractStandardShutterPlugin):
         MerlinOrionHardware._defineConfig(self)
         AbstractStandardShutterPlugin._defineConfig(self)
 
-    def _triggerShutter(self):
-        """ Trigger the shutter contact.
+    def _triggerOnShutter(self):
+        """ Set the shutter on.
         """
         self._sendCmd("O", "1")
-        time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
+
+    def _triggerOffShutter(self):
+        """ Set the shutter off.
+        """
         self._sendCmd("O", "0")
-        self.__LastShootTime = time.time()
 
     def activate(self):
         Logger().trace("MerlinOrionShutter.activate()")
@@ -519,33 +521,7 @@ class MerlinOrionShutter(MerlinOrionHardware, AbstractStandardShutterPlugin):
 
     def shutdown(self):
         Logger().trace("MerlinOrionShutter.shutdown()")
-        self._sendCmd("O", "0")
-
-    def lockupMirror(self):
-        Logger().trace("MerlinOrionShutter.lockupMirror()")
-        self._ensurePulseWidthLowDelay()
-        self._driver.acquireBus()
-        try:
-            self._triggerShutter()
-            return 0
-        finally:
-            self._driver.releaseBus()
-
-    def shoot(self, bracketNumber):
-        Logger().trace("MerlinOrionShutter.shoot()")
-        self._ensurePulseWidthLowDelay()
-        self._driver.acquireBus()
-        try:
-            self._triggerShutter()
-
-            # Wait for the end of shutter cycle
-            delay = self._config['TIME_VALUE'] - self._config['PULSE_WIDTH_HIGH'] / 1000.
-            if delay > 0:
-                time.sleep(delay)
-
-            return 0
-        finally:
-            self._driver.releaseBus()
+        self._triggerOffShutter()
 
 
 class MerlinOrionShutterController(StandardShutterPluginController, HardwarePluginController):

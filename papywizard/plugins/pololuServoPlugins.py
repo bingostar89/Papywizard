@@ -440,13 +440,15 @@ class PololuServoShutter(PololuServoHardware, AbstractStandardShutterPlugin):
         self._addConfigKey('_valueOn', 'VALUE_ON', default=DEFAULT_VALUE_ON)
         self._channel = self._config['CHANNEL']
 
-    def _triggerShutter(self):
-        """ Trigger the shutter contact.
+    def _triggerOnShutter(self):
+        """ Set the shutter on.
         """
         self._setPosition7bits(self._config['VALUE_ON'])
-        time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
+
+    def _triggerOffShutter(self):
+        """ Set the shutter off.
+        """
         self._setPosition7bits(self._config['VALUE_OFF'])
-        self.__LastShootTime = time.time()
 
     def activate(self):
         Logger().trace("PololuServoShutter.activate()")
@@ -458,38 +460,12 @@ class PololuServoShutter(PololuServoHardware, AbstractStandardShutterPlugin):
     def init(self):
         Logger().trace("PololuServoShutter.init()")
         self._initPololuServo()
-##        self._position = 0.  # ???
+        #self._position = 0.  # ???
 
     def shutdown(self):
         Logger().trace("PololuServoShutter.shutdown()")
+        self._triggerOffShutter()
         self._shutdownPololuServo()
-
-    def lockupMirror(self):
-        Logger().trace("PololuServoShutter.lockupMirror()")
-        self._ensurePulseWidthLowDelay()
-        self._driver.acquireBus()
-        try:
-            self._triggerShutter()
-            return 0
-        finally:
-            self._driver.releaseBus()
-
-    def shoot(self, bracketNumber):
-        Logger().trace("PololuServoShutter.shoot()")
-        self._ensurePulseWidthLowDelay()
-        self._driver.acquireBus()
-
-        try:
-            self._triggerShutter()
-
-            # Wait for the end of shutter cycle
-            delay = self._config['TIME_VALUE'] - self._config['PULSE_WIDTH_HIGH'] / 1000.
-            if delay > 0:
-                time.sleep(delay)
-
-            return 0
-        finally:
-            self._driver.releaseBus()
 
 
 class PololuServoShutterController(StandardShutterPluginController, HardwarePluginController):

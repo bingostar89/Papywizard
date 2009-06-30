@@ -65,8 +65,8 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 NAME = "Ursa Minor USB"
 
-DEFAULT_LINE = 'RTS'
-DEFAULT_LINE_INVERTED = False
+DEFAULT_TRIGGER_LINE = 'RTS'
+DEFAULT_TRIGGER_LINE_INVERTED = False
 
 lineLevel = {False: {'on': 1, 'off': 0},
              True: {'on': 0, 'off': 1}}
@@ -83,19 +83,20 @@ class UrsaMinorUsbShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin)
     def _defineConfig(self):
         AbstractHardwarePlugin._defineConfig(self)
         AbstractStandardShutterPlugin._defineConfig(self)
-        self._addConfigKey('_lineInverted', 'LINE_INVERTED', default=DEFAULT_LINE_INVERTED)
+        self._addConfigKey('_triggerLine', 'TRIGGER_LINE', default=DEFAULT_TRIGGER_LINE)
+        self._addConfigKey('_triggerLineInverted', 'TRIGGER_LINE_INVERTED', default=DEFAULT_TRIGGER_LINE_INVERTED)
 
-    def _triggerShutter(self):
-        """ Trigger the shutter contact.
-
-        @raise AttributeError: the driver does not support this method
+    def _triggerOnShutter(self):
+        """ Set the shutter on.
         """
-        self._driver.setRTS(lineLevel[self._config['LINE_INVERTED']]['on'])
-        self._driver.setDTR(lineLevel[self._config['LINE_INVERTED']]['on'])
-        time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
-        self._driver.setRTS(lineLevel[self._config['LINE_INVERTED']]['off'])
-        self._driver.setDTR(lineLevel[self._config['LINE_INVERTED']]['off'])
-        self.__LastShootTime = time.time()
+        method = getattr(self._driver, "set%s" % self._config['TRIGGER_LINE'])
+        method(lineLevel[self._config['TRIGGER_LINE_INVERTED']]['on'])
+
+    def _triggerOffShutter(self):
+        """ Set the shutter off.
+        """
+        method = getattr(self._driver, "set%s" % self._config['TRIGGER_LINE'])
+        method(lineLevel[self._config['TRIGGER_LINE_INVERTED']]['off'])
 
     def activate(self):
         Logger().trace("UrsaMinorUsbShutter.activate()")
@@ -109,43 +110,17 @@ class UrsaMinorUsbShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin)
     def shutdown(self):
         Logger().trace("UrsaMinorUsbShutter.shutdown()")
         try:
-            self._driver.setRTS(lineLevel[self._config['LINE_INVERTED']]['off'])
-            self._driver.setDTR(lineLevel[self._config['LINE_INVERTED']]['off'])
+            self._triggerOffShutter()
         except AttributeError:
             Logger().exception("UrsaMinorUsbShutter.shutdown", debug=True)
-
-    def lockupMirror(self):
-        Logger().trace("UrsaMinorUsbShutter.lockupMirror()")
-        self._ensurePulseWidthLowDelay()
-        self._driver.acquireBus()
-        try:
-            self._triggerShutter()
-            return 0
-        finally:
-            self._driver.releaseBus()
-
-    def shoot(self, bracketNumber):
-        Logger().trace("UrsaMinorUsbShutter.shoot()")
-        self._ensurePulseWidthLowDelay()
-        self._driver.acquireBus()
-        try:
-            self._triggerShutter()
-
-            # Wait for the end of shutter cycle
-            delay = self._config['TIME_VALUE'] - self._config['PULSE_WIDTH_HIGH'] / 1000.
-            if delay > 0:
-                time.sleep(delay)
-
-            return 0
-        finally:
-            self._driver.releaseBus()
 
 
 class UrsaMinorUsbShutterController(StandardShutterPluginController, HardwarePluginController):
     def _defineGui(self):
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Hard', "Line inverted", CheckBoxField, (), 'LINE_INVERTED')
+        self._addWidget('Hard', "Trigger line", ComboBoxField, (['RTS', 'DTR'],), 'TRIGGER_LINE')
+        self._addWidget('Hard', "Line inverted", CheckBoxField, (), 'TRIGGER_LINE_INVERTED')
 
 
 def register():
