@@ -66,7 +66,7 @@ from PyQt4 import QtCore
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
-from papywizard.lowLevelSimulator.merlinOrionCommandDispatcher import MerlinOrionCommandDispatcher
+from papywizard.simulator.merlinOrionCommandDispatcher import MerlinOrionCommandDispatcher
 from papywizard.plugins.simulationPlugins import SimulationAxis
 
 

@@ -53,8 +53,8 @@ import optparse
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
-from papywizard.lowLevelSimulator.merlinOrionCommandDispatcher import MerlinOrionCommandDispatcher
-from papywizard.lowLevelSimulator.merlinOrionSimulator import MerlinOrionEthernetSimulator, MerlinOrionSerialSimulator
+from papywizard.simulator.merlinOrionCommandDispatcher import MerlinOrionCommandDispatcher
+from papywizard.simulator.merlinOrionSimulator import MerlinOrionEthernetSimulator, MerlinOrionSerialSimulator
 
 
 def main():
