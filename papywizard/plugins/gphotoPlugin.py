@@ -50,7 +50,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: GphotoPlugins.py 1999 2009-06-30 11:49:00Z fma $"
+__revision__ = "$Id$"
 
 import time
 import subprocess
