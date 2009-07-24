@@ -129,7 +129,7 @@ class GphotoShutter(AbstractShutterPlugin):
 
         # Get exposure bias list (only once)
         if not self.__exposureBiasTable['0.5 EV']:
-            Logger().debug("GphotoShutter.activate(): get camera configuration")
+            Logger().debug("GphotoShutter.shoot(): get camera configuration")
             cmd = GET_CONFIG_COMMAND
 
             # Launch external command
@@ -139,8 +139,8 @@ class GphotoShutter(AbstractShutterPlugin):
             # Wait end of execution
             stdout, stderr = p.communicate()
             if stderr:
-                Logger().error("GphotoShutter.activate(): stderr:\n%s" % stderr.strip())
-            Logger().debug("GphotoShutter.activate(): stdout:\n%s" % stdout.strip())
+                Logger().error("GphotoShutter.shoot(): stderr:\n%s" % stderr.strip())
+            Logger().debug("GphotoShutter.shoot(): stdout:\n%s" % stdout.strip())
 
             if not p.returcode:
                 for line in stdout.strip():
