@@ -108,7 +108,7 @@ class PluginsManagerObject(QtCore.QObject):
                     file_, pathname, description = imp.find_module(moduleName, [pluginDir])
                     Logger().debug("PluginsManager.register(): found '%s' module" % moduleName)
                     try:
-                        module = imp.load_module('module', file, pathname, description)
+                        module = imp.load_module('module', file_, pathname, description)
                         module.register()
                     except AttributeError:
                         Logger().exception("PluginsManager.register()", debug=True)
