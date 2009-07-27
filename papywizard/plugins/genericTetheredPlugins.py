@@ -150,4 +150,4 @@ class GenericTetheredShutterController(ShutterPluginController):
 def register():
     """ Register plugins.
     """
-    PluginsManager ().register(GenericTetheredShutter, GenericTetheredShutterController, capacity='shutter', name=NAME)
+    PluginsManager().register(GenericTetheredShutter, GenericTetheredShutterController, capacity='shutter', name=NAME)

@@ -141,4 +141,4 @@ class TimelordShutterController(ShutterPluginController):
 def register():
     """ Register plugins.
     """
-    PluginsManager ().register(TimelordShutter, TimelordShutterController, capacity='shutter', name=NAME)
+    PluginsManager().register(TimelordShutter, TimelordShutterController, capacity='shutter', name=NAME)

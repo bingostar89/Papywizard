@@ -126,4 +126,4 @@ class UrsaMinorUsbShutterController(StandardShutterPluginController, HardwarePlu
 def register():
     """ Register plugins.
     """
-    PluginsManager ().register(UrsaMinorUsbShutter, UrsaMinorUsbShutterController, capacity='shutter', name=NAME)
+    PluginsManager().register(UrsaMinorUsbShutter, UrsaMinorUsbShutterController, capacity='shutter', name=NAME)

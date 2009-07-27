@@ -184,4 +184,4 @@ class GphotoShutterController(ShutterPluginController):
 def register():
     """ Register plugins.
     """
-    PluginsManager ().register(GphotoShutter, GphotoShutterController, capacity='shutter', name=NAME)
+    PluginsManager().register(GphotoShutter, GphotoShutterController, capacity='shutter', name=NAME)
