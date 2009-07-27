@@ -68,9 +68,9 @@ DEFAULT_BRACKETING_NBPICTS = 1
 DEFAULT_BRACKETING_STEP = 1.
 DEFAULT_BRACKETING_INTENT = 'exposure'
 
-GET_CONFIG_COMMAND = "gphoto2 --setconfig evstep=1 --get-config exposurebiascompensation"
-MIRROR_LOCKUP_COMMAND = "gphoto2 --capture-image"  # ???
-SHOOT_COMMAND = "gphoto2 --set-config capturetarget=0 --set-config evstep=1"
+GET_CONFIG_COMMAND = "gphoto2 --set-config evstep=1 --get-config exposurebiascompensation"
+#MIRROR_LOCKUP_COMMAND = "gphoto2 --capture-image"
+SHOOT_COMMAND = "gphoto2 --capture-image-and-download --setconfig evstep=1 --set-config=exposurebiascompensation="
 
 
 class GphotoShutter(AbstractShutterPlugin):
@@ -130,9 +130,9 @@ class GphotoShutter(AbstractShutterPlugin):
         # Get exposure bias list (only once)
         if not self.__exposureBiasTable['0.5 EV']:
             Logger().debug("GphotoShutter.shoot(): get camera configuration")
-            cmd = GET_CONFIG_COMMAND
 
             # Launch external command
+            cmd = GET_CONFIG_COMMAND
             args = cmd.split()
             p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
@@ -142,19 +142,21 @@ class GphotoShutter(AbstractShutterPlugin):
                 Logger().error("GphotoShutter.shoot(): stderr:\n%s" % stderr.strip())
             Logger().debug("GphotoShutter.shoot(): stdout:\n%s" % stdout.strip())
 
-            if not p.returcode:
-                for line in stdout.strip():
-                if line.startswith("Choice"):
-                    bias = line.split()[-1]  # Get last field
-                    self.__exposureBiasTable['0.5 EV'].append(bias / 1000.)
+            if not p.returncode:
+                for line in stdout.split('\n'):
+                    if line.startswith("Choice"):
+                        bias = line.split()[-1]  # Get last field
+                        self.__exposureBiasTable['0.5 EV'].append(float(bias) / 1000.)
+            Logger().debug("GphotoShutter.shoot(): __exposureBiasTable=%s" % self.__exposureBiasTable)
 
         # Compute exposure bias according to bracketNumber
         bias = (bracketNumber - 1 - int(self._config['BRACKETING_NB_PICTS'] / 2)) * self._config['BRACKETING_STEP']
+        Logger().debug("GphotoShutter.shoot(): bias=%f" % bias)
 
         # Retreive index in exposure table
-        index = self.__exposureBiasTable["%.1f EV" % bracketEV].index(bias)
+        index = self.__exposureBiasTable["0.5 EV"].index(bias)
 
-        cmd = self._config['SHOOT_COMMAND'] + "--set-config=exposurebiascompensation=%d --capture-image-and-download" % index
+        cmd = "%s%d" % (SHOOT_COMMAND, index)
         Logger().debug("GphotoShutter.shoot(): execute command '%s'..." % cmd)
 
         # Launch external command
@@ -175,7 +177,7 @@ class GphotoShutterController(ShutterPluginController):
         ShutterPluginController._defineGui(self)
         self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', "Bracketing nb picts", SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
-        self._addWidget('Main', "Bracketing step", ComboBoxField, ([0.5, 1., 1.5, 2., 2.5, 3., 3.5, 4., 4.5, 5.],), 'BRACKETING_STEP')
+        self._addWidget('Main', "Bracketing step", DoubleSpinBoxField, (0.5, 5., 1, 0.5, "", " ev"), 'BRACKETING_STEP')
         self._addWidget('Main', "Bracketing intent", ComboBoxField, (['exposure', 'focus', 'white balance', 'movement'],), 'BRACKETING_INTENT')
 
 
