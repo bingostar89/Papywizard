@@ -171,6 +171,10 @@ def main():
         register()
         from papywizard.plugins.ursaMinorUsbPlugins import register
         register()
+        from papywizard.plugins.ursaMinorBt2Plugins import register
+        register()
+        from papywizard.plugins.gphotoPlugins import register
+        register()
         PluginsManager ().load()
 
         # Activate selected plugins (move to PluginsManager ?)
