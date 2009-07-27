@@ -47,6 +47,8 @@ Implements
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
 @license: CeCILL
+
+@todo: check what type(s) of driver(s) a plugin can use
 """
 
 __revision__ = "$Id$"
