@@ -179,7 +179,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
                     c = self._driver.read(1)
                 if c == '!':
                     c = self._driver.read(1) # Get error code
-                    raise IOError("MerlinOrion didn't understand the command '%s' (err=%s)" % (cmd, c))
+                    raise IOError("%s didn't understand the command '%s' (err=%s)" % (NAME, cmd, c))
                 answer = ""
                 while True:
                     c = self._driver.read(1)
