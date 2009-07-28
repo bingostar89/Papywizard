@@ -68,9 +68,9 @@ DEFAULT_BRACKETING_NBPICTS = 1
 DEFAULT_BRACKETING_STEP = 1.
 DEFAULT_BRACKETING_INTENT = 'exposure'
 
-GET_CONFIG_COMMAND = "gphoto2 --set-config evstep=1 --get-config exposurebiascompensation"
+GET_CONFIG_COMMAND = "gphoto2 --set-config evstep=1 --set-config capturetarget=0 --get-config exposurebiascompensation"
 #MIRROR_LOCKUP_COMMAND = "gphoto2 --capture-image"
-SHOOT_COMMAND = "gphoto2 --capture-image-and-download --setconfig evstep=1 --set-config=exposurebiascompensation="
+SHOOT_COMMAND = "gphoto2 --get-config time --set-config exposurebiascompensation=%(index)d --capture-image-and-download"
 
 
 class GphotoShutter(AbstractShutterPlugin):
@@ -156,7 +156,7 @@ class GphotoShutter(AbstractShutterPlugin):
         # Retreive index in exposure table
         index = self.__exposureBiasTable["0.5 EV"].index(bias)
 
-        cmd = "%s%d" % (SHOOT_COMMAND, index)
+        cmd = SHOOT_COMMAND % {'index': index}
         Logger().debug("GphotoShutter.shoot(): execute command '%s'..." % cmd)
 
         # Launch external command
