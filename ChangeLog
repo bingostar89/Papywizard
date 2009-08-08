@@ -7,8 +7,16 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + 'PixOrb' plugin
+    + new shutter plugin for Ursa Minor BT 2 interface
+    + added 'Gphoto' plugin
+    - renamed 'Ursa Minor' plugins
+    - improved connection sequence
+
+2009-06-20 Version 2.1.10 (dev)
     - removed refresh bluetooth button
-    x bluetooth scan works on MacOS
+    - improved connection sequence
+    x bluetooth scan on MacOS (only once!)
 
 2009-06-07 Version 2.1.9 (dev)
     + new shutter plugin for USB TA interface
