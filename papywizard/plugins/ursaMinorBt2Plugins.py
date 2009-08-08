@@ -50,7 +50,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: ursaMinorUsbPlugins.py 1998 2009-06-30 11:45:49Z fma $"
+__revision__ = "$Id$"
 
 import time
 
@@ -65,6 +65,10 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 NAME = "Ursa Minor BT2"
 
+DEFAULT_FOCUS = False
+DEFAULT_FOCUS_PULSE = 0.5  # (s)
+DEFAULT_MAINTAIN_FOCUS = False
+
 
 class UrsaMinorBt2Shutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):  # Use a AbstractEnhancedShutterPlugin
     """
@@ -77,8 +81,9 @@ class UrsaMinorBt2Shutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin)
     def _defineConfig(self):
         AbstractHardwarePlugin._defineConfig(self)
         AbstractStandardShutterPlugin._defineConfig(self)
-        #self._addConfigKey('_triggerLine', 'TRIGGER_LINE', default=DEFAULT_TRIGGER_LINE)
-        #self._addConfigKey('_triggerLineInverted', 'TRIGGER_LINE_INVERTED', default=DEFAULT_TRIGGER_LINE_INVERTED)
+        self._addConfigKey('_focus', 'FOCUS', default=DEFAULT_FOCUS)
+        self._addConfigKey('_focusPulse', 'FOCUS_PULSE', default=DEFAULT_FOCUS_PULSE)
+        self._addConfigKey('_maintainFocus', 'MAINTAIN_FOCUS', default=DEFAULT_MAINTAIN_FOCUS)
 
     def _sendCmd(self, cmd, param=""):
         """ Send a command to the axis.
@@ -115,7 +120,7 @@ class UrsaMinorBt2Shutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin)
                 break
         else:
             raise HardwareError("%s can't send command '%s'" % (NAME, cmd))
-        #Logger().debug("MerlinOrionHardware._sendCmd(): cmd=%s, ans=%s" % (cmd, answer))
+        #Logger().debug("UrsaMinorBt2Shutter._sendCmd(): cmd=%s, ans=%s" % (cmd, answer))
 
         return answer
 
@@ -150,8 +155,9 @@ class UrsaMinorBt2ShutterController(StandardShutterPluginController, HardwarePlu
     def _defineGui(self):
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        #self._addWidget('Hard', "Trigger line", ComboBoxField, (['RTS', 'DTR'],), 'TRIGGER_LINE')
-        #self._addWidget('Hard', "Line inverted", CheckBoxField, (), 'TRIGGER_LINE_INVERTED')
+        self._addWidget('Hard', "Focus", CheckBoxField, (), 'FOCUS')
+        self._addWidget('Hard', "Focus pulse", DoubleSpinBoxField, (0.1, 5., 1, 0.1, "", " s"), 'FOCUS_PULSE')
+        self._addWidget('Hard', "Maintain focus", CheckBoxField, (), 'MAINTAIN_FOCUS')
 
 
 def register():
