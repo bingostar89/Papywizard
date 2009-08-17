@@ -75,16 +75,18 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 NAME = "PixOrb"
 
-DEFAULT_ALTERNATE_DRIVE = True
-DEFAULT_INERTIA_ANGLE = 1. # °
+DEFAULT_SPEED = 30.   # deg/s
 
-AXIS_NAME = {'yawAxis': 'A',
-             'pitchAxis': 'B',
-             'shutter': 'C'}
-SPEED_INDEX = {'slow': 170,  # "AA0000"  / 5
-               'alternate': 80, # "500000"
-               'normal': 34, # "220000" nominal
-               'fast': 17}   # "110000"  * 2
+ENCODER_FULL_CIRCLE = 1000000  # steps per turn
+INITIAL_VELOCITY = 100  # in SPS
+ACCELERATION = 100  # in steps
+DECCELERATION =  100  # in steps
+AXIS_NAME = {'yawAxis': 'B',
+             'pitchAxis': 'C',
+             'shutter': 'B'}
+SPEED_INDEX = {'slow': 100,  # normal / 5
+               'normal': 500,
+               'fast': 1000}  # normal * 2
 
 
 class PixOrbHardware(AbstractHardwarePlugin):
@@ -103,7 +105,7 @@ class PixOrbHardware(AbstractHardwarePlugin):
         @return: position, in °
         @rtype: float
         """
-        return (codPos - ENCODER_ZERO) * 360. / ENCODER_FULL_CIRCLE
+        return codPos * 360. / ENCODER_FULL_CIRCLE
 
     def _angleToEncoder(self, pos):
         """ Convert degres to encoder value.
@@ -114,7 +116,7 @@ class PixOrbHardware(AbstractHardwarePlugin):
         @return: encoder position
         @rtype: int
         """
-        return int(pos * ENCODER_FULL_CIRCLE / 360. + ENCODER_ZERO)
+        return int(pos /360. * ENCODER_FULL_CIRCLE)
 
     def _sendCmd(self, cmd):
         """ Send a command to the axis.
@@ -132,39 +134,51 @@ class PixOrbHardware(AbstractHardwarePlugin):
                 self._driver.empty()
                 self._driver.write("%s\n" % cmd)
                 c = ''
-                while c not in ('=', '!'):
+                while c  != '\r':
                     c = self._driver.read(1)
-                if c == '!':
-                    c = self._driver.read(1) # Get error code
-                    raise IOError("%s didn't understand the command '%s' (err=%s)" % (NAME, cmd, c))
-                answer = ""
-                while True:
-                    c = self._driver.read(1)
-                    if c == '\r':
-                        break
+                    if c in ('#', '!', '$'):
+                        raise IOError("Timeout on command '%s'" % cmd)
+                    #elif c == '???':
+                        #raise IOError("Unknown command '%s' (err=%s)" % (cmd, c))
                     answer += c
 
             except IOError:
                 Logger().exception("PixOrbHardware._sendCmd")
-                Logger().warning("PixOrbHardware._sendCmd(): axis %d can't sent command '%s'. Retrying..." % (NUM_AXIS[self.capacity], cmd))
+                Logger().warning("PixOrbHardware._sendCmd(): %s axis %s failed to send command '%s'. Retrying..." % (NAME, AXIS_NAME[self.capacity], cmd))
             else:
+                answer = answer.strip()  # remove final CRLF
                 break
         else:
-            raise HardwareError("PixOrb axis %d can't send command '%s'" % (NUM_AXIS[self.capacity], cmd))
-        #Logger().debug("PixOrbHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (NUM_AXIS[self.capacity], cmd, answer))
+            raise HardwareError("%s axis %s can't send command '%s'" % (NAME, AXIS_NAME[self.capacity], cmd))
+        #Logger().debug("PixOrbHardware._sendCmd(): axis %s, cmd=%s, ans=%s" % (AXIS_NAME[self.capacity], cmd, answer))
 
         return answer
 
-    def _initPixOrb(self):
+    def _initPixOrb(self)  #, initVelocity, accel, decel):
         """ Init the PixOrb hardware.
 
-        Done only once per axis.
+        #@param initVelocity: initial velocity, in SPS
+        #@type initVelocity: int
+
+        #@param accel: acceleration, in steps
+        #@type accel: int
+
+        #@param decel: deceleration, in steps
+        #@type decel: int
+
+        Done only once per axis when connection is established.
         """
         self._driver.acquireBus()
         try:
 
             # Stop axis
             self._sendCmd("@")
+
+            # Set initialVelocity
+            self.sendCmd("I%d" % INITIAL_VELOCITY)
+
+            # Set accel/decel
+            self._sendCmd("K%d %d" % (ACCELERATION, DECELERATION))
         finally:
             self._driver.releaseBus()
 
@@ -176,26 +190,36 @@ class PixOrbHardware(AbstractHardwarePlugin):
         """
         self._driver.acquireBus()
         try:
-            value = self._sendCmd("j")
+            answer = self._sendCmd("Z")
         finally:
             self._driver.releaseBus()
-        pos = self._encoderToAngle(value)
+        axis, value = answer.split()
+        pos = self._encoderToAngle(int(value))
         return pos
 
-    def _drive(self, pos):
+    def _drive(self, pos, speed):
         """ Drive the axis.
 
         @param pos: position to reach, in °
         @type pos: float
+
+        @param speed: speed, in °/s
+        @type speed: float
         """
         strValue = self._angleToEncoder(pos)
         self._driver.acquireBus()
         try:
-            self._sendCmd("L")
-            self._sendCmd("G", "00")
-            self._sendCmd("S", strValue)
-            #self._sendCmd("I", self._encodeAxisValue(SPEED_INDEX[self._manualSpeed]))
-            self._sendCmd("J")
+            self._sendCmd("V%d" % self._angleToEncoder(speed))
+            self._sendCmd("R%+d" % self._angleToEncoder(pos))
+        finally:
+            self._driver.releaseBus()
+
+    def _wait(self):
+        """ Wait until motion is complete.
+        """
+        self._driver.acquireBus()
+        try:
+            self._sendCmd("W")
         finally:
             self._driver.releaseBus()
 
@@ -204,7 +228,7 @@ class PixOrbHardware(AbstractHardwarePlugin):
         """
         self._driver.acquireBus()
         try:
-            self._sendCmd("L")
+            self._sendCmd("@")
         finally:
             self._driver.releaseBus()
 
@@ -219,15 +243,10 @@ class PixOrbHardware(AbstractHardwarePlugin):
         """
         self._driver.acquireBus()
         try:
-            self._sendCmd("L")
-            if dir_ == '+':
-                self._sendCmd("G", "30")
-            elif dir_ == '-':
-                self._sendCmd("G", "31")
+            if dir not in ('+', '-'):
+                raise ValueError("Axis %d dir. must be in ('+', '-')" % AXIS_NAME[self.capacity])
             else:
-                raise ValueError("Axis %d dir. must be in ('+', '-')" % NUM_AXIS[self.capacity])
-            self._sendCmd("I", self._encodeAxisValue(speed))
-            self._sendCmd("J")
+                self._sendCmd("M%s%d" % (dir, speed))
         finally:
             self._driver.releaseBus()
 
@@ -239,80 +258,39 @@ class PixOrbHardware(AbstractHardwarePlugin):
         """
         self._driver.acquireBus()
         try:
-            return self._sendCmd("f")
+            return self._sendCmd("^")
         finally:
             self._driver.releaseBus()
 
 
-class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin, QtCore.QThread):
+class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
     def __init__(self, *args, **kwargs):
         PixOrbHardware.__init__(self, *args, **kwargs)
         AbstractAxisPlugin.__init__(self, *args, **kwargs)
-        QtCore.QThread.__init__(self)
 
     def _init(self):
         Logger().trace("PixOrbAxis._init()")
         PixOrbHardware._init(self)
         AbstractAxisPlugin._init(self)
-        self.__run = False
-        self.__driveFlag = False
-        self.__setPoint = None
 
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
         AbstractHardwarePlugin._defineConfig(self)
-        self._addConfigKey('_alternateDrive', 'ALTERNATE_DRIVE', default=DEFAULT_ALTERNATE_DRIVE)
-        self._addConfigKey('_inertiaAngle', 'INERTIA_ANGLE', default=DEFAULT_INERTIA_ANGLE)
+        self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
 
     def activate(self):
         Logger().trace("PixOrbHardware.activate()")
 
-        # Start the thread
-        self.start()
-
     def deactivate(self):
         Logger().trace("PixOrbHardware.deactivate()")
 
-        # Stop the thread
-        self._stopThread()
-        self.wait()
-
     def init(self):
         Logger().trace("PixOrbAxis.init()")
-        self._initPixOrb()
+        self._initPixOrb()  # initVelocity=, accel=, decel=)
 
     def shutdown(self):
         Logger().trace("PixOrbAxis.shutdown()")
         self.stop()
-
-    def run(self):
-        """ Main entry of the thread.
-        """
-        threadName = "%s_%s" % (self.name, self.capacity)
-        threading.currentThread().setName(threadName)
-        Logger().debug("PixOrbAxis.run(): start thread")
-        self.__run = True
-        while self.__run:
-            if self.__driveFlag:
-
-                # Choose alternate drive if needed
-                currentPos = self.read()
-                if self._config['ALTERNATE_DRIVE'] and \
-                   1.1 * self._config['INERTIA_ANGLE'] < abs(self.__setPoint - currentPos) < ALTERNATE_DRIVE_ANGLE:
-                    self._alternateDrive(self.__setPoint)
-                else:
-                    self._directDrive(self.__setPoint)
-                self.__driveFlag = False
-                self.waitEndOfDrive()
-
-            self.msleep(config.SPY_REFRESH_DELAY)
-
-        Logger().debug("PixOrbAxis.run(): thread terminated")
-
-    def _stopThread(self):
-        """ Stop the thread.
-        """
-        self.__run = False
 
     def read(self):
         pos = self._read() - self._offset
@@ -329,70 +307,16 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin, QtCore.QThread):
                 pos += self._offset
 
         self._checkLimits(pos)
+        self._drive(pos, self._config['SPEED'])
 
-        # Only move if needed
-        if abs(pos - currentPos) > AXIS_ACCURACY:
-            self.__setPoint = pos
-            self.__driveFlag = True # Start thread action
-
-            # Wait end of movement
-            if wait:
-                self.waitEndOfDrive()
-
-    def _directDrive(self, pos):
-        """ Default (hardware) drive.
-
-        @param pos: position to reach, in °
-        @type pos: float
-        """
-        Logger().trace("PixOrbAxis._directDrive()")
-        self._drive(pos)
-
-    def _alternateDrive(self, pos):
-        """ Alternate drive.
-
-        This method implements an external closed-loop regulation.
-        It is faster for angles < 6-7°, because in this case, the
-        head does not accelerate to full speed, but rather stays at
-        very low speed.
-
-        @param pos: position to reach, in °
-        @type pos: float
-        """
-        Logger().trace("PixOrbAxis._alternateDrive()")
-
-        # Compute initial direction
-        currentPos = self.read()
-        if pos > currentPos:
-            dir_ = '+'
-        else:
-            dir_ = '-'
-        stopRequest = False
-
-        # Alternate speed move
-        Logger().debug("PixOrbAxis._alternateDrive(): alternate speed move")
-        self._startJog(dir_, SPEED_INDEX['alternate'])
-
-        # Check when stop
-        while abs(pos - self.read()) > self._config['INERTIA_ANGLE']: # adjust inertia while moving?
-
-            # Test if a stop request has been sent
-            if not self.isMoving():
-                stopRequest = True
-                break
-            time.sleep(0.1)
-        self._stop()
-
-        # Final move
-        if abs(pos - self.read()) > AXIS_ACCURACY and not stopRequest:
-            Logger().debug("PixOrbAxis._alternateDrive(): final move")
-            self._drive(pos)
+        # Wait end of movement
+        if wait:
+            self.waitEndOfDrive()
 
     def waitEndOfDrive(self):
-        while True:
-            if not self.isMoving():
-                break
-            time.sleep(0.1)
+        self._wait()
+        #while self.isMoving():
+            #time.sleep(0.1)
         self.waitStop()
 
     def startJog(self, dir_):
@@ -401,7 +325,7 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin, QtCore.QThread):
     def stop(self):
         self.__driveFlag = False
         self._stop()
-        self.waitStop()
+        self.waitStop()  # Really needed?
 
     def waitStop(self):
         pos = self.read()
@@ -414,7 +338,8 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin, QtCore.QThread):
 
     def isMoving(self):
         status = self._getStatus()
-        if status[1] != '0' or self.__driveFlag:
+        axis, value = status.split()
+        if value != '0':
             return True
         else:
             return False
@@ -424,8 +349,7 @@ class PixOrbAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addTab('Controller')
-        self._addWidget('Controller', "Axis name", LineEditField, (), 'AXIS_NAME')
+        self._addWidget('Main', "Speed", SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
 
 
 class PixOrbShutter(PixOrbHardware, AbstractStandardShutterPlugin):
@@ -433,7 +357,6 @@ class PixOrbShutter(PixOrbHardware, AbstractStandardShutterPlugin):
         Logger().trace("PixOrbShutter._init()")
         PixOrbHardware._init(self)
         AbstractStandardShutterPlugin._init(self)
-        self._numAxis = 1 # shutter contact is connected on axis
 
     def _defineConfig(self):
         PixOrbHardware._defineConfig(self)
@@ -442,12 +365,12 @@ class PixOrbShutter(PixOrbHardware, AbstractStandardShutterPlugin):
     def _triggerOnShutter(self):
         """ Set the shutter on.
         """
-        self._sendCmd("O", "1")
+        self._sendCmd("A8")
 
     def _triggerOffShutter(self):
         """ Set the shutter off.
         """
-        self._sendCmd("O", "0")
+        self._sendCmd("A0")
 
     def activate(self):
         Logger().trace("PixOrbShutter.activate()")
