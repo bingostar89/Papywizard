@@ -12,6 +12,7 @@ x bug fix
     + added 'Gphoto' plugin
     - renamed 'Ursa Minor' plugins
     - improved connection sequence
+    x manager now correctly loads custom plugins
 
 2009-06-20 Version 2.1.10 (dev)
     - removed refresh bluetooth button
