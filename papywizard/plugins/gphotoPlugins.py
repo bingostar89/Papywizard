@@ -151,7 +151,7 @@ class GphotoShutter(AbstractShutterPlugin):
 
         # Compute exposure bias according to bracketNumber
         bias = (bracketNumber - 1 - int(self._config['BRACKETING_NB_PICTS'] / 2)) * self._config['BRACKETING_STEP']
-        Logger().debug("GphotoShutter.shoot(): bias=%f" % bias)
+        Logger().debug("GphotoShutter.shoot(): exposure bias=%f" % bias)
 
         # Retreive index in exposure table
         index = self.__exposureBiasTable["0.5 EV"].index(bias)
