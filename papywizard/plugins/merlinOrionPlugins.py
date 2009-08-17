@@ -179,7 +179,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
                     c = self._driver.read(1)
                 if c == '!':
                     c = self._driver.read(1) # Get error code
-                    raise IOError("%s didn't understand the command '%s' (err=%s)" % (NAME, cmd, c))
+                    raise IOError("Unknown command '%s' (err=%s)" % (cmd, c))
                 answer = ""
                 while True:
                     c = self._driver.read(1)
@@ -189,7 +189,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
 
             except IOError:
                 Logger().exception("MerlinOrionHardware._sendCmd")
-                Logger().warning("MerlinOrionHardware._sendCmd(): axis %d can't sent command '%s'. Retrying..." % (NUM_AXIS[self.capacity], cmd))
+                Logger().warning("MerlinOrionHardware._sendCmd(): %s axis %d can't sent command '%s'. Retrying..." % (NAME, NUM_AXIS[self.capacity], cmd))
             else:
                 break
         else:
@@ -360,7 +360,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
                 else:
                     self._directDrive(self.__setPoint)
                 self.__driveFlag = False
-                self.waitEndOfDrive()
+                self.waitEndOfDrive()  # ???
 
             self.msleep(config.SPY_REFRESH_DELAY)
 
@@ -446,9 +446,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
             self._drive(pos)
 
     def waitEndOfDrive(self):
-        while True:
-            if not self.isMoving():
-                break
+        while self.isMoving():
             time.sleep(0.1)
         self.waitStop()
 
