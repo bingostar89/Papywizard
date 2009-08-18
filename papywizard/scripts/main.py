@@ -175,6 +175,8 @@ def main():
         #register()
         from papywizard.plugins.gphotoPlugins import register
         register()
+        from papywizard.plugins.pixOrbPlugins import register
+        register()
         PluginsManager ().load()
 
         # Activate selected plugins (move to PluginsManager ?)
