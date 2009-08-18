@@ -128,7 +128,7 @@ class PluginsConnector(QtCore.QObject):
                 Logger().exception("PluginsConnector.connectPlugins()")
             else:
                 pluginsStatus['shutter']['init'] = True
-                
+
         return pluginsStatus
 
     def stop(self, pluginsStatus):

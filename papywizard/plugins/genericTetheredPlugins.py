@@ -89,30 +89,13 @@ class GenericTetheredShutter(AbstractShutterPlugin):
         return self._config['BRACKETING_INTENT']
 
     def _defineConfig(self):
+        Logger().trace("GenericTetheredShutter._defineConfig()")
         #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_mirrorLockupCommand', 'MIRROR_LOCKUP_COMMAND', default=DEFAULT_MIRROR_LOCKUP_COMMAND)
         self._addConfigKey('_shootCommand', 'SHOOT_COMMAND', default=DEFAULT_SHOOT_COMMAND)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
         self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
-
-    def activate(self):
-        Logger().trace("GenericTetheredShutter.activate()")
-
-    def deactivate(self):
-        Logger().trace("GenericTetheredShutter.deactivate()")
-
-    def establishConnection(self):
-        Logger().trace("GenericTetheredShutter.establishConnection()")
-
-    def stopConnection(self):
-        Logger().trace("GenericTetheredShutter.stopConnection()")
-
-    def init(self):
-        Logger().trace("GenericTetheredShutter.init()")
-
-    def shutdown(self):
-        Logger().trace("GenericTetheredShutter.shutdown()")
 
     def lockupMirror(self):
         # @todo: implement mirror lockup command
@@ -122,6 +105,7 @@ class GenericTetheredShutter(AbstractShutterPlugin):
         return 0
 
     def shoot(self, bracketNumber):
+        Logger().debug("GenericTetheredShutter.shoot(): bracketNumber:%s" % bracketNumber)
         Logger().debug("GenericTetheredShutter.shoot(): execute command '%s'..." % self._config['SHOOT_COMMAND'])
 
         # Launch external command
@@ -139,6 +123,7 @@ class GenericTetheredShutter(AbstractShutterPlugin):
 
 class GenericTetheredShutterController(ShutterPluginController):
     def _defineGui(self):
+        Logger().trace("GenericTetheredShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
         self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', "Mirror lockup command", LineEditField, (), 'MIRROR_LOCKUP_COMMAND')

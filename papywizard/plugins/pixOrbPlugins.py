@@ -75,27 +75,31 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 NAME = "PixOrb"
 
-DEFAULT_SPEED = 30.   # deg/s
+DEFAULT_SPEED_TABLE_INDEX = 9
 
 ENCODER_FULL_CIRCLE = 1000000  # steps per turn
-INITIAL_VELOCITY = 10  # in steps/s (SPS)
-ACCELERATION = 100  # in steps
-DECCELERATION =  100  # in steps
 AXIS_NAME = {'yawAxis': 'B',
              'pitchAxis': 'C',
              'shutter': 'B'}
-SPEED_INDEX = {'slow': 100,  # normal / 5
-               'normal': 500,
-               'fast': 1000}  # normal * 2
+SPEED_TABLE = {'1': {'initVelocity': 6000, 'accel': 5, 'decel': 5, 'slewSpeed': 38400, 'divider': 160},
+               '2': {'initVelocity': 6000, 'accel': 5, 'decel': 5, 'slewSpeed': 38400, 'divider': 80},
+               '3': {'initVelocity': 6000, 'accel': 5, 'decel': 5, 'slewSpeed': 38400, 'divider': 40},
+               '4': {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider': 20},
+               '5': {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider': 10},
+               '6': {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider': 6},
+               '7': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider': 5},
+               '8': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider': 4},
+               '9': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider': 3},
+               '10': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider': 1}
+               }
+MANUAL_SPEED_TABLE = {'slow': 7,  # normal / 5
+                      'normal': 9,
+                      'fast': 10}  # normal * 2
 
 
 class PixOrbHardware(AbstractHardwarePlugin):
     """
     """
-    def _init(self):
-        Logger().trace("PixOrbHardware._init()")
-        AbstractHardwarePlugin._init(self)
-
     def _encoderToAngle(self, codPos):
         """ Convert encoder value to degres.
 
@@ -137,10 +141,8 @@ class PixOrbHardware(AbstractHardwarePlugin):
                 while c  != '\r':
                     c = self._driver.read(1)
                     if c in ('#', '!', '$'):
-                        raise IOError("Timeout on command '%s'" % cmd)
-                    #elif c == '???':
-                        #raise IOError("Unknown command '%s' (err=%s)" % (cmd, c))
-                    answer += c
+                        self._driver.read(1)  # Read last CR
+                        raise IOError("Error on command '%s'" % cmd)
 
             except IOError:
                 Logger().exception("PixOrbHardware._sendCmd")
@@ -154,31 +156,26 @@ class PixOrbHardware(AbstractHardwarePlugin):
 
         return answer
 
-    def _initPixOrb(self)  #, initVelocity, accel, decel):
-        """ Init the PixOrb hardware.
+    def _configurePixOrb(self, speedTableIndex):
+        """ onfigure the PixOrb hardware.
 
-        #@param initVelocity: initial velocity, in SPS
-        #@type initVelocity: int
-
-        #@param accel: acceleration, in steps
-        #@type accel: int
-
-        #@param decel: deceleration, in steps
-        #@type decel: int
-
-        Done only once per axis when connection is established.
+        @param speedTableIndex: speed params table index
+        @type speedTableIndex: int
         """
         self._driver.acquireBus()
         try:
 
-            # Stop axis
-            self._sendCmd("@")
-
-            # Set initialVelocity
-            self.sendCmd("I%d" % INITIAL_VELOCITY)
+            # Set initial velocity
+            self.sendCmd("I%d" % SPEED_TABLE[speedTableIndex]['initVelocity'])
 
             # Set accel/decel
-            self._sendCmd("K%d %d" % (ACCELERATION, DECELERATION))
+            self._sendCmd("K%d %d" % (SPEED_TABLE[speedTableIndex]['accel'], SPEED_TABLE[speedTableIndex]['decel']))
+
+            # Set slew speed
+            self.sendCmd("V%d" % SPEED_TABLE[speedTableIndex]['slewSpeed'])
+
+            # Set divider
+            self.sendCmd("D%d" % SPEED_TABLE[speedTableIndex]['divider'])
         finally:
             self._driver.releaseBus()
 
@@ -197,19 +194,15 @@ class PixOrbHardware(AbstractHardwarePlugin):
         pos = self._encoderToAngle(int(value))
         return pos
 
-    def _drive(self, pos, speed):
+    def _drive(self, pos):
         """ Drive the axis.
 
         @param pos: position to reach, in °
         @type pos: float
-
-        @param speed: speed, in °/s
-        @type speed: float
         """
         strValue = self._angleToEncoder(pos)
         self._driver.acquireBus()
         try:
-            self._sendCmd("V%d" % self._angleToEncoder(speed))
             self._sendCmd("R%+d" % self._angleToEncoder(pos))
         finally:
             self._driver.releaseBus()
@@ -278,24 +271,22 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
         AbstractHardwarePlugin._defineConfig(self)
-        self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
-        #self._addConfigKey('_initVelocity', 'INIT_VELOCITY', default=DEFAULT_INIT_VELOCITY)
-        #self._addConfigKey('_accel', 'ACCEL', default=DEFAULT_ACCEL)
-        #self._addConfigKey('_decel', 'DECEL', default=DEFAULT_DECEL)
-
-    def activate(self):
-        Logger().trace("PixOrbHardware.activate()")
-
-    def deactivate(self):
-        Logger().trace("PixOrbHardware.deactivate()")
+        self._addConfigKey('_speedTableIndex', 'SPEED_TABLE_INDEX', default=DEFAULT_SPEED_TABLE_INDEX)
 
     def init(self):
         Logger().trace("PixOrbAxis.init()")
-        self._initPixOrb()  # initVelocity=, accel=, decel=)
+        AbstractAxisPlugin.init(self)
+        self.configure()
 
     def shutdown(self):
         Logger().trace("PixOrbAxis.shutdown()")
         self.stop()
+        AbstractAxisPlugin.shutdown(self)
+
+    def configure(self):
+        Logger().trace("PixOrbAxis.configure()")
+        AbstractAxisPlugin.configure(self)
+        self._configurePixOrb(self._config['SPEED_TABLE_INDEX'])
 
     def read(self):
         pos = self._read() - self._offset
@@ -312,7 +303,7 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
                 pos += self._offset
 
         self._checkLimits(pos)
-        self._drive(pos, self._config['SPEED'])
+        self._drive(pos)
 
         # Wait end of movement
         if wait:
@@ -325,22 +316,15 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         self.waitStop()
 
     def startJog(self, dir_):
-        self._startJog(dir_, SPEED_INDEX[self._manualSpeed])
+        self._startJog(dir_, MANUAL_SPEED_TABLE[self._manualSpeed])
 
     def stop(self):
         self.__driveFlag = False
         self._stop()
-        self.waitStop()  # Really needed?
+        self.waitStop()
 
     def waitStop(self):
         pass
-        #pos = self.read()
-        #time.sleep(0.05)
-        #while True:
-            #if round(abs(pos - self.read()), 1) == 0:
-                #break
-            #pos = self.read()
-            #time.sleep(0.05)
 
     def isMoving(self):
         status = self._getStatus()
@@ -354,11 +338,8 @@ class PixOrbAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Main', "Speed", SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
-        #self._addTab('Controller')
-        #self._addWidget('Controller', "Initial velocity", SpinBoxField, (10, 1000), 'INIT_VELOCITY')
-        #self._addWidget('Controller', "Acceleration", SpinBoxField, (10, 1000), 'ACCEL')
-        #self._addWidget('Controller', "Deceleration", SpinBoxField, (10, 1000), 'DECEL')
+        self._addWidget('Main', "Speed table index", SpinBoxField, (1, 10, "", ""), 'SPEED_TABLE_INDEX')
+        self._addTab('Hard')
 
 
 class PixOrbShutter(PixOrbHardware, AbstractStandardShutterPlugin):
@@ -389,19 +370,10 @@ class PixOrbShutter(PixOrbHardware, AbstractStandardShutterPlugin):
         finally:
             self._driver.releaseBus()
 
-    def activate(self):
-        Logger().trace("PixOrbShutter.activate()")
-
-    def deactivate(self):
-        Logger().trace("PixOrbShutter.deactivate()")
-
-    def init(self):
-        Logger().trace("PixOrbShutter.init()")
-        self._initPixOrb()
-
     def shutdown(self):
         Logger().trace("PixOrbShutter.shutdown()")
         self._triggerOffShutter()
+        AbstractStandardShutterPlugin.shutdown(shutdown)
 
 
 class PixOrbShutterController(StandardShutterPluginController, HardwarePluginController):

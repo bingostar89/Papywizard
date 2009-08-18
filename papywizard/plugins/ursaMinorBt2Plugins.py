@@ -70,21 +70,9 @@ DEFAULT_FOCUS_PULSE = 0.5  # (s)
 DEFAULT_MAINTAIN_FOCUS = False
 
 
-class UrsaMinorBt2Shutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):  # Use a AbstractEnhancedShutterPlugin
+class UrsaMinorBt2ShutterHardware(AbstractHardwarePlugin):
     """
     """
-    def _init(self):
-        Logger().trace("UrsaMinorBt2Shutter._init()")
-        AbstractHardwarePlugin._init(self)
-        AbstractStandardShutterPlugin._init(self)
-
-    def _defineConfig(self):
-        AbstractHardwarePlugin._defineConfig(self)
-        AbstractStandardShutterPlugin._defineConfig(self)
-        self._addConfigKey('_focus', 'FOCUS', default=DEFAULT_FOCUS)
-        self._addConfigKey('_focusPulse', 'FOCUS_PULSE', default=DEFAULT_FOCUS_PULSE)
-        self._addConfigKey('_maintainFocus', 'MAINTAIN_FOCUS', default=DEFAULT_MAINTAIN_FOCUS)
-
     def _sendCmd(self, cmd, param=""):
         """ Send a command to the axis.
 
@@ -124,6 +112,23 @@ class UrsaMinorBt2Shutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin)
 
         return answer
 
+
+class UrsaMinorBt2Shutter(UrsaMinorBt2ShutterHardware, AbstractStandardShutterPlugin):  # Use a AbstractEnhancedShutterPlugin
+    """
+    """
+    def _init(self):
+        Logger().trace("UrsaMinorBt2Shutter._init()")
+        AbstractHardwarePlugin._init(self)
+        AbstractStandardShutterPlugin._init(self)
+
+    def _defineConfig(self):
+        Logger().trace("UrsaMinorBt2Shutter._defineConfig()")
+        AbstractHardwarePlugin._defineConfig(self)
+        AbstractStandardShutterPlugin._defineConfig(self)
+        self._addConfigKey('_focus', 'FOCUS', default=DEFAULT_FOCUS)
+        self._addConfigKey('_focusPulse', 'FOCUS_PULSE', default=DEFAULT_FOCUS_PULSE)
+        self._addConfigKey('_maintainFocus', 'MAINTAIN_FOCUS', default=DEFAULT_MAINTAIN_FOCUS)
+
     def _triggerOnShutter(self):
         """ Set the shutter on.
         """
@@ -134,25 +139,14 @@ class UrsaMinorBt2Shutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin)
         """
         self._sendCmd("X", "0")
 
-    def activate(self):
-        Logger().trace("UrsaMinorBt2Shutter.activate()")
-
-    def deactivate(self):
-        Logger().trace("UrsaMinorBt2Shutter.deactivate()")
-
-    def init(self):
-        Logger().trace("UrsaMinorBt2Shutter.init()")
-
     def shutdown(self):
         Logger().trace("UrsaMinorBt2Shutter.shutdown()")
-        try:
-            self._triggerOffShutter()
-        except AttributeError:
-            Logger().exception("UrsaMinorBt2Shutter.shutdown", debug=True)
+        self._triggerOffShutter()
 
 
 class UrsaMinorBt2ShutterController(StandardShutterPluginController, HardwarePluginController):
     def _defineGui(self):
+        Logger().trace("UrsaMinorBt2ShutterController._defineGui()")
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
         self._addWidget('Hard', "Focus", CheckBoxField, (), 'FOCUS')

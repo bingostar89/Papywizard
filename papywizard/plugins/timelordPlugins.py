@@ -89,29 +89,17 @@ class TimelordShutter(AbstractShutterPlugin):
         return None
 
     def _defineConfig(self):
+        Logger().trace("TimelordShutter._defineConfig()")
         #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('Program path', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
         self._addConfigKey('LRD file path', 'LRD_FILE_PATH', default=DEFAULT_LRD_FILE_PATH)
 
-    def activate(self):
-        Logger().trace("TimelordShutter.activate()")
-
-    def deactivate(self):
-        Logger().trace("TimelordShutter.deactivate()")
-
-    def establishConnection(self):
-        Logger().trace("TimelordShutter.establishConnection()")
-
-    def stopConnection(self):
-        Logger().trace("TimelordShutter.stopConnection()")
-
-    def init(self):
-        Logger().trace("TimelordShutter.init()")
-
-    def shutdown(self):
-        Logger().trace("TimelordShutter.shutdown()")
+    def lockupMirror(self):
+        Logger().warning("TimelordShutter.lockupMirror(): Not possible with TimeLord")
+        return 0
 
     def shoot(self, bracketNumber):
+        Logger().debug("TimelordShutter.shoot(): bracketNumber=%d" % bracketNumber)
         Logger().debug("TimelordShutter.shoot(): execute command '%s %s'..." % (self._config['PROGRAM_PATH'], self._config['LRD_FILE_PATH']))
 
         # Launch external command
@@ -133,6 +121,7 @@ class TimelordShutter(AbstractShutterPlugin):
 
 class TimelordShutterController(ShutterPluginController):
     def _defineGui(self):
+        Logger().trace("TimelordShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
         self._addWidget('Main', "Program path", LineEditField, (), 'PROGRAM_PATH')
         self._addWidget('Main', "LRD file path", LineEditField, (), 'LRD_FILE_PATH')

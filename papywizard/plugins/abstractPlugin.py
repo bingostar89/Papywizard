@@ -78,8 +78,9 @@ class AbstractPlugin(object): #(QtCore.QObject):
         # Plugin specific init
         self._capacity = capacity
         self._name = name
-        self._init()
         self._config = {}
+        self._connected = False
+        self._init()
         self._defineConfig()
         self._loadConfig()
 
@@ -100,6 +101,8 @@ class AbstractPlugin(object): #(QtCore.QObject):
 
     def _init(self):
         """ Additional init of the plugin.
+
+        Can be used to define new internal objects.
         """
         raise NotImplementedError("AbstractPlugin._init() must be overloaded")
 
@@ -122,6 +125,7 @@ class AbstractPlugin(object): #(QtCore.QObject):
         @param default: default value for the given key
         @type default:
         """
+        Logger().debug("AbstractPlugin._addConfigKey(): attr=%s, key=%s, default=%s" % (attr, key, str(default)))
         #self.__dict__[attr] = default # Find a way to bind to _config[key]. Use property?
         self._config[key] = default
 
@@ -157,27 +161,42 @@ class AbstractPlugin(object): #(QtCore.QObject):
         """ Activate the plugin.
 
         The plugin may need to perform some operations when activated,
-        like starting a thread or so.
+        like starting a thread.
         """
-        raise NotImplementedError("AbstractPlugin.activate() must be overloaded")
+        pass
+        #Logger().trace("AbstractPlugin.activate()")
 
     def deactivate(self):
-        """ Shutdown the plugin.
+        """ deactivate the plugin.
 
-        The plugin may need to perform some operations when desactivated.
+        The plugin may need to perform some operations when desactivated,
+        like stopping a thread.
         """
-        raise NotImplementedError("AbstractPlugin.deactivate() must be overloaded")
+        pass
+        #Logger().trace("AbstractPlugin.deactivate()")
 
     def establishConnection(self):
         """ Establish the connexion.
+
+        Sub-classes should call this method after their own implementation,
+        if the connection succeeded.
         """
-        raise NotImplementedError("AbstractPlugin.establishConnection() must be overloaded")
+        Logger().trace("AbstractPlugin.establishConnection()")
+        self._connected = True
 
     def stopConnection(self):
         """ Stop the connexion.
-        """
-        raise NotImplementedError("AbstractPlugin.stopConnection() must be overloaded")
 
+        Sub-classes should call this method after their own implementation,
+        in any case.
+        """
+        Logger().trace("AbstractPlugin.stopConnection()")
+        self._connected = False
+
+    def isConnected(self):
+        """ Check if the plugin is connected.
+        """
+        return self._connected
 
     def init(self):
         """ Init the plugin.
@@ -185,12 +204,24 @@ class AbstractPlugin(object): #(QtCore.QObject):
         This method is called after the connection is established.
         Can be used to make some low-level init operations.
         """
-        raise NotImplementedError("AbstractPlugin.init() must be overloaded")
+        pass
+        #Logger().trace("AbstractPlugin.init()")
 
     def shutdown(self):
         """ Shutdown the plugin.
 
         This method is called before the connection is stopped.
-        Can be used to make some low-level shotdown operations.
+        Can be used to make some low-level shutdown operations.
         """
-        raise NotImplementedError("AbstractPlugin.shutdown() must be overloaded")
+        pass
+        #Logger().trace("AbstractPlugin.shutdown()")
+
+    def configure(self):
+        """ Configure the plugin.
+
+        This method is called when the configuration dialog has been validated,
+        if the plugin is connected.
+        It can be used to send new config params to low-level methods.
+        """
+        pass
+        #Logger().trace("AbstractPlugin.configure()")

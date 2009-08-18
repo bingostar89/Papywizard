@@ -81,6 +81,7 @@ class UrsaMinorUsbShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin)
         AbstractStandardShutterPlugin._init(self)
 
     def _defineConfig(self):
+        Logger().trace("UrsaMinorUsbShutter._defineConfig()")
         AbstractHardwarePlugin._defineConfig(self)
         AbstractStandardShutterPlugin._defineConfig(self)
         self._addConfigKey('_triggerLine', 'TRIGGER_LINE', default=DEFAULT_TRIGGER_LINE)
@@ -98,15 +99,6 @@ class UrsaMinorUsbShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin)
         method = getattr(self._driver, "set%s" % self._config['TRIGGER_LINE'])
         method(TRIGGER_LINE_LEVELS[self._config['TRIGGER_LINE_INVERTED']]['off'])
 
-    def activate(self):
-        Logger().trace("UrsaMinorUsbShutter.activate()")
-
-    def deactivate(self):
-        Logger().trace("UrsaMinorUsbShutter.deactivate()")
-
-    def init(self):
-        Logger().trace("UrsaMinorUsbShutter.init()")
-
     def shutdown(self):
         Logger().trace("UrsaMinorUsbShutter.shutdown()")
         try:
@@ -117,6 +109,7 @@ class UrsaMinorUsbShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin)
 
 class UrsaMinorUsbShutterController(StandardShutterPluginController, HardwarePluginController):
     def _defineGui(self):
+        Logger().trace("UrsaMinorUsbShutterController._defineGui()")
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
         self._addWidget('Hard', "Trigger line", ComboBoxField, (['RTS', 'DTR'],), 'TRIGGER_LINE')

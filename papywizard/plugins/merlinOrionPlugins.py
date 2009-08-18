@@ -97,11 +97,6 @@ SPEED_INDEX = {'slow': 170,  # "AA0000"  / 5
 class MerlinOrionHardware(AbstractHardwarePlugin):
     """
     """
-    def _init(self):
-        Logger().trace("MerlinOrionHardware._init()")
-        AbstractHardwarePlugin._init(self)
-        #self._numAxis = None
-
     def _decodeAxisValue(self, strValue):
         """ Decode value from axis.
 
@@ -198,7 +193,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
 
         return answer
 
-    def _initMerlinOrion(self):
+    def _configureMerlinOrion(self):
         """ Init the MerlinOrion hardware.
 
         Done only once per axis.
@@ -206,7 +201,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
         self._driver.acquireBus()
         try:
 
-            # Stop axis
+            # Stop motor
             self._sendCmd("L")
 
             # Check motor?
@@ -214,11 +209,11 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
 
             # Get full circle count
             value = self._sendCmd("a")
-            Logger().debug("MerlinOrionHardware._initMerlinOrion(): full circle count=%s" % hex(self._decodeAxisValue(value)))
+            Logger().debug("MerlinOrionHardware._configureMerlinOrion(): full circle count=%s" % hex(self._decodeAxisValue(value)))
 
             # Get sidereal rate
             value = self._sendCmd("D")
-            Logger().debug("MerlinOrionHardware._initMerlinOrion(): sidereal rate=%s" % hex(self._decodeAxisValue(value)))
+            Logger().debug("MerlinOrionHardware._configureMerlinOrion(): sidereal rate=%s" % hex(self._decodeAxisValue(value)))
 
         finally:
             self._driver.releaseBus()
@@ -323,6 +318,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
 
     def activate(self):
         Logger().trace("MerlinOrionHardware.activate()")
+        AbstractAxisPlugin.activate(self)
 
         # Start the thread
         self.start()
@@ -333,14 +329,17 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
         # Stop the thread
         self._stopThread()
         self.wait()
+        AbstractAxisPlugin.deactivate(self)
 
     def init(self):
         Logger().trace("MerlinOrionAxis.init()")
+        AbstractAxisPlugin.init(self)
         self._initMerlinOrion()
 
     def shutdown(self):
         Logger().trace("MerlinOrionAxis.shutdown()")
         self.stop()
+        AbstractAxisPlugin.shutdown(self)
 
     def run(self):
         """ Main entry of the thread.
@@ -491,7 +490,6 @@ class MerlinOrionShutter(MerlinOrionHardware, AbstractStandardShutterPlugin):
         Logger().trace("MerlinOrionShutter._init()")
         MerlinOrionHardware._init(self)
         AbstractStandardShutterPlugin._init(self)
-        self._numAxis = 1 # shutter contact is connected on axis
 
     def _defineConfig(self):
         MerlinOrionHardware._defineConfig(self)
@@ -515,12 +513,6 @@ class MerlinOrionShutter(MerlinOrionHardware, AbstractStandardShutterPlugin):
         finally:
             self._driver.releaseBus()
 
-    def activate(self):
-        Logger().trace("MerlinOrionShutter.activate()")
-
-    def deactivate(self):
-        Logger().trace("MerlinOrionShutter.deactivate()")
-
     def init(self):
         Logger().trace("MerlinOrionShutter.init()")
         self._initMerlinOrion()
@@ -528,6 +520,7 @@ class MerlinOrionShutter(MerlinOrionHardware, AbstractStandardShutterPlugin):
     def shutdown(self):
         Logger().trace("MerlinOrionShutter.shutdown()")
         self._triggerOffShutter()
+        AbstractStandardShutterPlugin.shutdown(self)
 
 
 class MerlinOrionShutterController(StandardShutterPluginController, HardwarePluginController):

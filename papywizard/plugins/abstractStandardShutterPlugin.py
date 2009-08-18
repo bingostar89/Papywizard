@@ -83,6 +83,7 @@ class  AbstractStandardShutterPlugin(AbstractShutterPlugin):
         return self._config["BRACKETING_INTENT"]
 
     def _defineConfig(self):
+        Logger().trace("AbstractStandardShutterPlugin._defineConfig()")
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
@@ -103,6 +104,7 @@ class  AbstractStandardShutterPlugin(AbstractShutterPlugin):
     def _triggerShutter(self):
         """ Trigger the shutter contact.
         """
+        Logger().trace("AbstractStandardShutterPlugin._triggerShutter()")
         self._triggerOnShutter()
         time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
         self._triggerOffShutter()
@@ -111,6 +113,7 @@ class  AbstractStandardShutterPlugin(AbstractShutterPlugin):
     def _ensurePulseWidthLowDelay(self):
         """ Ensure that PULSE_WIDTH_LOW delay has elapsed before last trigger.
         """
+        Logger().trace("AbstractStandardShutterPlugin._ensurePulseWidthLowDelay()")
         delay = self._config['PULSE_WIDTH_LOW'] / 1000. - (time.time() - self._LastShootTime)
         if delay > 0:
             time.sleep(delay)

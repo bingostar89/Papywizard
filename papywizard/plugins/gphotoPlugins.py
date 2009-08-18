@@ -94,29 +94,12 @@ class GphotoShutter(AbstractShutterPlugin):
         return self._config['BRACKETING_INTENT']
 
     def _defineConfig(self):
+        Logger().debug("GphotoShutter._defineConfig()")
         #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
         self._addConfigKey('_bracketingStep', 'BRACKETING_STEP', default=DEFAULT_BRACKETING_STEP)
         self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
-
-    def activate(self):
-        Logger().trace("GphotoShutter.activate()")
-
-    def deactivate(self):
-        Logger().trace("GphotoShutter.deactivate()")
-
-    def establishConnection(self):
-        Logger().trace("GphotoShutter.establishConnection()")
-
-    def stopConnection(self):
-        Logger().trace("GphotoShutter.stopConnection()")
-
-    def init(self):
-        Logger().trace("GphotoShutter.init()")
-
-    def shutdown(self):
-        Logger().trace("GphotoShutter.shutdown()")
 
     def lockupMirror(self):
         # @todo: implement mirror lockup command
@@ -126,6 +109,7 @@ class GphotoShutter(AbstractShutterPlugin):
         return 0
 
     def shoot(self, bracketNumber):
+        Logger().debug("GphotoShutter.shoot(): bracketNumber=%d" % bracketNumber)
 
         # Get exposure bias list (only once)
         if not self.__exposureBiasTable['0.5 EV']:

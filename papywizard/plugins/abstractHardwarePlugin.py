@@ -51,6 +51,7 @@ Implements
 
 __revision__ = "$Id$"
 
+from papywizard.common.loggingServices import Logger
 from papywizard.plugins.abstractPlugin import AbstractPlugin
 from papywizard.hardware.driverFactory import DriverFactory
 
@@ -71,6 +72,7 @@ class AbstractHardwarePlugin(AbstractPlugin):
     _driver = property(__getDriver)
 
     def _defineConfig(self):
+        Logger().trace("AbstractHardwarePlugin._defineConfig()")
         self._addConfigKey('_driverType', 'DRIVER_TYPE', default=DEFAULT_DRIVER_TYPE)
 
     def establishConnection(self):
@@ -78,11 +80,17 @@ class AbstractHardwarePlugin(AbstractPlugin):
 
         We pass self, so the driver can keep track of connected hardwares.
         """
+        Logger().trace("AbstractHardwarePlugin.establishConnection()")
         self._driver.establishConnection(self)
+        AbstractPlugin.establishConnection(self)
 
     def stopConnection(self):
-        """ Shutdown the connexion with the driver.
+        """ stop the connexion with the driver.
 
         We pass self, so the driver can keep track of disconnected hardwares.
         """
-        self._driver.shutdownConnection(self)
+        Logger().trace("AbstractHardwarePlugin.stopConnection()")
+        try:
+            self._driver.shutdownConnection(self)
+        finally:
+            AbstractPlugin.stopConnection(self)

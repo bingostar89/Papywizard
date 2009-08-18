@@ -102,6 +102,7 @@ class EOSUtilityShutter(AbstractShutterPlugin):
         return 'exposure'
 
     def _defineConfig(self):
+        Logger().trace("EOSUtilityShutter._defineConfig()")
         #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_eosBracketPath', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
         self._addConfigKey('_eosUtilityType', 'EOSUTILITY_TYPE', default=DEFAULT_EOSUTILITY_TYPE)
@@ -117,29 +118,12 @@ class EOSUtilityShutter(AbstractShutterPlugin):
         self._addConfigKey('_focusStepCount', 'FOCUS_STEP_COUNT', default=DEFAULT_FOCUS_STEP_COUNT)
         self._addConfigKey('_focusBracketingNbPictures', 'FOCUS_BRACKETING_NBPICTS', default=DEFAULT_FOCUS_BRACKETING_NBPICTS)
 
-    def activate(self):
-        Logger().trace("EOSUtilityShutter.activate()")
-
-    def deactivate(self):
-        Logger().trace("EOSUtilityShutter.deactivate()")
-
-    def establishConnection(self):
-        Logger().trace("EOSUtilityShutter.establishConnection()")
-
-    def stopConnection(self):
-        Logger().trace("EOSUtilityShutter.stopConnection()")
-
-    def init(self):
-        Logger().trace("EOSUtilityShutter.init()")
-
-    def shutdown(self):
-        Logger().trace("EOSUtilityShutter.shutdown()")
-
     def lockupMirror(self):
-        Logger().debug("EOSUtilityShutter.lockupMirror(): Not possible with EOS Utility")
+        Logger().warning("EOSUtilityShutter.lockupMirror(): Not possible with EOS Utility")
         return 0
 
     def shoot(self, bracketNumber):
+        Logger().debug("EOSUtilityShutter.shoot(): bracketNumber=%d" % bracketNumber)
         Logger().debug("EOSUtilityShutter.shoot(): EOSBracket Path '%s'..." % self._config['PROGRAM_PATH'])
         Logger().debug("EOSUtilityShutter.shoot(): EOS Utility Type '%s'..." % self._config['EOSUTILITY_TYPE'])
         Logger().debug("EOSUtilityShutter.shoot(): Exposure Bracketing Stops '%s'..." % self._config['EXPOSURE_BRACKETING_STOPS'])
@@ -194,6 +178,7 @@ class EOSUtilityShutter(AbstractShutterPlugin):
 
 class EOSUtilityShutterController(ShutterPluginController):
     def _defineGui(self):
+        Logger().trace("EOSUtilityShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
         self._addWidget('Main', "EOS Bracket path", LineEditField, (), 'PROGRAM_PATH')
         self._addWidget('Main', "EOS Utility Type", ComboBoxField, (['old', 'new'],), 'EOSUTILITY_TYPE')

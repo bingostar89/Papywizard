@@ -114,18 +114,6 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
         self._stopThread()
         self.wait()
 
-    def establishConnection(self):
-        Logger().trace("SimulationAxis.establishConnection()")
-
-    def stopConnection(self):
-        Logger().trace("SimulationAxis.stopConnection()")
-
-    def init(self):
-        Logger().trace("SimulationAxis.init()")
-
-    def shutdown(self):
-        Logger().trace("SimulationAxis.shutdown()")
-
     def run(self):
         """ Main entry of the thread.
         """
@@ -252,29 +240,12 @@ class SimulationShutter(AbstractShutterPlugin):
         return self._config['BRACKETING_INTENT']
 
     def _defineConfig(self):
+        Logger().trace("AbstractShutterPlugin._defineConfig()")
         #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
         self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
-
-    def activate(self):
-        Logger().trace("SimulationShutter.activate()")
-
-    def deactivate(self):
-        Logger().trace("SimulationShutter.deactivate()")
-
-    def establishConnection(self):
-        Logger().trace("SimulationShutter.establishConnection()")
-
-    def stopConnection(self):
-        Logger().trace("SimulationShutter.stopConnection()")
-
-    def init(self):
-        Logger().trace("SimulationShutter.init()")
-
-    def shutdown(self):
-        Logger().trace("SimulationShutter.shutdown()")
 
     def lockupMirror(self):
         """ Lockup the mirror.
@@ -286,13 +257,14 @@ class SimulationShutter(AbstractShutterPlugin):
     def shoot(self, bracketNumber):
         """ Shoot.
         """
-        Logger().trace("SimulationShutter.shoot()")
+        Logger().debug("SimulationShutter.shoot(): bracketNumber=%d" % bracketNumber)
         time.sleep(self.timeValue)
         return 0
 
 
 class SimulationShutterController(ShutterPluginController):
     def _defineGui(self):
+        Logger().trace("SimulationShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
         self._addWidget('Main', "Time value", DoubleSpinBoxField, (0.1, 3600, 1, 0.1, "", " s"), 'TIME_VALUE')
         self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')

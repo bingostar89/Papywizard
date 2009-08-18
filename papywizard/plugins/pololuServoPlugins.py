@@ -135,6 +135,41 @@ class PololuServoHardware(AbstractHardwarePlugin):
         data = self._driver.read(size)
         Logger().debug("PololuServoHardware._sendCmd: pololu returned: %s" % repr(data))
 
+    def _initPololuServo(self):
+        """ Turn on servo power.
+        """
+        self._driver.acquireBus()
+        try:
+            self._reset()
+            self._setParameters(on=True)
+        finally:
+            self._driver.releaseBus()
+
+    def _shutdownPololuServo(self):
+        """ Turn off servo power.
+        """
+        self._driver.acquireBus()
+        try:
+            self._setParameters(on=False)
+        finally:
+            self._driver.releaseBus()
+
+    def _configurePololuServo(self, speed, direction):
+        """ Turn on servo power.
+
+        @param speed: rotation speed
+        @type speed: int
+
+        @param direction: direction of rotation, in ('forward', 'reverse')
+        @type direction: str
+        """
+        self._driver.acquireBus()
+        try:
+            self._setSpeed(speed)
+            self._setParameters(on=True, direction=direction) # Add range_?
+        finally:
+            self._driver.releaseBus()
+
     def _reset(self):
         """ Reset the controller.
 
@@ -248,32 +283,6 @@ class PololuServoHardware(AbstractHardwarePlugin):
         finally:
             self._driver.releaseBus()
 
-    def _initPololuServo(self, speed=0, direction='forward'):
-        """ Turn on servo power.
-
-        @param speed: rotation speed
-        @type speed: int
-
-        @param direction: direction of rotation, in ('forward', 'reverse')
-        @type direction: str
-        """
-        self._driver.acquireBus()
-        try:
-            self._reset()
-            self._setSpeed(speed)
-            self._setParameters(on=True, direction=direction) # Add range_?
-        finally:
-            self._driver.releaseBus()
-
-    def _shutdownPololuServo(self):
-        """ Turn off servo power.
-        """
-        self._driver.acquireBus()
-        try:
-            self._setParameters(on=False)
-        finally:
-            self._driver.releaseBus()
-
 
 class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
     def _init(self):
@@ -305,22 +314,26 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         if not 500 <= value <= 5500:
             raise HardwareError("Servo limit reached: %d not in [500-5500]" % value)
 
-    def activate(self):
-        Logger().trace("PololuServoHardware.activate()")
-
-    def deactivate(self):
-        Logger().trace("PololuServoHardware.shutdown()")
-
     def init(self):
+        Logger().trace("PololuServoAxis.init()")
+        AbstractAxisPlugin.init(self)
         self._setPositionAbsolute(self._config['NEUTRAL_POSITION'])
-        speed = self._computeServoSpeed(self._config['SPEED'])
-        self._initPololuServo(speed, self._config['DIRECTION'])
+        self._initPololuServo()
+        self.configure()
         self._position = 0.
         self._endDrive = 0
 
     def shutdown(self):
+        Logger().trace("PololuServoAxis.shutdown()")
         self.stop()
         self._shutdownPololuServo()
+        AbstractAxisPlugin.shutdown(self)
+
+    def configure(self):
+        Logger().trace("PololuServoAxis.configure()")
+        AbstractAxisPlugin.configure(self)
+        speed = self._computeServoSpeed(self._config['SPEED'])
+        self._configurePololuServo(speed, self._config['DIRECTION'])
 
     def read(self):
         return self._position - self._offset
@@ -462,22 +475,21 @@ class PololuServoShutter(PololuServoHardware, AbstractStandardShutterPlugin):
         Logger().trace("PololuServoShutter.activate()")
         self._initialPosition = self._config['VALUE_OFF']
 
-    def deactivate(self):
-        Logger().trace("PololuServoShutter.deactivate()")
-
     def init(self):
         Logger().trace("PololuServoShutter.init()")
+        AbstractStandardShutterPlugin.init(self)
         self._initPololuServo()
-        #self._position = 0.  # ???
 
     def shutdown(self):
         Logger().trace("PololuServoShutter.shutdown()")
         self._triggerOffShutter()
         self._shutdownPololuServo()
+        AbstractStandardShutterPlugin.shutdown(self)
 
 
 class PololuServoShutterController(StandardShutterPluginController, HardwarePluginController):
     def _defineGui(self):
+        Logger().trace("PololuServoShutterController._defineGui()")
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
         self._addTab('Servo')

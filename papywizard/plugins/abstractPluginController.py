@@ -139,6 +139,8 @@ class AbstractPluginController(AbstractModalDialogController):
                 self._model._config[field['configKey']] = value
         Logger().debug("AbstractPluginController._onAccepted(): config=%s" % self._model._config)
         self._model._saveConfig()
+        if self._model.isConnected():
+            self._model.configure()
 
     def _defineGui(self):
         """ Define the GUI.
