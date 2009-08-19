@@ -339,7 +339,7 @@ class PixOrbAxisController(AxisPluginController, HardwarePluginController):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
         self._addWidget('Main', "Speed table index", SpinBoxField, (1, 10, "", ""), 'SPEED_TABLE_INDEX')
-        self._addTab('Hard')
+        #self._addTab('Hard')
 
 
 class PixOrbShutter(PixOrbHardware, AbstractStandardShutterPlugin):
