@@ -81,16 +81,16 @@ ENCODER_FULL_CIRCLE = 1000000  # steps per turn
 AXIS_NAME = {'yawAxis': 'B',
              'pitchAxis': 'C',
              'shutter': 'B'}
-SPEED_TABLE = {'1': {'initVelocity': 6000, 'accel': 5, 'decel': 5, 'slewSpeed': 38400, 'divider': 160},  # 1 rev/day
-               '2': {'initVelocity': 6000, 'accel': 5, 'decel': 5, 'slewSpeed': 38400, 'divider': 80},  # 2 rev/day
-               '3': {'initVelocity': 6000, 'accel': 5, 'decel': 5, 'slewSpeed': 38400, 'divider': 40},  # 6 rev/day
-               '4': {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider': 20},  # 1 rev/h
-               '5': {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider': 10},  # 2 rev/h
-               '6': {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider': 6},  # 5 rev/h
-               '7': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider': 5},  # 1 °/s
-               '8': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider': 4},  # 3 °/s
-               '9': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider': 3},  # 6 °/s
-               '10': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider': 1}  # 1 2°/s
+SPEED_TABLE = { '1': {'initVelocity': 6000, 'accel':  5, 'decel':  5, 'slewSpeed': 38400, 'divider': 160},  # 1 rev/day
+                '2': {'initVelocity': 6000, 'accel':  5, 'decel':  5, 'slewSpeed': 38400, 'divider':  80},  # 2 rev/day
+                '3': {'initVelocity': 6000, 'accel':  5, 'decel':  5, 'slewSpeed': 38400, 'divider':  40},  # 6 rev/day
+                '4': {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider':  20},  # 1 rev/h
+                '5': {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider':  10},  # 2 rev/h
+                '6': {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider':   6},  # 5 rev/h
+                '7': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   5},  # 1 °/s
+                '8': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   4},  # 3 °/s
+                '9': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   3},  # 6 °/s
+               '10': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   1}   # 1 2°/s
                }
 MANUAL_SPEED_TABLE = {'slow': 7,  # normal / 5
                       'normal': 9,
