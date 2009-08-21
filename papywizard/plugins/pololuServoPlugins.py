@@ -76,7 +76,8 @@ NAME = "Pololu Servo"
 
 DEFAULT_CHANNEL = {'yawAxis': 1,
                    'pitchAxis': 2,
-                   'shutter': 0}
+                   'shutter': 0
+                   }
 DEFAULT_SPEED = 30 # deg/s
 DEFAULT_DIRECTION = 'forward'
 DEFAULT_ANGLE_1MS = 120. # angle for 1ms, which is 2 servo units (deg)
@@ -85,10 +86,12 @@ DEFAULT_VALUE_OFF = 0
 DEFAULT_VALUE_ON = 127
 
 DIRECTION_INDEX = {'forward': 1,
-                   'reverse': -1}
-MANUAL_SPEED_INDEX = {'slow': .5,
-                      'normal': 2.,
-                      'fast': 5.}
+                   'reverse': -1
+                   }
+MANUAL_MANUAL_SPEED_INDEX = {'slow': .5,
+                             'normal': 2.,
+                             'fast': 5.
+                             }
 
 
 class PololuServoHardware(AbstractHardwarePlugin):
@@ -399,9 +402,9 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         """
         position = self._position + self._offset
         if dir_ == '+':
-            position += MANUAL_SPEED_INDEX[self._manualSpeed]
+            position += MANUAL_MANUAL_SPEED_INDEX[self._manualSpeed]
         else:
-            position -= MANUAL_SPEED_INDEX[self._manualSpeed]
+            position -= MANUAL_MANUAL_SPEED_INDEX[self._manualSpeed]
 
         # Call self.drive() ???
 

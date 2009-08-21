@@ -85,13 +85,15 @@ ALTERNATE_DRIVE_ANGLE = 7. # °
 ENCODER_ZERO = 0x800000
 ENCODER_FULL_CIRCLE = 0xE62D3
 AXIS_ACCURACY = 0.1 # °
-NUM_AXIS = {'yawAxis': 1,
-            'pitchAxis': 2,
-            'shutter': 1}
+AXIS_TABLE = {'yawAxis': 1,
+              'pitchAxis': 2,
+              'shutter': 1
+              }
 SPEED_INDEX = {'slow': 170,  # "AA0000"  / 5
                'alternate': 80, # "500000"
                'normal': 34, # "220000" nominal
-               'fast': 17}   # "110000"  * 2
+               'fast': 17   # "110000"  * 2
+               }
 
 
 class MerlinOrionHardware(AbstractHardwarePlugin):
@@ -163,7 +165,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
         @return: answer
         @rtype: str
         """
-        cmd = "%s%d%s" % (cmd, NUM_AXIS[self.capacity], param)
+        cmd = "%s%d%s" % (cmd, AXIS_TABLE[self.capacity], param)
         for nbTry in xrange(3):
             try:
                 answer = ""
@@ -184,16 +186,16 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
 
             except IOError:
                 Logger().exception("MerlinOrionHardware._sendCmd")
-                Logger().warning("MerlinOrionHardware._sendCmd(): %s axis %d can't sent command '%s'. Retrying..." % (NAME, NUM_AXIS[self.capacity], cmd))
+                Logger().warning("MerlinOrionHardware._sendCmd(): %s axis %d can't sent command '%s'. Retrying..." % (NAME, AXIS_TABLE[self.capacity], cmd))
             else:
                 break
         else:
-            raise HardwareError("%s axis %d can't send command '%s'" % (NAME, NUM_AXIS[self.capacity], cmd))
-        #Logger().debug("MerlinOrionHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (NUM_AXIS[self.capacity], cmd, answer))
+            raise HardwareError("%s axis %d can't send command '%s'" % (NAME, AXIS_TABLE[self.capacity], cmd))
+        #Logger().debug("MerlinOrionHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (AXIS_TABLE[self.capacity], cmd, answer))
 
         return answer
 
-    def _configureMerlinOrion(self):
+    def _initMerlinOrion(self):
         """ Init the MerlinOrion hardware.
 
         Done only once per axis.
@@ -209,11 +211,11 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
 
             # Get full circle count
             value = self._sendCmd("a")
-            Logger().debug("MerlinOrionHardware._configureMerlinOrion(): full circle count=%s" % hex(self._decodeAxisValue(value)))
+            Logger().debug("MerlinOrionHardware._initMerlinOrion(): full circle count=%s" % hex(self._decodeAxisValue(value)))
 
             # Get sidereal rate
             value = self._sendCmd("D")
-            Logger().debug("MerlinOrionHardware._configureMerlinOrion(): sidereal rate=%s" % hex(self._decodeAxisValue(value)))
+            Logger().debug("MerlinOrionHardware._initMerlinOrion(): sidereal rate=%s" % hex(self._decodeAxisValue(value)))
 
         finally:
             self._driver.releaseBus()
@@ -275,7 +277,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
             elif dir_ == '-':
                 self._sendCmd("G", "31")
             else:
-                raise ValueError("%s axis %d dir. must be in ('+', '-')" % (NAME, NUM_AXIS[self.capacity]))
+                raise ValueError("%s axis %d dir. must be in ('+', '-')" % (NAME, AXIS_TABLE[self.capacity]))
             self._sendCmd("I", self._encodeAxisValue(speed))
             self._sendCmd("J")
         finally:

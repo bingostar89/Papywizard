@@ -75,9 +75,10 @@ DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
 DEFAULT_BRACKETING_INTENT = 'exposure'
-MANUAL_SPEED_INDEX = {'slow': .2,
-                      'normal': 1.,
-                      'fast': 2.}
+MANUAL_MANUAL_SPEED_INDEX = {'slow': .2,
+                             'normal': 1.,
+                             'fast': 2.
+                             }
 
 
 class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
@@ -131,7 +132,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
                     if self.__drive:
                         inc = (time.time() - self.__time) * self._config['SPEED']
                     else:
-                        inc = (time.time() - self.__time) * self._config['SPEED'] * MANUAL_SPEED_INDEX[self._manualSpeed]
+                        inc = (time.time() - self.__time) * self._config['SPEED'] * MANUAL_MANUAL_SPEED_INDEX[self._manualSpeed]
                     self.__time = time.time()
                     if self.__dir == '+':
                         self.__pos += inc
