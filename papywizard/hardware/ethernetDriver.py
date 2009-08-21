@@ -102,10 +102,11 @@ class EthernetDriver(AbstractDriver):
         #Logger().debug("EthernetDriver.write(): data=%s" % repr(data))
         try:
             size = self._sock.send(data)
-            if size != len(data) + 2:
-                raise IOError("Failed to send data on ethernet")
-            else:
-                return size
+            #if size != len(data) + 2:
+                #raise IOError("Failed to send data on ethernet")
+            #else:
+                #return size
+            return size
         except socket.timeout:
             raise IOError("Timeout while writing on ethernet")
         except socket.error, msg:
