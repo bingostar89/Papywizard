@@ -44,13 +44,8 @@ between Papywizard and the head.
 Implements
 ==========
 
-- MerlinOrionBaseHandler
-- MerlinOrionEthernetHandler
-- MerlinOrionSerialHandler
-- MerlinOrionBaseSimulator
-- SimulatorTCPServer
-- MerlinOrionEthernetSimulator
-- MerlinOrionSerialSimulator
+- MerlinOrionCommandDispatcherObject
+- MerlinOrionCommandDispatcher
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
@@ -185,7 +180,7 @@ class MerlinOrionCommandDispatcherObject(QtCore.QObject):
 
         # Stop command
         if cmd == 'L':
-            Logger().trace("MerlinOrionBaseHandler.handleCmd(): stop")
+            Logger().debug("MerlinOrionBaseHandler.handleCmd(): stop")
             self._axis[numAxis].stop()
             response = ""
 
@@ -195,30 +190,30 @@ class MerlinOrionCommandDispatcherObject(QtCore.QObject):
 
         # ??? command
         elif cmd == 'a':
-            Logger().trace("MerlinOrionBaseHandler.handleCmd(): ???")
+            Logger().debug("MerlinOrionBaseHandler.handleCmd(): ???")
 
         # ??? command
         elif cmd == 'D':
-            Logger().trace("MerlinOrionBaseHandler.handleCmd(): ???")
+            Logger().debug("MerlinOrionBaseHandler.handleCmd(): ???")
             response = "F90600"
 
-        # read command
+        # Read command
         elif cmd == 'j':
-            Logger().trace("MerlinOrionBaseHandler.handleCmd(): read")
+            Logger().debug("MerlinOrionBaseHandler.handleCmd(): read")
             pos = self._axis[numAxis].read()
             response = self._encodeAxisValue(self._angleToEncoder(pos))
 
-        # status command
+        # Status command
         elif cmd == 'f':
-            Logger().trace("MerlinOrionBaseHandler.handleCmd(): status")
+            Logger().debug("MerlinOrionBaseHandler.handleCmd(): status")
             if self._axis[numAxis].isMoving():
                 response = "-1-"
             else:
                 response = "-0-"
 
-        # command command
+        # Set action command
         elif cmd == 'G':
-            Logger().trace("MerlinOrionBaseHandler.handleCmd(): command")
+            Logger().debug("MerlinOrionBaseHandler.handleCmd(): set action")
             if param[0] == '0':
                 self._axisCmd[numAxis] = 'drive'
             elif param[0] == '3':
@@ -233,9 +228,9 @@ class MerlinOrionCommandDispatcherObject(QtCore.QObject):
             else:
                 raise NotImplementedError
 
-        # speed command
+        # Speed command
         elif cmd == 'I':
-            Logger().trace("MerlinOrionBaseHandler.handleCmd(): speed")
+            Logger().debug("MerlinOrionBaseHandler.handleCmd(): speed")
             try:
                 speed = self._decodeAxisValue(param)
                 Logger().debug("MerlinOrionBaseHandler.handleCmd(): axis %d speed=%d" % (numAxis, speed))
@@ -243,14 +238,14 @@ class MerlinOrionCommandDispatcherObject(QtCore.QObject):
             except KeyError:
                 raise HardwareError("No direction has been set")
 
-        # position command
+        # Position command
         elif cmd == 'S':
-            Logger().trace("MerlinOrionBaseHandler.handleCmd(): position")
+            Logger().debug("MerlinOrionBaseHandler.handleCmd(): position")
             self._axisPos[numAxis] = self._encoderToAngle(self._decodeAxisValue(param))
 
-        # run command
+        # Run command
         elif cmd == 'J':
-            Logger().trace("MerlinOrionBaseHandler.handleCmd(): run")
+            Logger().debug("MerlinOrionBaseHandler.handleCmd(): run")
             try:
                 if self._axisCmd[numAxis] == 'jog':
                     dir_ = self._axisDir[numAxis]
@@ -262,9 +257,9 @@ class MerlinOrionCommandDispatcherObject(QtCore.QObject):
             except KeyError:
                 raise HardwareError("Missing one axis cmd/direction/speed value")
 
-        # shutter command
+        # Shutter command
         elif cmd == 'O':
-            Logger().trace("MerlinOrionBaseHandler.handleCmd(): shutter")
+            Logger().debug("MerlinOrionBaseHandler.handleCmd(): shutter")
 
         # Invalid command
         else:
