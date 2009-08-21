@@ -62,7 +62,7 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.exception import HardwareError, OutOfLimitsError
 from papywizard.plugins.pluginsManager  import PluginsManager
-from papywizard.hardware.head import Head
+from papywizard.model.head import Head
 from papywizard.model.camera import Camera
 from papywizard.model.data import MosaicData, PresetData
 from papywizard.model.scan import MosaicScan, PresetScan
