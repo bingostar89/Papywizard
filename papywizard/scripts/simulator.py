@@ -55,6 +55,8 @@ from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.simulator.merlinOrionCommandDispatcher import MerlinOrionCommandDispatcher
 from papywizard.simulator.merlinOrionSimulator import MerlinOrionEthernetSimulator, MerlinOrionSerialSimulator
+from papywizard.simulator.pixOrbCommandDispatcher import PixOrbCommandDispatcher
+from papywizard.simulator.pixOrbSimulator import PixOrbEthernetSimulator, PixOrbSerialSimulator
 
 
 def main():
@@ -65,9 +67,15 @@ def main():
     version = "%%prog %s" % config.VERSION
     parser = optparse.OptionParser(usage=usage, version=version)
     parser.set_defaults(connexion=config.SIMUL_DEFAULT_CONNEXION)
+    parser.add_option("-g", "--plugin", action="store",
+                                           dest="plugin",
+                                           choices=('merlin', 'pixorb'),
+                                           default='merlin',
+                                           help="Plugin name (merlin/pixorb)")
     parser.add_option("-c", "--connexion", action="store",
                                            dest="connexion",
                                            choices=('serial', 'ethernet'),
+                                           default='ethernet',
                                            help="Connection type (%s)" % config.SIMUL_DEFAULT_CONNEXION)
     parser.set_defaults(serialPort=config.SIMUL_DEFAULT_SERIAL_PORT)
     parser.add_option("-s", "--serial-port", action="store",
@@ -91,9 +99,15 @@ def main():
     #Logger().debug("option=%s" % option)
 
     if option.connexion == 'serial':
-        simulator = MerlinOrionSerialSimulator(option.serialPort)
+        if option.plugin == 'merlin':
+            simulator = MerlinOrionSerialSimulator(option.serialPort)
+        elif option.plugin == 'pixorb':
+            simulator = PixOrbSerialSimulator(option.serialPort)
     elif option.connexion == 'ethernet':
-        simulator = MerlinOrionEthernetSimulator(option.ethernetHost, option.ethernetPort)
+        if option.plugin == 'merlin':
+            simulator = MerlinOrionEthernetSimulator(option.ethernetHost, option.ethernetPort)
+        elif option.plugin == 'pixorb':
+            simulator = PixOrbEthernetSimulator(option.ethernetHost, option.ethernetPort)
     else:
         parser.print_help()
         sys.exit(1)
