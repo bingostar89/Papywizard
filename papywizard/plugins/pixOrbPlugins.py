@@ -76,25 +76,31 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 NAME = "PixOrb"
 
 DEFAULT_SPEED_TABLE_INDEX = 9
+DEFAULT_AXIS_WITH_BREAK = False
 
 ENCODER_FULL_CIRCLE = 1000000  # steps per turn
-AXIS_NAME = {'yawAxis': 'B',
-             'pitchAxis': 'C',
-             'shutter': 'B'}
-SPEED_TABLE = { '1': {'initVelocity': 6000, 'accel':  5, 'decel':  5, 'slewSpeed': 38400, 'divider': 160},  #  1 rev/day
-                '2': {'initVelocity': 6000, 'accel':  5, 'decel':  5, 'slewSpeed': 38400, 'divider':  80},  #  2 rev/day
-                '3': {'initVelocity': 6000, 'accel':  5, 'decel':  5, 'slewSpeed': 38400, 'divider':  40},  #  6 rev/day
-                '4': {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider':  20},  #  1 rev/h
-                '5': {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider':  10},  #  2 rev/h
-                '6': {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider':   6},  #  5 rev/h
-                '7': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   5},  #  1 °/s
-                '8': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   4},  #  3 °/s
-                '9': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   3},  #  6 °/s
-               '10': {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   1}   # 12 °/s
+AXIS_TABLE = {'yawAxis': 'B',
+              'pitchAxis': 'C',
+              'shutter': 'B'
+              }
+BREAK_TABLE = {'yawAxis': 'A',
+               'pitchAxis': 'C'
+               }
+SPEED_TABLE = { 1: {'initVelocity': 6000, 'accel':  5, 'decel':  5, 'slewSpeed': 38400, 'divider': 160},  #  1 rev/day
+                2: {'initVelocity': 6000, 'accel':  5, 'decel':  5, 'slewSpeed': 38400, 'divider':  80},  #  2 rev/day
+                3: {'initVelocity': 6000, 'accel':  5, 'decel':  5, 'slewSpeed': 38400, 'divider':  40},  #  6 rev/day
+                4: {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider':  20},  #  1 rev/h
+                5: {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider':  10},  #  2 rev/h
+                6: {'initVelocity': 6000, 'accel': 10, 'decel': 10, 'slewSpeed': 38400, 'divider':   6},  #  5 rev/h
+                7: {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   5},  #  1 °/s
+                8: {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   4},  #  3 °/s
+                9: {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   3},  #  6 °/s
+               10: {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   1}   # 12 °/s
                }
 MANUAL_SPEED_TABLE = {'slow': 7,  # normal / 5
                       'normal': 9,
-                      'fast': 10}  # normal * 2
+                      'fast': 10  # normal * 2
+                      }
 
 
 class PixOrbHardware(AbstractHardwarePlugin):
@@ -122,16 +128,19 @@ class PixOrbHardware(AbstractHardwarePlugin):
         """
         return int(pos / 360. * ENCODER_FULL_CIRCLE)
 
-    def _sendCmd(self, cmd):
+    def _sendCmd(self, cmd, table=AXIS_TABLE):
         """ Send a command to the axis.
 
         @param cmd: command to send
         @type cmd: str
 
+        @param table: controller name table to use for this command
+        @type table: dict
+
         @return: answer
         @rtype: str
         """
-        cmd = "%d%s" % (AXIS_NAME[self.capacity], cmd)
+        cmd = "%s%s" % (table[self.capacity], cmd)
         for nbTry in xrange(3):
             try:
                 answer = ""
@@ -143,16 +152,18 @@ class PixOrbHardware(AbstractHardwarePlugin):
                     if c in ('#', '!', '$'):
                         self._driver.read(1)  # Read last CR
                         raise IOError("Error on command '%s'" % cmd)
+                    else:
+                        answer += c
 
             except IOError:
                 Logger().exception("PixOrbHardware._sendCmd")
-                Logger().warning("PixOrbHardware._sendCmd(): %s axis %s failed to send command '%s'. Retrying..." % (NAME, AXIS_NAME[self.capacity], cmd))
+                Logger().warning("PixOrbHardware._sendCmd(): %s axis %s failed to send command '%s'. Retrying..." % (NAME, AXIS_TABLE[self.capacity], cmd))
             else:
                 answer = answer.strip()  # remove final CRLF
                 break
         else:
-            raise HardwareError("%s axis %s can't send command '%s'" % (NAME, AXIS_NAME[self.capacity], cmd))
-        #Logger().debug("PixOrbHardware._sendCmd(): axis %s, cmd=%s, ans=%s" % (AXIS_NAME[self.capacity], cmd, answer))
+            raise HardwareError("%s axis %s can't send command '%s'" % (NAME, AXIS_TABLE[self.capacity], cmd))
+        #Logger().debug("PixOrbHardware._sendCmd(): axis %s, cmd=%s, ans=%s" % (AXIS_TABLE[self.capacity], cmd, answer))
 
         return answer
 
@@ -166,16 +177,16 @@ class PixOrbHardware(AbstractHardwarePlugin):
         try:
 
             # Set initial velocity
-            self.sendCmd("I%d" % SPEED_TABLE[speedTableIndex]['initVelocity'])
+            self._sendCmd("I%d" % SPEED_TABLE[speedTableIndex]['initVelocity'])
 
             # Set accel/decel
             self._sendCmd("K%d %d" % (SPEED_TABLE[speedTableIndex]['accel'], SPEED_TABLE[speedTableIndex]['decel']))
 
             # Set slew speed
-            self.sendCmd("V%d" % SPEED_TABLE[speedTableIndex]['slewSpeed'])
+            self._sendCmd("V%d" % SPEED_TABLE[speedTableIndex]['slewSpeed'])
 
             # Set divider
-            self.sendCmd("D%d" % SPEED_TABLE[speedTableIndex]['divider'])
+            self._sendCmd("D%d" % SPEED_TABLE[speedTableIndex]['divider'])
         finally:
             self._driver.releaseBus()
 
@@ -237,9 +248,27 @@ class PixOrbHardware(AbstractHardwarePlugin):
         self._driver.acquireBus()
         try:
             if dir_ not in ('+', '-'):
-                raise ValueError("%s axis %d dir. must be in ('+', '-')" % (NAME, AXIS_NAME[self.capacity]))
+                raise ValueError("%s axis %d dir. must be in ('+', '-')" % (NAME, AXIS_TABLE[self.capacity]))
             else:
                 self._sendCmd("M%s%d" % (dir_, speed))
+        finally:
+            self._driver.releaseBus()
+
+    def _releaseBreak(self):
+        """ Release the (opional) break.
+        """
+        self._driver.acquireBus()
+        try:
+            self._sendCmd("A8", table=BREAK_TABLE)
+        finally:
+            self._driver.releaseBus()
+
+    def _activateBreak(self):
+        """ Release the (opional) break.
+        """
+        self._driver.acquireBus()
+        try:
+            self._sendCmd("A0", table=BREAK_TABLE)
         finally:
             self._driver.releaseBus()
 
@@ -272,6 +301,7 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         AbstractAxisPlugin._defineConfig(self)
         AbstractHardwarePlugin._defineConfig(self)
         self._addConfigKey('_speedTableIndex', 'SPEED_TABLE_INDEX', default=DEFAULT_SPEED_TABLE_INDEX)
+        self._addConfigKey('_axisWithBreak', 'AXIS_WITH_BREAK', default=DEFAULT_AXIS_WITH_BREAK)
 
     def init(self):
         Logger().trace("PixOrbAxis.init()")
@@ -303,6 +333,8 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
                 pos += self._offset
 
         self._checkLimits(pos)
+        if self._config['AXIS_WITH_BREAK']:
+            self._releaseBreak()
         self._drive(pos)
 
         # Wait end of movement
@@ -316,6 +348,8 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         self.waitStop()
 
     def startJog(self, dir_):
+        if self._config['AXIS_WITH_BREAK']:
+            self._releaseBreak()
         self._startJog(dir_, MANUAL_SPEED_TABLE[self._manualSpeed])
 
     def stop(self):
@@ -324,7 +358,8 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         self.waitStop()
 
     def waitStop(self):
-        pass
+        if self._config['AXIS_WITH_BREAK']:
+            self._activateBreak()
 
     def isMoving(self):
         status = self._getStatus()
@@ -339,7 +374,8 @@ class PixOrbAxisController(AxisPluginController, HardwarePluginController):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
         self._addWidget('Main', "Speed table index", SpinBoxField, (1, 10, "", ""), 'SPEED_TABLE_INDEX')
-        #self._addTab('Hard')
+        self._addTab('Hard')
+        self._addWidget('Hard', "Axis with break", CheckBoxField, (), 'AXIS_WITH_BREAK')
 
 
 class PixOrbShutter(PixOrbHardware, AbstractStandardShutterPlugin):
@@ -373,7 +409,7 @@ class PixOrbShutter(PixOrbHardware, AbstractStandardShutterPlugin):
     def shutdown(self):
         Logger().trace("PixOrbShutter.shutdown()")
         self._triggerOffShutter()
-        AbstractStandardShutterPlugin.shutdown(shutdown)
+        AbstractStandardShutterPlugin.shutdown(self)
 
 
 class PixOrbShutterController(StandardShutterPluginController, HardwarePluginController):
