@@ -88,7 +88,7 @@ class ShootController(AbstractModalDialogController):
 
         self.__thread = None
         self.__shootingElapseTimer = QtCore.QTimer()
-        QtCore.QCoreApplication.connect(self.__shootingElapseTimer, QtCore.SIGNAL("timeout()"), self.__updateShootingElapsedTime)
+        self.connect(self.__shootingElapseTimer, QtCore.SIGNAL("timeout()"), self.__updateShootingElapsedTime)
 
     def _initWidgets(self):
 
