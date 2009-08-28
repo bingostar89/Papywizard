@@ -61,7 +61,7 @@ from PyQt4 import QtCore
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
-from papywizard.plugins.pluginsManager  import PluginsManager 
+from papywizard.plugins.pluginsManager import PluginsManager
 from papywizard.plugins.abstractAxisPlugin import AbstractAxisPlugin
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.axisPluginController import AxisPluginController
@@ -70,7 +70,7 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 NAME = "Simulation"
 
-DEFAULT_SPEED = 30. # deg/s
+DEFAULT_SPEED = 30 # deg/s
 DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
