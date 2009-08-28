@@ -167,15 +167,13 @@ class ConfigController(AbstractModalDialogController):
                 dialog = WarningMessageDialog(self.tr("Wrong value for camera orientation"),
                                               self.tr("Can't set camera orientation to 'custom' while in 'mosaic' mode"))
                 dialog.exec_()
-                self._view.cameraOrientationComboBox.setCurrentIndex(self._view.cameraOrientationComboBox.findText(self._model.cameraOrientation))
+                self._view.cameraOrientationComboBox.setCurrentIndex(config.CAMERA_ORIENTATION_INDEX[self._model.cameraOrientation])
             else:
                 self._view.cameraRollDoubleSpinBox.setEnabled(True)
                 self._view.cameraRollDoubleSpinBox.setValue(self._model.cameraRoll)
 
     def __onLensTypeComboBoxCurrentIndexChanged(self, index):
         """ Lens type combobox has changed.
-
-        Enable/disable focal lens entry.
         """
         type_ = config.LENS_TYPE_INDEX[index]
         Logger().debug("ConfigController.__onLensTypeComboBoxCurrentIndexChanged(): type=%s" % type_)
@@ -183,20 +181,18 @@ class ConfigController(AbstractModalDialogController):
             dialog = WarningMessageDialog(self.tr("Wrong value for lens type"),
                                           self.tr("Can't set lens type to 'fisheye' while in 'mosaic' mode"))
             dialog.exec_()
-            self._view.lensTypeComboBox.setCurrentIndex(self._view.lensTypeComboBox.findText('rectilinear'))
+            self._view.lensTypeComboBox.setCurrentIndex(config.LENS_TYPE_INDEX[self._model.camera.lens.type_])
         else:
             if type_ == 'rectilinear':
-                self._view.focalDoubleSpinBox.setEnabled(True)
                 self._view.opticalMultiplierLabel.setEnabled(True)
                 self._view.opticalMultiplierDoubleSpinBox.setEnabled(True)
             else:
-                self._view.focalDoubleSpinBox.setEnabled(False)
                 self._view.opticalMultiplierLabel.setEnabled(False)
                 self._view.opticalMultiplierDoubleSpinBox.setEnabled(False)
             Logger().debug("ConfigController.__onLensTypeComboBoxCurrentIndexChanged(): lens type set to '%s'" % type_)
 
     def __onYawAxisConfigurePushButtonClicked(self):
-        """
+        """ Yaw axis plugin configure push button clicked.
         """
         selectedPluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
         model, controllerClass = PluginsManager ().get('yawAxis', selectedPluginName)
@@ -204,7 +200,7 @@ class ConfigController(AbstractModalDialogController):
         controller.exec_()
 
     def __onPitchAxisConfigurePushButtonClicked(self):
-        """
+        """ Pitch axis plugin configure push button clicked.
         """
         selectedPluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
         model, controllerClass = PluginsManager ().get('pitchAxis', selectedPluginName)
@@ -212,7 +208,7 @@ class ConfigController(AbstractModalDialogController):
         controller.exec_()
 
     def __onShutterConfigurePushButtonClicked(self):
-        """
+        """ Shutter plugin configure push button clicked.
         """
         selectedPluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
         model, controllerClass = PluginsManager ().get('shutter', selectedPluginName)
