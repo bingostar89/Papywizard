@@ -215,8 +215,7 @@ class AbstractData(object):
 
         # Lens
         node = self._addNode(self._headerNode, 'lens', type=values['lensType'])
-        if values['lensType'] == 'rectilinear':
-            self._addNode(node, 'focal', values['focal'])
+        self._addNode(node, 'focal', values['focal'])
 
     def addPicture(self, bracket, yaw, pitch, roll):
         """ Add a new picture node to shoot node.

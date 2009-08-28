@@ -417,6 +417,9 @@ class Shooting(QtCore.QObject):
             roll = self.cameraRoll
         else:
             raise ValueError("cameraOrientation must be in ('portrait', 'landscape', 'custom'")
+        focal = self.camera.lens.focal
+        if self.camera.lens.type_ == 'rectilinear':
+            focal *= self.camera.lens.opticalMultiplier
         values = {'title' : ConfigManager().get('Configuration/DATA_TITLE'),
                   'gps': ConfigManager().get('Configuration/DATA_GPS'),
                   'comment': ConfigManager().get('Configuration/DATA_COMMENT') % {'version': config.VERSION},
@@ -430,7 +433,8 @@ class Shooting(QtCore.QObject):
                   'sensorCoef': "%.1f" % self.camera.sensorCoef,
                   'sensorRatio': "%s" % self.camera.sensorRatio,
                   'lensType': "%s" % self.camera.lens.type_,
-                  'focal': "%.1f" % (self.camera.lens.focal * self.camera.lens.opticalMultiplier)}
+                  'focal': "%.1f" % focal
+                  }
 
         Logger().info("Start shooting process...")
         try:
