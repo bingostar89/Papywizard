@@ -9,7 +9,7 @@ License
   - (C) 2007-2009 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
 U{http://www.cecill.info}.
@@ -18,7 +18,7 @@ As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -27,9 +27,9 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
@@ -112,19 +112,21 @@ class AbstractPluginController(AbstractModalDialogController):
         # Populate GUI with fields
         widgets = {}
         for tabName in self._fields.keys():
-            frame = QtGui.QFrame()
-            formLayout = QtGui.QFormLayout()
-            frame.setLayout(formLayout)
-            self._view.tabWidget.addTab(frame, tabName)
-            Logger().debug("AbstractPluginController._initWidgets(): created '%s' tab" % tabName)
+            if tabName == "Main":
+                widget = self._view.mainTab
+                formLayout =self._view.formLayout
+            else:
+                widget = QtGui.QWidget(self._view)
+                formLayout = QtGui.QFormLayout(widget)
+                widget.setLayout(formLayout)
+                self._view.tabWidget.addTab(widget, tabName)
+                Logger().debug("AbstractPluginController._initWidgets(): created '%s' tab" % tabName)
             for label, field in self._fields[tabName].iteritems():
                 widgets[label] = field['widget']
-                field['widget'].setParent(frame)
+                field['widget'].setParent(widget)
                 formLayout.addRow(label, field['widget'])
                 Logger().debug("AbstractPluginController._initWidgets(): added '%s' field" % label)
 
-        self._view.tabWidget.setCurrentIndex(1)
-        self._view.tabWidget.removeTab(0)
         self._view.adjustSize()
 
     def _onAccepted(self):
