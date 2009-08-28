@@ -266,4 +266,5 @@ def main():
 
 
 if __name__ == "__main__":
+    sys.argv[0] = "Papywizard"
     main()
