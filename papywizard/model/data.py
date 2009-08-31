@@ -208,8 +208,7 @@ class AbstractData(object):
         # Camera
         node = self._addNode(self._headerNode, 'camera')
         self._addNode(node, 'timeValue', values['timeValue'])
-        self._addNode(node, 'bracketing', nbPicts=values['bracketingNbPicts'],
-                                          intent=values['bracketingIntent'])
+        self._addNode(node, 'bracketing', nbPicts=values['bracketingNbPicts'])
         self._addNode(node, 'sensor', coef=values['sensorCoef'],
                                       ratio=values['sensorRatio'])
 

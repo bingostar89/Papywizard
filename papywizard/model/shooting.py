@@ -429,7 +429,6 @@ class Shooting(QtCore.QObject):
                   'stabilizationDelay': "%.1f" % self.stabilizationDelay,
                   'timeValue': "%.1f" % self.shutter.timeValue,
                   'bracketingNbPicts': "%d" % self.shutter.bracketingNbPicts,
-                  'bracketingIntent': "%s" % self.shutter.bracketingIntent,
                   'sensorCoef': "%.1f" % self.camera.sensorCoef,
                   'sensorRatio': "%s" % self.camera.sensorRatio,
                   'lensType': "%s" % self.camera.lens.type_,
