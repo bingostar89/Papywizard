@@ -52,7 +52,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: pixOrbCommandDispatcher.py 1995 2009-06-30 07:57:03Z fma $"
+__revision__ = "$Id$"
 
 from PyQt4 import QtCore
 
