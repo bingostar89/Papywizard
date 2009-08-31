@@ -58,7 +58,6 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 from papywizard.controller.abstractController import AbstractModalDialogController
 
-
 class AbstractPluginController(AbstractModalDialogController):
     """ Plugin controller.
 
@@ -68,17 +67,22 @@ class AbstractPluginController(AbstractModalDialogController):
     """
     def _init(self):
         self._uiFile = "pluginsConfigDialog.ui"
-        self._fields = OrderedDict()
+        self._tabs = OrderedDict()
+        self._fields = {}
 
         # Add a general tab
-        self._addTab('Main')
+        self._addTab('Main', QtGui.QApplication.translate("AbstractPluginController", 'Main'))
 
-    def _addTab(self, tabName):
+    def _addTab(self, tabName, tabLabel):
         """ Add a new tab to the tab widget.
 
         @param tabName: name of the new tab
         @type tabName: str
+
+        @param tabLabel: label to use for the tab (for translations)
+        @type tabLabel: str
         """
+        self._tabs[tabName] = tabLabel
         self._fields[tabName] = OrderedDict()
 
     def _addWidget(self, tabName, label, widgetClass, widgetParams, configKey):
@@ -111,15 +115,15 @@ class AbstractPluginController(AbstractModalDialogController):
 
         # Populate GUI with fields
         widgets = {}
-        for tabName in self._fields.keys():
-            if tabName == "Main":
+        for tabName, tabLabel in self._tabs.iteritems():
+            if tabName == 'Main':
                 widget = self._view.mainTab
-                formLayout =self._view.formLayout
+                formLayout = self._view.formLayout
             else:
                 widget = QtGui.QWidget(self._view)
                 formLayout = QtGui.QFormLayout(widget)
                 widget.setLayout(formLayout)
-                self._view.tabWidget.addTab(widget, tabName)
+                self._view.tabWidget.addTab(widget, tabLabel)
                 Logger().debug("AbstractPluginController._initWidgets(): created '%s' tab" % tabName)
             for label, field in self._fields[tabName].iteritems():
                 widgets[label] = field['widget']
@@ -133,7 +137,7 @@ class AbstractPluginController(AbstractModalDialogController):
         """ Ok button has been clicked.
         """
         Logger().trace("AbstractPluginController._onAccepted()")
-        for tabName in self._fields.keys():
+        for tabName in self._tabs.keys():
             for label, field in self._fields[tabName].iteritems():
                 value = field['widget'].value()
                 if isinstance(value, QtCore.QString):

@@ -59,7 +59,7 @@ import time
 import sys
 import threading
 
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
 from papywizard.common.exception import HardwareError
@@ -373,9 +373,11 @@ class PixOrbAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Main', "Speed table index", SpinBoxField, (1, 10, "", ""), 'SPEED_TABLE_INDEX')
-        self._addTab('Hard')
-        self._addWidget('Hard', "Axis with break", CheckBoxField, (), 'AXIS_WITH_BREAK')
+        self._addWidget('Main', QtGui.QApplication.translate("PixOrbAxisController", "Speed table index"),
+                        SpinBoxField, (1, 10, "", ""), 'SPEED_TABLE_INDEX')
+        self._addTab('Hard', QtGui.QApplication.translate("PixOrbAxisController", 'Hard'))
+        self._addWidget('Hard', QtGui.QApplication.translate("PixOrbAxisController", "Axis with break"),
+                        CheckBoxField, (), 'AXIS_WITH_BREAK')
 
 
 class PixOrbShutter(PixOrbHardware, AbstractStandardShutterPlugin):

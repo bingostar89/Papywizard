@@ -57,6 +57,8 @@ __revision__ = "$Id$"
 import time
 import subprocess
 
+from PyQt4 import QtCore, QtGui
+
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager import PluginsManager
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
@@ -66,21 +68,35 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 NAME = "EOS Utility"
 
 DEFAULT_PROGRAM_PATH = "C:\\Program Files\\Papywizard\\EOSBracket.exe"
-DEFAULT_EOSUTILITY_TYPE = 'new'
-DEFAULT_EXPOSURE_BRACKETING_STOPS = '1'
-DEFAULT_EXPOSURE_BRACKETING_TYPE = '0-+'
-DEFAULT_EXPOSURE_BRACKETING_NBPICTS = 1
-DEFAULT_SHOOT_PICTURES = False
-DEFAULT_BULB_MODE = False
-DEFAULT_BASE_BULB_EXPOSURE = 1
-DEFAULT_FOCUS_MODE = False
-DEFAULT_FOCUS_DIRECTION = 'far'
-DEFAULT_FOCUS_STEP = 'medium'
+DEFAULT_EOS_UTILITY_VERSION = QtGui.QApplication.translate("EOSUtilityShutterController", 'new')
+DEFAULT_BRACKETING_STOPS = '1'
+DEFAULT_BRACKETING_TYPE = '0-+'
+DEFAULT_BRACKETING_NB_PICTS = 1
+DEFAULT_DRY_RUN = True
+DEFAULT_BULB_ENABLE = False
+DEFAULT_BULB_BASE_EXPOSURE = 1
+DEFAULT_FOCUS_ENABLE = False
+DEFAULT_FOCUS_DIRECTION = QtGui.QApplication.translate("EOSUtilityShutterController", 'far')
+DEFAULT_FOCUS_STEP = QtGui.QApplication.translate("EOSUtilityShutterController", 'medium')
 DEFAULT_FOCUS_STEP_COUNT = 1
-DEFAULT_FOCUS_BRACKETING_NBPICTS = 1
-EXPOSURE_BRACKETING_TYPE_INDEX = {'0--': '1',
-                                  '0++': '2',
-                                  '0-+': '3'}
+DEFAULT_FOCUS_NB_PICTS = 1
+BRACKETING_TYPE_INDEX = {'0--': '1',
+                         '0++': '2',
+                         '0-+': '3'}
+EOS_UTILITY_VERSION_TABLE = {'old': QtGui.QApplication.translate("EOSUtilityShutterController", 'old'),
+                             'new': QtGui.QApplication.translate("EOSUtilityShutterController", 'new'),
+                             unicode(QtGui.QApplication.translate("EOSUtilityShutterController", 'old')): 'old',
+                             unicode(QtGui.QApplication.translate("EOSUtilityShutterController", 'new')): 'new'}
+FOCUS_DIRECTION_TABLE = {'far': QtGui.QApplication.translate("EOSUtilityShutterController", 'far'),
+                         'near': QtGui.QApplication.translate("EOSUtilityShutterController", 'near'),
+                         QtGui.QApplication.translate("EOSUtilityShutterController", 'far'): 'far',
+                         QtGui.QApplication.translate("EOSUtilityShutterController", 'near'): 'near'}
+FOCUS_STEP_MODE_TABLE = {'small': QtGui.QApplication.translate("EOSUtilityShutterController", 'small'),
+                         'medium': QtGui.QApplication.translate("EOSUtilityShutterController", 'medium'),
+                         'large': QtGui.QApplication.translate("EOSUtilityShutterController", 'large'),
+                         QtGui.QApplication.translate("EOSUtilityShutterController", 'small'): 'small',
+                         QtGui.QApplication.translate("EOSUtilityShutterController", 'medium'): 'medium',
+                         QtGui.QApplication.translate("EOSUtilityShutterController", 'large'): 'large'}
 
 
 class EOSUtilityShutter(AbstractShutterPlugin):
@@ -104,19 +120,19 @@ class EOSUtilityShutter(AbstractShutterPlugin):
     def _defineConfig(self):
         Logger().trace("EOSUtilityShutter._defineConfig()")
         #AbstractShutterPlugin._defineConfig(self)
-        self._addConfigKey('_eosBracketPath', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
-        self._addConfigKey('_eosUtilityType', 'EOSUTILITY_TYPE', default=DEFAULT_EOSUTILITY_TYPE)
-        self._addConfigKey('_exposureBracketingStops', 'EXPOSURE_BRACKETING_STOPS', default=DEFAULT_EXPOSURE_BRACKETING_STOPS)
-        self._addConfigKey('_exposureBracketingType', 'EXPOSURE_BRACKETING_TYPE', default=DEFAULT_EXPOSURE_BRACKETING_TYPE)
-        self._addConfigKey('_exposureBracketingNbPicts', 'EXPOSURE_BRACKETING_NBPICTS', default=DEFAULT_EXPOSURE_BRACKETING_NBPICTS)
-        self._addConfigKey('_shootPictures', 'SHOOT_PICTURES', default=DEFAULT_SHOOT_PICTURES)
-        self._addConfigKey('_bulbMode', 'BULB_MODE', default=DEFAULT_BULB_MODE)
-        self._addConfigKey('_baseBulbExposure', 'BASE_BULB_EXPOSURE', default=DEFAULT_BASE_BULB_EXPOSURE)
-        self._addConfigKey('_focusBracketMode', 'FOCUS_MODE', default=DEFAULT_FOCUS_MODE)
+        self._addConfigKey('_programPath', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
+        self._addConfigKey('_eosUtilityVersion', 'EOS_UTILITY_VERSION', default=DEFAULT_EOS_UTILITY_VERSION)
+        self._addConfigKey('_bracketingStops', 'BRACKETING_STOPS', default=DEFAULT_BRACKETING_STOPS)
+        self._addConfigKey('_bracketingType', 'BRACKETING_TYPE', default=DEFAULT_BRACKETING_TYPE)
+        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NB_PICTS)
+        self._addConfigKey('_dryRun', 'DRY_RUN', default=DEFAULT_DRY_RUN)
+        self._addConfigKey('_bulbEnable', 'BULB_ENABLE', default=DEFAULT_BULB_ENABLE)
+        self._addConfigKey('_bulbBseExposure', 'BULB_BASE_EXPOSURE', default=DEFAULT_BULB_BASE_EXPOSURE)
+        self._addConfigKey('_focusEnable', 'FOCUS_ENABLE', default=DEFAULT_FOCUS_ENABLE)
         self._addConfigKey('_focusDirection', 'FOCUS_DIRECTION', default=DEFAULT_FOCUS_DIRECTION)
         self._addConfigKey('_focusStep', 'FOCUS_STEP', default=DEFAULT_FOCUS_STEP)
         self._addConfigKey('_focusStepCount', 'FOCUS_STEP_COUNT', default=DEFAULT_FOCUS_STEP_COUNT)
-        self._addConfigKey('_focusBracketingNbPictures', 'FOCUS_BRACKETING_NBPICTS', default=DEFAULT_FOCUS_BRACKETING_NBPICTS)
+        self._addConfigKey('_focusNbPicts', 'FOCUS_NB_PICTS', default=DEFAULT_FOCUS_NB_PICTS)
 
     def lockupMirror(self):
         Logger().warning("EOSUtilityShutter.lockupMirror(): Not possible with EOS Utility")
@@ -124,44 +140,44 @@ class EOSUtilityShutter(AbstractShutterPlugin):
 
     def shoot(self, bracketNumber):
         Logger().debug("EOSUtilityShutter.shoot(): bracketNumber=%d" % bracketNumber)
-        Logger().debug("EOSUtilityShutter.shoot(): EOSBracket Path '%s'..." % self._config['PROGRAM_PATH'])
-        Logger().debug("EOSUtilityShutter.shoot(): EOS Utility Type '%s'..." % self._config['EOSUTILITY_TYPE'])
-        Logger().debug("EOSUtilityShutter.shoot(): Exposure Bracketing Stops '%s'..." % self._config['EXPOSURE_BRACKETING_STOPS'])
-        Logger().debug("EOSUtilityShutter.shoot(): Exposure Bracketing Type '%s'..." % self._config['EXPOSURE_BRACKETING_TYPE'])
-        Logger().debug("EOSUtilityShutter.shoot(): Exposure Bracketing NB Pictures '%s'..." % self._config['EXPOSURE_BRACKETING_NBPICTS'])
-        Logger().debug("EOSUtilityShutter.shoot(): Shoot Pictures? '%s'..." % self._config['SHOOT_PICTURES'])
-        Logger().debug("EOSUtilityShutter.shoot(): Bulb Mode? '%s'..." % self._config['BULB_MODE'])
-        Logger().debug("EOSUtilityShutter.shoot(): Base Bulb Exposure (in secs) '%s'..." % self._config['BASE_BULB_EXPOSURE'])
-        Logger().debug("EOSUtilityShutter.shoot(): Focus Bracket Mode '%s'..." % self._config['FOCUS_MODE'])
-        Logger().debug("EOSUtilityShutter.shoot(): Focus Direction '%s'..." % self._config['FOCUS_DIRECTION'])
-        Logger().debug("EOSUtilityShutter.shoot(): Focus Step Mode '%s'..." % self._config['FOCUS_STEP'])
-        Logger().debug("EOSUtilityShutter.shoot(): Focus Step Count '%s'..." % self._config['FOCUS_STEP_COUNT'])
-        Logger().debug("EOSUtilityShutter.shoot(): Focus Bracketing NB Pictures '%s'..." % self._config['FOCUS_BRACKETING_NBPICTS'])
+        Logger().debug("EOSUtilityShutter.shoot(): Program Path=%s" % self._config['PROGRAM_PATH'])
+        Logger().debug("EOSUtilityShutter.shoot(): EOS Utility version=%s" % self._config['EOS_UTILITY_VERSION'])
+        Logger().debug("EOSUtilityShutter.shoot(): Bracketing stops=%s" % self._config['BRACKETING_STOPS'])
+        Logger().debug("EOSUtilityShutter.shoot(): Bracketing type=%s" % self._config['BRACKETING_TYPE'])
+        Logger().debug("EOSUtilityShutter.shoot(): Bracketing nb pict=%d" % self._config['BRACKETING_NB_PICTS'])
+        Logger().debug("EOSUtilityShutter.shoot(): Dry run=%s" % self._config['DRY_RUN'])
+        Logger().debug("EOSUtilityShutter.shoot(): Bulb enable=%s" % self._config['BULB_ENABLE'])
+        Logger().debug("EOSUtilityShutter.shoot(): Bulb base exposure %d s" % self._config['BULB_BASE_EXPOSURE'])
+        Logger().debug("EOSUtilityShutter.shoot(): Focus enable=%s" % self._config['FOCUS_ENABLE'])
+        Logger().debug("EOSUtilityShutter.shoot(): Focus direction=%s" % self._config['FOCUS_DIRECTION'])
+        Logger().debug("EOSUtilityShutter.shoot(): Focus step=%s" % self._config['FOCUS_STEP'])
+        Logger().debug("EOSUtilityShutter.shoot(): Focus step count=%d" % self._config['FOCUS_STEP_COUNT'])
+        Logger().debug("EOSUtilityShutter.shoot(): Focus nb picts=%d" % self._config['FOCUS_NB_PICTS'])
 
         args = []
         args.append(self._config['PROGRAM_PATH'])
         args.append("CL")
-        args.append(self._config['EOSUTILITY_TYPE'])
-        args.append(self._config['EXPOSURE_BRACKETING_STOPS'])
-        args.append(EXPOSURE_BRACKETING_TYPE_INDEX[self._config['EXPOSURE_BRACKETING_TYPE']])
-        args.append(str(self._config['EXPOSURE_BRACKETING_NBPICTS']))
-        if self._config['SHOOT_PICTURES']:
-            args.append("y")
+        args.append(EOS_UTILITY_VERSION_TABLE[self._config['EOS_UTILITY_VERSION']])
+        args.append(self._config['BRACKETING_STOPS'])
+        args.append(BRACKETING_TYPE_INDEX[self._config['BRACKETING_TYPE']])
+        args.append(str(self._config['BRACKETING_NB_PICTS']))
+        if self._config['DRY_RUN']:
+            args.append("n")
         else:
-            args.append("N")
-        if self._config['BULB_MODE']:
+            args.append("y")
+        if self._config['BULB_ENABLE']:
             args.append("y")
         else:
             args.append("n")
-        args.append(str(self._config['BASE_BULB_EXPOSURE']))
-        if self._config['FOCUS_MODE']:
+        args.append(str(self._config['BULB_BASE_EXPOSURE']))
+        if self._config['FOCUS_ENABLE']:
             args.append("y")
         else:
             args.append("n")
-        args.append(self._config['FOCUS_DIRECTION'])
-        args.append(self._config['FOCUS_STEP'])
+        args.append(FOCUS_DIRECTION_TABLE[self._config['FOCUS_DIRECTION']])
+        args.append(FOCUS_STEP_MODE_TABLE[self._config['FOCUS_STEP']])
         args.append(str(self._config['FOCUS_STEP_COUNT']))
-        args.append(str(self._config['FOCUS_BRACKETING_NBPICTS']))
+        args.append(str(self._config['FOCUS_NB_PICTS']))
         Logger().debug("EOSUtilityShutter.shoot(): cmdLineArgs '%s'..." % ' '.join(args))
 
         # Launch external command
@@ -180,21 +196,52 @@ class EOSUtilityShutterController(ShutterPluginController):
     def _defineGui(self):
         Logger().trace("EOSUtilityShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', "EOS Bracket path", LineEditField, (), 'PROGRAM_PATH')
-        self._addWidget('Main', "EOS Utility Type", ComboBoxField, (['old', 'new'],), 'EOSUTILITY_TYPE')
-        self._addWidget('Main', "Exposure Bracketing Stops", ComboBoxField, (['1/3', '2/3', '1', '1 1/3', '1 2/3', '2', '2 1/3', '2 2/3', '3', '3 1/3', '3 2/3', '4', '4 1/3', '4 2/3', '5', '5 1/3', '5 2/3', '6'],), 'EXPOSURE_BRACKETING_STOPS')
-        self._addWidget('Main', "Exposure Bracketing Type", ComboBoxField, (EXPOSURE_BRACKETING_TYPE_INDEX.keys(),), 'EXPOSURE_BRACKETING_TYPE')
-        self._addWidget('Main', "Exposure Bracketing Picture Count", SpinBoxField, (1, 99), 'EXPOSURE_BRACKETING_NBPICTS')
-        self._addWidget('Main', "Shoot Pictures", CheckBoxField, (), 'SHOOT_PICTURES')
-        self._addTab('Bulb')
-        self._addWidget('Bulb', "Bulb Exposure Mode", CheckBoxField, (), 'BULB_MODE')
-        self._addWidget('Bulb', "Base Bulb Exposure", SpinBoxField, (1, 99, "", " s"), 'BASE_BULB_EXPOSURE')
-        self._addTab('Focus')
-        self._addWidget('Focus', "Focus Bracket Mode", CheckBoxField, (), 'FOCUS_MODE')
-        self._addWidget('Focus', "Focus Direction", ComboBoxField, (['far', 'near'],), 'FOCUS_DIRECTION')
-        self._addWidget('Focus', "Focus Step Mode", ComboBoxField, (['small', 'medium', 'large'],), 'FOCUS_STEP')
-        self._addWidget('Focus', "Focus Step Count", SpinBoxField, (1, 99), 'FOCUS_STEP_COUNT')
-        self._addWidget('Focus', "Focus Bracketing Picture Count", SpinBoxField, (1, 99), 'FOCUS_BRACKETING_NBPICTS')
+        self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Program path"),
+                        LineEditField, (),
+                        'PROGRAM_PATH')
+        types = [EOS_UTILITY_VERSION_TABLE['old'], EOS_UTILITY_VERSION_TABLE['new']]
+        self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "EOS Utility version"),
+                        ComboBoxField, (types,),
+                        'EOS_UTILITY_VERSION')
+        self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Bracketing nb picts"),
+                        SpinBoxField, (1, 99),
+                        'BRACKETING_NB_PICTS')
+        stops = ['1/3', '2/3', '1', '1 1/3', '1 2/3', '2', '2 1/3', '2 2/3','3',
+                 '3 1/3', '3 2/3', '4', '4 1/3', '4 2/3', '5', '5 1/3', '5 2/3', '6']
+        self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Bracketing stops"),
+                        ComboBoxField, (stops,),
+                        'BRACKETING_STOPS')
+        self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Bracketing type"),
+                        ComboBoxField, (BRACKETING_TYPE_INDEX.keys(),),
+                        'BRACKETING_TYPE')
+        self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Dry run"),
+                        CheckBoxField, (),
+                        'DRY_RUN')
+        self._addTab('Bulb', QtGui.QApplication.translate("EOSUtilityShutterController", 'Bulb'))
+        self._addWidget('Bulb', QtGui.QApplication.translate("EOSUtilityShutterController", "Enable"),
+                        CheckBoxField, (),
+                        'BULB_ENABLE')
+        self._addWidget('Bulb', QtGui.QApplication.translate("EOSUtilityShutterController", "Base exposure"),
+                        SpinBoxField, (1, 99, "", " s"),
+                        'BULB_BASE_EXPOSURE')
+        self._addTab('Focus', QtGui.QApplication.translate("EOSUtilityShutterController", 'Focus'))
+        self._addWidget('Focus',  QtGui.QApplication.translate("EOSUtilityShutterController", "Enable"),
+                        CheckBoxField, (),
+                        'FOCUS_ENABLE')
+        focusDir = [FOCUS_DIRECTION_TABLE['far'], FOCUS_DIRECTION_TABLE['near']]
+        self._addWidget('Focus', QtGui.QApplication.translate("EOSUtilityShutterController", "Direction"),
+                        ComboBoxField, (focusDir,),
+                        'FOCUS_DIRECTION')
+        stepMode = [FOCUS_STEP_MODE_TABLE['small'], FOCUS_STEP_MODE_TABLE['medium'], FOCUS_STEP_MODE_TABLE['large']]
+        self._addWidget('Focus',  QtGui.QApplication.translate("EOSUtilityShutterController", "Step"),
+                        ComboBoxField, (stepMode,),
+                        'FOCUS_STEP')
+        self._addWidget('Focus', QtGui.QApplication.translate("EOSUtilityShutterController", "Step count"),
+                        SpinBoxField, (1, 99),
+                        'FOCUS_STEP_COUNT')
+        self._addWidget('Focus', QtGui.QApplication.translate("EOSUtilityShutterController", "Nb picts"),
+                        SpinBoxField, (1, 99),
+                        'FOCUS_NB_PICTS')
 
 def register():
     """ Register plugins.

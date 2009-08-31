@@ -111,26 +111,6 @@ class AbstractShutterPlugin(AbstractPlugin):
 
     bracketingNbPicts = property(__getBracketingNbPicts)
 
-    def _getBracketingIntent(self):
-        """ Return the bracketing intent.
-
-        If this parameter is not relevant in the plugin, returnone of the
-        allowed values.
-        This parameter is only used in the xml data file header.
-
-        Other values will be added in teh future (possibility of having
-        several values).
-
-        @return: bracketing intent ('exposure', 'focus', 'white balance', 'movement')
-        @rtype: str
-        """
-        raise NotImplementedError("AbstractShutterPlugin.__getBracketingIntent() must be overloaded")
-
-    def __getBracketingIntent(self):
-        return self._getBracketingIntent()
-
-    bracketingIntent = property(__getBracketingIntent)
-
     def lockupMirror(self):
         """ Lockup the mirror.
 

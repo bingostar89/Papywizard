@@ -55,7 +55,7 @@ __revision__ = "$Id$"
 import time
 import subprocess
 
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
@@ -123,8 +123,10 @@ class TimelordShutterController(ShutterPluginController):
     def _defineGui(self):
         Logger().trace("TimelordShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', "Program path", LineEditField, (), 'PROGRAM_PATH')
-        self._addWidget('Main', "LRD file path", LineEditField, (), 'LRD_FILE_PATH')
+        self._addWidget('Main', QtGui.QApplication.translate("TimelordShutterController", "Program path"),
+                        LineEditField, (), 'PROGRAM_PATH')
+        self._addWidget('Main', QtGui.QApplication.translate("TimelordShutterController", "LRD file path"),
+                        LineEditField, (), 'LRD_FILE_PATH')
 
 
 def register():

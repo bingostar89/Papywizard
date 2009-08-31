@@ -55,6 +55,8 @@ __revision__ = "$Id$"
 import time
 import subprocess
 
+from PyQt4 import QtCore, QtGui
+
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager 
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
@@ -67,7 +69,6 @@ DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_MIRROR_LOCKUP_COMMAND = "gphoto2 --capture-image"
 DEFAULT_SHOOT_COMMAND = "gphoto2 --capture-image"
 DEFAULT_BRACKETING_NBPICTS = 1
-DEFAULT_BRACKETING_INTENT = 'exposure'
 
 
 class GenericTetheredShutter(AbstractShutterPlugin):
@@ -85,9 +86,6 @@ class GenericTetheredShutter(AbstractShutterPlugin):
     def _getBracketingNbPicts(self):
         return self._config['BRACKETING_NB_PICTS']
 
-    def _getBracketingIntent(self):
-        return self._config['BRACKETING_INTENT']
-
     def _defineConfig(self):
         Logger().trace("GenericTetheredShutter._defineConfig()")
         #AbstractShutterPlugin._defineConfig(self)
@@ -95,7 +93,6 @@ class GenericTetheredShutter(AbstractShutterPlugin):
         self._addConfigKey('_mirrorLockupCommand', 'MIRROR_LOCKUP_COMMAND', default=DEFAULT_MIRROR_LOCKUP_COMMAND)
         self._addConfigKey('_shootCommand', 'SHOOT_COMMAND', default=DEFAULT_SHOOT_COMMAND)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
-        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
 
     def lockupMirror(self):
         # @todo: implement mirror lockup command
@@ -105,7 +102,7 @@ class GenericTetheredShutter(AbstractShutterPlugin):
         return 0
 
     def shoot(self, bracketNumber):
-        Logger().debug("GenericTetheredShutter.shoot(): bracketNumber:%s" % bracketNumber)
+        Logger().debug("GenericTetheredShutter.shoot(): bracketNumber=%d" % bracketNumber)
         Logger().debug("GenericTetheredShutter.shoot(): execute command '%s'..." % self._config['SHOOT_COMMAND'])
 
         # Launch external command
@@ -125,11 +122,14 @@ class GenericTetheredShutterController(ShutterPluginController):
     def _defineGui(self):
         Logger().trace("GenericTetheredShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', "Mirror lockup command", LineEditField, (), 'MIRROR_LOCKUP_COMMAND')
-        self._addWidget('Main', "Shoot command", LineEditField, (), 'SHOOT_COMMAND')
-        self._addWidget('Main', "Bracketing nb picts", SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
-        self._addWidget('Main', "Bracketing intent", ComboBoxField, (['exposure', 'focus', 'white balance', 'movement'],), 'BRACKETING_INTENT')
+        self._addWidget('Main', QtGui.QApplication.translate("GenericTetheredShutterController", "Mirror lockup"),
+                        CheckBoxField, (), 'MIRROR_LOCKUP')
+        self._addWidget('Main', QtGui.QApplication.translate("GenericTetheredShutterController", "Mirror lockup command"),
+                        LineEditField, (), 'MIRROR_LOCKUP_COMMAND')
+        self._addWidget('Main', QtGui.QApplication.translate("GenericTetheredShutterController", "Shoot command"),
+                        LineEditField, (), 'SHOOT_COMMAND')
+        self._addWidget('Main', QtGui.QApplication.translate("GenericTetheredShutterController", "Bracketing nb picts"),
+                        SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
 
 
 def register():

@@ -55,6 +55,8 @@ __revision__ = "$Id$"
 import time
 import subprocess
 
+from PyQt4 import QtCore, QtGui
+
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
@@ -66,7 +68,6 @@ NAME = "Gphoto"
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
 DEFAULT_BRACKETING_STEP = 1.
-DEFAULT_BRACKETING_INTENT = 'exposure'
 
 GET_CONFIG_COMMAND = "gphoto2 --set-config evstep=1 --set-config capturetarget=0 --get-config exposurebiascompensation"
 #MIRROR_LOCKUP_COMMAND = "gphoto2 --capture-image"
@@ -90,16 +91,12 @@ class GphotoShutter(AbstractShutterPlugin):
     def _getBracketingNbPicts(self):
         return self._config['BRACKETING_NB_PICTS']
 
-    def _getBracketingIntent(self):
-        return self._config['BRACKETING_INTENT']
-
     def _defineConfig(self):
         Logger().debug("GphotoShutter._defineConfig()")
         #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
         self._addConfigKey('_bracketingStep', 'BRACKETING_STEP', default=DEFAULT_BRACKETING_STEP)
-        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
 
     def lockupMirror(self):
         # @todo: implement mirror lockup command
@@ -159,10 +156,12 @@ class GphotoShutter(AbstractShutterPlugin):
 class GphotoShutterController(ShutterPluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', "Bracketing nb picts", SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
-        self._addWidget('Main', "Bracketing step", DoubleSpinBoxField, (0.5, 5., 1, 0.5, "", " ev"), 'BRACKETING_STEP')
-        self._addWidget('Main', "Bracketing intent", ComboBoxField, (['exposure', 'focus', 'white balance', 'movement'],), 'BRACKETING_INTENT')
+        self._addWidget('Main', QtGui.QApplication.translate("GphotoShutterController", "Mirror lockup"),
+                        CheckBoxField, (), 'MIRROR_LOCKUP')
+        self._addWidget('Main', QtGui.QApplication.translate("GphotoShutterController", "Bracketing nb picts"),
+                        SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
+        self._addWidget('Main', QtGui.QApplication.translate("GphotoShutterController", "Bracketing step"),
+                        DoubleSpinBoxField, (0.5, 5., 1, 0.5, "", " ev"), 'BRACKETING_STEP')
 
 
 def register():

@@ -58,6 +58,8 @@ __revision__ = "$Id$"
 import time
 import struct
 
+from PyQt4 import QtCore, QtGui
+
 from papywizard.common import config
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
@@ -79,7 +81,7 @@ DEFAULT_CHANNEL = {'yawAxis': 1,
                    'shutter': 0
                    }
 DEFAULT_SPEED = 30 # deg/s
-DEFAULT_DIRECTION = 'forward'
+DEFAULT_DIRECTION = QtGui.QApplication.translate("PololuServoAxisController", 'forward')
 DEFAULT_ANGLE_1MS = 120. # angle for 1ms, which is 2 servo units (deg)
 DEFAULT_NEUTRAL_POSITION = 3000 # controller value for neutral position
 DEFAULT_VALUE_OFF = 0
@@ -88,10 +90,15 @@ DEFAULT_VALUE_ON = 127
 DIRECTION_INDEX = {'forward': 1,
                    'reverse': -1
                    }
-MANUAL_MANUAL_SPEED_INDEX = {'slow': .5,
-                             'normal': 2.,
-                             'fast': 5.
-                             }
+DIRECTION_TABLE = {'forward': QtGui.QApplication.translate("PololuServoAxisController", 'forward'),
+                   'reverse': QtGui.QApplication.translate("PololuServoAxisController", 'reverse'),
+                   QtGui.QApplication.translate("PololuServoAxisController", 'forward'): 'forward',
+                   QtGui.QApplication.translate("PololuServoAxisController", 'reverse'): 'reverse'
+                   }
+MANUAL_SPEED_TABLE = {'slow': .5,
+                      'normal': 2.,
+                      'fast': 5.
+                      }
 
 
 class PololuServoHardware(AbstractHardwarePlugin):
@@ -402,9 +409,9 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         """
         position = self._position + self._offset
         if dir_ == '+':
-            position += MANUAL_MANUAL_SPEED_INDEX[self._manualSpeed]
+            position += MANUAL_SPEED_TABLE[self._manualSpeed]
         else:
-            position -= MANUAL_MANUAL_SPEED_INDEX[self._manualSpeed]
+            position -= MANUAL_SPEED_TABLE[self._manualSpeed]
 
         # Call self.drive() ???
 
@@ -434,12 +441,18 @@ class PololuServoAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Main', "Speed", SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
-        self._addTab('Servo')
-        self._addWidget('Servo', "Channel", SpinBoxField, (0, 7), 'CHANNEL')
-        self._addWidget('Servo', "Direction", ComboBoxField, (['forward', 'reverse'],), 'DIRECTION')
-        self._addWidget('Servo', "Angle for 1ms", DoubleSpinBoxField, (1., 999., 1, 0.1, "", " deg"), 'ANGLE_1MS')
-        self._addWidget('Servo', "Neutral position", SpinBoxField, (500, 5500), 'NEUTRAL_POSITION')
+        self._addWidget('Main', QtGui.QApplication.translate("PololuServoAxisController", "Speed"),
+                        SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
+        self._addTab('Servo', QtGui.QApplication.translate("PololuServoAxisController", 'Servo'))
+        self._addWidget('Servo', QtGui.QApplication.translate("PololuServoAxisController", "Channel"),
+                        SpinBoxField, (0, 7), 'CHANNEL')
+        directions = [DIRECTION_TABLE['forward'], DIRECTION_TABLE['reverse']]
+        self._addWidget('Servo', QtGui.QApplication.translate("PololuServoAxisController", "Direction"),
+                        ComboBoxField, (directions,), 'DIRECTION')
+        self._addWidget('Servo', QtGui.QApplication.translate("PololuServoAxisController", "Angle for 1ms"),
+                        DoubleSpinBoxField, (1., 999., 1, 0.1, "", " deg"), 'ANGLE_1MS')
+        self._addWidget('Servo', QtGui.QApplication.translate("PololuServoAxisController", "Neutral position"),
+                        SpinBoxField, (500, 5500), 'NEUTRAL_POSITION')
 
 
 class PololuServoShutter(PololuServoHardware, AbstractStandardShutterPlugin):
@@ -495,10 +508,13 @@ class PololuServoShutterController(StandardShutterPluginController, HardwarePlug
         Logger().trace("PololuServoShutterController._defineGui()")
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addTab('Servo')
-        self._addWidget('Servo', "Channel", SpinBoxField, (0, 7), 'CHANNEL')
-        self._addWidget('Servo', "Value off", SpinBoxField, (0, 127), 'VALUE_OFF')
-        self._addWidget('Servo', "Value on", SpinBoxField, (0, 127), 'VALUE_ON')
+        self._addTab('Servo', QtGui.QApplication.translate("PololuServoShutterController", 'Servo'))
+        self._addWidget('Servo', QtGui.QApplication.translate("PololuServoShutterController", "Channel"),
+                        SpinBoxField, (0, 7), 'CHANNEL')
+        self._addWidget('Servo', QtGui.QApplication.translate("PololuServoShutterController", "Value off"),
+                        SpinBoxField, (0, 127), 'VALUE_OFF')
+        self._addWidget('Servo', QtGui.QApplication.translate("PololuServoShutterController", "Value on"),
+                        SpinBoxField, (0, 127), 'VALUE_ON')
 
 
 def register():

@@ -57,7 +57,7 @@ __revision__ = "$Id$"
 import time
 import threading
 
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
@@ -74,7 +74,6 @@ DEFAULT_SPEED = 30 # deg/s
 DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
-DEFAULT_BRACKETING_INTENT = 'exposure'
 MANUAL_MANUAL_SPEED_INDEX = {'slow': .2,
                              'normal': 1.,
                              'fast': 2.
@@ -219,7 +218,8 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
 class SimulationAxisController(AxisPluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
-        self._addWidget('Main', "Speed", SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
+        self._addWidget('Main', QtGui.QApplication.translate("SimulationAxisController", "Speed"),
+                        SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
 
 
 class SimulationShutter(AbstractShutterPlugin):
@@ -237,16 +237,12 @@ class SimulationShutter(AbstractShutterPlugin):
     def _getBracketingNbPicts(self):
         return self._config['BRACKETING_NB_PICTS']
 
-    def _getBracketingIntent(self):
-        return self._config['BRACKETING_INTENT']
-
     def _defineConfig(self):
         Logger().trace("AbstractShutterPlugin._defineConfig()")
         #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
-        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
 
     def lockupMirror(self):
         """ Lockup the mirror.
@@ -267,10 +263,12 @@ class SimulationShutterController(ShutterPluginController):
     def _defineGui(self):
         Logger().trace("SimulationShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', "Time value", DoubleSpinBoxField, (0.1, 3600, 1, 0.1, "", " s"), 'TIME_VALUE')
-        self._addWidget('Main', "Mirror lockup", CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', "Bracketing nb picts", SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
-        self._addWidget('Main', "Bracketing intent", ComboBoxField, (['exposure', 'focus', 'white balance', 'movement'],), 'BRACKETING_INTENT')
+        self._addWidget('Main', QtGui.QApplication.translate("SimulationShutterController", "Time value"),
+                        DoubleSpinBoxField, (0.1, 3600, 1, 0.1, "", " s"), 'TIME_VALUE')
+        self._addWidget('Main', QtGui.QApplication.translate("SimulationShutterController", "Mirror lockup"),
+                        CheckBoxField, (), 'MIRROR_LOCKUP')
+        self._addWidget('Main', QtGui.QApplication.translate("SimulationShutterController", "Bracketing nb picts"),
+                        SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
 
 
 def register():

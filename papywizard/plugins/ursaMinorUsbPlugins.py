@@ -54,6 +54,8 @@ __revision__ = "$Id$"
 
 import time
 
+from PyQt4 import QtCore, QtGui
+
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
@@ -112,8 +114,10 @@ class UrsaMinorUsbShutterController(StandardShutterPluginController, HardwarePlu
         Logger().trace("UrsaMinorUsbShutterController._defineGui()")
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Hard', "Trigger line", ComboBoxField, (['RTS', 'DTR'],), 'TRIGGER_LINE')
-        self._addWidget('Hard', "Line inverted", CheckBoxField, (), 'TRIGGER_LINE_INVERTED')
+        self._addWidget('Hard', QtGui.QApplication.translate("UrsaMinorUsbShutterController", "Trigger line"),
+                        ComboBoxField, (['RTS', 'DTR'],), 'TRIGGER_LINE')
+        self._addWidget('Hard', QtGui.QApplication.translate("UrsaMinorUsbShutterController", "Line inverted"),
+                        CheckBoxField, (), 'TRIGGER_LINE_INVERTED')
 
 
 def register():

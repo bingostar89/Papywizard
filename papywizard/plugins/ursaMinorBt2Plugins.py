@@ -54,6 +54,8 @@ __revision__ = "$Id$"
 
 import time
 
+from PyQt4 import QtCore, QtGui
+
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
@@ -65,9 +67,9 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 NAME = "Ursa Minor BT2"
 
-DEFAULT_FOCUS = False
-DEFAULT_FOCUS_PULSE = 0.5  # (s)
-DEFAULT_MAINTAIN_FOCUS = False
+DEFAULT_FOCUS_ENABLE = False
+DEFAULT_FOCUS_PULSE_WIDTH = 0.5  # (s)
+DEFAULT_FOCUS_MAINTAIN = False
 
 
 class UrsaMinorBt2ShutterHardware(AbstractHardwarePlugin):
@@ -125,9 +127,9 @@ class UrsaMinorBt2Shutter(UrsaMinorBt2ShutterHardware, AbstractStandardShutterPl
         Logger().trace("UrsaMinorBt2Shutter._defineConfig()")
         AbstractHardwarePlugin._defineConfig(self)
         AbstractStandardShutterPlugin._defineConfig(self)
-        self._addConfigKey('_focus', 'FOCUS', default=DEFAULT_FOCUS)
-        self._addConfigKey('_focusPulse', 'FOCUS_PULSE', default=DEFAULT_FOCUS_PULSE)
-        self._addConfigKey('_maintainFocus', 'MAINTAIN_FOCUS', default=DEFAULT_MAINTAIN_FOCUS)
+        self._addConfigKey('_focus', 'FOCUS_ENABLE', default=DEFAULT_FOCUS_ENABLE)
+        self._addConfigKey('_focusPulse', 'FOCUS_PULSE_WIDTH', default=DEFAULT_FOCUS_PULSE_WIDTH)
+        self._addConfigKey('_maintainFocus', 'FOCUS_MAINTAIN', default=DEFAULT_FOCUS_MAINTAIN)
 
     def _triggerOnShutter(self):
         """ Set the shutter on.
@@ -149,9 +151,13 @@ class UrsaMinorBt2ShutterController(StandardShutterPluginController, HardwarePlu
         Logger().trace("UrsaMinorBt2ShutterController._defineGui()")
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Hard', "Focus", CheckBoxField, (), 'FOCUS')
-        self._addWidget('Hard', "Focus pulse", DoubleSpinBoxField, (0.1, 5., 1, 0.1, "", " s"), 'FOCUS_PULSE')
-        self._addWidget('Hard', "Maintain focus", CheckBoxField, (), 'MAINTAIN_FOCUS')
+        self._addTab('Focus', QtGui.QApplication.translate("UrsaMinorBt2ShutterController", 'Focus'))
+        self._addWidget('Focus', QtGui.QApplication.translate("UrsaMinorBt2ShutterController", "Enable"),
+                        CheckBoxField, (), 'FOCUS_ENABLE')
+        self._addWidget('Focus', QtGui.QApplication.translate("UrsaMinorBt2ShutterController", "Pulse width"),
+                        DoubleSpinBoxField, (0.1, 5., 1, 0.1, "", " s"), 'FOCUS_PULSE_WIDTH')
+        self._addWidget('Focus', QtGui.QApplication.translate("UrsaMinorBt2ShutterController", "Maintain focus"),
+                        CheckBoxField, (), 'FOCUS_MAINTAIN')
 
 
 def register():

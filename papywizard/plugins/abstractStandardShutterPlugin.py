@@ -59,7 +59,6 @@ from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
-DEFAULT_BRACKETING_INTENT = 'exposure'
 DEFAULT_PULSE_WIDTH_HIGH = 200 # ms
 DEFAULT_PULSE_WIDTH_LOW = 200 # ms
 
@@ -79,15 +78,11 @@ class  AbstractStandardShutterPlugin(AbstractShutterPlugin):
     def _getBracketingNbPicts(self):
         return self._config["BRACKETING_NB_PICTS"]
 
-    def _getBracketingIntent(self):
-        return self._config["BRACKETING_INTENT"]
-
     def _defineConfig(self):
         Logger().trace("AbstractStandardShutterPlugin._defineConfig()")
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
-        self._addConfigKey('_bracketingIntent', 'BRACKETING_INTENT', default=DEFAULT_BRACKETING_INTENT)
         self._addConfigKey('_pulseWidthHigh', 'PULSE_WIDTH_HIGH', default=DEFAULT_PULSE_WIDTH_HIGH)
         self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=DEFAULT_PULSE_WIDTH_LOW)
 

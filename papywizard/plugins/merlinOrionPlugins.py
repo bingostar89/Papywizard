@@ -60,7 +60,7 @@ import time
 import sys
 import threading
 
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
 from papywizard.common.exception import HardwareError
@@ -89,11 +89,11 @@ AXIS_TABLE = {'yawAxis': 1,
               'pitchAxis': 2,
               'shutter': 1
               }
-SPEED_INDEX = {'slow': 170,  # "AA0000"  / 5
-               'alternate': 80, # "500000"
-               'normal': 34, # "220000" nominal
-               'fast': 17   # "110000"  * 2
-               }
+MANUAL_SPEED_TABLE = {'slow': 170,  # "AA0000"  / 5
+                      'alternate': 80, # "500000"
+                      'normal': 34, # "220000" nominal
+                      'fast': 17   # "110000"  * 2
+                      }
 
 
 class MerlinOrionHardware(AbstractHardwarePlugin):
@@ -246,7 +246,7 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
             self._sendCmd("L")
             self._sendCmd("G", "00")
             self._sendCmd("S", strValue)
-            #self._sendCmd("I", self._encodeAxisValue(SPEED_INDEX[self._manualSpeed]))
+            #self._sendCmd("I", self._encodeAxisValue(MANUAL_SPEED_TABLE[self._manualSpeed]))
             self._sendCmd("J")
         finally:
             self._driver.releaseBus()
@@ -429,7 +429,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
 
         # Alternate speed move
         Logger().debug("MerlinOrionAxis._alternateDrive(): alternate speed move")
-        self._startJog(dir_, SPEED_INDEX['alternate'])
+        self._startJog(dir_, MANUAL_SPEED_TABLE['alternate'])
 
         # Check when stop
         while abs(pos - self.read()) > self._config['INERTIA_ANGLE']: # adjust inertia while moving?
@@ -452,7 +452,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
         self.waitStop()
 
     def startJog(self, dir_):
-        self._startJog(dir_, SPEED_INDEX[self._manualSpeed])
+        self._startJog(dir_, MANUAL_SPEED_TABLE[self._manualSpeed])
 
     def stop(self):
         self.__driveFlag = False
@@ -480,11 +480,15 @@ class MerlinOrionAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addTab('Hard')
-        self._addWidget('Hard', "Alternate drive", CheckBoxField, (), 'ALTERNATE_DRIVE')
-        self._addWidget('Hard', "Inertia angle", DoubleSpinBoxField, (0.1, 9.9, 1, .1, "", " deg"), 'INERTIA_ANGLE')
-        #self._addWidget('Hard', "Alternate full circle", CheckBoxField, (), 'ALTERNATE_FULL_CIRCLE')
-        #self._addWidget('Hard', "Encoder full circle", SpinBoxField, (0x080000, 0x380000, "", " units/turn"), 'ENCODER_FULL_CIRCLE')
+        self._addTab('Hard', QtGui.QApplication.translate("MerlinOrionAxisController", 'Hard'))
+        self._addWidget('Hard', QtGui.QApplication.translate("MerlinOrionAxisController", "Alternate drive"),
+                        CheckBoxField, (), 'ALTERNATE_DRIVE')
+        self._addWidget('Hard', QtGui.QApplication.translate("MerlinOrionAxisController", "Inertia angle"),
+                        DoubleSpinBoxField, (0.1, 9.9, 1, .1, "", " deg"), 'INERTIA_ANGLE')
+        #self._addWidget('Hard', QtGui.QApplication.translate("MerlinOrionAxisController", "Alternate full circle"),
+                        #CheckBoxField, (), 'ALTERNATE_FULL_CIRCLE')
+        #self._addWidget('Hard', QtGui.QApplication.translate("MerlinOrionAxisController", "Encoder full circle"),
+                        #SpinBoxField, (0x080000, 0x380000, "", " units/turn"), 'ENCODER_FULL_CIRCLE')
 
 
 class MerlinOrionShutter(MerlinOrionHardware, AbstractStandardShutterPlugin):
