@@ -12,8 +12,7 @@ FORMS += papywizard/view/ui/bluetoothChooserDialog.ui \
          papywizard/view/ui/pluginsConfigDialog.ui \
          papywizard/view/ui/pluginsDialog.ui \
          papywizard/view/ui/shootDialog.ui \
-         papywizard/view/ui/totalFovDialog.ui \
-         papywizard/view/ui/wizardDialog.ui
+         papywizard/view/ui/totalFovDialog.ui
 
 # common
 SOURCES += papywizard/common/bluetoothTransport.py \
