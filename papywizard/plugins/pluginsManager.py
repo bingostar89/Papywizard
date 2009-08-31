@@ -141,10 +141,11 @@ class PluginsManagerObject(QtCore.QObject):
         for plugin in self.__plugins:
             if plugin[0].capacity == capacity:
                 plugins.append(plugin)
+        plugins.sort()
         return plugins
 
     def get(self, capacity, name):
-        """ Return the plugin 
+        """ Return the plugin
         """
         for model, controllerClass in self.getList(capacity):
             if model.capacity == capacity and model.name == name:
