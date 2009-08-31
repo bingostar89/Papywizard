@@ -111,7 +111,7 @@ class PluginsController(AbstractModalDialogController):
             previousPlugin.deactivate()
             newPlugin.activate()
         if hasattr(newPlugin, '_driver'):
-            newPlugin._config['DRIVER_TYPE'] = self._view.yawAxisDriverComboBox.currentText()
+            newPlugin._config['DRIVER_TYPE'] = unicode(self._view.yawAxisDriverComboBox.currentText())
         # todo: set config in a callback
         newPlugin._saveConfig()
 
@@ -124,7 +124,7 @@ class PluginsController(AbstractModalDialogController):
             previousPlugin.deactivate()
             newPlugin.activate()
         if hasattr(newPlugin, '_driver'):
-            newPlugin._config['DRIVER_TYPE'] = self._view.pitchAxisDriverComboBox.currentText()
+            newPlugin._config['DRIVER_TYPE'] = unicode(self._view.pitchAxisDriverComboBox.currentText())
         # todo: set config in a callback
         newPlugin._saveConfig()
 
@@ -137,7 +137,7 @@ class PluginsController(AbstractModalDialogController):
             previousPlugin.deactivate()
             newPlugin.activate()
         if hasattr(newPlugin, '_driver'):
-            newPlugin._config['DRIVER_TYPE'] = self._view.shutterDriverComboBox.currentText()
+            newPlugin._config['DRIVER_TYPE'] = unicode(self._view.shutterDriverComboBox.currentText())
         # todo: set config in a callback
         newPlugin._saveConfig()
 
