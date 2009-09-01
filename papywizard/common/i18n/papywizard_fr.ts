@@ -656,7 +656,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="646"/>
         <source>Nb Picts</source>
-        <translation>Nb photos</translation>
+        <translation>Nb Photos</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="703"/>
@@ -751,7 +751,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1236"/>
         <source>Clear Limits</source>
-        <translation>Effacer les limites</translation>
+        <translation>Effacer Limites</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1245"/>
@@ -1097,7 +1097,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="153"/>
         <source>Focus</source>
-        <translation type="unfinished">MaP</translation>
+        <translation>MaP</translation>
     </message>
     <message>
         <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="158"/>
@@ -1439,7 +1439,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="292"/>
         <source>Lens (type, focal)</source>
-        <translation>Objectif (type, foccale)</translation>
+        <translation>Objectif (type, focale)</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="659"/>
