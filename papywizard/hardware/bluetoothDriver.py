@@ -56,8 +56,8 @@ import time
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
-from papywizard.common.bluetoothTransport import BluetoothSocket, BluetoothError, RFCOMM
 from papywizard.common.exception import HardwareError
+from papywizard.hardware.bluetoothTransport import BluetoothSocket, BluetoothError, RFCOMM
 from papywizard.hardware.abstractDriver import AbstractDriver
 
 
