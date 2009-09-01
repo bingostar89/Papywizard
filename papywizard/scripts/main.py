@@ -215,8 +215,8 @@ def main():
             from papywizard.view.messageDialog import InfoMessageDialog
             #dialog = WarningMessageDialog(QtCore.QObject().tr("Configuration"),
                                           #QtCore.QObject().tr("Papywizard needs to be configured"))
-            dialog = InfoMessageDialog(QtGui.QApplication.translate("", "Plugins selection"),
-                                       QtGui.QApplication.translate("", "Before you can use Papywizard, you must choose what " \
+            dialog = InfoMessageDialog(QtGui.QApplication.translate("main", "Plugins selection"),
+                                       QtGui.QApplication.translate("main", "Before you can use Papywizard, you must choose what " \
                                                                     "plugins to use to control your hardware.\n\n" \
                                                                     "After closing this dialog, you will be prompt to select " \
                                                                     "these plugins. Once it is done, you can configure them "
