@@ -42,9 +42,9 @@ Data management
 Implements
 ==========
 
-- Data
-- MosaicData
-- Presetdata
+ - Data
+ - MosaicData
+ - Presetdata
 
 Usage
 =====

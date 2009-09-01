@@ -39,6 +39,11 @@ Module purpose
 
 View.
 
+Implements
+==========
+
+ - LogBuffer
+
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
 @license: CeCILL
