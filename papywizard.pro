@@ -15,15 +15,13 @@ FORMS += papywizard/view/ui/bluetoothChooserDialog.ui \
          papywizard/view/ui/totalFovDialog.ui
 
 # common
-SOURCES += papywizard/common/bluetoothTransport.py \
-           papywizard/common/configManager.py \
+SOURCES += papywizard/common/configManager.py \
            papywizard/common/config.py \
            papywizard/common/exception.py \
            papywizard/common/helpers.py \
            papywizard/common/loggingFormatter.py \
            papywizard/common/loggingServices.py \
            papywizard/common/orderedDict.py \
-           papywizard/common/orderedSet.py \
            papywizard/common/presetManager.py \
            papywizard/common/publisher.py \
            papywizard/common/qLoggingFormatter.py \
@@ -46,6 +44,7 @@ SOURCES += papywizard/controller/abstractController.py \
 # hardware
 SOURCES += papywizard/hardware/abstractDriver.py \
            papywizard/hardware/bluetoothDriver.py \
+           papywizard/hardware/bluetoothTransport.py \
            papywizard/hardware/driverFactory.py \
            papywizard/hardware/ethernetDriver.py \
            papywizard/hardware/serialDriver.py \
