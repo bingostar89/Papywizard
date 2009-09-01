@@ -76,7 +76,7 @@ class ConfigManagerObject(QtCore.QObject):
         """ Init the object.
         """
         self.__config = None
-        self.__action = 'none'
+        self.__install = False
         self.__saved = False
 
     def load(self):
@@ -93,34 +93,20 @@ class ConfigManagerObject(QtCore.QObject):
         distConfigVersion = config.VERSION.split('.')
         userConfig = QtCore.QSettings(config.USER_CONFIG_FILE, QtCore.QSettings.IniFormat)
         if not userConfig.contains('CONFIG_VERSION'):
-            self.__action = 'install'
+            self.__install = True
         else:
             userConfigVersion = unicode(userConfig.value('CONFIG_VERSION').toString()).split('.')
             Logger().debug("ConfigManager.__init__(): versions: dist=%s, user=%s" % (distConfigVersion, userConfigVersion))
 
             # Old versioning system
             if len(userConfigVersion) < 2:
-                self.__action = 'overwrite'
+                self.__install = True
 
             # Versions differ
             elif distConfigVersion != userConfigVersion:
+                self.__install = True
 
-                # Dev. version over any version
-                if isOdd(int(distConfigVersion[1])):
-                    self.__action = 'overwrite'
-
-                # Stable version...
-                elif not isOdd(int(distConfigVersion[1])):
-
-                    # ...over dev. version
-                    if isOdd(int(userConfigVersion[1])):
-                        self.__action = 'overwrite'
-
-                    # ...over stable version
-                    else:
-                        self.__action = 'update'
-
-        if self.__action == 'install':
+        if self.__install:
             Logger().debug("ConfigManager.__init__(): install user config.")
             shutil.copy(distConfigFile, config.USER_CONFIG_FILE)
 
@@ -130,37 +116,7 @@ class ConfigManagerObject(QtCore.QObject):
             # Write user config.
             userConfig.sync()
 
-        elif self.__action == 'overwrite':
-            Logger().debug("ConfigManager.__init__(): overwrite user config.")
-            shutil.copy(distConfigFile, config.USER_CONFIG_FILE)
-
-            # Set config. version
-            userConfig.setValue('CONFIG_VERSION', QtCore.QVariant("%s" % '.'.join(distConfigVersion)))
-
-            # Write user config.
-            userConfig.sync()
-
-        elif self.__action == 'update':
-            Logger().debug("ConfigManager.__init__(): update user config.")
-            keys = sets.Set(userConfig.allKeys())
-            keys.update(distConfig.allKeys())
-            for key in keys:
-                if distConfig.contains(key):
-                    if not userConfig.contains(key):
-                        value = distConfig.value(key)
-                        userConfig.setValue(key, value)
-                        Logger().debug("ConfigManager.__init__(): added %s key with %s" % (key, value.toString()))
-                else:
-                    userConfig.remove(key)
-                    Logger().debug("ConfigManager.__init__(): removed %s key" % key)
-
-            # Set config. version
-            userConfig.setValue('CONFIG_VERSION', QtCore.QVariant("%s" % '.'.join(distConfigVersion)))
-
-            # Write user config.
-            userConfig.sync()
-
-        elif self.__action == 'none':
+        else:
             Logger().debug("ConfigManager.__init__(): user config. is up-to-date")
 
         self.__config = userConfig
@@ -178,10 +134,10 @@ class ConfigManagerObject(QtCore.QObject):
     def isConfigured(self):
         """ Check if configuration has been set by user.
         """
-        if self.__saved or self.__action in ('none', 'update'):
-            return True
-        else:
+        if self.__install and not self.__saved:
             return False
+        else:
+            return True
 
     def contains(self, key):
         """ Check if the config contains the given section/option.
