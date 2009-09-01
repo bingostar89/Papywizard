@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="de">
-<context>
-    <name></name>
-    <message>
-        <location filename="papywizard/scripts/main.py" line="217"/>
-        <source>Plugins selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="papywizard/scripts/main.py" line="222"/>
-        <source>Before you can use Papywizard, you must choose what plugins to use to control your hardware.
-
-After closing this dialog, you will be prompt to select these plugins. Once it is done, you can configure them in the global Configuration dialog</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
+<!DOCTYPE TS>
+<TS version="2.0" language="de">
 <context>
     <name>AbortMessageDialog</name>
     <message>
@@ -87,121 +73,6 @@ After closing this dialog, you will be prompt to select these plugins. Once it i
         <translation>Erstellt von Papywizard %(version)s</translation>
     </message>
 </context>
-<context encoding="UTF-8">
-    <name>Dialog</name>
-    <message>
-        <location filename="papywizard/view/ui/bluetoothChooserDialog.ui" line="14"/>
-        <source>Bluetooth chooser</source>
-        <translation type="unfinished">Bluetooth Auswahl</translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/totalFovDialog.ui" line="69"/>
-        <source> °</source>
-        <translation type="unfinished"> °</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="14"/>
-        <source>About Papywizard</source>
-        <translation type="unfinished">Über Papywizard</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="31"/>
-        <source>General</source>
-        <translation type="unfinished">Allgemein</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="72"/>
-        <source>Papywizard x.x.x</source>
-        <translation type="unfinished">Papywizard x.x.x</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="84"/>
-        <source>Papywizard is a panohead control software, mainly developped for the Merlin/Orion astronomic mount but usable for other panoheads.</source>
-        <translation type="unfinished">Papywizard ist eine Panoramakopf-kontrollsoftware, entwickelt für den Merlin/Orion-Astronomie-Kopfaber auch für andere.</translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="108"/>
-        <source>© 2007-2009 Frédéric Mantegazza</source>
-        <translation type="unfinished">© 2007-2009 Frédéric Mantegazza</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="146"/>
-        <source>Credits</source>
-        <translation type="unfinished">Mitarbeit</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="188"/>
-        <source>License</source>
-        <translation type="unfinished">Lizenz</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="194"/>
-        <source>This software is governed by the CeCILL license under French law and abiding by the rules of distribution of free software. You can  use, modify and/or redistribute the software under the terms of the CeCILL license as circulated by CEA, CNRS and INRIA at the following URL http://www.cecill.info.
-
-As a counterpart to the access to the source code and  rights to copy, modify and redistribute granted by the license, users are provided only with a limited warranty  and the software&apos;s author,  the holder of the economic rights,  and the successive licensors  have only  limited liability.
-
-In this respect, the user&apos;s attention is drawn to the risks associated with loading,  using,  modifying and/or developing or reproducing the software by the user in light of its specific status of free software, that may mean  that it is complicated to manipulate,  and  that  also therefore means  that it is reserved for developers  and  experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the software&apos;s suitability as regards their requirements in conditions enabling the security of their systems and/or data to be ensured and,  more generally, to use and operate it in the same conditions as regards security.
-
-The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</source>
-        <translation type="unfinished">This software is governed by the CeCILL license under French law and abiding by the rules of distribution of free software. You can  use, modify and/or redistribute the software under the terms of the CeCILL license as circulated by CEA, CNRS and INRIA at the following URL http://www.cecill.info.￼
-
-As a counterpart to the access to the source code and  rights to copy, modify and redistribute granted by the license, users are provided only with a limited warranty  and the software&apos;s author,  the holder of the economic rights,  and the successive licensors  have only  limited liability.￼
-
-￼In this respect, the user&apos;s attention is drawn to the risks associated with loading,  using,  modifying and/or developing or reproducing the software by the user in light of its specific status of free software, that may mean  that it is complicated to manipulate,  and  that  also therefore means  that it is reserved for developers  and  experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the software&apos;s suitability as regards their requirements in conditions enabling the security of their systems and/or data to be ensured and,  more generally, to use and operate it in the same conditions as regards security.￼
-
-￼The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/totalFovDialog.ui" line="49"/>
-        <source>Total Fov</source>
-        <translation type="unfinished">Gesamt- FOV</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/totalFovDialog.ui" line="29"/>
-        <source>Yaw</source>
-        <translation type="unfinished">Drehung</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/totalFovDialog.ui" line="39"/>
-        <source>Pitch</source>
-        <translation type="unfinished">Neigung</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="130"/>
-        <source>http://www.papywizard.org</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="155"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Written by:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (main core)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jones Henry Subbiah (EOS Utility plugin)&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Translated by:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (fr)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jo Lutum (de)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Maciej Dworak (pl)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Antonio Bruno (it)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Juan Carlos Andres (es)&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Graphics by:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hubert Pawlowski&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Packaged by:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (linux, windows, maemo)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jeremy Pronk (MacOS)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
 <context>
     <name>EOSUtilityShutterController</name>
     <message>
@@ -272,7 +143,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/plugins/eosUtilityPlugins.py" line="227"/>
         <source>Enable</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktivieren</translation>
     </message>
     <message>
         <location filename="papywizard/plugins/eosUtilityPlugins.py" line="223"/>
@@ -287,7 +158,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/plugins/eosUtilityPlugins.py" line="235"/>
         <source>Step</source>
-        <translation type="unfinished">Schritt</translation>
+        <translation>Schritt</translation>
     </message>
     <message>
         <location filename="papywizard/plugins/eosUtilityPlugins.py" line="241"/>
@@ -331,7 +202,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/plugins/genericTetheredPlugins.py" line="124"/>
         <source>Mirror lockup</source>
-        <translation type="unfinished">Spiegelverriegelung</translation>
+        <translation>Spiegelverriegelung</translation>
     </message>
     <message>
         <location filename="papywizard/plugins/genericTetheredPlugins.py" line="126"/>
@@ -354,7 +225,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/plugins/gphotoPlugins.py" line="158"/>
         <source>Mirror lockup</source>
-        <translation type="unfinished">Spiegelverriegelung</translation>
+        <translation>Spiegelverriegelung</translation>
     </message>
     <message>
         <location filename="papywizard/plugins/gphotoPlugins.py" line="160"/>
@@ -588,192 +459,182 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="23"/>
         <source>Papywizard</source>
-        <translation type="unfinished">Papywizard</translation>
+        <translation>Papywizard</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="438"/>
         <source>Mosaic</source>
-        <translation type="unfinished">Raster</translation>
+        <translation>Raster</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1004"/>
         <source>Yaw</source>
-        <translation type="unfinished">Drehung</translation>
+        <translation>Drehung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1009"/>
         <source>Pitch</source>
-        <translation type="unfinished">Neigung</translation>
+        <translation>Neigung</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="484"/>
         <source>Start (°)</source>
-        <translation type="unfinished">Start (°)</translation>
+        <translation>Start (°)</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="813"/>
         <source>--</source>
-        <translation type="unfinished">--</translation>
+        <translation>--</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="538"/>
         <source>End (°)</source>
-        <translation type="unfinished">Ende (°)</translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/mainWindow.ui" line="589"/>
-        <source>Total Fov (°)</source>
-        <translation type="unfinished">Gesamt- FOV (°)</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="646"/>
-        <source>Nb Picts</source>
-        <translation type="unfinished">Anz. Aufnahmen</translation>
+        <translation>Ende (°)</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="703"/>
         <source>Real overlap (%)</source>
-        <translation type="unfinished">Überlappung (%)</translation>
+        <translation>Überlappung (%)</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="766"/>
         <source>Resolution (px)</source>
-        <translation type="unfinished">Auflösung (pixel)</translation>
+        <translation>Auflösung (pixel)</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="830"/>
         <source>Preset</source>
-        <translation type="unfinished">Vorlage</translation>
+        <translation>Vorlage</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="849"/>
         <source>Name</source>
-        <translation type="unfinished">Name</translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="893"/>
         <source>Be sure that the preset used is compatible with your camera and lens size (collision).</source>
-        <translation type="unfinished">Sicherstellen dass Voreinstellung kompatibel mit Kamera und Objektiv ist (Kollision mit Merlin).</translation>
+        <translation>Sicherstellen dass Voreinstellung kompatibel mit Kamera und Objektiv ist (Kollision mit Merlin).</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="919"/>
         <source>Timelapse</source>
-        <translation type="unfinished">Zeitraffer</translation>
+        <translation>Zeitraffer</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="60"/>
         <source>Move</source>
-        <translation type="unfinished">Move</translation>
+        <translation>Move</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="312"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="348"/>
         <source>Configure...</source>
-        <translation type="unfinished">Einstellungen...</translation>
+        <translation>Einstellungen...</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="371"/>
         <source>Shoot...</source>
-        <translation type="unfinished">Aufnahme...</translation>
+        <translation>Aufnahme...</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1151"/>
         <source>File</source>
-        <translation type="unfinished">Datei</translation>
+        <translation>Datei</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1160"/>
         <source>Hardware</source>
-        <translation type="unfinished">Hardware</translation>
+        <translation>Hardware</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1164"/>
         <source>Set Limit</source>
-        <translation type="unfinished">Limit setzen</translation>
+        <translation>Limit setzen</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1183"/>
         <source>Help</source>
-        <translation type="unfinished">Hilfe</translation>
+        <translation>Hilfe</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1207"/>
         <source>Quit</source>
-        <translation type="unfinished">Quit</translation>
+        <translation>Quit</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1210"/>
         <source>Ctrl+Q</source>
-        <translation type="unfinished">Ctrl+Q</translation>
+        <translation>Ctrl+Q</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1219"/>
         <source>Import Preset File...</source>
-        <translation type="unfinished">Import Datei Voreinstellungen...</translation>
+        <translation>Import Datei Voreinstellungen...</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1227"/>
         <source>Connect...</source>
-        <translation type="unfinished">Verbinden...</translation>
+        <translation>Verbinden...</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1236"/>
         <source>Clear Limits</source>
-        <translation type="unfinished">Limits löschen</translation>
+        <translation>Limits löschen</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1245"/>
         <source>Yaw -</source>
-        <translation type="unfinished">Drehung -</translation>
+        <translation>Drehung -</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1254"/>
         <source>Yaw +</source>
-        <translation type="unfinished">Drehung +</translation>
+        <translation>Drehung +</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1263"/>
         <source>Pitch +</source>
-        <translation type="unfinished">Neigung +</translation>
+        <translation>Neigung +</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1272"/>
         <source>Pitch -</source>
-        <translation type="unfinished">Neigung -</translation>
+        <translation>Neigung -</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1281"/>
         <source>Manual</source>
-        <translation type="unfinished">Anleitung</translation>
+        <translation>Anleitung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1290"/>
         <source>View Log...</source>
-        <translation type="unfinished">Log anzeigen...</translation>
+        <translation>Log anzeigen...</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1299"/>
         <source>About Papywizard</source>
-        <translation type="unfinished">Über Papywizard</translation>
+        <translation>Über Papywizard</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1308"/>
         <source>About Qt</source>
-        <translation type="unfinished">Über Qt</translation>
+        <translation>Über Qt</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1317"/>
         <source>Load Style Sheet...</source>
-        <translation type="unfinished">Lade Style Sheet</translation>
+        <translation>Lade Style Sheet...</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1335"/>
         <source>Goto Initial...</source>
-        <translation type="unfinished">Gehe zur Ausgangsposition...</translation>
+        <translation>Gehe zur Ausgangsposition...</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1326"/>
@@ -803,6 +664,16 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1344"/>
         <source>Plugins...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message utf8="true">
+        <location filename="papywizard/view/ui/mainWindow.ui" line="589"/>
+        <source>Total fov (°)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="646"/>
+        <source>Nb picts</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -847,7 +718,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/controller/pluginsController.py" line="203"/>
         <source>Can&apos;t scan bluetooth</source>
-        <translation type="unfinished">Bluetooth nicht erkannt</translation>
+        <translation>Bluetooth nicht erkannt</translation>
     </message>
 </context>
 <context>
@@ -982,12 +853,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>Shooting</name>
     <message>
-        <location filename="papywizard/model/shooting.py" line="522"/>
+        <location filename="papywizard/model/shooting.py" line="521"/>
         <source>Shutter failed while mirror locking up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/model/shooting.py" line="537"/>
+        <location filename="papywizard/model/shooting.py" line="536"/>
         <source>Shutter failed while shooting</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1010,7 +881,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/plugins/simulationPlugins.py" line="267"/>
         <source>Mirror lockup</source>
-        <translation type="unfinished">Spiegelverriegelung</translation>
+        <translation>Spiegelverriegelung</translation>
     </message>
     <message>
         <location filename="papywizard/plugins/simulationPlugins.py" line="269"/>
@@ -1028,7 +899,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/plugins/standardShutterPluginController.py" line="65"/>
         <source>Mirror lockup</source>
-        <translation type="unfinished">Spiegelverriegelung</translation>
+        <translation>Spiegelverriegelung</translation>
     </message>
     <message>
         <location filename="papywizard/plugins/standardShutterPluginController.py" line="67"/>
@@ -1079,7 +950,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="154"/>
         <source>Enable</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aktivieren</translation>
     </message>
     <message>
         <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="156"/>
@@ -1117,296 +988,304 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>bluetoothChooserDialog</name>
+    <message>
+        <location filename="papywizard/view/ui/bluetoothChooserDialog.ui" line="14"/>
+        <source>Bluetooth Chooser</source>
+        <translation>Bluetooth Auswahl</translation>
+    </message>
+</context>
+<context>
     <name>configDialog</name>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="17"/>
         <source>Configuration</source>
-        <translation type="unfinished">Konfiguration</translation>
+        <translation>Konfiguration</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="37"/>
         <source>Shooting</source>
-        <translation type="unfinished">Aufnahme</translation>
+        <translation>Aufnahme</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="45"/>
         <source>Head orientation</source>
-        <translation type="unfinished">Geräte-Ausrichtung</translation>
+        <translation>Geräte-Ausrichtung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="62"/>
         <source>up</source>
-        <translation type="unfinished">hoch</translation>
+        <translation>hoch</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="67"/>
         <source>left</source>
-        <translation type="unfinished">links</translation>
+        <translation>links</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="72"/>
         <source>right</source>
-        <translation type="unfinished">rechts</translation>
+        <translation>rechts</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="77"/>
         <source>down</source>
-        <translation type="unfinished">runter</translation>
+        <translation>runter</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="85"/>
         <source>Camera orientation</source>
-        <translation type="unfinished">Ausrichtung der Kamera</translation>
+        <translation>Ausrichtung der Kamera</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="102"/>
         <source>portrait</source>
-        <translation type="unfinished">Hoch</translation>
+        <translation>Hoch</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="107"/>
         <source>landscape</source>
-        <translation type="unfinished">Quer</translation>
+        <translation>Quer</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="112"/>
         <source>custom</source>
-        <translation type="unfinished">Eigene</translation>
+        <translation>Eigene</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/configDialog.ui" line="123"/>
         <source> °</source>
-        <translation type="unfinished"> °</translation>
+        <translation> °</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="139"/>
         <source>Stabilization delay</source>
-        <translation type="unfinished">Stab. Pause</translation>
+        <translation>Stab. Pause</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="152"/>
         <source> s</source>
-        <translation type="unfinished"> s</translation>
+        <translation> s</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="174"/>
         <source>Mosaic</source>
-        <translation type="unfinished">Raster</translation>
+        <translation>Raster</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="182"/>
         <source>Overlap</source>
-        <translation type="unfinished">Überlappung</translation>
+        <translation>Überlappung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="195"/>
         <source> %</source>
-        <translation type="unfinished"> %</translation>
+        <translation> %</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="214"/>
         <source>Start from</source>
-        <translation type="unfinished">Start bei</translation>
+        <translation>Start bei</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="231"/>
         <source>start</source>
-        <translation type="unfinished">Start</translation>
+        <translation>Start</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="236"/>
         <source>end</source>
-        <translation type="unfinished">ende</translation>
+        <translation>ende</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="244"/>
         <source>Initial direction</source>
-        <translation type="unfinished">Anfangsrichtung</translation>
+        <translation>Anfangsrichtung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="261"/>
         <source>yaw</source>
-        <translation type="unfinished">drehung</translation>
+        <translation>drehung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="266"/>
         <source>pitch</source>
-        <translation type="unfinished">neigung</translation>
+        <translation>neigung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="274"/>
         <source>CR</source>
-        <translation type="unfinished">CR</translation>
+        <translation>CR</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="448"/>
         <source> x</source>
-        <translation type="unfinished"> x</translation>
+        <translation> x</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="387"/>
         <source>3:2</source>
-        <translation type="unfinished">3:2</translation>
+        <translation>3:2</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="392"/>
         <source>4:3</source>
-        <translation type="unfinished">4:3</translation>
+        <translation>4:3</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="397"/>
         <source>5:4</source>
-        <translation type="unfinished">5:4</translation>
+        <translation>5:4</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="402"/>
         <source>16:9</source>
-        <translation type="unfinished">16:9</translation>
+        <translation>16:9</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="410"/>
         <source> Mpx</source>
-        <translation type="unfinished"> Mpx</translation>
+        <translation> Mpx</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="309"/>
         <source>rectilinear</source>
-        <translation type="unfinished">rechtwinklig</translation>
+        <translation>rechtwinklig</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="314"/>
         <source>fisheye</source>
-        <translation type="unfinished">rischauge</translation>
+        <translation>rischauge</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="426"/>
         <source> mm</source>
-        <translation type="unfinished"> mm</translation>
+        <translation> mm</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="625"/>
         <source>Data</source>
-        <translation type="unfinished">Daten</translation>
+        <translation>Daten</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="633"/>
         <source>Data directory</source>
-        <translation type="unfinished">Daten-Verzeichnis</translation>
+        <translation>Daten-Verzeichnis</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="646"/>
         <source>Data file</source>
-        <translation type="unfinished">Datei</translation>
+        <translation>Datei</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="659"/>
         <source>%(date_time)s_%(mode)s</source>
-        <translation type="unfinished">%(date_time)s_%(mode)s</translation>
+        <translation>%(date_time)s_%(mode)s</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="823"/>
         <source>Enable</source>
-        <translation type="unfinished">Aktivieren</translation>
+        <translation>Aktivieren</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="676"/>
         <source>Title</source>
-        <translation type="unfinished">Titel</translation>
+        <translation>Titel</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="699"/>
         <source>GPS</source>
-        <translation type="unfinished">GPS</translation>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="722"/>
         <source>Comment</source>
-        <translation type="unfinished">Bemerkung</translation>
+        <translation>Bemerkung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="772"/>
         <source>Timer</source>
-        <translation type="unfinished">Timer</translation>
+        <translation>Timer</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="780"/>
         <source>Start after</source>
-        <translation type="unfinished">Start nach</translation>
+        <translation>Start nach</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="800"/>
         <source>Repeat</source>
-        <translation type="unfinished">Wiederhole</translation>
+        <translation>Wiederhole</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="830"/>
         <source>Repeat every</source>
-        <translation type="unfinished">Wiederhole alle</translation>
+        <translation>Wiederhole alle</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="869"/>
         <source>HH:mm:ss</source>
-        <translation type="unfinished">HH:mm:ss</translation>
+        <translation>HH:mm:ss</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="882"/>
         <source>Misc</source>
-        <translation type="unfinished">Verschiedenes</translation>
+        <translation>Verschiedenes</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="890"/>
         <source>Logger level</source>
-        <translation type="unfinished">Logger level</translation>
+        <translation>Logger level</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="907"/>
         <source>trace</source>
-        <translation type="unfinished">trace</translation>
+        <translation>trace</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="912"/>
         <source>debug</source>
-        <translation type="unfinished">debug</translation>
+        <translation>debug</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="917"/>
         <source>info</source>
-        <translation type="unfinished">info</translation>
+        <translation>info</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="922"/>
         <source>warning</source>
-        <translation type="unfinished">warning</translation>
+        <translation>warning</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="927"/>
         <source>error</source>
-        <translation type="unfinished">error</translation>
+        <translation>error</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="932"/>
         <source>exception</source>
-        <translation type="unfinished">exception</translation>
+        <translation>exception</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="937"/>
         <source>critical</source>
-        <translation type="unfinished">critical</translation>
+        <translation>critical</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="370"/>
         <source>Sensor (coef, ratio)</source>
-        <translation type="unfinished">Sensor (Faktor, Verhältnis)</translation>
+        <translation>Sensor (Faktor, Verhältnis)</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="335"/>
         <source>Sensor resolution</source>
-        <translation type="unfinished">Sensorauflösung MP</translation>
+        <translation>Sensorauflösung MP</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="322"/>
         <source>Optical multiplier</source>
-        <translation type="unfinished">Optischer Faktor</translation>
+        <translation>Optischer Faktor</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="284"/>
@@ -1426,17 +1305,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="481"/>
         <source>Yaw</source>
-        <translation type="unfinished"></translation>
+        <translation>Drehung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="494"/>
         <source>Pitch</source>
-        <translation type="unfinished"></translation>
+        <translation>Neigung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="545"/>
         <source>Configure...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Einstellungen...</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="521"/>
@@ -1445,39 +1324,174 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>helpAboutDialog</name>
+    <message>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="14"/>
+        <source>About Papywizard</source>
+        <translation>Über Papywizard</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="31"/>
+        <source>General</source>
+        <translation>Allgemein</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="72"/>
+        <source>Papywizard x.x.x</source>
+        <translation>Papywizard x.x.x</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="84"/>
+        <source>Papywizard is a panohead control software, mainly developped for the Merlin/Orion astronomic mount but usable for other panoheads.</source>
+        <translation>Papywizard ist eine Panoramakopf-kontrollsoftware, entwickelt für den Merlin/Orion-Astronomie-Kopfaber auch für andere.</translation>
+    </message>
+    <message utf8="true">
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="108"/>
+        <source>© 2007-2009 Frédéric Mantegazza</source>
+        <translation>© 2007-2009 Frédéric Mantegazza</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="130"/>
+        <source>http://www.papywizard.org</source>
+        <translation>http://www.papywizard.org</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="146"/>
+        <source>Credits</source>
+        <translation>Mitarbeit</translation>
+    </message>
+    <message utf8="true">
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="155"/>
+        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Written by:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (main core)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jones Henry Subbiah (EOS Utility plugin)&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Translated by:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (fr)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jo Lutum (de)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Maciej Dworak (pl)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Antonio Bruno (it)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Juan Carlos Andres (es)&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Graphics by:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hubert Pawlowski&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Packaged by:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (linux, windows, maemo)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jeremy Pronk (MacOS)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Erstellt von:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (main core)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jones Henry Subbiah (EOS Utility plugin)&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Übersetzt von:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (fr)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jo Lutum (de)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Maciej Dworak (pl)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Antonio Bruno (it)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Juan Carlos Andres (es)&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Grafik von:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hubert Pawlowski&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Packaged by:&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (linux, windows, maemo)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jeremy Pronk (MacOS)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="188"/>
+        <source>License</source>
+        <translation>Lizenz</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="194"/>
+        <source>This software is governed by the CeCILL license under French law and abiding by the rules of distribution of free software. You can  use, modify and/or redistribute the software under the terms of the CeCILL license as circulated by CEA, CNRS and INRIA at the following URL http://www.cecill.info.
+
+As a counterpart to the access to the source code and  rights to copy, modify and redistribute granted by the license, users are provided only with a limited warranty  and the software&apos;s author,  the holder of the economic rights,  and the successive licensors  have only  limited liability.
+
+In this respect, the user&apos;s attention is drawn to the risks associated with loading,  using,  modifying and/or developing or reproducing the software by the user in light of its specific status of free software, that may mean  that it is complicated to manipulate,  and  that  also therefore means  that it is reserved for developers  and  experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the software&apos;s suitability as regards their requirements in conditions enabling the security of their systems and/or data to be ensured and,  more generally, to use and operate it in the same conditions as regards security.
+
+The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</source>
+        <translation>This software is governed by the CeCILL license under French law and abiding by the rules of distribution of free software. You can  use, modify and/or redistribute the software under the terms of the CeCILL license as circulated by CEA, CNRS and INRIA at the following URL http://www.cecill.info.￼
+
+As a counterpart to the access to the source code and  rights to copy, modify and redistribute granted by the license, users are provided only with a limited warranty  and the software&apos;s author,  the holder of the economic rights,  and the successive licensors  have only  limited liability.￼
+
+￼In this respect, the user&apos;s attention is drawn to the risks associated with loading,  using,  modifying and/or developing or reproducing the software by the user in light of its specific status of free software, that may mean  that it is complicated to manipulate,  and  that  also therefore means  that it is reserved for developers  and  experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the software&apos;s suitability as regards their requirements in conditions enabling the security of their systems and/or data to be ensured and,  more generally, to use and operate it in the same conditions as regards security.￼
+
+￼The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</translation>
+    </message>
+</context>
+<context>
     <name>loggerDialog</name>
     <message>
         <location filename="papywizard/view/ui/loggerDialog.ui" line="13"/>
         <source>Logger</source>
-        <translation type="unfinished">Logger</translation>
+        <translation>Logger</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/loggerDialog.ui" line="144"/>
         <source>Clear log</source>
-        <translation type="unfinished">Logdateien löschen</translation>
+        <translation>Logdateien löschen</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/loggerDialog.ui" line="151"/>
         <source>Save log</source>
-        <translation type="unfinished">Log anzeigen</translation>
+        <translation>Log anzeigen</translation>
+    </message>
+</context>
+<context>
+    <name>main</name>
+    <message>
+        <location filename="papywizard/scripts/main.py" line="217"/>
+        <source>Plugins selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/scripts/main.py" line="222"/>
+        <source>Before you can use Papywizard, you must choose what plugins to use to control your hardware.
+
+After closing this dialog, you will be prompt to select these plugins. Once it is done, you can configure them in the global Configuration dialog</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>nbPictsDialog</name>
     <message>
-        <location filename="papywizard/view/ui/nbPictsDialog.ui" line="49"/>
+        <location filename="papywizard/view/ui/nbPictsDialog.ui" line="14"/>
         <source>Nb Picts</source>
-        <translation type="unfinished">Anz. Aufnahmen</translation>
+        <translation>Anz. Aufnahmen</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/nbPictsDialog.ui" line="29"/>
         <source>Yaw</source>
-        <translation type="unfinished">Drehung</translation>
+        <translation>Drehung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/nbPictsDialog.ui" line="39"/>
         <source>Pitch</source>
-        <translation type="unfinished">Neigung</translation>
+        <translation>Neigung</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/nbPictsDialog.ui" line="49"/>
+        <source>Nb picts</source>
+        <translation type="unfinished">Anz. aufnahmen</translation>
     </message>
 </context>
 <context>
@@ -1513,47 +1527,47 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/view/ui/pluginsDialog.ui" line="174"/>
         <source>BT device address</source>
-        <translation type="unfinished">BT Geräteadresse</translation>
+        <translation>BT Geräteadresse</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/pluginsDialog.ui" line="199"/>
         <source>00:50:C2:58:55:B9</source>
-        <translation type="unfinished">00:50:C2:58:55:B9</translation>
+        <translation>00:50:C2:58:55:B9</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/pluginsDialog.ui" line="209"/>
         <source>Choose...</source>
-        <translation type="unfinished">Wähle...</translation>
+        <translation>Wähle...</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/pluginsDialog.ui" line="219"/>
         <source>Serial port</source>
-        <translation type="unfinished">Serieller Anschluss</translation>
+        <translation>Serieller Anschluss</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/pluginsDialog.ui" line="235"/>
         <source>0</source>
-        <translation type="unfinished">0</translation>
+        <translation>0</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/pluginsDialog.ui" line="248"/>
         <source>Ethernet host/port</source>
-        <translation type="unfinished">Ethernet host/port</translation>
+        <translation>Ethernet host/port</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/pluginsDialog.ui" line="264"/>
         <source>locahost</source>
-        <translation type="unfinished">localhost</translation>
+        <translation>localhost</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/pluginsDialog.ui" line="51"/>
         <source>Yaw</source>
-        <translation type="unfinished"></translation>
+        <translation>Drehung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/pluginsDialog.ui" line="71"/>
         <source>Pitch</source>
-        <translation type="unfinished"></translation>
+        <translation>Neigung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/pluginsDialog.ui" line="145"/>
@@ -1576,82 +1590,110 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="17"/>
         <source>Shooting</source>
-        <translation type="unfinished">Aufnahme</translation>
+        <translation>Aufnahme</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="105"/>
         <source>Total</source>
-        <translation type="unfinished">Gesamt</translation>
+        <translation>Gesamt</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="115"/>
         <source>Yaw</source>
-        <translation type="unfinished">Drehung</translation>
+        <translation>Drehung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="125"/>
         <source>Pitch</source>
-        <translation type="unfinished">Neigung</translation>
+        <translation>Neigung</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="135"/>
         <source>Current</source>
-        <translation type="unfinished">Aktuell</translation>
+        <translation>Aktuell</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="259"/>
         <source>--/--</source>
-        <translation type="unfinished">--/--</translation>
+        <translation>--/--</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="199"/>
         <source>Next</source>
-        <translation type="unfinished">Nächste</translation>
+        <translation>Nächste</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="338"/>
         <source>Idle</source>
-        <translation type="unfinished">Warte</translation>
+        <translation>Warte</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="425"/>
         <source>00:00:00</source>
-        <translation type="unfinished">00:00:00</translation>
+        <translation>00:00:00</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="468"/>
         <source>%p%</source>
-        <translation type="unfinished">%p%</translation>
+        <translation>%p%</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="508"/>
         <source>Data</source>
-        <translation type="unfinished">Daten</translation>
+        <translation>Daten</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="537"/>
         <source>Timer</source>
-        <translation type="unfinished">Timer</translation>
+        <translation>Timer</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="563"/>
         <source>Step-by-step</source>
-        <translation type="unfinished">Einzelschritt</translation>
+        <translation>Einzelschritt</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="596"/>
         <source>Start</source>
-        <translation type="unfinished">Start</translation>
+        <translation>Start</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="625"/>
         <source>Pause</source>
-        <translation type="unfinished">Pause</translation>
+        <translation>Pause</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/shootDialog.ui" line="654"/>
         <source>Stop</source>
-        <translation type="unfinished">Stop</translation>
+        <translation>Stop</translation>
+    </message>
+</context>
+<context>
+    <name>totalFovDialog</name>
+    <message>
+        <location filename="papywizard/view/ui/totalFovDialog.ui" line="14"/>
+        <source>Total Fov</source>
+        <translation>Gesamt Fov</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/totalFovDialog.ui" line="29"/>
+        <source>Yaw</source>
+        <translation>Drehung</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/totalFovDialog.ui" line="39"/>
+        <source>Pitch</source>
+        <translation>Neigung</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/totalFovDialog.ui" line="49"/>
+        <source>Total fov</source>
+        <translation>Gesamt fov</translation>
+    </message>
+    <message utf8="true">
+        <location filename="papywizard/view/ui/totalFovDialog.ui" line="69"/>
+        <source> °</source>
+        <translation> °</translation>
     </message>
 </context>
 </TS>
