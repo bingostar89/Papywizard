@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>helpAboutDialog</class>
+ <widget class="QDialog" name="helpAboutDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -228,7 +228,7 @@ The fact that you are presently reading this means that you have had knowledge o
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>helpAboutDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -244,7 +244,7 @@ The fact that you are presently reading this means that you have had knowledge o
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>helpAboutDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

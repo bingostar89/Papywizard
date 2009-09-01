@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog">
+ <class>bluetoothChooserDialog</class>
+ <widget class="QDialog" name="bluetoothChooserDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Bluetooth chooser</string>
+   <string>Bluetooth Chooser</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../icons.qrc">
@@ -47,7 +47,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>bluetoothChooserDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -63,7 +63,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>Dialog</receiver>
+   <receiver>bluetoothChooserDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
