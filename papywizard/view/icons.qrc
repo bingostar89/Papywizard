@@ -1,5 +1,6 @@
 <RCC>
   <qresource>
+    <file>icons/knewstuff.png</file>
     <file>icons/qt.png</file>
     <file>icons/fonts.png</file>
     <file>icons/misc.png</file>
