@@ -473,7 +473,7 @@
              </widget>
             </item>
             <item row="1" column="0">
-             <widget class="QPushButton" name="setStartPushButton">
+             <widget class="QPushButton" name="setCorner0PushButton">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
                 <horstretch>0</horstretch>
@@ -481,12 +481,12 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Start (°)</string>
+               <string>Corner 0 (°)</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QPushButton" name="setYawStartPushButton">
+             <widget class="QPushButton" name="setYawCorner0PushButton">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
                 <horstretch>0</horstretch>
@@ -505,7 +505,7 @@
              </widget>
             </item>
             <item row="1" column="2">
-             <widget class="QPushButton" name="setPitchStartPushButton">
+             <widget class="QPushButton" name="setPitchCorner0PushButton">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
                 <horstretch>0</horstretch>
@@ -527,7 +527,7 @@
              </widget>
             </item>
             <item row="2" column="0">
-             <widget class="QPushButton" name="setEndPushButton">
+             <widget class="QPushButton" name="setCorner1PushButton">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
                 <horstretch>0</horstretch>
@@ -535,12 +535,12 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>End (°)</string>
+               <string>Corner 1 (°)</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="QPushButton" name="setYawEndPushButton">
+             <widget class="QPushButton" name="setYawCorner1PushButton">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
                 <horstretch>0</horstretch>
@@ -559,7 +559,7 @@
              </widget>
             </item>
             <item row="2" column="2">
-             <widget class="QPushButton" name="setPitchEndPushButton">
+             <widget class="QPushButton" name="setPitchCorner1PushButton">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
                 <horstretch>0</horstretch>
@@ -1168,10 +1168,19 @@
      <addaction name="actionHardwareSetLimitPitchPlus"/>
      <addaction name="actionHardwareSetLimitPitchMinus"/>
     </widget>
+    <widget class="QMenu" name="menuYawOffset">
+     <property name="title">
+      <string>Yaw Offset</string>
+     </property>
+     <addaction name="actionHardwareYawOffsetPlus360"/>
+     <addaction name="actionHardwareYawOffsetMinus360"/>
+    </widget>
     <addaction name="actionHardwareConnect"/>
     <addaction name="separator"/>
     <addaction name="menuSetLimit"/>
     <addaction name="actionHardwareClearLimits"/>
+    <addaction name="separator"/>
+    <addaction name="menuYawOffset"/>
     <addaction name="separator"/>
     <addaction name="actionHardwareGotoReference"/>
     <addaction name="actionHardwareGotoInitial"/>
@@ -1342,6 +1351,24 @@
    </property>
    <property name="text">
     <string>Plugins...</string>
+   </property>
+  </action>
+  <action name="actionHardwareYawOffsetPlus360">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icons/rotate_cw.png</normaloff>:/icons/rotate_cw.png</iconset>
+   </property>
+   <property name="text">
+    <string>+360°</string>
+   </property>
+  </action>
+  <action name="actionHardwareYawOffsetMinus360">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icons/rotate_ccw.png</normaloff>:/icons/rotate_ccw.png</iconset>
+   </property>
+   <property name="text">
+    <string>-360°</string>
    </property>
   </action>
  </widget>

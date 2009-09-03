@@ -210,6 +210,9 @@
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="label_5">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string>Start from</string>
            </property>
@@ -223,17 +226,30 @@
          </item>
          <item row="1" column="1">
           <widget class="QComboBox" name="startFromComboBox">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="currentIndex">
             <number>-1</number>
            </property>
            <item>
             <property name="text">
-             <string>start</string>
+             <string>top-left</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>end</string>
+             <string>top-right</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>bottom-left</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>bottom-right</string>
             </property>
            </item>
           </widget>
@@ -641,7 +657,10 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_20">
+          <widget class="QLabel" name="dataFileFormatLabel">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string>Data file</string>
            </property>
@@ -655,6 +674,9 @@
          </item>
          <item row="1" column="1">
           <widget class="QLineEdit" name="dataFileFormatLineEdit">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string>%(date_time)s_%(mode)s</string>
            </property>
@@ -668,10 +690,16 @@
            <property name="text">
             <string>Enable</string>
            </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QLabel" name="label_21">
+          <widget class="QLabel" name="dataTitleLabel">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string>Title</string>
            </property>
@@ -685,6 +713,9 @@
          </item>
          <item row="2" column="1" colspan="2">
           <widget class="QLineEdit" name="dataTitleLineEdit">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -694,7 +725,10 @@
           </widget>
          </item>
          <item row="3" column="0">
-          <widget class="QLabel" name="label_22">
+          <widget class="QLabel" name="dataGpsLabel">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string>GPS</string>
            </property>
@@ -708,6 +742,9 @@
          </item>
          <item row="3" column="1" colspan="2">
           <widget class="QLineEdit" name="dataGpsLineEdit">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -717,7 +754,10 @@
           </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QLabel" name="label_23">
+          <widget class="QLabel" name="dataCommentLabel">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string>Comment</string>
            </property>
@@ -731,6 +771,9 @@
          </item>
          <item row="4" column="1" colspan="2">
           <widget class="QLineEdit" name="dataCommentLineEdit">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -775,7 +818,10 @@
        <item>
         <layout class="QGridLayout" name="gridLayout_7">
          <item row="0" column="0">
-          <widget class="QLabel" name="label_24">
+          <widget class="QLabel" name="timerAfterLabel">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="text">
             <string>Start after</string>
            </property>
@@ -795,7 +841,10 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QLabel" name="label_25">
+          <widget class="QLabel" name="timerRepeatLabel">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="text">
             <string>Repeat</string>
            </property>
@@ -809,6 +858,9 @@
          </item>
          <item row="1" column="1">
           <widget class="QSpinBox" name="timerRepeatSpinBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="suffix">
             <string/>
            </property>
@@ -825,7 +877,10 @@
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QLabel" name="label_26">
+          <widget class="QLabel" name="timerEveryLabel">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="text">
             <string>Repeat every</string>
            </property>
@@ -839,6 +894,9 @@
          </item>
          <item row="2" column="1">
           <widget class="QTimeEdit" name="timerEveryTimeEdit">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="dateTime">
             <datetime>
              <hour>0</hour>
@@ -862,6 +920,9 @@
          </item>
          <item row="0" column="1">
           <widget class="QTimeEdit" name="timerAfterTimeEdit">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="currentSection">
             <enum>QDateTimeEdit::SecondSection</enum>
            </property>
@@ -870,6 +931,16 @@
            </property>
            <property name="currentSectionIndex">
             <number>2</number>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1" colspan="2">
+          <widget class="QCheckBox" name="timerReverseDirectionCheckBox">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Reverse direction before repeat</string>
            </property>
           </widget>
          </item>

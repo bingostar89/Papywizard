@@ -64,7 +64,7 @@ class NbPictsController(AbstractModalDialogController):
         self._uiFile = "nbPictsDialog.ui"
 
     def _initWidgets(self):
- 
+
         # Set limits
         maxYawNbPicts = 200 # Compute the maximum number of pictures
         maxPitchNbPicts = 200
@@ -78,7 +78,7 @@ class NbPictsController(AbstractModalDialogController):
         Logger().trace("NbPictsController._onAccepted()")
         yawNbPicts = self._view.yawNbPictsSpinBox.value()
         pitchNbPicts = self._view.pitchNbPictsSpinBox.value()
-        self._model.setStartEndFromNbPicts(yawNbPicts, pitchNbPicts)
+        self._model.setCornersFromNbPicts(yawNbPicts, pitchNbPicts)
         Logger().debug("NbPictsController._onAccepted(): nb picts set to yaw=%d, pitch=%d" % (yawNbPicts, pitchNbPicts))
 
     # Interface

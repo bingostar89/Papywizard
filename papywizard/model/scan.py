@@ -9,7 +9,7 @@ License
   - (C) 2007-2009 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
 U{http://www.cecill.info}.
@@ -18,7 +18,7 @@ As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -27,9 +27,9 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
@@ -72,6 +72,7 @@ class AbstractScan(object):
         super(AbstractScan, self).__init__()
         self._model = model
         self._positions = None
+        self._reversed = False
         self._index = None
 
     # Properties
@@ -113,8 +114,29 @@ class AbstractScan(object):
         """
         raise NotImplementedError
 
+    def reverseDirection(self, reverse):
+        """ Reverse the direction according to flag.
+
+        @param reverse: if True, reverse direction
+                        if False, use default direction
+        @type reverse: bool
+        """
+        if reverse and not self._reversed or not reverse and self._reversed:
+            self._positions.reverse()
+            self._reversed = not self._reversed
+
+    #def reverseIndex(self):
+        #"""
+        #"""
+        #self._index = len(self._positions) + 1 - self._index
+
     def getCurrentPosition(self):
         """ Get the current position.
+        """
+        raise NotImplementedError
+
+    def getAllPositions(self):
+        """ Get all positions.
         """
         raise NotImplementedError
 
@@ -133,12 +155,50 @@ class MosaicScan(AbstractScan):
         """ Init the MosaicScan object.
         """
         super(MosaicScan, self).__init__(*args, **kwargs)
-        self.yawStart = 0.
-        self.pitchStart = 0.
-        self.yawEnd = 0.
-        self.pitchEnd = 0.
+        self.corners = [{'yaw': 0., 'pitch': 0.},
+                        {'yaw': 0., 'pitch': 0.}]
 
     # Properties
+    def __getYawStart(self):
+        """
+        """
+        if self.startFrom in ('top-left', 'bottom-left'):
+            return min(self.corners[0]['yaw'], self.corners[1]['yaw'])
+        elif self.startFrom in ('top-right', 'bottom-right'):
+            return max(self.corners[0]['yaw'], self.corners[1]['yaw'])
+
+    yawStart = property(__getYawStart)
+
+    def __getYawEnd(self):
+        """
+        """
+        if self.startFrom in ('top-left', 'bottom-left'):
+            return max(self.corners[0]['yaw'], self.corners[1]['yaw'])
+        elif self.startFrom in ('top-right', 'bottom-right'):
+            return min(self.corners[0]['yaw'], self.corners[1]['yaw'])
+
+    yawEnd = property(__getYawEnd)
+
+    def __getPitchStart(self):
+        """
+        """
+        if self.startFrom in ('top-left', 'top-right'):
+            return max(self.corners[0]['pitch'], self.corners[1]['pitch'])
+        elif self.startFrom in ('bottom-left', 'bottom-right'):
+            return min(self.corners[0]['pitch'], self.corners[1]['pitch'])
+
+    pitchStart = property(__getPitchStart)
+
+    def __getPitchEnd(self):
+        """
+        """
+        if self.startFrom in ('top-left', 'top-right'):
+            return min(self.corners[0]['pitch'], self.corners[1]['pitch'])
+        elif self.startFrom in ('bottom-left', 'bottom-right'):
+            return max(self.corners[0]['pitch'], self.corners[1]['pitch'])
+
+    pitchEnd = property(__getPitchEnd)
+
     def __getStartFrom(self):
         """
         """
@@ -261,16 +321,10 @@ class MosaicScan(AbstractScan):
     def generatePositions(self):
         self._positions = []
         self._index = 1
-        if self.startFrom == 'start':
-            yawStart = self.yawStart
-            pitchStart = self.pitchStart
-            yawEnd = self.yawEnd
-            pitchEnd = self.pitchEnd
-        else:
-            yawStart = self.yawEnd
-            pitchStart = self.pitchEnd
-            yawEnd = self.yawStart
-            pitchEnd = self.pitchStart
+        yawStart = self.yawStart
+        pitchStart = self.pitchStart
+        yawEnd = self.yawEnd
+        pitchEnd = self.pitchEnd
         try:
             yawInc = (yawEnd - yawStart) / (self.yawNbPicts - 1)
         except ZeroDivisionError:
@@ -323,6 +377,14 @@ class MosaicScan(AbstractScan):
     def getCurrentPosition(self):
         yawIndex, pitchIndex, yaw, pitch = self._positions[self._index - 1]
         return (self._index, yawIndex, pitchIndex), (yaw, pitch)
+
+    def getAllPositions(self):
+        positions = []
+        for index, position in enumerate(self._positions):
+            yawIndex, pitchIndex, yaw, pitch = position
+            positions.append(((index + 1, yawIndex, pitchIndex), (yaw, pitch)))
+            #positions.append((index, position))
+        return positions
 
     def getYawResolution(self):
         """ Compute the total pano yaw resolution
@@ -382,3 +444,11 @@ class PresetScan(AbstractScan):
     def getCurrentPosition(self):
         yaw, pitch = self._positions[self._index - 1]
         return self._index, (yaw, pitch)
+
+    def getAllPositions(self):
+        positions = []
+        for index, position in enumerate(self._positions):
+            yaw, pitch = position
+            positions.append((index + 1, (yaw, pitch)))
+            #positions.append((index, position))
+        return positions

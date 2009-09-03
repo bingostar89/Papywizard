@@ -87,6 +87,11 @@ class ConfigController(AbstractModalDialogController):
         self.connect(self._view.shutterConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onShutterConfigurePushButtonClicked)
 
         self.connect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
+        self.connect(self._view.dataFileEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onDataFileEnableCheckBoxToggled)
+
+        self.connect(self._view.timerAfterEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onTimerAfterEnableCheckBoxToggled)
+        self.connect(self._view.timerRepeatEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onTimerRepeatEnableCheckBoxToggled)
+
 
     def _disconnectSignals(self):
         AbstractModalDialogController._disconnectSignals(self)
@@ -99,6 +104,10 @@ class ConfigController(AbstractModalDialogController):
         self.disconnect(self._view.shutterConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onShutterConfigurePushButtonClicked)
 
         self.disconnect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
+        self.disconnect(self._view.dataFileEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onDataFileEnableCheckBoxToggled)
+
+        self.disconnect(self._view.timerAfterEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onTimerAfterEnableCheckBoxToggled)
+        self.disconnect(self._view.timerRepeatEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onTimerRepeatEnableCheckBoxToggled)
 
     # Callbacks
     def _onAccepted(self):
@@ -145,6 +154,7 @@ class ConfigController(AbstractModalDialogController):
         self._model.timerRepeatEnable = self._view.timerRepeatEnableCheckBox.isChecked()
         time_ = self._view.timerEveryTimeEdit.time()
         self._model.timerEvery = hmsAsStrToS(time_.toString("hh:mm:ss"))
+        self._model.timerReverseDirection = self._view.timerReverseDirectionCheckBox.isChecked()
 
         # Misc tab
         ConfigManager().set('Configuration/LOGGER_LEVEL', config.LOGGER_INDEX[self._view.loggerLevelComboBox.currentIndex()])
@@ -229,6 +239,42 @@ class ConfigController(AbstractModalDialogController):
         if dirName:
             self._view.dataStorageDirLineEdit.setText(dirName)
 
+    def __onDataFileEnableCheckBoxToggled(self, checked):
+        """ Data file enable check box toggled.
+
+        Show/hide related widgets.
+        """
+        Logger().debug("ConfigController.__onDataFileEnableCheckBoxToggled(): checked=%s" % checked)
+        self._view.dataFileFormatLabel.setEnabled(checked)
+        self._view.dataFileFormatLineEdit.setEnabled(checked)
+        self._view.dataTitleLabel.setEnabled(checked)
+        self._view.dataTitleLineEdit.setEnabled(checked)
+        self._view.dataGpsLabel.setEnabled(checked)
+        self._view.dataGpsLineEdit.setEnabled(checked)
+        self._view.dataCommentLabel.setEnabled(checked)
+        self._view.dataCommentLineEdit.setEnabled(checked)
+
+    def __onTimerAfterEnableCheckBoxToggled(self, checked):
+        """ Timer after enable check box toggled.
+
+        Show/hide related widgets.
+        """
+        Logger().debug("ConfigController.__onTimerAfterEnableCheckBoxToggled(): checked=%s" % checked)
+        self._view.timerAfterLabel.setEnabled(checked)
+        self._view.timerAfterTimeEdit.setEnabled(checked)
+
+    def __onTimerRepeatEnableCheckBoxToggled(self, checked):
+        """ Timer repeat enable check box toggled.
+
+        Show/hide related widgets.
+        """
+        Logger().debug("ConfigController.__onTimerRepeatEnableCheckBoxToggled(): checked=%s" % checked)
+        self._view.timerRepeatLabel.setEnabled(checked)
+        self._view.timerRepeatSpinBox.setEnabled(checked)
+        self._view.timerEveryLabel.setEnabled(checked)
+        self._view.timerEveryTimeEdit.setEnabled(checked)
+        self._view.timerReverseDirectionCheckBox.setEnabled(checked)
+
     # Interface
     def selectTab(self, tabIndex, disable=False):
         """ Select the specified tab.
@@ -300,6 +346,7 @@ class ConfigController(AbstractModalDialogController):
         self._view.timerRepeatEnableCheckBox.setChecked(self._model.timerRepeatEnable)
         time_ = QtCore.QTime.fromString(QtCore.QString(sToHmsAsStr(self._model.timerEvery)), "hh:mm:ss")
         self._view.timerEveryTimeEdit.setTime(time_)
+        self._view.timerReverseDirectionCheckBox.setChecked(self._model.timerReverseDirection)
 
         # Misc tab
         loggerIndex = config.LOGGER_INDEX[ConfigManager().get('Configuration/LOGGER_LEVEL')]

@@ -126,7 +126,7 @@ class MainController(AbstractController):
 
         self.__yawPos = 0
         self.__pitchPos = 0
-        self.__mosaicInputParam = 'startEnd'
+        self.__mosaicInputParam = 'corners'
         self.__manualSpeed = 'normal'
         self.__lastPluginsTabSelected = 0
         self.__lastConfigTabSelected = 0
@@ -195,12 +195,12 @@ class MainController(AbstractController):
         # Widgets
         self.connect(self._view.tabWidget, QtCore.SIGNAL("currentChanged(int)"), self.__onTabWidgetCurrentChanged)
 
-        self.connect(self._view.setYawStartPushButton, QtCore.SIGNAL("clicked()"), self.__onSetYawStartPushButtonClicked)
-        self.connect(self._view.setPitchStartPushButton, QtCore.SIGNAL("clicked()"), self.__onSetPitchStartPushButtonClicked)
-        self.connect(self._view.setYawEndPushButton, QtCore.SIGNAL("clicked()"), self.__onSetYawEndPushButtonClicked)
-        self.connect(self._view.setPitchEndPushButton, QtCore.SIGNAL("clicked()"), self.__onSetPitchEndPushButtonClicked)
-        self.connect(self._view.setStartPushButton, QtCore.SIGNAL("clicked()"), self.__onSetStartPushButtonClicked)
-        self.connect(self._view.setEndPushButton, QtCore.SIGNAL("clicked()"), self.__onSetEndPushButtonClicked)
+        self.connect(self._view.setYawCorner0PushButton, QtCore.SIGNAL("clicked()"), self.__onSetYawCorner0PushButtonClicked)
+        self.connect(self._view.setPitchCorner0PushButton, QtCore.SIGNAL("clicked()"), self.__onSetPitchCorner0PushButtonClicked)
+        self.connect(self._view.setYawCorner1PushButton, QtCore.SIGNAL("clicked()"), self.__onSetYawCorner1PushButtonClicked)
+        self.connect(self._view.setPitchCorner1PushButton, QtCore.SIGNAL("clicked()"), self.__onSetPitchCorner1PushButtonClicked)
+        self.connect(self._view.setCorner0PushButton, QtCore.SIGNAL("clicked()"), self.__onSetCorner0PushButtonClicked)
+        self.connect(self._view.setCorner1PushButton, QtCore.SIGNAL("clicked()"), self.__onSetCorner1PushButtonClicked)
         self.connect(self._view.totalFovPushButton, QtCore.SIGNAL("clicked()"), self.__onTotalFovPushButtonClicked)
         self.connect(self._view.nbPictsPushButton, QtCore.SIGNAL("clicked()"), self.__onNbPictsPushButtonClicked)
 
@@ -252,12 +252,12 @@ class MainController(AbstractController):
         # Widgets
         self.disconnect(self._view.tabWidget, QtCore.SIGNAL("currentChanged(int)"), self.__onTabWidgetCurrentChanged)
 
-        self.disconnect(self._view.setYawStartPushButton, QtCore.SIGNAL("clicked()"), self.__onSetYawStartPushButtonClicked)
-        self.disconnect(self._view.setPitchStartPushButton, QtCore.SIGNAL("clicked()"), self.__onSetPitchStartPushButtonClicked)
-        self.disconnect(self._view.setYawEndPushButton, QtCore.SIGNAL("clicked()"), self.__onSetYawEndPushButtonClicked)
-        self.disconnect(self._view.setPitchEndPushButton, QtCore.SIGNAL("clicked()"), self.__onSetPitchEndPushButtonClicked)
-        self.disconnect(self._view.setStartPushButton, QtCore.SIGNAL("clicked()"), self.__onSetStartPushButtonClicked)
-        self.disconnect(self._view.setEndPushButton, QtCore.SIGNAL("clicked()"), self.__onSetEndPushButtonClicked)
+        self.disconnect(self._view.setYawCorner0PushButton, QtCore.SIGNAL("clicked()"), self.__onSetYawCorner0PushButtonClicked)
+        self.disconnect(self._view.setPitchCorner0PushButton, QtCore.SIGNAL("clicked()"), self.__onSetPitchCorner0PushButtonClicked)
+        self.disconnect(self._view.setYawCorner1PushButton, QtCore.SIGNAL("clicked()"), self.__onSetYawCorner1PushButtonClicked)
+        self.disconnect(self._view.setPitchCorner1PushButton, QtCore.SIGNAL("clicked()"), self.__onSetPitchCorner1PushButtonClicked)
+        self.disconnect(self._view.setCorner0PushButton, QtCore.SIGNAL("clicked()"), self.__onSetCorner0PushButtonClicked)
+        self.disconnect(self._view.setCorner1PushButton, QtCore.SIGNAL("clicked()"), self.__onSetCorner1PushButtonClicked)
         self.disconnect(self._view.totalFovPushButton, QtCore.SIGNAL("clicked()"), self.__onTotalFovPushButtonClicked)
         self.disconnect(self._view.nbPictsPushButton, QtCore.SIGNAL("clicked()"), self.__onNbPictsPushButtonClicked)
 
@@ -614,41 +614,41 @@ class MainController(AbstractController):
             #selF._model.mode = 'timelapse'
         Logger().debug("MainController.__onTabWidgetCurrentChanged(): shooting mode set to '%s'" % self._model.mode)
 
-    def __onSetYawStartPushButtonClicked(self):
+    def __onSetYawCorner0PushButtonClicked(self):
         Logger().trace("MainController.__onSetYawStartPushButtonClicked()")
-        self._model.mosaic.yawStart = self.__yawPos
-        self.__mosaicInputParam = 'startEnd'
+        self._model.mosaic.corners[0]['yaw'] = self.__yawPos
+        self.__mosaicInputParam = 'corners'
         self.refreshView()
-        self.setStatusbarMessage(self.tr("Yaw start set from current position"), 10)
+        self.setStatusbarMessage(self.tr("Yaw corner 0 set from current position"), 10)
 
-    def __onSetPitchStartPushButtonClicked(self):
-        Logger().trace("MainController.__onSetPitchStartPushButtonClicked()")
-        self._model.mosaic.pitchStart = self.__pitchPos
-        self.__mosaicInputParam = 'startEnd'
+    def __onSetPitchCorner0PushButtonClicked(self):
+        Logger().trace("MainController.__onSetPitchCorner0PushButtonClicked()")
+        self._model.mosaic.corners[0]['pitch'] = self.__pitchPos
+        self.__mosaicInputParam = 'corners'
         self.refreshView()
-        self.setStatusbarMessage(self.tr("Pitch start set from current position"), 10)
+        self.setStatusbarMessage(self.tr("Pitch corner 0 set from current position"), 10)
 
-    def __onSetYawEndPushButtonClicked(self):
-        Logger().trace("MainController.__onSetYawEndPushButtonClicked()")
-        self._model.mosaic.yawEnd = self.__yawPos
-        self.__mosaicInputParam = 'startEnd'
+    def __onSetYawCorner1PushButtonClicked(self):
+        Logger().trace("MainController.__onSetYawCorner1PushButtonClicked()")
+        self._model.mosaic.corners[1]['yaw'] = self.__yawPos
+        self.__mosaicInputParam = 'corners'
         self.refreshView()
-        self.setStatusbarMessage(self.tr("Yaw end set from current position"), 10)
+        self.setStatusbarMessage(self.tr("Yaw corner 1 set from current position"), 10)
 
-    def __onSetPitchEndPushButtonClicked(self):
-        Logger().trace("MainController.__onSetEndPitchButtonClicked()")
-        self._model.mosaic.pitchEnd = self.__pitchPos
-        self.__mosaicInputParam = 'startEnd'
+    def __onSetPitchCorner1PushButtonClicked(self):
+        Logger().trace("MainController.__onSetPitchCorner1PushButtonClicked()")
+        self._model.mosaic.corners[1]['pitch'] = self.__pitchPos
+        self.__mosaicInputParam = 'corners'
         self.refreshView()
-        self.setStatusbarMessage(self.tr("Pitch end set from current position"), 10)
+        self.setStatusbarMessage(self.tr("Pitch corner 1 set from current position"), 10)
 
-    def __onSetStartPushButtonClicked(self):
-        Logger().trace("MainController.__onSetStartPushButtonClicked()")
-        self.__setYawPitchStartPosition()
+    def __onSetCorner0PushButtonClicked(self):
+        Logger().trace("MainController.__onSetCorner0PushButtonClicked()")
+        self.__setYawPitchCorner0Position()
 
-    def __onSetEndPushButtonClicked(self):
-        Logger().trace("MainController.__onSetEndPushButtonClicked()")
-        self.__setYawPitchEndPosition()
+    def __onSetCorner1PushButtonClicked(self):
+        Logger().trace("MainController.__onSetCorner1PushButtonClicked()")
+        self.__setYawPitchCorner1Position()
 
     def __onTotalFovPushButtonClicked(self):
         Logger().trace("MainController.__onTotalFovPushButtonClicked()")
@@ -727,21 +727,21 @@ class MainController(AbstractController):
         self.__openShootdialog()
 
     # Helpers
-    def __setYawPitchStartPosition(self):
-        """ Set yaw/pitch end from current position.
+    def __setYawPitchCorner0Position(self):
+        """ Set yaw/pitch corner 0 from current position.
         """
-        self._model.mosaic.yawStart, self._model.mosaic.pitchStart = self.__yawPos, self.__pitchPos
-        self.__mosaicInputParam = 'startEnd'
+        self._model.mosaic.corners[0]['yaw'], self._model.mosaic.corners[0]['pitch'] = self.__yawPos, self.__pitchPos
+        self.__mosaicInputParam = 'corners'
         self.refreshView()
-        self.setStatusbarMessage(self.tr("Yaw/pitch start set from current position"), 10)
+        self.setStatusbarMessage(self.tr("Yaw/pitch corner 0 set from current position"), 10)
 
-    def __setYawPitchEndPosition(self):
-        """ Set yaw/pitch start from current position.
+    def __setYawPitchCorner1Position(self):
+        """ Set yaw/pitch corner 1 from current position.
         """
-        self._model.mosaic.yawEnd, self._model.mosaic.pitchEnd = self.__yawPos, self.__pitchPos
-        self.__mosaicInputParam = 'startEnd'
+        self._model.mosaic.corners[1]['yaw'], self._model.mosaic.corners[1]['pitch'] = self.__yawPos, self.__pitchPos
+        self.__mosaicInputParam = 'corners'
         self.refreshView()
-        self.setStatusbarMessage(self.tr("Yaw/pitch end set from current position"), 10)
+        self.setStatusbarMessage(self.tr("Yaw/pitch corner 1 set from current position"), 10)
 
     def __openTotalFovDialog(self):
         """ Open the Total Fov input dialog.
@@ -811,16 +811,16 @@ class MainController(AbstractController):
 
         if response:
             Logger().setLevel(ConfigManager().get('Configuration/LOGGER_LEVEL'))
-            if self.__mosaicInputParam == 'startEnd':
+            if self.__mosaicInputParam == 'corners':
                 pass
             elif self.__mosaicInputParam == 'fov':
                 yawFov = float(self._view.yawFovLabel.text())
                 pitchFov = float(self._view.pitchFovLabel.text())
-                self._model.setStartEndFromFov(yawFov, pitchFov)
+                self._model.setCornersFromFov(yawFov, pitchFov)
             elif self.__mosaicInputParam == 'nbPicts':
                 yawNbPicts = int(self._view.yawNbPictsLabel.text())
                 pitchNbPicts = int(self._view.pitchNbPictsLabel.text())
-                self._model.setStartEndFromNbPicts(yawNbPicts, pitchNbPicts)
+                self._model.setCornersFromNbPicts(yawNbPicts, pitchNbPicts)
             self.refreshView()
 
     def __openShootdialog(self):
@@ -1038,10 +1038,10 @@ class MainController(AbstractController):
         self._view.statusBar().clearMessage()
 
     def _refreshMosaicPage(self):
-        self._view.setYawStartPushButton.setText("%.1f" % self._model.mosaic.yawStart)
-        self._view.setPitchStartPushButton.setText("%.1f" % self._model.mosaic.pitchStart)
-        self._view.setYawEndPushButton.setText("%.1f" % self._model.mosaic.yawEnd)
-        self._view.setPitchEndPushButton.setText("%.1f" % self._model.mosaic.pitchEnd)
+        self._view.setYawCorner0PushButton.setText("%.1f" % self._model.mosaic.corners[0]['yaw'])
+        self._view.setPitchCorner0PushButton.setText("%.1f" % self._model.mosaic.corners[0]['pitch'])
+        self._view.setYawCorner1PushButton.setText("%.1f" % self._model.mosaic.corners[1]['yaw'])
+        self._view.setPitchCorner1PushButton.setText("%.1f" % self._model.mosaic.corners[1]['pitch'])
         self._view.yawFovLabel.setText("%.1f" % self._model.mosaic.yawFov)
         self._view.pitchFovLabel.setText("%.1f" % self._model.mosaic.pitchFov)
         self._view.yawNbPictsLabel.setText("%d" % self._model.mosaic.yawNbPicts)

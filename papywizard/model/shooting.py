@@ -103,20 +103,16 @@ class Shooting(QtCore.QObject):
     shutter = property(__getShutter)
 
     def __getMode(self):
+        """
+        """
         return ConfigManager().get('Core/SHOOTING_MODE')
 
     def __setMode(self, mode):
+        """
+        """
         ConfigManager().set('Core/SHOOTING_MODE', mode)
 
     mode = property(__getMode, __setMode)
-
-    def __getStabilizationDelay(self):
-        return ConfigManager().getFloat('Configuration/SHOOTING_STABILIZATION_DELAY')
-
-    def __setStabilizationDelay(self, stabilizationDelay):
-        ConfigManager().setFloat('Configuration/SHOOTING_STABILIZATION_DELAY', stabilizationDelay, 1)
-
-    stabilizationDelay = property(__getStabilizationDelay, __setStabilizationDelay)
 
     def __getHeadOrientation(self):
         """
@@ -153,6 +149,18 @@ class Shooting(QtCore.QObject):
         ConfigManager().setFloat('Configuration/SHOOTING_CAMERA_ROLL', cameraRoll, 1)
 
     cameraRoll = property(__getCameraRoll, __setCameraRoll)
+
+    def __getStabilizationDelay(self):
+        """
+        """
+        return ConfigManager().getFloat('Configuration/SHOOTING_STABILIZATION_DELAY')
+
+    def __setStabilizationDelay(self, stabilizationDelay):
+        """
+        """
+        ConfigManager().setFloat('Configuration/SHOOTING_STABILIZATION_DELAY', stabilizationDelay, 1)
+
+    stabilizationDelay = property(__getStabilizationDelay, __setStabilizationDelay)
 
     def __getTimerAfter(self):
         """
@@ -213,6 +221,18 @@ class Shooting(QtCore.QObject):
         ConfigManager().set('Configuration/TIMER_EVERY', sToHmsAsStr(s))
 
     timerEvery = property(__getTimerEvery, __setTimerEvery)
+
+    def __getTimerReverseDirection(self):
+        """
+        """
+        return ConfigManager().getBoolean('Configuration/TIMER_REVERSE_DIRECTION')
+
+    def __setTimerReverseDirection(self, timerReverseDirection):
+        """
+        """
+        ConfigManager().setBoolean('Configuration/TIMER_REVERSE_DIRECTION', timerReverseDirection)
+
+    timerReverseDirection = property(__getTimerReverseDirection, __setTimerReverseDirection)
 
     def __getScan(self):
         """
@@ -306,8 +326,16 @@ class Shooting(QtCore.QObject):
         """
         self.emit(QtCore.SIGNAL("sequence"), sequence, bracket)
 
+    def over(self):
+        """ Shooting over.
+
+        This signal is emitted at the end of a shooting sequence,
+        before any repeat
+        """
+        self.emit(QtCore.SIGNAL("over"))
+
     # Interface
-    def setStartEndFromFov(self, yawFov, pitchFov):
+    def setCornersFromFov(self, yawFov, pitchFov):
         """ Set yaw start/end positions from total fov.
 
         @param yawFov: total yaw fov (°)
@@ -320,15 +348,15 @@ class Shooting(QtCore.QObject):
         yawDelta = yawFov - self.camera.getYawFov(self.cameraOrientation)
         if yawDelta < 0.:
             yawDelta = 0.
-        self.mosaic.yawStart = yawPos - yawDelta / 2.
-        self.mosaic.yawEnd = yawPos + yawDelta / 2.
+        self.mosaic.corners[0]['yaw'] = yawPos - yawDelta / 2.
+        self.mosaic.corners[1]['yaw'] = yawPos + yawDelta / 2.
         pitchDelta = pitchFov - self.camera.getPitchFov(self.cameraOrientation)
         if pitchDelta < 0.:
             pitchDelta = 0.
-        self.mosaic.pitchStart = pitchPos - pitchDelta / 2.
-        self.mosaic.pitchEnd = pitchPos + pitchDelta / 2.
+        self.mosaic.corners[0]['pitch'] = pitchPos - pitchDelta / 2.
+        self.mosaic.corners[1]['pitch'] = pitchPos + pitchDelta / 2.
 
-    def setStartEndFromNbPicts(self, yawNbPicts, pitchNbPicts):
+    def setCornersFromNbPicts(self, yawNbPicts, pitchNbPicts):
         """ Set the start/end positions from nb picts.
 
         @param yawNbPicts: yaw nb picts
@@ -341,13 +369,13 @@ class Shooting(QtCore.QObject):
         yawDelta = self.camera.getYawFov(self.cameraOrientation) * (1 - self.mosaic.overlap) * (yawNbPicts - 1)
         if yawNbPicts > 1:
             yawDelta -= .01
-        self.mosaic.yawStart = yawPos - yawDelta / 2.
-        self.mosaic.yawEnd = yawPos + yawDelta / 2.
+        self.mosaic.corners[0]['yaw'] = yawPos - yawDelta / 2.
+        self.mosaic.corners[1]['yaw'] = yawPos + yawDelta / 2.
         pitchDelta = self.camera.getPitchFov(self.cameraOrientation) * (1 - self.mosaic.overlap) * (pitchNbPicts - 1)
         if pitchNbPicts > 1:
             pitchDelta -= .01
-        self.mosaic.pitchStart = pitchPos - pitchDelta / 2.
-        self.mosaic.pitchEnd = pitchPos + pitchDelta / 2.
+        self.mosaic.corners[0]['pitch'] = pitchPos - pitchDelta / 2.
+        self.mosaic.corners[1]['pitch'] = pitchPos + pitchDelta / 2.
 
     def setStepByStep(self, flag):
         """ Turn on/off step-by-step shooting.
@@ -571,7 +599,11 @@ class Shooting(QtCore.QObject):
                         # Force index behond valid position. Hugly!!!
                         # Better find a way to tell the view not to display the next position
                         self.scan.setOverPosition()
-                        self.update(self.scan.index, yaw, pitch, next=True)
+                        if isinstance(index, tuple):
+                            newIndex = (self.scan.index, yawIndex, pitchIndex)
+                        else:
+                            newIndex = self.scan.index
+                        self.update(newIndex, yaw, pitch, next=True)
                         end = True
                     else:
                         index, (yaw, pitch) = self.scan.getCurrentPosition()
@@ -596,7 +628,7 @@ class Shooting(QtCore.QObject):
                     if self.__forceNewPosition:
                         continue
 
-                    # If the sequence is finished, we leave the loop
+                    # If the sequence is over, we leave the loop
                     if end:
                         break
 
@@ -609,6 +641,8 @@ class Shooting(QtCore.QObject):
                         remainingTime = self.timerEvery - (time.time() - startTime)
 
                         checkStop()
+
+                    self.over()
 
         except StopIteration:
             Logger().debug("Shooting.start(): stop detected")

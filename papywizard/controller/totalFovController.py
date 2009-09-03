@@ -82,7 +82,7 @@ class TotalFovController(AbstractModalDialogController):
         Logger().trace("TotalFovController._onAccepted()")
         yawFov = self._view.yawFovDoubleSpinBox.value()
         pitchFov = self._view.pitchFovDoubleSpinBox.value()
-        self._model.setStartEndFromFov(yawFov, pitchFov)
+        self._model.setCornersFromFov(yawFov, pitchFov)
         Logger().debug("MainController._onAccepted(): total fov set to yaw=%.1f, pitch=%.1f" % (yawFov, pitchFov))
 
     # Interface
