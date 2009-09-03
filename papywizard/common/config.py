@@ -52,9 +52,9 @@ import os.path
 # Version
 VERSION_MAJOR = 2
 VERSION_MINOR = 1 # Odd means dev. release
-VERSION_UPDATE = 10
+VERSION_UPDATE = 11
 VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
-VERSION_XML = "a"
+VERSION_XML = "b"
 
 # Paths
 HOME_DIR = os.path.expanduser("~")
@@ -134,8 +134,8 @@ HEAD_ORIENTATION_INDEX = {'up': 0, 'left': 1, 'right': 2, 'down': 3,
                           0: 'up', 1: 'left', 2: 'right', 3: 'down'}
 CAMERA_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1, 'custom': 2,
                             0: 'portrait', 1: 'landscape', 2: 'custom'}
-MOSAIC_START_FROM_INDEX = {'start': 0, 'end': 1,
-                           0: 'start', 1 : 'end'}
+MOSAIC_START_FROM_INDEX = {'top-left': 0, 'top-right': 1, 'bottom-left': 2, 'bottom-right': 3,
+                           0: 'top-left', 1 : 'top-right', 2: 'bottom-left', 3: 'bottom-right'}
 MOSAIC_INITIAL_DIR_INDEX = {'yaw': 0, 'pitch': 1,
                             0: 'yaw', 1: 'pitch'}
 CAMERA_BRACKETING_INTENT_INDEX = {'exposure': 0, 'focus' : 1, 'white balance': 2, 'movement': 3,
