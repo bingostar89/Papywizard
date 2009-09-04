@@ -809,59 +809,69 @@
         <translation>Passo</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="499"/>
+        <location filename="papywizard/controller/shootController.py" line="507"/>
         <source>Resume</source>
         <translation>Ripristina</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="512"/>
+        <location filename="papywizard/controller/shootController.py" line="520"/>
         <source>Pause</source>
         <translation>Pausa</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="503"/>
+        <location filename="papywizard/controller/shootController.py" line="511"/>
         <source>Paused</source>
         <translation>In pausa</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="524"/>
+        <location filename="papywizard/controller/shootController.py" line="532"/>
         <source>Finished</source>
         <translation>Finito</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="526"/>
+        <location filename="papywizard/controller/shootController.py" line="534"/>
         <source>Canceled</source>
         <translation>Cancellato</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="528"/>
+        <location filename="papywizard/controller/shootController.py" line="536"/>
         <source>Failed</source>
         <translation>Fallito, non riuscito</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="539"/>
+        <location filename="papywizard/controller/shootController.py" line="549"/>
         <source>Waiting</source>
         <translation>Attenzione</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="585"/>
+        <location filename="papywizard/controller/shootController.py" line="595"/>
         <source>Moving</source>
         <translation>In movimento</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="587"/>
+        <location filename="papywizard/controller/shootController.py" line="597"/>
         <source>Stabilization</source>
         <translation>Stabilizzazione</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="589"/>
+        <location filename="papywizard/controller/shootController.py" line="599"/>
         <source>Mirror lockup</source>
         <translation>Blocco dello specchio </translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="592"/>
+        <location filename="papywizard/controller/shootController.py" line="602"/>
         <source>Shutter - Picture</source>
         <translation>Scatto - Immagine</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/shootController.py" line="442"/>
+        <source>Stop</source>
+        <translation type="unfinished">Stop</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/shootController.py" line="542"/>
+        <source>Finish</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

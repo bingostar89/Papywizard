@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="en">
+<!DOCTYPE TS>
+<TS version="2.0" language="en">
 <context>
     <name>AbortMessageDialog</name>
     <message>
@@ -453,7 +454,7 @@
         <translation>Yaw/pitch corner 1 set from current position</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="23"/>
@@ -655,7 +656,7 @@
         <source>Plugins...</source>
         <translation></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="589"/>
         <source>Total fov (°)</source>
         <translation>Total fov (°)</translation>
@@ -665,12 +666,12 @@
         <source>Nb picts</source>
         <translation>Nb picts</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="484"/>
         <source>Corner 0 (°)</source>
         <translation>Corner 0 (°)</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="538"/>
         <source>Corner 1 (°)</source>
         <translation>Corner 1 (°)</translation>
@@ -680,12 +681,12 @@
         <source>Yaw Offset</source>
         <translation>Yaw Offset</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="1362"/>
         <source>+360°</source>
         <translation>+360°</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="1371"/>
         <source>-360°</source>
         <translation>-360°</translation>
@@ -809,59 +810,69 @@
         <translation>Step</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="499"/>
+        <location filename="papywizard/controller/shootController.py" line="507"/>
         <source>Resume</source>
         <translation>Resume</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="512"/>
+        <location filename="papywizard/controller/shootController.py" line="520"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="503"/>
+        <location filename="papywizard/controller/shootController.py" line="511"/>
         <source>Paused</source>
         <translation>Paused</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="524"/>
+        <location filename="papywizard/controller/shootController.py" line="532"/>
         <source>Finished</source>
         <translation>Finished</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="526"/>
+        <location filename="papywizard/controller/shootController.py" line="534"/>
         <source>Canceled</source>
         <translation>Canceled</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="528"/>
+        <location filename="papywizard/controller/shootController.py" line="536"/>
         <source>Failed</source>
         <translation>Failed</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="539"/>
+        <location filename="papywizard/controller/shootController.py" line="549"/>
         <source>Waiting</source>
         <translation>Waiting</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="585"/>
+        <location filename="papywizard/controller/shootController.py" line="595"/>
         <source>Moving</source>
         <translation>Moving</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="587"/>
+        <location filename="papywizard/controller/shootController.py" line="597"/>
         <source>Stabilization</source>
         <translation>Stabilization</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="589"/>
+        <location filename="papywizard/controller/shootController.py" line="599"/>
         <source>Mirror lockup</source>
         <translation>Mirror lockup</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="592"/>
+        <location filename="papywizard/controller/shootController.py" line="602"/>
         <source>Shutter - Picture</source>
         <translation>Shutter - Picture</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/shootController.py" line="442"/>
+        <source>Stop</source>
+        <translation>Stop</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/shootController.py" line="542"/>
+        <source>Finish</source>
+        <translation>Finish</translation>
     </message>
 </context>
 <context>
@@ -1066,7 +1077,7 @@
         <source>custom</source>
         <translation>custom</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/configDialog.ui" line="123"/>
         <source> °</source>
         <translation> °</translation>
@@ -1352,7 +1363,7 @@
         <translation>Reverse direction before repeat</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>helpAboutDialog</name>
     <message>
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="14"/>
@@ -1374,7 +1385,7 @@
         <source>Papywizard is a panohead control software, mainly developped for the Merlin/Orion astronomic mount but usable for other panoheads.</source>
         <translation>Papywizard is a panohead control software, mainly developped for the Merlin/Orion astronomic mount but usable for other panoheads.</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="108"/>
         <source>© 2007-2009 Frédéric Mantegazza</source>
         <translation>© 2007-2009 Frédéric Mantegazza</translation>
@@ -1389,7 +1400,7 @@
         <source>Credits</source>
         <translation>Credits</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="155"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1699,7 +1710,7 @@ After closing this dialog, you will be prompt to select these plugins. Once it i
         <translation>Stop</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>totalFovDialog</name>
     <message>
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="14"/>
@@ -1721,7 +1732,7 @@ After closing this dialog, you will be prompt to select these plugins. Once it i
         <source>Total fov</source>
         <translation>Total fov</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="69"/>
         <source> °</source>
         <translation> °</translation>

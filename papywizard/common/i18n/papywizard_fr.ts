@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="fr">
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>AbortMessageDialog</name>
     <message>
@@ -453,7 +454,7 @@
         <translation>Coin 1 de lacet/tangage fixé depuis la position courante</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="23"/>
@@ -655,7 +656,7 @@
         <source>Plugins...</source>
         <translation>Plugins...</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="589"/>
         <source>Total fov (°)</source>
         <translation>Adc total (°)</translation>
@@ -665,12 +666,12 @@
         <source>Nb picts</source>
         <translation>Nb photos</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="484"/>
         <source>Corner 0 (°)</source>
         <translation>Coin 0 (°)</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="538"/>
         <source>Corner 1 (°)</source>
         <translation>Coin 1 (°)</translation>
@@ -680,12 +681,12 @@
         <source>Yaw Offset</source>
         <translation>Offset lacet</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="1362"/>
         <source>+360°</source>
         <translation>+360°</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="1371"/>
         <source>-360°</source>
         <translation>-360°</translation>
@@ -809,59 +810,69 @@
         <translation>Pas</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="499"/>
+        <location filename="papywizard/controller/shootController.py" line="507"/>
         <source>Resume</source>
         <translation>Reprendre</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="512"/>
+        <location filename="papywizard/controller/shootController.py" line="520"/>
         <source>Pause</source>
         <translation>Suspendre</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="503"/>
+        <location filename="papywizard/controller/shootController.py" line="511"/>
         <source>Paused</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="524"/>
+        <location filename="papywizard/controller/shootController.py" line="532"/>
         <source>Finished</source>
         <translation>Terminé</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="526"/>
+        <location filename="papywizard/controller/shootController.py" line="534"/>
         <source>Canceled</source>
         <translation>Annulé</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="528"/>
+        <location filename="papywizard/controller/shootController.py" line="536"/>
         <source>Failed</source>
         <translation>Échoué</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="539"/>
+        <location filename="papywizard/controller/shootController.py" line="549"/>
         <source>Waiting</source>
         <translation>Attente</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="585"/>
+        <location filename="papywizard/controller/shootController.py" line="595"/>
         <source>Moving</source>
         <translation>Déplacement</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="587"/>
+        <location filename="papywizard/controller/shootController.py" line="597"/>
         <source>Stabilization</source>
         <translation>Stabilisation</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="589"/>
+        <location filename="papywizard/controller/shootController.py" line="599"/>
         <source>Mirror lockup</source>
         <translation>Verrouillage miroir</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="592"/>
+        <location filename="papywizard/controller/shootController.py" line="602"/>
         <source>Shutter - Picture</source>
         <translation>Obturateur - Image</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/shootController.py" line="442"/>
+        <source>Stop</source>
+        <translation>Arrêter</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/shootController.py" line="542"/>
+        <source>Finish</source>
+        <translation>Terminer</translation>
     </message>
 </context>
 <context>
@@ -1066,7 +1077,7 @@
         <source>custom</source>
         <translation>personnalisé</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/configDialog.ui" line="123"/>
         <source> °</source>
         <translation> °</translation>
@@ -1352,7 +1363,7 @@
         <translation>Inverse direction avant répétition</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>helpAboutDialog</name>
     <message>
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="14"/>
@@ -1374,7 +1385,7 @@
         <source>Papywizard is a panohead control software, mainly developped for the Merlin/Orion astronomic mount but usable for other panoheads.</source>
         <translation>Papywizard est un logiciel de pilotage de tête panoramique principalement développé pour la tête astronomique Merlin/Orion mais utilisable pour d&apos;autres têtes.</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="108"/>
         <source>© 2007-2009 Frédéric Mantegazza</source>
         <translation>© 2007-2009 Frédéric Mantegazza</translation>
@@ -1389,7 +1400,7 @@
         <source>Credits</source>
         <translation>Crédits</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="155"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1699,7 +1710,7 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
         <translation>Arrêter</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>totalFovDialog</name>
     <message>
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="14"/>
@@ -1721,7 +1732,7 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
         <source>Total fov</source>
         <translation></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="69"/>
         <source> °</source>
         <translation> °</translation>
