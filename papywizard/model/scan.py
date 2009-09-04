@@ -125,11 +125,6 @@ class AbstractScan(object):
             self._positions.reverse()
             self._reversed = not self._reversed
 
-    #def reverseIndex(self):
-        #"""
-        #"""
-        #self._index = len(self._positions) + 1 - self._index
-
     def getCurrentPosition(self):
         """ Get the current position.
         """
@@ -317,7 +312,7 @@ class MosaicScan(AbstractScan):
 
     pitchRealOverlap = property(__getPitchRealOverlap, "Pitch real overlap")
 
-    #Interface
+    # Interface
     def generatePositions(self):
         self._positions = []
         self._index = 1
@@ -383,7 +378,6 @@ class MosaicScan(AbstractScan):
         for index, position in enumerate(self._positions):
             yawIndex, pitchIndex, yaw, pitch = position
             positions.append(((index + 1, yawIndex, pitchIndex), (yaw, pitch)))
-            #positions.append((index, position))
         return positions
 
     def getYawResolution(self):
@@ -450,5 +444,4 @@ class PresetScan(AbstractScan):
         for index, position in enumerate(self._positions):
             yaw, pitch = position
             positions.append((index + 1, (yaw, pitch)))
-            #positions.append((index, position))
         return positions

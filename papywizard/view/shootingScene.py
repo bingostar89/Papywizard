@@ -201,8 +201,10 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
         """ Reset state of pictures in the shooting area.
         """
         for picture in self._pictures.itervalues():
-            picture.setState(state='preview')
+            if picture.getState != 'invalid':
+                picture.setState(state='preview')
             AbstractPictureItem.nextIndex = 1
+            picture.refresh()
 
     def clear(self):
         """ Clear the shooting area.

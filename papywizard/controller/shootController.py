@@ -99,24 +99,8 @@ class ShootController(AbstractModalDialogController):
         # be displayed fullscreen on Nokia N8x0 devices
         self._view.setWindowFlags(QtCore.Qt.Window)
 
-        if self._model.timerRepeatEnable:
-            self._view.repeatLabel.setText("--/%d" % self._model.timerRepeat)
-        else:
-            self._view.repeatLabel.setText("")
-
-        # Init text view
-        self._view.currentIndexLabel.setText("--/%d" % self._model.scan.totalNbPicts)
-        self._view.nextIndexLabel.setText("--/%d" % self._model.scan.totalNbPicts)
-        if self._model.mode == 'mosaic':
-            self._view.yawCurrentIndexLabel.setText("--/%d" % self._model.mosaic.yawNbPicts)
-            self._view.pitchCurrentIndexLabel.setText("--/%d" % self._model.mosaic.pitchNbPicts)
-            self._view.yawNextIndexLabel.setText("--/%d" % self._model.mosaic.yawNbPicts)
-            self._view.pitchNextIndexLabel.setText("--/%d" % self._model.mosaic.pitchNbPicts)
-        else:
-            self._view.yawCurrentIndexLabel.setText("--")
-            self._view.pitchCurrentIndexLabel.setText("--")
-            self._view.yawNextIndexLabel.setText("--")
-            self._view.pitchNextIndexLabel.setText("--")
+        # Init state of some widgets
+        self.__initWidgetsState()
 
         # Create graphical shooting view and scene
         self._view.shootingGraphicsView = ShootingView()
@@ -166,7 +150,7 @@ class ShootController(AbstractModalDialogController):
 
         self.connect(self._view.startPushButton, QtCore.SIGNAL("clicked()"), self.__onStartPushButtonClicked)
         self.connect(self._view.pauseResumeStepPushButton, QtCore.SIGNAL("clicked()"), self.__onPauseResumeStepPushButtonClicked)
-        self.connect(self._view.stopPushButton, QtCore.SIGNAL("clicked()"), self.__onStopPushButtonClicked)
+        self.connect(self._view.stopFinishPushButton, QtCore.SIGNAL("clicked()"), self.__onStopFinishPushButtonClicked)
 
         self.connect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate, QtCore.Qt.BlockingQueuedConnection)
         self.connect(self._model, QtCore.SIGNAL("started"), self.__onShootingStarted, QtCore.Qt.BlockingQueuedConnection)
@@ -178,7 +162,7 @@ class ShootController(AbstractModalDialogController):
         self.connect(self._model, QtCore.SIGNAL("repeat"), self.__onShootingRepeat, QtCore.Qt.BlockingQueuedConnection)
         self.connect(self._model, QtCore.SIGNAL("update"), self.__onShootingUpdate, QtCore.Qt.BlockingQueuedConnection)
         self.connect(self._model, QtCore.SIGNAL("sequence"), self.__onShootingSequence, QtCore.Qt.BlockingQueuedConnection)
-        self.connect(self._model, QtCore.SIGNAL("over"), self.__onShootingOver, QtCore.Qt.BlockingQueuedConnection)
+        self.connect(self._model, QtCore.SIGNAL("beforeRepeat"), self.__onShootingBeforeRepeat, QtCore.Qt.BlockingQueuedConnection)
 
         self._view._originalKeyPressEvent = self._view.keyPressEvent
         self._view.keyPressEvent = self.__onKeyPressed
@@ -199,7 +183,7 @@ class ShootController(AbstractModalDialogController):
 
         self.disconnect(self._view.startPushButton, QtCore.SIGNAL("clicked()"), self.__onStartPushButtonClicked)
         self.disconnect(self._view.pauseResumeStepPushButton, QtCore.SIGNAL("clicked()"), self.__onPauseResumeStepPushButtonClicked)
-        self.disconnect(self._view.stopPushButton, QtCore.SIGNAL("clicked()"), self.__onStopPushButtonClicked)
+        self.disconnect(self._view.stopFinishPushButton, QtCore.SIGNAL("clicked()"), self.__onStopFinishPushButtonClicked)
 
         self.disconnect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate)
         self.disconnect(self._model, QtCore.SIGNAL("started"), self.__onShootingStarted)
@@ -211,7 +195,7 @@ class ShootController(AbstractModalDialogController):
         self.disconnect(self._model, QtCore.SIGNAL("repeat"), self.__onShootingRepeat)
         self.disconnect(self._model, QtCore.SIGNAL("update"), self.__onShootingUpdate)
         self.disconnect(self._model, QtCore.SIGNAL("sequence"), self.__onShootingSequence)
-        self.disconnect(self._model, QtCore.SIGNAL("over"), self.__onShootingOver)
+        self.disconnect(self._model, QtCore.SIGNAL("beforeRepeat"), self.__onShootingBeforeRepeat)
 
         self._view.keyPressEvent = self._view._originalKeyPressEvent
         self._view.keyReleaseEvent = self._view._originalKeyReleaseEvent
@@ -430,13 +414,22 @@ class ShootController(AbstractModalDialogController):
                 self.__resumeShooting()
                 # Use a stepShooting stuff
 
-    def __onStopPushButtonClicked(self):
-        Logger().trace("ShootController.__stopPushButtonClicked()")
-        self.__stopShooting()
-
-    def __onDonePushButtonClicked(self):
-        Logger().trace("ShootController.__onDonePushButtonClicked()")
-        self.shutdown()
+    def __onStopFinishPushButtonClicked(self):
+        Logger().trace("ShootController.__onStopFinishPushButtonClicked()")
+        if self._model.isShooting():
+            self.__stopShooting()
+        else:
+            self.__shootingScene.resetState()
+            self.__initWidgetsState()
+            self._view.dataPushButton.setEnabled(True)
+            self._view.timerPushButton.setEnabled(True)
+            self._view.startPushButton.setEnabled(True)
+            self._view.pauseResumeStepPushButton.setEnabled(False)
+            self._view.stopFinishPushButton.setText(self.tr("Stop"))
+            self._view.stopFinishPushButton.setIcon(QtGui.QIcon(":/icons/player_stop.png"))
+            self._view.stopFinishPushButton.setEnabled(False)
+            self._view.buttonBox.setEnabled(True)
+            self._view.reverseDirectionPushButton.setEnabled(True)
 
     def __onPictureClicked(self, index):
         Logger().trace("ShootController.__onPictureClicked(): index=%d" % index)
@@ -457,33 +450,12 @@ class ShootController(AbstractModalDialogController):
     # Callback model
     def __onShootingStarted(self):
         Logger().trace("ShootController.__onShootingStarted()")
-        self.__shootingScene.resetState()
-        self._view.shootingProgressBar.setValue(0)
-        self._view.totalProgressBar.setValue(0)
-        if self._model.timerRepeatEnable:
-            self._view.repeatLabel.setText("--/%d" % self._model.timerRepeat)
-        else:
-            self._view.repeatLabel.setText("")
-        self._view.shootingTimeLabel.setText("00:00:00")
-        self._view.elapsedTimeLabel.setText("00:00:00")
-        self._view.currentIndexLabel.setText("--/%d" % self._model.scan.totalNbPicts)
-        self._view.nextIndexLabel.setText("--/%d" % self._model.scan.totalNbPicts)
-        if self._model.mode == 'mosaic':
-            self._view.yawCurrentIndexLabel.setText("--/%d" % self._model.mosaic.yawNbPicts)
-            self._view.pitchCurrentIndexLabel.setText("--/%d" % self._model.mosaic.pitchNbPicts)
-            self._view.yawNextIndexLabel.setText("--/%d" % self._model.mosaic.yawNbPicts)
-            self._view.pitchNextIndexLabel.setText("--/%d" % self._model.mosaic.pitchNbPicts)
-        else:
-            self._view.yawCurrentIndexLabel.setText("--")
-            self._view.pitchCurrentIndexLabel.setText("--")
-            self._view.yawNextIndexLabel.setText("--")
-            self._view.pitchNextIndexLabel.setText("--")
         self._view.dataPushButton.setEnabled(False)
         self._view.timerPushButton.setEnabled(False)
         self._view.startPushButton.setEnabled(False)
         if not self._view.stepByStepPushButton.isChecked():
             self._view.pauseResumeStepPushButton.setEnabled(True)
-        self._view.stopPushButton.setEnabled(True)
+        self._view.stopFinishPushButton.setEnabled(True)
         self._view.buttonBox.setEnabled(False)
         self._view.reverseDirectionPushButton.setEnabled(False)
         self._view.rewindPushButton.setEnabled(False)
@@ -527,13 +499,9 @@ class ShootController(AbstractModalDialogController):
             self._view.sequenceLabel.setText(self.tr("Canceled"))
         elif status == 'fail':
             self._view.sequenceLabel.setText(self.tr("Failed"))
-        self._view.dataPushButton.setEnabled(True)
-        self._view.timerPushButton.setEnabled(True)
-        self._view.startPushButton.setEnabled(True)
         self._view.pauseResumeStepPushButton.setEnabled(False)
-        self._view.stopPushButton.setEnabled(False)
-        self._view.buttonBox.setEnabled(True)
-        self._view.reverseDirectionPushButton.setEnabled(True)
+        self._view.stopFinishPushButton.setText(self.tr("Finish"))
+        self._view.stopFinishPushButton.setIcon(QtGui.QIcon(":/icons/player_eject.png"))
 
     def __onShootingWaiting(self, wait):
         Logger().trace("ShootController.__onShootingRepeat()")
@@ -592,8 +560,8 @@ class ShootController(AbstractModalDialogController):
             totalNbPicts = self._model.shutter.bracketingNbPicts
             self._view.sequenceLabel.setText(self.tr("Shutter - Picture") + " %d/%d" % (bracket, totalNbPicts))
 
-    def __onShootingOver(self):
-        Logger().trace("ShootController.__onShootingOver()")
+    def __onShootingBeforeRepeat(self):
+        Logger().trace("ShootController.__onShootingBeforeRepeat()")
         if self._model.timerReverseDirection:
             self._model.scan.reverseDirection()
             self.__shootingScene.clear()
@@ -626,20 +594,29 @@ class ShootController(AbstractModalDialogController):
         # Select next picture position
         self.__shootingScene.selectNextPicture(1)
 
-        #self._model.scan.index = 1
-        #while True:
-            #try:
-                #index, (yaw, pitch) = self._model.scan.getCurrentPosition()
-                #if isinstance(index, tuple):
-                    #index, yawIndex, pitchIndex = index
-                #if self._model.head.isPositionValid(yaw, pitch):
-                    #self.__shootingScene.addPicture(index, yaw, pitch, 'preview')
-                #else:
-                    #self.__shootingScene.addPicture(index, yaw, pitch, 'invalid')
-                #self._model.scan.index += 1
-            #except IndexError:
-                #Logger().exception("ShootController.__generatePreviews()", debug=True)
-                #break
+    def __initWidgetsState(self):
+        """ Init widget state.
+        """
+        self._view.shootingProgressBar.setValue(0)
+        self._view.totalProgressBar.setValue(0)
+        if self._model.timerRepeatEnable:
+            self._view.repeatLabel.setText("--/%d" % self._model.timerRepeat)
+        else:
+            self._view.repeatLabel.setText("")
+        self._view.shootingTimeLabel.setText("00:00:00")
+        self._view.elapsedTimeLabel.setText("00:00:00")
+        self._view.currentIndexLabel.setText("--/%d" % self._model.scan.totalNbPicts)
+        self._view.nextIndexLabel.setText("--/%d" % self._model.scan.totalNbPicts)
+        if self._model.mode == 'mosaic':
+            self._view.yawCurrentIndexLabel.setText("--/%d" % self._model.mosaic.yawNbPicts)
+            self._view.pitchCurrentIndexLabel.setText("--/%d" % self._model.mosaic.pitchNbPicts)
+            self._view.yawNextIndexLabel.setText("--/%d" % self._model.mosaic.yawNbPicts)
+            self._view.pitchNextIndexLabel.setText("--/%d" % self._model.mosaic.pitchNbPicts)
+        else:
+            self._view.yawCurrentIndexLabel.setText("--")
+            self._view.pitchCurrentIndexLabel.setText("--")
+            self._view.yawNextIndexLabel.setText("--")
+            self._view.pitchNextIndexLabel.setText("--")
 
     def __refreshNextPosition(self):
         index, (yaw, pitch) = self._model.scan.getCurrentPosition()

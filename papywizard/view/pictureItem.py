@@ -139,14 +139,19 @@ class AbstractPictureItem(QtGui.QGraphicsItemGroup):
         """
         return self._index
 
-    def setState(self, state):
+    def setState(self, state):  # Turn to property
         """ Set the current state of the picture.
 
-        @param state: state of the picture, in ('preview', 'ok', 'error')
+        @param state: state of the picture, in ('preview', 'ok', 'invalid', 'error')
         @type state: str
         """
         self._state = state
         self.refresh()
+
+    def getState(self):  # Turn to property
+        """ Return the state of the picture.
+        """
+        return self._state
 
     def refresh(self):
         """ Refresh the picture.

@@ -326,13 +326,13 @@ class Shooting(QtCore.QObject):
         """
         self.emit(QtCore.SIGNAL("sequence"), sequence, bracket)
 
-    def over(self):
-        """ Shooting over.
+    def beforeRepeat(self):
+        """ Shooting before repeat.
 
         This signal is emitted at the end of a shooting sequence,
         before any repeat
         """
-        self.emit(QtCore.SIGNAL("over"))
+        self.emit(QtCore.SIGNAL("beforeRepeat"))
 
     # Interface
     def setCornersFromFov(self, yawFov, pitchFov):
@@ -642,7 +642,7 @@ class Shooting(QtCore.QObject):
 
                         checkStop()
 
-                    self.over()
+                    self.beforeRepeat()
 
         except StopIteration:
             Logger().debug("Shooting.start(): stop detected")

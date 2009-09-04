@@ -643,7 +643,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="stopPushButton">
+        <widget class="QPushButton" name="stopFinishPushButton">
          <property name="enabled">
           <bool>false</bool>
          </property>
