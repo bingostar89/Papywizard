@@ -18,6 +18,7 @@ x bug fix
     - renamed 'Ursa Minor' plugins
     - improved connection sequence
     - new xml data file format (version 'b')
+    x several bug fix
     x text shooting view refresh
     x manager now correctly loads custom plugins
 
