@@ -805,74 +805,79 @@
 <context>
     <name>ShootController</name>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="403"/>
+        <location filename="papywizard/controller/shootController.py" line="387"/>
         <source>Step</source>
         <translation>Pas</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="507"/>
+        <location filename="papywizard/controller/shootController.py" line="471"/>
         <source>Resume</source>
         <translation>Reprendre</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="520"/>
+        <location filename="papywizard/controller/shootController.py" line="484"/>
         <source>Pause</source>
         <translation>Suspendre</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="511"/>
+        <location filename="papywizard/controller/shootController.py" line="475"/>
         <source>Paused</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="532"/>
+        <location filename="papywizard/controller/shootController.py" line="496"/>
         <source>Finished</source>
         <translation>Terminé</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="534"/>
+        <location filename="papywizard/controller/shootController.py" line="498"/>
         <source>Canceled</source>
         <translation>Annulé</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="536"/>
+        <location filename="papywizard/controller/shootController.py" line="500"/>
         <source>Failed</source>
         <translation>Échoué</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="549"/>
+        <location filename="papywizard/controller/shootController.py" line="507"/>
         <source>Waiting</source>
         <translation>Attente</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="595"/>
+        <location filename="papywizard/controller/shootController.py" line="553"/>
         <source>Moving</source>
         <translation>Déplacement</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="597"/>
+        <location filename="papywizard/controller/shootController.py" line="555"/>
         <source>Stabilization</source>
         <translation>Stabilisation</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="599"/>
+        <location filename="papywizard/controller/shootController.py" line="557"/>
         <source>Mirror lockup</source>
         <translation>Verrouillage miroir</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="602"/>
+        <location filename="papywizard/controller/shootController.py" line="560"/>
         <source>Shutter - Picture</source>
         <translation>Obturateur - Image</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="442"/>
+        <location filename="papywizard/controller/shootController.py" line="427"/>
         <source>Stop</source>
         <translation>Arrêter</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="542"/>
+        <location filename="papywizard/controller/shootController.py" line="502"/>
         <source>Finish</source>
         <translation>Terminer</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/shootController.py" line="601"/>
+        <source>Idle</source>
+        <translation>Repos</translation>
     </message>
 </context>
 <context>

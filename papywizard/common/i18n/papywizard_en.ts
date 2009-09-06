@@ -805,74 +805,79 @@
 <context>
     <name>ShootController</name>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="403"/>
+        <location filename="papywizard/controller/shootController.py" line="387"/>
         <source>Step</source>
         <translation>Step</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="507"/>
+        <location filename="papywizard/controller/shootController.py" line="471"/>
         <source>Resume</source>
         <translation>Resume</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="520"/>
+        <location filename="papywizard/controller/shootController.py" line="484"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="511"/>
+        <location filename="papywizard/controller/shootController.py" line="475"/>
         <source>Paused</source>
         <translation>Paused</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="532"/>
+        <location filename="papywizard/controller/shootController.py" line="496"/>
         <source>Finished</source>
         <translation>Finished</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="534"/>
+        <location filename="papywizard/controller/shootController.py" line="498"/>
         <source>Canceled</source>
         <translation>Canceled</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="536"/>
+        <location filename="papywizard/controller/shootController.py" line="500"/>
         <source>Failed</source>
         <translation>Failed</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="549"/>
+        <location filename="papywizard/controller/shootController.py" line="507"/>
         <source>Waiting</source>
         <translation>Waiting</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="595"/>
+        <location filename="papywizard/controller/shootController.py" line="553"/>
         <source>Moving</source>
         <translation>Moving</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="597"/>
+        <location filename="papywizard/controller/shootController.py" line="555"/>
         <source>Stabilization</source>
         <translation>Stabilization</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="599"/>
+        <location filename="papywizard/controller/shootController.py" line="557"/>
         <source>Mirror lockup</source>
         <translation>Mirror lockup</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="602"/>
+        <location filename="papywizard/controller/shootController.py" line="560"/>
         <source>Shutter - Picture</source>
         <translation>Shutter - Picture</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="442"/>
+        <location filename="papywizard/controller/shootController.py" line="427"/>
         <source>Stop</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="542"/>
+        <location filename="papywizard/controller/shootController.py" line="502"/>
         <source>Finish</source>
         <translation>Finish</translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/shootController.py" line="601"/>
+        <source>Idle</source>
+        <translation>Idle</translation>
     </message>
 </context>
 <context>

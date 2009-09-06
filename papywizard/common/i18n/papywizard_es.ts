@@ -804,74 +804,79 @@
 <context>
     <name>ShootController</name>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="403"/>
+        <location filename="papywizard/controller/shootController.py" line="387"/>
         <source>Step</source>
         <translation>Paso</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="507"/>
+        <location filename="papywizard/controller/shootController.py" line="471"/>
         <source>Resume</source>
         <translation>Resume</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="520"/>
+        <location filename="papywizard/controller/shootController.py" line="484"/>
         <source>Pause</source>
         <translation>Parar</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="511"/>
+        <location filename="papywizard/controller/shootController.py" line="475"/>
         <source>Paused</source>
         <translation>Parado</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="532"/>
+        <location filename="papywizard/controller/shootController.py" line="496"/>
         <source>Finished</source>
         <translation>Terminado</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="534"/>
+        <location filename="papywizard/controller/shootController.py" line="498"/>
         <source>Canceled</source>
         <translation>Cancelado</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="536"/>
+        <location filename="papywizard/controller/shootController.py" line="500"/>
         <source>Failed</source>
         <translation>Fallo</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="549"/>
+        <location filename="papywizard/controller/shootController.py" line="507"/>
         <source>Waiting</source>
         <translation>Esperando</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="595"/>
+        <location filename="papywizard/controller/shootController.py" line="553"/>
         <source>Moving</source>
         <translation>Moviendo</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="597"/>
+        <location filename="papywizard/controller/shootController.py" line="555"/>
         <source>Stabilization</source>
         <translation>Estabilizando</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="599"/>
+        <location filename="papywizard/controller/shootController.py" line="557"/>
         <source>Mirror lockup</source>
         <translation>Levantar espejo</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="602"/>
+        <location filename="papywizard/controller/shootController.py" line="560"/>
         <source>Shutter - Picture</source>
         <translation>Disparo - Imagen</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="442"/>
+        <location filename="papywizard/controller/shootController.py" line="427"/>
         <source>Stop</source>
         <translation type="unfinished">Stop</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="542"/>
+        <location filename="papywizard/controller/shootController.py" line="502"/>
         <source>Finish</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/controller/shootController.py" line="601"/>
+        <source>Idle</source>
+        <translation type="unfinished">Detenido</translation>
     </message>
 </context>
 <context>
