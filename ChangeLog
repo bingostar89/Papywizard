@@ -7,6 +7,8 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+
+2009-09-06 Version 2.1.11 (dev)
     + mosaic start corner selection
     + reverse shooting direction
     + plugins i18n support
@@ -14,7 +16,7 @@ x bug fix
     + 'Gphoto' plugin (under test)
     - data file enabled by default
     - remove bracketing intent
-    - user config is always overwritten when version changes
+    - user config is always overwritten for new versions
     - renamed 'Ursa Minor' plugins
     - improved connection sequence
     - new xml data file format (version 'b')
