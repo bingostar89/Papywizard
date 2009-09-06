@@ -599,6 +599,7 @@ class ShootController(AbstractModalDialogController):
         """
         self._view.shootingProgressBar.setValue(0)
         self._view.totalProgressBar.setValue(0)
+        self._view.sequenceLabel.setText(self.tr("Idle"))
         if self._model.timerRepeatEnable:
             self._view.repeatLabel.setText("--/%d" % self._model.timerRepeat)
         else:
