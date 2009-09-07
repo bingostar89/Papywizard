@@ -323,7 +323,7 @@ class MainController(AbstractController):
                 Logger().debug("MainController.__onKeyPressed(): 'Right' key pressed; start 'yaw' axis dir '+'")
                 self.__keyPressedDict['Right'] = True
                 self._view.yawMovePlusToolButton.setDown(True)
-                self._model.hardware.startAxis('yaw', '+')
+                self._model.head.startAxis('yaw', '+')
             event.ignore()
 
         # 'Left' key
@@ -332,7 +332,7 @@ class MainController(AbstractController):
                 Logger().debug("MainController.__onKeyPressed(): 'Left' key pressed; start 'yaw' axis dir '-'")
                 self.__keyPressedDict['Left'] = True
                 self._view.yawMoveMinusToolButton.setDown(True)
-                self._model.hardware.startAxis('yaw', '-')
+                self._model.head.startAxis('yaw', '-')
             event.ignore()
 
         # 'Up' key
@@ -341,7 +341,7 @@ class MainController(AbstractController):
                 Logger().debug("MainController.__onKeyPressed(): 'Up' key pressed; start 'pitch' axis dir '+'")
                 self.__keyPressedDict['Up'] = True
                 self._view.pitchMovePlusToolButton.setDown(True)
-                self._model.hardware.startAxis('pitch', '+')
+                self._model.head.startAxis('pitch', '+')
             event.ignore()
 
         # 'Down' key
@@ -350,7 +350,7 @@ class MainController(AbstractController):
                 Logger().debug("MainController.__onKeyPressed(): 'Down' key pressed; start 'pitch' axis dir '-'")
                 self.__keyPressedDict['Down'] = True
                 self._view.pitchMoveMinusToolButton.setDown(True)
-                self._model.hardware.startAxis('pitch', '-')
+                self._model.head.startAxis('pitch', '-')
             event.ignore()
 
         # 'Home' key
@@ -360,13 +360,13 @@ class MainController(AbstractController):
                 if self.__manualSpeed == 'normal':
                     self.__manualSpeed = 'slow'
                     Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; select slow speed")
-                    self._model.hardware.setManualSpeed('slow')
+                    self._model.head.setManualSpeed('slow')
                     self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_play.png").scaled(22, 22))
                     self.setStatusbarMessage(self.tr("Manual speed set to slow"), 10)
                 elif self.__manualSpeed == 'fast':
                     self.__manualSpeed = 'normal'
                     Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; select normal speed")
-                    self._model.hardware.setManualSpeed('normal')
+                    self._model.head.setManualSpeed('normal')
                     self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_fwd.png").scaled(22, 22))
                     self.setStatusbarMessage(self.tr("Manual speed set to normal"), 10)
             event.ignore()
@@ -378,7 +378,7 @@ class MainController(AbstractController):
                 if self.__manualSpeed == 'slow':
                     self.__manualSpeed = 'normal'
                     Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select normal speed")
-                    self._model.hardware.setManualSpeed('normal')
+                    self._model.head.setManualSpeed('normal')
                     self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_fwd.png").scaled(22, 22))
                     self.setStatusbarMessage(self.tr("Manual speed set to normal"), 10)
                 elif self.__manualSpeed == 'normal':
@@ -388,7 +388,7 @@ class MainController(AbstractController):
                     #self._view.grabKeyboard()
                     self.__manualSpeed = 'fast'
                     Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select fast speed")
-                    self._model.hardware.setManualSpeed('fast')
+                    self._model.head.setManualSpeed('fast')
                     self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/messagebox_warning.png").scaled(22, 22))
                     self.setStatusbarMessage(self.tr("Manual speed set to fast"), 10)
             event.ignore()
@@ -437,8 +437,8 @@ class MainController(AbstractController):
         if event.key() == self.__key['Right'] and not event.isAutoRepeat() and self.__pluginsConnected:
             if self.__keyPressedDict['Right']:
                 Logger().debug("MainController.__onKeyReleased(): 'Right' key released; stop 'yaw' axis")
-                self._model.hardware.stopAxis('yaw')
-                self._model.hardware.waitStopAxis('yaw')
+                self._model.head.stopAxis('yaw')
+                self._model.head.waitStopAxis('yaw')
                 self.__keyPressedDict['Right'] = False
                 self._view.yawMovePlusToolButton.setDown(False)
             event.accept()
@@ -447,8 +447,8 @@ class MainController(AbstractController):
         elif event.key() == self.__key['Left'] and not event.isAutoRepeat() and self.__pluginsConnected:
             if self.__keyPressedDict['Left']:
                 Logger().debug("MainController.__onKeyReleased(): 'Left' key released; stop 'yaw' axis")
-                self._model.hardware.stopAxis('yaw')
-                self._model.hardware.waitStopAxis('yaw')
+                self._model.head.stopAxis('yaw')
+                self._model.head.waitStopAxis('yaw')
                 self.__keyPressedDict['Left'] = False
                 self._view.yawMoveMinusToolButton.setDown(False)
             event.accept()
@@ -457,8 +457,8 @@ class MainController(AbstractController):
         elif event.key() == self.__key['Up'] and not event.isAutoRepeat() and self.__pluginsConnected:
             if self.__keyPressedDict['Up']:
                 Logger().debug("MainController.__onKeyReleased(): 'Up' key released; stop 'pitch' axis")
-                self._model.hardware.stopAxis('pitch')
-                self._model.hardware.waitStopAxis('pitch')
+                self._model.head.stopAxis('pitch')
+                self._model.head.waitStopAxis('pitch')
                 self.__keyPressedDict['Up'] = False
                 self._view.pitchMovePlusToolButton.setDown(False)
             event.accept()
@@ -467,8 +467,8 @@ class MainController(AbstractController):
         elif event.key() == self.__key['Down'] and not event.isAutoRepeat() and self.__pluginsConnected:
             if self.__keyPressedDict['Down']:
                 Logger().debug("MainController.__onKeyReleased(): 'Down' key released; stop 'pitch' axis")
-                self._model.hardware.stopAxis('pitch')
-                self._model.hardware.waitStopAxis('pitch')
+                self._model.head.stopAxis('pitch')
+                self._model.head.waitStopAxis('pitch')
                 self.__keyPressedDict['Down'] = False
                 self._view.pitchMoveMinusToolButton.setDown(False)
             event.accept()
@@ -502,45 +502,45 @@ class MainController(AbstractController):
             self.__stopConnection()
 
     def __onActionHardwareSetLimitYawMinusActivated(self):
-        yaw, pitch = self._model.hardware.readPosition()
-        self._model.hardware.setLimit('yaw', '-', yaw)
+        yaw, pitch = self._model.head.readPosition()
+        self._model.head.setLimit('yaw', '-', yaw)
         Logger().debug("MainController.__onActionHardwareSetLimitYawMinusActivated(): yaw minus limit set to %.1f" % yaw)
         self.setStatusbarMessage(self.tr("Yaw - limit set"), 10)
 
     def __onActionHardwareSetLimitYawPlusActivated(self):
-        yaw, pitch = self._model.hardware.readPosition()
-        self._model.hardware.setLimit('yaw', '+', yaw)
+        yaw, pitch = self._model.head.readPosition()
+        self._model.head.setLimit('yaw', '+', yaw)
         Logger().debug("MainController.__onActionHardwareSetLimitYawPlusActivated(): yaw plus limit set to %.1f" % yaw)
         self.setStatusbarMessage(self.tr("Yaw + limit set"), 10)
 
     def __onActionHardwareSetLimitPitchPlusActivated(self):
-        yaw, pitch = self._model.hardware.readPosition()
-        self._model.hardware.setLimit('pitch', '+', pitch)
+        yaw, pitch = self._model.head.readPosition()
+        self._model.head.setLimit('pitch', '+', pitch)
         Logger().debug("MainController.__onActionHardwareSetLimitPitchPlusActivated(): pitch plus limit set to %.1f" % pitch)
         self.setStatusbarMessage(self.tr("Pitch + limit set"), 10)
 
     def __onActionHardwareSetLimitPitchMinusActivated(self):
-        yaw, pitch = self._model.hardware.readPosition()
-        self._model.hardware.setLimit('pitch', '-', pitch)
+        yaw, pitch = self._model.head.readPosition()
+        self._model.head.setLimit('pitch', '-', pitch)
         Logger().debug("MainController.__onActionHardwareSetLimitPitchMinusActivated(): pitch minus limit set to %.1f" % pitch)
         self.setStatusbarMessage(self.tr("Pitch - limit set"), 10)
 
     def __onActionHardwareClearLimitsActivated(self):
         Logger().trace("MainController.__onActionHardwareClearLimitsActivated()")
-        self._model.hardware.clearLimits()
+        self._model.head.clearLimits()
         self.setStatusbarMessage(self.tr("Limits cleared"), 10)
 
     def __onActionHardwareGotoReferenceActivated(self):
         Logger().trace("MainController.__onActionHardwareGotoReferenceActivated()")
         self.setStatusbarMessage(self.tr("Goto reference position..."))
-        self._model.hardware.gotoPosition(0., 0., wait=False)
+        self._model.head.gotoPosition(0., 0., wait=False)
         dialog = AbortMessageDialog(self.tr("Goto reference position"), self.tr("Please wait..."))
         self._view.releaseKeyboard()
         dialog.show()
-        while self._model.hardware.isAxisMoving():
+        while self._model.head.isAxisMoving():
             QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
             if dialog.result() == QtGui.QMessageBox.Abort:
-                self._model.hardware.stopAxis()
+                self._model.head.stopAxis()
                 self.setStatusbarMessage(self.tr("Operation aborted"), 10)
                 break
             time.sleep(0.01)
@@ -554,14 +554,14 @@ class MainController(AbstractController):
         self.setStatusbarMessage(self.tr("Goto initial position..."))
         while QtGui.QApplication.hasPendingEvents():
             QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
-        self._model.hardware.gotoPosition(0., 0., useOffset=False, wait=False)
+        self._model.head.gotoPosition(0., 0., useOffset=False, wait=False)
         dialog = AbortMessageDialog(self.tr("Goto initial position"), self.tr("Please wait..."))
         self._view.releaseKeyboard()
         dialog.show()
-        while self._model.hardware.isAxisMoving():
+        while self._model.head.isAxisMoving():
             QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
             if dialog.result() == QtGui.QMessageBox.Abort:
-                self._model.hardware.stopAxis()
+                self._model.head.stopAxis()
                 self.setStatusbarMessage(self.tr("Operation aborted"), 10)
                 break
             time.sleep(0.01)
@@ -671,50 +671,50 @@ class MainController(AbstractController):
     def __onSetReferenceToolButtonClicked(self):
         Logger().trace("MainController.__onSetReferenceToolButtonClicked()")
         Logger().info("Set hardware reference")
-        self._model.hardware.setReference()
+        self._model.head.setReference()
         self.setStatusbarMessage(self.tr("Reference set at current position"), 10)
 
     def __onYawMovePlusToolButtonPressed(self):
         Logger().trace("MainController.__yawMovePlusToolButtonPressed()")
-        self._model.hardware.startAxis('yaw', '+')
+        self._model.head.startAxis('yaw', '+')
 
     def __onYawMovePlusToolButtonReleased(self):
         Logger().trace("MainController.__yawMovePlusToolButtonReleased()")
-        self._model.hardware.stopAxis('yaw')
-        self._model.hardware.waitStopAxis('yaw')
+        self._model.head.stopAxis('yaw')
+        self._model.head.waitStopAxis('yaw')
         #self._view.yawMovePlusToolButton.setDown(False)
         self.refreshView()
 
     def __onPitchMovePlusToolButtonPressed(self):
         Logger().trace("MainController.__pitchMovePlusToolButtonPressed()")
-        self._model.hardware.startAxis('pitch', '+')
+        self._model.head.startAxis('pitch', '+')
 
     def __onPitchMovePlusToolButtonReleased(self):
         Logger().trace("MainController.__pitchMovePlusToolButtonReleased()")
-        self._model.hardware.stopAxis('pitch')
-        self._model.hardware.waitStopAxis('pitch')
+        self._model.head.stopAxis('pitch')
+        self._model.head.waitStopAxis('pitch')
         #self._view.pitchMovePlusToolButton.setDown(False)
         self.refreshView()
 
     def __onPitchMoveMinusToolButtonPressed(self):
         Logger().trace("MainController.__onPitchMoveMinusToolButtonPressed()")
-        self._model.hardware.startAxis('pitch', '-')
+        self._model.head.startAxis('pitch', '-')
 
     def __onPitchMoveMinusToolButtonReleased(self):
         Logger().trace("MainController.__onPitchMoveMinusToolButtonReleased()")
-        self._model.hardware.stopAxis('pitch')
-        self._model.hardware.waitStopAxis('pitch')
+        self._model.head.stopAxis('pitch')
+        self._model.head.waitStopAxis('pitch')
         #self._view.pitchMoveMinusToolButton.setDown(False)
         self.refreshView()
 
     def __onYawMoveMinusToolButtonPressed(self):
         Logger().trace("MainController.__onYawMoveMinusToolButtonPressed()")
-        self._model.hardware.startAxis('yaw', '-')
+        self._model.head.startAxis('yaw', '-')
 
     def __onYawMoveMinusToolButtonReleased(self):
         Logger().trace("MainController.__onYawMoveMinusToolButtonReleased()")
-        self._model.hardware.stopAxis('yaw')
-        self._model.hardware.waitStopAxis('yaw')
+        self._model.head.stopAxis('yaw')
+        self._model.head.waitStopAxis('yaw')
         #self._view.yawMoveMinusToolButton.setDown(False)
         self.refreshView()
 

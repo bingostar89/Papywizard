@@ -85,8 +85,6 @@ class Shooting(QtCore.QObject):
         self.__pauseTime = None
         self.__totalPausedTime = 0.
         self.head = Head()
-        self.hardware = self.head
-        Logger().warning("Shooting.__init__(): Remove self.hardware compatibility")
 
         # Sub-models
         self.camera = Camera()
@@ -542,6 +540,7 @@ class Shooting(QtCore.QObject):
                         for bracket in xrange(1, self.shutter.bracketingNbPicts + 1):
 
                             # Mirror lockup sequence
+                            # TODO: move call to plugin!
                             if self.shutter.mirrorLockup:
                                 Logger().info("Mirror lockup")
                                 self.sequence('mirror')

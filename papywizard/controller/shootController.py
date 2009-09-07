@@ -130,7 +130,7 @@ class ShootController(AbstractModalDialogController):
         self.connect(self.__shootingScene, QtCore.SIGNAL("pictureClicked"), self.__onPictureClicked)
 
         # Refresh head position
-        yaw, pitch = self._model.hardware.readPosition()
+        yaw, pitch = self._model.head.readPosition()
         self.__shootingScene.setHeadPosition(yaw, pitch)
 
         # Keyboard behaviour
