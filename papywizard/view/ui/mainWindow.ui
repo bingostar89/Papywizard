@@ -1168,19 +1168,11 @@
      <addaction name="actionHardwareSetLimitPitchPlus"/>
      <addaction name="actionHardwareSetLimitPitchMinus"/>
     </widget>
-    <widget class="QMenu" name="menuYawOffset">
-     <property name="title">
-      <string>Yaw Offset</string>
-     </property>
-     <addaction name="actionHardwareYawOffsetPlus360"/>
-     <addaction name="actionHardwareYawOffsetMinus360"/>
-    </widget>
     <addaction name="actionHardwareConnect"/>
     <addaction name="separator"/>
     <addaction name="menuSetLimit"/>
     <addaction name="actionHardwareClearLimits"/>
     <addaction name="separator"/>
-    <addaction name="menuYawOffset"/>
     <addaction name="separator"/>
     <addaction name="actionHardwareGotoReference"/>
     <addaction name="actionHardwareGotoInitial"/>
