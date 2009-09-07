@@ -175,7 +175,10 @@ class AbstractData(object):
         if ConfigManager().getBoolean('Configuration/DATA_FILE_ENABLE'):
             Logger().trace("Data.serialize()")
             dataFileFormat = "papywizard_%s.xml" % ConfigManager().get('Configuration/DATA_FILE_FORMAT')
-            fileName = os.path.join(ConfigManager().get('Configuration/DATA_STORAGE_DIR'), dataFileFormat)
+            dataStorageDir = os.path.join(ConfigManager().get('Configuration/DATA_STORAGE_DIR'))
+            if not dataStorageDir:
+                dataStorageDir = config.DATA_STORAGE_DIR
+            fileName = os.path.join(dataStorageDir, dataFileFormat)
             xmlFile = file(fileName % self._dataFileFormatDict, 'w')
             #Logger().debug("Data.serialize():\n%s" % self._doc.toprettyxml(indent="    ", newl='\n', encoding='utf-8'))
             #self._doc.writexml(xmlFile, addindent="    ", newl='\n', encoding='utf-8')
