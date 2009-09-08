@@ -128,7 +128,9 @@ class GphotoShutter(AbstractShutterPlugin):
                     if line.startswith("Choice"):
                         bias = line.split()[-1]  # Get last field
                         self.__exposureBiasTable['0.5 EV'].append(float(bias) / 1000.)
-            Logger().debug("GphotoShutter.shoot(): __exposureBiasTable=%s" % self.__exposureBiasTable)
+                Logger().debug("GphotoShutter.shoot(): __exposureBiasTable=%s" % self.__exposureBiasTable)
+            else:
+                return p.returncode
 
         # Compute exposure bias according to bracketNumber
         bias = (bracketNumber - 1 - int(self._config['BRACKETING_NB_PICTS'] / 2)) * self._config['BRACKETING_STEP']
@@ -137,10 +139,9 @@ class GphotoShutter(AbstractShutterPlugin):
         # Retreive index in exposure table
         index = self.__exposureBiasTable["0.5 EV"].index(bias)
 
+        # Launch external command
         cmd = SHOOT_COMMAND % {'index': index}
         Logger().debug("GphotoShutter.shoot(): execute command '%s'..." % cmd)
-
-        # Launch external command
         args = cmd.split()
         p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
