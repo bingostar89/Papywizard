@@ -56,7 +56,7 @@ Notes
 @license: CeCILL
 """
 
-__revision__ = "$Id: gphotoPlugins.py 2055 2009-08-31 22:19:23Z fma $"
+__revision__ = "$Id$"
 
 import time
 import subprocess
