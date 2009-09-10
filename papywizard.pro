@@ -106,4 +106,5 @@ TRANSLATIONS += papywizard/common/i18n/papywizard_en.ts \
                 papywizard/common/i18n/papywizard_pl.ts \
                 papywizard/common/i18n/papywizard_de.ts \
                 papywizard/common/i18n/papywizard_it.ts \
-                papywizard/common/i18n/papywizard_es.ts
+                papywizard/common/i18n/papywizard_es.ts \
+                papywizard/common/i18n/papywizard_cz.ts
