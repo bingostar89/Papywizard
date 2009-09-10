@@ -197,51 +197,38 @@ class EOSUtilityShutterController(ShutterPluginController):
         Logger().trace("EOSUtilityShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
         self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Program path"),
-                        LineEditField, (),
-                        'PROGRAM_PATH')
+                        LineEditField, (), 'PROGRAM_PATH')
         types = [EOS_UTILITY_VERSION_TABLE['old'], EOS_UTILITY_VERSION_TABLE['new']]
         self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "EOS Utility version"),
-                        ComboBoxField, (types,),
-                        'EOS_UTILITY_VERSION')
+                        ComboBoxField, (types,), 'EOS_UTILITY_VERSION')
         self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Bracketing nb picts"),
-                        SpinBoxField, (1, 99),
-                        'BRACKETING_NB_PICTS')
+                        SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
         stops = ['1/3', '2/3', '1', '1 1/3', '1 2/3', '2', '2 1/3', '2 2/3','3',
                  '3 1/3', '3 2/3', '4', '4 1/3', '4 2/3', '5', '5 1/3', '5 2/3', '6']
         self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Bracketing stops"),
-                        ComboBoxField, (stops,),
-                        'BRACKETING_STOPS')
+                        ComboBoxField, (stops,), 'BRACKETING_STOPS')
         self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Bracketing type"),
-                        ComboBoxField, (BRACKETING_TYPE_INDEX.keys(),),
-                        'BRACKETING_TYPE')
+                        ComboBoxField, (BRACKETING_TYPE_INDEX.keys(),), 'BRACKETING_TYPE')
         self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Dry run"),
-                        CheckBoxField, (),
-                        'DRY_RUN')
+                        CheckBoxField, (), 'DRY_RUN')
         self._addTab('Bulb', QtGui.QApplication.translate("EOSUtilityShutterController", 'Bulb'))
         self._addWidget('Bulb', QtGui.QApplication.translate("EOSUtilityShutterController", "Enable"),
-                        CheckBoxField, (),
-                        'BULB_ENABLE')
+                        CheckBoxField, (), 'BULB_ENABLE')
         self._addWidget('Bulb', QtGui.QApplication.translate("EOSUtilityShutterController", "Base exposure"),
-                        SpinBoxField, (1, 99, "", " s"),
-                        'BULB_BASE_EXPOSURE')
+                        SpinBoxField, (1, 99, "", " s"), 'BULB_BASE_EXPOSURE')
         self._addTab('Focus', QtGui.QApplication.translate("EOSUtilityShutterController", 'Focus'))
         self._addWidget('Focus',  QtGui.QApplication.translate("EOSUtilityShutterController", "Enable"),
-                        CheckBoxField, (),
-                        'FOCUS_ENABLE')
+                        CheckBoxField, (), 'FOCUS_ENABLE')
         focusDir = [FOCUS_DIRECTION_TABLE['far'], FOCUS_DIRECTION_TABLE['near']]
         self._addWidget('Focus', QtGui.QApplication.translate("EOSUtilityShutterController", "Direction"),
-                        ComboBoxField, (focusDir,),
-                        'FOCUS_DIRECTION')
+                        ComboBoxField, (focusDir,), 'FOCUS_DIRECTION')
         stepMode = [FOCUS_STEP_MODE_TABLE['small'], FOCUS_STEP_MODE_TABLE['medium'], FOCUS_STEP_MODE_TABLE['large']]
         self._addWidget('Focus',  QtGui.QApplication.translate("EOSUtilityShutterController", "Step"),
-                        ComboBoxField, (stepMode,),
-                        'FOCUS_STEP')
+                        ComboBoxField, (stepMode,), 'FOCUS_STEP')
         self._addWidget('Focus', QtGui.QApplication.translate("EOSUtilityShutterController", "Step count"),
-                        SpinBoxField, (1, 99),
-                        'FOCUS_STEP_COUNT')
+                        SpinBoxField, (1, 99), 'FOCUS_STEP_COUNT')
         self._addWidget('Focus', QtGui.QApplication.translate("EOSUtilityShutterController", "Nb picts"),
-                        SpinBoxField, (1, 99),
-                        'FOCUS_NB_PICTS')
+                        SpinBoxField, (1, 99), 'FOCUS_NB_PICTS')
 
 def register():
     """ Register plugins.
