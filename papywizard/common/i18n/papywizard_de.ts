@@ -85,12 +85,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="219"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="213"/>
         <source>Bulb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="226"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="218"/>
         <source>Focus</source>
         <translation type="unfinished"></translation>
     </message>
@@ -125,57 +125,57 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="205"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="203"/>
         <source>Bracketing nb picts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="210"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="207"/>
         <source>Bracketing stops</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="213"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="209"/>
         <source>Bracketing type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="227"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="219"/>
         <source>Enable</source>
         <translation>Aktivieren</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="223"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="216"/>
         <source>Base exposure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="231"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="222"/>
         <source>Direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="235"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="225"/>
         <source>Step</source>
         <translation>Schritt</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="241"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="229"/>
         <source>Nb picts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="238"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="227"/>
         <source>Step count</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="216"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="211"/>
         <source>Dry run</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="202"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="201"/>
         <source>EOS Utility version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -222,17 +222,17 @@
 <context>
     <name>GphotoShutterController</name>
     <message>
-        <location filename="papywizard/plugins/gphotoPlugins.py" line="158"/>
+        <location filename="papywizard/plugins/gphotoPlugins.py" line="159"/>
         <source>Mirror lockup</source>
         <translation>Spiegelverriegelung</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/gphotoPlugins.py" line="160"/>
+        <location filename="papywizard/plugins/gphotoPlugins.py" line="161"/>
         <source>Bracketing nb picts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/gphotoPlugins.py" line="162"/>
+        <location filename="papywizard/plugins/gphotoPlugins.py" line="163"/>
         <source>Bracketing step</source>
         <translation type="unfinished"></translation>
     </message>
@@ -466,17 +466,17 @@
         <translation>Raster</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1004"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="933"/>
         <source>Yaw</source>
         <translation>Drehung</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1009"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="949"/>
         <source>Pitch</source>
         <translation>Neigung</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="813"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1057"/>
         <source>--</source>
         <translation>--</translation>
     </message>
@@ -531,127 +531,107 @@
         <translation>Aufnahme...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1151"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1100"/>
         <source>File</source>
         <translation>Datei</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1160"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1109"/>
         <source>Hardware</source>
         <translation>Hardware</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1164"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1113"/>
         <source>Set Limit</source>
         <translation>Limit setzen</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1192"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1132"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1216"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1156"/>
         <source>Quit</source>
         <translation>Quit</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1219"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1159"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1228"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1168"/>
         <source>Import Preset File...</source>
         <translation>Import Datei Voreinstellungen...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1236"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1176"/>
         <source>Connect...</source>
         <translation>Verbinden...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1245"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1185"/>
         <source>Clear Limits</source>
         <translation>Limits löschen</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1254"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1194"/>
         <source>Yaw -</source>
         <translation>Drehung -</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1263"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1203"/>
         <source>Yaw +</source>
         <translation>Drehung +</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1272"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1212"/>
         <source>Pitch +</source>
         <translation>Neigung +</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1281"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1221"/>
         <source>Pitch -</source>
         <translation>Neigung -</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1290"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1230"/>
         <source>Manual</source>
         <translation>Anleitung</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1299"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1239"/>
         <source>View Log...</source>
         <translation>Log anzeigen...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1308"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1248"/>
         <source>About Papywizard</source>
         <translation>Über Papywizard</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1317"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1257"/>
         <source>About Qt</source>
         <translation>Über Qt</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1326"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1266"/>
         <source>Load Style Sheet...</source>
         <translation>Lade Style Sheet...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1344"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1284"/>
         <source>Goto Initial...</source>
         <translation>Gehe zur Ausgangsposition...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1335"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1275"/>
         <source>Goto Reference...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1067"/>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1101"/>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1084"/>
-        <source>Replace</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1118"/>
-        <source>Goto...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1353"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1293"/>
         <source>Plugins...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -675,19 +655,24 @@
         <source>Corner 1 (°)</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1173"/>
-        <source>Yaw Offset</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1362"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1302"/>
         <source>+360°</source>
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1371"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1311"/>
         <source>-360°</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="papywizard/view/ui/mainWindow.ui" line="965"/>
+        <source>Start (°)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message encoding="UTF-8">
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1019"/>
+        <source>End (°)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -712,17 +697,17 @@
 <context>
     <name>PixOrbAxisController</name>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="375"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="403"/>
         <source>Speed table index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="377"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="405"/>
         <source>Hard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="378"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="406"/>
         <source>Axis with break</source>
         <translation type="unfinished"></translation>
     </message>
@@ -809,72 +794,72 @@
         <translation>Schritt</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="471"/>
+        <location filename="papywizard/controller/shootController.py" line="458"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="484"/>
+        <location filename="papywizard/controller/shootController.py" line="471"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="475"/>
+        <location filename="papywizard/controller/shootController.py" line="462"/>
         <source>Paused</source>
         <translation>pausiert</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="496"/>
+        <location filename="papywizard/controller/shootController.py" line="483"/>
         <source>Finished</source>
         <translation>Beendet</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="498"/>
+        <location filename="papywizard/controller/shootController.py" line="485"/>
         <source>Canceled</source>
         <translation>Abgebrochen</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="500"/>
+        <location filename="papywizard/controller/shootController.py" line="487"/>
         <source>Failed</source>
         <translation>Fehlgeschlagen</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="507"/>
+        <location filename="papywizard/controller/shootController.py" line="494"/>
         <source>Waiting</source>
         <translation>Warte</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="553"/>
+        <location filename="papywizard/controller/shootController.py" line="540"/>
         <source>Moving</source>
         <translation>Kopf fährt</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="555"/>
+        <location filename="papywizard/controller/shootController.py" line="542"/>
         <source>Stabilization</source>
         <translation>Stabilisierung</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="557"/>
+        <location filename="papywizard/controller/shootController.py" line="544"/>
         <source>Mirror lockup</source>
         <translation>Spiegelverriegelung</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="560"/>
+        <location filename="papywizard/controller/shootController.py" line="547"/>
         <source>Shutter - Picture</source>
         <translation>Auslöser - Bild</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="427"/>
+        <location filename="papywizard/controller/shootController.py" line="678"/>
         <source>Stop</source>
         <translation type="unfinished">Stop</translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="502"/>
+        <location filename="papywizard/controller/shootController.py" line="489"/>
         <source>Finish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/controller/shootController.py" line="601"/>
+        <location filename="papywizard/controller/shootController.py" line="588"/>
         <source>Idle</source>
         <translation type="unfinished">Warte</translation>
     </message>
@@ -882,12 +867,12 @@
 <context>
     <name>Shooting</name>
     <message>
-        <location filename="papywizard/model/shooting.py" line="549"/>
+        <location filename="papywizard/model/shooting.py" line="548"/>
         <source>Shutter failed while mirror locking up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/model/shooting.py" line="564"/>
+        <location filename="papywizard/model/shooting.py" line="563"/>
         <source>Shutter failed while shooting</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1404,6 +1389,28 @@
         <source>Credits</source>
         <translation>Mitarbeit</translation>
     </message>
+    <message>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="189"/>
+        <source>License</source>
+        <translation>Lizenz</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="195"/>
+        <source>This software is governed by the CeCILL license under French law and abiding by the rules of distribution of free software. You can  use, modify and/or redistribute the software under the terms of the CeCILL license as circulated by CEA, CNRS and INRIA at the following URL http://www.cecill.info.
+
+As a counterpart to the access to the source code and  rights to copy, modify and redistribute granted by the license, users are provided only with a limited warranty  and the software&apos;s author,  the holder of the economic rights,  and the successive licensors  have only  limited liability.
+
+In this respect, the user&apos;s attention is drawn to the risks associated with loading,  using,  modifying and/or developing or reproducing the software by the user in light of its specific status of free software, that may mean  that it is complicated to manipulate,  and  that  also therefore means  that it is reserved for developers  and  experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the software&apos;s suitability as regards their requirements in conditions enabling the security of their systems and/or data to be ensured and,  more generally, to use and operate it in the same conditions as regards security.
+
+The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</source>
+        <translation>This software is governed by the CeCILL license under French law and abiding by the rules of distribution of free software. You can  use, modify and/or redistribute the software under the terms of the CeCILL license as circulated by CEA, CNRS and INRIA at the following URL http://www.cecill.info.￼
+
+As a counterpart to the access to the source code and  rights to copy, modify and redistribute granted by the license, users are provided only with a limited warranty  and the software&apos;s author,  the holder of the economic rights,  and the successive licensors  have only  limited liability.￼
+
+￼In this respect, the user&apos;s attention is drawn to the risks associated with loading,  using,  modifying and/or developing or reproducing the software by the user in light of its specific status of free software, that may mean  that it is complicated to manipulate,  and  that  also therefore means  that it is reserved for developers  and  experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the software&apos;s suitability as regards their requirements in conditions enabling the security of their systems and/or data to be ensured and,  more generally, to use and operate it in the same conditions as regards security.￼
+
+￼The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</translation>
+    </message>
     <message encoding="UTF-8">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="155"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1422,6 +1429,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Maciej Dworak (pl)&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Antonio Bruno (it)&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Juan Carlos Andres (es)&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Vaclav Cerny (cz)&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Graphics by:&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
@@ -1432,54 +1440,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (linux, windows, maemo)&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jeremy Pronk (MacOS)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans Serif&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Erstellt von:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (main core)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jones Henry Subbiah (EOS Utility plugin)&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Übersetzt von:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (fr)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jo Lutum (de)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Maciej Dworak (pl)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Antonio Bruno (it)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Juan Carlos Andres (es)&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Grafik von:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Hubert Pawlowski&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Packaged by:&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (linux, windows, maemo)&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jeremy Pronk (MacOS)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="188"/>
-        <source>License</source>
-        <translation>Lizenz</translation>
-    </message>
-    <message>
-        <location filename="papywizard/view/ui/helpAboutDialog.ui" line="194"/>
-        <source>This software is governed by the CeCILL license under French law and abiding by the rules of distribution of free software. You can  use, modify and/or redistribute the software under the terms of the CeCILL license as circulated by CEA, CNRS and INRIA at the following URL http://www.cecill.info.
-
-As a counterpart to the access to the source code and  rights to copy, modify and redistribute granted by the license, users are provided only with a limited warranty  and the software&apos;s author,  the holder of the economic rights,  and the successive licensors  have only  limited liability.
-
-In this respect, the user&apos;s attention is drawn to the risks associated with loading,  using,  modifying and/or developing or reproducing the software by the user in light of its specific status of free software, that may mean  that it is complicated to manipulate,  and  that  also therefore means  that it is reserved for developers  and  experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the software&apos;s suitability as regards their requirements in conditions enabling the security of their systems and/or data to be ensured and,  more generally, to use and operate it in the same conditions as regards security.
-
-The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</source>
-        <translation>This software is governed by the CeCILL license under French law and abiding by the rules of distribution of free software. You can  use, modify and/or redistribute the software under the terms of the CeCILL license as circulated by CEA, CNRS and INRIA at the following URL http://www.cecill.info.￼
-
-As a counterpart to the access to the source code and  rights to copy, modify and redistribute granted by the license, users are provided only with a limited warranty  and the software&apos;s author,  the holder of the economic rights,  and the successive licensors  have only  limited liability.￼
-
-￼In this respect, the user&apos;s attention is drawn to the risks associated with loading,  using,  modifying and/or developing or reproducing the software by the user in light of its specific status of free software, that may mean  that it is complicated to manipulate,  and  that  also therefore means  that it is reserved for developers  and  experienced professionals having in-depth computer knowledge. Users are therefore encouraged to load and test the software&apos;s suitability as regards their requirements in conditions enabling the security of their systems and/or data to be ensured and,  more generally, to use and operate it in the same conditions as regards security.￼
-
-￼The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1503,12 +1464,12 @@ As a counterpart to the access to the source code and  rights to copy, modify an
 <context>
     <name>main</name>
     <message>
-        <location filename="papywizard/scripts/main.py" line="217"/>
+        <location filename="papywizard/scripts/main.py" line="219"/>
         <source>Plugins selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/scripts/main.py" line="222"/>
+        <location filename="papywizard/scripts/main.py" line="224"/>
         <source>Before you can use Papywizard, you must choose what plugins to use to control your hardware.
 
 After closing this dialog, you will be prompt to select these plugins. Once it is done, you can configure them in the global Configuration dialog</source>
