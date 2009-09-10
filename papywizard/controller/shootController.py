@@ -282,8 +282,8 @@ class ShootController(AbstractModalDialogController):
 
             # Pressing 'Escape' while shooting stops shooting
             else:
-                Logger().debug("shootController.__onKeyPressed(): stop shooting")
-                self.__stopShooting()
+                Logger().debug("shootController.__onKeyPressed(): stop/finish shooting")
+                self.__stopFinishShooting()
             event.ignore()
 
         else:
@@ -416,20 +416,7 @@ class ShootController(AbstractModalDialogController):
 
     def __onStopFinishPushButtonClicked(self):
         Logger().trace("ShootController.__onStopFinishPushButtonClicked()")
-        if self._model.isShooting():
-            self.__stopShooting()
-        else:
-            self.__shootingScene.resetState()
-            self.__initWidgetsState()
-            self._view.dataPushButton.setEnabled(True)
-            self._view.timerPushButton.setEnabled(True)
-            self._view.startPushButton.setEnabled(True)
-            self._view.pauseResumeStepPushButton.setEnabled(False)
-            self._view.stopFinishPushButton.setText(self.tr("Stop"))
-            self._view.stopFinishPushButton.setIcon(QtGui.QIcon(":/icons/player_stop.png"))
-            self._view.stopFinishPushButton.setEnabled(False)
-            self._view.buttonBox.setEnabled(True)
-            self._view.reverseDirectionPushButton.setEnabled(True)
+        self.__stopFinishShooting()
 
     def __onPictureClicked(self, index):
         Logger().trace("ShootController.__onPictureClicked(): index=%d" % index)
@@ -678,8 +665,22 @@ class ShootController(AbstractModalDialogController):
             self._view.pauseResumeStepPushButton.setEnabled(False)
         self._model.resume()
 
-    def __stopShooting(self):
-        self._model.stop()
+    def __stopFinishShooting(self):
+        print "ici"
+        if self._model.isShooting():
+            self._model.stop()
+        else:
+            self.__shootingScene.resetState()
+            self.__initWidgetsState()
+            self._view.dataPushButton.setEnabled(True)
+            self._view.timerPushButton.setEnabled(True)
+            self._view.startPushButton.setEnabled(True)
+            self._view.pauseResumeStepPushButton.setEnabled(False)
+            self._view.stopFinishPushButton.setText(self.tr("Stop"))
+            self._view.stopFinishPushButton.setIcon(QtGui.QIcon(":/icons/player_stop.png"))
+            self._view.stopFinishPushButton.setEnabled(False)
+            self._view.buttonBox.setEnabled(True)
+            self._view.reverseDirectionPushButton.setEnabled(True)
 
     # Interface
     def shutdown(self):
