@@ -103,7 +103,35 @@ MANUAL_SPEED_TABLE = {'slow': 7,  # normal / 5
                       }
 
 
-class PixOrbHardware(AbstractHardwarePlugin):
+class AbstractPixOrbHardware(AbstractHardwarePlugin):
+    __initSIN11 = False
+
+    def establishConnection(self):
+        """ Establish the connection.
+
+        The SIN-11 device used to control the Pixorb axis needs to be
+        initialised before any command can be sent to the axis controllers.
+        """
+        AbstractHardwarePlugin.establishConnection(self)
+        Logger().trace("AbstractPixOrbHardware.establishConnection()")
+        if not AbstractPixOrbHardware.__initSIN11:
+            answer = ""
+            self._driver.empty()
+            self._driver.write('&\n')
+            c = ''
+            while c != '\n':
+                c = self._driver.read(1)
+                if c == '?':
+                    self._driver.read(1)  # Read last CR. Or is it CRLF?
+                    raise HardwareError("Can't init SIN-11")
+                else:
+                    answer += c
+            answer = answer.strip()  # remove final CR
+            Logger().debug("AbstractPixOrbHardware.establishConnection(): SIN-11 '&' answer=%s" % answer)
+            AbstractPixOrbHardware.__initSIN11 = True
+
+
+class PixOrbHardware(AbstractPixOrbHardware):
     """
     """
     def _encoderToAngle(self, codPos):
@@ -147,10 +175,10 @@ class PixOrbHardware(AbstractHardwarePlugin):
                 self._driver.empty()
                 self._driver.write("%s\n" % cmd)
                 c = ''
-                while c  != '\r':
+                while c != '\r':
                     c = self._driver.read(1)
                     if c in ('#', '!', '$'):
-                        self._driver.read(1)  # Read last CR
+                        self._driver.read(1)  # Read last CR. Or is it CRLF?
                         raise IOError("Error on command '%s'" % cmd)
                     else:
                         answer += c
@@ -168,7 +196,7 @@ class PixOrbHardware(AbstractHardwarePlugin):
         return answer
 
     def _configurePixOrb(self, speedTableIndex):
-        """ onfigure the PixOrb hardware.
+        """ Configure the PixOrb hardware.
 
         @param speedTableIndex: speed params table index
         @type speedTableIndex: int
