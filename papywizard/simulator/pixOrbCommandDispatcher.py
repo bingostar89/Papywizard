@@ -127,6 +127,10 @@ class PixOrbCommandDispatcherObject(QtCore.QObject):
         raise HardwareError: wrong command
         """
 
+        # SIN-11 specific command
+        if cmdStr.startswith('&'):
+            return '\n'
+
         # Split cmdStr
         controllerName = cmdStr[0]
         cmd = cmdStr[1]
@@ -142,7 +146,6 @@ class PixOrbCommandDispatcherObject(QtCore.QObject):
         if cmd == '@':
             Logger().debug("PixOrbBaseHandler.handleCmd(): stop")
             self._axis[controllerName].stop()
-            answer = ""
 
         # read command
         elif cmd == 'Z':
@@ -211,7 +214,8 @@ class PixOrbCommandDispatcherObject(QtCore.QObject):
 
         # Invalid command
         else:
-            raise HardwareError("Invalid command")
+            #raise HardwareError("Invalid command")
+            return "#\n\r"  # Or only '\n'?
 
         return "%s %s\n\r" % (controllerName, answer)
 
