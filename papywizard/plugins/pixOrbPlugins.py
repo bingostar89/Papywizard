@@ -117,16 +117,16 @@ class AbstractPixOrbHardware(AbstractHardwarePlugin):
         if not AbstractPixOrbHardware.__initSIN11:
             answer = ""
             self._driver.empty()
-            self._driver.write('&\n')
+            self._driver.write('&')
             c = ''
-            while c != '\n':
+            while c != '\r':
                 c = self._driver.read(1)
                 if c == '?':
-                    self._driver.read(1)  # Read last CR. Or is it CRLF?
+                    self._driver.read(2)  # Read last CRLF
                     raise HardwareError("Can't init SIN-11")
                 else:
                     answer += c
-            answer = answer.strip()  # remove final CR
+            answer = answer.strip()  # remove final CRLR
             Logger().debug("AbstractPixOrbHardware.establishConnection(): SIN-11 '&' answer=%s" % answer)
             AbstractPixOrbHardware.__initSIN11 = True
 
