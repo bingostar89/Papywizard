@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>565</width>
-    <height>367</height>
+    <height>365</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -1119,6 +1119,8 @@
     </widget>
     <addaction name="actionHardwareConnect"/>
     <addaction name="separator"/>
+    <addaction name="actionHardwareSuspendSpy"/>
+    <addaction name="separator"/>
     <addaction name="menuSetLimit"/>
     <addaction name="actionHardwareClearLimits"/>
     <addaction name="separator"/>
@@ -1174,15 +1176,6 @@
    </property>
    <property name="text">
     <string>Connect...</string>
-   </property>
-  </action>
-  <action name="actionHardwareClearLimits">
-   <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icons/editclear.png</normaloff>:/icons/editclear.png</iconset>
-   </property>
-   <property name="text">
-    <string>Clear Limits</string>
    </property>
   </action>
   <action name="actionHardwareSetLimitYawMinus">
@@ -1309,6 +1302,27 @@
    </property>
    <property name="text">
     <string>-360°</string>
+   </property>
+  </action>
+  <action name="actionSdfsdf">
+   <property name="text">
+    <string>sdfsdf</string>
+   </property>
+  </action>
+  <action name="actionHardwareSuspendSpy">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Suspend Spy</string>
+   </property>
+  </action>
+  <action name="actionHardwareClearLimits">
+   <property name="text">
+    <string>Clear Limits</string>
    </property>
   </action>
  </widget>
