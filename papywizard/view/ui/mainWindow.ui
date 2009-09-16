@@ -1286,29 +1286,6 @@
     <string>Plugins...</string>
    </property>
   </action>
-  <action name="actionHardwareYawOffsetPlus360">
-   <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icons/rotate_cw.png</normaloff>:/icons/rotate_cw.png</iconset>
-   </property>
-   <property name="text">
-    <string>+360°</string>
-   </property>
-  </action>
-  <action name="actionHardwareYawOffsetMinus360">
-   <property name="icon">
-    <iconset resource="../icons.qrc">
-     <normaloff>:/icons/rotate_ccw.png</normaloff>:/icons/rotate_ccw.png</iconset>
-   </property>
-   <property name="text">
-    <string>-360°</string>
-   </property>
-  </action>
-  <action name="actionSdfsdf">
-   <property name="text">
-    <string>sdfsdf</string>
-   </property>
-  </action>
   <action name="actionHardwareSuspendSpy">
    <property name="checkable">
     <bool>true</bool>
