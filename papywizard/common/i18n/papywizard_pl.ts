@@ -453,7 +453,7 @@
         <translation type="unfinished"></translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="23"/>
@@ -546,92 +546,92 @@
         <translation>Ustaw limit</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1132"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1134"/>
         <source>Help</source>
         <translation>Pomoc</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1156"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1158"/>
         <source>Quit</source>
         <translation>Wyjdź</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1159"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1161"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1168"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1170"/>
         <source>Import Preset File...</source>
         <translation>Wczytaj plik ustawień...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1176"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1178"/>
         <source>Connect...</source>
         <translation>Połącz się...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1185"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1302"/>
         <source>Clear Limits</source>
         <translation>Usuń limity</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1194"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1187"/>
         <source>Yaw -</source>
         <translation>Yaw -</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1203"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1196"/>
         <source>Yaw +</source>
         <translation>Yaw +</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1212"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1205"/>
         <source>Pitch +</source>
         <translation>Pitch +</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1221"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1214"/>
         <source>Pitch -</source>
         <translation>Pitch -</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1230"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1223"/>
         <source>Manual</source>
         <translation>Podręcznik</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1239"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1232"/>
         <source>View Log...</source>
         <translation>Zobacz log...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1248"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1241"/>
         <source>About Papywizard</source>
         <translation>O Papywizard</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1257"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1250"/>
         <source>About Qt</source>
         <translation>O QT</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1266"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1259"/>
         <source>Load Style Sheet...</source>
         <translation>Wczytaj arkusz stylów...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1284"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1277"/>
         <source>Goto Initial...</source>
         <translation>Pozycja pierwotna...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1275"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1268"/>
         <source>Goto Reference...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1293"/>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1286"/>
         <source>Plugins...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -656,16 +656,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1302"/>
-        <source>+360°</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/mainWindow.ui" line="1311"/>
-        <source>-360°</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/mainWindow.ui" line="965"/>
         <source>Start (°)</source>
         <translation type="unfinished"></translation>
@@ -673,6 +663,11 @@
     <message encoding="UTF-8">
         <location filename="papywizard/view/ui/mainWindow.ui" line="1019"/>
         <source>End (°)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/mainWindow.ui" line="1297"/>
+        <source>Suspend Spy</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -697,17 +692,17 @@
 <context>
     <name>PixOrbAxisController</name>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="403"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="408"/>
         <source>Speed table index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="405"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="410"/>
         <source>Hard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="406"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="411"/>
         <source>Axis with break</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1122,7 +1117,7 @@
         <translation>Powrót karetki</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="464"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="473"/>
         <source> x</source>
         <translation> x</translation>
     </message>
@@ -1162,117 +1157,117 @@
         <translation>rybie oko</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="442"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="448"/>
         <source> mm</source>
         <translation> mm</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="641"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="650"/>
         <source>Data</source>
         <translation>Dane</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="649"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="658"/>
         <source>Data directory</source>
         <translation>Katalog danych</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="665"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="674"/>
         <source>Data file</source>
         <translation>Plik danych</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="681"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="690"/>
         <source>%(date_time)s_%(mode)s</source>
         <translation>%(date_time)s_%(mode)s</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="875"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="884"/>
         <source>Enable</source>
         <translation>Włącz</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="704"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="713"/>
         <source>Title</source>
         <translation>Tytuł</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="733"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="742"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="762"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="771"/>
         <source>Comment</source>
         <translation>Komentarz</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="815"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="824"/>
         <source>Timer</source>
         <translation>Samowyzwalacz</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="826"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="835"/>
         <source>Start after</source>
         <translation>Startuj po</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="849"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="858"/>
         <source>Repeat</source>
         <translation>Powtórz</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="885"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="894"/>
         <source>Repeat every</source>
         <translation>Powtarzaj co</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="930"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="939"/>
         <source>HH:mm:ss</source>
         <translation>HH:mm:ss</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="953"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="962"/>
         <source>Misc</source>
         <translation>Różne</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="961"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="970"/>
         <source>Logger level</source>
         <translation>Poziom Loggera</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="978"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="987"/>
         <source>trace</source>
         <translation>trace</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="983"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="992"/>
         <source>debug</source>
         <translation>debug</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="988"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="997"/>
         <source>info</source>
         <translation>info</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="993"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="1002"/>
         <source>warning</source>
         <translation>warning</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="998"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="1007"/>
         <source>error</source>
         <translation>error</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="1003"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="1012"/>
         <source>exception</source>
         <translation>exception</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="1008"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="1017"/>
         <source>critical</source>
         <translation>critical</translation>
     </message>
@@ -1302,27 +1297,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="489"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="498"/>
         <source>Plugins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="497"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="506"/>
         <source>Yaw</source>
         <translation>Yaw</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="510"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="519"/>
         <source>Pitch</source>
         <translation>Pitch</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="561"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="570"/>
         <source>Configure...</source>
         <translation type="unfinished">Ustaw...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="537"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="546"/>
         <source>Shutter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1347,7 +1342,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="943"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="952"/>
         <source>Reverse direction before repeat</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1509,6 +1504,39 @@ After closing this dialog, you will be prompt to select these plugins. Once it i
     <message>
         <location filename="papywizard/view/ui/pluginsConfigDialog.ui" line="34"/>
         <source>Main</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>pluginsStatusDialog</name>
+    <message>
+        <location filename="papywizard/view/ui/pluginsStatusDialog.ui" line="14"/>
+        <source>Plugins Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/pluginsStatusDialog.ui" line="29"/>
+        <source>Yaw</source>
+        <translation type="unfinished">Yaw</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/pluginsStatusDialog.ui" line="39"/>
+        <source>Pitch</source>
+        <translation type="unfinished">Pitch</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/pluginsStatusDialog.ui" line="49"/>
+        <source>Shutter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/pluginsStatusDialog.ui" line="65"/>
+        <source>Init</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/pluginsStatusDialog.ui" line="81"/>
+        <source>Connect</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
