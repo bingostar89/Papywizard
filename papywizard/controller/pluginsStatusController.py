@@ -61,7 +61,7 @@ class PluginsStatusController(AbstractModalDialogController):
     """ Plugins status controller object.
     """
     def _init(self):
-        self._uiFile = "pluginsStatusDialog2.ui"
+        self._uiFile = "pluginsStatusDialog.ui"
 
     def _initWidgets(self):
         pass
