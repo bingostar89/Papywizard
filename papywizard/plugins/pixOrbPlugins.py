@@ -120,9 +120,23 @@ class AbstractPixOrbHardware(AbstractHardwarePlugin):
             try:
                 answer = ""
                 self._driver.empty()
-                self._driver.write('&')
-                time.sleep(10)  # TODO: exit as soon as the answer arrives
+                self._driver.write('&\n')
                 c = ''
+
+                # The Sin-11 takes several seconds to answer
+                self._driver.setTimeout(10)
+                #start = time.time()
+                #while True:
+                    #try:
+                        #c = self._driver.read(1)
+                    #except IOError:
+                        #if time.time() - start >= 10.:
+                            #raise
+                        #else:
+                            #continue
+                    #answer += c
+                    #break
+
                 while c != '\r':
                     c = self._driver.read(1)
                     if c in ('#', '?'):
