@@ -54,6 +54,8 @@ Implements
 
 __revision__ = "$Id$"
 
+import time
+
 from PyQt4 import QtCore
 
 from papywizard.common.loggingServices import Logger
@@ -130,6 +132,7 @@ class PixOrbCommandDispatcherObject(QtCore.QObject):
 
         # SIN-11 specific command
         if cmdStr.startswith('&'):
+            time.sleep(5)  # Simulate SIN-11 scan
             return 'ABC\n\r'
 
         # Split cmdStr
