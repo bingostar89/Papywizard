@@ -93,6 +93,10 @@ class ShootController(AbstractModalDialogController):
         # Generate positions
         self._model.scan.generatePositions()
 
+        # Manage spy
+        self.__spyWasSuspended = Spy().isSuspended()
+        Spy().resume()
+
     def _initWidgets(self):
 
         # Let the dialog be managed as a window so it can
@@ -134,7 +138,7 @@ class ShootController(AbstractModalDialogController):
         self.__shootingScene.setHeadPosition(yaw, pitch)
 
         # Keyboard behaviour
-        self._view.grabKeyboard()
+        #self._view.grabKeyboard()
 
     def _connectSignals(self):
         AbstractModalDialogController._connectSignals(self)
@@ -210,69 +214,69 @@ class ShootController(AbstractModalDialogController):
             event.ignore()
 
     def __onKeyPressed(self, event):
-        #Logger().debug("MainController.__onKeyPressed(): key='%s" % event.key())
+        Logger().debug("MainController.__onKeyPressed(): key='%s" % event.key())
 
         # 'Right' key
-        if event.key() == self.__key['Right']:
-            if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
-                if self._model.isPaused():
-                    Logger().debug("MainController.__onKeyPressed(): 'Right' key pressed; forward shooting position")
-                    self.__keyPressedDict['Right'] = True
-                    self.__forwardShootingPosition()
-            event.ignore()
+        #if event.key() == self.__key['Right']:
+            #if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
+                #if self._model.isPaused():
+                    #Logger().debug("MainController.__onKeyPressed(): 'Right' key pressed; forward shooting position")
+                    #self.__keyPressedDict['Right'] = True
+                    #self.__forwardShootingPosition()
+            #event.ignore()
 
         # 'Left' key
-        elif event.key() == self.__key['Left']:
-            if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
-                if self._model.isPaused():
-                    Logger().debug("MainController.__onKeyPressed(): 'Left' key pressed; rewind shooting position")
-                    self.__keyPressedDict['Left'] = True
-                    self.__rewindShootingPosition()
-            event.ignore()
+        #elif event.key() == self.__key['Left']:
+            #if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
+                #if self._model.isPaused():
+                    #Logger().debug("MainController.__onKeyPressed(): 'Left' key pressed; rewind shooting position")
+                    #self.__keyPressedDict['Left'] = True
+                    #self.__rewindShootingPosition()
+            #event.ignore()
 
         # 'Up' key
-        elif event.key() == self.__key['Up']:
-            if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                if self._model.isPaused():
-                    Logger().debug("MainController.__onKeyPressed(): 'Up' key pressed; rewind shooting position")
-                    self.__keyPressedDict['Up'] = True
-                    self.__forwardShootingPosition()
-            event.ignore()
+        #elif event.key() == self.__key['Up']:
+            #if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
+                #if self._model.isPaused():
+                    #Logger().debug("MainController.__onKeyPressed(): 'Up' key pressed; rewind shooting position")
+                    #self.__keyPressedDict['Up'] = True
+                    #self.__forwardShootingPosition()
+            #event.ignore()
 
         # 'Down' key
-        elif event.key() == self.__key['Down']:
-            if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
-                if self._model.isPaused():
-                    Logger().debug("MainController.__onKeyPressed(): 'Down' key pressed; forward shooting position")
-                    self.__keyPressedDict['Down'] = True
-                    self.__rewindShootingPosition()
-            event.ignore()
+        #elif event.key() == self.__key['Down']:
+            #if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
+                #if self._model.isPaused():
+                    #Logger().debug("MainController.__onKeyPressed(): 'Down' key pressed; forward shooting position")
+                    #self.__keyPressedDict['Down'] = True
+                    #self.__rewindShootingPosition()
+            #event.ignore()
 
         # 'Return' key
-        if event.key() == self.__key['Return']:
-            Logger().debug("shootController.__onKeyPressed(): 'Return' key pressed")
+        #if event.key() == self.__key['Return']:
+            #Logger().debug("shootController.__onKeyPressed(): 'Return' key pressed")
 
-            # Pressing 'Return' while not shooting starts shooting
-            if not self._model.isShooting():
-                Logger().debug("shootController.__onKeyPressed(): start shooting")
-                self.__startShooting()
+            ## Pressing 'Return' while not shooting starts shooting
+            #if not self._model.isShooting():
+                #Logger().debug("shootController.__onKeyPressed(): start shooting")
+                #self.__startShooting()
 
-            # Pressing 'Return' while shooting...
-            else:
+            ## Pressing 'Return' while shooting...
+            #else:
 
-                # ...and not paused pauses shooting
-                if not self._model.isPaused():
-                    Logger().debug("shootController.__onKeyPressed(): pause shooting")
-                    self.__pauseShooting()
+                ## ...and not paused pauses shooting
+                #if not self._model.isPaused():
+                    #Logger().debug("shootController.__onKeyPressed(): pause shooting")
+                    #self.__pauseShooting()
 
-                #... and paused resumes shooting
-                else:
-                    Logger().debug("shootController.__onKeyPressed(): resume shooting")
-                    self.__resumeShooting()
-            event.ignore()
+                ##... and paused resumes shooting
+                #else:
+                    #Logger().debug("shootController.__onKeyPressed(): resume shooting")
+                    #self.__resumeShooting()
+            #event.ignore()
 
         # 'Escape' key
-        elif event.key() == self.__key['Escape']:
+        if event.key() == self.__key['Escape']:
             Logger().debug("shootController.__onKeyPressed(): 'Escape' key pressed")
 
             # Pressing 'Escape' while not shooting exit shoot dialog
@@ -281,61 +285,61 @@ class ShootController(AbstractModalDialogController):
                 self._view.reject()
 
             # Pressing 'Escape' while shooting stops shooting
-            else:
-                Logger().debug("shootController.__onKeyPressed(): stop/finish shooting")
-                self.__stopFinishShooting()
+            #else:
+                #Logger().debug("shootController.__onKeyPressed(): stop/finish shooting")
+                #self.__stopFinishShooting()
             event.ignore()
 
         else:
             event.accept()
 
     def __onKeyReleased(self, event):
-        #Logger().debug("MainController.__onKeyReleased(): key='%s" % event.key())
+        Logger().debug("MainController.__onKeyReleased(): key='%s" % event.key())
 
         # 'Right' key
-        if event.key() == self.__key['Right']:
-            if self.__keyPressedDict['Right']:
-                Logger().debug("MainController.__onKeyReleased(): 'Right' key released")
-                self.__keyPressedDict['Right'] = False
-            event.ignore()
+        #if event.key() == self.__key['Right']:
+            #if self.__keyPressedDict['Right']:
+                #Logger().debug("MainController.__onKeyReleased(): 'Right' key released")
+                #self.__keyPressedDict['Right'] = False
+            #event.ignore()
 
         # 'Left' key
-        if event.key() == self.__key['Left']:
-            if self.__keyPressedDict['Left']:
-                Logger().debug("MainController.__onKeyReleased(): 'Left' key released")
-                self.__keyPressedDict['Left'] = False
-            event.ignore()
+        #elif event.key() == self.__key['Left']:
+            #if self.__keyPressedDict['Left']:
+                #Logger().debug("MainController.__onKeyReleased(): 'Left' key released")
+                #self.__keyPressedDict['Left'] = False
+            #event.ignore()
 
         # 'Up' key
-        if event.key() == self.__key['Up']:
-            if self.__keyPressedDict['Up']:
-                Logger().debug("MainController.__onKeyReleased(): 'Up' key released;")
-                self.__keyPressedDict['Up'] = False
-            event.ignore()
+        #elif event.key() == self.__key['Up']:
+            #if self.__keyPressedDict['Up']:
+                #Logger().debug("MainController.__onKeyReleased(): 'Up' key released;")
+                #self.__keyPressedDict['Up'] = False
+            #event.ignore()
 
         # 'Down' key
-        if event.key() == self.__key['Down']:
-            if self.__keyPressedDict['Down']:
-                Logger().debug("MainController.__onKeyReleased(): 'Down' key released;")
-                self.__keyPressedDict['Down'] = False
-            event.ignore()
+        #elif event.key() == self.__key['Down']:
+            #if self.__keyPressedDict['Down']:
+                #Logger().debug("MainController.__onKeyReleased(): 'Down' key released;")
+                #self.__keyPressedDict['Down'] = False
+            #event.ignore()
 
-        else:
-            event.accept()
+        #else:
+        event.accept()
 
-    def __onMotionNotify(self, widget, event):
+    #def __onMotionNotify(self, widget, event):
         #Logger().trace("ShootController.__onMotionNotify()")
-        if self._model.isPaused():
-            if event.is_hint:
-                Logger().trace("ShootController.__onMotionNotify(): is_hint")
-                x, y, state = event.window.get_pointer()
-            else:
-                x = event.x
-                y = event.y
-                state = event.state
+        #if self._model.isPaused():
+            #if event.is_hint:
+                #Logger().trace("ShootController.__onMotionNotify(): is_hint")
+                #x, y, state = event.window.get_pointer()
+            #else:
+                #x = event.x
+                #y = event.y
+                #state = event.state
 
-            if state & gtk.gdk.BUTTON1_MASK:
-                Logger().debug("ShootController.__onMotionNotify(): drag x=%d, y=%d" % (x, y))
+            #if state & gtk.gdk.BUTTON1_MASK:
+                #Logger().debug("ShootController.__onMotionNotify(): drag x=%d, y=%d" % (x, y))
 
     def __onShootingStackPushButtonToggled(self, checked):
         Logger().debug("ShootController.__onShootingStackPushButtonToggled(): checked=%s" % checked)
@@ -362,18 +366,18 @@ class ShootController(AbstractModalDialogController):
         Logger().trace("ShootController.__onDataPushButtonClicked()")
         controller = ConfigController(self, self._model)
         controller.selectTab(4, disable=True)
-        self._view.releaseKeyboard()
+        #self._view.releaseKeyboard()
         controller.exec_()
-        self._view.grabKeyboard()
+        #self._view.grabKeyboard()
         self.refreshView()
 
     def __onTimerPushButtonClicked(self):
         Logger().trace("ShootController.__onTimerPushButtonClicked()")
         controller = ConfigController(self, self._model)
         controller.selectTab(5, disable=True)
-        self._view.releaseKeyboard()
+        #self._view.releaseKeyboard()
         controller.exec_()
-        self._view.grabKeyboard()
+        #self._view.grabKeyboard()
         if self._model.timerRepeatEnable:
             self._view.repeatLabel.setText("--/%d" % self._model.timerRepeat)
         else:
@@ -666,7 +670,6 @@ class ShootController(AbstractModalDialogController):
         self._model.resume()
 
     def __stopFinishShooting(self):
-        print "ici"
         if self._model.isShooting():
             self._model.stop()
         else:
@@ -687,6 +690,8 @@ class ShootController(AbstractModalDialogController):
         AbstractModalDialogController.shutdown(self)
         if self.__thread is not None:
             self.__thread.wait()
+        if self.__spyWasSuspended:
+            Spy().suspend()
 
     def refreshView(self):
         dataFlag = ConfigManager().getBoolean('Configuration/DATA_FILE_ENABLE')
