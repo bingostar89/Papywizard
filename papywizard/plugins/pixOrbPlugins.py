@@ -121,22 +121,8 @@ class AbstractPixOrbHardware(AbstractHardwarePlugin):
                 answer = ""
                 self._driver.empty()
                 self._driver.write('&')
+                self._driver.setTimeout(10)  # Sin-11 takes several seconds to answer
                 c = ''
-
-                # The Sin-11 takes several seconds to answer
-                self._driver.setTimeout(10)
-                #start = time.time()
-                #while True:
-                    #try:
-                        #c = self._driver.read(1)
-                    #except IOError:
-                        #if time.time() - start >= 10.:
-                            #raise
-                        #else:
-                            #continue
-                    #answer += c
-                    #break
-
                 while c != '\r':
                     c = self._driver.read(1)
                     if c in ('#', '?'):
@@ -148,6 +134,7 @@ class AbstractPixOrbHardware(AbstractHardwarePlugin):
                 answer = answer.strip()  # Remove final CRLF
                 Logger().debug("AbstractPixOrbHardware.establishConnection(): SIN-11 '&' answer=%s" % answer)
                 AbstractPixOrbHardware.__initSIN11 = True
+                self._driver.setTimeout(config.DRIVER_TIMEOUT)
             except:
                 self._connected = False
                 raise
@@ -367,7 +354,6 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         AbstractAxisPlugin._defineConfig(self)
         AbstractHardwarePlugin._defineConfig(self)
         self._addConfigKey('_speedIndex', 'SPEED_INDEX', default=DEFAULT_SPEED_INDEX)
-        #self._addConfigKey('_axisReversed', 'AXIS_REVERSED', default=DEFAULT_AXIS_REVERSED)
         self._addConfigKey('_axisWithBreak', 'AXIS_WITH_BREAK', default=DEFAULT_AXIS_WITH_BREAK)
 
     def init(self):
@@ -387,8 +373,6 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
 
     def read(self):
         pos = self._read()
-        #if self._config['AXIS_REVERSED']:
-            #pos *= -1
         pos -= self._offset
         return pos
 
@@ -406,8 +390,6 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         if self._config['AXIS_WITH_BREAK']:
             self._releaseBreak()
         self._configurePixOrb(self._config['SPEED_INDEX'])
-        #if self._config['AXIS_REVERSED']:
-            #pos *= -1
         self._drive(pos)
 
         # Wait end of movement
@@ -424,11 +406,6 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         if self._config['AXIS_WITH_BREAK']:
             self._releaseBreak()
         self._configurePixOrb(MANUAL_SPEED_TABLE[self._manualSpeed])
-        #if self._config['AXIS_REVERSED']:
-            #if dir_ == '+':
-                #dir_ = '-'
-            #else:
-                #dir_ = '+'
         self._startJog(dir_, SPEED_TABLE[MANUAL_SPEED_TABLE[self._manualSpeed]]['slewSpeed'])
 
     def stop(self):
@@ -455,8 +432,6 @@ class PixOrbAxisController(AxisPluginController, HardwarePluginController):
         self._addWidget('Main', QtGui.QApplication.translate("PixOrbAxisController", "Speed index"),
                         SpinBoxField, (1, 10, "", ""), 'SPEED_INDEX')
         self._addTab('Hard', QtGui.QApplication.translate("PixOrbAxisController", 'Hard'))
-        #self._addWidget('Hard', QtGui.QApplication.translate("PixOrbAxisController", "Axis reversed"),
-                        #CheckBoxField, (), 'AXIS_REVERSED')
         self._addWidget('Hard', QtGui.QApplication.translate("PixOrbAxisController", "Axis with break"),
                         CheckBoxField, (), 'AXIS_WITH_BREAK')
 
