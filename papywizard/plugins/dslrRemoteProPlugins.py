@@ -127,13 +127,13 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
         elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±5@1/2":
             self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2
         elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±3@1/3":
-            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_3[6:-6]
-        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±3@1/2":
-            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2[6:-6]
-        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±2@1/3":
             self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_3[4:-4]
-        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±2@1/2":
+        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±3@1/2":
             self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2[4:-4]
+        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±2@1/3":
+            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_3[6:-6]
+        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±2@1/2":
+            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2[6:-6]
         Logger().debug("DslrRemoteProShutter.configure(): camera exposure compensation table=%s" % \
                        self.__cameraExposureCompensationList)
 
