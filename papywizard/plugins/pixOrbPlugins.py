@@ -120,7 +120,7 @@ class AbstractPixOrbHardware(AbstractHardwarePlugin):
             try:
                 answer = ""
                 self._driver.empty()
-                self._driver.write('&\n')
+                self._driver.write('&')
                 c = ''
 
                 # The Sin-11 takes several seconds to answer
