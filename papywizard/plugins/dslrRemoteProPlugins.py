@@ -67,24 +67,34 @@ from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.shutterPluginController import ShutterPluginController
-from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
+from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, \
+                                         DoubleSpinBoxField, CheckBoxField, SliderField
 
 NAME = "DSLR Remote Pro"
 
 DEFAULT_MIRROR_LOCKUP = False
-DEFAULT_BRACKETING_NBPICTS = 1
-DEFAULT_BRACKETING_STEP = 1.
+DEFAULT_USER_EXPOSURE_COMPENSATION_LIST = "-2, 0, +2"
+DEFAULT_CAMERA_EXPOSURE_COMPENSATION_LIST = u"±2@1/2"
 
 PROGRAM_PATH = "C:\\Program Files\\breezesys\\DSLrRemotePro\\DSLrRemote.exe"
-GET_CONFIG_PARAMS = ""
+MIRROR_LOCKUP_PARAMS = ""
 SHOOT_PARAMS = "-x %(index)d"
+CAMERA_EXPOSURE_COMPENSATION_LIST_1_3 = ["+5", "+4 2/3", "+4 1/3", "+4", "+3 2/3", "+3 1/3", "+3", "+2 2/3",
+                                         "+2 1/3", "+2", "+1 2/3", "+1 1/3", "+1", "+2/3", "+1/3",
+                                         "0",
+                                         "-1/3", "-2/3", "-1", "-1 1/3", "-1 2/3", "-2", "-2 1/3",
+                                         "-2 2/3", "-3", "-3 1/3", "-3 2/3", "-4", "-4 1/3", "-4 2/3", "-5"]
+CAMERA_EXPOSURE_COMPENSATION_LIST_1_2 = ["+5", "+4 1/2", "+4", "+3 1/2", "+3", "+2 1/2", "+2", "+1 1/2", "+1", "+1/2",
+                                         "0",
+                                         "-1/2", "-1", "-1 1/2", "-2", "-2 1/2", "-3", "-3 1/2", "-4", "-4 1/2", "-5"]
 
 
 class DslrRemoteProShutter(AbstractShutterPlugin):
     """ DSLR Remote Pro plugin class.
     """
     def _init(self):
-        self.__biasTable = {}
+        self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2
+        self.__userExposureCompensationList = DEFAULT_USER_EXPOSURE_COMPENSATION_LIST
 
     def _getTimeValue(self):
         return -1
@@ -93,18 +103,49 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
         return self._config['MIRROR_LOCKUP']
 
     def _getBracketingNbPicts(self):
-        return self._config['BRACKETING_NB_PICTS']
+        return len(self.__userExposureCompensationList)
 
     def _defineConfig(self):
         Logger().debug("DslrRemoteProShutter._defineConfig()")
-        #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
-        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
-        self._addConfigKey('_bracketingStep', 'BRACKETING_STEP', default=DEFAULT_BRACKETING_STEP)
+        self._addConfigKey('_userExposureCompensationList', 'USER_EXPOSURE_COMPENSATION_LIST',
+                           default=DEFAULT_USER_EXPOSURE_COMPENSATION_LIST)
+        self._addConfigKey('_cameraExposureCompensationList', 'CAMERA_EXPOSURE_COMPENSATION_LIST',
+                           default=DEFAULT_CAMERA_EXPOSURE_COMPENSATION_LIST)
+
+    def init(self):
+        Logger().trace("DslrRemoteProShutter.init()")
+        AbstractShutterPlugin.init(self)
+        self.configure()
+
+    def configure(self):
+        AbstractShutterPlugin.configure(self)
+
+        # Build camera exposure compensation list
+        if self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±5@1/3":
+            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_3
+        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±5@1/2":
+            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2
+        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±3@1/3":
+            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_3[6:-6]
+        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±3@1/2":
+            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2[6:-6]
+        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±2@1/3":
+            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_3[4:-4]
+        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±2@1/2":
+            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2[4:-4]
+        Logger().debug("DslrRemoteProShutter.configure(): camera exposure compensation table=%s" % \
+                       self.__cameraExposureCompensationList)
+
+        # Build user exposure compensation list
+        self.__userExposureCompensationList = self._config['USER_EXPOSURE_COMPENSATION_LIST'].split(',')
+        Logger().debug("DslrRemoteProShutter.configure(): user exposure compensation list=%s" % \
+                       self.__userExposureCompensationList)
 
     def lockupMirror(self):
         # @todo: implement mirror lockup command
-        Logger().debug("DslrRemoteProShutter.lockupMirror(): execute command '%s'..." % MIRROR_LOCKUP_COMMAND)
+        cmd = "%s %s" %( PROGRAM_PATH, MIRROR_LOCKUP_PARAMS)
+        Logger().debug("DslrRemoteProShutter.lockupMirror(): command '%s'..." % cmd)
         time.sleep(1)
         Logger().debug("DslrRemoteProShutter.lockupMirror(): command over")
         return 0
@@ -112,37 +153,13 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
     def shoot(self, bracketNumber):
         Logger().debug("DslrRemoteProShutter.shoot(): bracketNumber=%d" % bracketNumber)
 
-        # Get exposure bias list (only once)
-        if not self.__biasTable:
-
-            # Launch external command
-            cmd = "%s %s" %( PROGRAM_PATH, GET_CONFIG_PARAMS)
-            Logger().debug("DslrRemoteProShutter.shoot(): get config. command '%s'" % cmd)
-            args = cmd.split()
-            p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-            # Wait end of execution
-            stdout, stderr = p.communicate()
-            if stderr:
-                Logger().error("DslrRemoteProShutter.shoot(): stderr:\n%s" % stderr.strip())
-            Logger().debug("DslrRemoteProShutter.shoot(): stdout:\n%s" % stdout.strip())
-
-            if not p.returncode:
-                for line in stdout.split('\n'):
-                    self.__biasTable.append(float(line))
-                Logger().debug("DslrRemoteProShutter.shoot(): __biasTable=%s" % self.__biasTable)
-            else:
-                return p.returncode
-
-        # Compute exposure bias according to bracketNumber
-        bias = (bracketNumber - 1 - int(self._config['BRACKETING_NB_PICTS'] / 2)) * self._config['BRACKETING_STEP']
-        Logger().debug("DslrRemoteProShutter.shoot(): bias=%f" % bias)
-
         # Retreive index in exposure table
-        index = self.__biasTable.index(bias)
+        exposureCompensation = self.__userExposureCompensationList[bracketNumber - 1].strip()
+        Logger().debug("DslrRemoteProShutter.shoot(): exposure compensation=%s" % exposureCompensation)
+        index = self.__cameraExposureCompensationList.index(exposureCompensation)
 
         # Launch external command
-        cmd = "%s %s" %( PROGRAM_PATH, SHOOT_PARAMS) % {'index': index}
+        cmd = "%s %s" % (PROGRAM_PATH, SHOOT_PARAMS) % {'index': index}
         Logger().debug("DslrRemoteProShutter.shoot(): shoot command '%s'..." % cmd)
         args = cmd.split()
         p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -155,16 +172,23 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
 
         return p.returncode
 
+    def getCameraExposureCompensationList(self):
+        """
+        """
+        return self.__cameraExposureCompensationList
+
 
 class DslrRemoteProShutterController(ShutterPluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
         self._addWidget('Main', QtGui.QApplication.translate("DslrRemoteProShutterController", "Mirror lockup"),
                         CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', QtGui.QApplication.translate("DslrRemoteProShutterController", "Bracketing nb picts"),
-                        SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
-        self._addWidget('Main', QtGui.QApplication.translate("DslrRemoteProShutterController", "Bracketing step"),
-                        DoubleSpinBoxField, (0.5, 5., 1, 0.5, "", " ev"), 'BRACKETING_STEP')
+        self._addWidget('Main', QtGui.QApplication.translate("DslrRemoteProShutterController", "User exposure\ncompensation list"),
+                        LineEditField, (), 'USER_EXPOSURE_COMPENSATION_LIST')
+        self._addTab('Camera', QtGui.QApplication.translate("DslrRemoteProShutterController", 'Camera'))
+        self._addWidget('Camera', QtGui.QApplication.translate("DslrRemoteProShutterController", "Camera exposure\ncompensation list"),
+                        ComboBoxField, ((u"±5@1/3", u"±5@1/2", u"±3@1/3", u"±3@1/2", u"±2@1/3", u"±2@1/2"),),
+                        'CAMERA_EXPOSURE_COMPENSATION_LIST')
 
 
 def register():
