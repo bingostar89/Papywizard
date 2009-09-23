@@ -7,19 +7,23 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + 'PixOrb' plugin
+    + 'DSLR Remote Pro' plugin
+    + 'Gphoto' plugin (under test)
+    + czech translation
 
-2009-09-06 Version 2.1.11 (dev)
+2009-09-15 Version 2.1.11 (dev)
     + mosaic start corner selection
     + reverse shooting direction
-    + plugins i18n support
-    + 'PixOrb' plugin (under test)
-    + 'Gphoto' plugin (under test)
+    + i18n plugins support
+    + czech translation (partial)
     - data file enabled by default
     - remove bracketing intent
     - user config is always overwritten for new versions
     - renamed 'Ursa Minor' plugins
     - improved connection sequence
     - new xml data file format (version 'b')
+    - 'EOS Utility' plugin params revisited
     x several bug fix
     x text shooting view refresh
     x manager now correctly loads custom plugins
