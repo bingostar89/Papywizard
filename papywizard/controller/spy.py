@@ -9,7 +9,7 @@ License
   - (C) 2007-2009 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
 U{http://www.cecill.info}.
@@ -18,7 +18,7 @@ As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -27,9 +27,9 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
@@ -79,7 +79,7 @@ class SpyObject(QtCore.QThread):
         QtCore.QThread.__init__(self)
         self.__model = model
         self.__run = False
-        self.__suspend = True
+        self.__suspend = True  # The spy starts suspended
         self.__yaw = None
         self.__pitch = None
 
@@ -107,8 +107,10 @@ class SpyObject(QtCore.QThread):
         try:
             while self.__run:
                 if self.__suspend:
+                    Logger().info("Spy suspended")
                     while self.__suspend:
                         self.msleep(config.SPY_REFRESH_DELAY)
+                    Logger().info("Spy resumed")
                 if not self.__run:
                     break
                 self.refresh()
@@ -169,6 +171,14 @@ class SpyObject(QtCore.QThread):
         @rtype: bool
         """
         return self.__run
+
+    def isSuspended(self):
+        """ Test if spy is suspended.
+
+        @return: True if suspended, False if not
+        @rtype: bool
+        """
+        return self.__suspend
 
 
 # Spy factory
