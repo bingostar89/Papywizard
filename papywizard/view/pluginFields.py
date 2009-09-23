@@ -56,6 +56,8 @@ __revision__ = "$Id$"
 
 from PyQt4 import QtGui, QtCore
 
+from papywizard.common.loggingServices import Logger
+
 
 class ComboBoxField(QtGui.QComboBox):
     """
@@ -142,3 +144,41 @@ class SliderField(QtGui.QSlider):
         self.setRange(minimum, maximum)
         self.setTickPosition(QtGui.QSlider.TicksAbove)
         self.setTickInterval(tickInterval)
+
+
+class ListField(QtGui.QListWidget):
+    """
+    """
+    def __init__(self, entries, select='single'):
+        """
+        """
+        QtGui.QListWidget.__init__(self)
+        self.__entries = entries
+        self.addItems(entries)
+        if select == 'single':
+            self.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        elif select == 'contiguous':
+            self.setSelectionMode(QtGui.QAbstractItemView.ContiguousSelection)
+        elif select == 'extended':
+            self.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        elif select == 'multi':
+            self.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
+        elif select == 'no':
+            self.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
+
+    def setValue(self, values):
+        self.setCurrentRow(-1)  #, QtGui.QItemSelectionModel.SelectionFlags(QtGui.QItemSelectionModel.Clear))
+        for value in values:
+            try:
+                index = self.__entries.index(value)
+            except ValueError:
+                Logger().exception("ListField.setValue()", debug=True)
+            else:
+                self.setCurrentRow(index, QtGui.QItemSelectionModel.SelectionFlags(QtGui.QItemSelectionModel.Select))
+
+    def value(self):
+        items = self.selectedItems()
+        values = []
+        for item in items:
+            values.append(unicode(item.text()))
+        return values
