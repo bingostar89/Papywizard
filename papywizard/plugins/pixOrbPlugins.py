@@ -42,11 +42,12 @@ Hardware
 Implements
 ==========
 
-- PixOrbHardware
-- PixOrbAxis
-- PixOrbAxisController
-- PixOrbShutter
-- PixOrbShutterController
+ - AbstractPixOrbHardware
+ - PixOrbHardware
+ - PixOrbAxis
+ - PixOrbAxisController
+ - PixOrbShutter
+ - PixOrbShutterController
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2009 Frédéric Mantegazza
@@ -75,7 +76,8 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 NAME = "PixOrb"
 
-DEFAULT_SPEED_TABLE_INDEX = 9
+DEFAULT_SPEED_INDEX = 9
+DEFAULT_AXIS_REVERSED = False
 DEFAULT_AXIS_WITH_BREAK = False
 
 ENCODER_FULL_CIRCLE = 1000000  # steps per turn
@@ -97,7 +99,7 @@ SPEED_TABLE = { 1: {'initVelocity': 6000, 'accel':  5, 'decel':  5, 'slewSpeed':
                 9: {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   3},  #  6 °/s
                10: {'initVelocity': 6000, 'accel': 80, 'decel': 80, 'slewSpeed': 38400, 'divider':   1}   # 12 °/s
                }
-MANUAL_SPEED_TABLE = {'slow': 7,  # normal / 5
+MANUAL_SPEED_TABLE = {'slow': 7,  # normal / 6
                       'normal': 9,
                       'fast': 10  # normal * 2
                       }
@@ -115,20 +117,26 @@ class AbstractPixOrbHardware(AbstractHardwarePlugin):
         AbstractHardwarePlugin.establishConnection(self)
         Logger().trace("AbstractPixOrbHardware.establishConnection()")
         if not AbstractPixOrbHardware.__initSIN11:
-            answer = ""
-            self._driver.empty()
-            self._driver.write('&')
-            c = ''
-            while c != '\r':
-                c = self._driver.read(1)
-                if c == '?':
-                    self._driver.read(2)  # Read last CRLF
-                    raise HardwareError("Can't init SIN-11")
-                else:
-                    answer += c
-            answer = answer.strip()  # remove final CRLR
-            Logger().debug("AbstractPixOrbHardware.establishConnection(): SIN-11 '&' answer=%s" % answer)
-            AbstractPixOrbHardware.__initSIN11 = True
+            try:
+                answer = ""
+                self._driver.empty()
+                self._driver.write('&')
+                time.sleep(10)  # TODO: exit as soon as the answer arrives
+                c = ''
+                while c != '\r':
+                    c = self._driver.read(1)
+                    if c in ('#', '?'):
+                        self._driver.read(2)  # Read last CRLF
+                        Logger().debug("AbstractPixOrbHardware.establishConnection(): SIN-11 '&' answer=%s" % answer)
+                        raise HardwareError("Can't init SIN-11")
+                    else:
+                        answer += c
+                answer = answer.strip()  # Remove final CRLF
+                Logger().debug("AbstractPixOrbHardware.establishConnection(): SIN-11 '&' answer=%s" % answer)
+                AbstractPixOrbHardware.__initSIN11 = True
+            except:
+                self._connected = False
+                raise
 
 
 class PixOrbHardware(AbstractPixOrbHardware):
@@ -178,7 +186,7 @@ class PixOrbHardware(AbstractPixOrbHardware):
                 while c != '\r':
                     c = self._driver.read(1)
                     if c in ('#', '!', '$'):
-                        self._driver.read(1)  # Read last CR. Or is it CRLF?
+                        self._driver.read(2)  # Read last CRLF
                         raise IOError("Error on command '%s'" % cmd)
                     else:
                         answer += c
@@ -187,7 +195,7 @@ class PixOrbHardware(AbstractPixOrbHardware):
                 Logger().exception("PixOrbHardware._sendCmd")
                 Logger().warning("PixOrbHardware._sendCmd(): %s axis %s failed to send command '%s'. Retrying..." % (NAME, AXIS_TABLE[self.capacity], cmd))
             else:
-                answer = answer.strip()  # remove final CRLF
+                answer = answer.strip()  # Remove final CRLF
                 break
         else:
             raise HardwareError("%s axis %s can't send command '%s'" % (NAME, AXIS_TABLE[self.capacity], cmd))
@@ -195,26 +203,26 @@ class PixOrbHardware(AbstractPixOrbHardware):
 
         return answer
 
-    def _configurePixOrb(self, speedTableIndex):
+    def _configurePixOrb(self, speedIndex):
         """ Configure the PixOrb hardware.
 
-        @param speedTableIndex: speed params table index
-        @type speedTableIndex: int
+        @param speedIndex: speed params table index
+        @type speedIndex: int
         """
         self._driver.acquireBus()
         try:
 
             # Set initial velocity
-            self._sendCmd("I%d" % SPEED_TABLE[speedTableIndex]['initVelocity'])
+            self._sendCmd("I%d" % SPEED_TABLE[speedIndex]['initVelocity'])
 
             # Set accel/decel
-            self._sendCmd("K%d %d" % (SPEED_TABLE[speedTableIndex]['accel'], SPEED_TABLE[speedTableIndex]['decel']))
+            self._sendCmd("K%d %d" % (SPEED_TABLE[speedIndex]['accel'], SPEED_TABLE[speedIndex]['decel']))
 
             # Set slew speed
-            self._sendCmd("V%d" % SPEED_TABLE[speedTableIndex]['slewSpeed'])
+            self._sendCmd("V%d" % SPEED_TABLE[speedIndex]['slewSpeed'])
 
             # Set divider
-            self._sendCmd("D%d" % SPEED_TABLE[speedTableIndex]['divider'])
+            self._sendCmd("D%d" % SPEED_TABLE[speedIndex]['divider'])
         finally:
             self._driver.releaseBus()
 
@@ -229,7 +237,7 @@ class PixOrbHardware(AbstractPixOrbHardware):
             answer = self._sendCmd("Z")
         finally:
             self._driver.releaseBus()
-        axis, value = answer.split()
+        value = answer[1:]
         pos = self._encoderToAngle(int(value))
         return pos
 
@@ -308,11 +316,11 @@ class PixOrbHardware(AbstractPixOrbHardware):
         """
         self._driver.acquireBus()
         try:
-            status = self._sendCmd("^")
+            answer = self._sendCmd("^")
         finally:
             self._driver.releaseBus()
-        axis, value = status.split()
-        return value
+        axis, status = answer.split()
+        return status
 
 
 class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
@@ -328,7 +336,8 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
         AbstractHardwarePlugin._defineConfig(self)
-        self._addConfigKey('_speedTableIndex', 'SPEED_TABLE_INDEX', default=DEFAULT_SPEED_TABLE_INDEX)
+        self._addConfigKey('_speedIndex', 'SPEED_INDEX', default=DEFAULT_SPEED_INDEX)
+        self._addConfigKey('_axisReversed', 'AXIS_REVERSED', default=DEFAULT_AXIS_REVERSED)
         self._addConfigKey('_axisWithBreak', 'AXIS_WITH_BREAK', default=DEFAULT_AXIS_WITH_BREAK)
 
     def init(self):
@@ -344,10 +353,13 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
     def configure(self):
         Logger().trace("PixOrbAxis.configure()")
         AbstractAxisPlugin.configure(self)
-        self._configurePixOrb(self._config['SPEED_TABLE_INDEX'])
+        self._configurePixOrb(self._config['SPEED_INDEX'])
 
     def read(self):
-        pos = self._read() - self._offset
+        pos = self._read()
+        if self._config['AXIS_REVERSED']:
+            pos *= -1
+        pos -= self._offset
         return pos
 
     def drive(self, pos, inc=False, useOffset=True, wait=True):
@@ -363,6 +375,9 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         self._checkLimits(pos)
         if self._config['AXIS_WITH_BREAK']:
             self._releaseBreak()
+        self._configurePixOrb(self._config['SPEED_INDEX'])
+        if self._config['AXIS_REVERSED']:
+            pos *= -1
         self._drive(pos)
 
         # Wait end of movement
@@ -378,7 +393,13 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
     def startJog(self, dir_):
         if self._config['AXIS_WITH_BREAK']:
             self._releaseBreak()
-        self._startJog(dir_, MANUAL_SPEED_TABLE[self._manualSpeed])
+        self._configurePixOrb(MANUAL_SPEED_TABLE[self._manualSpeed])
+        if self._config['AXIS_REVERSED']:
+            if dir_ == '+':
+                dir_ = '-'
+            else:
+                dir_ = '+'
+        self._startJog(dir_, SPEED_TABLE[MANUAL_SPEED_TABLE[self._manualSpeed]]['slewSpeed'])
 
     def stop(self):
         self.__driveFlag = False
@@ -401,9 +422,11 @@ class PixOrbAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("PixOrbAxisController", "Speed table index"),
-                        SpinBoxField, (1, 10, "", ""), 'SPEED_TABLE_INDEX')
+        self._addWidget('Main', QtGui.QApplication.translate("PixOrbAxisController", "Speed index"),
+                        SpinBoxField, (1, 10, "", ""), 'SPEED_INDEX')
         self._addTab('Hard', QtGui.QApplication.translate("PixOrbAxisController", 'Hard'))
+        self._addWidget('Hard', QtGui.QApplication.translate("PixOrbAxisController", "Axis reversed"),
+                        CheckBoxField, (), 'AXIS_REVERSED')
         self._addWidget('Hard', QtGui.QApplication.translate("PixOrbAxisController", "Axis with break"),
                         CheckBoxField, (), 'AXIS_WITH_BREAK')
 
