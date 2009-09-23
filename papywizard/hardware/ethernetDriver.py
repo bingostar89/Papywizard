@@ -53,6 +53,7 @@ __revision__ = "$Id$"
 
 import socket
 
+from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
@@ -72,7 +73,7 @@ class EthernetDriver(AbstractDriver):
             self.setDeviceHostPort(host, port)
             self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self._sock.connect((self.__host, self.__port))
-            self._sock.settimeout(1.)
+            self._sock.settimeout(config.DRIVER_TIMEOUT)
             self.empty()
         except Exception, msg:
             Logger().exception("EthernetDriver._init()")
@@ -94,6 +95,9 @@ class EthernetDriver(AbstractDriver):
         """
         self.__host = host
         self.__port = port
+
+    def setTimeout(self, timeout):
+        self._sock.settimeout(timeout)
 
     def empty(self):
         pass
