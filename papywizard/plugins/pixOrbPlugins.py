@@ -77,7 +77,7 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 NAME = "PixOrb"
 
 DEFAULT_SPEED_INDEX = 9
-DEFAULT_AXIS_REVERSED = False
+#DEFAULT_AXIS_REVERSED = False
 DEFAULT_AXIS_WITH_BREAK = False
 
 ENCODER_FULL_CIRCLE = 1000000  # steps per turn
@@ -187,7 +187,7 @@ class PixOrbHardware(AbstractPixOrbHardware):
                     c = self._driver.read(1)
                     if c in ('#', '!', '$'):
                         self._driver.read(2)  # Read last CRLF
-                        raise IOError("Error on command '%s'" % cmd)
+                        raise IOError("Error on command '%s' (answer=%s)" % (cmd, answer))
                     else:
                         answer += c
 
@@ -239,6 +239,11 @@ class PixOrbHardware(AbstractPixOrbHardware):
             self._driver.releaseBus()
         value = answer[1:]
         pos = self._encoderToAngle(int(value))
+
+        # Reverse direction on yaw axis
+        if self.capacity == 'yawAxis':
+            pos *= -1
+
         return pos
 
     def _drive(self, pos):
@@ -247,7 +252,11 @@ class PixOrbHardware(AbstractPixOrbHardware):
         @param pos: position to reach, in °
         @type pos: float
         """
-        strValue = self._angleToEncoder(pos)
+
+        # Reverse direction on yaw axis
+        if self.capacity == 'yawAxis':
+            pos *= -1
+
         self._driver.acquireBus()
         try:
             self._sendCmd("R%+d" % self._angleToEncoder(pos))
@@ -281,12 +290,19 @@ class PixOrbHardware(AbstractPixOrbHardware):
         @param speed: speed
         @type speed: int
         """
+        if dir_ not in ('+', '-'):
+            raise ValueError("%s axis %d dir. must be in ('+', '-')" % (NAME, AXIS_TABLE[self.capacity]))
+
+        # Reverse direction on yaw axis
+        if self.capacity == 'yawAxis':
+            if dir_ == '+':
+                dir_ = '-'
+            else:
+                dir_ = '+'
+
         self._driver.acquireBus()
         try:
-            if dir_ not in ('+', '-'):
-                raise ValueError("%s axis %d dir. must be in ('+', '-')" % (NAME, AXIS_TABLE[self.capacity]))
-            else:
-                self._sendCmd("M%s%d" % (dir_, speed))
+            self._sendCmd("M%s%d" % (dir_, speed))
         finally:
             self._driver.releaseBus()
 
@@ -337,7 +353,7 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         AbstractAxisPlugin._defineConfig(self)
         AbstractHardwarePlugin._defineConfig(self)
         self._addConfigKey('_speedIndex', 'SPEED_INDEX', default=DEFAULT_SPEED_INDEX)
-        self._addConfigKey('_axisReversed', 'AXIS_REVERSED', default=DEFAULT_AXIS_REVERSED)
+        #self._addConfigKey('_axisReversed', 'AXIS_REVERSED', default=DEFAULT_AXIS_REVERSED)
         self._addConfigKey('_axisWithBreak', 'AXIS_WITH_BREAK', default=DEFAULT_AXIS_WITH_BREAK)
 
     def init(self):
@@ -357,8 +373,8 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
 
     def read(self):
         pos = self._read()
-        if self._config['AXIS_REVERSED']:
-            pos *= -1
+        #if self._config['AXIS_REVERSED']:
+            #pos *= -1
         pos -= self._offset
         return pos
 
@@ -376,8 +392,8 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         if self._config['AXIS_WITH_BREAK']:
             self._releaseBreak()
         self._configurePixOrb(self._config['SPEED_INDEX'])
-        if self._config['AXIS_REVERSED']:
-            pos *= -1
+        #if self._config['AXIS_REVERSED']:
+            #pos *= -1
         self._drive(pos)
 
         # Wait end of movement
@@ -394,11 +410,11 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         if self._config['AXIS_WITH_BREAK']:
             self._releaseBreak()
         self._configurePixOrb(MANUAL_SPEED_TABLE[self._manualSpeed])
-        if self._config['AXIS_REVERSED']:
-            if dir_ == '+':
-                dir_ = '-'
-            else:
-                dir_ = '+'
+        #if self._config['AXIS_REVERSED']:
+            #if dir_ == '+':
+                #dir_ = '-'
+            #else:
+                #dir_ = '+'
         self._startJog(dir_, SPEED_TABLE[MANUAL_SPEED_TABLE[self._manualSpeed]]['slewSpeed'])
 
     def stop(self):
@@ -425,8 +441,8 @@ class PixOrbAxisController(AxisPluginController, HardwarePluginController):
         self._addWidget('Main', QtGui.QApplication.translate("PixOrbAxisController", "Speed index"),
                         SpinBoxField, (1, 10, "", ""), 'SPEED_INDEX')
         self._addTab('Hard', QtGui.QApplication.translate("PixOrbAxisController", 'Hard'))
-        self._addWidget('Hard', QtGui.QApplication.translate("PixOrbAxisController", "Axis reversed"),
-                        CheckBoxField, (), 'AXIS_REVERSED')
+        #self._addWidget('Hard', QtGui.QApplication.translate("PixOrbAxisController", "Axis reversed"),
+                        #CheckBoxField, (), 'AXIS_REVERSED')
         self._addWidget('Hard', QtGui.QApplication.translate("PixOrbAxisController", "Axis with break"),
                         CheckBoxField, (), 'AXIS_WITH_BREAK')
 
