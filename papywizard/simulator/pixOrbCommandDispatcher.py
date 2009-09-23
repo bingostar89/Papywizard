@@ -126,10 +126,11 @@ class PixOrbCommandDispatcherObject(QtCore.QObject):
 
         raise HardwareError: wrong command
         """
+        Logger().debug("PixOrbBaseHandler.handleCmd(): cmdStr=%s" % repr(cmdStr))
 
         # SIN-11 specific command
         if cmdStr.startswith('&'):
-            return '\n'
+            return 'ABC\n\r'
 
         # Split cmdStr
         controllerName = cmdStr[0]
@@ -137,7 +138,7 @@ class PixOrbCommandDispatcherObject(QtCore.QObject):
         param = cmdStr[2:-1]
         if controllerName not in ('A', 'B', 'C'):
             raise HardwareError("Invalid controller name (%s)" % controllerName)
-        Logger().debug("PixOrbBaseHandler.handleCmd(): cmdStr=%s, cmd=%s, controllerName=%s, param=%s" % (repr(cmdStr), cmd, controllerName, param))
+        Logger().debug("PixOrbBaseHandler.handleCmd(): cmd=%s, controllerName=%s, param=%s" % (cmd, controllerName, param))
 
         # Compute command answer
         answer = ""
@@ -217,6 +218,7 @@ class PixOrbCommandDispatcherObject(QtCore.QObject):
             #raise HardwareError("Invalid command")
             return "#\n\r"  # Or only '\n'?
 
+        #return "%s%s %s %s\n\r" % (controllerName, cmd, controllerName, answer)  # Only if '&E5' activated on SIN-11
         return "%s %s\n\r" % (controllerName, answer)
 
 
