@@ -135,7 +135,7 @@ class AbstractPlugin(object): #(QtCore.QObject):
         Logger().trace("AbstractPlugin._loadConfig()")
         for key, defaultValue in self._config.iteritems():
             configKey = "%s_%s/%s" % (self.name, self.capacity, key)
-            #Logger().debug("AbstractPlugin._loadConfig(): key=%s" % configKey)
+            Logger().debug("AbstractPlugin._loadConfig(): key=%s, defaultValue=%s" % (configKey, defaultValue))
             if ConfigManager().contains(configKey):
                 if isinstance(defaultValue, bool):
                     self._config[key] = ConfigManager().getBoolean(configKey)
@@ -145,7 +145,10 @@ class AbstractPlugin(object): #(QtCore.QObject):
                     self._config[key] = ConfigManager().getInt(configKey)
                 elif isinstance(defaultValue, float):
                     self._config[key] = ConfigManager().getFloat(configKey)
-        #Logger().debug("AbstractPlugin._loadConfig(): config=%s" % self._config)
+                elif isinstance(defaultValue, list):
+                    Logger().debug("AbstractPlugin._loadConfig(): defaultValue=%s" % str(ConfigManager().get(configKey)))
+                    self._config[key] = ConfigManager().get(configKey).split(',')
+        Logger().debug("AbstractPlugin._loadConfig(): config=%s" % self._config)
 
     def _saveConfig(self):
         """ Save the plugin config.
@@ -153,7 +156,10 @@ class AbstractPlugin(object): #(QtCore.QObject):
         Logger().trace("AbstractPlugin._saveConfig()")
         for key, value in self._config.iteritems():
             group = "%s_%s" % (self.name, self.capacity)
-            #Logger().debug("AbstractPlugin._saveConfig(): %s/%s=%s" % (group, key, value))
+            Logger().debug("AbstractPlugin._saveConfig(): %s/%s=%s" % (group, key, value))
+            if isinstance(value, list):
+                value_ = ','.join(value)
+                value = value_
             ConfigManager().set('%s/%s' % (group, key), value)
         ConfigManager().save()
 
