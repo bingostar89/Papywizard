@@ -58,6 +58,8 @@ from PyQt4 import QtGui, QtCore
 
 from papywizard.common.loggingServices import Logger
 
+LINEEDIT_MINIMUM_WIDTH = 150  # pixels
+
 
 class ComboBoxField(QtGui.QComboBox):
     """
@@ -82,6 +84,7 @@ class LineEditField(QtGui.QLineEdit):
         """
         """
         QtGui.QLineEdit.__init__(self)
+        self.setMinimumWidth(LINEEDIT_MINIMUM_WIDTH)
         self.adjustSize()
 
     def setValue(self, value):
@@ -182,3 +185,57 @@ class ListField(QtGui.QListWidget):
         for item in items:
             values.append(unicode(item.text()))
         return values
+
+
+class DirSelectorField(QtGui.QWidget):
+    """
+    """
+    def __init__(self, title):
+        """
+        """
+        QtGui.QWidget.__init__(self)
+        self._title = title
+
+        # Create sub-widgets.
+        layout = QtGui.QHBoxLayout(self)
+        self._lineEdit = QtGui.QLineEdit(self)
+        self._lineEdit.setMinimumWidth(LINEEDIT_MINIMUM_WIDTH)
+        layout.addWidget(self._lineEdit)
+        self._toolButton = QtGui.QToolButton(self)
+        self._toolButton.setText("...")
+        layout.addWidget(self._toolButton)
+
+        # Connect signals
+        self.connect(self._toolButton, QtCore.SIGNAL("clicked()"), self._onToolButtonClicked)
+
+    def _onToolButtonClicked(self):
+        """
+        """
+        Logger().trace("DirSelectorField.__onToolButtonClicked()")
+        dir_ = self._lineEdit.text()
+        dirName = QtGui.QFileDialog.getExistingDirectory(self, self._title, dir_, QtGui.QFileDialog.ShowDirsOnly)
+        if dirName:
+            self._lineEdit.setText(dirName)
+
+    def setValue(self, value):
+        self._lineEdit.setText(value)
+
+    def value(self):
+        return self._lineEdit.text()
+
+
+class FileSelectorField(DirSelectorField):
+    """
+    """
+    def __init__(self, title, filter_):
+        DirSelectorField.__init__(self, title)
+        self.__filter = filter_
+
+    def _onToolButtonClicked(self):
+        """
+        """
+        Logger().trace("FileSelectorField.__onToolButtonClicked()")
+        dir_ = self._lineEdit.text()
+        fileName = QtGui.QFileDialog.getOpenFileName(self, self._title, dir_, self.__filter)
+        if fileName:
+            self._lineEdit.setText(fileName)
