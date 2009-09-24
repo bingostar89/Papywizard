@@ -82,9 +82,10 @@ DEFAULT_CAMERA_EXPOSURE_COMPENSATION_LIST = u"±2@1/2"
 
 PROGRAM_PATH = "C:\\Program Files\\BreezeSys\\DSLR Remote Pro\\DSLRRemoteTest\\DSLRRemoteTest.exe"
 MIRROR_LOCKUP_PARAMS = ""
-OUTPUT_DIR_PARAM = "-o %(dir)s"
-FILENAME_PREFIX_PARAM = "-p %(prefix)s"
-EXPOSURE_COMPENSATION_PARAM = "-x %(index)d"
+OUTPUT_DIR_PARAM = "-o"
+FILENAME_PREFIX_PARAM = "-p"
+EXPOSURE_COMPENSATION_PARAM = "-x"
+DRY_RUN_PARAM = "-n"
 CAMERA_EXPOSURE_COMPENSATION_LIST_1_3 = ["+5", "+4 2/3", "+4 1/3", "+4", "+3 2/3", "+3 1/3", "+3", "+2 2/3",
                                          "+2 1/3", "+2", "+1 2/3", "+1 1/3", "+1", "+2/3", "+1/3",
                                          "0",
@@ -168,20 +169,22 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
         index = self.__cameraExposureCompensationList.index(exposureCompensation)
 
         # Build command
-        cmd = PROGRAM_PATH
-        cmd += " %s" % EXPOSURE_COMPENSATION_PARAM % {'index': index}
+        cmdArgs = [PROGRAM_PATH]
+        cmdArgs.append(EXPOSURE_COMPENSATION_PARAM)
+        cmdArgs.append(str(index))
         if self._config['DRY_RUN']:
-            cmd += " -n"
+            cmdArgs.append(DRY_RUN_PARAM)
         if self._config['OUTPUT_DIR']:
-            cmd += " %s" % OUTPUT_DIR_PARAM % {'dir': self._config['OUTPUT_DIR']}
+            cmdArgs.append(OUTPUT_DIR_PARAM)
+            cmdArgs.append(self._config['OUTPUT_DIR'])
         if self._config['FILENAME_PREFIX']:
-            cmd += " %s" % FILENAME_PREFIX_PARAM % {'prefix': self._config['FILENAME_PREFIX']}
-        Logger().debug("DslrRemoteProShutter.shoot(): shoot command '%s'..." % cmd)
+            cmdArgs.append(FILENAME_PREFIX_PARAM)
+            cmdArgs.append(self._config['FILENAME_PREFIX'])
+        Logger().debug("DslrRemoteProShutter.shoot(): shoot command '%s'..." % ' '.join(cmdArgs))
 
         # Launch external command
-        args = cmd.split()
         for nbTry in xrange(3):
-            p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p = subprocess.Popen(cmdArgs, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
             # Wait end of execution
             stdout, stderr = p.communicate()
