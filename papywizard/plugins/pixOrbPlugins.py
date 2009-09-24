@@ -77,7 +77,6 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 NAME = "PixOrb"
 
 DEFAULT_SPEED_INDEX = 9
-#DEFAULT_AXIS_REVERSED = False
 DEFAULT_AXIS_WITH_BREAK = False
 
 ENCODER_FULL_CIRCLE = 1000000  # steps per turn
