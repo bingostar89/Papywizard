@@ -80,8 +80,7 @@ DEFAULT_OUTPUT_DIR = config.HOME_DIR
 DEFAULT_FILENAME_PREFIX = ""
 DEFAULT_CAMERA_EXPOSURE_COMPENSATION_LIST = u"±2@1/2"
 
-#PROGRAM_PATH = "C:\\Program Files\\BreezeSys\\DSLR Remote Pro\\DSLRRemoteTest\\DSLRRemoteTest.exe"
-PROGRAM_PATH = "gphoto2 --capture-preview"
+PROGRAM_PATH = "C:\\Program Files\\BreezeSys\\DSLR Remote Pro\\DSLRRemoteTest\\DSLRRemoteTest.exe"
 MIRROR_LOCKUP_PARAMS = ""
 OUTPUT_DIR_PARAM = "-o %(dir)s"
 FILENAME_PREFIX_PARAM = "-p %(prefix)s"
