@@ -86,7 +86,7 @@ class ConfigController(AbstractModalDialogController):
         self.connect(self._view.pitchAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onPitchAxisConfigurePushButtonClicked)
         self.connect(self._view.shutterConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onShutterConfigurePushButtonClicked)
 
-        self.connect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
+        self.connect(self._view.dataStorageDirToolButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirToolButtonClicked)
         self.connect(self._view.dataFileEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onDataFileEnableCheckBoxToggled)
 
         self.connect(self._view.timerAfterEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onTimerAfterEnableCheckBoxToggled)
@@ -103,7 +103,7 @@ class ConfigController(AbstractModalDialogController):
         self.disconnect(self._view.pitchAxisConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onPitchAxisConfigurePushButtonClicked)
         self.disconnect(self._view.shutterConfigurePushButton, QtCore.SIGNAL("clicked()"), self.__onShutterConfigurePushButtonClicked)
 
-        self.disconnect(self._view.dataStorageDirPushButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirPushButtonClicked)
+        self.disconnect(self._view.dataStorageDirToolButton, QtCore.SIGNAL("clicked()"), self.__onDataStorageDirToolButtonClicked)
         self.disconnect(self._view.dataFileEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onDataFileEnableCheckBoxToggled)
 
         self.disconnect(self._view.timerAfterEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onTimerAfterEnableCheckBoxToggled)
@@ -225,12 +225,12 @@ class ConfigController(AbstractModalDialogController):
         controller = controllerClass(self, model)
         controller.exec_()
 
-    def __onDataStorageDirPushButtonClicked(self):
+    def __onDataStorageDirToolButtonClicked(self):
         """ Select data storage dir button clicked.
 
         Open a file dialog to select the dir.
         """
-        Logger().trace("ConfigController.__onDataStorageDirPushButtonClicked()")
+        Logger().trace("ConfigController.__onDataStorageDirToolButtonClicked()")
         dataStorageDir = ConfigManager().get('Configuration/DATA_STORAGE_DIR')
         dirName = QtGui.QFileDialog.getExistingDirectory(self._view,
                                                          self.tr("Choose Data Storage dir"),

@@ -799,19 +799,9 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="QPushButton" name="dataStorageDirPushButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
+          <widget class="QToolButton" name="dataStorageDirToolButton">
            <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="../icons.qrc">
-             <normaloff>:/icons/fileopen.png</normaloff>:/icons/fileopen.png</iconset>
+            <string>...</string>
            </property>
           </widget>
          </item>

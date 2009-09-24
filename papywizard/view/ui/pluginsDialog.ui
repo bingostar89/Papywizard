@@ -203,13 +203,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="bluetoothChoosePushButton">
-           <property name="text">
-            <string>Choose...</string>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="0">
           <widget class="QLabel" name="serialPortLabel">
            <property name="enabled">
@@ -281,6 +274,13 @@
            </property>
            <property name="value">
             <number>7165</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="bluetoothChoosePushButton">
+           <property name="text">
+            <string>Choose...</string>
            </property>
           </widget>
          </item>

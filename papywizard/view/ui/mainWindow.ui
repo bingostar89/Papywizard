@@ -1102,7 +1102,7 @@
            <item row="3" column="0">
             <widget class="QLabel" name="label_11">
              <property name="text">
-              <string>Nb picts:</string>
+              <string>Nb picts</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1125,7 +1125,7 @@
            <item row="4" column="0">
             <widget class="QLabel" name="label_12">
              <property name="text">
-              <string>Duration:</string>
+              <string>Duration</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
