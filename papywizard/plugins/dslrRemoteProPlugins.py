@@ -63,22 +63,29 @@ import subprocess
 
 from PyQt4 import QtCore, QtGui
 
+from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, \
-                                         DoubleSpinBoxField, CheckBoxField, SliderField
+                                         DoubleSpinBoxField, CheckBoxField, SliderField, DirSelectorField
 
 NAME = "DSLR Remote Pro"
 
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_USER_EXPOSURE_COMPENSATION_LIST = "-2, 0, +2"
+DEFAULT_DRY_RUN = False
+DEFAULT_OUTPUT_DIR = config.HOME_DIR
+DEFAULT_FILENAME_PREFIX = ""
 DEFAULT_CAMERA_EXPOSURE_COMPENSATION_LIST = u"±2@1/2"
 
-PROGRAM_PATH = "C:\\Program Files\\breezesys\\DSLrRemotePro\\DSLrRemote.exe"
+#PROGRAM_PATH = "C:\\Program Files\\BreezeSys\\DSLR Remote Pro\\DSLRRemoteTest\\DSLRRemoteTest.exe"
+PROGRAM_PATH = "gphoto2 --capture-preview"
 MIRROR_LOCKUP_PARAMS = ""
-SHOOT_PARAMS = "-x %(index)d"
+OUTPUT_DIR_PARAM = "-o %(dir)s"
+FILENAME_PREFIX_PARAM = "-p %(prefix)s"
+EXPOSURE_COMPENSATION_PARAM = "-x %(index)d"
 CAMERA_EXPOSURE_COMPENSATION_LIST_1_3 = ["+5", "+4 2/3", "+4 1/3", "+4", "+3 2/3", "+3 1/3", "+3", "+2 2/3",
                                          "+2 1/3", "+2", "+1 2/3", "+1 1/3", "+1", "+2/3", "+1/3",
                                          "0",
@@ -110,6 +117,9 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_userExposureCompensationList', 'USER_EXPOSURE_COMPENSATION_LIST',
                            default=DEFAULT_USER_EXPOSURE_COMPENSATION_LIST)
+        self._addConfigKey('_dryRun', 'DRY_RUN', default=DEFAULT_DRY_RUN)
+        self._addConfigKey('_outputDir', 'OUTPUT_DIR', default=DEFAULT_OUTPUT_DIR)
+        self._addConfigKey('_filenamePrefix', 'FILENAME_PREFIX', default=DEFAULT_FILENAME_PREFIX)
         self._addConfigKey('_cameraExposureCompensationList', 'CAMERA_EXPOSURE_COMPENSATION_LIST',
                            default=DEFAULT_CAMERA_EXPOSURE_COMPENSATION_LIST)
 
@@ -158,35 +168,54 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
         Logger().debug("DslrRemoteProShutter.shoot(): exposure compensation=%s" % exposureCompensation)
         index = self.__cameraExposureCompensationList.index(exposureCompensation)
 
-        # Launch external command
-        cmd = "%s %s" % (PROGRAM_PATH, SHOOT_PARAMS) % {'index': index}
+        # Build command
+        cmd = PROGRAM_PATH
+        cmd += " %s" % EXPOSURE_COMPENSATION_PARAM % {'index': index}
+        if self._config['DRY_RUN']:
+            cmd += " -n"
+        if self._config['OUTPUT_DIR']:
+            cmd += " %s" % OUTPUT_DIR_PARAM % {'dir': self._config['OUTPUT_DIR']}
+        if self._config['FILENAME_PREFIX']:
+            cmd += " %s" % FILENAME_PREFIX_PARAM % {'prefix': self._config['FILENAME_PREFIX']}
         Logger().debug("DslrRemoteProShutter.shoot(): shoot command '%s'..." % cmd)
-        args = cmd.split()
-        p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        # Wait end of execution
-        stdout, stderr = p.communicate()
-        if stderr:
-            Logger().error("DslrRemoteProShutter.shoot(): stderr:\n%s" % stderr.strip())
+        # Launch external command
+        args = cmd.split()
+        for nbTry in xrange(3):
+            p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+            # Wait end of execution
+            stdout, stderr = p.communicate()
+
+            # Check result
+            if stderr:
+                Logger().error("DslrRemoteProShutter.shoot(): stderr:\n%s" % stderr.strip())
+            if p.returncode == 0:
+                break
+            Logger().warning("DslrRemoteProShutter.shoot(): shoot command failed (retcode=%d). Retrying..." % p.returncode)
+
         Logger().debug("DslrRemoteProShutter.shoot(): stdout:\n%s" % stdout.strip())
 
         return p.returncode
-
-    def getCameraExposureCompensationList(self):
-        """
-        """
-        return self.__cameraExposureCompensationList
 
 
 class DslrRemoteProShutterController(ShutterPluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("DslrRemoteProShutterController", "Mirror lockup"),
+        self._addWidget('Main', QtGui.QApplication.translate("dslrRemoteProPlugins", "Mirror lockup"),
                         CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', QtGui.QApplication.translate("DslrRemoteProShutterController", "User exposure\ncompensation list"),
+        self._addWidget('Main', QtGui.QApplication.translate("dslrRemoteProPlugins", "User exposure\ncompensation list"),
                         LineEditField, (), 'USER_EXPOSURE_COMPENSATION_LIST')
-        self._addTab('Camera', QtGui.QApplication.translate("DslrRemoteProShutterController", 'Camera'))
-        self._addWidget('Camera', QtGui.QApplication.translate("DslrRemoteProShutterController", "Camera exposure\ncompensation list"),
+        self._addWidget('Main', QtGui.QApplication.translate("dslrRemoteProPlugins", "Dry run"),
+                        CheckBoxField, (), 'DRY_RUN')
+        self._addTab('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", 'Camera'))
+        self._addWidget('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", "Output directory"),
+                        DirSelectorField,
+                        (QtGui.QApplication.translate("dslrRemoteProPlugins", "Choose output directory..."),),
+                        'OUTPUT_DIR')
+        self._addWidget('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", "File name prefix"),
+                        LineEditField, (), 'FILENAME_PREFIX')
+        self._addWidget('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", "Camera exposure\ncompensation list"),
                         ComboBoxField, ((u"±5@1/3", u"±5@1/2", u"±3@1/3", u"±3@1/2", u"±2@1/3", u"±2@1/2"),),
                         'CAMERA_EXPOSURE_COMPENSATION_LIST')
 
