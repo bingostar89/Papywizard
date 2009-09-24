@@ -169,22 +169,22 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
         index = self.__cameraExposureCompensationList.index(exposureCompensation)
 
         # Build command
-        cmdArgs = [PROGRAM_PATH]
-        cmdArgs.append(EXPOSURE_COMPENSATION_PARAM)
-        cmdArgs.append(str(index))
+        args = [PROGRAM_PATH]
+        args.append(EXPOSURE_COMPENSATION_PARAM)
+        args.append(str(index))
         if self._config['DRY_RUN']:
-            cmdArgs.append(DRY_RUN_PARAM)
+            args.append(DRY_RUN_PARAM)
         if self._config['OUTPUT_DIR']:
-            cmdArgs.append(OUTPUT_DIR_PARAM)
-            cmdArgs.append(self._config['OUTPUT_DIR'])
+            args.append(OUTPUT_DIR_PARAM)
+            args.append(self._config['OUTPUT_DIR'])
         if self._config['FILENAME_PREFIX']:
-            cmdArgs.append(FILENAME_PREFIX_PARAM)
-            cmdArgs.append(self._config['FILENAME_PREFIX'])
-        Logger().debug("DslrRemoteProShutter.shoot(): shoot command '%s'..." % ' '.join(cmdArgs))
+            args.append(FILENAME_PREFIX_PARAM)
+            args.append(self._config['FILENAME_PREFIX'])
+        Logger().debug("DslrRemoteProShutter.shoot(): shoot command '%s'..." % ' '.join(args))
 
         # Launch external command
         for nbTry in xrange(3):
-            p = subprocess.Popen(cmdArgs, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
             # Wait end of execution
             stdout, stderr = p.communicate()
