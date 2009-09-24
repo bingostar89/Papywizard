@@ -71,7 +71,7 @@ class AbstractPluginController(AbstractModalDialogController):
         self._fields = {}
 
         # Add a general tab
-        self._addTab('Main', QtGui.QApplication.translate("AbstractPluginController", 'Main'))
+        self._addTab('Main', QtGui.QApplication.translate("abstractPluginController", 'Main'))
 
     def _addTab(self, tabName, tabLabel):
         """ Add a new tab to the tab widget.

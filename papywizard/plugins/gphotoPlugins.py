@@ -157,11 +157,11 @@ class GphotoShutter(AbstractShutterPlugin):
 class GphotoShutterController(ShutterPluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("GphotoShutterController", "Mirror lockup"),
+        self._addWidget('Main', QtGui.QApplication.translate("gphotoPlugins", "Mirror lockup"),
                         CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', QtGui.QApplication.translate("GphotoShutterController", "Bracketing nb picts"),
+        self._addWidget('Main', QtGui.QApplication.translate("gphotoPlugins", "Bracketing nb picts"),
                         SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
-        self._addWidget('Main', QtGui.QApplication.translate("GphotoShutterController", "Bracketing step"),
+        self._addWidget('Main', QtGui.QApplication.translate("gphotoPlugins", "Bracketing step"),
                         DoubleSpinBoxField, (0.5, 5., 1, 0.5, "", " ev"), 'BRACKETING_STEP')
 
 

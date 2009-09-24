@@ -151,12 +151,12 @@ class UrsaMinorBt2ShutterController(StandardShutterPluginController, HardwarePlu
         Logger().trace("UrsaMinorBt2ShutterController._defineGui()")
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addTab('Focus', QtGui.QApplication.translate("UrsaMinorBt2ShutterController", 'Focus'))
-        self._addWidget('Focus', QtGui.QApplication.translate("UrsaMinorBt2ShutterController", "Enable"),
+        self._addTab('Focus', QtGui.QApplication.translate("ursaMinorBt2Plugins", 'Focus'))
+        self._addWidget('Focus', QtGui.QApplication.translate("ursaMinorBt2Plugins", "Enable"),
                         CheckBoxField, (), 'FOCUS_ENABLE')
-        self._addWidget('Focus', QtGui.QApplication.translate("UrsaMinorBt2ShutterController", "Pulse width"),
+        self._addWidget('Focus', QtGui.QApplication.translate("ursaMinorBt2Plugins", "Pulse width"),
                         DoubleSpinBoxField, (0.1, 5., 1, 0.1, "", " s"), 'FOCUS_PULSE_WIDTH')
-        self._addWidget('Focus', QtGui.QApplication.translate("UrsaMinorBt2ShutterController", "Maintain focus"),
+        self._addWidget('Focus', QtGui.QApplication.translate("ursaMinorBt2Plugins", "Maintain focus"),
                         CheckBoxField, (), 'FOCUS_MAINTAIN')
 
 

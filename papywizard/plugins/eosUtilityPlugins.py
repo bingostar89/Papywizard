@@ -63,12 +63,12 @@ from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager import PluginsManager
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.shutterPluginController import ShutterPluginController
-from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField
+from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField, FileSelectorField
 
 NAME = "EOS Utility"
 
 DEFAULT_PROGRAM_PATH = "C:\\Program Files\\Papywizard\\EOSBracket.exe"
-DEFAULT_EOS_UTILITY_VERSION = QtGui.QApplication.translate("EOSUtilityShutterController", 'new')
+DEFAULT_EOS_UTILITY_VERSION = QtGui.QApplication.translate("eosUtilityPlugins", 'new')
 DEFAULT_BRACKETING_STOPS = '1'
 DEFAULT_BRACKETING_TYPE = '0-+'
 DEFAULT_BRACKETING_NB_PICTS = 1
@@ -76,27 +76,27 @@ DEFAULT_DRY_RUN = True
 DEFAULT_BULB_ENABLE = False
 DEFAULT_BULB_BASE_EXPOSURE = 1
 DEFAULT_FOCUS_ENABLE = False
-DEFAULT_FOCUS_DIRECTION = QtGui.QApplication.translate("EOSUtilityShutterController", 'far')
-DEFAULT_FOCUS_STEP = QtGui.QApplication.translate("EOSUtilityShutterController", 'medium')
+DEFAULT_FOCUS_DIRECTION = QtGui.QApplication.translate("eosUtilityPlugins", 'far')
+DEFAULT_FOCUS_STEP = QtGui.QApplication.translate("eosUtilityPlugins", 'medium')
 DEFAULT_FOCUS_STEP_COUNT = 1
 DEFAULT_FOCUS_NB_PICTS = 1
 BRACKETING_TYPE_INDEX = {'0--': '1',
                          '0++': '2',
                          '0-+': '3'}
-EOS_UTILITY_VERSION_TABLE = {'old': QtGui.QApplication.translate("EOSUtilityShutterController", 'old'),
-                             'new': QtGui.QApplication.translate("EOSUtilityShutterController", 'new'),
-                             unicode(QtGui.QApplication.translate("EOSUtilityShutterController", 'old')): 'old',
-                             unicode(QtGui.QApplication.translate("EOSUtilityShutterController", 'new')): 'new'}
-FOCUS_DIRECTION_TABLE = {'far': QtGui.QApplication.translate("EOSUtilityShutterController", 'far'),
-                         'near': QtGui.QApplication.translate("EOSUtilityShutterController", 'near'),
-                         QtGui.QApplication.translate("EOSUtilityShutterController", 'far'): 'far',
-                         QtGui.QApplication.translate("EOSUtilityShutterController", 'near'): 'near'}
-FOCUS_STEP_MODE_TABLE = {'small': QtGui.QApplication.translate("EOSUtilityShutterController", 'small'),
-                         'medium': QtGui.QApplication.translate("EOSUtilityShutterController", 'medium'),
-                         'large': QtGui.QApplication.translate("EOSUtilityShutterController", 'large'),
-                         QtGui.QApplication.translate("EOSUtilityShutterController", 'small'): 'small',
-                         QtGui.QApplication.translate("EOSUtilityShutterController", 'medium'): 'medium',
-                         QtGui.QApplication.translate("EOSUtilityShutterController", 'large'): 'large'}
+EOS_UTILITY_VERSION_TABLE = {'old': QtGui.QApplication.translate("eosUtilityPlugins", 'old'),
+                             'new': QtGui.QApplication.translate("eosUtilityPlugins", 'new'),
+                             unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'old')): 'old',
+                             unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'new')): 'new'}
+FOCUS_DIRECTION_TABLE = {'far': QtGui.QApplication.translate("eosUtilityPlugins", 'far'),
+                         'near': QtGui.QApplication.translate("eosUtilityPlugins", 'near'),
+                         QtGui.QApplication.translate("eosUtilityPlugins", 'far'): 'far',
+                         QtGui.QApplication.translate("eosUtilityPlugins", 'near'): 'near'}
+FOCUS_STEP_MODE_TABLE = {'small': QtGui.QApplication.translate("eosUtilityPlugins", 'small'),
+                         'medium': QtGui.QApplication.translate("eosUtilityPlugins", 'medium'),
+                         'large': QtGui.QApplication.translate("eosUtilityPlugins", 'large'),
+                         QtGui.QApplication.translate("eosUtilityPlugins", 'small'): 'small',
+                         QtGui.QApplication.translate("eosUtilityPlugins", 'medium'): 'medium',
+                         QtGui.QApplication.translate("eosUtilityPlugins", 'large'): 'large'}
 
 
 class EOSUtilityShutter(AbstractShutterPlugin):
@@ -196,38 +196,40 @@ class EOSUtilityShutterController(ShutterPluginController):
     def _defineGui(self):
         Logger().trace("EOSUtilityShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Program path"),
-                        LineEditField, (), 'PROGRAM_PATH')
+        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Program path"),
+                        FileSelectorField, (QtGui.QApplication.translate("TimelordShutterController", "Choose program path..."),
+                                            QtGui.QApplication.translate("TimelordShutterController", "EXE files (*.exe);;All files (*)")),
+                        'PROGRAM_PATH')
         types = [EOS_UTILITY_VERSION_TABLE['old'], EOS_UTILITY_VERSION_TABLE['new']]
-        self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "EOS Utility version"),
+        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "EOS Utility version"),
                         ComboBoxField, (types,), 'EOS_UTILITY_VERSION')
-        self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Bracketing nb picts"),
+        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Bracketing nb picts"),
                         SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
         stops = ['1/3', '2/3', '1', '1 1/3', '1 2/3', '2', '2 1/3', '2 2/3','3',
                  '3 1/3', '3 2/3', '4', '4 1/3', '4 2/3', '5', '5 1/3', '5 2/3', '6']
-        self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Bracketing stops"),
+        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Bracketing stops"),
                         ComboBoxField, (stops,), 'BRACKETING_STOPS')
-        self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Bracketing type"),
+        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Bracketing type"),
                         ComboBoxField, (BRACKETING_TYPE_INDEX.keys(),), 'BRACKETING_TYPE')
-        self._addWidget('Main', QtGui.QApplication.translate("EOSUtilityShutterController", "Dry run"),
+        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Dry run"),
                         CheckBoxField, (), 'DRY_RUN')
-        self._addTab('Bulb', QtGui.QApplication.translate("EOSUtilityShutterController", 'Bulb'))
-        self._addWidget('Bulb', QtGui.QApplication.translate("EOSUtilityShutterController", "Enable"),
+        self._addTab('Bulb', QtGui.QApplication.translate("eosUtilityPlugins", 'Bulb'))
+        self._addWidget('Bulb', QtGui.QApplication.translate("eosUtilityPlugins", "Enable"),
                         CheckBoxField, (), 'BULB_ENABLE')
-        self._addWidget('Bulb', QtGui.QApplication.translate("EOSUtilityShutterController", "Base exposure"),
+        self._addWidget('Bulb', QtGui.QApplication.translate("eosUtilityPlugins", "Base exposure"),
                         SpinBoxField, (1, 99, "", " s"), 'BULB_BASE_EXPOSURE')
-        self._addTab('Focus', QtGui.QApplication.translate("EOSUtilityShutterController", 'Focus'))
-        self._addWidget('Focus',  QtGui.QApplication.translate("EOSUtilityShutterController", "Enable"),
+        self._addTab('Focus', QtGui.QApplication.translate("eosUtilityPlugins", 'Focus'))
+        self._addWidget('Focus',  QtGui.QApplication.translate("eosUtilityPlugins", "Enable"),
                         CheckBoxField, (), 'FOCUS_ENABLE')
         focusDir = [FOCUS_DIRECTION_TABLE['far'], FOCUS_DIRECTION_TABLE['near']]
-        self._addWidget('Focus', QtGui.QApplication.translate("EOSUtilityShutterController", "Direction"),
+        self._addWidget('Focus', QtGui.QApplication.translate("eosUtilityPlugins", "Direction"),
                         ComboBoxField, (focusDir,), 'FOCUS_DIRECTION')
         stepMode = [FOCUS_STEP_MODE_TABLE['small'], FOCUS_STEP_MODE_TABLE['medium'], FOCUS_STEP_MODE_TABLE['large']]
-        self._addWidget('Focus',  QtGui.QApplication.translate("EOSUtilityShutterController", "Step"),
+        self._addWidget('Focus',  QtGui.QApplication.translate("eosUtilityPlugins", "Step"),
                         ComboBoxField, (stepMode,), 'FOCUS_STEP')
-        self._addWidget('Focus', QtGui.QApplication.translate("EOSUtilityShutterController", "Step count"),
+        self._addWidget('Focus', QtGui.QApplication.translate("eosUtilityPlugins", "Step count"),
                         SpinBoxField, (1, 99), 'FOCUS_STEP_COUNT')
-        self._addWidget('Focus', QtGui.QApplication.translate("EOSUtilityShutterController", "Nb picts"),
+        self._addWidget('Focus', QtGui.QApplication.translate("eosUtilityPlugins", "Nb picts"),
                         SpinBoxField, (1, 99), 'FOCUS_NB_PICTS')
 
 def register():

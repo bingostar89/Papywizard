@@ -480,14 +480,14 @@ class MerlinOrionAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addTab('Hard', QtGui.QApplication.translate("MerlinOrionAxisController", 'Hard'))
-        self._addWidget('Hard', QtGui.QApplication.translate("MerlinOrionAxisController", "Alternate drive"),
+        self._addTab('Hard', QtGui.QApplication.translate("merlinOrionPlugins", 'Hard'))
+        self._addWidget('Hard', QtGui.QApplication.translate("merlinOrionPlugins", "Alternate drive"),
                         CheckBoxField, (), 'ALTERNATE_DRIVE')
-        self._addWidget('Hard', QtGui.QApplication.translate("MerlinOrionAxisController", "Inertia angle"),
+        self._addWidget('Hard', QtGui.QApplication.translate("merlinOrionPlugins", "Inertia angle"),
                         DoubleSpinBoxField, (0.1, 9.9, 1, .1, "", " deg"), 'INERTIA_ANGLE')
-        #self._addWidget('Hard', QtGui.QApplication.translate("MerlinOrionAxisController", "Alternate full circle"),
+        #self._addWidget('Hard', QtGui.QApplication.translate("merlinOrionPlugins", "Alternate full circle"),
                         #CheckBoxField, (), 'ALTERNATE_FULL_CIRCLE')
-        #self._addWidget('Hard', QtGui.QApplication.translate("MerlinOrionAxisController", "Encoder full circle"),
+        #self._addWidget('Hard', QtGui.QApplication.translate("merlinOrionPlugins", "Encoder full circle"),
                         #SpinBoxField, (0x080000, 0x380000, "", " units/turn"), 'ENCODER_FULL_CIRCLE')
 
 

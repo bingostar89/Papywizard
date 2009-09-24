@@ -114,9 +114,9 @@ class UrsaMinorUsbShutterController(StandardShutterPluginController, HardwarePlu
         Logger().trace("UrsaMinorUsbShutterController._defineGui()")
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Hard', QtGui.QApplication.translate("UrsaMinorUsbShutterController", "Trigger line"),
+        self._addWidget('Hard', QtGui.QApplication.translate("ursaMinorUsbPlugins", "Trigger line"),
                         ComboBoxField, (['RTS', 'DTR'],), 'TRIGGER_LINE')
-        self._addWidget('Hard', QtGui.QApplication.translate("UrsaMinorUsbShutterController", "Line inverted"),
+        self._addWidget('Hard', QtGui.QApplication.translate("ursaMinorUsbPlugins", "Line inverted"),
                         CheckBoxField, (), 'TRIGGER_LINE_INVERTED')
 
 

@@ -61,14 +61,14 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 class StandardShutterPluginController(ShutterPluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("StandardShutterPluginController", "Time value"),
+        self._addWidget('Main', QtGui.QApplication.translate("standardShutterPluginController", "Time value"),
                         DoubleSpinBoxField, (0.1, 3600., 1, 0.1, "", " s"), 'TIME_VALUE')
-        self._addWidget('Main', QtGui.QApplication.translate("StandardShutterPluginController", "Mirror lockup"),
+        self._addWidget('Main', QtGui.QApplication.translate("standardShutterPluginController", "Mirror lockup"),
                         CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', QtGui.QApplication.translate("StandardShutterPluginController", "Bracketing nb picts"),
+        self._addWidget('Main', QtGui.QApplication.translate("standardShutterPluginController", "Bracketing nb picts"),
                         SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
-        self._addTab('Hard', QtGui.QApplication.translate("StandardShutterPluginController", 'Hard'))
-        self._addWidget('Hard', QtGui.QApplication.translate("StandardShutterPluginController", "Pulse width high"),
+        self._addTab('Hard', QtGui.QApplication.translate("standardShutterPluginController", 'Hard'))
+        self._addWidget('Hard', QtGui.QApplication.translate("standardShutterPluginController", "Pulse width high"),
                         SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_HIGH')
-        self._addWidget('Hard', QtGui.QApplication.translate("StandardShutterPluginController", "Pulse width low"),
+        self._addWidget('Hard', QtGui.QApplication.translate("standardShutterPluginController", "Pulse width low"),
                         SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_LOW')

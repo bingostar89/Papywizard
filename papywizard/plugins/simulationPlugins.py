@@ -218,7 +218,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
 class SimulationAxisController(AxisPluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("SimulationAxisController", "Speed"),
+        self._addWidget('Main', QtGui.QApplication.translate("simulationPlugins", "Speed"),
                         SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
 
 
@@ -263,11 +263,11 @@ class SimulationShutterController(ShutterPluginController):
     def _defineGui(self):
         Logger().trace("SimulationShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("SimulationShutterController", "Time value"),
+        self._addWidget('Main', QtGui.QApplication.translate("simulationPlugins", "Time value"),
                         DoubleSpinBoxField, (0.1, 3600, 1, 0.1, "", " s"), 'TIME_VALUE')
-        self._addWidget('Main', QtGui.QApplication.translate("SimulationShutterController", "Mirror lockup"),
+        self._addWidget('Main', QtGui.QApplication.translate("simulationPlugins", "Mirror lockup"),
                         CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', QtGui.QApplication.translate("SimulationShutterController", "Bracketing nb picts"),
+        self._addWidget('Main', QtGui.QApplication.translate("simulationPlugins", "Bracketing nb picts"),
                         SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
 
 

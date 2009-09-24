@@ -9,7 +9,7 @@ License
   - (C) 2007-2009 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
-abiding by the rules of distribution of free software.  You can  use, 
+abiding by the rules of distribution of free software.  You can  use,
 modify and/or redistribute the software under the terms of the CeCILL
 license as circulated by CEA, CNRS and INRIA at the following URL
 U{http://www.cecill.info}.
@@ -18,7 +18,7 @@ As a counterpart to the access to the source code and  rights to copy,
 modify and redistribute granted by the license, users are provided only
 with a limited warranty  and the software's author,  the holder of the
 economic rights,  and the successive licensors  have only  limited
-liability. 
+liability.
 
 In this respect, the user's attention is drawn to the risks associated
 with loading,  using,  modifying and/or developing or reproducing the
@@ -27,9 +27,9 @@ that may mean  that it is complicated to manipulate,  and  that  also
 therefore means  that it is reserved for developers  and  experienced
 professionals having in-depth computer knowledge. Users are therefore
 encouraged to load and test the software's suitability as regards their
-requirements in conditions enabling the security of their systems and/or 
-data to be ensured and,  more generally, to use and operate it in the 
-same conditions as regards security. 
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
 
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL license and that you accept its terms.
@@ -62,12 +62,13 @@ from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.shutterPluginController import ShutterPluginController
-from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
+from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, \
+                                         CheckBoxField, SliderField, FileSelectorField
 
 NAME = "Timelord"
 
 DEFAULT_PROGRAM_PATH = "C:\\Program Files\\OxfordEye\\Timelord\\Timelord.exe"
-DEFAULT_LRD_FILE_PATH = "C:\\Documents and Settings\\win2k\\My Documents\\timelord.lrd"
+DEFAULT_LRD_FILE = "C:\\Documents and Settings\\win2k\\My Documents\\timelord.lrd"
 
 
 class TimelordShutter(AbstractShutterPlugin):
@@ -92,7 +93,7 @@ class TimelordShutter(AbstractShutterPlugin):
         Logger().trace("TimelordShutter._defineConfig()")
         #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('Program path', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
-        self._addConfigKey('LRD file path', 'LRD_FILE_PATH', default=DEFAULT_LRD_FILE_PATH)
+        self._addConfigKey('LRD file path', 'LRD_FILE', default=DEFAULT_LRD_FILE)
 
     def lockupMirror(self):
         Logger().warning("TimelordShutter.lockupMirror(): Not possible with TimeLord")
@@ -100,10 +101,10 @@ class TimelordShutter(AbstractShutterPlugin):
 
     def shoot(self, bracketNumber):
         Logger().debug("TimelordShutter.shoot(): bracketNumber=%d" % bracketNumber)
-        Logger().debug("TimelordShutter.shoot(): execute command '%s %s'..." % (self._config['PROGRAM_PATH'], self._config['LRD_FILE_PATH']))
+        Logger().debug("TimelordShutter.shoot(): execute command '%s %s'..." % (self._config['PROGRAM_PATH'], self._config['LRD_FILE']))
 
         # Launch external command
-        args = [self._config['PROGRAM_PATH'], self._config['LRD_FILE_PATH']]
+        args = [self._config['PROGRAM_PATH'], self._config['LRD_FILE']]
         try:
             p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except OSError:
@@ -123,10 +124,14 @@ class TimelordShutterController(ShutterPluginController):
     def _defineGui(self):
         Logger().trace("TimelordShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("TimelordShutterController", "Program path"),
-                        LineEditField, (), 'PROGRAM_PATH')
-        self._addWidget('Main', QtGui.QApplication.translate("TimelordShutterController", "LRD file path"),
-                        LineEditField, (), 'LRD_FILE_PATH')
+        self._addWidget('Main', QtGui.QApplication.translate("timelordPlugins", "Program path"),
+                        FileSelectorField, (QtGui.QApplication.translate("timelordPlugins", "Choose program path..."),
+                                            QtGui.QApplication.translate("timelordPlugins", "EXE files (*.exe);;All files (*)")),
+                        'PROGRAM_PATH')
+        self._addWidget('Main', QtGui.QApplication.translate("timelordPlugins", "LRD file"),
+                        FileSelectorField, (QtGui.QApplication.translate("timelordPlugins", "Choose LRD file..."),
+                                            QtGui.QApplication.translate("timelordPlugins", "LRD files (*.lrd);;All files (*)")),
+                        'LRD_FILE')
 
 
 def register():
