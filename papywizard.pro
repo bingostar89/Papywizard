@@ -67,6 +67,7 @@ SOURCES += papywizard/plugins/abstractAxisPlugin.py \
            papywizard/plugins/abstractPlugin.py \
            papywizard/plugins/abstractShutterPlugin.py \
            papywizard/plugins/abstractStandardShutterPlugin.py \
+           papywizard/plugins/dslrRemoteProPlugins.py \
            papywizard/plugins/eosUtilityPlugins.py \
            papywizard/plugins/genericTetheredPlugins.py \
            papywizard/plugins/gphotoPlugins.py \
