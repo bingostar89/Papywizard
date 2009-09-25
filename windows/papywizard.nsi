@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Papywizard"
-!define PRODUCT_VERSION "2.1.7-1"
+!define PRODUCT_VERSION "2.1.12-1"
 !define PRODUCT_WEB_SITE "http://trac.gbiloba.org/papywizard"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Papywizard.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -24,7 +24,7 @@
 ; Welcome page
 !insertmacro MUI_PAGE_WELCOME
 ; License page
-!insertmacro MUI_PAGE_LICENSE "..\licence_CeCILL_V2-en.txt"
+!insertmacro MUI_PAGE_LICENSE $(license)
 ; Components page
 !insertmacro MUI_PAGE_COMPONENTS
 ; Directory page
@@ -39,12 +39,38 @@
 !insertmacro MUI_UNPAGE_INSTFILES
 
 ; Language files
+!define MUI_LANGDLL_ALLLANGUAGES
 !insertmacro MUI_LANGUAGE "English"
 !insertmacro MUI_LANGUAGE "French"
 !insertmacro MUI_LANGUAGE "German"
 !insertmacro MUI_LANGUAGE "Italian"
 !insertmacro MUI_LANGUAGE "Spanish"
 !insertmacro MUI_LANGUAGE "Polish"
+!insertmacro MUI_LANGUAGE "Czech"
+;
+LicenseLangString license ${LANG_ENGLISH} "..\licence_CeCILL_V2-en.txt"
+LicenseLangString license ${LANG_FRENCH} "..\licence_CeCILL_V2-fr.txt"
+LicenseLangString license ${LANG_GERMAN} "..\licence_CeCILL_V2-en.txt"
+LicenseLangString license ${LANG_ITALIAN} "..\licence_CeCILL_V2-en.txt"
+LicenseLangString license ${LANG_SPANISH} "..\licence_CeCILL_V2-en.txt"
+LicenseLangString license ${LANG_POLISH} "..\licence_CeCILL_V2-en.txt"
+LicenseLangString license ${LANG_CZECH} "..\licence_CeCILL_V2-en.txt"
+;
+LangString un_message_1 ${LANG_ENGLISH} "Do you really want to uninstall $(^Name)?"
+LangString un_message_1 ${LANG_FRENCH} "Êtes-vous certain de vouloir désinstaller $(^Name)?"
+LangString un_message_1 ${LANG_GERMAN} "Do you really want to uninstall $(^Name)?"
+LangString un_message_1 ${LANG_ITALIAN} "Do you really want to uninstall $(^Name)?"
+LangString un_message_1 ${LANG_SPANISH} "Do you really want to uninstall $(^Name)?"
+LangString un_message_1 ${LANG_POLISH} "Do you really want to uninstall $(^Name)?"
+LangString un_message_1 ${LANG_CZECH} "Do you really want to uninstall $(^Name)?"
+;
+LangString un_message_2 ${LANG_ENGLISH} "$(^Name) has been successfully removed from your computer."
+LangString un_message_2 ${LANG_FRENCH} "$(^Name) a été supprimé avec succès de votre ordinateur."
+LangString un_message_2 ${LANG_GERMAN} "$(^Name) has been successfully removed from your computer."
+LangString un_message_2 ${LANG_ITALIAN} "$(^Name) has been successfully removed from your computer."
+LangString un_message_2 ${LANG_SPANISH} "$(^Name) has been successfully removed from your computer."
+LangString un_message_2 ${LANG_POLISH} "$(^Name) has been successfully removed from your computer."
+LangString un_message_2 ${LANG_CZECH} "$(^Name) has been successfully removed from your computer."
 
 ; MUI end ------
 
@@ -102,15 +128,15 @@ SectionEnd
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "Papywizard software"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
-Function un.onUninstSuccess
-  HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) has been successfully removed from your computer."
-FunctionEnd
-
 Function un.onInit
 !insertmacro MUI_UNGETLANGUAGE
-  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Do you really want to uninstall $(^Name)?" IDYES +2
+  MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 $(un_message_1) IDYES +2
   Abort
+FunctionEnd
+
+Function un.onUninstSuccess
+  HideWindow
+  MessageBox MB_ICONINFORMATION|MB_OK $(un_message_2)
 FunctionEnd
 
 Section Uninstall
@@ -125,7 +151,6 @@ Section Uninstall
   Delete "$SMPROGRAMS\Papywizard\Uninstall.lnk"
   Delete "$SMPROGRAMS\Papywizard\Website.lnk"
   Delete "$SMPROGRAMS\Papywizard\Papywizard.lnk"
-  Delete "$SMPROGRAMS\Papywizard\Papywizard-Simul.lnk"
   RMDir  "$SMPROGRAMS\Papywizard"
   Delete "$DESKTOP\Papywizard.lnk"
 
