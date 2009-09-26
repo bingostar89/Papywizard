@@ -59,6 +59,12 @@ import time
 import sys
 if sys.platform == 'win32':
     from ctypes import windll
+    STD_INPUT_HANDLE = -10
+    STD_OUTPUT_HANDLE = -11
+    STD_ERROR_HANDLE = -12
+    stderrHandle = windll.kernel32.GetStdHandle(STD_ERROR_HANDLE)
+    stdoutHandle = windll.kernel32.GetStdHandle(STD_OUTPUT_HANDLE)
+    setConsoleTextAttribute = windll.kernel32.SetConsoleTextAttribute
 
 
 class DefaultFormatter(logging.Formatter):
@@ -113,12 +119,6 @@ class LinuxColorFormatter(DefaultFormatter):
 class WindowsColorFormatter(DefaultFormatter):
     """ Colors for Windows console.
     """
-    from ctypes import windll
-
-    STD_INPUT_HANDLE = -10
-    STD_OUTPUT_HANDLE = -11
-    STD_ERROR_HANDLE = -12
-
     FOREGROUND_BLACK     = 0x0000
     FOREGROUND_BLUE      = 0x0001
     FOREGROUND_GREEN     = 0x0002
@@ -148,8 +148,6 @@ class WindowsColorFormatter(DefaultFormatter):
               'critical': FOREGROUND_GREY | BACKGROUND_RED | FOREGROUND_INTENSITY,        # blanc/rouge, gras
               'default': FOREGROUND_GREY | BACKGROUND_BLACK,                              # defaut
               }
-    stderrHandle = windll.kernel32.GetStdHandle(STD_ERROR_HANDLE)
-    setConsoleTextAttribute = windll.kernel32.SetConsoleTextAttribute
 
     def _setTextAttribute(self, color):
         """ Sets the character attributes (colors).
@@ -157,7 +155,7 @@ class WindowsColorFormatter(DefaultFormatter):
         Color is a combination of foreground and background color,
         foreground and background intensity.
         """
-        WindowsColorFormatter.setConsoleTextAttribute(WindowsColorFormatter.stderrHandle, color)
+        setConsoleTextAttribute(stderrHandle, color)
 
     def _toColor(self, msg, levelname):
         """ Colorize.
@@ -240,3 +238,5 @@ if sys.platform in ('linux2', 'darwin'):
 elif sys.platform == 'win32':
     ColorFormatter = WindowsColorFormatter
     SpaceColorFormatter = WindowsSpaceColorFormatter
+else:
+    raise ValueError("Unsupported platform '%s'" % sys.platform)
