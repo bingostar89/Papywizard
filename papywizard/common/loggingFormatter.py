@@ -57,6 +57,8 @@ __revision__ = "$Id$"
 import logging
 import time
 import sys
+if sys.platform == 'win32':
+    from ctypes import windll
 
 
 class DefaultFormatter(logging.Formatter):
@@ -64,55 +66,124 @@ class DefaultFormatter(logging.Formatter):
     """
 
 
-class ColorFormatter(DefaultFormatter):
-    """ Formatage avec couleurs.
+class LinuxColorFormatter(DefaultFormatter):
+    """ Colors for linux console.
     """
-    if sys.platform in ('linux2', 'darwin'):
-        colors = {'trace':"\033[0;36;40;22m",     # cyan/noir, normal
-                  'debug':"\033[0;36;40;1m",      # cyan/noir, gras
-                  'info':"\033[0;37;40;1m",       # blanc/noir, gras
-                  'warning':"\033[0;33;40;1m",    # marron/noir, gras
-                  'error':"\033[0;31;40;1m",      # rouge/noir, gras
-                  'exception':"\033[0;35;40;1m",  # magenta/noir, gras
-                  'critical':"\033[0;37;41;1m",   # blanc/rouge, gras
-                  'default':"\033[0m",            # defaut
-                  }
-    else:
-        colors = {'trace':"",
-                  'debug':"",
-                  'info':"",
-                  'warning':"",
-                  'error':"",
-                  'exception':"",
-                  'critical':"",
-                  'default':"",
-                  }
+    colors = {'trace': "\033[0;36;40;22m",     # cyan/noir, normal
+              'debug': "\033[0;36;40;1m",      # cyan/noir, gras
+              'info': "\033[0;37;40;1m",       # blanc/noir, gras
+              'warning': "\033[0;33;40;1m",    # jaune/noir, gras
+              'error': "\033[0;31;40;1m",      # rouge/noir, gras
+              'exception': "\033[0;35;40;1m",  # magenta/noir, gras
+              'critical': "\033[0;37;41;1m",   # blanc/rouge, gras
+              'default': "\033[0m",            # defaut
+              }
 
     def _toColor(self, msg, levelname):
         """ Colorize.
         """
         if levelname == 'TRACE':
-            color = ColorFormatter.colors['trace']
+            color = LinuxColorFormatter.colors['trace']
         elif levelname == 'DEBUG':
-            color = ColorFormatter.colors['debug']
+            color = LinuxColorFormatter.colors['debug']
         elif  levelname in 'INFO':
-            color = ColorFormatter.colors['info']
+            color = LinuxColorFormatter.colors['info']
         elif levelname == 'COMMENT':
-            color = ColorFormatter.colors['comment']
+            color = LinuxColorFormatter.colors['comment']
         elif levelname == 'PROMPT':
-            color = ColorFormatter.colors['prompt']
+            color = LinuxColorFormatter.colors['prompt']
         elif levelname == 'WARNING':
-            color = ColorFormatter.colors['warning']
+            color = LinuxColorFormatter.colors['warning']
         elif levelname == 'ERROR':
-            color = ColorFormatter.colors['error']
+            color = LinuxColorFormatter.colors['error']
         elif levelname == 'EXCEPTION':
-            color = ColorFormatter.colors['exception']
+            color = LinuxColorFormatter.colors['exception']
         elif levelname == 'CRITICAL':
-            color = ColorFormatter.colors['critical']
+            color = LinuxColorFormatter.colors['critical']
         else:
-            color = ColorFormatter.colors['default']
+            color = LinuxColorFormatter.colors['default']
 
-        return color + msg + ColorFormatter.colors['default']
+        return color + msg + LinuxColorFormatter.colors['default']
+
+    def format(self, record):
+        msg = DefaultFormatter.format(self, record)
+        return self._toColor(msg, record.levelname)
+
+
+class WindowsColorFormatter(DefaultFormatter):
+    """ Colors for Windows console.
+    """
+    from ctypes import windll
+
+    STD_INPUT_HANDLE = -10
+    STD_OUTPUT_HANDLE = -11
+    STD_ERROR_HANDLE = -12
+
+    FOREGROUND_BLACK     = 0x0000
+    FOREGROUND_BLUE      = 0x0001
+    FOREGROUND_GREEN     = 0x0002
+    FOREGROUND_CYAN      = 0x0003
+    FOREGROUND_RED       = 0x0004
+    FOREGROUND_MAGENTA   = 0x0005
+    FOREGROUND_YELLOW    = 0x0006
+    FOREGROUND_GREY      = 0x0007
+    FOREGROUND_INTENSITY = 0x0008 # foreground color is intensified.
+
+    BACKGROUND_BLACK     = 0x0000
+    BACKGROUND_BLUE      = 0x0010
+    BACKGROUND_GREEN     = 0x0020
+    BACKGROUND_CYAN      = 0x0030
+    BACKGROUND_RED       = 0x0040
+    BACKGROUND_MAGENTA   = 0x0050
+    BACKGROUND_YELLOW    = 0x0060
+    BACKGROUND_GREY      = 0x0070
+    BACKGROUND_INTENSITY = 0x0080 # background color is intensified.
+
+    colors = {'trace': FOREGROUND_CYAN | BACKGROUND_BLACK,                                # cyan/noir, normal
+              'debug': FOREGROUND_CYAN | BACKGROUND_BLACK | FOREGROUND_INTENSITY,         # cyan/noir, gras
+              'info': FOREGROUND_GREY | BACKGROUND_BLACK | FOREGROUND_INTENSITY,          # blanc/noir, gras
+              'warning': FOREGROUND_YELLOW | BACKGROUND_BLACK | FOREGROUND_INTENSITY,     # jaune/noir, gras
+              'error': FOREGROUND_RED | BACKGROUND_BLACK | FOREGROUND_INTENSITY,          # rouge/noir, gras
+              'exception': FOREGROUND_MAGENTA | BACKGROUND_BLACK | FOREGROUND_INTENSITY,  # magenta/noir, gras
+              'critical': FOREGROUND_GREY | BACKGROUND_RED | FOREGROUND_INTENSITY,        # blanc/rouge, gras
+              'default': FOREGROUND_GREY | BACKGROUND_BLACK,                              # defaut
+              }
+    stderrHandle = windll.kernel32.GetStdHandle(STD_ERROR_HANDLE)
+    setConsoleTextAttribute = windll.kernel32.SetConsoleTextAttribute
+
+    def _setTextAttribute(self, color):
+        """ Sets the character attributes (colors).
+        
+        Color is a combination of foreground and background color,
+        foreground and background intensity.
+        """
+        WindowsColorFormatter.setConsoleTextAttribute(WindowsColorFormatter.stderrHandle, color)
+
+    def _toColor(self, msg, levelname):
+        """ Colorize.
+        """
+        if levelname == 'TRACE':
+            self._setTextAttribute(WindowsColorFormatter.colors['trace'])
+        elif levelname == 'DEBUG':
+            self._setTextAttribute(WindowsColorFormatter.colors['debug'])
+        elif  levelname == 'INFO':
+            self._setTextAttribute(WindowsColorFormatter.colors['info'])
+        elif levelname == 'COMMENT':
+            self._setTextAttribute(WindowsColorFormatter.colors['comment'])
+        elif levelname == 'PROMPT':
+            self._setTextAttribute(WindowsColorFormatter.colors['prompt'])
+        elif levelname == 'WARNING':
+            self._setTextAttribute(WindowsColorFormatter.colors['warning'])
+        elif levelname == 'ERROR':
+            self._setTextAttribute(WindowsColorFormatter.colors['error'])
+        elif levelname == 'EXCEPTION':
+            self._setTextAttribute(WindowsColorFormatter.colors['exception'])
+        elif levelname == 'CRITICAL':
+            self._setTextAttribute(WindowsColorFormatter.colors['critical'])
+        else:
+            self._setTextAttribute(WindowsColorFormatter.colors['default'])
+
+        return msg
 
     def format(self, record):
         msg = DefaultFormatter.format(self, record)
@@ -147,9 +218,25 @@ class SpaceFormatter(DefaultFormatter):
         return self._addSpace(msg)
 
 
-class SpaceColorFormatter(SpaceFormatter, ColorFormatter):
-    """ Formatter avec couleurs et sauts de lignes.
+class LinuxSpaceColorFormatter(SpaceFormatter, LinuxColorFormatter):
+    """ Formatter linux avec couleurs et sauts de lignes.
     """
     def format(self, record):
         msg = SpaceFormatter.format(self, record)
         return self._toColor(msg, record.levelname)
+
+
+class WindowsSpaceColorFormatter(SpaceFormatter, WindowsColorFormatter):
+    """ Formatter windows avec couleurs et sauts de lignes.
+    """
+    def format(self, record):
+        msg = SpaceFormatter.format(self, record)
+        return self._toColor(msg, record.levelname)
+
+
+if sys.platform in ('linux2', 'darwin'):
+    ColorFormatter = LinuxColorFormatter
+    SpaceColorFormatter = LinuxSpaceColorFormatter
+elif sys.platform == 'win32':
+    ColorFormatter = WindowsColorFormatter
+    SpaceColorFormatter = WindowsSpaceColorFormatter
