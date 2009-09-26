@@ -133,97 +133,97 @@ class PixOrbCommandDispatcherObject(QtCore.QObject):
         # SIN-11 specific command
         if cmdStr.startswith('&'):
             time.sleep(5)  # Simulate SIN-11 scan
-            return 'ABC\n\r'
-
-        # Split cmdStr
-        controllerName = cmdStr[0]
-        cmd = cmdStr[1]
-        param = cmdStr[2:-1]
-        if controllerName not in ('A', 'B', 'C'):
-            #raise HardwareError("Invalid controller name (%s)" % controllerName)
-            return "?%s#\n\r" % controllerName
-        Logger().debug("PixOrbBaseHandler.handleCmd(): cmd=%s, controllerName=%s, param=%s" % (cmd, controllerName, param))
-
-        # Compute command answer
-        answer = ""
-
-        # Stop command
-        if cmd == '@':
-            Logger().debug("PixOrbBaseHandler.handleCmd(): stop")
-            self._axis[controllerName].stop()
-
-        # read command
-        elif cmd == 'Z':
-            Logger().debug("PixOrbBaseHandler.handleCmd(): read")
-            pos = self._axis[controllerName].read()
-            answer = "% d" % self._angleToEncoder(pos)
-
-        # Status command
-        elif cmd == '^':
-            Logger().debug("PixOrbBaseHandler.handleCmd(): status")
-            if self._axis[controllerName].isMoving():
-                answer = "1"
-            else:
-                answer = "0"
-
-        # Initial Velocity command
-        elif cmd == 'I':
-            Logger().debug("PixOrbBaseHandler.handleCmd(): initial velocity")
-            initVelocity = int(param)
-            Logger().debug("PixOrbBaseHandler.handleCmd(): axis %s initVelocity=%d" % (controllerName, initVelocity))
-
-        # Slew speed command
-        elif cmd == 'V':
-            Logger().debug("PixOrbBaseHandler.handleCmd(): slew speed")
-            speed = int(param)
-            Logger().debug("PixOrbBaseHandler.handleCmd(): axis %s speed=%d" % (controllerName, speed))
-
-        # Ramp command
-        elif cmd == 'K':
-            Logger().debug("PixOrbBaseHandler.handleCmd(): ramp")
-            param1, param2 = param.split()
-            accel = int(param1)
-            decel = int(param2)
-            Logger().debug("PixOrbBaseHandler.handleCmd(): axis %s accel=%d decel=%d" % (controllerName, accel, decel))
-
-        # Divider command
-        elif cmd == 'D':
-            Logger().debug("PixOrbBaseHandler.handleCmd(): divider")
-            divider = int(param)
-            Logger().debug("PixOrbBaseHandler.handleCmd(): axis %s divider=%d" % (controllerName, divider))
-
-        # Drive command
-        elif cmd == 'R':
-            Logger().debug("PixOrbBaseHandler.handleCmd(): drive")
-            pos = self._encoderToAngle(int(param))
-            self._axis[controllerName].drive(pos, wait=False)
-
-        # Jog command
-        elif cmd == 'M':
-            Logger().debug("PixOrbBaseHandler.handleCmd(): jog")
-            speed = int(param)
-            if speed > 0:
-                self._axis[controllerName].startJog('+')
-            elif speed < 0:
-                self._axis[controllerName].startJog('-')
-
-        # Shutter command
-        elif cmd == 'A':
-            Logger().debug("PixOrbBaseHandler.handleCmd(): shutter")
-
-        # Wait command
-        elif cmd == 'A':
-            Logger().debug("PixOrbBaseHandler.handleCmd(): wait")
-            while self._axis[controllerName].isMoving():
-                time.sleep(0.1)
-
-        # Invalid command
+            answer = "ABC"
         else:
-            #raise HardwareError("Invalid command")
-            return "#\n\r"  # Or only '\n'?
 
-        #return "%s%s %s %s\n\r" % (controllerName, cmd, controllerName, answer)  # Only if '&E5' activated on SIN-11
-        return "%s%s\n\r" % (controllerName, answer)
+            # Split cmdStr
+            controllerName = cmdStr[0]
+            cmd = cmdStr[1]
+            param = cmdStr[2:-1]
+            if controllerName not in ('A', 'B', 'C'):
+                #raise HardwareError("Invalid controller name (%s)" % controllerName)
+                answer = "?%s#" % controllerName
+            Logger().debug("PixOrbBaseHandler.handleCmd(): cmd=%s, controllerName=%s, param=%s" % (cmd, controllerName, param))
+    
+            # Compute command answer
+            answer = ""
+    
+            # Stop command
+            if cmd == '@':
+                Logger().debug("PixOrbBaseHandler.handleCmd(): stop")
+                self._axis[controllerName].stop()
+    
+            # read command
+            elif cmd == 'Z':
+                Logger().debug("PixOrbBaseHandler.handleCmd(): read")
+                pos = self._axis[controllerName].read()
+                answer = "%s% d" % (controllerName, self._angleToEncoder(pos))
+    
+            # Status command
+            elif cmd == '^':
+                Logger().debug("PixOrbBaseHandler.handleCmd(): status")
+                if self._axis[controllerName].isMoving():
+                    answer = "%s 1" % controllerName
+                else:
+                    answer = "%s 0" % controllerName
+    
+            # Initial Velocity command
+            elif cmd == 'I':
+                Logger().debug("PixOrbBaseHandler.handleCmd(): initial velocity")
+                initVelocity = int(param)
+                Logger().debug("PixOrbBaseHandler.handleCmd(): axis %s initVelocity=%d" % (controllerName, initVelocity))
+    
+            # Slew speed command
+            elif cmd == 'V':
+                Logger().debug("PixOrbBaseHandler.handleCmd(): slew speed")
+                speed = int(param)
+                Logger().debug("PixOrbBaseHandler.handleCmd(): axis %s speed=%d" % (controllerName, speed))
+    
+            # Ramp command
+            elif cmd == 'K':
+                Logger().debug("PixOrbBaseHandler.handleCmd(): ramp")
+                param1, param2 = param.split()
+                accel = int(param1)
+                decel = int(param2)
+                Logger().debug("PixOrbBaseHandler.handleCmd(): axis %s accel=%d decel=%d" % (controllerName, accel, decel))
+    
+            # Divider command
+            elif cmd == 'D':
+                Logger().debug("PixOrbBaseHandler.handleCmd(): divider")
+                divider = int(param)
+                Logger().debug("PixOrbBaseHandler.handleCmd(): axis %s divider=%d" % (controllerName, divider))
+    
+            # Drive command
+            elif cmd == 'R':
+                Logger().debug("PixOrbBaseHandler.handleCmd(): drive")
+                pos = self._encoderToAngle(int(param))
+                self._axis[controllerName].drive(pos, wait=False)
+    
+            # Jog command
+            elif cmd == 'M':
+                Logger().debug("PixOrbBaseHandler.handleCmd(): jog")
+                speed = int(param)
+                if speed > 0:
+                    self._axis[controllerName].startJog('+')
+                elif speed < 0:
+                    self._axis[controllerName].startJog('-')
+    
+            # Shutter command
+            elif cmd == 'A':
+                Logger().debug("PixOrbBaseHandler.handleCmd(): shutter")
+    
+            # Wait command
+            elif cmd == 'A':
+                Logger().debug("PixOrbBaseHandler.handleCmd(): wait")
+                while self._axis[controllerName].isMoving():
+                    time.sleep(0.1)
+    
+            # Invalid command
+            else:
+                #raise HardwareError("Invalid command")
+                answer = "#"  # Or only '\n'?
+
+        return "%s\n\r" % answer
 
 
 # Command dispatcher factory
