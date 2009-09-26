@@ -140,7 +140,8 @@ class PixOrbCommandDispatcherObject(QtCore.QObject):
         cmd = cmdStr[1]
         param = cmdStr[2:-1]
         if controllerName not in ('A', 'B', 'C'):
-            raise HardwareError("Invalid controller name (%s)" % controllerName)
+            #raise HardwareError("Invalid controller name (%s)" % controllerName)
+            return "?%s#\n\r" % controllerName
         Logger().debug("PixOrbBaseHandler.handleCmd(): cmd=%s, controllerName=%s, param=%s" % (cmd, controllerName, param))
 
         # Compute command answer
@@ -155,7 +156,7 @@ class PixOrbCommandDispatcherObject(QtCore.QObject):
         elif cmd == 'Z':
             Logger().debug("PixOrbBaseHandler.handleCmd(): read")
             pos = self._axis[controllerName].read()
-            answer = self._angleToEncoder(pos)
+            answer = "% d" % self._angleToEncoder(pos)
 
         # Status command
         elif cmd == '^':
@@ -222,7 +223,7 @@ class PixOrbCommandDispatcherObject(QtCore.QObject):
             return "#\n\r"  # Or only '\n'?
 
         #return "%s%s %s %s\n\r" % (controllerName, cmd, controllerName, answer)  # Only if '&E5' activated on SIN-11
-        return "%s %s\n\r" % (controllerName, answer)
+        return "%s%s\n\r" % (controllerName, answer)
 
 
 # Command dispatcher factory
