@@ -7,10 +7,13 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + color support on windows console for log
+    + suspend spy feature
     + 'PixOrb' plugin
     + 'DSLR Remote Pro' plugin
-    + 'Gphoto' plugin (under test)
+    + 'Gphoto' plugin (still under test)
     + czech translation
+    - removed key binding
 
 2009-09-15 Version 2.1.11 (dev)
     + mosaic start corner selection
