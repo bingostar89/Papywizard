@@ -65,10 +65,7 @@ from distutils.core import setup
 
 import py2exe
 
-sys.path.append("C:\\Documents and Settings\\fma\\Mes documents\\develop\\papywizard\\trunk")
 from papywizard.common import config
-
-VERSION_PACKAGE = 1
 
 
 includes = ["sip", "elementtree"]
@@ -78,7 +75,7 @@ dlls_excludes = []
 class Target:
     def __init__(self, **kw):
         self.__dict__.update(kw)
-        self.version = "%s-%d" % (config.VERSION, VERSION_PACKAGE)
+        self.version = "%s" % config.VERSION
         self.company_name = ""
         self.copyright = "(c) 2007-2009 Frédéric Mantegazza"
         self.name = ""
