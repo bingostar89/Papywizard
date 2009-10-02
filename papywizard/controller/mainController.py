@@ -702,7 +702,7 @@ class MainController(AbstractController):
     def __onYawMovePlusToolButtonReleased(self):
         Logger().trace("MainController.__yawMovePlusToolButtonReleased()")
         self._model.head.stopAxis('yaw')
-        self._model.head.waitStopAxis('yaw')
+        #self._model.head.waitStopAxis('yaw')
         #self._view.yawMovePlusToolButton.setDown(False)
         self.refreshView()
 
@@ -713,7 +713,7 @@ class MainController(AbstractController):
     def __onPitchMovePlusToolButtonReleased(self):
         Logger().trace("MainController.__pitchMovePlusToolButtonReleased()")
         self._model.head.stopAxis('pitch')
-        self._model.head.waitStopAxis('pitch')
+        #self._model.head.waitStopAxis('pitch')
         #self._view.pitchMovePlusToolButton.setDown(False)
         self.refreshView()
 
@@ -724,7 +724,7 @@ class MainController(AbstractController):
     def __onPitchMoveMinusToolButtonReleased(self):
         Logger().trace("MainController.__onPitchMoveMinusToolButtonReleased()")
         self._model.head.stopAxis('pitch')
-        self._model.head.waitStopAxis('pitch')
+        #self._model.head.waitStopAxis('pitch')
         #self._view.pitchMoveMinusToolButton.setDown(False)
         self.refreshView()
 
@@ -735,7 +735,7 @@ class MainController(AbstractController):
     def __onYawMoveMinusToolButtonReleased(self):
         Logger().trace("MainController.__onYawMoveMinusToolButtonReleased()")
         self._model.head.stopAxis('yaw')
-        self._model.head.waitStopAxis('yaw')
+        #self._model.head.waitStopAxis('yaw')
         #self._view.yawMoveMinusToolButton.setDown(False)
         self.refreshView()
 
