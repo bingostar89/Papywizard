@@ -5,7 +5,7 @@
 License
 =======
 
- - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
+ - B{Papywizard} (U{http://www.papywizard.org}) is Copyright:
   - (C) 2007-2009 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and

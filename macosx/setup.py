@@ -5,7 +5,7 @@
 License
 =======
 
- - B{papywizard} (U{http://trac.gbiloba.org/papywizard}) is Copyright:
+ - B{Papywizard} (U{http://www.papywizard.org}) is Copyright:
   - (C) 2007-2009 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
@@ -51,7 +51,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: setup.py 1895 2009-06-06 21:02:22Z fma $"
+__revision__ = "$Id$"
 
 from setuptools import setup
 
