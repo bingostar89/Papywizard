@@ -83,7 +83,10 @@ CONFIG_FILE = "papywizard.conf"
 USER_CONFIG_FILE = os.path.join(USER_CONFIG_DIR, CONFIG_FILE)
 PRESET_FILE = "presets.xml"
 USER_PRESET_FILE = os.path.join(USER_CONFIG_DIR, PRESET_FILE)
-USER_GUIDE_URL = "http://www.papywizard.org/wiki/UserGuide2.x"
+if VERSION_MINOR % 2:
+    USER_GUIDE_URL = "http://www.papywizard.org/wiki/UserGuideSvn"
+else:
+    USER_GUIDE_URL = "http://www.papywizard.org/wiki/UserGuide2.x"
 STYLESHEET_FILE = "papywizard.css"
 USER_STYLESHEET_FILE = os.path.join(USER_CONFIG_DIR, STYLESHEET_FILE)
 SPLASHCREEN_FILE = "splashscreen.png"
