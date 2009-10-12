@@ -167,17 +167,13 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
     def read(self):
         return self.__pos - self._offset
 
-    def drive(self, pos, inc=False, useOffset=True, wait=True):
+    def drive(self, pos, useOffset=True, wait=True):
         Logger().debug("SimulationAxis.drive(): '%s' drive to %.1f" % (self.capacity, pos))
 
-        # Compute absolute position from increment if needed
-        if inc:
-            self.__setpoint = self.__pos + inc
+        if useOffset:
+            self.__setpoint = pos + self._offset
         else:
-            if useOffset:
-                self.__setpoint = pos + self._offset
-            else:
-                self.__setpoint = pos
+            self.__setpoint = pos
 
         self._checkLimits(self.__setpoint)
 

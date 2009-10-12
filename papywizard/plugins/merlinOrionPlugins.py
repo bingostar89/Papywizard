@@ -376,15 +376,12 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
         pos = self._read() - self._offset
         return pos
 
-    def drive(self, pos, inc=False, useOffset=True, wait=True):
+    def drive(self, pos, useOffset=True, wait=True):
+        Logger().debug("MerlinOrionAxis.drive(): '%s' drive to %.1f" % (self.capacity, pos))
         currentPos = self.read()
 
-        # Compute absolute position from increment if needed
-        if inc:
-            pos += currentPos
-        else:
-            if useOffset:
-                pos += self._offset
+        if useOffset:
+            pos += self._offset
 
         self._checkLimits(pos)
 

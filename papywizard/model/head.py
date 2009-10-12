@@ -144,11 +144,11 @@ class Head(QtCore.QObject):
         pitch = self.pitchAxis.read()
         return yaw, pitch
 
-    def gotoPosition(self, yaw, pitch, inc=False, useOffset=True, wait=True):
+    def gotoPosition(self, yaw, pitch, useOffset=True, wait=True):
         """ Goto given position.
         """
-        self.yawAxis.drive(yaw, inc, useOffset, wait=False)
-        self.pitchAxis.drive(pitch, inc, useOffset, wait=False)
+        self.yawAxis.drive(yaw, useOffset, wait=False)
+        self.pitchAxis.drive(pitch, useOffset, wait=False)
         if wait:
             self.waitEndOfDrive()
             #self.yawAxis.waitEndOfDrive()

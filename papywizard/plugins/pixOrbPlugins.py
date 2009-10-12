@@ -392,13 +392,9 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         pos -= self._offset
         return pos
 
-    def drive(self, pos, inc=False, useOffset=True, wait=True):
+    def drive(self, pos, useOffset=True, wait=True):
+        Logger().debug("PixOrbAxis.drive(): '%s' drive to %.1f" % (self.capacity, pos))
         currentPos = self.read()
-
-        # Compute absolute position from increment if needed
-        if inc:
-            pos += currentPos
-
         if abs(pos - currentPos) <= self._config['AXIS_ACCURACY']:
             return
 

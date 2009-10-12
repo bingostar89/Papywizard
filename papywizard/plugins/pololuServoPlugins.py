@@ -373,19 +373,15 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         servoPosition = int(self._config['NEUTRAL_POSITION'] + dir_ * position / self._config['ANGLE_1MS'] * 2000)
         return servoPosition
 
-    def drive(self, position, inc=False, useOffset=True, wait=True):
-        """ @todo: use thread.
-        """
+    def drive(self, position, useOffset=True, wait=True):
+        Logger().debug("PololuServoAxis.drive(): '%s' drive to %.1f" % (self.capacity, pos))
         currentPos = self.read()
 
-        # Compute absolute position from increment if needed
-        if inc:
-            position += currentPos
-        else:
-            if useOffset:
-                position += self._offset
+        if useOffset:
+            position += self._offset
 
         self._checkLimits(position)
+
         self._driver.acquireBus()
         try:
             value = self._computeServoPosition(position)
