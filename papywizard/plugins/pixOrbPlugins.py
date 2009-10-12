@@ -398,12 +398,13 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         # Compute absolute position from increment if needed
         if inc:
             pos += currentPos
-        else:
-            if useOffset:
-                pos += self._offset
 
         if abs(pos - currentPos) <= self._config['AXIS_ACCURACY']:
             return
+
+        if useOffset:
+            pos += self._offset
+
         self._checkLimits(pos)
 
         if self._config['AXIS_WITH_BREAK']:
