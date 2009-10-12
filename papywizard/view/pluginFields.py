@@ -101,6 +101,7 @@ class SpinBoxField(QtGui.QSpinBox):
         """
         """
         QtGui.QSpinBox.__init__(self)
+        self.setAccelerated(True)
         self.setMinimum(minimum)
         self.setMaximum(maximum)
         self.setPrefix(prefix)
@@ -114,6 +115,7 @@ class DoubleSpinBoxField(QtGui.QDoubleSpinBox):
         """
         """
         QtGui.QDoubleSpinBox.__init__(self)
+        self.setAccelerated(True)
         self.setMinimum(minimum)
         self.setMaximum(maximum)
         self.setDecimals(decimals)
