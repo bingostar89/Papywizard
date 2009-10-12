@@ -79,6 +79,7 @@ NAME = "PixOrb"
 
 DEFAULT_SPEED_INDEX = 9
 DEFAULT_AXIS_WITH_BREAK = False
+DEFAULT_AXIS_ACCURACY = 0.1  # °
 
 SIN11_INIT_TIMEOUT = 10.
 DRIVER_TIMEOUT = 3.
@@ -122,9 +123,9 @@ class AbstractPixOrbHardware(AbstractHardwarePlugin):
             try:
                 answer = ""
                 self._driver.empty()
-                
+
                 # Ask the SIN-11 to scan online controllers
-                self._driver.write('&')
+                self._driver.write('&\n')
                 self._driver.setTimeout(SIN11_INIT_TIMEOUT)  # Sin-11 takes several seconds to answer
                 c = ''
                 while c != '\r':
@@ -369,6 +370,7 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         AbstractHardwarePlugin._defineConfig(self)
         self._addConfigKey('_speedIndex', 'SPEED_INDEX', default=DEFAULT_SPEED_INDEX)
         self._addConfigKey('_axisWithBreak', 'AXIS_WITH_BREAK', default=DEFAULT_AXIS_WITH_BREAK)
+        self._addConfigKey('_axisAccuracy', 'AXIS_ACCURACY', default=DEFAULT_AXIS_ACCURACY)
 
     def init(self):
         Logger().trace("PixOrbAxis.init()")
@@ -400,7 +402,10 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
             if useOffset:
                 pos += self._offset
 
+        if abs(pos - currentPos) <= self._config['AXIS_ACCURACY']:
+            return
         self._checkLimits(pos)
+
         if self._config['AXIS_WITH_BREAK']:
             self._releaseBreak()
         self._configurePixOrb(self._config['SPEED_INDEX'])
@@ -447,6 +452,8 @@ class PixOrbAxisController(AxisPluginController, HardwarePluginController):
         self._addTab('Hard', QtGui.QApplication.translate("pixOrbPlugins", 'Hard'))
         self._addWidget('Hard', QtGui.QApplication.translate("pixOrbPlugins", "Axis with break"),
                         CheckBoxField, (), 'AXIS_WITH_BREAK')
+        self._addWidget('Hard', QtGui.QApplication.translate("pixOrbPlugins", "Axis accuracy"),
+                        DoubleSpinBoxField, (0.01, 0.50, 2, 0.01, "", " °"), 'AXIS_ACCURACY')
 
 
 class PixOrbShutter(PixOrbHardware, AbstractStandardShutterPlugin):
