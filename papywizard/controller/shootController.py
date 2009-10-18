@@ -94,7 +94,6 @@ class ShootController(AbstractModalDialogController):
         self._model.scan.generatePositions()
 
         # Manage spy
-        self.__spyWasSuspended = Spy().isSuspended()
         Spy().resume()
 
     def _initWidgets(self):
@@ -690,8 +689,6 @@ class ShootController(AbstractModalDialogController):
         AbstractModalDialogController.shutdown(self)
         if self.__thread is not None:
             self.__thread.wait()
-        if self.__spyWasSuspended:
-            Spy().suspend()
 
     def refreshView(self):
         dataFlag = ConfigManager().getBoolean('Configuration/DATA_FILE_ENABLE')

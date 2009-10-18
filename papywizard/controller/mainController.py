@@ -178,7 +178,6 @@ class MainController(AbstractController):
         self.connect(self._view.actionFileLoadStyleSheet, QtCore.SIGNAL("activated()"), self.__onActionFileLoadStyleSheetActivated)
 
         self.connect(self._view.actionHardwareConnect, QtCore.SIGNAL("toggled(bool)"), self.__onActionHardwareConnectToggled)
-        self.connect(self._view.actionHardwareSuspendSpy, QtCore.SIGNAL("toggled(bool)"), self.__onActionHardwareSuspendSpyToggled)
         self.connect(self._view.actionHardwareSetLimitYawMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitYawMinusActivated)
         self.connect(self._view.actionHardwareSetLimitYawPlus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitYawPlusActivated)
         self.connect(self._view.actionHardwareSetLimitPitchPlus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchPlusActivated)
@@ -236,7 +235,6 @@ class MainController(AbstractController):
         self.disconnect(self._view.actionFileLoadStyleSheet, QtCore.SIGNAL("activated()"), self.__onActionFileLoadStyleSheetActivated)
 
         self.disconnect(self._view.actionHardwareConnect, QtCore.SIGNAL("toggled(bool)"), self.__onActionHardwareConnectToggled)
-        self.disconnect(self._view.actionHardwareSuspendSpy, QtCore.SIGNAL("toggled(bool)"), self.__onActionHardwareSuspendSpyToggled)
         self.disconnect(self._view.actionHardwareSetLimitYawMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitYawMinusActivated)
         self.disconnect(self._view.actionHardwareSetLimitYawPlus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitYawPlusActivated)
         self.disconnect(self._view.actionHardwareSetLimitPitchPlus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchPlusActivated)
@@ -502,13 +500,6 @@ class MainController(AbstractController):
             self.__startConnection()
         else:
             self.__stopConnection()
-
-    def __onActionHardwareSuspendSpyToggled(self, checked):
-        Logger().debug("MainController.__onActionHardwareSuspendSpyToggled(%s)" % checked)
-        if checked:
-            Spy().suspend()
-        else:
-            Spy().resume()
 
     def __onActionHardwareSetLimitYawMinusActivated(self):
         yaw, pitch = self._model.head.readPosition()
@@ -918,8 +909,8 @@ class MainController(AbstractController):
         self._view.setCorner1PushButton.setEnabled(True)
         self._view.setYawCorner1PushButton.setEnabled(True)
         self._view.setPitchCorner1PushButton.setEnabled(True)
-        #self._view.totalFovPushButton.setEnabled(True)
-        #self._view.nbPictsPushButton.setEnabled(True)
+        self._view.totalFovPushButton.setEnabled(True)
+        self._view.nbPictsPushButton.setEnabled(True)
 
         self._view.setReferenceToolButton.setEnabled(True)
         self._view.yawMovePlusToolButton.setEnabled(True)
@@ -945,8 +936,8 @@ class MainController(AbstractController):
         self._view.setCorner1PushButton.setEnabled(False)
         self._view.setYawCorner1PushButton.setEnabled(False)
         self._view.setPitchCorner1PushButton.setEnabled(False)
-        #self._view.totalFovPushButton.setEnabled(False)
-        #self._view.nbPictsPushButton.setEnabled(False)
+        self._view.totalFovPushButton.setEnabled(False)
+        self._view.nbPictsPushButton.setEnabled(False)
 
         self._view.setReferenceToolButton.setEnabled(False)
         self._view.yawMovePlusToolButton.setEnabled(False)

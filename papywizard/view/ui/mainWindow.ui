@@ -1203,8 +1203,6 @@
     </widget>
     <addaction name="actionHardwareConnect"/>
     <addaction name="separator"/>
-    <addaction name="actionHardwareSuspendSpy"/>
-    <addaction name="separator"/>
     <addaction name="menuSetLimit"/>
     <addaction name="actionHardwareClearLimits"/>
     <addaction name="separator"/>
