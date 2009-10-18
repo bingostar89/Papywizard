@@ -8,7 +8,6 @@ x bug fix
 
 0000-00-00 Version SVN
     + color support on windows console for log
-    + suspend spy feature
     + 'PixOrb' plugin
     + 'DSLR Remote Pro' plugin
     + 'Gphoto' plugin (still under test)
