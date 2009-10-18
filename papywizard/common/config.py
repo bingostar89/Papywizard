@@ -130,7 +130,6 @@ SHOOTING_COLOR_SCHEME = {'default': {'background': (224, 224, 224, 255),
                                   'error-toshoot': (128, 96, 96, ALPHA),
                               }
                         }
-QtOpenGL = False
 
 # GUI index for controller
 HEAD_ORIENTATION_INDEX = {'up': 0, 'left': 1, 'right': 2, 'down': 3,

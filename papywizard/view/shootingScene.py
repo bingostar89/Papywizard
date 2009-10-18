@@ -74,15 +74,6 @@ class ShootingView(QtGui.QGraphicsView):
         #self.setOptimizationFlag(QtGui.QGraphicsView.DontAdjustForAntialiasing, False)
         self.setCacheMode(QtGui.QGraphicsView.CacheBackground)
 
-        # Enable OpenGL support
-        if config.QtOpenGL:
-            try:
-                from PyQt4 import QtOpenGL
-                self.setViewport(QtOpenGL.QGLWidget())
-                Logger().info("Use OpenGL")
-            except ImportError:
-                Logger().warning("QtOpenGL module not available")
-
     def resizeEvent(self, event):
         self.fitInView(self.scene().sceneRect(), QtCore.Qt.KeepAspectRatio)
 
