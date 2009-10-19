@@ -75,7 +75,8 @@ class ShootingView(QtGui.QGraphicsView):
         self.setCacheMode(QtGui.QGraphicsView.CacheBackground)
 
     def resizeEvent(self, event):
-        self.fitInView(self.scene().sceneRect(), QtCore.Qt.KeepAspectRatio)
+        Logger().trace("ShootingView.resizeEvent()")
+        self.fitInView(self.scene().sceneRect(), QtCore.Qt.KeepAspectRatio)  # Does not work
 
 
 class AbstractShootingScene(QtGui.QGraphicsScene):
@@ -227,11 +228,12 @@ class AbstractShootingScene(QtGui.QGraphicsScene):
 class MosaicShootingScene(AbstractShootingScene):
     def _init(self):
         x = min(self._yawStart, self._yawEnd) - self._yawCameraFov / 2
-        y = min(self._pitchStart, self._pitchEnd) - self._pitchCameraFov / 2
+        y = max(self._pitchStart, self._pitchEnd) + self._pitchCameraFov / 2
+        #y = min(self._pitchStart - self._pitchCameraFov / 2, self._pitchEnd - self._pitchCameraFov / 2)
         w = self._yawFov
         h = self._pitchFov
         #Logger().debug("MosaicShootingScene._init(): x=%d, y=%d, w=%d, h=%d" % (x, y, w, h))
-        self.setSceneRect(x, y, w, h)
+        self.setSceneRect(x, -y, w, h)
 
     # Interface
     def addPicture(self, index, yaw, pitch, state='preview'):
