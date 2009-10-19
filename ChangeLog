@@ -13,6 +13,7 @@ x bug fix
     + 'Gphoto' plugin (still under test)
     + czech translation
     - removed key binding
+    x pictures correctly centered on shooting scene
 
 2009-09-15 Version 2.1.11 (dev)
     + mosaic start corner selection
