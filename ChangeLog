@@ -7,10 +7,12 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + 'Gphoto' plugin (still under test)
+
+2009-10-20 Version 2.1.12 (dev)
     + color support on windows console for log
     + 'PixOrb' plugin
     + 'DSLR Remote Pro' plugin
-    + 'Gphoto' plugin (still under test)
     + czech translation
     - removed key binding
     x pictures correctly centered on shooting scene
