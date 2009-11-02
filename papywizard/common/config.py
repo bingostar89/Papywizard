@@ -57,7 +57,7 @@ VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 VERSION_XML = "b"
 
 # Paths
-HOME_DIR = os.path.expanduser("~")  # Does not work fine under wine
+HOME_DIR = os.path.expanduser(u"~")  # Does not work fine under wine
 if sys.platform == 'win32':
     USER_CONFIG_DIR = os.path.join(os.path.expandvars("$APPDATA"), "papywizard2")
     DATA_STORAGE_DIR = HOME_DIR # Find a way to retreive the "My Documents" dir in all languages
