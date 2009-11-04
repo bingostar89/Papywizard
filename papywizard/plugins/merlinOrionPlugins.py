@@ -380,10 +380,10 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
         Logger().debug("MerlinOrionAxis.drive(): '%s' drive to %.1f" % (self.capacity, pos))
         currentPos = self.read()
 
+        self._checkLimits(pos)
+
         if useOffset:
             pos += self._offset
-
-        self._checkLimits(pos)
 
         # Only move if needed
         if abs(pos - currentPos) > AXIS_ACCURACY:

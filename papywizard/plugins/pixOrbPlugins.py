@@ -398,10 +398,10 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         if abs(pos - currentPos) <= self._config['AXIS_ACCURACY']:
             return
 
+        self._checkLimits(pos)
+
         if useOffset:
             pos += self._offset
-
-        self._checkLimits(pos)
 
         if self._config['AXIS_WITH_BREAK']:
             self._releaseBreak()

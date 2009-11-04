@@ -377,10 +377,10 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         Logger().debug("PololuServoAxis.drive(): '%s' drive to %.1f" % (self.capacity, pos))
         currentPos = self.read()
 
+        self._checkLimits(position)
+
         if useOffset:
             position += self._offset
-
-        self._checkLimits(position)
 
         self._driver.acquireBus()
         try:
