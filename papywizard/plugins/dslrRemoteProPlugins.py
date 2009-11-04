@@ -86,14 +86,12 @@ OUTPUT_DIR_PARAM = "-o"
 FILENAME_PREFIX_PARAM = "-p"
 EXPOSURE_COMPENSATION_PARAM = "-x"
 DRY_RUN_PARAM = "-n"
-CAMERA_EXPOSURE_COMPENSATION_LIST_1_3 = ["+5", "+4 2/3", "+4 1/3", "+4", "+3 2/3", "+3 1/3", "+3", "+2 2/3",
-                                         "+2 1/3", "+2", "+1 2/3", "+1 1/3", "+1", "+2/3", "+1/3",
+CAMERA_EXPOSURE_COMPENSATION_LIST_1_3 = ["+3", "+2 2/3", "+2 1/3", "+2", "+1 2/3", "+1 1/3", "+1", "+2/3", "+1/3",
                                          "0",
-                                         "-1/3", "-2/3", "-1", "-1 1/3", "-1 2/3", "-2", "-2 1/3",
-                                         "-2 2/3", "-3", "-3 1/3", "-3 2/3", "-4", "-4 1/3", "-4 2/3", "-5"]
-CAMERA_EXPOSURE_COMPENSATION_LIST_1_2 = ["+5", "+4 1/2", "+4", "+3 1/2", "+3", "+2 1/2", "+2", "+1 1/2", "+1", "+1/2",
+                                         "-1/3", "-2/3", "-1", "-1 1/3", "-1 2/3", "-2", "-2 1/3", "-2 2/3", "-3"]
+CAMERA_EXPOSURE_COMPENSATION_LIST_1_2 = ["+3", "+2 1/2", "+2", "+1 1/2", "+1", "+1/2",
                                          "0",
-                                         "-1/2", "-1", "-1 1/2", "-2", "-2 1/2", "-3", "-3 1/2", "-4", "-4 1/2", "-5"]
+                                         "-1/2", "-1", "-1 1/2", "-2", "-2 1/2", "-3"]
 
 
 class DslrRemoteProShutter(AbstractShutterPlugin):
@@ -132,18 +130,14 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
         AbstractShutterPlugin.configure(self)
 
         # Build camera exposure compensation list
-        if self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±5@1/3":
+        if self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±3@1/3":
             self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_3
-        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±5@1/2":
-            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2
-        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±3@1/3":
-            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_3[4:-4]
         elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±3@1/2":
-            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2[4:-4]
+            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2
         elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±2@1/3":
-            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_3[6:-6]
+            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_3[3:-3]
         elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±2@1/2":
-            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2[6:-6]
+            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2[2:-2]
         Logger().debug("DslrRemoteProShutter.configure(): camera exposure compensation table=%s" % \
                        self.__cameraExposureCompensationList)
 
@@ -218,7 +212,7 @@ class DslrRemoteProShutterController(ShutterPluginController):
         self._addWidget('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", "File name prefix"),
                         LineEditField, (), 'FILENAME_PREFIX')
         self._addWidget('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", "Camera exposure\ncompensation list"),
-                        ComboBoxField, ((u"±5@1/3", u"±5@1/2", u"±3@1/3", u"±3@1/2", u"±2@1/3", u"±2@1/2"),),
+                        ComboBoxField, ((u"±3@1/3", u"±3@1/2", u"±2@1/3", u"±2@1/2"),),
                         'CAMERA_EXPOSURE_COMPENSATION_LIST')
 
 
