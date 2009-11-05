@@ -170,7 +170,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
     def drive(self, pos, useOffset=True, wait=True):
         Logger().debug("SimulationAxis.drive(): '%s' drive to %.1f" % (self.capacity, pos))
 
-        self._checkLimits(self.__setpoint)
+        self._checkLimits(pos)
 
         if useOffset:
             self.__setpoint = pos + self._offset
