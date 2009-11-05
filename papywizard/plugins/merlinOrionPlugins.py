@@ -217,6 +217,10 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
             value = self._sendCmd("D")
             Logger().debug("MerlinOrionHardware._initMerlinOrion(): sidereal rate=%s" % hex(self._decodeAxisValue(value)))
 
+            # Get firmeware version
+            value = self._sendCmd("e")
+            Logger().debug("MerlinOrionHardware._initMerlinOrion(): firmeware version=%s" % value)
+
         finally:
             self._driver.releaseBus()
 
