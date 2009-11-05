@@ -299,7 +299,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         Logger().trace("PololuServoAxis._init()")
         PololuServoHardware._init(self)
         AbstractAxisPlugin._init(self)
-        self._position = None
+        self._pos = None
         self._endDrive = None
 
     def _defineConfig(self):
@@ -330,7 +330,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         self._setPositionAbsolute(self._config['NEUTRAL_POSITION'])
         self._initPololuServo()
         self.configure()
-        self._position = 0.
+        self._pos = 0.
         self._endDrive = 0
 
     def shutdown(self):
@@ -346,7 +346,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         self._configurePololuServo(speed, self._config['DIRECTION'])
 
     def read(self):
-        return self._position - self._offset
+        return self._pos - self._offset
 
     def _computeServoSpeed(self, speed):
         """ Compute controller servo value from position.
@@ -373,23 +373,23 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         servoPosition = int(self._config['NEUTRAL_POSITION'] + dir_ * position / self._config['ANGLE_1MS'] * 2000)
         return servoPosition
 
-    def drive(self, position, useOffset=True, wait=True):
+    def drive(self, pos, useOffset=True, wait=True):
         Logger().debug("PololuServoAxis.drive(): '%s' drive to %.1f" % (self.capacity, pos))
         currentPos = self.read()
 
-        self._checkLimits(position)
+        self._checkLimits(pos)
 
         if useOffset:
             position += self._offset
 
         self._driver.acquireBus()
         try:
-            value = self._computeServoPosition(position)
+            value = self._computeServoPosition(pos)
             self._setPositionAbsolute(value)
-            self._endDrive = time.time() + abs(position - self._position) / self._config['SPEED']
+            self._endDrive = time.time() + abs(pos - self._pos) / self._config['SPEED']
             if wait:
                 self.waitEndOfDrive()
-            self._position = position
+            self._pos = pos
         finally:
             self._driver.releaseBus()
 
@@ -403,7 +403,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
     def startJog(self, dir_):
         """ Need to be run in a thread.
         """
-        position = self._position + self._offset
+        position = self._pos + self._offset
         if dir_ == '+':
             position += MANUAL_SPEED_TABLE[self._manualSpeed]
         else:
@@ -416,7 +416,7 @@ class PololuServoAxis(PololuServoHardware, AbstractAxisPlugin):
         try:
             value = self._computeServoPosition(position)
             self._setPositionAbsolute(value)
-            self._position = position
+            self._pos = position
         finally:
             self._driver.releaseBus()
 
