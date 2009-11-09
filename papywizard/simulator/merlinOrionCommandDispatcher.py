@@ -164,6 +164,7 @@ class MerlinOrionCommandDispatcherObject(QtCore.QObject):
 
         raise HardwareError: wrong command
         """
+        Logger().debug("MerlinOrionBaseHandler.handleCmd(): cmdStr=%s" % cmdStr)
         if not cmdStr.startswith(':'):
             raise HardwareError("Invalid command format (%s)" % repr(cmdStr))
 
@@ -184,18 +185,23 @@ class MerlinOrionCommandDispatcherObject(QtCore.QObject):
             self._axis[numAxis].stop()
             response = ""
 
-        # ??? command
+        # Check motor command
         elif cmd == 'F':
             Logger().trace("MerlinOrionBaseHandler.handleCmd(): ???")
 
-        # ??? command
+        # Get full circle count command
         elif cmd == 'a':
             Logger().debug("MerlinOrionBaseHandler.handleCmd(): ???")
 
-        # ??? command
+        # Get sidereal reate command
         elif cmd == 'D':
             Logger().debug("MerlinOrionBaseHandler.handleCmd(): ???")
             response = "F90600"
+
+        # Get firmeware version command
+        elif cmd == 'e':
+            Logger().debug("MerlinOrionBaseHandler.handleCmd(): ???")
+            response = "xxxxxx"
 
         # Read command
         elif cmd == 'j':
