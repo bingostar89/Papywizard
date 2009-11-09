@@ -66,7 +66,7 @@ from papywizard.plugins.abstractAxisPlugin import AbstractAxisPlugin
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.axisPluginController import AxisPluginController
 from papywizard.plugins.shutterPluginController import ShutterPluginController
-from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
+from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField
 
 NAME = "Simulation"
 
