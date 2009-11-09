@@ -151,8 +151,6 @@ class Head(QtCore.QObject):
         self.pitchAxis.drive(pitch, useOffset, wait=False)
         if wait:
             self.waitEndOfDrive()
-            #self.yawAxis.waitEndOfDrive()
-            #self.pitchAxis.waitEndOfDrive()
 
     def waitEndOfDrive(self):
         """ Wait all axis to end the drive.
