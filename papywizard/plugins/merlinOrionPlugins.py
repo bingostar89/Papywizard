@@ -250,7 +250,6 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
             self._sendCmd("L")
             self._sendCmd("G", "00")
             self._sendCmd("S", strValue)
-            #self._sendCmd("I", self._encodeAxisValue(MANUAL_SPEED_TABLE[self._manualSpeed]))
             self._sendCmd("J")
         finally:
             self._driver.releaseBus()
