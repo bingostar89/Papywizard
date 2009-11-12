@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>preferencesDialog</class>
- <widget class="QDialog" name="preferencesDialog">
+ <class>pluginsDialog</class>
+ <widget class="QDialog" name="pluginsDialog">
   <property name="windowModality">
    <enum>Qt::NonModal</enum>
   </property>
@@ -196,7 +196,7 @@
             </size>
            </property>
            <property name="text">
-            <string>00:50:C2:58:55:B9</string>
+            <string notr="true">00:50:C2:58:55:B9</string>
            </property>
            <property name="maxLength">
             <number>50</number>
@@ -225,7 +225,7 @@
             <bool>true</bool>
            </property>
            <property name="text">
-            <string>0</string>
+            <string notr="true">0</string>
            </property>
            <property name="maxLength">
             <number>50</number>
@@ -254,7 +254,7 @@
             <bool>true</bool>
            </property>
            <property name="text">
-            <string>169.254.1.1</string>
+            <string notr="true">169.254.1.1</string>
            </property>
            <property name="maxLength">
             <number>50</number>
@@ -312,7 +312,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>preferencesDialog</receiver>
+   <receiver>pluginsDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -328,7 +328,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>preferencesDialog</receiver>
+   <receiver>pluginsDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

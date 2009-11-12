@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>loggerDialog</class>
- <widget class="QDialog" name="loggerDialog" >
-  <property name="geometry" >
+ <widget class="QDialog" name="loggerDialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,42 +10,42 @@
     <height>405</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Logger</string>
   </property>
-  <property name="windowIcon" >
-   <iconset resource="../icons.qrc" >
+  <property name="windowIcon">
+   <iconset resource="../icons.qrc">
     <normaloff>:/icons/papywizard.png</normaloff>:/icons/papywizard.png</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" >
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout" >
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QPlainTextEdit" name="loggerPlainTextEdit" >
-       <property name="palette" >
+      <widget class="QPlainTextEdit" name="loggerPlainTextEdit">
+       <property name="palette">
         <palette>
          <active>
-          <colorrole role="Text" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
+          <colorrole role="Text">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
              <red>232</red>
              <green>232</green>
              <blue>232</blue>
             </color>
            </brush>
           </colorrole>
-          <colorrole role="Base" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
              <red>0</red>
              <green>0</green>
              <blue>0</blue>
             </color>
            </brush>
           </colorrole>
-          <colorrole role="NoRole" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
+          <colorrole role="NoRole">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
              <red>255</red>
              <green>255</green>
              <blue>255</blue>
@@ -53,27 +54,27 @@
           </colorrole>
          </active>
          <inactive>
-          <colorrole role="Text" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
+          <colorrole role="Text">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
              <red>232</red>
              <green>232</green>
              <blue>232</blue>
             </color>
            </brush>
           </colorrole>
-          <colorrole role="Base" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
              <red>0</red>
              <green>0</green>
              <blue>0</blue>
             </color>
            </brush>
           </colorrole>
-          <colorrole role="NoRole" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
+          <colorrole role="NoRole">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
              <red>255</red>
              <green>255</green>
              <blue>255</blue>
@@ -82,27 +83,27 @@
           </colorrole>
          </inactive>
          <disabled>
-          <colorrole role="Text" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
+          <colorrole role="Text">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
              <red>110</red>
              <green>111</green>
              <blue>114</blue>
             </color>
            </brush>
           </colorrole>
-          <colorrole role="Base" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
+          <colorrole role="Base">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
              <red>255</red>
              <green>255</green>
              <blue>255</blue>
             </color>
            </brush>
           </colorrole>
-          <colorrole role="NoRole" >
-           <brush brushstyle="SolidPattern" >
-            <color alpha="255" >
+          <colorrole role="NoRole">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
              <red>255</red>
              <green>255</green>
              <blue>255</blue>
@@ -112,52 +113,52 @@
          </disabled>
         </palette>
        </property>
-       <property name="font" >
+       <property name="font">
         <font>
          <family>Bitstream Vera Sans Mono</family>
          <weight>75</weight>
          <bold>true</bold>
         </font>
        </property>
-       <property name="autoFillBackground" >
+       <property name="autoFillBackground">
         <bool>true</bool>
        </property>
-       <property name="lineWrapMode" >
+       <property name="lineWrapMode">
         <enum>QPlainTextEdit::NoWrap</enum>
        </property>
-       <property name="readOnly" >
+       <property name="readOnly">
         <bool>true</bool>
        </property>
-       <property name="plainText" >
-        <string/>
+       <property name="plainText">
+        <string notr="true"/>
        </property>
-       <property name="backgroundVisible" >
+       <property name="backgroundVisible">
         <bool>false</bool>
        </property>
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout" >
+      <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QPushButton" name="clearLogPushButton" >
-         <property name="text" >
+        <widget class="QPushButton" name="clearLogPushButton">
+         <property name="text">
           <string>Clear log</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="saveLogPushButton" >
-         <property name="text" >
+        <widget class="QPushButton" name="saveLogPushButton">
+         <property name="text">
           <string>Save log</string>
          </property>
         </widget>
        </item>
        <item>
-        <spacer name="horizontalSpacer" >
-         <property name="orientation" >
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" stdset="0">
           <size>
            <width>40</width>
            <height>20</height>
@@ -170,11 +171,11 @@
     </layout>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox" >
-     <property name="orientation" >
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <property name="standardButtons" >
+     <property name="standardButtons">
       <set>QDialogButtonBox::Close</set>
      </property>
     </widget>
@@ -182,7 +183,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../icons.qrc" />
+  <include location="../icons.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -191,11 +192,11 @@
    <receiver>loggerDialog</receiver>
    <slot>accept()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>227</x>
      <y>277</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>157</x>
      <y>274</y>
     </hint>
@@ -207,11 +208,11 @@
    <receiver>loggerDialog</receiver>
    <slot>reject()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>295</x>
      <y>283</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>286</x>
      <y>274</y>
     </hint>
@@ -223,11 +224,11 @@
    <receiver>loggerPlainTextEdit</receiver>
    <slot>clear()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>39</x>
      <y>234</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>111</x>
      <y>143</y>
     </hint>

@@ -151,7 +151,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>--/--</string>
+                <string notr="true">--/--</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -167,7 +167,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>--/--</string>
+                <string notr="true">--/--</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -183,7 +183,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>--/--</string>
+                <string notr="true">--/--</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -218,7 +218,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>--/--</string>
+                <string notr="true">--/--</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -237,7 +237,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>--/--</string>
+                <string notr="true">--/--</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -256,7 +256,7 @@
                 </font>
                </property>
                <property name="text">
-                <string>--/--</string>
+                <string notr="true">--/--</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -394,7 +394,7 @@
           <enum>QFrame::Sunken</enum>
          </property>
          <property name="text">
-          <string>00:00:00</string>
+          <string notr="true">00:00:00</string>
          </property>
          <property name="scaledContents">
           <bool>false</bool>
@@ -468,7 +468,7 @@
             <bool>false</bool>
            </property>
            <property name="format">
-            <string>%p%</string>
+            <string notr="true">%p%</string>
            </property>
           </widget>
          </item>
@@ -491,6 +491,9 @@
            </property>
            <property name="textVisible">
             <bool>false</bool>
+           </property>
+           <property name="format">
+            <string notr="true">%p%</string>
            </property>
           </widget>
          </item>

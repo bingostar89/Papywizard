@@ -120,7 +120,7 @@
             <bool>false</bool>
            </property>
            <property name="suffix">
-            <string> °</string>
+            <string notr="true"> °</string>
            </property>
            <property name="decimals">
             <number>1</number>
@@ -149,7 +149,7 @@
          <item row="2" column="1">
           <widget class="QDoubleSpinBox" name="stabilizationDelayDoubleSpinBox">
            <property name="suffix">
-            <string> s</string>
+            <string notr="true"> s</string>
            </property>
            <property name="decimals">
             <number>1</number>
@@ -192,7 +192,7 @@
          <item row="0" column="1">
           <widget class="QSpinBox" name="overlapSpinBox">
            <property name="suffix">
-            <string> %</string>
+            <string notr="true"> %</string>
            </property>
            <property name="minimum">
             <number>10</number>
@@ -361,7 +361,7 @@
          <item row="0" column="1">
           <widget class="QDoubleSpinBox" name="sensorCoefDoubleSpinBox">
            <property name="suffix">
-            <string> x</string>
+            <string notr="true"> x</string>
            </property>
            <property name="decimals">
             <number>1</number>
@@ -396,26 +396,26 @@
          <item row="0" column="2">
           <widget class="QComboBox" name="sensorRatioComboBox">
            <property name="currentIndex">
-            <number>-1</number>
+            <number>0</number>
            </property>
            <item>
             <property name="text">
-             <string>3:2</string>
+             <string notr="true">3:2</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>4:3</string>
+             <string notr="true">4:3</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>5:4</string>
+             <string notr="true">5:4</string>
             </property>
            </item>
            <item>
             <property name="text">
-             <string>16:9</string>
+             <string notr="true">16:9</string>
             </property>
            </item>
           </widget>
@@ -423,7 +423,7 @@
          <item row="2" column="1">
           <widget class="QDoubleSpinBox" name="sensorResolutionDoubleSpinBox">
            <property name="suffix">
-            <string> Mpx</string>
+            <string notr="true"> Mpx</string>
            </property>
            <property name="decimals">
             <number>1</number>
@@ -445,7 +445,7 @@
             <bool>true</bool>
            </property>
            <property name="suffix">
-            <string> mm</string>
+            <string notr="true"> mm</string>
            </property>
            <property name="decimals">
             <number>1</number>
@@ -470,7 +470,7 @@
             <bool>true</bool>
            </property>
            <property name="suffix">
-            <string> x</string>
+            <string notr="true"> x</string>
            </property>
            <property name="decimals">
             <number>1</number>
@@ -687,7 +687,7 @@
             <bool>true</bool>
            </property>
            <property name="text">
-            <string>%(date_time)s_%(mode)s</string>
+            <string notr="true">%(date_time)s_%(mode)s</string>
            </property>
            <property name="maxLength">
             <number>50</number>
@@ -801,7 +801,7 @@
          <item row="0" column="2">
           <widget class="QToolButton" name="dataStorageDirToolButton">
            <property name="text">
-            <string>...</string>
+            <string notr="true">...</string>
            </property>
           </widget>
          </item>
@@ -907,13 +907,13 @@
             </datetime>
            </property>
            <property name="currentSection">
-            <enum>QDateTimeEdit::SecondSection</enum>
+            <enum>QDateTimeEdit::HourSection</enum>
            </property>
            <property name="displayFormat">
-            <string>HH:mm:ss</string>
+            <string notr="true">HH:mm:ss</string>
            </property>
            <property name="currentSectionIndex">
-            <number>2</number>
+            <number>0</number>
            </property>
           </widget>
          </item>
@@ -923,13 +923,13 @@
             <bool>false</bool>
            </property>
            <property name="currentSection">
-            <enum>QDateTimeEdit::SecondSection</enum>
+            <enum>QDateTimeEdit::HourSection</enum>
            </property>
            <property name="displayFormat">
-            <string>HH:mm:ss</string>
+            <string notr="true">HH:mm:ss</string>
            </property>
            <property name="currentSectionIndex">
-            <number>2</number>
+            <number>0</number>
            </property>
           </widget>
          </item>
