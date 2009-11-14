@@ -140,8 +140,6 @@ MOSAIC_START_FROM_INDEX = {'top-left': 0, 'top-right': 1, 'bottom-left': 2, 'bot
                            0: 'top-left', 1 : 'top-right', 2: 'bottom-left', 3: 'bottom-right'}
 MOSAIC_INITIAL_DIR_INDEX = {'yaw': 0, 'pitch': 1,
                             0: 'yaw', 1: 'pitch'}
-CAMERA_BRACKETING_INTENT_INDEX = {'exposure': 0, 'focus' : 1, 'white balance': 2, 'movement': 3,
-                                  0: 'exposure', 1: 'focus', 2: 'white balance', 3: 'movement'}
 SENSOR_RATIO_INDEX = {'3:2': 0, '4:3': 1, '5:4': 2, '16:9': 3,
                       0: '3:2', 1: '4:3', 2: '5:4', 3: '16:9'}
 LENS_TYPE_INDEX = {'rectilinear': 0, 'fisheye': 1,
