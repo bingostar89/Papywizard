@@ -111,7 +111,7 @@ class PluginsController(AbstractModalDialogController):
             previousPlugin.deactivate()
             newPlugin.activate()
         if hasattr(newPlugin, '_driver'):
-            newPlugin._config['DRIVER_TYPE'] = unicode(self._view.yawAxisDriverComboBox.currentText())
+            newPlugin._config['DRIVER_TYPE'] = config.DRIVER_INDEX[self._view.yawAxisDriverComboBox.currentIndex()]
         # todo: set config in a callback
         newPlugin._saveConfig()
 
@@ -124,7 +124,7 @@ class PluginsController(AbstractModalDialogController):
             previousPlugin.deactivate()
             newPlugin.activate()
         if hasattr(newPlugin, '_driver'):
-            newPlugin._config['DRIVER_TYPE'] = unicode(self._view.pitchAxisDriverComboBox.currentText())
+            newPlugin._config['DRIVER_TYPE'] = config.DRIVER_INDEX[self._view.pitchAxisDriverComboBox.currentIndex()]
         # todo: set config in a callback
         newPlugin._saveConfig()
 
@@ -137,7 +137,7 @@ class PluginsController(AbstractModalDialogController):
             previousPlugin.deactivate()
             newPlugin.activate()
         if hasattr(newPlugin, '_driver'):
-            newPlugin._config['DRIVER_TYPE'] = unicode(self._view.shutterDriverComboBox.currentText())
+            newPlugin._config['DRIVER_TYPE'] = config.DRIVER_INDEX[self._view.shutterDriverComboBox.currentIndex()]
         # todo: set config in a callback
         newPlugin._saveConfig()
 
@@ -240,7 +240,7 @@ class PluginsController(AbstractModalDialogController):
             if hasattr(selectedPlugin, '_driver'):
                 self._view.yawAxisDriverComboBox.setEnabled(True)
                 driverType = selectedPlugin._config['DRIVER_TYPE']
-                self._view.yawAxisDriverComboBox.setCurrentIndex(self._view.yawAxisDriverComboBox.findText(driverType))
+                self._view.yawAxisDriverComboBox.setCurrentIndex(config.DRIVER_INDEX[driverType])
             else:
                 self._view.yawAxisDriverComboBox.setEnabled(False)
                 #self._view.yawAxisDriverComboBox.setCurrentIndex(-1)
@@ -255,7 +255,7 @@ class PluginsController(AbstractModalDialogController):
             if hasattr(selectedPlugin, '_driver'):
                 self._view.pitchAxisDriverComboBox.setEnabled(True)
                 driverType = selectedPlugin._config['DRIVER_TYPE']
-                self._view.pitchAxisDriverComboBox.setCurrentIndex(self._view.pitchAxisDriverComboBox.findText(driverType))
+                self._view.pitchAxisDriverComboBox.setCurrentIndex(config.DRIVER_INDEX[driverType])
             else:
                 self._view.pitchAxisDriverComboBox.setEnabled(False)
                 #self._view.pitchAxisDriverComboBox.setCurrentIndex(-1)
@@ -270,7 +270,7 @@ class PluginsController(AbstractModalDialogController):
             if hasattr(selectedPlugin, '_driver'):
                 self._view.shutterDriverComboBox.setEnabled(True)
                 driverType = selectedPlugin._config['DRIVER_TYPE']
-                self._view.shutterDriverComboBox.setCurrentIndex(self._view.shutterDriverComboBox.findText(driverType))
+                self._view.shutterDriverComboBox.setCurrentIndex(config.DRIVER_INDEX[driverType])
             else:
                 self._view.shutterDriverComboBox.setEnabled(False)
                 #self._view.shutterDriverComboBox.setCurrentIndex(-1)
