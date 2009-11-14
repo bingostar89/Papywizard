@@ -53,7 +53,7 @@
      <item row="1" column="1">
       <widget class="QDoubleSpinBox" name="yawFovDoubleSpinBox">
        <property name="suffix">
-        <string notr="true"> °</string>
+        <string> °</string>
        </property>
        <property name="decimals">
         <number>1</number>
@@ -66,7 +66,7 @@
      <item row="1" column="2">
       <widget class="QDoubleSpinBox" name="pitchFovDoubleSpinBox">
        <property name="suffix">
-        <string notr="true"> °</string>
+        <string> °</string>
        </property>
        <property name="decimals">
         <number>1</number>
