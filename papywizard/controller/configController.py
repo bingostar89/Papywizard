@@ -143,8 +143,8 @@ class ConfigController(AbstractModalDialogController):
         ConfigManager().set('Configuration/DATA_FILE_FORMAT', unicode(self._view.dataFileFormatLineEdit.text()))
         ConfigManager().setBoolean('Configuration/DATA_FILE_ENABLE', bool(self._view.dataFileEnableCheckBox.isChecked()))
         ConfigManager().set('Configuration/DATA_TITLE', unicode(self._view.dataTitleLineEdit.text()))
-        ConfigManager().set('Configuration/DATA_GPS',  unicode(self._view.dataGpsLineEdit.text()))
-        ConfigManager().set('Configuration/DATA_COMMENT',  unicode(self._view.dataCommentLineEdit.text()))
+        ConfigManager().set('Configuration/DATA_GPS', unicode(self._view.dataGpsLineEdit.text()))
+        ConfigManager().set('Configuration/DATA_COMMENT', unicode(self._view.dataCommentLineEdit.text()))
 
         # Timer tab
         time_ = self._view.timerAfterTimeEdit.time()
