@@ -68,7 +68,7 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 NAME = "EOS Utility"
 
 DEFAULT_PROGRAM_PATH = "C:\\Program Files\\Papywizard\\EOSBracket.exe"
-DEFAULT_EOS_UTILITY_VERSION = QtGui.QApplication.translate("eosUtilityPlugins", 'new')
+DEFAULT_EOS_UTILITY_VERSION = unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'new'))
 DEFAULT_BRACKETING_STOPS = '1'
 DEFAULT_BRACKETING_TYPE = '0-+'
 DEFAULT_BRACKETING_NB_PICTS = 1
@@ -76,27 +76,27 @@ DEFAULT_DRY_RUN = True
 DEFAULT_BULB_ENABLE = False
 DEFAULT_BULB_BASE_EXPOSURE = 1
 DEFAULT_FOCUS_ENABLE = False
-DEFAULT_FOCUS_DIRECTION = QtGui.QApplication.translate("eosUtilityPlugins", 'far')
-DEFAULT_FOCUS_STEP = QtGui.QApplication.translate("eosUtilityPlugins", 'medium')
+DEFAULT_FOCUS_DIRECTION = unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'far'))
+DEFAULT_FOCUS_STEP = unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'medium'))
 DEFAULT_FOCUS_STEP_COUNT = 1
 DEFAULT_FOCUS_NB_PICTS = 1
 BRACKETING_TYPE_INDEX = {'0--': '1',
                          '0++': '2',
                          '0-+': '3'}
-EOS_UTILITY_VERSION_TABLE = {'old': QtGui.QApplication.translate("eosUtilityPlugins", 'old'),
-                             'new': QtGui.QApplication.translate("eosUtilityPlugins", 'new'),
+EOS_UTILITY_VERSION_TABLE = {'old': unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'old')),
+                             'new': unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'new')),
                              unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'old')): 'old',
                              unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'new')): 'new'}
-FOCUS_DIRECTION_TABLE = {'far': QtGui.QApplication.translate("eosUtilityPlugins", 'far'),
-                         'near': QtGui.QApplication.translate("eosUtilityPlugins", 'near'),
-                         QtGui.QApplication.translate("eosUtilityPlugins", 'far'): 'far',
-                         QtGui.QApplication.translate("eosUtilityPlugins", 'near'): 'near'}
-FOCUS_STEP_MODE_TABLE = {'small': QtGui.QApplication.translate("eosUtilityPlugins", 'small'),
-                         'medium': QtGui.QApplication.translate("eosUtilityPlugins", 'medium'),
-                         'large': QtGui.QApplication.translate("eosUtilityPlugins", 'large'),
-                         QtGui.QApplication.translate("eosUtilityPlugins", 'small'): 'small',
-                         QtGui.QApplication.translate("eosUtilityPlugins", 'medium'): 'medium',
-                         QtGui.QApplication.translate("eosUtilityPlugins", 'large'): 'large'}
+FOCUS_DIRECTION_TABLE = {'far': unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'far')),
+                         'near': unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'near')),
+                         unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'far')): 'far',
+                         unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'near')): 'near'}
+FOCUS_STEP_MODE_TABLE = {'small': unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'small')),
+                         'medium': unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'medium')),
+                         'large': unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'large')),
+                         unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'small')): 'small',
+                         unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'medium')): 'medium',
+                         unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'large')): 'large'}
 
 
 class EOSUtilityShutter(AbstractShutterPlugin):
