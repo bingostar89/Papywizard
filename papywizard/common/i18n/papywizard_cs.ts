@@ -445,7 +445,7 @@
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1305"/>
         <source>Manual</source>
-        <translation>Ručně</translation>
+        <translation>Návod</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1314"/>
@@ -760,7 +760,7 @@
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="277"/>
         <source>yaw</source>
-        <translation>Natočení</translation>
+        <translation>natočení</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="282"/>
@@ -785,7 +785,7 @@
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="325"/>
         <source>rectilinear</source>
-        <translation>resctilineární</translation>
+        <translation>rectilineární</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="330"/>
@@ -890,7 +890,7 @@
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="942"/>
         <source>Reverse direction before repeat</source>
-        <translation>Obrátit směr pře opakováním</translation>
+        <translation>Obrátit směr před opakováním</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="952"/>
