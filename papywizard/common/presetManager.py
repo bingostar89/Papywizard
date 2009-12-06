@@ -216,7 +216,7 @@ class PresetManagerObject(QtCore.QObject):
             Logger().warning("No user presets found")
 
     def importPresetFile(self, presetFileName):
-        """ Importe the presets from given file.
+        """ Import the presets from given file.
 
         @param presetFileName: xml file containing the presets to import
         @type presetFileName: str
