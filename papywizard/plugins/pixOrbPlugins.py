@@ -125,7 +125,7 @@ class AbstractPixOrbHardware(AbstractHardwarePlugin):
                 self._driver.empty()
 
                 # Ask the SIN-11 to scan online controllers
-                self._driver.write('&\n')
+                self._driver.write('&')
                 self._driver.setTimeout(SIN11_INIT_TIMEOUT)  # Sin-11 takes several seconds to answer
                 c = ''
                 while c != '\r':
