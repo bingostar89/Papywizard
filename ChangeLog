@@ -9,6 +9,10 @@ x bug fix
 0000-00-00 Version SVN
     + 'Gphoto' plugin (still under test)
 
+2010-01-10 Version 2.1.14 (dev)
+    - translations files updated
+    x unicode fix
+
 2009-10-20 Version 2.1.13 (dev)
     + read firmeware version in 'Merlin/Orion' plugin
     x check limits before applying offset
