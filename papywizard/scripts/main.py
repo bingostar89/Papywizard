@@ -179,6 +179,8 @@ def main():
         register()
         from papywizard.plugins.dslrRemoteProPlugins import register
         register()
+        from papywizard.plugins.panoguyPlugins import register
+        register()
         PluginsManager ().load()
 
         # Activate selected plugins (move to PluginsManager ?)
