@@ -209,9 +209,9 @@ class MerlinOrionHardware(AbstractHardwarePlugin):
             # Check motor?
             self._sendCmd("F")
 
-            # Get full circle count
+            # Get encoder full circle
             value = self._sendCmd("a")
-            Logger().debug("MerlinOrionHardware._initMerlinOrion(): full circle count=%s" % hex(self._decodeAxisValue(value)))
+            Logger().debug("MerlinOrionHardware._initMerlinOrion(): encoder full circle=%s" % hex(self._decodeAxisValue(value)))
 
             # Get sidereal rate
             value = self._sendCmd("D")
