@@ -73,11 +73,6 @@ class ShootController(AbstractModalDialogController):
     def _init(self):
         self._uiFile = "shootDialog.ui"
 
-        self.__keyPressedDict = {'Right': False,
-                                 'Left': False,
-                                 'Up': False,
-                                 'Down': False,
-                             }
         self.__key = {'Right': QtCore.Qt.Key_Right,
                       'Left': QtCore.Qt.Key_Left,
                       'Up': QtCore.Qt.Key_Up,
@@ -135,9 +130,6 @@ class ShootController(AbstractModalDialogController):
         # Refresh head position
         yaw, pitch = self._model.head.readPosition()
         self.__shootingScene.setHeadPosition(yaw, pitch)
-
-        # Keyboard behaviour
-        #self._view.grabKeyboard()
 
     def _connectSignals(self):
         AbstractModalDialogController._connectSignals(self)
@@ -215,65 +207,6 @@ class ShootController(AbstractModalDialogController):
     def __onKeyPressed(self, event):
         Logger().debug("MainController.__onKeyPressed(): key='%s" % event.key())
 
-        # 'Right' key
-        #if event.key() == self.__key['Right']:
-            #if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
-                #if self._model.isPaused():
-                    #Logger().debug("MainController.__onKeyPressed(): 'Right' key pressed; forward shooting position")
-                    #self.__keyPressedDict['Right'] = True
-                    #self.__forwardShootingPosition()
-            #event.ignore()
-
-        # 'Left' key
-        #elif event.key() == self.__key['Left']:
-            #if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
-                #if self._model.isPaused():
-                    #Logger().debug("MainController.__onKeyPressed(): 'Left' key pressed; rewind shooting position")
-                    #self.__keyPressedDict['Left'] = True
-                    #self.__rewindShootingPosition()
-            #event.ignore()
-
-        # 'Up' key
-        #elif event.key() == self.__key['Up']:
-            #if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                #if self._model.isPaused():
-                    #Logger().debug("MainController.__onKeyPressed(): 'Up' key pressed; rewind shooting position")
-                    #self.__keyPressedDict['Up'] = True
-                    #self.__forwardShootingPosition()
-            #event.ignore()
-
-        # 'Down' key
-        #elif event.key() == self.__key['Down']:
-            #if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
-                #if self._model.isPaused():
-                    #Logger().debug("MainController.__onKeyPressed(): 'Down' key pressed; forward shooting position")
-                    #self.__keyPressedDict['Down'] = True
-                    #self.__rewindShootingPosition()
-            #event.ignore()
-
-        # 'Return' key
-        #if event.key() == self.__key['Return']:
-            #Logger().debug("shootController.__onKeyPressed(): 'Return' key pressed")
-
-            ## Pressing 'Return' while not shooting starts shooting
-            #if not self._model.isShooting():
-                #Logger().debug("shootController.__onKeyPressed(): start shooting")
-                #self.__startShooting()
-
-            ## Pressing 'Return' while shooting...
-            #else:
-
-                ## ...and not paused pauses shooting
-                #if not self._model.isPaused():
-                    #Logger().debug("shootController.__onKeyPressed(): pause shooting")
-                    #self.__pauseShooting()
-
-                ##... and paused resumes shooting
-                #else:
-                    #Logger().debug("shootController.__onKeyPressed(): resume shooting")
-                    #self.__resumeShooting()
-            #event.ignore()
-
         # 'Escape' key
         if event.key() == self.__key['Escape']:
             Logger().debug("shootController.__onKeyPressed(): 'Escape' key pressed")
@@ -294,36 +227,6 @@ class ShootController(AbstractModalDialogController):
 
     def __onKeyReleased(self, event):
         Logger().debug("MainController.__onKeyReleased(): key='%s" % event.key())
-
-        # 'Right' key
-        #if event.key() == self.__key['Right']:
-            #if self.__keyPressedDict['Right']:
-                #Logger().debug("MainController.__onKeyReleased(): 'Right' key released")
-                #self.__keyPressedDict['Right'] = False
-            #event.ignore()
-
-        # 'Left' key
-        #elif event.key() == self.__key['Left']:
-            #if self.__keyPressedDict['Left']:
-                #Logger().debug("MainController.__onKeyReleased(): 'Left' key released")
-                #self.__keyPressedDict['Left'] = False
-            #event.ignore()
-
-        # 'Up' key
-        #elif event.key() == self.__key['Up']:
-            #if self.__keyPressedDict['Up']:
-                #Logger().debug("MainController.__onKeyReleased(): 'Up' key released;")
-                #self.__keyPressedDict['Up'] = False
-            #event.ignore()
-
-        # 'Down' key
-        #elif event.key() == self.__key['Down']:
-            #if self.__keyPressedDict['Down']:
-                #Logger().debug("MainController.__onKeyReleased(): 'Down' key released;")
-                #self.__keyPressedDict['Down'] = False
-            #event.ignore()
-
-        #else:
         event.accept()
 
     #def __onMotionNotify(self, widget, event):
@@ -365,18 +268,14 @@ class ShootController(AbstractModalDialogController):
         Logger().trace("ShootController.__onDataPushButtonClicked()")
         controller = ConfigController(self, self._model)
         controller.selectTab(4, disable=True)
-        #self._view.releaseKeyboard()
         controller.exec_()
-        #self._view.grabKeyboard()
         self.refreshView()
 
     def __onTimerPushButtonClicked(self):
         Logger().trace("ShootController.__onTimerPushButtonClicked()")
         controller = ConfigController(self, self._model)
         controller.selectTab(5, disable=True)
-        #self._view.releaseKeyboard()
         controller.exec_()
-        #self._view.grabKeyboard()
         if self._model.timerRepeatEnable:
             self._view.repeatLabel.setText("--/%d" % self._model.timerRepeat)
         else:

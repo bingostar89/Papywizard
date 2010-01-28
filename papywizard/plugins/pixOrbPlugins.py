@@ -428,7 +428,7 @@ class PixOrbAxis(PixOrbHardware, AbstractAxisPlugin):
         self._stop()
         self.waitStop()
 
-    def waitStop(self):  # Not used out this plugin?
+    def waitStop(self):
         if self._config['AXIS_WITH_BREAK']:
             self._activateBreak()
 

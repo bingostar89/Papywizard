@@ -97,11 +97,6 @@ class MainController(AbstractController):
     def _init(self):
         self._uiFile = "mainWindow.ui"
 
-        self.__keyPressedDict = {'Right': False,
-                                 'Left': False,
-                                 'Up': False,
-                                 'Down': False,
-                             }
         self.__key = {'FullScreen': QtCore.Qt.Key_F11,
                       'Right': QtCore.Qt.Key_Right,
                       'Left': QtCore.Qt.Key_Left,
@@ -159,9 +154,6 @@ class MainController(AbstractController):
 
         # Disable 'timelapse' tab
         self._view.tabWidget.setTabEnabled(2, False)
-
-        # Keyboard behaviour
-        #self._view.grabKeyboard()
 
         if self.__fullScreen:
             #self._view.setWindowState(self._view.windowState() | QtCore.Qt.WindowFullScreen)
@@ -221,7 +213,6 @@ class MainController(AbstractController):
 
         self.connect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate, QtCore.Qt.BlockingQueuedConnection)
 
-        #self._view.grabKeyboard()
         self._view._originalKeyPressEvent = self._view.keyPressEvent
         self._view.keyPressEvent = self.__onKeyPressed
         self._view._originalKeyReleaseEvent = self._view.keyReleaseEvent
@@ -278,7 +269,6 @@ class MainController(AbstractController):
 
         self.disconnect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate)
 
-        #self._view.releaseKeyboard()
         self._view.keyPressEvent = self._view._originalKeyPressEvent
         self._view.keyReleaseEvent = self._view._originalKeyReleaseEvent
 
@@ -317,111 +307,43 @@ class MainController(AbstractController):
                 self._view.showFullScreen()
             event.ignore()
 
-        # 'Right' key
-        #elif event.key() == self.__key['Right'] and not event.isAutoRepeat() and self.__pluginsConnected:
-            #if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left']:
-                #Logger().debug("MainController.__onKeyPressed(): 'Right' key pressed; start 'yaw' axis dir '+'")
-                #self.__keyPressedDict['Right'] = True
-                #self._view.yawMovePlusToolButton.setDown(True)
-                #self._model.head.startAxis('yaw', '+')
-            #event.ignore()
-
-        # 'Left' key
-        #elif event.key() == self.__key['Left'] and not event.isAutoRepeat() and self.__pluginsConnected:
-            #if not self.__keyPressedDict['Left'] and not self.__keyPressedDict['Right']:
-                #Logger().debug("MainController.__onKeyPressed(): 'Left' key pressed; start 'yaw' axis dir '-'")
-                #self.__keyPressedDict['Left'] = True
-                #self._view.yawMoveMinusToolButton.setDown(True)
-                #self._model.head.startAxis('yaw', '-')
-            #event.ignore()
-
-        # 'Up' key
-        #elif event.key() == self.__key['Up'] and not event.isAutoRepeat() and self.__pluginsConnected:
-            #if not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                #Logger().debug("MainController.__onKeyPressed(): 'Up' key pressed; start 'pitch' axis dir '+'")
-                #self.__keyPressedDict['Up'] = True
-                #self._view.pitchMovePlusToolButton.setDown(True)
-                #self._model.head.startAxis('pitch', '+')
-            #event.ignore()
-
-        # 'Down' key
-        #elif event.key() == self.__key['Down'] and not event.isAutoRepeat() and self.__pluginsConnected:
-            #if not self.__keyPressedDict['Down'] and not self.__keyPressedDict['Up']:
-                #Logger().debug("MainController.__onKeyPressed(): 'Down' key pressed; start 'pitch' axis dir '-'")
-                #self.__keyPressedDict['Down'] = True
-                #self._view.pitchMoveMinusToolButton.setDown(True)
-                #self._model.head.startAxis('pitch', '-')
-            #event.ignore()
-
         # 'Home' key
         elif event.key() == self.__key['Home'] and not event.isAutoRepeat():
-            if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
-               not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                if self.__manualSpeed == 'normal':
-                    self.__manualSpeed = 'slow'
-                    Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; select slow speed")
-                    self._model.head.setManualSpeed('slow')
-                    self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_play.png").scaled(22, 22))
-                    self.setStatusbarMessage(self.tr("Manual speed set to slow"), 10)
-                elif self.__manualSpeed == 'fast':
-                    self.__manualSpeed = 'normal'
-                    Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; select normal speed")
-                    self._model.head.setManualSpeed('normal')
-                    self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_fwd.png").scaled(22, 22))
-                    self.setStatusbarMessage(self.tr("Manual speed set to normal"), 10)
+            if self.__manualSpeed == 'normal':
+                self.__manualSpeed = 'slow'
+                Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; select slow speed")
+                self._model.head.setManualSpeed('slow')
+                self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_play.png").scaled(22, 22))
+                self.setStatusbarMessage(self.tr("Manual speed set to slow"), 10)
+            elif self.__manualSpeed == 'fast':
+                self.__manualSpeed = 'normal'
+                Logger().debug("MainController.__onKeyPressed(): 'Home' key pressed; select normal speed")
+                self._model.head.setManualSpeed('normal')
+                self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_fwd.png").scaled(22, 22))
+                self.setStatusbarMessage(self.tr("Manual speed set to normal"), 10)
             event.ignore()
 
         # 'End' key
         elif event.key() == self.__key['End'] and not event.isAutoRepeat():
-            if not self.__keyPressedDict['Right'] and not self.__keyPressedDict['Left'] and \
-               not self.__keyPressedDict['Up'] and not self.__keyPressedDict['Down']:
-                if self.__manualSpeed == 'slow':
-                    self.__manualSpeed = 'normal'
-                    Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select normal speed")
-                    self._model.head.setManualSpeed('normal')
-                    self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_fwd.png").scaled(22, 22))
-                    self.setStatusbarMessage(self.tr("Manual speed set to normal"), 10)
-                elif self.__manualSpeed == 'normal':
-                    #self._view.releaseKeyboard()
-                    #dialog = WarningMessageDialog(self.tr("Fast manual speed"), self.tr("This can be dangerous for the hardware!"))
-                    #dialog.exec_()
-                    #self._view.grabKeyboard()
-                    self.__manualSpeed = 'fast'
-                    Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select fast speed")
-                    self._model.head.setManualSpeed('fast')
-                    self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/messagebox_warning.png").scaled(22, 22))
-                    self.setStatusbarMessage(self.tr("Manual speed set to fast"), 10)
+            if self.__manualSpeed == 'slow':
+                self.__manualSpeed = 'normal'
+                Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select normal speed")
+                self._model.head.setManualSpeed('normal')
+                self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/player_fwd.png").scaled(22, 22))
+                self.setStatusbarMessage(self.tr("Manual speed set to normal"), 10)
+            elif self.__manualSpeed == 'normal':
+                self.__manualSpeed = 'fast'
+                Logger().debug("MainController.__onKeyPressed(): 'End' key pressed; select fast speed")
+                self._model.head.setManualSpeed('fast')
+                self._view.manualSpeedLabel.setPixmap(QtGui.QPixmap(":/icons/messagebox_warning.png").scaled(22, 22))
+                self.setStatusbarMessage(self.tr("Manual speed set to fast"), 10)
             event.ignore()
-
-        # 'Tab' key
-        #elif event.key() == self.__key['Tab']:
-            #if not self.__keyPressedDict['Tab']:
-                #Logger().debug("MainController.__onKeyPressed(): 'Tab' key pressed; blocked")
-                #self.__keyPressedDict['Tab'] = True
-            #event.accept()
-
-        # 'Space' key. Activate the focuses widget
-        #elif event.key() == self.__key['space']:
-            #Logger().debug("MainController.__onKeyPressed(): 'space' key pressed; blocked")
-            #widget = QtGui.QApplication.focusWidget()
-            #self._view.releaseKeyboard()
-            #widget.keyPressEvent(event)
-            #self._view.grabKeyboard()
-            #event.accept()
-
-        # 'Return' key
-        #elif event.key() == self.__key['Return'] and not event.isAutoRepeat() and self.__pluginsConnected:
-            #Logger().debug("MainController.__onKeyPressed(): 'Return' key pressed; open shoot dialog")
-            #self.__openShootdialog()
-            #event.ignore()
 
         # 'Escape' key
         elif event.key() == self.__key['Escape'] and not event.isAutoRepeat():
             Logger().debug("MainController.__onKeyPressed(): 'Escape' key pressed")
-            #self._view.releaseKeyboard()
             dialog = YesNoMessageDialog(self.tr("About to Quit"), self.tr("Are you sure you want to quit Papywizard?"))
             response = dialog.exec_()
-            #self._view.grabKeyboard()
             if response == QtGui.QMessageBox.Yes:
                 self.__stopConnection()
                 QtGui.QApplication.quit()
@@ -432,48 +354,6 @@ class MainController(AbstractController):
 
     def __onKeyReleased(self, event):
         Logger().debug("MainController.__onKeyReleased(): key='%s" % event.key())
-
-        # 'Right' key
-        #if event.key() == self.__key['Right'] and not event.isAutoRepeat() and self.__pluginsConnected:
-            #if self.__keyPressedDict['Right']:
-                #Logger().debug("MainController.__onKeyReleased(): 'Right' key released; stop 'yaw' axis")
-                #self._model.head.stopAxis('yaw')
-                #self._model.head.waitStopAxis('yaw')
-                #self.__keyPressedDict['Right'] = False
-                #self._view.yawMovePlusToolButton.setDown(False)
-            #event.ignore()
-
-        # 'Left' key
-        #elif event.key() == self.__key['Left'] and not event.isAutoRepeat() and self.__pluginsConnected:
-            #if self.__keyPressedDict['Left']:
-                #Logger().debug("MainController.__onKeyReleased(): 'Left' key released; stop 'yaw' axis")
-                #self._model.head.stopAxis('yaw')
-                #self._model.head.waitStopAxis('yaw')
-                #self.__keyPressedDict['Left'] = False
-                #self._view.yawMoveMinusToolButton.setDown(False)
-            #event.ignore()
-
-        # 'Up' key
-        #elif event.key() == self.__key['Up'] and not event.isAutoRepeat() and self.__pluginsConnected:
-            #if self.__keyPressedDict['Up']:
-                #Logger().debug("MainController.__onKeyReleased(): 'Up' key released; stop 'pitch' axis")
-                #self._model.head.stopAxis('pitch')
-                #self._model.head.waitStopAxis('pitch')
-                #self.__keyPressedDict['Up'] = False
-                #self._view.pitchMovePlusToolButton.setDown(False)
-            #event.ignore()
-
-        # 'Down' key
-        #elif event.key() == self.__key['Down'] and not event.isAutoRepeat() and self.__pluginsConnected:
-            #if self.__keyPressedDict['Down']:
-                #Logger().debug("MainController.__onKeyReleased(): 'Down' key released; stop 'pitch' axis")
-                #self._model.head.stopAxis('pitch')
-                #self._model.head.waitStopAxis('pitch')
-                #self.__keyPressedDict['Down'] = False
-                #self._view.pitchMoveMinusToolButton.setDown(False)
-            #event.ignore()
-
-        #else:
         event.accept()
 
     def __onActionFileImportPresetActivated(self):
@@ -535,7 +415,6 @@ class MainController(AbstractController):
         self.setStatusbarMessage(self.tr("Goto reference position..."))
         self._model.head.gotoPosition(0., 0., wait=False)
         dialog = AbortMessageDialog(self.tr("Goto reference position"), self.tr("Please wait..."))
-        #self._view.releaseKeyboard()
         dialog.show()
         while self._model.head.isAxisMoving():
             QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
@@ -547,7 +426,6 @@ class MainController(AbstractController):
         else:
             self.setStatusbarMessage(self.tr("Reference position reached"), 10)
         dialog.hide()
-        #self._view.grabKeyboard()
 
     def __onActionHardwareGotoInitialActivated(self):
         Logger().trace("MainController.__onActionHardwareGotoInitialActivated()")
@@ -556,7 +434,6 @@ class MainController(AbstractController):
             QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
         self._model.head.gotoPosition(0., 0., useOffset=False, wait=False)
         dialog = AbortMessageDialog(self.tr("Goto initial position"), self.tr("Please wait..."))
-        #self._view.releaseKeyboard()
         dialog.show()
         while self._model.head.isAxisMoving():
             QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
@@ -568,7 +445,6 @@ class MainController(AbstractController):
         else:
             self.setStatusbarMessage(self.tr("Initial position reached"), 10)
         dialog.hide()
-        #self._view.grabKeyboard()
 
     def __onActionHardwarePluginsActivated(self):
         Logger().trace("MainController.__onActionHardwarePluginsActivated()")
@@ -586,17 +462,13 @@ class MainController(AbstractController):
         Logger().trace("MainController.__onActionHelpViewLogActivated()")
         controller = LoggerController(self, self._model)
         controller.setBuffer(self.__logStream)
-        #self._view.releaseKeyboard()
         controller.exec_()
-        #self._view.grabKeyboard()
         controller.shutdown()
 
     def __onActionHelpAboutPapywizardActivated(self):
         Logger().trace("MainController.__onActionHelpAboutPapywizardActivated()")
         controller = HelpAboutController(self, self._model)
-        #self._view.releaseKeyboard()
         controller.exec_()
-        #self._view.grabKeyboard()
         controller.shutdown()
 
     def __onActionHelpAboutQtActivated(self):
@@ -693,8 +565,6 @@ class MainController(AbstractController):
     def __onYawMovePlusToolButtonReleased(self):
         Logger().trace("MainController.__yawMovePlusToolButtonReleased()")
         self._model.head.stopAxis('yaw')
-        #self._model.head.waitStopAxis('yaw')
-        #self._view.yawMovePlusToolButton.setDown(False)
         self.refreshView()
 
     def __onPitchMovePlusToolButtonPressed(self):
@@ -704,8 +574,6 @@ class MainController(AbstractController):
     def __onPitchMovePlusToolButtonReleased(self):
         Logger().trace("MainController.__pitchMovePlusToolButtonReleased()")
         self._model.head.stopAxis('pitch')
-        #self._model.head.waitStopAxis('pitch')
-        #self._view.pitchMovePlusToolButton.setDown(False)
         self.refreshView()
 
     def __onPitchMoveMinusToolButtonPressed(self):
@@ -715,8 +583,6 @@ class MainController(AbstractController):
     def __onPitchMoveMinusToolButtonReleased(self):
         Logger().trace("MainController.__onPitchMoveMinusToolButtonReleased()")
         self._model.head.stopAxis('pitch')
-        #self._model.head.waitStopAxis('pitch')
-        #self._view.pitchMoveMinusToolButton.setDown(False)
         self.refreshView()
 
     def __onYawMoveMinusToolButtonPressed(self):
@@ -726,8 +592,6 @@ class MainController(AbstractController):
     def __onYawMoveMinusToolButtonReleased(self):
         Logger().trace("MainController.__onYawMoveMinusToolButtonReleased()")
         self._model.head.stopAxis('yaw')
-        #self._model.head.waitStopAxis('yaw')
-        #self._view.yawMoveMinusToolButton.setDown(False)
         self.refreshView()
 
     def __onConfigPushButtonClicked(self):
@@ -743,9 +607,7 @@ class MainController(AbstractController):
         """ Open the Total Fov input dialog.
         """
         controller = TotalFovController(self, self._model)
-        #self._view.releaseKeyboard()
         response = controller.exec_()
-        #self._view.grabKeyboard()
         controller.shutdown()
         if response:
             self.__mosaicInputParam = 'fov'
@@ -756,9 +618,7 @@ class MainController(AbstractController):
         """ Open the Nb Picts input dialog.
         """
         controller = NbPictsController(self, self._model)
-        #self._view.releaseKeyboard()
         response = controller.exec_()
-        #self._view.grabKeyboard()
         controller.shutdown()
         if response:
             self.__mosaicInputParam = 'nbPicts'
@@ -778,9 +638,7 @@ class MainController(AbstractController):
         finally:
             QtGui.qApp.restoreOverrideCursor()
             self.clearStatusBar()
-        #self._view.releaseKeyboard()
         response = controller.exec_()
-        #self._view.grabKeyboard()
         self.__lastPluginsTabSelected = controller.getSelectedTab()
         controller.shutdown()
 
@@ -799,9 +657,7 @@ class MainController(AbstractController):
             #self._view.configPushButton.setEnabled(True)
             QtGui.qApp.restoreOverrideCursor()
             self.clearStatusBar()
-        #self._view.releaseKeyboard()
         response = controller.exec_()
-        #self._view.grabKeyboard()
         self.__lastConfigTabSelected = controller.getSelectedTab()
         controller.shutdown()
 
@@ -836,9 +692,7 @@ class MainController(AbstractController):
             #self._view.shootPushButton.setEnabled(True)
             QtGui.qApp.restoreOverrideCursor()
             self.clearStatusBar()
-        #self._view.releaseKeyboard()
         controller.exec_()
-        #self._view.grabKeyboard()
         controller.shutdown()
 
     def __populatePresetComboBox(self):
@@ -870,10 +724,8 @@ class MainController(AbstractController):
             self.refreshView()
         except Exception, msg:
             Logger().exception("MainController.__importPresetFile()")
-            #self._view.releaseKeyboard()
             dialog = ExceptionMessageDialog(self.tr("Can't import preset file"), unicode(msg))
             dialog.exec_()
-            #self._view.grabKeyboard()
 
     def __loadStyleSheet(self, styleSheetFileName):
         """ Load and apply the style sheet.
@@ -888,10 +740,8 @@ class MainController(AbstractController):
             styleSheetFile.close()
         except Exception, msg:
             Logger().exception("MainController.__loadStyleSheet()")
-            #self._view.releaseKeyboard()
             dialog = ExceptionMessageDialog(self.tr("Can't load style sheet"), unicode(msg))
             dialog.exec_()
-            #self._view.grabKeyboard()
 
     def __SetConnectedWidgetState(self):
         """ Enable/disable widgets when connected.
@@ -981,9 +831,7 @@ class MainController(AbstractController):
             Logger().error("Connection failed to start")
             self.setStatusbarMessage(self.tr("Connection failed to start"), 10)
             controller = PluginsStatusController(self, self.__pluginsStatus)
-            #self._view.releaseKeyboard()
             controller.exec_()
-            #self._view.grabKeyboard()
             controller.shutdown()
             self._view.actionHardwareConnect.setChecked(False)
             #self._view.actionHardwareConnect.emit(QtCore.SIGNAL("toggled(bool)"), False)
