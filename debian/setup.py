@@ -83,13 +83,13 @@ setup(name="papywizard",
                 "papywizard.plugins"],
       package_data={'papywizard': ["view/ui/*.ui", "common/papywizard.conf", "common/presets.xml"]},
       data_files=[("share/applications", ["debian/papywizard.desktop"]),
-                  ('share/pixmaps', ["debian/papywizard.png"]),
-                  ('share/icons/hicolor/48x48', ["debian/papywizard.png"]),
-                  ('share/icons/hicolor/scalable/apps/', ["debian/papywizard.png"])],
+                  ('share/pixmaps', ["debian/icons/48x48/papywizard.png"]),
+                  ('share/icons/hicolor/48x48', ["debian/icons/48x48/papywizard.png"]),
+                  ('share/icons/hicolor/scalable/apps/', ["debian/icons/scalable/papywizard.png"])],
 
       # Debian package
       section="user/graphics",
-      depends="python, python-qt4-core, python-qt4-gui, python-qt4-network, python-serial, python-bluez",
+      depends="python, python-qt4, python-serial, python-bluez",
       #icon="maemo/icons/26x26/papywizard.png",
       cmdclass={'bdist_debian': bdist_debian},
   )
