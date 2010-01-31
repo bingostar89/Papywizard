@@ -176,21 +176,19 @@ class PanoguyLowLevelHardware(QtCore.QObject):  # Inherits abstract???
         cmd = "%s%d%s" % (cmd, AXIS_TABLE[self.__capacity], param)
         for nbTry in xrange(3):
             try:
-                answer = ""
                 self.__driver.empty()
                 self.__driver.write(":%s\r" % cmd)
-                c = ''
-                while c not in ('=', '!'):
-                    c = self.__driver.read(1)
-                if c == '!':
-                    c = self.__driver.read(1) # Get error code
-                    raise IOError("Unknown command '%s' (err=%s)" % (cmd, c))
                 answer = ""
                 while True:
                     c = self.__driver.read(1)
-                    if c == '\r':
+                    Logger().debug("PanoguyLowLevelHardware.__sendCmd(): c=%s" % c)
+                    if c == '!':
+                        c = self.__driver.read(1) # Get error code
+                        raise IOError("Unknown command '%s' (err=%s)" % (cmd, c))
+                    elif c == '\r':
                         break
-                    answer += c
+                    else:
+                        answer += c
 
             except IOError:
                 Logger().exception("PanoguyLowLevelHardware.__sendCmd")

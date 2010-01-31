@@ -49,7 +49,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: setup.py 2157 2009-10-03 12:05:54Z fma $"
+__revision__ = "$Id$"
 
 import os
 import os.path
