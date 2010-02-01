@@ -56,7 +56,7 @@ Notes
 @license: CeCILL
 """
 
-__revision__ = "$Id: dslrRemoteProPlugins.py 2232 2010-02-01 09:36:40Z fma $"
+__revision__ = "$Id$"
 
 import time
 import subprocess
