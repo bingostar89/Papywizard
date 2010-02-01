@@ -20,7 +20,7 @@ Distribution.section = ""
 Distribution.depends = ""
 Distribution.recommends = ""
 Distribution.suggests = ""
-Distribution.architecture = ""
+Distribution.architecture = "all"
 Distribution.essential = ""
 Distribution.source = ""
 
