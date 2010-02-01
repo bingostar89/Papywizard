@@ -74,7 +74,7 @@ class BluetoothDriver(AbstractDriver):
             self._sock = BluetoothSocket(RFCOMM)
             self._sock.connect((address, 1))
             try:
-                self._sock.settimeout(config.DRIVER_TIMEOUT)
+                self._sock.settimeout(ConfigManager().getFloat('Plugins/HARDWARE_COM_TIMEOUT'))
             except NotImplementedError:
                 Logger().warning("BluetoothDriver._init(): bluetooth stack does not implment settimeout()")
         except BluetoothError, error:

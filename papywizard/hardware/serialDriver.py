@@ -71,7 +71,7 @@ class SerialDriver(AbstractDriver):
                 port = ConfigManager().get('Plugins/HARDWARE_SERIAL_PORT')
             self._serial = serial.Serial(port=port)
             self._serial.baudrate = config.SERIAL_BAUDRATE
-            self._serial.timeout = config.DRIVER_TIMEOUT
+            self._serial.timeout = ConfigManager().getFloat('Plugins/HARDWARE_COM_TIMEOUT')
             self.empty()
         except:
             Logger().exception("SerialDriver._init()")

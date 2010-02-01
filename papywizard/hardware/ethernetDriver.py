@@ -73,7 +73,7 @@ class EthernetDriver(AbstractDriver):
             self.setDeviceHostPort(host, port)
             self._sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self._sock.connect((self.__host, self.__port))
-            self._sock.settimeout(config.DRIVER_TIMEOUT)
+            self._sock.settimeout(ConfigManager().getFloat('Plugins/HARDWARE_COM_TIMEOUT'))
             self.empty()
         except Exception, msg:
             Logger().exception("EthernetDriver._init()")
