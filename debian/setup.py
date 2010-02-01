@@ -59,7 +59,7 @@ from distutils.core import setup
 from bdist_debian import bdist_debian
 
 path = os.path.dirname(__file__)
-sys.path.append(os.path.join(path, os.pardir))
+sys.path.insert(0, os.path.join(path, os.pardir))
 from papywizard.common import config
 
 VERSION_PACKAGE = 1
