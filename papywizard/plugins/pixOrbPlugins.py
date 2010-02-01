@@ -62,7 +62,7 @@ import threading
 
 from PyQt4 import QtCore, QtGui
 
-from papywizard.common import config
+from papywizard.common.configManager import ConfigManager
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
@@ -82,7 +82,6 @@ DEFAULT_AXIS_WITH_BREAK = False
 DEFAULT_AXIS_ACCURACY = 0.1  # °
 
 SIN11_INIT_TIMEOUT = 10.
-DRIVER_TIMEOUT = 3.
 ENCODER_FULL_CIRCLE = 1000000  # steps per turn
 AXIS_TABLE = {'yawAxis': 'B',
               'pitchAxis': 'C',
@@ -139,7 +138,7 @@ class AbstractPixOrbHardware(AbstractHardwarePlugin):
                 answer = answer.strip()  # Remove final CRLF
                 Logger().debug("AbstractPixOrbHardware.establishConnection(): SIN-11 '&' answer=%s" % answer)
                 AbstractPixOrbHardware.__initSIN11 = True
-                self._driver.setTimeout(DRIVER_TIMEOUT)
+                self._driver.setTimeout(ConfigManager().getFloat('Plugins/HARDWARE_COM_TIMEOUT'))
             except:
                 self._connected = False
                 raise
@@ -183,7 +182,7 @@ class PixOrbHardware(AbstractPixOrbHardware):
         @rtype: str
         """
         cmd = "%s%s" % (table[self.capacity], cmd)
-        for nbTry in xrange(3):
+        for nbTry in xrange(ConfigManager().getInt('Plugins/HARDWARE_COM_RETRY')):
             try:
                 answer = ""
                 self._driver.empty()

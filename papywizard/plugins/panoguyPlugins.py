@@ -61,7 +61,7 @@ import threading
 
 from PyQt4 import QtCore, QtGui
 
-from papywizard.common import config
+from papywizard.common.configManager import ConfigManager
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
@@ -174,7 +174,7 @@ class PanoguyLowLevelHardware(QtCore.QObject):  # Inherits abstract???
         @rtype: str
         """
         cmd = "%s%d%s" % (cmd, AXIS_TABLE[self.__capacity], param)
-        for nbTry in xrange(3):
+        for nbTry in xrange(ConfigManager().getInt('Plugins/HARDWARE_COM_RETRY')):
             try:
                 self.__driver.empty()
                 self.__driver.write(":%s\r" % cmd)

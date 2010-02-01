@@ -120,6 +120,8 @@ class PololuServoHardware(AbstractHardwarePlugin):
 
         @param data2: second data byte, in [0-127]
         @type data2: int
+
+        @todo: add retry
         """
         if data2 is not None:
            data2Str = hex(data2)
