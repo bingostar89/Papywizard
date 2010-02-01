@@ -146,6 +146,11 @@ class PluginsController(AbstractModalDialogController):
         ConfigManager().set('Plugins/HARDWARE_SERIAL_PORT', unicode(self._view.serialPortLineEdit.text()))
         ConfigManager().set('Plugins/HARDWARE_ETHERNET_HOST', unicode(self._view.ethernetHostLineEdit.text()))
         ConfigManager().setInt('Plugins/HARDWARE_ETHERNET_PORT', self._view.ethernetPortSpinBox.value())
+
+        # Communication tab
+        ConfigManager().setFloat('Plugins/HARDWARE_COM_TIMEOUT', self._view.comTimeoutDoubleSpinBox.value(), 1)
+        ConfigManager().setInt('Plugins/HARDWARE_COM_RETRY', self._view.comRetrySpinBox.value())
+
         ConfigManager().save()
 
     def __onYawAxisComboBoxActivated(self, pluginName):
@@ -280,6 +285,10 @@ class PluginsController(AbstractModalDialogController):
         self._view.serialPortLineEdit.setText(ConfigManager().get('Plugins/HARDWARE_SERIAL_PORT'))
         self._view.ethernetHostLineEdit.setText(ConfigManager().get('Plugins/HARDWARE_ETHERNET_HOST'))
         self._view.ethernetPortSpinBox.setValue(ConfigManager().getInt('Plugins/HARDWARE_ETHERNET_PORT'))
+
+        # Communication tab
+        self._view.comTimeoutDoubleSpinBox.setValue(ConfigManager().getFloat('Plugins/HARDWARE_COM_TIMEOUT'))
+        self._view.comRetrySpinBox.setValue(ConfigManager().getInt('Plugins/HARDWARE_COM_RETRY'))
 
     def getSelectedTab(self):
         """ Return the selected tab.
