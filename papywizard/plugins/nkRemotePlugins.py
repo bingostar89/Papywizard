@@ -71,7 +71,7 @@ from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, \
                                          DoubleSpinBoxField, CheckBoxField, SliderField, DirSelectorField
 
-NAME = "DSLR Remote Pro"
+NAME = "NK Remote"
 
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_USER_EXPOSURE_COMPENSATION_LIST = "-2, 0, +2"
@@ -146,14 +146,10 @@ class NkRemoteShutter(AbstractShutterPlugin):
         AbstractShutterPlugin.configure(self)
 
         # Build camera exposure compensation list
-        if self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±3@1/3":
+        if self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±5@1/3":
             self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_3
-        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±3@1/2":
+        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±5@1/2":
             self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2
-        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±2@1/3":
-            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_3[3:-3]
-        elif self._config['CAMERA_EXPOSURE_COMPENSATION_LIST'] == u"±2@1/2":
-            self.__cameraExposureCompensationList = CAMERA_EXPOSURE_COMPENSATION_LIST_1_2[2:-2]
         Logger().debug("NkRemoteShutter.configure(): camera exposure compensation table=%s" % \
                        self.__cameraExposureCompensationList)
 
@@ -228,7 +224,7 @@ class NkRemoteShutterController(ShutterPluginController):
         self._addWidget('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", "File name prefix"),
                         LineEditField, (), 'FILENAME_PREFIX')
         self._addWidget('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", "Camera exposure\ncompensation list"),
-                        ComboBoxField, ((u"±3@1/3", u"±3@1/2", u"±2@1/3", u"±2@1/2"),),
+                        ComboBoxField, ((u"±5@1/3", u"±5@1/2"),),
                         'CAMERA_EXPOSURE_COMPENSATION_LIST')
 
 
