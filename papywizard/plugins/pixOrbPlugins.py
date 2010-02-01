@@ -82,6 +82,7 @@ DEFAULT_AXIS_WITH_BREAK = False
 DEFAULT_AXIS_ACCURACY = 0.1  # °
 
 SIN11_INIT_TIMEOUT = 10.
+COM_TIMEOUT = 3.
 ENCODER_FULL_CIRCLE = 1000000  # steps per turn
 AXIS_TABLE = {'yawAxis': 'B',
               'pitchAxis': 'C',
@@ -138,7 +139,7 @@ class AbstractPixOrbHardware(AbstractHardwarePlugin):
                 answer = answer.strip()  # Remove final CRLF
                 Logger().debug("AbstractPixOrbHardware.establishConnection(): SIN-11 '&' answer=%s" % answer)
                 AbstractPixOrbHardware.__initSIN11 = True
-                self._driver.setTimeout(ConfigManager().getFloat('Plugins/HARDWARE_COM_TIMEOUT'))
+                self._driver.setTimeout(max(ConfigManager().getFloat('Plugins/HARDWARE_COM_TIMEOUT'), COM_TIMEOUT))
             except:
                 self._connected = False
                 raise
