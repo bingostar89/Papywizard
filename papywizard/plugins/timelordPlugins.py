@@ -6,7 +6,7 @@ License
 =======
 
  - B{Papywizard} (U{http://www.papywizard.org}) is Copyright:
-  - (C) 2007-2009 Frédéric Mantegazza
+  - (C) 2007-2010 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use,
@@ -46,7 +46,7 @@ Implements
 - TimelordShutterController
 
 @author: Frédéric Mantegazza
-@copyright: (C) 2007-2009 Frédéric Mantegazza
+@copyright: (C) 2007-2010 Frédéric Mantegazza
 @license: CeCILL
 """
 
