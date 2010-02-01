@@ -11,7 +11,7 @@ x bug fix
 
 2010-02-01 Version 2.1.15 (dev)
     + params for communication (timeout/retry)
-    + 'NKRmote' plugin
+    + 'NK Remote' plugin
 
 2010-01-10 Version 2.1.14 (dev)
     - translations files updated
