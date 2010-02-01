@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="fr">
+<!DOCTYPE TS><TS version="1.1" language="fr">
 <context>
     <name>AbortMessageDialog</name>
     <message>
@@ -446,7 +445,7 @@
         <source>Plugins...</source>
         <translation>Plugins...</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/mainWindow.ui" line="615"/>
         <source>Total fov (°)</source>
         <translation>Adc total (°)</translation>
@@ -456,12 +455,12 @@
         <source>Nb picts</source>
         <translation>Nb photos</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/mainWindow.ui" line="487"/>
         <source>Corner 0 (°)</source>
         <translation>Coin 0 (°)</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/mainWindow.ui" line="554"/>
         <source>Corner 1 (°)</source>
         <translation>Coin 1 (°)</translation>
@@ -911,11 +910,6 @@
         <source>Reverse direction before repeat</source>
         <translation>Inverse direction avant répétition</translation>
     </message>
-    <message utf8="true">
-        <location filename="papywizard/view/ui/configDialog.ui" line="123"/>
-        <source> °</source>
-        <translation></translation>
-    </message>
 </context>
 <context>
     <name>dslrRemoteProPlugins</name>
@@ -1113,7 +1107,7 @@ exposition appareil</translation>
         <translation>Incrément d&apos;exposition</translation>
     </message>
 </context>
-<context>
+<context encoding="UTF-8">
     <name>helpAboutDialog</name>
     <message>
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="14"/>
@@ -1157,7 +1151,7 @@ A cet égard  l&apos;attention de l&apos;utilisateur est attirée sur les risque
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les termes.</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="155"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1673,11 +1667,6 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
     <message>
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="49"/>
         <source>Total fov</source>
-        <translation></translation>
-    </message>
-    <message utf8="true">
-        <location filename="papywizard/view/ui/totalFovDialog.ui" line="69"/>
-        <source> °</source>
         <translation></translation>
     </message>
 </context>

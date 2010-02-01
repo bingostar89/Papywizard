@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="en">
+<!DOCTYPE TS>
+<TS version="2.0" language="en">
 <context>
     <name>AbortMessageDialog</name>
     <message>
@@ -445,7 +446,7 @@
         <source>Plugins...</source>
         <translation></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="615"/>
         <source>Total fov (°)</source>
         <translation>Total fov (°)</translation>
@@ -455,12 +456,12 @@
         <source>Nb picts</source>
         <translation>Nb picts</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="487"/>
         <source>Corner 0 (°)</source>
         <translation>Corner 0 (°)</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="554"/>
         <source>Corner 1 (°)</source>
         <translation>Corner 1 (°)</translation>
@@ -628,7 +629,7 @@
         <translation>Bluetooth Chooser</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>configDialog</name>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="17"/>
@@ -910,11 +911,6 @@
         <source>Reverse direction before repeat</source>
         <translation>Reverse direction before repeat</translation>
     </message>
-    <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/configDialog.ui" line="123"/>
-        <source> °</source>
-        <translation></translation>
-    </message>
 </context>
 <context>
     <name>dslrRemoteProPlugins</name>
@@ -1112,7 +1108,7 @@ compensation list</translation>
         <translation>Bracketing step</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>helpAboutDialog</name>
     <message>
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="14"/>
@@ -1156,7 +1152,7 @@ The fact that you are presently reading this means that you have had knowledge o
 
 ￼The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="155"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1391,17 +1387,17 @@ After closing this dialog, you will be prompt to select these plugins. Once it i
     <message>
         <location filename="papywizard/view/ui/pluginsDialog.ui" line="296"/>
         <source>Communication</source>
-        <translation type="unfinished"></translation>
+        <translation>Communication</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/pluginsDialog.ui" line="304"/>
         <source>Timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Timeout</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/pluginsDialog.ui" line="342"/>
         <source>Retry</source>
-        <translation type="unfinished"></translation>
+        <translation>Retry</translation>
     </message>
 </context>
 <context>
@@ -1652,7 +1648,7 @@ After closing this dialog, you will be prompt to select these plugins. Once it i
         <translation>LRD files (*.lrd);;All files (*)</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>totalFovDialog</name>
     <message>
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="14"/>
@@ -1673,11 +1669,6 @@ After closing this dialog, you will be prompt to select these plugins. Once it i
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="49"/>
         <source>Total fov</source>
         <translation>Total fov</translation>
-    </message>
-    <message encoding="UTF-8">
-        <location filename="papywizard/view/ui/totalFovDialog.ui" line="69"/>
-        <source> °</source>
-        <translation></translation>
     </message>
 </context>
 <context>
