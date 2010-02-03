@@ -564,7 +564,8 @@ class Shooting(QtCore.QObject):
                                 raise HardwareError(self.tr("Shutter failed while shooting"))
 
                             # Add image to the xml data file
-                            data.addPicture(bracket, yaw, pitch, roll)
+                            realYaw, realPitch = self.head.readPosition()
+                            data.addPicture(bracket, realYaw, realPitch, roll)
 
                             checkStop()
 
