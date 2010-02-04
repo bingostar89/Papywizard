@@ -80,8 +80,6 @@ class PanoguyCommandDispatcherObject(QtCore.QObject):
         self._axis = {1: yawAxis,
                       2: pitchAxis}
         self._axisCmd = {}
-        self._axisDir = {}
-        self._axisSpeed = {}
         self._axisPos = {}
 
     def activate(self):
@@ -195,7 +193,7 @@ class PanoguyCommandDispatcherObject(QtCore.QObject):
         # Get firmeware version command
         elif cmd == 'e':
             Logger().debug("PanoguyBaseHandler.handleCmd(): get firmware version?")
-            response = "xxxxxx"
+            response = "Vx.x"
 
         # Read command
         elif cmd == 'j':
@@ -211,51 +209,27 @@ class PanoguyCommandDispatcherObject(QtCore.QObject):
             else:
                 response = "0"
 
-        # Set action command
+        # Start jog command
         elif cmd == 'G':
-            Logger().debug("PanoguyBaseHandler.handleCmd(): set action")
-            self._axisCmd[numAxis] = 'jog'
+            Logger().debug("PanoguyBaseHandler.handleCmd(): start jog")
+            #self._axisCmd[numAxis] = 'jog'
             if param == '0':
-                self._axisDir[numAxis] = '+'
+                dir_ = '+'
             elif param == '1':
-                self._axisDir[numAxis] = '-'
+                dir_ = '-'
             else:
                 raise HardwareError("Invalid param")
-            Logger().debug("PanoguyBaseHandler.handleCmd(): axis %d direction=%s" % (numAxis, self._axisDir[numAxis]))
+            self._axis[numAxis].startJog(dir_)
+            Logger().debug("PanoguyBaseHandler.handleCmd(): axis %d direction=%s" % (numAxis, dir_))
 
-        # Speed command
-        elif cmd == 'I':
-            Logger().debug("PanoguyBaseHandler.handleCmd(): speed")
-            try:
-                speed = self._decodeAxisValue(param)
-                Logger().debug("PanoguyBaseHandler.handleCmd(): axis %d speed=%d" % (numAxis, speed))
-                self._axisSpeed[numAxis] = speed
-            except KeyError:
-                raise HardwareError("No direction has been set")
-
-        # Position command
+        # Goto command
         elif cmd == 'S':
-            Logger().debug("PanoguyBaseHandler.handleCmd(): position")
-            self._axisCmd[numAxis] = 'drive'
-            self._axisPos[numAxis] = self._encoderToAngle(self._decodeAxisValue(param))
+            Logger().debug("PanoguyBaseHandler.handleCmd(): goto")
+            self._axis[numAxis].drive(self._encoderToAngle(self._decodeAxisValue(param)), wait=False)
 
-        # Run command
-        elif cmd == 'J':
-            Logger().debug("PanoguyBaseHandler.handleCmd(): run")
-            try:
-                if self._axisCmd[numAxis] == 'jog':
-                    dir_ = self._axisDir[numAxis]
-                    #speed = self._axisSpeed[numAxis]
-                    self._axis[numAxis].startJog(dir_)
-                elif self._axisCmd[numAxis] == 'drive':
-                    pos = self._axisPos[numAxis]
-                    self._axis[numAxis].drive(pos, wait=False)
-            except KeyError:
-                raise HardwareError("Missing one axis cmd/direction/speed value")
-
-        # Shutter command
+        # Output command
         elif cmd == 'O':
-            Logger().debug("PanoguyBaseHandler.handleCmd(): shutter")
+            Logger().debug("PanoguyBaseHandler.handleCmd(): output")
 
         # Invalid command
         else:
