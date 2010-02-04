@@ -439,7 +439,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
             if not self.isMoving():
                 stopRequest = True
                 break
-            time.sleep(0.1)
+            time.sleep(config.SPY_REFRESH_DELAY / 1000.)
         self._stop()
 
         # Final move
@@ -449,7 +449,7 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
 
     def waitEndOfDrive(self):
         while self.isMoving():
-            time.sleep(0.1)
+            time.sleep(config.SPY_REFRESH_DELAY / 1000.)
         self.waitStop()
 
     def startJog(self, dir_):
@@ -462,12 +462,12 @@ class MerlinOrionAxis(MerlinOrionHardware, AbstractAxisPlugin, QtCore.QThread):
 
     def waitStop(self):
         pos = self.read()
-        time.sleep(0.05)
+        time.sleep(config.SPY_REFRESH_DELAY / 1000.)
         while True:
-            if round(abs(pos - self.read()), 1) == 0:
+            if abs(pos - self.read()) <= AXIS_ACCURACY:
                 break
             pos = self.read()
-            time.sleep(0.05)
+            time.sleep(config.SPY_REFRESH_DELAY / 1000.)
 
     def isMoving(self):
         status = self._getStatus()
