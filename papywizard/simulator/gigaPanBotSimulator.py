@@ -37,19 +37,19 @@ knowledge of the CeCILL license and that you accept its terms.
 Module purpose
 ==============
 
-Complete simulation of the Panoguy head protocole.
+Complete simulation of the GigaPanBot head protocole.
 This simulator can be use to check all low-level messages
 between Papywizard and the head.
 
 Implements
 ==========
 
-- PanoguySerialHandler
-- PanoguyEthernetHandler
-- PanoguyBaseSimulator
+- GigaPanBotSerialHandler
+- GigaPanBotEthernetHandler
+- GigaPanBotBaseSimulator
 - SimulatorTCPServer
-- PanoguyEthernetSimulator
-- PanoguySerialSimulator
+- GigaPanBotEthernetSimulator
+- GigaPanBotSerialSimulator
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2010 Frédéric Mantegazza
@@ -66,11 +66,11 @@ from PyQt4 import QtCore
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.common.exception import HardwareError
-from papywizard.simulator.panoguyCommandDispatcher import PanoguyCommandDispatcher
+from papywizard.simulator.gigaPanBotCommandDispatcher import GigaPanBotCommandDispatcher
 from papywizard.plugins.simulationPlugins import SimulationAxis
 
 
-class PanoguySerialHandler(QtCore.QObject):
+class GigaPanBotSerialHandler(QtCore.QObject):
     """ Serial-based handler.
     """
     def __init__(self, serial):
@@ -84,18 +84,18 @@ class PanoguySerialHandler(QtCore.QObject):
                 cmd = ""
                 while not cmd.endswith('\r'):
                     data = self.serial.read(1)
-                    #Logger().debug("PanoguySerialHandler.handle(): data=%s" % repr(data))
+                    #Logger().debug("GigaPanBotSerialHandler.handle(): data=%s" % repr(data))
                     if not data:
                         Logger().error("Timeout while reading on serial bus")
                         break
                     cmd += data
                 if cmd:
-                    response = PanoguyCommandDispatcher().handleCmd(cmd)
-                    Logger().debug("PanoguySerialHandler.handle(): response=%s" % repr(response))
+                    response = GigaPanBotCommandDispatcher().handleCmd(cmd)
+                    Logger().debug("GigaPanBotSerialHandler.handle(): response=%s" % repr(response))
                     self.serial.write(response)
                 else:
                     #self.serial.close()
-                    Logger().debug("PanoguySerialHandler.handle(): lost connection")
+                    Logger().debug("GigaPanBotSerialHandler.handle(): lost connection")
                     Logger().info("Serial connection closed")
                     break
             except KeyboardInterrupt:
@@ -103,14 +103,14 @@ class PanoguySerialHandler(QtCore.QObject):
                 Logger().info("Serial connection closed")
                 raise
             except:
-                Logger().exception("PanoguySerialHandler.handle()")
+                Logger().exception("GigaPanBotSerialHandler.handle()")
 
 
-class PanoguyEthernetHandler(SocketServer.BaseRequestHandler):
+class GigaPanBotEthernetHandler(SocketServer.BaseRequestHandler):
     """ Ethernet-based handler.
     """
     def handle(self):
-        Logger().debug("PanoguyEthernetHandler.handle(): connection request from ('%s', %d)" % self.client_address)
+        Logger().debug("GigaPanBotEthernetHandler.handle(): connection request from ('%s', %d)" % self.client_address)
         Logger().info("New ethernet connection established")
         while True:
             try:
@@ -122,12 +122,12 @@ class PanoguyEthernetHandler(SocketServer.BaseRequestHandler):
                         break
                     cmd += data
                 if cmd:
-                    response = PanoguyCommandDispatcher().handleCmd(cmd)
-                    Logger().debug("PanoguyEthernetHandler.handle(): response=%s" % repr(response))
+                    response = GigaPanBotCommandDispatcher().handleCmd(cmd)
+                    Logger().debug("GigaPanBotEthernetHandler.handle(): response=%s" % repr(response))
                     self.request.sendall(response)
                 else:
                     self.request.close()
-                    Logger().debug("PanoguyEthernetHandler.handle(): lost connection with ('%s', %d)" % self.client_address)
+                    Logger().debug("GigaPanBotEthernetHandler.handle(): lost connection with ('%s', %d)" % self.client_address)
                     Logger().info("Ethernet connection closed")
                     break
             except KeyboardInterrupt:
@@ -135,14 +135,14 @@ class PanoguyEthernetHandler(SocketServer.BaseRequestHandler):
                 Logger().info("Ethernet connection closed")
                 break
             except:
-                Logger().exception("PanoguyEthernetHandler.handle()")
+                Logger().exception("GigaPanBotEthernetHandler.handle()")
 
 
-class PanoguyBaseSimulator(QtCore.QObject):
-    """ Abstract Panoguy simulator.
+class GigaPanBotBaseSimulator(QtCore.QObject):
+    """ Abstract GigaPanBot simulator.
     """
     def __init__(self):
-        """ Init the Panoguy base simulator.
+        """ Init the GigaPanBot base simulator.
         """
         QtCore.QObject.__init__(self)
         self._init()
@@ -158,13 +158,13 @@ class PanoguyBaseSimulator(QtCore.QObject):
         raise NotImplementedError
 
 
-class PanoguySerialSimulator(PanoguyBaseSimulator):
+class GigaPanBotSerialSimulator(GigaPanBotBaseSimulator):
     """ Serial-based simulator.
     """
     def __init__(self, port):
-        Logger().debug("PanoguySerialSimulator.__init__(): port=%s" % port)
+        Logger().debug("GigaPanBotSerialSimulator.__init__(): port=%s" % port)
         self.__port = port
-        PanoguyBaseSimulator.__init__(self)
+        GigaPanBotBaseSimulator.__init__(self)
 
     def _init(self):
         self.__serial = serial.Serial(self.__port)
@@ -179,7 +179,7 @@ class PanoguySerialSimulator(PanoguyBaseSimulator):
         try:
             while True:
                 if self.__serial.inWaiting():
-                    handler = PanoguySerialHandler(self.__serial)
+                    handler = GigaPanBotSerialHandler(self.__serial)
                     handler.handle()
         except KeyboardInterrupt:
             pass
@@ -192,16 +192,16 @@ class SimulatorTCPServer(SocketServer.ThreadingTCPServer):
         Logger().error("Error while handling request from ('%s', %d)" % client_address)
 
 
-class PanoguyEthernetSimulator(PanoguyBaseSimulator):
+class GigaPanBotEthernetSimulator(GigaPanBotBaseSimulator):
     """ Ethernet-based simulator.
     """
     def __init__(self, host, port):
         self.__host = host
         self.__port = port
-        PanoguyBaseSimulator.__init__(self)
+        GigaPanBotBaseSimulator.__init__(self)
 
     def _init(self):
-        self.__server = SimulatorTCPServer((self.__host, self.__port), PanoguyEthernetHandler)
+        self.__server = SimulatorTCPServer((self.__host, self.__port), GigaPanBotEthernetHandler)
         self.__server.socket.setblocking(1)
 
     def run(self):

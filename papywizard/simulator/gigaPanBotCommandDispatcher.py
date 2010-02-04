@@ -37,15 +37,15 @@ knowledge of the CeCILL license and that you accept its terms.
 Module purpose
 ==============
 
-Complete simulation of the Panoguy head protocole.
+Complete simulation of the GigaPanBot head protocole.
 This simulator can be use to check all low-level messages
 between Papywizard and the head.
 
 Implements
 ==========
 
-- PanoguyCommandDispatcherObject
-- PanoguyCommandDispatcher
+- GigaPanBotCommandDispatcherObject
+- GigaPanBotCommandDispatcher
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2010 Frédéric Mantegazza
@@ -66,8 +66,8 @@ ENCODER_FULL_CIRCLE = 0xE62D3
 panoguyCommandDispatcher = None
 
 
-class PanoguyCommandDispatcherObject(QtCore.QObject):
-    """ Abstract handler for Panoguy commands set.
+class GigaPanBotCommandDispatcherObject(QtCore.QObject):
+    """ Abstract handler for GigaPanBot commands set.
     """
     def __init__(self):
         """ Init the abstract handler.
@@ -160,7 +160,7 @@ class PanoguyCommandDispatcherObject(QtCore.QObject):
 
         raise HardwareError: wrong command
         """
-        Logger().debug("PanoguyBaseHandler.handleCmd(): cmdStr=%s" % cmdStr)
+        Logger().debug("GigaPanBotBaseHandler.handleCmd(): cmdStr=%s" % cmdStr)
         if not cmdStr.startswith(':'):
             raise HardwareError("Invalid command format (%s)" % repr(cmdStr))
 
@@ -170,40 +170,40 @@ class PanoguyCommandDispatcherObject(QtCore.QObject):
         if numAxis not in (1, 2):
             raise HardwareError("Invalid axis number (%d)" % numAxis)
         param = cmdStr[3:-1]
-        Logger().debug("PanoguyBaseHandler.handleCmd(): cmdStr=%s, cmd=%s, numAxis=%d, param=%s" % (repr(cmdStr), cmd, numAxis, param))
+        Logger().debug("GigaPanBotBaseHandler.handleCmd(): cmdStr=%s, cmd=%s, numAxis=%d, param=%s" % (repr(cmdStr), cmd, numAxis, param))
 
         # Compute command response
         response = ""
 
         # Stop command
         if cmd == 'L':
-            Logger().debug("PanoguyBaseHandler.handleCmd(): stop")
+            Logger().debug("GigaPanBotBaseHandler.handleCmd(): stop")
             self._axis[numAxis].stop()
             response = ""
 
         # Check motor command
         elif cmd == 'F':
-            Logger().trace("PanoguyBaseHandler.handleCmd(): check motor")
+            Logger().trace("GigaPanBotBaseHandler.handleCmd(): check motor")
 
         # Get encoder full circle command
         elif cmd == 'a':
-            Logger().debug("PanoguyBaseHandler.handleCmd(): get encoder full circle")
+            Logger().debug("GigaPanBotBaseHandler.handleCmd(): get encoder full circle")
             response =  self._encodeAxisValue(self._angleToEncoder(0xE62D3))
 
         # Get firmeware version command
         elif cmd == 'e':
-            Logger().debug("PanoguyBaseHandler.handleCmd(): get firmware version?")
+            Logger().debug("GigaPanBotBaseHandler.handleCmd(): get firmware version?")
             response = "Vx.x"
 
         # Read command
         elif cmd == 'j':
-            Logger().debug("PanoguyBaseHandler.handleCmd(): read")
+            Logger().debug("GigaPanBotBaseHandler.handleCmd(): read")
             pos = self._axis[numAxis].read()
             response = self._encodeAxisValue(self._angleToEncoder(pos))
 
         # Status command
         elif cmd == 'f':
-            Logger().debug("PanoguyBaseHandler.handleCmd(): status")
+            Logger().debug("GigaPanBotBaseHandler.handleCmd(): status")
             if self._axis[numAxis].isMoving():
                 response = "1"
             else:
@@ -211,7 +211,7 @@ class PanoguyCommandDispatcherObject(QtCore.QObject):
 
         # Start jog command
         elif cmd == 'G':
-            Logger().debug("PanoguyBaseHandler.handleCmd(): start jog")
+            Logger().debug("GigaPanBotBaseHandler.handleCmd(): start jog")
             #self._axisCmd[numAxis] = 'jog'
             if param == '0':
                 dir_ = '+'
@@ -220,16 +220,16 @@ class PanoguyCommandDispatcherObject(QtCore.QObject):
             else:
                 raise HardwareError("Invalid param")
             self._axis[numAxis].startJog(dir_)
-            Logger().debug("PanoguyBaseHandler.handleCmd(): axis %d direction=%s" % (numAxis, dir_))
+            Logger().debug("GigaPanBotBaseHandler.handleCmd(): axis %d direction=%s" % (numAxis, dir_))
 
         # Goto command
         elif cmd == 'S':
-            Logger().debug("PanoguyBaseHandler.handleCmd(): goto")
+            Logger().debug("GigaPanBotBaseHandler.handleCmd(): goto")
             self._axis[numAxis].drive(self._encoderToAngle(self._decodeAxisValue(param)), wait=False)
 
         # Output command
         elif cmd == 'O':
-            Logger().debug("PanoguyBaseHandler.handleCmd(): output")
+            Logger().debug("GigaPanBotBaseHandler.handleCmd(): output")
 
         # Invalid command
         else:
@@ -239,9 +239,9 @@ class PanoguyCommandDispatcherObject(QtCore.QObject):
 
 
 # Command dispatcher factory
-def PanoguyCommandDispatcher(model=None):
+def GigaPanBotCommandDispatcher(model=None):
     global panoguyCommandDispatcher
     if panoguyCommandDispatcher is None:
-        panoguyCommandDispatcher = PanoguyCommandDispatcherObject()
+        panoguyCommandDispatcher = GigaPanBotCommandDispatcherObject()
 
     return panoguyCommandDispatcher
