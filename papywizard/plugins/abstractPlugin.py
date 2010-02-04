@@ -125,7 +125,7 @@ class AbstractPlugin(object): #(QtCore.QObject):
         @param default: default value for the given key
         @type default:
         """
-        Logger().debug("AbstractPlugin._addConfigKey(): attr=%s, key=%s, default=%s" % (attr, key, default))
+        #Logger().debug("AbstractPlugin._addConfigKey(): attr=%s, key=%s, default=%s" % (attr, key, default))
         #self.__dict__[attr] = default # Find a way to bind to _config[key]. Use property?
         self._config[key] = default
 
@@ -135,7 +135,7 @@ class AbstractPlugin(object): #(QtCore.QObject):
         Logger().trace("AbstractPlugin._loadConfig()")
         for key, defaultValue in self._config.iteritems():
             configKey = "%s_%s/%s" % (self.name, self.capacity, key)
-            Logger().debug("AbstractPlugin._loadConfig(): key=%s, defaultValue=%s" % (configKey, defaultValue))
+            #Logger().debug("AbstractPlugin._loadConfig(): key=%s, defaultValue=%s" % (configKey, defaultValue))
             if ConfigManager().contains(configKey):
                 if isinstance(defaultValue, bool):
                     self._config[key] = ConfigManager().getBoolean(configKey)
@@ -146,7 +146,7 @@ class AbstractPlugin(object): #(QtCore.QObject):
                 elif isinstance(defaultValue, float):
                     self._config[key] = ConfigManager().getFloat(configKey)
                 elif isinstance(defaultValue, list):
-                    Logger().debug("AbstractPlugin._loadConfig(): defaultValue=%s" % str(ConfigManager().get(configKey)))
+                    #Logger().debug("AbstractPlugin._loadConfig(): defaultValue=%s" % str(ConfigManager().get(configKey)))
                     self._config[key] = ConfigManager().get(configKey).split(',')
         Logger().debug("AbstractPlugin._loadConfig(): config=%s" % self._config)
 
