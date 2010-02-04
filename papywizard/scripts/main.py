@@ -181,7 +181,7 @@ def main():
         register()
         from papywizard.plugins.nkRemotePlugins import register
         register()
-        from papywizard.plugins.panoguyPlugins import register
+        from papywizard.plugins.gigaPanBotPlugins import register
         register()
         PluginsManager ().load()
 

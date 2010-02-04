@@ -82,10 +82,10 @@ AXIS_TABLE = {'yawAxis': 1,
               'pitchAxis': 2,
               'shutter': 1
               }
-#MANUAL_SPEED_TABLE = {'slow': 170,  # "AA0000"  / 5
-                      #'normal': 34, # "220000" nominal
-                      #'fast': 17   # "110000"  * 2
-                      #}
+MANUAL_SPEED_TABLE = {'slow': 170,  # "AA0000"  / 5
+                      'normal': 34, # "220000" nominal
+                      'fast': 17   # "110000"  * 2
+                      }
 
 
 class GigaPanBotLowLevelHardware(QtCore.QObject):  # Inherits abstract???

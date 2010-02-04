@@ -57,8 +57,8 @@ from papywizard.simulator.merlinOrionCommandDispatcher import MerlinOrionCommand
 from papywizard.simulator.merlinOrionSimulator import MerlinOrionEthernetSimulator, MerlinOrionSerialSimulator
 from papywizard.simulator.pixOrbCommandDispatcher import PixOrbCommandDispatcher
 from papywizard.simulator.pixOrbSimulator import PixOrbEthernetSimulator, PixOrbSerialSimulator
-from papywizard.simulator.panoguyCommandDispatcher import PanoguyCommandDispatcher
-from papywizard.simulator.panoguySimulator import PanoguyEthernetSimulator, PanoguySerialSimulator
+from papywizard.simulator.gigaPanBotCommandDispatcher import GigaPanBotCommandDispatcher
+from papywizard.simulator.gigaPanBotSimulator import GigaPanBotEthernetSimulator, GigaPanBotSerialSimulator
 
 
 def main():
@@ -71,9 +71,9 @@ def main():
     parser.set_defaults(connexion=config.SIMUL_DEFAULT_CONNEXION)
     parser.add_option("-g", "--plugin", action="store",
                                            dest="plugin",
-                                           choices=('merlin', 'pixorb', 'panoguy'),
+                                           choices=('merlin', 'pixorb', 'gigapanbot'),
                                            default='merlin',
-                                           help="Plugin name (merlin/pixorb/panoguy)")
+                                           help="Plugin name (merlin/pixorb/gigapanbot)")
     parser.add_option("-c", "--connexion", action="store",
                                            dest="connexion",
                                            choices=('serial', 'ethernet'),
@@ -105,15 +105,15 @@ def main():
             simulator = MerlinOrionSerialSimulator(option.serialPort)
         elif option.plugin == 'pixorb':
             simulator = PixOrbSerialSimulator(option.serialPort)
-        elif option.plugin == 'panoguy':
-            simulator = PanoguySerialSimulator(option.serialPort)
+        elif option.plugin == 'gigapanbot':
+            simulator = GigaPanBotSerialSimulator(option.serialPort)
     elif option.connexion == 'ethernet':
         if option.plugin == 'merlin':
             simulator = MerlinOrionEthernetSimulator(option.ethernetHost, option.ethernetPort)
         elif option.plugin == 'pixorb':
             simulator = PixOrbEthernetSimulator(option.ethernetHost, option.ethernetPort)
-        elif option.plugin == 'panoguy':
-            simulator = PanoguyEthernetSimulator(option.ethernetHost, option.ethernetPort)
+        elif option.plugin == 'gigapanbot':
+            simulator = GigaPanBotEthernetSimulator(option.ethernetHost, option.ethernetPort)
     else:
         parser.print_help()
         sys.exit(1)
