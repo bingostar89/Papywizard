@@ -42,11 +42,11 @@ Hardware
 Implements
 ==========
 
-- PanoguyLowLevelHardware
-- PanoguyAxis
-- PanoguyAxisController
-- PanoguyShutter
-- PanoguyShutterController
+- GigaPanBotLowLevelHardware
+- GigaPanBotAxis
+- GigaPanBotAxisController
+- GigaPanBotShutter
+- GigaPanBotShutterController
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2010 Frédéric Mantegazza
@@ -74,7 +74,7 @@ from papywizard.plugins.hardwarePluginController import HardwarePluginController
 from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
-NAME = "Panoguy"
+NAME = "GigaPanBot"
 
 ENCODER_ZERO = 0x800000
 AXIS_ACCURACY = 0.1 # °
@@ -82,17 +82,17 @@ AXIS_TABLE = {'yawAxis': 1,
               'pitchAxis': 2,
               'shutter': 1
               }
-MANUAL_SPEED_TABLE = {'slow': 170,  # "AA0000"  / 5
-                      'normal': 34, # "220000" nominal
-                      'fast': 17   # "110000"  * 2
-                      }
+#MANUAL_SPEED_TABLE = {'slow': 170,  # "AA0000"  / 5
+                      #'normal': 34, # "220000" nominal
+                      #'fast': 17   # "110000"  * 2
+                      #}
 
 
-class PanoguyLowLevelHardware(QtCore.QObject):  # Inherits abstract???
-    """ Low-level access to Panoguy controller.
+class GigaPanBotLowLevelHardware(QtCore.QObject):  # Inherits abstract???
+    """ Low-level access to GigaPanBot controller.
     """
     def __init__(self,):
-        """ Init PanoguyLowLevelHardware Object.
+        """ Init GigaPanBotLowLevelHardware Object.
         """
         QtCore.QObject.__init__(self)
 
@@ -182,7 +182,7 @@ class PanoguyLowLevelHardware(QtCore.QObject):  # Inherits abstract???
                 answer = ""
                 while True:
                     c = self.__driver.read(1)
-                    #Logger().debug("PanoguyLowLevelHardware.__sendCmd(): c=%s" % c)
+                    #Logger().debug("GigaPanBotLowLevelHardware.__sendCmd(): c=%s" % c)
                     if c == '=':
                         continue
                     if c == '!':
@@ -194,18 +194,18 @@ class PanoguyLowLevelHardware(QtCore.QObject):  # Inherits abstract???
                         answer += c
 
             except IOError:
-                Logger().exception("PanoguyLowLevelHardware.__sendCmd")
-                Logger().warning("PanoguyLowLevelHardware.__sendCmd(): %s axis %d can't sent command '%s'. Retrying..." % (NAME, AXIS_TABLE[self.__capacity], cmd))
+                Logger().exception("GigaPanBotLowLevelHardware.__sendCmd")
+                Logger().warning("GigaPanBotLowLevelHardware.__sendCmd(): %s axis %d can't sent command '%s'. Retrying..." % (NAME, AXIS_TABLE[self.__capacity], cmd))
             else:
                 break
         else:
             raise HardwareError("%s axis %d can't send command '%s'" % (NAME, AXIS_TABLE[self.__capacity], cmd))
-        #Logger().debug("PanoguyLowLevelHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (AXIS_TABLE[self.__capacity], cmd, answer))
+        #Logger().debug("GigaPanBotLowLevelHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (AXIS_TABLE[self.__capacity], cmd, answer))
 
         return answer
 
     def initHardware(self):
-        """ Init the Panoguy hardware.
+        """ Init the GigaPanBot hardware.
 
         Done only once per axis.
         """
@@ -221,11 +221,11 @@ class PanoguyLowLevelHardware(QtCore.QObject):  # Inherits abstract???
             # Get encoder full circle
             value = self.__sendCmd("a")
             self.__encoderFullCircle = self.__decodeAxisValue(value)
-            Logger().debug("PanoguyLowLevelHardware.init(): full circle count=%s" % hex(self.__encoderFullCircle))
+            Logger().debug("GigaPanBotLowLevelHardware.init(): full circle count=%s" % hex(self.__encoderFullCircle))
 
             # Get firmeware version
             value = self.__sendCmd("e")
-            Logger().debug("PanoguyLowLevelHardware.init(): firmeware version=%s" % value)
+            Logger().debug("GigaPanBotLowLevelHardware.init(): firmeware version=%s" % value)
 
         finally:
             self.__driver.releaseBus()
@@ -313,30 +313,30 @@ class PanoguyLowLevelHardware(QtCore.QObject):  # Inherits abstract???
             self.__driver.releaseBus()
 
 
-class PanoguyAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
+class GigaPanBotAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def __init__(self, *args, **kwargs):
         AbstractHardwarePlugin.__init__(self, *args, **kwargs)
         AbstractAxisPlugin.__init__(self, *args, **kwargs)
 
     def _init(self):
-        Logger().trace("PanoguyAxis._init()")
+        Logger().trace("GigaPanBotAxis._init()")
         AbstractHardwarePlugin._init(self)
         AbstractAxisPlugin._init(self)
-        self.__lowLevelHardware = PanoguyLowLevelHardware()  # Move to parent class?
+        self.__lowLevelHardware = GigaPanBotLowLevelHardware()  # Move to parent class?
 
     def _defineConfig(self):
         AbstractHardwarePlugin._defineConfig(self)
         AbstractAxisPlugin._defineConfig(self)
 
     def init(self):
-        Logger().trace("PanoguyAxis.init()")
+        Logger().trace("GigaPanBotAxis.init()")
         AbstractAxisPlugin.init(self)
         self.__lowLevelHardware.setCapacity(self.capacity),
         self.__lowLevelHardware.setDriver(self._driver)
         self.__lowLevelHardware.initHardware()
 
     def shutdown(self):
-        Logger().trace("PanoguyAxis.shutdown()")
+        Logger().trace("GigaPanBotAxis.shutdown()")
         self.stop()
         AbstractAxisPlugin.shutdown(self)
 
@@ -345,7 +345,7 @@ class PanoguyAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         return pos
 
     def drive(self, pos, useOffset=True, wait=True):
-        Logger().debug("PanoguyAxis.drive(): '%s' drive to %.1f" % (self.capacity, pos))
+        Logger().debug("GigaPanBotAxis.drive(): '%s' drive to %.1f" % (self.capacity, pos))
         currentPos = self.read()
 
         self._checkLimits(pos)
@@ -392,13 +392,13 @@ class PanoguyAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
             return False
 
 
-class PanoguyAxisController(AxisPluginController, HardwarePluginController):
+class GigaPanBotAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
 
 
-class PanoguyShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
+class GigaPanBotShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
     def __init__(self, *args, **kwargs):
         """
         """
@@ -406,10 +406,10 @@ class PanoguyShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
         AbstractStandardShutterPlugin.__init__(self, *args, **kwargs)
 
     def _init(self):
-        Logger().trace("PanoguyShutter._init()")
+        Logger().trace("GigaPanBotShutter._init()")
         AbstractHardwarePlugin._init(self)
         AbstractStandardShutterPlugin._init(self)
-        self.__lowLevelHardware = PanoguyLowLevelHardware()  # Move to parent class?
+        self.__lowLevelHardware = GigaPanBotLowLevelHardware()  # Move to parent class?
 
     def _defineConfig(self):
         AbstractHardwarePlugin._defineConfig(self)
@@ -426,7 +426,7 @@ class PanoguyShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
         self.__lowLevelHardware.setOutput(False)
 
     def init(self):
-        Logger().trace("PanoguyShutter.init()")
+        Logger().trace("GigaPanBotShutter.init()")
         AbstractHardwarePlugin.init(self)
         AbstractStandardShutterPlugin.init(self)
         self.__lowLevelHardware.setCapacity(self.capacity),
@@ -434,13 +434,13 @@ class PanoguyShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
         self.__lowLevelHardware.initHardware()
 
     def shutdown(self):
-        Logger().trace("PanoguyShutter.shutdown()")
+        Logger().trace("GigaPanBotShutter.shutdown()")
         self._triggerOffShutter()
         AbstractHardwarePlugin.shutdown(self)
         AbstractStandardShutterPlugin.shutdown(self)
 
 
-class PanoguyShutterController(StandardShutterPluginController, HardwarePluginController):
+class GigaPanBotShutterController(StandardShutterPluginController, HardwarePluginController):
     def _defineGui(self):
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
@@ -449,6 +449,6 @@ class PanoguyShutterController(StandardShutterPluginController, HardwarePluginCo
 def register():
     """ Register plugins.
     """
-    PluginsManager().register(PanoguyAxis, PanoguyAxisController, capacity='yawAxis', name=NAME)
-    PluginsManager().register(PanoguyAxis, PanoguyAxisController, capacity='pitchAxis', name=NAME)
-    PluginsManager().register(PanoguyShutter, PanoguyShutterController, capacity='shutter', name=NAME)
+    PluginsManager().register(GigaPanBotAxis, GigaPanBotAxisController, capacity='yawAxis', name=NAME)
+    PluginsManager().register(GigaPanBotAxis, GigaPanBotAxisController, capacity='pitchAxis', name=NAME)
+    PluginsManager().register(GigaPanBotShutter, GigaPanBotShutterController, capacity='shutter', name=NAME)
