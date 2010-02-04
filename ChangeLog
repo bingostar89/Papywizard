@@ -7,11 +7,14 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + Renamed 'Panoguy' plugin to 'GigaPanBot'
     + 'Gphoto' plugin (still under test)
+    - read real position for xml data file (jeongyun patch)
+    x bug fixed in 'GigaPanBot' plugin
 
-2010-02-01 Version 2.1.15 (dev)
     + params for communication (timeout/retry)
     + 'NK Remote' plugin
+    + 'Panoguy' plugin
 
 2010-01-10 Version 2.1.14 (dev)
     - translations files updated
