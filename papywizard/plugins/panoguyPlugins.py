@@ -6,7 +6,7 @@ License
 =======
 
  - B{Papywizard} (U{http://www.papywizard.org}) is Copyright:
-  - (C) 2007-2010 Frédéric Mantegazza
+  - (C) 2007-2009 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use,
@@ -61,6 +61,7 @@ import threading
 
 from PyQt4 import QtCore, QtGui
 
+from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
@@ -76,7 +77,7 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 NAME = "Panoguy"
 
 ENCODER_ZERO = 0x800000
-AXIS_ACCURACY = 0.1  # °
+AXIS_ACCURACY = 0.1 # °
 AXIS_TABLE = {'yawAxis': 1,
               'pitchAxis': 2,
               'shutter': 1
@@ -181,7 +182,9 @@ class PanoguyLowLevelHardware(QtCore.QObject):  # Inherits abstract???
                 answer = ""
                 while True:
                     c = self.__driver.read(1)
-                    Logger().debug("PanoguyLowLevelHardware.__sendCmd(): c=%s" % c)
+                    #Logger().debug("PanoguyLowLevelHardware.__sendCmd(): c=%s" % c)
+                    if c == '=':
+                        continue
                     if c == '!':
                         c = self.__driver.read(1) # Get error code
                         raise IOError("Unknown command '%s' (err=%s)" % (cmd, c))
@@ -251,9 +254,7 @@ class PanoguyLowLevelHardware(QtCore.QObject):  # Inherits abstract???
         self.__driver.acquireBus()
         try:
             self.__sendCmd("L")
-            #self._sendCmd("G", "00")
             self.__sendCmd("S", strValue)
-            self.__sendCmd("J")
         finally:
             self.__driver.releaseBus()
 
@@ -284,8 +285,6 @@ class PanoguyLowLevelHardware(QtCore.QObject):  # Inherits abstract???
                 self.__sendCmd("G", "1")
             else:
                 raise ValueError("%s axis %d dir. must be in ('+', '-')" % (NAME, AXIS_TABLE[self.__capacity]))
-            #self.__sendCmd("I", self.__encodeAxisValue(speed))
-            self.__sendCmd("J")
         finally:
             self.__driver.releaseBus()
 
@@ -364,7 +363,7 @@ class PanoguyAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
 
     def waitEndOfDrive(self):
         while self.isMoving():
-            time.sleep(0.1)
+            time.sleep(config.SPY_REFRESH_DELAY / 1000.)
         self.waitStop()
 
     def startJog(self, dir_):
@@ -376,13 +375,14 @@ class PanoguyAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         self.waitStop()
 
     def waitStop(self):
-        pos = self.read()
-        time.sleep(0.05)
-        while True:
-            if abs(pos - self.read()) <= AXIS_ACCURACY:
-                break
-            pos = self.read()
-            time.sleep(0.05)
+        pass
+        #pos = self.read()
+        #time.sleep(config.SPY_REFRESH_DELAY / 1000.)
+        #while True:
+            #if abs(pos - self.read()) <= AXIS_ACCURACY:
+                #break
+            #pos = self.read()
+            #time.sleep(config.SPY_REFRESH_DELAY / 1000.)
 
     def isMoving(self):
         status = self.__lowLevelHardware.getStatus()
