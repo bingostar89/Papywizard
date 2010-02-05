@@ -175,6 +175,7 @@ class GigaPanBotLowLevelHardware(QtCore.QObject):  # Inherits abstract???
         @rtype: str
         """
         cmd = "%s%d%s" % (cmd, AXIS_TABLE[self.__capacity], param)
+        Logger().debug("GigaPanBotLowLevelHardware.__sendCmd(): axis %d cmd=%s" % (AXIS_TABLE[self.__capacity], repr(cmd)))
         for nbTry in xrange(ConfigManager().getInt('Plugins/HARDWARE_COM_RETRY')):
             try:
                 self.__driver.empty()
@@ -182,12 +183,13 @@ class GigaPanBotLowLevelHardware(QtCore.QObject):  # Inherits abstract???
                 answer = ""
                 while True:
                     c = self.__driver.read(1)
-                    #Logger().debug("GigaPanBotLowLevelHardware.__sendCmd(): c=%s" % c)
+                    #Logger().debug("GigaPanBotLowLevelHardware.__sendCmd(): c='%s'" % repr(c))
                     if c == '=':
                         continue
-                    if c == '!':
-                        c = self.__driver.read(1) # Get error code
-                        raise IOError("Unknown command '%s' (err=%s)" % (cmd, c))
+                    elif c == '!':
+                        c = self.__driver.read(1)  # Get error code
+                        # Do we need to read an additional '\r', here?
+                        raise IOError("Error in command %s (err=%s)" % (repr(cmd), repr(c)))
                     elif c == '\r':
                         break
                     else:
@@ -200,7 +202,7 @@ class GigaPanBotLowLevelHardware(QtCore.QObject):  # Inherits abstract???
                 break
         else:
             raise HardwareError("%s axis %d can't send command '%s'" % (NAME, AXIS_TABLE[self.__capacity], cmd))
-        #Logger().debug("GigaPanBotLowLevelHardware._sendCmd(): axis %d cmd=%s, ans=%s" % (AXIS_TABLE[self.__capacity], cmd, answer))
+        Logger().debug("GigaPanBotLowLevelHardware.__sendCmd(): axis %d ans=%s" % (AXIS_TABLE[self.__capacity], repr(answer)))
 
         return answer
 
@@ -242,6 +244,7 @@ class GigaPanBotLowLevelHardware(QtCore.QObject):  # Inherits abstract???
         finally:
             self.__driver.releaseBus()
         pos = self.__encoderToAngle(self.__decodeAxisValue(value))
+
         return pos
 
     def drive(self, pos):
