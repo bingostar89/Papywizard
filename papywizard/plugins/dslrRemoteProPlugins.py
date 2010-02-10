@@ -68,11 +68,12 @@ from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.shutterPluginController import ShutterPluginController
-from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, \
-                                         DoubleSpinBoxField, CheckBoxField, SliderField, DirSelectorField
+from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, \
+                                         CheckBoxField, SliderField, DirSelectorField, FileSelectorField
 
 NAME = "DSLR Remote Pro"
 
+DEFAULT_PROGRAM_PATH = "C:\\Program Files\\BreezeSys\\DSLR Remote Pro\\DSLRRemoteTest\\DSLRRemoteTest.exe"
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_USER_EXPOSURE_COMPENSATION_LIST = "-2, 0, +2"
 DEFAULT_DRY_RUN = False
@@ -80,7 +81,6 @@ DEFAULT_OUTPUT_DIR = config.HOME_DIR
 DEFAULT_FILENAME_PREFIX = ""
 DEFAULT_CAMERA_EXPOSURE_COMPENSATION_LIST = u"±2@1/2"
 
-PROGRAM_PATH = "C:\\Program Files\\BreezeSys\\DSLR Remote Pro\\DSLRRemoteTest\\DSLRRemoteTest.exe"
 MIRROR_LOCKUP_PARAMS = ""
 OUTPUT_DIR_PARAM = "-o"
 FILENAME_PREFIX_PARAM = "-p"
@@ -112,6 +112,7 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
 
     def _defineConfig(self):
         Logger().debug("DslrRemoteProShutter._defineConfig()")
+        self._addConfigKey('_programPath', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_userExposureCompensationList', 'USER_EXPOSURE_COMPENSATION_LIST',
                            default=DEFAULT_USER_EXPOSURE_COMPENSATION_LIST)
@@ -148,7 +149,7 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
 
     def lockupMirror(self):
         # @todo: implement mirror lockup command
-        cmd = "%s %s" %( PROGRAM_PATH, MIRROR_LOCKUP_PARAMS)
+        cmd = "%s %s" %(self._config['PROGRAM_PATH'], MIRROR_LOCKUP_PARAMS)
         Logger().debug("DslrRemoteProShutter.lockupMirror(): command '%s'..." % cmd)
         time.sleep(1)
         Logger().debug("DslrRemoteProShutter.lockupMirror(): command over")
@@ -163,7 +164,7 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
         index = self.__cameraExposureCompensationList.index(exposureCompensation)
 
         # Build command
-        args = [PROGRAM_PATH]
+        args = [self._config['PROGRAM_PATH']]
         args.append(EXPOSURE_COMPENSATION_PARAM)
         args.append(str(index))
         if self._config['DRY_RUN']:
@@ -198,6 +199,10 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
 class DslrRemoteProShutterController(ShutterPluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
+        self._addWidget('Main', QtGui.QApplication.translate("dslrRemoteProPlugins", "Program path"),
+                        FileSelectorField, (QtGui.QApplication.translate("dslrRemoteProPlugins", "Choose program path..."),
+                                            QtGui.QApplication.translate("dslrRemoteProPlugins", "EXE files (*.exe);;All files (*)")),
+                        'PROGRAM_PATH')
         self._addWidget('Main', QtGui.QApplication.translate("dslrRemoteProPlugins", "Mirror lockup"),
                         CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', QtGui.QApplication.translate("dslrRemoteProPlugins", "User exposure\ncompensation list"),

@@ -68,11 +68,12 @@ from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.shutterPluginController import ShutterPluginController
-from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, \
-                                         DoubleSpinBoxField, CheckBoxField, SliderField, DirSelectorField
+from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, \
+                                         CheckBoxField, SliderField, DirSelectorField, FileSelectorField
 
 NAME = "NK Remote"
 
+DEFAULT_PROGRAM_PATH = "C:\\Program Files\\BreezeSys\\NKRemote\\NKRemoteLibTest.exe"
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_USER_EXPOSURE_COMPENSATION_LIST = "-2, 0, +2"
 DEFAULT_DRY_RUN = False
@@ -80,7 +81,6 @@ DEFAULT_OUTPUT_DIR = config.HOME_DIR
 DEFAULT_FILENAME_PREFIX = ""
 DEFAULT_CAMERA_EXPOSURE_COMPENSATION_LIST = u"±5@1/2"
 
-PROGRAM_PATH = "C:\\Program Files\\BreezeSys\\DSLR Remote Pro\\DSLRRemoteTest\\DSLRRemoteTest.exe"
 MIRROR_LOCKUP_PARAMS = ""
 OUTPUT_DIR_PARAM = "-o"
 FILENAME_PREFIX_PARAM = "-p"
@@ -128,6 +128,7 @@ class NkRemoteShutter(AbstractShutterPlugin):
 
     def _defineConfig(self):
         Logger().debug("NkRemoteShutter._defineConfig()")
+        self._addConfigKey('_programPath', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_userExposureCompensationList', 'USER_EXPOSURE_COMPENSATION_LIST',
                            default=DEFAULT_USER_EXPOSURE_COMPENSATION_LIST)
@@ -160,7 +161,7 @@ class NkRemoteShutter(AbstractShutterPlugin):
 
     def lockupMirror(self):
         # @todo: implement mirror lockup command
-        cmd = "%s %s" %( PROGRAM_PATH, MIRROR_LOCKUP_PARAMS)
+        cmd = "%s %s" %(self._config['PROGRAM_PATH'], MIRROR_LOCKUP_PARAMS)
         Logger().debug("NkRemoteShutter.lockupMirror(): command '%s'..." % cmd)
         time.sleep(1)
         Logger().debug("NkRemoteShutter.lockupMirror(): command over")
@@ -175,7 +176,7 @@ class NkRemoteShutter(AbstractShutterPlugin):
         index = self.__cameraExposureCompensationList.index(exposureCompensation)
 
         # Build command
-        args = [PROGRAM_PATH]
+        args = [self._config['PROGRAM_PATH']]
         args.append(EXPOSURE_COMPENSATION_PARAM)
         args.append(str(index))
         if self._config['DRY_RUN']:
@@ -210,20 +211,24 @@ class NkRemoteShutter(AbstractShutterPlugin):
 class NkRemoteShutterController(ShutterPluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("dslrRemoteProPlugins", "Mirror lockup"),
+        self._addWidget('Main', QtGui.QApplication.translate("nkRemotePlugins", "Program path"),
+                        FileSelectorField, (QtGui.QApplication.translate("nkRemotePlugins", "Choose program path..."),
+                                            QtGui.QApplication.translate("nkRemotePlugins", "EXE files (*.exe);;All files (*)")),
+                        'PROGRAM_PATH')
+        self._addWidget('Main', QtGui.QApplication.translate("nkRemotePlugins", "Mirror lockup"),
                         CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', QtGui.QApplication.translate("dslrRemoteProPlugins", "User exposure\ncompensation list"),
+        self._addWidget('Main', QtGui.QApplication.translate("nkRemotePlugins", "User exposure\ncompensation list"),
                         LineEditField, (), 'USER_EXPOSURE_COMPENSATION_LIST')
-        self._addWidget('Main', QtGui.QApplication.translate("dslrRemoteProPlugins", "Dry run"),
+        self._addWidget('Main', QtGui.QApplication.translate("nkRemotePlugins", "Dry run"),
                         CheckBoxField, (), 'DRY_RUN')
-        self._addTab('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", 'Camera'))
-        self._addWidget('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", "Output directory"),
+        self._addTab('Camera', QtGui.QApplication.translate("nkRemotePlugins", 'Camera'))
+        self._addWidget('Camera', QtGui.QApplication.translate("nkRemotePlugins", "Output directory"),
                         DirSelectorField,
-                        (QtGui.QApplication.translate("dslrRemoteProPlugins", "Choose output directory..."),),
+                        (QtGui.QApplication.translate("nkRemotePlugins", "Choose output directory..."),),
                         'OUTPUT_DIR')
-        self._addWidget('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", "File name prefix"),
+        self._addWidget('Camera', QtGui.QApplication.translate("nkRemotePlugins", "File name prefix"),
                         LineEditField, (), 'FILENAME_PREFIX')
-        self._addWidget('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", "Camera exposure\ncompensation list"),
+        self._addWidget('Camera', QtGui.QApplication.translate("nkRemotePlugins", "Camera exposure\ncompensation list"),
                         ComboBoxField, ((u"±5@1/3", u"±5@1/2"),),
                         'CAMERA_EXPOSURE_COMPENSATION_LIST')
 
