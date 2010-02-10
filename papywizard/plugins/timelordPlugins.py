@@ -92,8 +92,8 @@ class TimelordShutter(AbstractShutterPlugin):
     def _defineConfig(self):
         Logger().trace("TimelordShutter._defineConfig()")
         #AbstractShutterPlugin._defineConfig(self)
-        self._addConfigKey('Program path', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
-        self._addConfigKey('LRD file path', 'LRD_FILE', default=DEFAULT_LRD_FILE)
+        self._addConfigKey('_programPath', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
+        self._addConfigKey('_lrdFilePath', 'LRD_FILE', default=DEFAULT_LRD_FILE)
 
     def lockupMirror(self):
         Logger().warning("TimelordShutter.lockupMirror(): Not possible with TimeLord")
