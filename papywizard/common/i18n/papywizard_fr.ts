@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="fr">
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>AbortMessageDialog</name>
     <message>
@@ -445,7 +446,7 @@
         <source>Plugins...</source>
         <translation>Plugins...</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="615"/>
         <source>Total fov (°)</source>
         <translation>Adc total (°)</translation>
@@ -455,12 +456,12 @@
         <source>Nb picts</source>
         <translation>Nb photos</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="487"/>
         <source>Corner 0 (°)</source>
         <translation>Coin 0 (°)</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="554"/>
         <source>Corner 1 (°)</source>
         <translation>Coin 1 (°)</translation>
@@ -910,52 +911,72 @@
         <source>Reverse direction before repeat</source>
         <translation>Inverse direction avant répétition</translation>
     </message>
+    <message utf8="true">
+        <location filename="papywizard/view/ui/configDialog.ui" line="123"/>
+        <source> °</source>
+        <translation> °</translation>
+    </message>
 </context>
 <context>
     <name>dslrRemoteProPlugins</name>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="201"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="206"/>
         <source>Mirror lockup</source>
         <translation>Verrouillage miroir</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="203"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="208"/>
         <source>User exposure
 compensation list</source>
         <translation>Liste compensation
 exposition utilisateur</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="205"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="210"/>
         <source>Dry run</source>
         <translation>Mode test</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="207"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="212"/>
         <source>Camera</source>
         <translation>Appareil</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="208"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="213"/>
         <source>Output directory</source>
         <translation>Répertoire de sortie</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="208"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="213"/>
         <source>Choose output directory...</source>
         <translation>Choisir répertoire de sortie...</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="212"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="217"/>
         <source>File name prefix</source>
         <translation>Préfixe fichiers</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="214"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="219"/>
         <source>Camera exposure
 compensation list</source>
         <translation>Liste compensation
 exposition appareil</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="202"/>
+        <source>Program path</source>
+        <translation>Programme</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="202"/>
+        <source>Choose program path...</source>
+        <translation>Choisir programme...</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="202"/>
+        <source>EXE files (*.exe);;All files (*)</source>
+        <translation>Fichiers EXE (*.exe);;Tous les fichiers (*)</translation>
     </message>
 </context>
 <context>
@@ -1107,7 +1128,7 @@ exposition appareil</translation>
         <translation>Incrément d&apos;exposition</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>helpAboutDialog</name>
     <message>
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="14"/>
@@ -1151,7 +1172,7 @@ A cet égard  l&apos;attention de l&apos;utilisateur est attirée sur les risque
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les termes.</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="155"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1230,12 +1251,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>main</name>
     <message>
-        <location filename="papywizard/scripts/main.py" line="222"/>
+        <location filename="papywizard/scripts/main.py" line="224"/>
         <source>Plugins selection</source>
         <translation>Sélection des plugins</translation>
     </message>
     <message>
-        <location filename="papywizard/scripts/main.py" line="222"/>
+        <location filename="papywizard/scripts/main.py" line="224"/>
         <source>Before you can use Papywizard, you must choose what plugins to use to control your hardware.
 
 After closing this dialog, you will be prompt to select these plugins. Once it is done, you can configure them in the global Configuration dialog</source>
@@ -1288,22 +1309,22 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
 <context>
     <name>pixOrbPlugins</name>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="446"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="447"/>
         <source>Speed index</source>
         <translation>Index vitesse</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="448"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="449"/>
         <source>Hard</source>
         <translation>Matos</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="449"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="450"/>
         <source>Axis with break</source>
         <translation>Axe avec frein</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="451"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="452"/>
         <source>Axis accuracy</source>
         <translation>Précision de l&apos;axe</translation>
     </message>
@@ -1668,6 +1689,11 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="49"/>
         <source>Total fov</source>
         <translation></translation>
+    </message>
+    <message utf8="true">
+        <location filename="papywizard/view/ui/totalFovDialog.ui" line="69"/>
+        <source> °</source>
+        <translation> °</translation>
     </message>
 </context>
 <context>

@@ -911,50 +911,70 @@
         <source>Reverse direction before repeat</source>
         <translation>Invertire la direzione prima di ripetere</translation>
     </message>
+    <message utf8="true">
+        <location filename="papywizard/view/ui/configDialog.ui" line="123"/>
+        <source> °</source>
+        <translation> °</translation>
+    </message>
 </context>
 <context>
     <name>dslrRemoteProPlugins</name>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="201"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="206"/>
         <source>Mirror lockup</source>
         <translation>Blocco dello specchio </translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="203"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="208"/>
         <source>User exposure
 compensation list</source>
         <translation>Lista compensazione esposizione persolale</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="205"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="210"/>
         <source>Dry run</source>
         <translation>Funzionamento a secco</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="207"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="212"/>
         <source>Camera</source>
         <translation>Camera</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="208"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="213"/>
         <source>Output directory</source>
         <translation>cartella di salvataggio</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="208"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="213"/>
         <source>Choose output directory...</source>
         <translation>Scegli Dir per salvataggio dati...</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="212"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="217"/>
         <source>File name prefix</source>
         <translation>Prefisso file</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="214"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="219"/>
         <source>Camera exposure
 compensation list</source>
         <translation>Lista compensazione esposizione camera</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="202"/>
+        <source>Program path</source>
+        <translation>Path programma</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="202"/>
+        <source>Choose program path...</source>
+        <translation>Scegli la cartella dei programmi...</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="202"/>
+        <source>EXE files (*.exe);;All files (*)</source>
+        <translation>EXE files (*.exe);;Tutti i files (*)</translation>
     </message>
 </context>
 <context>
@@ -1203,12 +1223,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>main</name>
     <message>
-        <location filename="papywizard/scripts/main.py" line="222"/>
+        <location filename="papywizard/scripts/main.py" line="224"/>
         <source>Plugins selection</source>
         <translation>Selezione plugins</translation>
     </message>
     <message>
-        <location filename="papywizard/scripts/main.py" line="222"/>
+        <location filename="papywizard/scripts/main.py" line="224"/>
         <source>Before you can use Papywizard, you must choose what plugins to use to control your hardware.
 
 After closing this dialog, you will be prompt to select these plugins. Once it is done, you can configure them in the global Configuration dialog</source>
@@ -1261,22 +1281,22 @@ Dopo la chiusura di questa finestra di dialogo, vi verrà richiesto di seleziona
 <context>
     <name>pixOrbPlugins</name>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="446"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="447"/>
         <source>Speed index</source>
         <translation>Indice di velocità</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="448"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="449"/>
         <source>Hard</source>
         <translation>Duro</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="449"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="450"/>
         <source>Axis with break</source>
         <translation>Asse con pausa</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="451"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="452"/>
         <source>Axis accuracy</source>
         <translation>Precisione asse</translation>
     </message>
@@ -1641,6 +1661,11 @@ Dopo la chiusura di questa finestra di dialogo, vi verrà richiesto di seleziona
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="49"/>
         <source>Total fov</source>
         <translation>Fov totale</translation>
+    </message>
+    <message utf8="true">
+        <location filename="papywizard/view/ui/totalFovDialog.ui" line="69"/>
+        <source> °</source>
+        <translation> °</translation>
     </message>
 </context>
 <context>
