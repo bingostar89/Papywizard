@@ -77,6 +77,7 @@ S<1d><6h>  Goto position                    None
 j<1d>      Read position                    <6h>
 f<1d>      Get status                       <1d> (1=moving, 0=not moving)
 G<1d><1d>  Start moving (0=+, 1=-)          None
+O<1d><1d>  Output (O=open, 1=close)         None
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2010 Frédéric Mantegazza
