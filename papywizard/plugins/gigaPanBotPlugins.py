@@ -59,9 +59,14 @@ simple digit (decimal), or a full value on 6 digits (hex).
 When the GigaPanBot receives a command, it answers immediatly. The answer
 starts with '=', and ends with '\r'.
 
+An unknown or invalid command should return '!' followed by 1 digit for
+the error code.
+
 <1d> 1 digit (dec)
 <6h> 6 digit (hex)
 <s>  string
+
+(In the followinf table, ':', '=' and '\r' chars are not shown).
 
 Command    Name                             Answer
 L<1d>      Stop                             None
