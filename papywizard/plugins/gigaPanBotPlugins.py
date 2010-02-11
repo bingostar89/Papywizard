@@ -48,6 +48,31 @@ Implements
 - GigaPanBotShutter
 - GigaPanBotShutterController
 
+GigaPanBot protocol
+===================
+
+The GigaPanBot protocol is based on the Merlin/Orion one. A command starts
+with ':', and ends with '\r'. A command is made of 1 letter, followed by
+the axis number (1 digit), and optional params. Params format is either 1
+simple digit (decimal), or a full value on 6 digits (hex).
+
+When the GigaPanBot receives a command, it answers immediatly. The answer
+starts with '=', and ends with '\r'.
+
+<1d> 1 digit (dec)
+<6h> 6 digit (hex)
+<s>  string
+
+Command    Name                             Answer
+L<1d>      Stop                             None
+F<1d>      Check axis                       None
+a<1d>      Get full circle encoder value    <6h>
+e<1d>      Get firmeware version            <s>
+S<1d><6h>  Goto position                    None
+j<1d>      Read position                    <6h>
+f<1d>      Get status                       <1d> (1=moving, 0=not moving)
+G<1d><1d>  Start moving (0=+, 1=-)          None
+
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2010 Frédéric Mantegazza
 @license: CeCILL
