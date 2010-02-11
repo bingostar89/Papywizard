@@ -66,7 +66,7 @@ the error code.
 <6h> 6 digit (hex)
 <s>  string
 
-(In the followinf table, ':', '=' and '\r' chars are not shown).
+(In the following table, ':', '=' and '\r' chars are not shown).
 
 Command    Name                             Answer
 L<1d>      Stop                             None
