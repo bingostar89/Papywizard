@@ -6,7 +6,7 @@ License
 =======
 
  - This file is Copyright:
-  - (C) 2006-2009 Igor Ghisi
+  - (C) 2006-2010 Igor Ghisi
 
 B{Python Software Foundation License Version 2}
 
@@ -71,7 +71,7 @@ From recipe ASPN N°496761
 @author: Igor Ghisi
 @author: Brodie Rao
 @author: Frédéric Mantegazza
-@copyright: (C) 2006-2009 Igor Ghisi
+@copyright: (C) 2006-2010 Igor Ghisi
 @license: PSF license v2
 """
 
