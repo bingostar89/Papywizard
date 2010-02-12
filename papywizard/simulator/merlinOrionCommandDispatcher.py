@@ -62,6 +62,7 @@ from papywizard.plugins.simulationPlugins import SimulationAxis
 
 ENCODER_ZERO = 0x800000
 ENCODER_FULL_CIRCLE = 0xE62D3
+SIDEREAL_RATE = 0x6f9  # "F90600"
 
 merlinOrionCommandDispatcher = None
 
@@ -189,14 +190,15 @@ class MerlinOrionCommandDispatcherObject(QtCore.QObject):
         elif cmd == 'F':
             Logger().trace("MerlinOrionBaseHandler.handleCmd(): ???")
 
-        # Get full circle count command
+        # Get encoder full circle command
         elif cmd == 'a':
             Logger().debug("MerlinOrionBaseHandler.handleCmd(): ???")
+            response = self._encodeAxisValue(ENCODER_FULL_CIRCLE)
 
-        # Get sidereal reate command
+        # Get sidereal rate command
         elif cmd == 'D':
             Logger().debug("MerlinOrionBaseHandler.handleCmd(): ???")
-            response = "F90600"
+            response = self._encodeAxisValue(SIDEREAL_RATE)
 
         # Get firmeware version command
         elif cmd == 'e':
