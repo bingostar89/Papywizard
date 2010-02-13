@@ -65,7 +65,7 @@ class AbstractHardware(QtCore.QObject):
         self._axis = None
         self._driver = None
         self._nbRetry = 3
-        
+
         self._init()
 
     def _init(self):
