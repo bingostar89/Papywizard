@@ -170,7 +170,6 @@ class AbstractPlugin(object): #(QtCore.QObject):
         like starting a thread.
         """
         pass
-        #Logger().trace("AbstractPlugin.activate()")
 
     def deactivate(self):
         """ deactivate the plugin.
@@ -179,7 +178,6 @@ class AbstractPlugin(object): #(QtCore.QObject):
         like stopping a thread.
         """
         pass
-        #Logger().trace("AbstractPlugin.deactivate()")
 
     def establishConnection(self):
         """ Establish the connexion.
@@ -211,7 +209,6 @@ class AbstractPlugin(object): #(QtCore.QObject):
         Can be used to make some low-level init operations.
         """
         pass
-        #Logger().trace("AbstractPlugin.init()")
 
     def shutdown(self):
         """ Shutdown the plugin.
@@ -220,7 +217,6 @@ class AbstractPlugin(object): #(QtCore.QObject):
         Can be used to make some low-level shutdown operations.
         """
         pass
-        #Logger().trace("AbstractPlugin.shutdown()")
 
     def configure(self):
         """ Configure the plugin.
@@ -230,4 +226,3 @@ class AbstractPlugin(object): #(QtCore.QObject):
         It can be used to send new config params to low-level methods.
         """
         pass
-        #Logger().trace("AbstractPlugin.configure()")

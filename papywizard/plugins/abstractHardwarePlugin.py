@@ -52,6 +52,7 @@ Implements
 __revision__ = "$Id$"
 
 from papywizard.common.loggingServices import Logger
+from papywizard.common.configManager import ConfigManager
 from papywizard.plugins.abstractPlugin import AbstractPlugin
 from papywizard.driver.driverFactory import DriverFactory
 
@@ -59,7 +60,7 @@ DEFAULT_DRIVER_TYPE = 'bluetooth'
 
 
 class AbstractHardwarePlugin(AbstractPlugin):
-    """
+    """ Abtract class for plugins using low-level hardware.
     """
     def __getDriver(self):
         """ Return the associated driver.
@@ -67,6 +68,9 @@ class AbstractHardwarePlugin(AbstractPlugin):
         return DriverFactory().get(self._config['DRIVER_TYPE'])
 
     _driver = property(__getDriver)
+
+    def _init(self):
+        self._hardware = None
 
     def _defineConfig(self):
         Logger().trace("AbstractHardwarePlugin._defineConfig()")
@@ -91,3 +95,10 @@ class AbstractHardwarePlugin(AbstractPlugin):
             self._driver.shutdownConnection(self)
         finally:
             AbstractPlugin.stopConnection(self)
+
+    def init(self):
+        Logger().trace("AbstractHardwarePlugin.init()")
+        AbstractPlugin.init(self)
+        self._hardware.setDriver(self._driver)
+        self._hardware.setNbRetry(ConfigManager().getInt('Plugins/HARDWARE_COM_RETRY'))
+        self._hardware.init()
