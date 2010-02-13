@@ -58,7 +58,7 @@ from PyQt4 import QtCore, QtGui
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
-from papywizard.hardware.bluetoothTransport import BluetoothTransport
+from papywizard.driver.bluetoothTransport import BluetoothTransport
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.controller.bluetoothChooserController import BluetoothChooserController
