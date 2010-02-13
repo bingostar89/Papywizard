@@ -49,7 +49,7 @@ GigaPanBot protocol
 
 The GigaPanBot protocol is based on the Merlin/Orion one. A command starts
 with ':', and ends with '\r'. A command is made of 1 letter, followed by
-the axis number (1 digit), and optional params. Params format is either 1
+the axis number (1 digit), and an optional param. Param format is either 1
 simple digit (decimal), or a full value on 6 digits (hex).
 
 When the GigaPanBot receives a command, it answers immediatly. The answer
@@ -58,22 +58,23 @@ starts with '=', and ends with '\r'.
 An unknown or invalid command should return '!' followed by 1 digit for
 the error code.
 
-<1d> 1 digit (dec)
-<6h> 6 digit (hex)
+<nd> n digit (dec)
+<nh> n digit (hex)
 <s>  string
 
 (In the following table, ':', '=' and '\r' chars are not shown).
 
-Command                 Name                            Answer
-L<axis(1d)>             Stop                            None
-F<axis(1d)>             Check axis                      None
-a<axis(1d)>             Get full circle encoder value   <value(6h)>
-e<axis(1d)>             Get firmeware version           <version(s)> (6 chars maxi)
-S<axis(1d)><pos(6h)>    Goto position                   None
-j<axis(1d)>             Read position                   <pos(6h)>
-f<axis(1d)>             Get status                      <status(1d)> (status 1=moving, 0=not moving)
-G<axis(1d)><dir(1d)>    Start moving (dir 0=+, 1=-)     None
-O<axis(1d)><state(1d)>  Output (state O=open, 1=close)  None
+Command                    Name                               Answer
+L<axis(1d)>                Stop                               None
+F<axis(1d)>                Check axis                         None
+a<axis(1d)>                Get full circle encoder value      <value(6h)>
+e<axis(1d)>                Get firmeware version              <version(s)> (6 chars maxi)
+S<axis(1d)><pos(6h)>       Goto position                      None
+j<axis(1d)>                Read position                      <pos(6h)>
+f<axis(1d)>                Get status                         <status(1d)> (status 1=moving, 0=not moving)
+G<axis(1d)><dir(1d)>       Start moving (dir 0=+, 1=-)        None
+O<axis(1d)><state(1d)>     Output (state O=open, 1=close)     None
+I<axis(1d)><speed(3h)>     Set manual speed                   None
 
 (also see U{http://www.autopano.net/forum/p58659-yesterday-23-48-24#p58659}).
 
@@ -165,7 +166,7 @@ class GigaPanBotHardware(AbstractHardware):
         @rtype: str
         """
         cmd = "%s%d%s" % (cmd, self._axis, param)
-        Logger().debug("GigaPanBotHardware.__sendCmd(): axis %d cmd=%s" % (self._axis, repr(cmd)))
+        #Logger().debug("GigaPanBotHardware.__sendCmd(): axis %d cmd=%s" % (self._axis, repr(cmd)))
         for nbTry in xrange(self._nbRetry):
             try:
                 self._driver.empty()
@@ -192,7 +193,7 @@ class GigaPanBotHardware(AbstractHardware):
                 break
         else:
             raise HardwareError("%s axis %d can't send command %s" % (NAME, self._axis, repr(cmd)))
-        Logger().debug("GigaPanBotHardware.__sendCmd(): axis %d ans=%s" % (self._axis, repr(answer)))
+        #Logger().debug("GigaPanBotHardware.__sendCmd(): axis %d ans=%s" % (self._axis, repr(answer)))
 
         return answer
 
@@ -272,12 +273,13 @@ class GigaPanBotHardware(AbstractHardware):
         self._driver.acquireBus()
         try:
             self.__sendCmd("L")
+            self._sendCmd("I", self.__encodeAxisValue(speed))
             if dir_ == '+':
                 self.__sendCmd("G", "0")
             elif dir_ == '-':
                 self.__sendCmd("G", "1")
             else:
-                raise ValueError("Axis %d dir. must be in ('+', '-')" % elf._axis)
+                raise ValueError("Axis %d dir. must be in ('+', '-')" % self._axis)
         finally:
             self._driver.releaseBus()
 
