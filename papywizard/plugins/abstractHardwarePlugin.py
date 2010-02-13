@@ -53,7 +53,7 @@ __revision__ = "$Id$"
 
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.abstractPlugin import AbstractPlugin
-from papywizard.hardware.driverFactory import DriverFactory
+from papywizard.driver.driverFactory import DriverFactory
 
 DEFAULT_DRIVER_TYPE = 'bluetooth'
 
