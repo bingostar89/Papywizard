@@ -82,7 +82,7 @@ O<axis(1d)><state(1d)>  Output (state O=open, 1=close)  None
 @license: CeCILL
 """
 
-__revision__ = "$Id: gigaPanBotPlugins.py 2267 2010-02-11 15:16:27Z fma $"
+__revision__ = "$Id$"
 
 from PyQt4 import QtCore
 
