@@ -61,7 +61,6 @@ from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 from papywizard.plugins.pluginsManager  import PluginsManager
-from papywizard.hardware.driverFactory import DriverFactory
 
 
 class Head(QtCore.QObject):
