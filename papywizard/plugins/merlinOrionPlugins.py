@@ -93,6 +93,8 @@ MANUAL_SPEED_TABLE = {'slow': 170,  # "AA0000"  / 5
 
 
 class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread):
+    """
+    """
     def __init__(self, *args, **kwargs):
         AbstractHardwarePlugin.__init__(self, *args, **kwargs)
         AbstractAxisPlugin.__init__(self, *args, **kwargs)
