@@ -56,8 +56,6 @@ Implements
 __revision__ = "$Id$"
 
 import time
-import sys
-import threading
 
 from PyQt4 import QtCore, QtGui
 
@@ -73,8 +71,7 @@ from papywizard.plugins.abstractHardwarePlugin import AbstractHardwarePlugin
 from papywizard.plugins.axisPluginController import AxisPluginController
 from papywizard.plugins.hardwarePluginController import HardwarePluginController
 from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
-from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, \
-                                         DoubleSpinBoxField, CheckBoxField, SliderField
+from papywizard.view.pluginFields import SpinBoxField, DoubleSpinBoxField, CheckBoxField
 
 NAME = "PixOrb"
 
