@@ -49,7 +49,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: pixOrbPlugins.py 2253 2010-02-04 12:21:24Z fma $"
+__revision__ = "$Id$"
 
 import time
 
