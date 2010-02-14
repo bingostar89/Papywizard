@@ -300,8 +300,6 @@ class PololuServoShutterController(StandardShutterPluginController, HardwarePlug
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
         self._addTab('Servo', QtGui.QApplication.translate("pololuServoPlugins", 'Servo'))
-        self._addWidget('Servo', QtGui.QApplication.translate("pololuServoPlugins", "Channel"),
-                        SpinBoxField, (0, 7), 'CHANNEL')
         self._addWidget('Servo', QtGui.QApplication.translate("pololuServoPlugins", "Value off"),
                         SpinBoxField, (0, 127), 'VALUE_OFF')
         self._addWidget('Servo', QtGui.QApplication.translate("pololuServoPlugins", "Value on"),
