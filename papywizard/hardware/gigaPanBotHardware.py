@@ -64,17 +64,17 @@ the error code.
 
 (In the following table, ':', '=' and '\r' chars are not shown).
 
-Command                    Name                               Answer
-L<axis(1d)>                Stop                               None
-F<axis(1d)>                Check axis                         None
-a<axis(1d)>                Get full circle encoder value      <value(6h)>
-e<axis(1d)>                Get firmeware version              <version(s)> (6 chars maxi)
-S<axis(1d)><pos(6h)>       Goto position                      None
-j<axis(1d)>                Read position                      <pos(6h)>
-f<axis(1d)>                Get status                         <status(1d)> (status 1=moving, 0=not moving)
-G<axis(1d)><dir(1d)>       Start moving (dir 0=+, 1=-)        None
-O<axis(1d)><state(1d)>     Output (state O=open, 1=close)     None
-I<axis(1d)><speed(3h)>     Set manual speed                   None
+Command                    Name                                            Answer
+L<axis(1d)>                Stop                                            None
+F<axis(1d)>                Check axis                                      None
+a<axis(1d)>                Get full circle encoder value                   <value(6h)>
+e<axis(1d)>                Get firmeware version                           <version(s)> (6 chars maxi)
+S<axis(1d)><pos(6h)>       Goto position                                   None
+j<axis(1d)>                Read position                                   <pos(6h)>
+f<axis(1d)>                Get status                                      <status(1d)> (status 1=moving, 0=not moving)
+G<axis(1d)><dir(1d)>       Start moving (dir 0=+, 1=-)                     None
+O<axis(1d)><state(1d)>     Output (state O=open, 1=close)                  None
+I<axis(1d)><speed(1d)>     Set manual speed (4=slow, 2=normal, 0=fast)     None
 
 (also see U{http://www.autopano.net/forum/p58659-yesterday-23-48-24#p58659}).
 
@@ -208,9 +208,6 @@ class GigaPanBotHardware(AbstractHardware):
             # Stop motor
             self.__sendCmd("L")
 
-            # Check motor?
-            self.__sendCmd("F")
-
             # Get firmeware version
             value = self.__sendCmd("e")
             Logger().debug("GigaPanBotHardware.init(): firmeware version=%s" % value)
@@ -273,7 +270,7 @@ class GigaPanBotHardware(AbstractHardware):
         self._driver.acquireBus()
         try:
             self.__sendCmd("L")
-            self._sendCmd("I", self.__encodeAxisValue(speed))
+            self.__sendCmd("I", "%d" % speed)
             if dir_ == '+':
                 self.__sendCmd("G", "0")
             elif dir_ == '-':

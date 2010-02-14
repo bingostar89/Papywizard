@@ -75,17 +75,13 @@ AXIS_TABLE = {'yawAxis': 1,
               'pitchAxis': 2,
               'shutter': 1
               }
-MANUAL_SPEED_TABLE = {'slow': 0x0aa,
-                      'normal': 0x022,
-                      'fast': 0x011
+MANUAL_SPEED_TABLE = {'slow': 4,
+                      'normal': 2,
+                      'fast': 0
                       }
 
 
 class GigaPanBotAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
-    def __init__(self, *args, **kwargs):
-        AbstractHardwarePlugin.__init__(self, *args, **kwargs)
-        AbstractAxisPlugin.__init__(self, *args, **kwargs)
-
     def _init(self):
         Logger().trace("GigaPanBotAxis._init()")
         AbstractHardwarePlugin._init(self)
@@ -93,21 +89,18 @@ class GigaPanBotAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         self._hardware = GigaPanBotHardware()
 
     def _defineConfig(self):
-        AbstractHardwarePlugin._defineConfig(self)
         AbstractAxisPlugin._defineConfig(self)
+        AbstractHardwarePlugin._defineConfig(self)
 
     def init(self):
         Logger().trace("GigaPanBotAxis.init()")
-        #AbstractAxisPlugin.init(self)
         self._hardware.setAxis(AXIS_TABLE[self.capacity]),
-        #self._hardware.setDriver(self._driver)
-        #self._hardware.setNbRetry(ConfigManager().getInt('Plugins/HARDWARE_COM_RETRY'))
-        #self._hardware.init()
         AbstractHardwarePlugin.init(self)
 
     def shutdown(self):
         Logger().trace("GigaPanBotAxis.shutdown()")
         self.stop()
+        AbstractHardwarePlugin.shutdown(self)
         AbstractAxisPlugin.shutdown(self)
 
     def read(self):
@@ -146,13 +139,6 @@ class GigaPanBotAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
 
     def waitStop(self):
         pass
-        #pos = self.read()
-        #time.sleep(config.SPY_REFRESH_DELAY / 1000.)
-        #while True:
-            #if abs(pos - self.read()) <= AXIS_ACCURACY:
-                #break
-            #pos = self.read()
-            #time.sleep(config.SPY_REFRESH_DELAY / 1000.)
 
     def isMoving(self):
         status = self._hardware.getStatus()
@@ -169,17 +155,11 @@ class GigaPanBotAxisController(AxisPluginController, HardwarePluginController):
 
 
 class GigaPanBotShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
-    def __init__(self, *args, **kwargs):
-        """
-        """
-        AbstractHardwarePlugin.__init__(self, *args, **kwargs)
-        AbstractStandardShutterPlugin.__init__(self, *args, **kwargs)
-
     def _init(self):
         Logger().trace("GigaPanBotShutter._init()")
         AbstractHardwarePlugin._init(self)
         AbstractStandardShutterPlugin._init(self)
-        self._hardware = GigaPanBotHardware()  # Move to parent class?
+        self._hardware = GigaPanBotHardware()
 
     def _defineConfig(self):
         AbstractHardwarePlugin._defineConfig(self)
@@ -197,11 +177,7 @@ class GigaPanBotShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
 
     def init(self):
         Logger().trace("GigaPanBotShutter.init()")
-        #AbstractAxisPlugin.init(self)
         self._hardware.setAxis(AXIS_TABLE[self.capacity]),
-        #self._hardware.setDriver(self._driver)
-        #self._hardware.setNbRetry(ConfigManager().getInt('Plugins/HARDWARE_COM_RETRY'))
-        #self._hardware.init()
         AbstractHardwarePlugin.init(self)
 
     def shutdown(self):

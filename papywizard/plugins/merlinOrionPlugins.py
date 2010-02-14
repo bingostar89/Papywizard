@@ -96,7 +96,7 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
     """
     """
     def __init__(self, *args, **kwargs):
-        AbstractHardwarePlugin.__init__(self, *args, **kwargs)
+        AbstractHardwarePlugin.__init__(self, *args, **kwargs)  # Only 1?
         AbstractAxisPlugin.__init__(self, *args, **kwargs)
         QtCore.QThread.__init__(self)
 
@@ -132,16 +132,13 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
 
     def init(self):
         Logger().trace("MerlinOrionAxis.init()")
-        #AbstractAxisPlugin.init(self)
         self._hardware.setAxis(AXIS_TABLE[self.capacity]),
-        #self._hardware.setDriver(self._driver)
-        #self._hardware.setNbRetry(ConfigManager().getInt('Plugins/HARDWARE_COM_RETRY'))
-        #self._hardware.init()
         AbstractHardwarePlugin.init(self)
 
     def shutdown(self):
         Logger().trace("MerlinOrionAxis.shutdown()")
         self.stop()
+        AbstractHardwarePlugin.shutdown(self)
         AbstractAxisPlugin.shutdown(self)
 
     def run(self):
@@ -296,7 +293,7 @@ class MerlinOrionShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
         Logger().trace("MerlinOrionShutter._init()")
         AbstractHardwarePlugin._init(self)
         AbstractStandardShutterPlugin._init(self)
-        self._hardware = MerlinOrionHardware()  # Move to AbstractHardwarePlugin?
+        self._hardware = MerlinOrionHardware()
 
     def _defineConfig(self):
         AbstractHardwarePlugin._defineConfig(self)
@@ -314,16 +311,13 @@ class MerlinOrionShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
 
     def init(self):  # Move to AbstractHardwarePlugin?
         Logger().trace("MerlinOrionShutter.init()")
-        #AbstractAxisPlugin.init(self)
         self._hardware.setAxis(AXIS_TABLE[self.capacity]),
-        #self._hardware.setDriver(self._driver)
-        #self._hardware.setNbRetry(ConfigManager().getInt('Plugins/HARDWARE_COM_RETRY'))
-        #self._hardware.init()
         AbstractHardwarePlugin.init(self)
 
     def shutdown(self):
         Logger().trace("MerlinOrionShutter.shutdown()")
         self._triggerOffShutter()
+        AbstractHardwarePlugin.shutdown(self)
         AbstractStandardShutterPlugin.shutdown(self)
 
 

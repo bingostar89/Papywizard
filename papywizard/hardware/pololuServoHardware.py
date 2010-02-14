@@ -55,16 +55,12 @@ import struct
 
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
+from papywizard.hardware.abstractHardware import AbstractHardware
 
 
 class PololuServoHardware(AbstractHardware):
     """ Pololu servo low-level hardware.
     """
-    def _init(self):
-        Logger().trace("PololuServoHardware._init()")
-        AbstractHardware._init(self)
-        self._channel = None
-
     def __sendCmd(self, command, data1, data2=None):
         """ Send a command to Pololu controller.
 
@@ -83,18 +79,18 @@ class PololuServoHardware(AbstractHardware):
            data2Str = hex(data2)
         else:
            data2Str = 'None'
-        Logger().debug("PololuServoHardware.__sendCmd: command=%d, servo=%d, data1=%s, data2=%s" % (command, self._channel, hex(data1), data2Str))
+        Logger().debug("PololuServoHardware.__sendCmd: command=%d, servo=%d, data1=%s, data2=%s" % (command, self._axis, hex(data1), data2Str))
         if command in (0, 1, 2):
             if data2 is not None:
                 raise ValueError("Command %d takes only 1 data parameter" % command)
             else:
-                self._driver.write(struct.pack("BBBBB", 0x80, 0x01, command, self._channel, data1))
+                self._driver.write(struct.pack("BBBBB", 0x80, 0x01, command, self._axis, data1))
                 size = 5
         elif command in (3, 4, 5):
             if data2 is None:
                 raise ValueError("Command %d takes 2 data parameters" % command)
             else:
-                self._driver.write(struct.pack("BBBBBB", 0x80, 0x01, command, self._channel, data1, data2))
+                self._driver.write(struct.pack("BBBBBB", 0x80, 0x01, command, self._axis, data1, data2))
                 size = 6
         else:
             raise ValueError("Command must be in [0-5]")
@@ -103,26 +99,26 @@ class PololuServoHardware(AbstractHardware):
         data = self._driver.read(size)
         Logger().debug("PololuServoHardware.__sendCmd: pololu returned: %s" % repr(data))
 
-    def _initPololuServo(self):
+    def init(self):
         """ Turn on servo power.
         """
         self._driver.acquireBus()
         try:
-            self._reset()
-            self._setParameters(on=True)
+            self.reset()
+            self.setParameters(on=True)
         finally:
             self._driver.releaseBus()
 
-    def _shutdownPololuServo(self):
+    def shutdown(self):
         """ Turn off servo power.
         """
         self._driver.acquireBus()
         try:
-            self._setParameters(on=False)
+            self.setParameters(on=False)
         finally:
             self._driver.releaseBus()
 
-    def _configurePololuServo(self, speed, direction):
+    def configure(self, speed, direction):
         """ Turn on servo power.
 
         @param speed: rotation speed
@@ -133,12 +129,12 @@ class PololuServoHardware(AbstractHardware):
         """
         self._driver.acquireBus()
         try:
-            self._setSpeed(speed)
-            self._setParameters(on=True, direction=direction) # Add range_?
+            self.setSpeed(speed)
+            self.setParameters(on=True, direction=direction) # Add range_?
         finally:
             self._driver.releaseBus()
 
-    def _reset(self):
+    def reset(self):
         """ Reset the controller.
 
         How to do this with all drivers?
@@ -149,9 +145,9 @@ class PololuServoHardware(AbstractHardware):
             self._driver.setRTS(0)
             self._driver.setDTR(0)
         except AttributeError:
-            Logger().exception("PololuServoHardware._reset()", debug=True)
+            Logger().exception("PololuServoHardware.reset()", debug=True)
 
-    def _setParameters(self, on=True, direction='forward', range_=15):
+    def setParameters(self, on=True, direction='forward', range_=15):
         """ Set servo parameters.
 
         @param on: if True, turn on servo power
@@ -174,7 +170,7 @@ class PololuServoHardware(AbstractHardware):
         finally:
             self._driver.releaseBus()
 
-    def _setSpeed(self, speed):
+    def setSpeed(self, speed):
         """ Set servo speed.
 
         @param speed: servo speed, in [0-127]
@@ -188,7 +184,7 @@ class PololuServoHardware(AbstractHardware):
         finally:
             self._driver.releaseBus()
 
-    def _setPosition7bits(self, position):
+    def setPosition7bits(self, position):
         """ Set servo position (7 bits).
 
         @param position: servo position, in [0-127]
@@ -202,7 +198,7 @@ class PololuServoHardware(AbstractHardware):
         finally:
             self._driver.releaseBus()
 
-    def _setPosition8bits(self, position):
+    def setPosition8bits(self, position):
         """ Set servo position (8 bits).
 
         @param position: servo position, in [0-255]
@@ -218,7 +214,7 @@ class PololuServoHardware(AbstractHardware):
         finally:
             self._driver.releaseBus()
 
-    def _setPositionAbsolute(self, position):
+    def setPositionAbsolute(self, position):
         """ Set servo position.
 
         @param position: servo position, in [500-5500]
@@ -235,7 +231,7 @@ class PololuServoHardware(AbstractHardware):
         finally:
             self._driver.releaseBus()
 
-    def _setNeutral(self, position):
+    def setNeutral(self, position):
         """ Set servo neutral position.
 
         @param position: servo neutral position, in [500-5500]
