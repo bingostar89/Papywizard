@@ -242,7 +242,7 @@ class PixOrbAxisController(AxisPluginController, HardwarePluginController):
         self._addWidget('Hard', QtGui.QApplication.translate("pixOrbPlugins", "Axis with break"),
                         CheckBoxField, (), 'AXIS_WITH_BREAK')
         self._addWidget('Hard', QtGui.QApplication.translate("pixOrbPlugins", "Axis accuracy"),
-                        DoubleSpinBoxField, (0.01, 0.50, 2, 0.01, "", " °"), 'AXIS_ACCURACY')
+                        DoubleSpinBoxField, (0.01, 0.50, 2, 0.01, "", u" °"), 'AXIS_ACCURACY')
 
 
 class PixOrbShutter(AbstractPixOrbHardware, AbstractStandardShutterPlugin):

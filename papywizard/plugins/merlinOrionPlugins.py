@@ -279,7 +279,7 @@ class MerlinOrionAxisController(AxisPluginController, HardwarePluginController):
         self._addWidget('Hard', QtGui.QApplication.translate("merlinOrionPlugins", "Alternate drive"),
                         CheckBoxField, (), 'ALTERNATE_DRIVE')
         self._addWidget('Hard', QtGui.QApplication.translate("merlinOrionPlugins", "Inertia angle"),
-                        DoubleSpinBoxField, (0.1, 9.9, 1, .1, "", " deg"), 'INERTIA_ANGLE')
+                        DoubleSpinBoxField, (0.1, 9.9, 1, .1, "", u" °"), 'INERTIA_ANGLE')
 
 
 class MerlinOrionShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):

@@ -80,7 +80,6 @@ DEFAULT_ANGLE_1MS = 120. # angle for 1ms, which is 2 servo units (deg)
 DEFAULT_NEUTRAL_POSITION = 3000 # controller value for neutral position
 DEFAULT_VALUE_OFF = 0
 DEFAULT_VALUE_ON = 127
-
 AXIS_TABLE = {'yawAxis': 1,
               'pitchAxis': 2,
               'shutter': 0
@@ -235,13 +234,13 @@ class PololuServoAxisController(AxisPluginController, HardwarePluginController):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
         self._addWidget('Main', QtGui.QApplication.translate("pololuServoPlugins", "Speed"),
-                        SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
+                        SpinBoxField, (1, 99, "", u" °/s"), 'SPEED')
         self._addTab('Servo', QtGui.QApplication.translate("pololuServoPlugins", 'Servo'))
         directions = [DIRECTION_TABLE['forward'], DIRECTION_TABLE['reverse']]
         self._addWidget('Servo', QtGui.QApplication.translate("pololuServoPlugins", "Direction"),
                         ComboBoxField, (directions,), 'DIRECTION')
         self._addWidget('Servo', QtGui.QApplication.translate("pololuServoPlugins", "Angle for 1ms"),
-                        DoubleSpinBoxField, (1., 999., 1, 0.1, "", " deg"), 'ANGLE_1MS')
+                        DoubleSpinBoxField, (1., 999., 1, 0.1, "", u" °"), 'ANGLE_1MS')
         self._addWidget('Servo', QtGui.QApplication.translate("pololuServoPlugins", "Neutral position"),
                         SpinBoxField, (500, 5500), 'NEUTRAL_POSITION')
 

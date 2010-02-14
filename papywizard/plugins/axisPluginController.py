@@ -65,6 +65,6 @@ class AxisPluginController(AbstractPluginController):
         """ Add high/low limits
         """
         self._addWidget('Main',QtGui.QApplication.translate("axisPluginController", "Low limit"),
-                        DoubleSpinBoxField, (-9999.9, 9999.9), 'LOW_LIMIT')
+                        DoubleSpinBoxField, (-9999.9, 9999.9, 1, .1, "", u" °"), 'LOW_LIMIT')
         self._addWidget('Main', QtGui.QApplication.translate("axisPluginController", "High limit"),
-                        DoubleSpinBoxField, (-9999.9, 9999.9), 'HIGH_LIMIT')
+                        DoubleSpinBoxField, (-9999.9, 9999.9, 1, .1, "", u" °"), 'HIGH_LIMIT')
