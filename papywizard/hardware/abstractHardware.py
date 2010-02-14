@@ -87,3 +87,8 @@ class AbstractHardware(QtCore.QObject):
         """ Set the number of retry during com.
         """
         self._nbRetry = nbRetry
+
+    def init(self):
+        """ Init the low-level hardware.
+        """
+        pass
