@@ -42,14 +42,21 @@ SOURCES += papywizard/controller/abstractController.py \
            papywizard/controller/spy.py \
            papywizard/controller/totalFovController.py
 
+# driver
+SOURCES += papywizard/driver/abstractDriver.py \
+           papywizard/driver/bluetoothDriver.py \
+           papywizard/driver/bluetoothTransport.py \
+           papywizard/driver/driverFactory.py \
+           papywizard/driver/ethernetDriver.py \
+           papywizard/driver/serialDriver.py \
+           papywizard/driver/usbDriver.py
+
 # hardware
-SOURCES += papywizard/hardware/abstractDriver.py \
-           papywizard/hardware/bluetoothDriver.py \
-           papywizard/hardware/bluetoothTransport.py \
-           papywizard/hardware/driverFactory.py \
-           papywizard/hardware/ethernetDriver.py \
-           papywizard/hardware/serialDriver.py \
-           papywizard/hardware/usbDriver.py
+SOURCES += papywizard/hardware/abstractHardware.py \
+           papywizard/hardware/gigaPanBotHardware.py \
+           papywizard/hardware/merlinOrionHardware.py \
+           papywizard/hardware/pixOrbHardware.py \
+           papywizard/hardware/pololuServoHardware.py \
 
 # model
 SOURCES += papywizard/model/camera.py \

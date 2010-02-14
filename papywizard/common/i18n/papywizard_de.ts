@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="de">
+<!DOCTYPE TS><TS version="1.1" language="de">
 <context>
     <name>AbortMessageDialog</name>
     <message>
@@ -446,7 +445,7 @@
         <source>Plugins...</source>
         <translation>Plugins...</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/mainWindow.ui" line="615"/>
         <source>Total fov (°)</source>
         <translation>Gesamt fov (°)</translation>
@@ -456,12 +455,12 @@
         <source>Nb picts</source>
         <translation>Anz. Aufnahmen</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/mainWindow.ui" line="487"/>
         <source>Corner 0 (°)</source>
         <translation>Ecke 0 (°)</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/mainWindow.ui" line="554"/>
         <source>Corner 1 (°)</source>
         <translation>Ecke 1 (°)</translation>
@@ -629,7 +628,7 @@
         <translation>Bluetooth Auswahl</translation>
     </message>
 </context>
-<context>
+<context encoding="UTF-8">
     <name>configDialog</name>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="17"/>
@@ -911,7 +910,7 @@
         <source>Reverse direction before repeat</source>
         <translation>Richtungsumkehr bei Wiederholung</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/configDialog.ui" line="123"/>
         <source> °</source>
         <translation> °</translation>
@@ -1128,7 +1127,7 @@ Kompensationsliste</translation>
         <translation>BKT Schritt</translation>
     </message>
 </context>
-<context>
+<context encoding="UTF-8">
     <name>helpAboutDialog</name>
     <message>
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="14"/>
@@ -1172,7 +1171,7 @@ As a counterpart to the access to the source code and  rights to copy, modify an
 
 ￼The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="155"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1268,17 +1267,17 @@ Nach Schliessen diese Dialogs erscheint ein Prompt zur Auswahl. Dann können sie
 <context>
     <name>merlinOrionPlugins</name>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="484"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="278"/>
         <source>Hard</source>
         <translation>Hard</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="485"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="279"/>
         <source>Alternate drive</source>
         <translation>Alternate drive</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="487"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="281"/>
         <source>Inertia angle</source>
         <translation>Inertia angle</translation>
     </message>
@@ -1309,22 +1308,22 @@ Nach Schliessen diese Dialogs erscheint ein Prompt zur Auswahl. Dann können sie
 <context>
     <name>pixOrbPlugins</name>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="447"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="239"/>
         <source>Speed index</source>
         <translation>Speed index</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="449"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="241"/>
         <source>Hard</source>
         <translation>Hard</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="450"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="242"/>
         <source>Axis with break</source>
         <translation>Axis with break</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="452"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="244"/>
         <source>Axis accuracy</source>
         <translation>Axis accuracy</translation>
     </message>
@@ -1456,52 +1455,47 @@ Nach Schliessen diese Dialogs erscheint ein Prompt zur Auswahl. Dann können sie
 <context>
     <name>pololuServoPlugins</name>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="95"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="92"/>
         <source>forward</source>
         <translation>vorwärts</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="96"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="93"/>
         <source>reverse</source>
         <translation>rückwärts</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="442"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="236"/>
         <source>Speed</source>
         <translation>Geschwindigkeit</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="509"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="301"/>
         <source>Servo</source>
         <translation>Servo</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="510"/>
-        <source>Channel</source>
-        <translation>Kanal</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="448"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="240"/>
         <source>Direction</source>
         <translation>Richtung</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="450"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="242"/>
         <source>Angle for 1ms</source>
         <translation>Winkel für 1ms</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="452"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="244"/>
         <source>Neutral position</source>
         <translation>Neutrale Position</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="512"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="302"/>
         <source>Value off</source>
         <translation>Wert AN</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="514"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="304"/>
         <source>Value on</source>
         <translation>Wert AUS</translation>
     </message>
@@ -1668,7 +1662,7 @@ Nach Schliessen diese Dialogs erscheint ein Prompt zur Auswahl. Dann können sie
         <translation>LRD Dateien (*.lrd);;Alle Dateien (*)</translation>
     </message>
 </context>
-<context>
+<context encoding="UTF-8">
     <name>totalFovDialog</name>
     <message>
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="14"/>
@@ -1690,7 +1684,7 @@ Nach Schliessen diese Dialogs erscheint ein Prompt zur Auswahl. Dann können sie
         <source>Total fov</source>
         <translation>Gesamt fov</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="69"/>
         <source> °</source>
         <translation> °</translation>
