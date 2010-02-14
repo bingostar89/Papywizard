@@ -181,10 +181,6 @@ class GigaPanBotCommandDispatcherObject(QtCore.QObject):
             self._axis[numAxis].stop()
             response = ""
 
-        # Check motor command
-        elif cmd == 'F':
-            Logger().trace("GigaPanBotBaseHandler.handleCmd(): check motor")
-
         # Get encoder full circle command
         elif cmd == 'a':
             Logger().debug("GigaPanBotBaseHandler.handleCmd(): get encoder full circle")
@@ -226,6 +222,12 @@ class GigaPanBotCommandDispatcherObject(QtCore.QObject):
         elif cmd == 'S':
             Logger().debug("GigaPanBotBaseHandler.handleCmd(): goto")
             self._axis[numAxis].drive(self._encoderToAngle(self._decodeAxisValue(param)), wait=False)
+
+        # Speed command
+        elif cmd == 'I':
+            Logger().debug("GigaPanBotBaseHandler.handleCmd(): speed")
+            speed = int(param)
+            Logger().debug("GigaPanBotBaseHandler.handleCmd(): axis %s speed=%d" % (numAxis, speed))
 
         # Output command
         elif cmd == 'O':
