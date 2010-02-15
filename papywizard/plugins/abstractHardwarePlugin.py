@@ -102,3 +102,8 @@ class AbstractHardwarePlugin(AbstractPlugin):
         self._hardware.setDriver(self._driver)
         self._hardware.setNbRetry(ConfigManager().getInt('Plugins/HARDWARE_COM_RETRY'))
         self._hardware.init()
+
+    def shutdown(self):
+        Logger().trace("AbstractHardwarePlugin.shutdown()")
+        AbstractPlugin.shutdown(self)
+        self._hardware.shutdown()

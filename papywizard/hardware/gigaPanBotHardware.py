@@ -188,20 +188,16 @@ class GigaPanBotHardware(AbstractHardware):
 
             except IOError:
                 Logger().exception("GigaPanBotHardware.__sendCmd")
-                Logger().warning("GigaPanBotHardware.__sendCmd(): %s axis %d can't sent command %s. Retrying..." % (NAME, self._axis, repr(cmd)))
+                Logger().warning("GigaPanBotHardware.__sendCmd(): axis %d can't sent command %s. Retrying..." % (self._axis, repr(cmd)))
             else:
                 break
         else:
-            raise HardwareError("%s axis %d can't send command %s" % (NAME, self._axis, repr(cmd)))
+            raise HardwareError("Axis %d can't send command %s" % (self._axis, repr(cmd)))
         #Logger().debug("GigaPanBotHardware.__sendCmd(): axis %d ans=%s" % (self._axis, repr(answer)))
 
         return answer
 
     def init(self):
-        """ Init the GigaPanBot hardware.
-
-        Done only once per axis.
-        """
         self._driver.acquireBus()
         try:
 
@@ -216,6 +212,19 @@ class GigaPanBotHardware(AbstractHardware):
             value = self.__sendCmd("a")
             self.__encoderFullCircle = self.__decodeAxisValue(value)
             Logger().debug("GigaPanBotHardware.init(): full circle count=%s" % hex(self.__encoderFullCircle))
+
+            # Tell the controller we are connected
+            self.__sendCmd("F", "1")
+
+        finally:
+            self._driver.releaseBus()
+
+    def shutdown(self):
+        self._driver.acquireBus()
+        try:
+
+            # Tell the controller we are disconnected
+            self.__sendCmd("F", "0")
 
         finally:
             self._driver.releaseBus()

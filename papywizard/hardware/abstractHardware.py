@@ -92,3 +92,8 @@ class AbstractHardware(QtCore.QObject):
         """ Init the low-level hardware.
         """
         pass
+
+    def shutdown(self):
+        """ Shutdown the low-level hardware.
+        """
+        pass
