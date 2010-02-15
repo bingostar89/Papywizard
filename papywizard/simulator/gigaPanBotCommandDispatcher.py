@@ -179,7 +179,6 @@ class GigaPanBotCommandDispatcherObject(QtCore.QObject):
         if cmd == 'L':
             Logger().debug("GigaPanBotBaseHandler.handleCmd(): stop")
             self._axis[numAxis].stop()
-            response = ""
 
         # Get encoder full circle command
         elif cmd == 'a':
@@ -204,6 +203,10 @@ class GigaPanBotCommandDispatcherObject(QtCore.QObject):
                 response = "1"
             else:
                 response = "0"
+
+        # Connect/disconnect command
+        elif cmd == 'F':
+            Logger().debug("GigaPanBotBaseHandler.handleCmd(): connect/disconnect")
 
         # Start jog command
         elif cmd == 'G':
