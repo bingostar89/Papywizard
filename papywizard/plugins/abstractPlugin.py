@@ -84,6 +84,16 @@ class AbstractPlugin(object): #(QtCore.QObject):
         self._defineConfig()
         self._loadConfig()
 
+    def __cmp__(self, other):
+        """ Sort plugins on their name.
+        """
+        if self.name < other.name:
+            return -1
+        elif self.name == other.name:
+            return 0
+        else:
+            return 1
+
     # Properties
     def __getCapacity(self):
         """ Return the capacity of the plugin.
