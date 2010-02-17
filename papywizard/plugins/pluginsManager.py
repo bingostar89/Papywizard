@@ -123,7 +123,24 @@ class PluginsManagerObject(QtCore.QObject):
 
         @param pluginControllerClass: class of the plugin controller
         @type pluginControllerClass: {AbstractPluginController<controller.abstractPluginController>}
+
+        @todo: add a number after the name if it already exists
         """
+
+        # Check if a plugin with the same capacity is already registered under this name
+        pluginsNames = []
+        for plugin in self.__plugins:
+            if plugin[0].capacity == capacity:
+                pluginsNames.append(plugin[0].name)
+        if name in pluginsNames:
+            idx = 1
+            while True:
+                name_ = "%s %d" % (name, idx)
+                if name_ not in pluginsNames:
+                    break
+                idx += 1
+            name = name_
+
         model = pluginClass(capacity, name)
         self.__plugins.add((model, pluginControllerClass))
         Logger().debug("PluginsManager.register(): added '%s' plugin with capacity '%s'" % (model.name, model.capacity))
