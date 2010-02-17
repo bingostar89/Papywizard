@@ -163,11 +163,12 @@ class PixOrbAxis(AbstractPixOrbHardware, AbstractAxisPlugin):
 
     def read(self):
         position = self._hardware.read()
-        position -= self._offset
 
         # Reverse direction on yaw axis
         if self.capacity == 'yawAxis':
             position *= -1
+
+        position -= self._offset
 
         return position
 
@@ -175,7 +176,7 @@ class PixOrbAxis(AbstractPixOrbHardware, AbstractAxisPlugin):
         Logger().debug("PixOrbAxis.drive(): '%s' drive to %.1f" % (self.capacity, position))
 
         currentPos = self.read()
-        if abs(position - currentPos) <= self._config['AXIS_ACCURACY']:
+        if abs(position - currentPos) <= self._config['AXIS_ACCURACY'] or not useOffset:
             return
 
         self._checkLimits(position)
@@ -188,7 +189,7 @@ class PixOrbAxis(AbstractPixOrbHardware, AbstractAxisPlugin):
             position *= -1
 
         if self._config['AXIS_WITH_BREAK']:
-            self._releaseBreak()
+            self._hardware.releaseBreak()
         self._hardware.configure(self._config['SPEED_INDEX'])
         self._hardware.drive(position)
 

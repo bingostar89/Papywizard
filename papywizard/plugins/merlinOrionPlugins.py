@@ -181,10 +181,11 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         self._checkLimits(pos)
 
         if useOffset:
+            Logger().debug("MerlinOrionAxis.drive(): offset=%.1f" % self._offset)
             pos += self._offset
 
         # Only move if needed
-        if abs(pos - currentPos) > AXIS_ACCURACY:
+        if abs(pos - currentPos) > AXIS_ACCURACY or not useOffset:
             self.__setPoint = pos
             self.__driveFlag = True # Start thread action
 

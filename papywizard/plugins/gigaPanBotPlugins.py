@@ -117,7 +117,7 @@ class GigaPanBotAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
             pos += self._offset
 
         # Only move if needed
-        if abs(pos - currentPos) > AXIS_ACCURACY:
+        if abs(pos - currentPos) > AXIS_ACCURACY or not useOffset:
             self._hardware.drive(pos)
 
             # Wait end of movement
