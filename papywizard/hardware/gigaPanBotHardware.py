@@ -180,13 +180,13 @@ class GigaPanBotHardware(AbstractHardware):
                     elif c == '!':
                         c = self._driver.read(1)  # Get error code
                         # Do we need to read an additional '\r', here?
-                        raise IOError("Error in command %s (err=%s)" % (repr(cmd), repr(c)))
+                        raise HardwareError("Error in command %s (err=%s)" % (repr(cmd), repr(c)))
                     elif c == '\r':
                         break
                     else:
                         answer += c
 
-            except IOError:
+            except (IOError, HardwareError):
                 Logger().exception("GigaPanBotHardware.__sendCmd")
                 Logger().warning("GigaPanBotHardware.__sendCmd(): axis %d can't sent command %s. Retrying..." % (self._axis, repr(cmd)))
             else:
