@@ -75,7 +75,7 @@ from papywizard.view.pluginFields import ComboBoxField, SpinBoxField, DoubleSpin
 NAME = "Pololu Servo"
 
 DEFAULT_SPEED = 30 # deg/s
-DEFAULT_DIRECTION = QtGui.QApplication.translate("pololuServoPlugins", 'forward')
+DEFAULT_DIRECTION = unicode(QtGui.QApplication.translate("pololuServoPlugins", 'forward'))
 DEFAULT_ANGLE_1MS = 120. # angle for 1ms, which is 2 servo units (deg)
 DEFAULT_NEUTRAL_POSITION = 3000 # controller value for neutral position
 DEFAULT_VALUE_OFF = 0
@@ -87,10 +87,10 @@ AXIS_TABLE = {'yawAxis': 1,
 DIRECTION_INDEX = {'forward': 1,
                    'reverse': -1
                    }
-DIRECTION_TABLE = {'forward': QtGui.QApplication.translate("pololuServoPlugins", 'forward'),
-                   'reverse': QtGui.QApplication.translate("pololuServoPlugins", 'reverse'),
-                   QtGui.QApplication.translate("pololuServoPlugins", 'forward'): 'forward',
-                   QtGui.QApplication.translate("pololuServoPlugins", 'reverse'): 'reverse'
+DIRECTION_TABLE = {'forward': unicode(QtGui.QApplication.translate("pololuServoPlugins", 'forward')),
+                   'reverse': unicode(QtGui.QApplication.translate("pololuServoPlugins", 'reverse')),
+                   unicode(QtGui.QApplication.translate("pololuServoPlugins", 'forward')): 'forward',
+                   unicode(QtGui.QApplication.translate("pololuServoPlugins", 'reverse')): 'reverse'
                    }
 MANUAL_SPEED_TABLE = {'slow': .5,
                       'normal': 2.,
