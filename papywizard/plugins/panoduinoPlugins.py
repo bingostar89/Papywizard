@@ -73,9 +73,8 @@ from papywizard.view.pluginFields import ComboBoxField, SpinBoxField, DoubleSpin
 
 NAME = "Panoduino"
 
-DEFAULT_SPEED = 30 # deg/s
+DEFAULT_SPEED = 64
 DEFAULT_DIRECTION = unicode(QtGui.QApplication.translate("panoduinoPlugins", 'forward'))
-DEFAULT_ANGLE_1MS = 120. # angle for 1ms, which is 2 servo units (deg)
 DEFAULT_NEUTRAL_POSITION = 3000 # controller value for neutral position
 DEFAULT_VALUE_OFF = 0
 DEFAULT_VALUE_ON = 127
@@ -91,7 +90,13 @@ DIRECTION_TABLE = {'forward': unicode(QtGui.QApplication.translate("panoduinoPlu
                    unicode(QtGui.QApplication.translate("panoduinoPlugins", 'forward')): 'forward',
                    unicode(QtGui.QApplication.translate("panoduinoPlugins", 'reverse')): 'reverse'
                    }
-MANUAL_SPEED_TABLE = {'slow': .5,
+SPEED_TABLE = {'yawAxis': 64,
+               'pitchAxis': 64
+               }
+ANGLE_1MS_TABLE = {'yawAxis': 525.,  # angle (in °) for a 1ms pulse change
+                   'pitchAxis': 315.
+                   }
+MANUAL_SPEED_TABLE = {'slow': .5,  # angle (in °) for each key press
                       'normal': 2.,
                       'fast': 5.
                       }
@@ -111,7 +116,6 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         AbstractHardwarePlugin._defineConfig(self)
         self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
         self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION)
-        self._addConfigKey('_angle1ms', 'ANGLE_1MS', default=DEFAULT_ANGLE_1MS)
         self._addConfigKey('_neutralPos', 'NEUTRAL_POSITION', default=DEFAULT_NEUTRAL_POSITION)
 
     def _checkLimits(self, position):
@@ -130,8 +134,8 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         Logger().trace("PanoduinoAxis.init()")
         self._hardware.setAxis(AXIS_TABLE[self.capacity]),
         AbstractHardwarePlugin.init(self)
-        #self._hardware.setPositionAbsolute(self._config['NEUTRAL_POSITION'])
         self.configure()
+        self._hardware.setPositionAbsolute(self._config['NEUTRAL_POSITION'])
         self.__position = 0.
         self.__endDrive = 0
 
@@ -146,10 +150,9 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         Logger().trace("PanoduinoAxis.configure()")
         AbstractAxisPlugin.configure(self)
         speed = self.__computeServoSpeed(self._config['SPEED'])
-        Logger().debug("PanoduinoAxis.configure(): speed=%d" % speed)
         direction = DIRECTION_TABLE[self._config['DIRECTION']]
         self._hardware.configure(speed, direction)
-        self._hardware.setPositionAbsolute(self._config['NEUTRAL_POSITION'])
+        #self._hardware.setNeutral(self._config['NEUTRAL_POSITION'])
 
     def read(self):
         return self.__position - self._offset
@@ -163,7 +166,9 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         @return: value to send to servo controller
         @rtype: int
         """
-        servoSpeed = int(speed * 1000 / self._config['ANGLE_1MS'] / 50)
+        return speed
+
+        servoSpeed = int(speed * 1000 / ANGLE_1MS_TABLE[self.capacity] / 50)
         if servoSpeed < 1:
             servoSpeed = 1
         elif servoSpeed > 127:
@@ -181,7 +186,7 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         """
         direction = DIRECTION_TABLE[self._config['DIRECTION']]
         dir_ = DIRECTION_INDEX[direction]
-        servoPosition = int(self._config['NEUTRAL_POSITION'] + dir_ * position / self._config['ANGLE_1MS'] * 2000)
+        servoPosition = int(self._config['NEUTRAL_POSITION'] + dir_ * position / ANGLE_1MS_TABLE[self.capacity] * 2000)
         return servoPosition
 
     def drive(self, position, useOffset=True, wait=True):
@@ -193,10 +198,13 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
             position += self._offset
         value = self.__computeServoPosition(position)
         self._hardware.setPositionAbsolute(value)
-        self._endDrive = time.time() + 2 * abs(position - self.__position) / self._config['SPEED']
+        self._endDrive = time.time() + abs(position - self.__position) / self._config['SPEED']
         if wait:
             self.waitEndOfDrive()
         self.__position = position
+
+        # TODO: use a setpoint, and compute position in read according to timing/speed/...
+        # This avoid using a thread
 
     def waitEndOfDrive(self):
         remaingTimeToWait = self._endDrive - time.time()
@@ -239,13 +247,11 @@ class PanoduinoAxisController(AxisPluginController, HardwarePluginController):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
         self._addWidget('Main', QtGui.QApplication.translate("panoduinoPlugins", "Speed"),
-                        SpinBoxField, (1, 99, "", u" °/s"), 'SPEED')
+                        SpinBoxField, (0, 127), 'SPEED')
         self._addTab('Servo', QtGui.QApplication.translate("panoduinoPlugins", 'Servo'))
         directions = [DIRECTION_TABLE['forward'], DIRECTION_TABLE['reverse']]
         self._addWidget('Servo', QtGui.QApplication.translate("panoduinoPlugins", "Direction"),
                         ComboBoxField, (directions,), 'DIRECTION')
-        self._addWidget('Servo', QtGui.QApplication.translate("panoduinoPlugins", "Angle for 1ms"),
-                        DoubleSpinBoxField, (1., 999., 1, 0.1, "", u" °"), 'ANGLE_1MS')
         self._addWidget('Servo', QtGui.QApplication.translate("panoduinoPlugins", "Neutral position"),
                         SpinBoxField, (500, 5500), 'NEUTRAL_POSITION')
 

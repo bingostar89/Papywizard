@@ -132,6 +132,7 @@ class PololuServoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         self._hardware.setAxis(AXIS_TABLE[self.capacity]),
         AbstractHardwarePlugin.init(self)
         self.configure()
+        self._hardware.setPositionAbsolute(self._config['NEUTRAL_POSITION'])
         self.__position = 0.
         self.__endDrive = 0
 
@@ -145,7 +146,6 @@ class PololuServoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def configure(self):
         Logger().trace("PololuServoAxis.configure()")
         AbstractAxisPlugin.configure(self)
-        self._hardware.setPositionAbsolute(self._config['NEUTRAL_POSITION'])
         speed = self.__computeServoSpeed(self._config['SPEED'])
         direction = DIRECTION_TABLE[self._config['DIRECTION']]
         self._hardware.configure(speed, direction)
