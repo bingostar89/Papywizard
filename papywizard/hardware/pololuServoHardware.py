@@ -79,7 +79,7 @@ class PololuServoHardware(AbstractHardware):
            data2Str = hex(data2)
         else:
            data2Str = 'None'
-        Logger().debug("PololuServoHardware.__sendCmd: command=%d, servo=%d, data1=%s, data2=%s" % (command, self._axis, hex(data1), data2Str))
+        #Logger().debug("PololuServoHardware.__sendCmd: command=%d, servo=%d, data1=%s, data2=%s" % (command, self._axis, hex(data1), data2Str))
         if command in (0, 1, 2):
             if data2 is not None:
                 raise ValueError("Command %d takes only 1 data parameter" % command)
@@ -97,7 +97,7 @@ class PololuServoHardware(AbstractHardware):
 
         # Check controller answer
         data = self._driver.read(size)
-        Logger().debug("PololuServoHardware.__sendCmd: pololu returned: %s" % repr(data))
+        #Logger().debug("PololuServoHardware.__sendCmd: pololu returned: %s" % repr(data))
 
     def init(self):
         """ Turn on servo power.
