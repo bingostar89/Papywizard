@@ -52,7 +52,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: panoduinoPlugins.py 2304 2010-02-25 16:58:44Z fma $"
+__revision__ = "$Id$"
 
 import time
 
