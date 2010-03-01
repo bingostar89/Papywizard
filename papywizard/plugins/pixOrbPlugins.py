@@ -96,7 +96,7 @@ MANUAL_SPEED_TABLE = {'slow': 7,  # normal / 6
 class AbstractPixOrbHardware(AbstractHardwarePlugin):
     __initSIN11 = False
 
-    def establishConnection(self):
+    def establishConnection(self):  # Move to hardware?
         """ Establish the connection.
 
         The SIN-11 device used to control the Pixorb axis needs to be
