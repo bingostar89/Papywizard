@@ -109,7 +109,7 @@ class PixOrbHardware(AbstractHardware):
         @rtype: str
         """
         cmd = "%s%s" % (axis, cmd)
-        #Logger().debug("PixOrbHardware.__sendCmd(): axis %d cmd=%s" % (axis, repr(cmd)))
+        #Logger().debug("PixOrbHardware.__sendCmd(): axis %s cmd=%s" % (axis, repr(cmd)))
         for nbTry in xrange(self._nbRetry):
             try:
                 answer = ""
