@@ -157,31 +157,35 @@ def main():
         # Load plugins (move to shooting?)
         Logger().info("Load plugins...")
         splash.showMessage("Load plugins...")
-        from papywizard.plugins.simulationPlugins import register
-        register()
-        from papywizard.plugins.merlinOrionPlugins import register
-        register()
-        from papywizard.plugins.genericTetheredPlugins import register
-        register()
-        from papywizard.plugins.timelordPlugins import register
-        register()
-        from papywizard.plugins.pololuServoPlugins import register
+        from papywizard.plugins.dslrRemoteProPlugins import register
         register()
         from papywizard.plugins.eosUtilityPlugins import register
         register()
-        from papywizard.plugins.ursaMinorUsbPlugins import register
+        from papywizard.plugins.genericTetheredPlugins import register
         register()
-        #from papywizard.plugins.ursaMinorBt2Plugins import register
+        from papywizard.plugins.gigaPanBotPlugins import register
+        register()
+        from papywizard.plugins.gphotoBracketPlugins import register
+        register()
+        #from papywizard.plugins.gphotoPlugins import register
         #register()
-        from papywizard.plugins.gphotoPlugins import register
-        register()
-        from papywizard.plugins.pixOrbPlugins import register
-        register()
-        from papywizard.plugins.dslrRemoteProPlugins import register
+        from papywizard.plugins.merlinOrionPlugins import register
         register()
         from papywizard.plugins.nkRemotePlugins import register
         register()
-        from papywizard.plugins.gigaPanBotPlugins import register
+        from papywizard.plugins.panoduinoPlugins import register
+        register()
+        from papywizard.plugins.pixOrbPlugins import register
+        register()
+        #from papywizard.plugins.pololuServoPlugins import register
+        #register()
+        from papywizard.plugins.simulationPlugins import register
+        register()
+        from papywizard.plugins.timelordPlugins import register
+        register()
+        #from papywizard.plugins.ursaMinorBt2Plugins import register
+        #register()
+        from papywizard.plugins.ursaMinorUsbPlugins import register
         register()
         PluginsManager ().load()
 
