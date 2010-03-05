@@ -7,11 +7,15 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + 'Gphoto Bracket' plugin (jeongyun patch)
+    + 'Panoduino' plugin (replace 'Pololu Servo' plugin?)
+    + value changed callback mecanism in plugins
+    - don't register 2 plugins under the same name
+    x goto initial position now works even from reference position
 
 2010-02-14 Version 2.1.16 (dev)
     + Renamed 'Panoguy' plugin to 'GigaPanBot'
     + Add path param to 'NK Remote' plugin
-    + 'Gphoto' plugin (still under test)
     - read real position for xml data file (jeongyun patch)
     - new plugins hardware architecture
     x bug fixed in 'GigaPanBot' plugin
