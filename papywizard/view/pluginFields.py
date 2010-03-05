@@ -50,6 +50,8 @@ Implements
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2010 Frédéric Mantegazza
 @license: CeCILL
+
+@todo: inherits all fields from a AbstractField?
 """
 
 __revision__ = "$Id$"
@@ -76,6 +78,14 @@ class ComboBoxField(QtGui.QComboBox):
     def value(self):
         return self.currentText()
 
+    def connectSlot(self, slot):
+        """ Add a slot to call when the value changes.
+
+        @param slot: slot to connect
+        @type slot: python callable
+        """
+        self.connect(self, QtCore.SIGNAL("currentIndexChanged(int)"), slot)
+
 
 class LineEditField(QtGui.QLineEdit):
     """
@@ -93,6 +103,14 @@ class LineEditField(QtGui.QLineEdit):
     def value(self):
         return self.text()
 
+    def connectSlot(self, slot):
+        """ Add a slot to call when the value changes.
+
+        @param slot: slot to connect
+        @type slot: python callable
+        """
+        self.connect(self, QtCore.SIGNAL("textChanged(const QString &)"), slot)
+
 
 class SpinBoxField(QtGui.QSpinBox):
     """
@@ -106,6 +124,14 @@ class SpinBoxField(QtGui.QSpinBox):
         self.setMaximum(maximum)
         self.setPrefix(prefix)
         self.setSuffix(suffix)
+
+    def connectSlot(self, slot):
+        """ Add a slot to call when the value changes.
+
+        @param slot: slot to connect
+        @type slot: python callable
+        """
+        self.connect(self, QtCore.SIGNAL("valueChanged(int)"), slot)
 
 
 class DoubleSpinBoxField(QtGui.QDoubleSpinBox):
@@ -123,6 +149,14 @@ class DoubleSpinBoxField(QtGui.QDoubleSpinBox):
         self.setPrefix(prefix)
         self.setSuffix(suffix)
 
+    def connectSlot(self, slot):
+        """ Add a slot to call when the value changes.
+
+        @param slot: slot to connect
+        @type slot: python callable
+        """
+        self.connect(self, QtCore.SIGNAL("valueChanged(double)"), slot)
+
 
 class CheckBoxField(QtGui.QCheckBox):
     """
@@ -138,6 +172,14 @@ class CheckBoxField(QtGui.QCheckBox):
     def value(self):
         return self.isChecked()
 
+    def connectSlot(self, slot):
+        """ Add a slot to call when the value changes.
+
+        @param slot: slot to connect
+        @type slot: python callable
+        """
+        self.connect(self, QtCore.SIGNAL("stateChanged(int)"), slot)
+
 
 class SliderField(QtGui.QSlider):
     """
@@ -149,6 +191,14 @@ class SliderField(QtGui.QSlider):
         self.setRange(minimum, maximum)
         self.setTickPosition(QtGui.QSlider.TicksAbove)
         self.setTickInterval(tickInterval)
+
+    def connectSlot(self, slot):
+        """ Add a slot to call when the value changes.
+
+        @param slot: slot to connect
+        @type slot: python callable
+        """
+        self.connect(self, QtCore.SIGNAL("sliderMoved(int)"), slot)
 
 
 class ListField(QtGui.QListWidget):
@@ -188,6 +238,14 @@ class ListField(QtGui.QListWidget):
             values.append(unicode(item.text()))
         return values
 
+    def connectSlot(self, slot):
+        """ Add a slot to call when the value changes.
+
+        @param slot: slot to connect
+        @type slot: python callable
+        """
+        self.connect(self, QtCore.SIGNAL("itemSelectionChanged()"), slot)
+
 
 class DirSelectorField(QtGui.QWidget):
     """
@@ -225,6 +283,14 @@ class DirSelectorField(QtGui.QWidget):
     def value(self):
         return self._lineEdit.text()
 
+    def connectSlot(self, slot):
+        """ Add a slot to call when the value changes.
+
+        @param slot: slot to connect
+        @type slot: python callable
+        """
+        self.connect(self._lineEdit, QtCore.SIGNAL("textChanged (str)"), slot)
+
 
 class FileSelectorField(DirSelectorField):
     """
@@ -241,3 +307,11 @@ class FileSelectorField(DirSelectorField):
         fileName = QtGui.QFileDialog.getOpenFileName(self, self._title, dir_, self.__filter)
         if fileName:
             self._lineEdit.setText(fileName)
+
+    def connectSlot(self, slot):
+        """ Add a slot to call when the value changes.
+
+        @param slot: slot to connect
+        @type slot: python callable
+        """
+        self.connect(self._lineEdit, QtCore.SIGNAL("textChanged(const QString &)"), slot)

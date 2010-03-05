@@ -103,9 +103,10 @@ class AbstractPluginController(AbstractModalDialogController):
         @param configKey: key for the config.
         @type configKey: str
         """
-        self._fields[tabName][label] = {'widget': widgetClass(*widgetParams),
-                                        'configKey': configKey}
-        self._fields[tabName][label]['widget'].setValue(self._model._config[configKey])
+        widget = widgetClass(*widgetParams)
+        self._fields[tabName][label] = {'widget': widget, 'configKey': configKey}
+        self._fields[tabName][label]['widget'].setValue(self._model._config[configKey])  # Hugly!
+        widget.connectSlot(self._valueChanged)
 
     def _initWidgets(self):
         self._view.setWindowTitle("%s %s" % (self._model.name, self._model.capacity))
@@ -133,6 +134,33 @@ class AbstractPluginController(AbstractModalDialogController):
 
         self._view.adjustSize()
 
+    def _getWidget(self, tabName, label):
+        """ Get the specified widget.
+
+        @param tabName: tab name
+        @type tabName: str
+
+        @param label: label name
+        @type label: str
+        """
+        return self._fields[tabName][label]['widget']
+
+    def _setTabEnabled(self, tabName, enable):
+        """ Enable/disable specified tab.
+
+        @param tabName: tab name
+        @type tabName: str
+
+        @param enable: flag to enabled/disable tab
+        Label@type enable: bool
+        """
+        for index, tabName_ in enumerate(self._tabs.iterkeys()):
+            if tabName_ == tabName:
+                self._view.tabWidget.setTabEnabled(index, enable)
+                break
+        else:
+            raise ValueError("Unknown %s tab" % repr(tabName))
+
     def _onAccepted(self):
         """ Ok button has been clicked.
         """
@@ -154,6 +182,20 @@ class AbstractPluginController(AbstractModalDialogController):
         The widgets for the plugin config. dialog are defined here.
         """
         raise NotImplementedError("AbstractPluginController._defineGui() must be overloaded")
+
+    def _valueChanged(self, value=None):
+        """ A widget value has changed.
+
+        #@param widget: widget which changed
+        #@type widget: QtGui.QWidget
+
+        @param value: new value
+        @type value: any type
+
+        @todo: retreive widget
+        """
+        #Logger().debug("AbstractPluginController._valueChanged(): value=%s" % repr(value))
+        pass
 
     # Interface
     def refreshView(self):
