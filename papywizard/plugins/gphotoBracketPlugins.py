@@ -316,14 +316,6 @@ class GphotoBracketShutterController(ShutterPluginController):
         self._addWidget('Advanced', LABEL_EV_LIST, LineEditField, (), 'BRACKETING_EV_LIST')
         self._getWidget('Advanced', LABEL_EV_LIST).setReadOnly(True)
 
-        #self.connect(self._getWidget('Main', LABEL_NB_PICTS), QtCore.SIGNAL("valueChanged(int)"), self.__updateBracketingInfo)
-        #self.connect(self._getWidget('Main', LABEL_EV_STEP), QtCore.SIGNAL("valueChanged(double)"), self.__updateBracketingInfo)
-        #self.connect(self._getWidget('Main', LABEL_ADVANCED), QtCore.SIGNAL("stateChanged(int)"), self.__updateBracketingInfo)
-        #self.connect(self._getWidget('Advanced', LABEL_PLUS_NB_PICTS), QtCore.SIGNAL("valueChanged(int)"), self.__updateBracketingInfo)
-        #self.connect(self._getWidget('Advanced', LABEL_MINUS_NB_PICTS), QtCore.SIGNAL("valueChanged(int)"), self.__updateBracketingInfo)
-        #self.connect(self._getWidget('Advanced', LABEL_PLUS_STEP), QtCore.SIGNAL("valueChanged(double)"), self.__updateBracketingInfo)
-        #self.connect(self._getWidget('Advanced', LABEL_MINUS_STEP), QtCore.SIGNAL("valueChanged(double)"), self.__updateBracketingInfo)
-
     def refreshView(self):
         advanced = self._getWidget('Main', LABEL_ADVANCED).value()
         self._getWidget('Main', LABEL_NB_PICTS).setDisabled(advanced)
