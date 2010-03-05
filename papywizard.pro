@@ -77,9 +77,13 @@ SOURCES += papywizard/plugins/abstractAxisPlugin.py \
            papywizard/plugins/dslrRemoteProPlugins.py \
            papywizard/plugins/eosUtilityPlugins.py \
            papywizard/plugins/genericTetheredPlugins.py \
+           papywizard/plugins/gigaPanBotPlugins.py \
+           papywizard/plugins/gphotoBracketPlugins.py \
            papywizard/plugins/gphotoPlugins.py \
            papywizard/plugins/hardwarePluginController.py \
            papywizard/plugins/merlinOrionPlugins.py \
+           papywizard/plugins/nkRemotePlugins.py \
+           papywizard/plugins/panoduinoPlugins.py \
            papywizard/plugins/pixOrbPlugins.py \
            papywizard/plugins/pluginsConnector.py \
            papywizard/plugins/pluginsManager.py \
