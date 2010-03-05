@@ -48,6 +48,8 @@ Implements
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2010 Frédéric Mantegazza
 @license: CeCILL
+
+@todo: add support of var in commands, like %(bracketNumber)d or so...
 """
 
 __revision__ = "$Id$"
