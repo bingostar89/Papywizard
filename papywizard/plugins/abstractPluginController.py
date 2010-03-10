@@ -129,7 +129,9 @@ class AbstractPluginController(AbstractModalDialogController):
             for label, field in self._fields[tabName].iteritems():
                 widgets[label] = field['widget']
                 field['widget'].setParent(widget)
-                formLayout.addRow(label, field['widget'])
+                labelWidget = QtGui.QLabel(label)
+                labelWidget.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
+                formLayout.addRow(labelWidget, field['widget'])
                 Logger().debug("AbstractPluginController._initWidgets(): added '%s' field" % label)
 
         self._view.adjustSize()
