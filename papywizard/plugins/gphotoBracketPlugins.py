@@ -540,7 +540,7 @@ class GphotoBracketShutterController(ShutterPluginController):
         Logger().trace("GphotoBracketShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
 
-        self._view.tabWidget.setUsesScrollButtons(False)  # Check if OK on N8x0
+        self._view.tabWidget.setUsesScrollButtons(False) 
 
         # Main tab
         #self._addWidget('Main', QtGui.QApplication.translate("gphotoBracketPlugins", "Mirror lockup"),
