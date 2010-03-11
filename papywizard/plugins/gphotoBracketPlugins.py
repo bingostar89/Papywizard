@@ -331,7 +331,15 @@ class GphotoBracketShutter(AbstractShutterPlugin):
 
         return 0
 
+
 class GphotoBracketShutterController(ShutterPluginController):
+    def __formatEv(self, ev):
+        ev = round(ev, 1)
+        if ev == 0:
+            return "0"
+        else:
+            return "%+g" % ev
+
     def _valueChanged(self, value=None):
         ShutterPluginController._valueChanged(self, value)
 
@@ -354,11 +362,11 @@ class GphotoBracketShutterController(ShutterPluginController):
         evList = []
         if minusNbPicts > 0:
             for i in range(-minusNbPicts, 0):
-                evList.append("%s" % formatEv(i * minusStep + evBias))
-        evList.append("%s" % formatEv(evBias))
+                evList.append("%s" % self.__formatEv(i * minusStep + evBias))
+        evList.append("%s" % self.__formatEv(evBias))
         if plusNbPicts > 0:
             for i in range(1, plusNbPicts+1):
-                evList.append("%s" % formatEv(i * plusStep + evBias))
+                evList.append("%s" % self.__formatEv(i * plusStep + evBias))
 
         self._getWidget('Main', LABEL_EV_LIST).setValue(", ".join(evList))
         self._getWidget('Advanced', LABEL_EV_LIST).setValue(", ".join(evList))
@@ -440,12 +448,6 @@ class GphotoBracketShutterController(ShutterPluginController):
         download = self._getWidget('Main', LABEL_DOWNLOAD_ENABLED).value()
         self._setTabEnabled('Download', download)
 
-def formatEv(ev):
-    ev = round(ev,1)
-    if ev == 0:
-        return "0"
-    else:
-        return "%+g" % ev
 
 def register():
     """ Register plugins.
