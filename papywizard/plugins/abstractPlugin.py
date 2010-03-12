@@ -149,7 +149,7 @@ class AbstractPlugin(object): #(QtCore.QObject):
             if ConfigManager().contains(configKey):
                 if isinstance(defaultValue, bool):
                     self._config[key] = ConfigManager().getBoolean(configKey)
-                elif isinstance(defaultValue, str):
+                elif isinstance(defaultValue, str) or isinstance(defaultValue, unicode):
                     self._config[key] = ConfigManager().get(configKey)
                 elif isinstance(defaultValue, int):
                     self._config[key] = ConfigManager().getInt(configKey)
