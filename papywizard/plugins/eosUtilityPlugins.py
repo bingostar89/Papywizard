@@ -68,8 +68,8 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 NAME = "EOS Utility"
 
 DEFAULT_PROGRAM_PATH = "C:\\Program Files\\Papywizard\\EOSBracket.exe"
-DEFAULT_EOS_UTILITY_VERSION = unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'new'))
-DEFAULT_BRACKETING_STOPS = '1'
+DEFAULT_EOS_UTILITY_VERSION = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "new"))
+DEFAULT_BRACKETING_STEP = "1"
 DEFAULT_BRACKETING_TYPE = '0-+'
 DEFAULT_BRACKETING_NB_PICTS = 1
 DEFAULT_DRY_RUN = True
@@ -122,7 +122,7 @@ class EOSUtilityShutter(AbstractShutterPlugin):
         #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_programPath', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
         self._addConfigKey('_eosUtilityVersion', 'EOS_UTILITY_VERSION', default=DEFAULT_EOS_UTILITY_VERSION)
-        self._addConfigKey('_bracketingStops', 'BRACKETING_STOPS', default=DEFAULT_BRACKETING_STOPS)
+        self._addConfigKey('_bracketingStep', 'BRACKETING_STEP', default=DEFAULT_BRACKETING_STEP)
         self._addConfigKey('_bracketingType', 'BRACKETING_TYPE', default=DEFAULT_BRACKETING_TYPE)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NB_PICTS)
         self._addConfigKey('_dryRun', 'DRY_RUN', default=DEFAULT_DRY_RUN)
@@ -142,7 +142,7 @@ class EOSUtilityShutter(AbstractShutterPlugin):
         Logger().debug("EOSUtilityShutter.shoot(): bracketNumber=%d" % bracketNumber)
         Logger().debug("EOSUtilityShutter.shoot(): Program Path=%s" % self._config['PROGRAM_PATH'])
         Logger().debug("EOSUtilityShutter.shoot(): EOS Utility version=%s" % self._config['EOS_UTILITY_VERSION'])
-        Logger().debug("EOSUtilityShutter.shoot(): Bracketing stops=%s" % self._config['BRACKETING_STOPS'])
+        Logger().debug("EOSUtilityShutter.shoot(): Bracketing step=%s" % self._config['BRACKETING_STEP'])
         Logger().debug("EOSUtilityShutter.shoot(): Bracketing type=%s" % self._config['BRACKETING_TYPE'])
         Logger().debug("EOSUtilityShutter.shoot(): Bracketing nb pict=%d" % self._config['BRACKETING_NB_PICTS'])
         Logger().debug("EOSUtilityShutter.shoot(): Dry run=%s" % self._config['DRY_RUN'])
@@ -158,7 +158,7 @@ class EOSUtilityShutter(AbstractShutterPlugin):
         args.append(self._config['PROGRAM_PATH'])
         args.append("CL")
         args.append(EOS_UTILITY_VERSION_TABLE[self._config['EOS_UTILITY_VERSION']])
-        args.append(self._config['BRACKETING_STOPS'])
+        args.append(self._config['BRACKETING_STEP'])
         args.append(BRACKETING_TYPE_INDEX[self._config['BRACKETING_TYPE']])
         args.append(str(self._config['BRACKETING_NB_PICTS']))
         if self._config['DRY_RUN']:
@@ -205,10 +205,10 @@ class EOSUtilityShutterController(ShutterPluginController):
                         ComboBoxField, (types,), 'EOS_UTILITY_VERSION')
         self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Bracketing nb picts"),
                         SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
-        stops = ['1/3', '2/3', '1', '1 1/3', '1 2/3', '2', '2 1/3', '2 2/3','3',
+        steps = ['1/3', '2/3', '1', '1 1/3', '1 2/3', '2', '2 1/3', '2 2/3','3',
                  '3 1/3', '3 2/3', '4', '4 1/3', '4 2/3', '5', '5 1/3', '5 2/3', '6']
-        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Bracketing stops"),
-                        ComboBoxField, (stops,), 'BRACKETING_STOPS')
+        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Bracketing step"),
+                        ComboBoxField, (steps,), 'BRACKETING_STEP')
         self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Bracketing type"),
                         ComboBoxField, (BRACKETING_TYPE_INDEX.keys(),), 'BRACKETING_TYPE')
         self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Dry run"),
