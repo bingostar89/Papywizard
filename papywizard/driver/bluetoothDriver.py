@@ -92,7 +92,7 @@ class BluetoothDriver(AbstractDriver):
     def _shutdown(self):
         self._sock.close()
 
-    def setTimout(self, timeout):
+    def setTimeout(self, timeout):
         try:
             self._sock.settimeout(timeout)
         except NotImplementedError:
