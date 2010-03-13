@@ -81,6 +81,19 @@ DEFAULT_OUTPUT_DIR = config.HOME_DIR
 DEFAULT_FILENAME_PREFIX = ""
 DEFAULT_CAMERA_EXPOSURE_COMPENSATION_LIST = u"±2@1/2"
 
+LABEL_PROGRAM_PATH = QtGui.QApplication.translate("dslrRemoteProPlugins", "Program path")
+TEXT_CHOOSE_PROGRAM_PATH = QtGui.QApplication.translate("dslrRemoteProPlugins", "Choose program path...")
+TEXT_CHOOSE_PROGRAM_PATH_FILTER = QtGui.QApplication.translate("dslrRemoteProPlugins", "EXE files (*.exe);;All files (*)")
+LABEL_MIRROR_LOCKUP = QtGui.QApplication.translate("dslrRemoteProPlugins", "Mirror lockup")
+LABEL_USER_EXPOSURE_COMPENSATION_LIST = QtGui.QApplication.translate("dslrRemoteProPlugins", "User exposure\ncompensation list")
+LABEL_DRY_RUN = QtGui.QApplication.translate("dslrRemoteProPlugins", "Dry run")
+
+TAB_CAMERA = QtGui.QApplication.translate("dslrRemoteProPlugins", 'Camera')
+LABEL_OUTPUT_DIR = QtGui.QApplication.translate("dslrRemoteProPlugins", "Output directory")
+TEXT_CHOOSE_OUTPUT_DIR = QtGui.QApplication.translate("dslrRemoteProPlugins", "Choose output directory...")
+LABEL_FILENAME_PREFIX = QtGui.QApplication.translate("dslrRemoteProPlugins", "File name prefix")
+LABEL_CAMERA_EXPOSURE_COMPENSATION_LIST = QtGui.QApplication.translate("dslrRemoteProPlugins", "Camera exposure\ncompensation list")
+
 MIRROR_LOCKUP_PARAMS = ""
 OUTPUT_DIR_PARAM = "-o"
 FILENAME_PREFIX_PARAM = "-p"
@@ -199,24 +212,16 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
 class DslrRemoteProShutterController(ShutterPluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("dslrRemoteProPlugins", "Program path"),
-                        FileSelectorField, (QtGui.QApplication.translate("dslrRemoteProPlugins", "Choose program path..."),
-                                            QtGui.QApplication.translate("dslrRemoteProPlugins", "EXE files (*.exe);;All files (*)")),
+        self._addWidget('Main', LABEL_PROGRAM_PATH,
+                        FileSelectorField, (TEXT_CHOOSE_PROGRAM_PATH, TEXT_CHOOSE_PROGRAM_PATH_FILTER),
                         'PROGRAM_PATH')
-        self._addWidget('Main', QtGui.QApplication.translate("dslrRemoteProPlugins", "Mirror lockup"),
-                        CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', QtGui.QApplication.translate("dslrRemoteProPlugins", "User exposure\ncompensation list"),
-                        LineEditField, (), 'USER_EXPOSURE_COMPENSATION_LIST')
-        self._addWidget('Main', QtGui.QApplication.translate("dslrRemoteProPlugins", "Dry run"),
-                        CheckBoxField, (), 'DRY_RUN')
-        self._addTab('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", 'Camera'))
-        self._addWidget('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", "Output directory"),
-                        DirSelectorField,
-                        (QtGui.QApplication.translate("dslrRemoteProPlugins", "Choose output directory..."),),
-                        'OUTPUT_DIR')
-        self._addWidget('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", "File name prefix"),
-                        LineEditField, (), 'FILENAME_PREFIX')
-        self._addWidget('Camera', QtGui.QApplication.translate("dslrRemoteProPlugins", "Camera exposure\ncompensation list"),
+        self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
+        self._addWidget('Main', LABEL_USER_EXPOSURE_COMPENSATION_LIST, LineEditField, (), 'USER_EXPOSURE_COMPENSATION_LIST')
+        self._addWidget('Main', LABEL_DRY_RUN, CheckBoxField, (), 'DRY_RUN')
+        self._addTab('Camera', TAB_CAMERA)
+        self._addWidget('Camera', LABEL_OUTPUT_DIR, DirSelectorField, (TEXT_CHOOSE_OUTPUT_DIR,), 'OUTPUT_DIR')
+        self._addWidget('Camera', LABEL_FILENAME_PREFIX, LineEditField, (), 'FILENAME_PREFIX')
+        self._addWidget('Camera', LABEL_CAMERA_EXPOSURE_COMPENSATION_LIST,
                         ComboBoxField, ((u"±3@1/3", u"±3@1/2", u"±2@1/3", u"±2@1/2"),),
                         'CAMERA_EXPOSURE_COMPENSATION_LIST')
 
