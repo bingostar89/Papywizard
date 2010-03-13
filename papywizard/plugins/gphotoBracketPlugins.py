@@ -73,68 +73,86 @@ NAME = "Gphoto Bracket"
 
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_MIRROR_LOCKUP_COMMAND = "gphoto2 --capture-image"
-DEFAULT_GPHOTO_COMMAND = "gphoto2"
-DEFAULT_BRACKETING_NBPICTS = 1
-DEFAULT_BRACKETING_STEP = 1.
+DEFAULT_PROGRAM_PATH = "gphoto2"
+DEFAULT_BRACKETING_NB_PICTS = 1
+DEFAULT_BRACKETING_STEP = 1
+DEFAULT_BRACKETING_EV_BIAS = 0
+DEFAULT_BRACKETING_ADVANCED = False
+DEFAULT_DOWNLOAD_ENABLE = False
+DEFAULT_DOWNLOAD_DIR = ""
+DEFAULT_DOWNLOAD_THEN_DELETE = False
+#DEFAULT_DOWNLOAD_FILENAME = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Use camera default"))
 
-LABEL_GPHOTO_COMMAND = QtGui.QApplication.translate("gphotoBracketPlugins", "gPhoto command")
-TEXT_CHOOSE_GPHOTO_COMMAND = QtGui.QApplication.translate("gphotoBracketPlugins", "Choose gphoto2 command...")
-TEXT_CHOOSE_GPHOTO_COMMAND_FILTER = QtGui.QApplication.translate("gphotoBracketPlugins", "gphoto2 (gphoto2);;All files (*)")
-LABEL_NB_PICTS = QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing nb picts")
-LABEL_EV_STEP = QtGui.QApplication.translate("gphotoBracketPlugins", "Ev step")
-LABEL_EV_BIAS = QtGui.QApplication.translate("gphotoBracketPlugins", "Exposure bias")
-LABEL_EV_LIST = QtGui.QApplication.translate("gphotoBracketPlugins", "Resulting Ev list")
-LABEL_ADVANCED = QtGui.QApplication.translate("gphotoBracketPlugins", "Advanced")
+LABEL_PROGRAM_PATH = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Program path"))
+TEXT_CHOOSE_PROGRAM_PATH = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Choose program path..."))
+TEXT_CHOOSE_PROGRAM_PATH_FILTER = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "gphoto2 (gphoto2);;All files (*)"))
+LABEL_NB_PICTS = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing nb picts"))
+LABEL_EV_STEP = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing step"))
+LABEL_EV_BIAS = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Exposure bias"))
+LABEL_EV_LIST = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Resulting Ev list"))
+LABEL_ADVANCED = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Advanced"))
 
-LABEL_ADVANCED_TAB = QtGui.QApplication.translate("gphotoBracketPlugins", 'Advanced')
-LABEL_PLUS_NB_PICTS = QtGui.QApplication.translate("gphotoBracketPlugins", "+ bracketing nb picts")
-LABEL_PLUS_STEP = QtGui.QApplication.translate("gphotoBracketPlugins", "+ step")
-LABEL_MINUS_NB_PICTS = QtGui.QApplication.translate("gphotoBracketPlugins", "- bracketing nb picts")
-LABEL_MINUS_STEP = QtGui.QApplication.translate("gphotoBracketPlugins", "- step")
+LABEL_ADVANCED_TAB = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", 'Advanced'))
+LABEL_PLUS_NB_PICTS = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing nb picts (+)"))
+LABEL_PLUS_STEP = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing step (+)"))
+LABEL_MINUS_NB_PICTS = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing nb picts (-)"))
+LABEL_MINUS_STEP = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing step (-)"))
 
-LABEL_DOWNLOAD_TAB = QtGui.QApplication.translate("gphotoBracketPlugins", "Download")
-LABEL_DOWNLOAD_ENABLED = QtGui.QApplication.translate("gphotoBracketPlugins", "Enable download")
-LABEL_DOWNLOAD_DIR = QtGui.QApplication.translate("gphotoBracketPlugins", "Download directory")
-TEXT_CHOOSE_DOWNLOAD_DIR = QtGui.QApplication.translate("gphotoBracketPlugins", "Choose download directory...")
-#LABEL_DOWNLOAD_FILENAME = QtGui.QApplication.translate("gphotoBracketPlugins", "File name")
-#DEFAULT_DOWNLOAD_FILENAME = QtGui.QApplication.translate("gphotoBracketPlugins", "Use camera default")
-LABEL_DOWNLOAD_WHEN = QtGui.QApplication.translate("gphotoBracketPlugins", "Download when")
-TEXT_AFTER_EACH_SHOT = QtGui.QApplication.translate("gphotoBracketPlugins", "After each shot")
-TEXT_AFTER_BRACKETING = QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing is finished")
-LABEL_DOWNLOAD_THEN_DELETE = QtGui.QApplication.translate("gphotoBracketPlugins", "Delete picts on camera")
+LABEL_DOWNLOAD_TAB = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Download"))
+LABEL_DOWNLOAD_ENABLE = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Enable"))
+LABEL_DOWNLOAD_DIR = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Download directory"))
+TEXT_CHOOSE_DOWNLOAD_DIR = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Choose download directory..."))
+#LABEL_DOWNLOAD_FILENAME = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "File name"))
+LABEL_DOWNLOAD_AFTER = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Download after"))
+TEXT_AFTER_EACH_SHOT = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Each shot"))
+TEXT_AFTER_BRACKETING = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing sequence"))
+LABEL_DOWNLOAD_THEN_DELETE = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Delete camera picts"))
 
 PREFIX_PROMPT = 'gphoto2: '  # gphoto2 shell prompt
 PREFIX_ERROR = '*** Error '  # Error message
 
 
-class Gphoto2Command(object):
-    def __init__(self, command):
-        super(Gphoto2Command, self).__init__()
+class GphotoShell(QtCore.QObject):
+    """
+    """
+    def __init__(self, programPath):
+        """ Init object.
+        """
+        QtCore.QObject.__init__(self)
 
-        args = [command, "--shell", "--quiet"]
-        self.popen = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env={ "LANG": "C" })
+        args = [programPath, "--shell", "--quiet"]
+        self.__popen = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env={'LANG': "C"})
 
-    def __sendCommand(self, command):
-        Logger().debug("Gphoto2Command.__sendCommand(): command='%s'" % command.strip())
-        self.popen.stdin.write("%s\n" % command)
-        prompt = self.popen.stdout.readline()  # Consume echo
+    def __sendCmd(self, cmd):
+        """ Send a command to gphoto2 shell.
+
+        @param command: command to send
+        @type command: str
+        """
+        Logger().debug("GphotoShell.__sendCmd(): command='%s'" % cmd.strip())
+        self.__popen.stdin.write("%s\n" % cmd)
+        prompt = self.__popen.stdout.readline()  # Consume echo
 
     def quit(self):
-        self.__sendCommand("quit")
-        self.__sendCommand("quit")
-        #stdout, stderr = self.popen.communicate()
+        """ Quit gphoto2 shell.
+        """
+        self.__sendCmd("quit")
+        self.__sendCmd("quit")
+        #stdout, stderr = self.__popen.communicate()
         #if stderr:
-            #Logger().warning("Gphoto2Command.quit(): gphoto2.stderr=\"%s\"" % (stderr))
+            #Logger().warning("GphotoShell.quit(): gphoto2.stderr=\"%s\"" % (stderr))
 
     def listConfig(self):
-        self.__sendCommand("list-config\n")
+        """ List all camera configs.
+        """
+        self.__sendCmd("list-config\n")
         configs = []
         while True:
-            line = self.popen.stdout.readline().rstrip()
-            if line.startswith(PREFIX_PROMPT):  # Prompt
+            line = self.__popen.stdout.readline().rstrip()
+            if line.startswith(PREFIX_PROMPT):
                 break
-            elif line.startswith(PREFIX_ERROR):  # Error
-                Logger().error("Gphoto2Command.listConfig(): gphoto2=\"%s\"" % (line))
+            elif line.startswith(PREFIX_ERROR):
+                Logger().error("GphotoShell.listConfig(): gphoto2=\"%s\"" % (line))
                 break
             elif line[0] == '/':
                 configs.append(line)
@@ -143,15 +161,20 @@ class Gphoto2Command(object):
         return configs
 
     def getConfig(self, config):
-        self.__sendCommand("get-config %s\n" % config)
+        """ Get a specific config from camera.
+
+        @param config: path of the config to get
+        @type config: str
+        """
+        self.__sendCmd("get-config %s\n" % config)
         props = {}
         choices = []
         while True:
-            line = self.popen.stdout.readline().rstrip()
-            if line.startswith(PREFIX_PROMPT):  # Prompt
+            line = self.__popen.stdout.readline().rstrip()
+            if line.startswith(PREFIX_PROMPT):
                 break
-            elif line.startswith(PREFIX_ERROR):  # Error
-                Logger().error("Gphoto2Command.getConfig(): config=%s gphoto2=\"%s\"" % (config, line))
+            elif line.startswith(PREFIX_ERROR):
+                Logger().error("GphotoShell.getConfig(): config=%s gphoto2=\"%s\"" % (config, line))
                 return None, None
             else:
                 key, sep, value = line.partition(': ')  # 'Key: Value' form
@@ -164,47 +187,60 @@ class Gphoto2Command(object):
         return props, choices
 
     def setConfig(self, config, value):
-        self.__sendCommand("set-config %s=%s\n" % (config, value))
-        prompt = self.popen.stdout.readline()
+        """ Set a specific config to camera.
 
-    def ls(self, dir=None, recurse=False):
-        if dir is None:
-            self.__sendCommand("ls")
-            dir = ""
+        @param config: path of the config to set
+        @type config: str
+        """
+        self.__sendCmd("set-config %s=%s\n" % (config, value))
+        prompt = self.__popen.stdout.readline()
+
+    def ls(self, dir_=None, recurse=False):
+        """ List dir.
+
+        @param dir_: directory to list
+        @type dir_: str
+
+        @param recurse: if True, list dir recursively
+        @type recurse: bool
+        """
+        if dir_ is None:
+            self.__sendCmd("ls")
+            dir_ = ""
         else:
-            self.__sendCommand("ls %s" % dir)
-            if len(dir) > 0 and dir[-1] != '/':
-                dir = dir + '/'
+            self.__sendCmd("ls %s" % dir_)
+            if len(dir_) > 0 and dir_[-1] != '/':
+                dir_ += '/'
 
         # read directory entries
-        line = self.popen.stdout.readline().rstrip()
-        if line.startswith(PREFIX_ERROR):  # Error
-            Logger().error("Gphoto2Command.ls(): %s recurse=%s gphoto2=\"%s\"" % (dir, str(recurse), line))
+        line = self.__popen.stdout.readline().rstrip()
+        if line.startswith(PREFIX_ERROR):
+            Logger().error("GphotoShell.ls(): %s recurse=%s gphoto2=\"%s\"" % (dir_, recurse, line))
             return None, None
         childDirs = []
         numDirs = int(line)
         for i in range(numDirs):
             if recurse:
-                childDirs.append(dir + self.popen.stdout.readline().rstrip() + '/')
+                childDirs.append(dir_ + self.__popen.stdout.readline().rstrip() + '/')
             else:
-                childDirs.append(self.popen.stdout.readline().rstrip() + '/')
+                childDirs.append(self.__popen.stdout.readline().rstrip() + '/')
 
         # read file entries
         childFiles = []
-        line = self.popen.stdout.readline().rstrip()
+        line = self.__popen.stdout.readline().rstrip()
         numFiles = int(line)
         for i in range(numFiles):
             if recurse:
-                childFiles.append(dir + self.popen.stdout.readline().rstrip())
+                childFiles.append(dir_ + self.__popen.stdout.readline().rstrip())
             else:
-                childFiles.append(self.popen.stdout.readline().rstrip())
+                childFiles.append(self.__popen.stdout.readline().rstrip())
 
         if recurse:
             dirs = []
             files = childFiles[:]
             for childDir in childDirs:
                 dirs.append(childDir)
-                grandChildDirs, grandChildFiles = ls(self.popen, (childDir), recurse)
+                grandChildDirs, grandChildFiles = ls(self.__popen, (childDir), recurse)  # ???
                 if grandChildDirs is not None and len(grandChildDirs) > 0:
                     dirs.extend([d for d in grandChildDirs])  # or just dirs.extend(grandChildDirs)
                 if grandChildFiles is not None and len(grandChildFiles) > 0:
@@ -213,62 +249,84 @@ class Gphoto2Command(object):
         else:
             return childDirs, childFiles
 
-    def cd(self, dir):
-        self.__sendCommand("cd %s" % dir)
-        msg = self.popen.stdout.readline().rstrip()  # Read message
+    def cd(self, dir_):
+        """ Change current dir.
+
+        @param dir_: new current dir
+        @type dir_: str
+        """
+        self.__sendCmd("cd %s" % dir_)
+        msg = self.__popen.stdout.readline().rstrip()  # Read message
         cwd = None
         if msg.startswith(PREFIX_ERROR):  # Error
-            Logger().error("Gphoto2Command.cd(): %s gphoto2=\"%s\"" % (dir, msg))
+            Logger().error("GphotoShell.cd(): %s gphoto2=\"%s\"" % (dir_, msg))
         elif msg.endswith("'."):
             fIndex = msg.find("'")
             rIndex = msg.rfind("'")
-            if (fIndex != -1) and (rIndex != -1):
-                cwd = msg[fIndex + 1 : rIndex]
+            if fIndex != -1 and rIndex != -1:
+                cwd = msg[fIndex + 1:rIndex]
         return cwd
 
-    def lcd(self, dir):
-        self.__sendCommand("lcd %s\n" % dir)
-        msg = self.popen.stdout.readline().rstrip()  # Read message
+    def lcd(self, dir_):
+        """ Change local current dir?
+
+        @param dir_: new local current dir
+        @type dir_: str
+        """
+        self.__sendCmd("lcd %s\n" % dir_)
+        msg = self.__popen.stdout.readline().rstrip()  # Read message
         cwd = None
         if msg.endswith("'."):
             fIndex = msg.find("'")
             rIndex = msg.rfind("'")
             if fIndex != -1 and rIndex != -1:
                 cwd = msg[fIndex + 1:rIndex]
-            prompt = self.popen.stdout.readline()
+            prompt = self.__popen.stdout.readline()
         return cwd
 
-    def get(self, file):
-        self.__sendCommand("get %s\n" % file)
-        msg = self.popen.stdout.readline().rstrip()
+    def get(self, file_):
+        """ Get file.
+
+        @param file_: file to get
+        @type file_: str
+        """
+        self.__sendCmd("get %s\n" % file_)
+        msg = self.__popen.stdout.readline().rstrip()
         if msg.startswith(PREFIX_ERROR):  # Error
-            prompt = self.popen.stdout.readline()
-            Logger().error("Gphoto2Command.get(): %s gphoto2=\"%s\"" % (file, msg))
+            prompt = self.__popen.stdout.readline()
+            Logger().error("GphotoShell.get(): %s gphoto2=\"%s\"" % (file_, msg))
             return False
         else:
             # Downloading 'IMAGE1234.JPG' from folder '/SOME/WHERE'...
-            #Logger().debug("Gphoto2Command.get(): gphoto2.stderr=\"%s\"" % self.popen.stderr.readline().rstrip())
+            #Logger().debug("GphotoShell.get(): gphoto2.stderr=\"%s\"" % self.__popen.stderr.readline().rstrip())
             pass
         return True
 
-    def delete(self, file):
-        self.__sendCommand("delete %s\n" % file)
-        msg = self.popen.stdout.readline().rstrip()
+    def delete(self, file_):
+        """ Delete file.
+
+        @param file_: file to delete
+        @type file_: str
+        """
+        self.__sendCmd("delete %s\n" % file_)
+        msg = self.__popen.stdout.readline().rstrip()
         if msg.startswith(PREFIX_ERROR):  # Error
-            prompt = self.popen.stdout.readline()
-            Logger().error("Gphoto2Command.delete(): %s gphoto2=\"%s\"" % (file, msg))
+            prompt = self.__popen.stdout.readline()
+            Logger().error("GphotoShell.delete(): %s gphoto2=\"%s\"" % (file_, msg))
             return False
         else:
             # Deleting 'IMAGE1234.JPG' from folder '/SOME/WHERE'...
-            #Logger().debug("Gphoto2Command.delete(): gphoto2.stderr=\"%s\"" % self.popen.stderr.readline().rstrip())
+            #Logger().debug("GphotoShell.delete(): gphoto2.stderr=\"%s\"" % self.__popen.stderr.readline().rstrip())
             pass
         return True
 
     def captureImage(self):
-        self.__sendCommand('capture-image')
-        line = self.popen.stdout.readline().rstrip()
+        """ Capture image.
+        """
+        self.__sendCmd('capture-image')
+        line = self.__popen.stdout.readline().rstrip()
         if line.startswith(PREFIX_ERROR):  # Error
-            Logger().error("Gphoto2Command.captureImage(): gphoto2=\"%s\"" % line)
+            Logger().error("GphotoShell.captureImage(): gphoto2=\"%s\"" % line)
             return None
         else:
             return line # full path
@@ -284,7 +342,7 @@ class GphotoBracketShutter(AbstractShutterPlugin):
         self.__bracketFiles = None
         self.__currentSpeed = None
         self.__evSteps = None
-        self.__gphoto2 = None
+        self.__gphotoShell = None
         self.__lastPictIndex = None
         self.__localCwd = None
         self.__remoteCwd = None
@@ -305,21 +363,21 @@ class GphotoBracketShutter(AbstractShutterPlugin):
         #AbstractShutterPlugin._defineConfig(self)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_mirrorLockupCommand', 'MIRROR_LOCKUP_COMMAND', default=DEFAULT_MIRROR_LOCKUP_COMMAND)
-        self._addConfigKey('_gphotoCommand', 'GPHOTO_COMMAND', default=DEFAULT_GPHOTO_COMMAND)
-        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
+        self._addConfigKey('_programPath', 'PROGRAM_PATH', default=DEFAULT_PROGRAM_PATH)
+        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NB_PICTS)
         self._addConfigKey('_bracketingEvStep', 'BRACKETING_EV_STEP', default=DEFAULT_BRACKETING_STEP)
-        self._addConfigKey('_bracketingEvBias', 'BRACKETING_EV_BIAS', default=0.)
-        self._addConfigKey('_bracketingPlusNbPicts', 'BRACKETING_PLUS_NB_PICTS', default=int(DEFAULT_BRACKETING_NBPICTS / 2))
-        self._addConfigKey('_bracketingMinusNbPicts', 'BRACKETING_MINUS_NB_PICTS', default=int(DEFAULT_BRACKETING_NBPICTS / 2))
+        self._addConfigKey('_bracketingEvBias', 'BRACKETING_EV_BIAS', default=DEFAULT_BRACKETING_EV_BIAS)
+        self._addConfigKey('_bracketingPlusNbPicts', 'BRACKETING_PLUS_NB_PICTS', default=int(DEFAULT_BRACKETING_NB_PICTS / 2))
+        self._addConfigKey('_bracketingMinusNbPicts', 'BRACKETING_MINUS_NB_PICTS', default=int(DEFAULT_BRACKETING_NB_PICTS / 2))
         self._addConfigKey('_bracketingPlusStep', 'BRACKETING_PLUS_STEP', default=DEFAULT_BRACKETING_STEP)
         self._addConfigKey('_bracketingMinusStep', 'BRACKETING_MINUS_STEP', default=DEFAULT_BRACKETING_STEP)
         self._addConfigKey('_bracketingEvList', 'BRACKETING_EV_LIST', default="0")
-        self._addConfigKey('_bracketingAdvanced', 'BRACKETING_ADVANCED', default=False)
-        self._addConfigKey('_downloadEnabled', 'DOWNLOAD_ENABLED', default=False)
-        self._addConfigKey('_downloadDir', 'DOWNLOAD_DIR', default="")
+        self._addConfigKey('_bracketingAdvanced', 'BRACKETING_ADVANCED', default=DEFAULT_BRACKETING_ADVANCED)
+        self._addConfigKey('_downloadEnable', 'DOWNLOAD_ENABLE', default=DEFAULT_DOWNLOAD_ENABLE)
+        self._addConfigKey('_downloadDir', 'DOWNLOAD_DIR', default=DEFAULT_DOWNLOAD_DIR)
         #self._addConfigKey('_downloadFilename', 'DOWNLOAD_FILENAME', default=DEFAULT_DOWNLOAD_FILENAME)
-        self._addConfigKey('_downloadWhen', 'DOWNLOAD_WHEN', default="")
-        self._addConfigKey('_downloadThenDelete', 'DOWNLOAD_THEN_DELETE', default=False)
+        self._addConfigKey('_downloadAfter', 'DOWNLOAD_AFTER', default=TEXT_AFTER_EACH_SHOT)
+        self._addConfigKey('_downloadThenDelete', 'DOWNLOAD_THEN_DELETE', default=DEFAULT_DOWNLOAD_THEN_DELETE)
 
     def lockupMirror(self):
         """ @todo: implement mirror lockup command
@@ -330,30 +388,16 @@ class GphotoBracketShutter(AbstractShutterPlugin):
         return 0
 
     def init(self):
-        """ @todo: Move all this in futur start() callback?
-        """
-        self.__availableSpeeds = None
-        self.__baseSpeedIndex = None
-        self.__baseSpeed = None
-        self.__bracketFiles = None
-        self.__currentSpeed = None
-        self.__evSteps = None
-        self.__gphoto2 = None
-        self.__lastPictIndex = None
-        self.__localCwd = None
-        self.__remoteCwd = None
-        self.__speedConfig = None
-        self.__speedOrder = None
-
-        self.__gphoto2 = Gphoto2Command(self._config['GPHOTO_COMMAND'])
+        #self.__localCwd = None  # Needed?
+        self.__gphotoShell = GphotoShell(self._config['PROGRAM_PATH'])
 
         # List up root directory of the camera
-        dirs, files = self.__gphoto2.ls()
+        dirs, files = self.__gphotoShell.ls()
         if dirs is None or files is None:
             raise HardwareError("Unable to access camera file system")
 
         # List config
-        configs = self.__gphoto2.listConfig()
+        configs = self.__gphotoShell.listConfig()
         if configs is None or len(configs) == 0:
             raise HardwareError("Unable to retrieve config list from the camera")
 
@@ -361,19 +405,18 @@ class GphotoBracketShutter(AbstractShutterPlugin):
             if config.endswith("/shutterspeed") or config.endswith("/exptime"):
                 self.__speedConfig = config
 
-        # Detected a 'Your Camera Model here'. message
-        #Logger().debug("GphotoBracketShutter.init(): gphoto2.stderr=\"%s\"" % self.__gphoto2.popen.stderr.readline().rstrip())
+        # Detected a 'Your Camera Model here' message ???!!!???
+        #Logger().debug("GphotoBracketShutter.init(): gphoto2.stderr=\"%s\"" % self.__gphotoShell.popen.stderr.readline().rstrip())
 
         # Get config
-        props, choices = self.__gphoto2.getConfig(self.__speedConfig)
+        props, choices = self.__gphotoShell.getConfig(self.__speedConfig)
         if props is None or choices is None:
             raise HardwareError("Unable to read shutter speed")
 
         # Load all available speeds and the current speed
         self.__availableSpeeds = choices
         self.__baseSpeed = props['Current']
-        self.__baseSpeedIndex = None
-        for choice, index in enumerate(choices):
+        for index, choice in enumerate(choices):
             if choice == self.__baseSpeed:
                 self.__baseSpeedIndex = index
 
@@ -388,16 +431,14 @@ class GphotoBracketShutter(AbstractShutterPlugin):
         else:
             self.__evSteps = 2
 
-        self.__remoteCwd = None
-
         Logger().debug("GphotoBracketShutter.init(): basespeed=%s config=%s order=%+d steps=1/%d" % \
                       (self.__baseSpeed, self.__speedConfig, self.__speedOrder, self.__evSteps))
 
     def shutdown(self):
         Logger().trace("GphotoBracketShutter.shutdown()")
-        if self.__gphoto2 is not None:
-            self.__gphoto2.quit()
-            self.__gphoto2 = None
+        if self.__gphotoShell is not None:
+            self.__gphotoShell.quit()
+            self.__gphotoShell = None
 
     def __downloadFiles(self, paths):
         downloadThenDelete = self._config['DOWNLOAD_THEN_DELETE']
@@ -407,7 +448,7 @@ class GphotoBracketShutter(AbstractShutterPlugin):
         if downloadDir[0] != '/':  # Relative path
             downloadDir = os.path.join(os.getcwd(), downloadDir)
         if downloadDir != self.__localCwd:
-            self.__localCwd = self.__gphoto2.lcd(downloadDir)
+            self.__localCwd = self.__gphotoShell.lcd(downloadDir)
         if self.__localCwd is None:
             Logger().error("GphotoBracketShutter.downloadFiles(): failed to change local directory to '%s'" % downloadDir)
 
@@ -422,27 +463,28 @@ class GphotoBracketShutter(AbstractShutterPlugin):
 
             if imageDir is not None and imageDir != self.__remoteCwd:
                 Logger().debug("GphotoBracketShutter.downloadFiles(): changing remote directory to '%s'" % imageDir)
-                self.__remoteCwd = self.__gphoto2.cd(imageDir)
+                self.__remoteCwd = self.__gphotoShell.cd(imageDir)
                 if self.__remoteCwd is None:
                     Logger().error("GphotoBracketShutter.downloadFiles(): failed to change remote directory to '%s'" % imageDir)
+
             # Download the file
             #Logger().debug("GphotoBracketShutter.downloadFiles(): downloading file '%s'" % imageFile)
-            self.__gphoto2.get(imageFile)
+            self.__gphotoShell.get(imageFile)
 
             if downloadThenDelete:
                 Logger().debug("GphotoBracketShutter.downloadFiles(): deleting remote file '%s'" % imageFile)
-                self.__gphoto2.delete(imageFile)
+                self.__gphotoShell.delete(imageFile)
 
     def shoot(self, bracketNumber):
         Logger().debug("GphotoBracketShutter.shoot(): bracketNumber=%d" % bracketNumber)
 
-        downloadEnabled = self._config['DOWNLOAD_ENABLED']
-        downloadAfterEachShot = (self._config['DOWNLOAD_WHEN'] == TEXT_AFTER_EACH_SHOT)
-        downloadAfterBracketing = (self._config['DOWNLOAD_WHEN'] == TEXT_AFTER_BRACKETING)
+        downloadEnable = self._config['DOWNLOAD_ENABLE']
+        downloadAfterEachShot = (self._config['DOWNLOAD_AFTER'] == TEXT_AFTER_EACH_SHOT)
+        downloadAfterBracketing = (self._config['DOWNLOAD_AFTER'] == TEXT_AFTER_BRACKETING)
         bracketingNbPicts = self._config['BRACKETING_NB_PICTS']
 
         # Take Ev offset from Ev list
-        evOffset = self._config['BRACKETING_EV_LIST'].split(",")[bracketNumber - 1].strip()
+        evOffset = self._config['BRACKETING_EV_LIST'].split(',')[bracketNumber - 1].strip()
 
         speedIndex = self.__baseSpeedIndex - int(float(evOffset) * self.__evSteps * self.__speedOrder)
 
@@ -458,29 +500,33 @@ class GphotoBracketShutter(AbstractShutterPlugin):
             elif speedIndex >= (len(self.__availableSpeeds) - 1):
                 speedIndex = len(self.__availableSpeeds) - 2
         Logger().debug("GphotoBracketShutter.shoot(): EV=%s shutter speed=%s" % \
-                      (evOffset, self.__availableSpeeds[speedIndex]))
+                       (evOffset, self.__availableSpeeds[speedIndex]))
 
         # Change shutter speed
         newSpeed = self.__availableSpeeds[speedIndex]
         if self.__currentSpeed != newSpeed:
-            self.__gphoto2.setConfig(self.__speedConfig, newSpeed)
+            self.__gphotoShell.setConfig(self.__speedConfig, newSpeed)
             self.__currentSpeed = newSpeed
 
         # Capture image
         Logger().debug("GphotoBracketShutter.shoot(): capturing image")
         for retry in range(5):
-            imagePath = self.__gphoto2.captureImage()
-            if imagePath is not None:  # Retry
+            imagePath = self.__gphotoShell.captureImage()
+            if imagePath is not None:
                 break
-            Logger().warning("GphotoBracketShutter.shoot(): retrying in 1 second...")
+            Logger().warning("Shoot failed; retrying in 1 second...")
             time.sleep(1)
+        #else:
+            #Logger().error("Shoot failed")
+            #raise Problem...
         Logger().debug("GphotoBracketShutter.shoot(): captured image file='%s'" % imagePath)
 
         # Change shutter speed back to base speed
         #self.__gphoto2.setConfig(self.__speedConfig, self.__baseSpeed)
+        # Why commented?
 
         # Download files
-        if downloadEnabled:
+        if downloadEnable:
             if downloadAfterEachShot:
                 self.__downloadFiles([imagePath])
             elif downloadAfterBracketing:
@@ -497,6 +543,8 @@ class GphotoBracketShutter(AbstractShutterPlugin):
 
 class GphotoBracketShutterController(ShutterPluginController):
     def __formatEv(self, ev):
+        """ Format the exposure value.
+        """
         ev = round(ev, 1)
         if ev == 0:
             return "0"
@@ -540,7 +588,7 @@ class GphotoBracketShutterController(ShutterPluginController):
         Logger().trace("GphotoBracketShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
 
-        self._view.tabWidget.setUsesScrollButtons(False) 
+        self._view.tabWidget.setUsesScrollButtons(False)
 
         # Main tab
         #self._addWidget('Main', QtGui.QApplication.translate("gphotoBracketPlugins", "Mirror lockup"),
@@ -550,9 +598,9 @@ class GphotoBracketShutterController(ShutterPluginController):
                         #(QtGui.QApplication.translate("gphotoBracketPlugins", "Choose mirror lockup command..."),
                          #QtGui.QApplication.translate("gphotoBracketPlugins", "All files (*)")),
                         #'MIRROR_LOCKUP_COMMAND')
-        self._addWidget('Main', LABEL_GPHOTO_COMMAND,
-                        FileSelectorField, (TEXT_CHOOSE_GPHOTO_COMMAND, TEXT_CHOOSE_GPHOTO_COMMAND_FILTER),
-                        'GPHOTO_COMMAND')
+        self._addWidget('Main', LABEL_PROGRAM_PATH,
+                        FileSelectorField, (TEXT_CHOOSE_PROGRAM_PATH, TEXT_CHOOSE_PROGRAM_PATH_FILTER),
+                        'PROGRAM_PATH')
         self._addWidget('Main', LABEL_NB_PICTS, SpinBoxField, (1, 11), 'BRACKETING_NB_PICTS')
         self._getWidget('Main', LABEL_NB_PICTS).setSingleStep(2)
         self._addWidget('Main', LABEL_EV_STEP, SpinBoxField, (1, 5, "", " ev"), 'BRACKETING_EV_STEP')
@@ -573,14 +621,14 @@ class GphotoBracketShutterController(ShutterPluginController):
 
         # Download tab
         self._addTab('Download', LABEL_DOWNLOAD_TAB)
-        self._addWidget('Download', LABEL_DOWNLOAD_ENABLED, CheckBoxField, (), 'DOWNLOAD_ENABLED')
+        self._addWidget('Download', LABEL_DOWNLOAD_ENABLE, CheckBoxField, (), 'DOWNLOAD_ENABLE')
         self._addWidget('Download', LABEL_DOWNLOAD_DIR,
                         DirSelectorField, (TEXT_CHOOSE_DOWNLOAD_DIR,),
                         'DOWNLOAD_DIR')
         #fileNamePatterns = [DEFAULT_DOWNLOAD_FILENAME, "%Y-%m-%d_%Hh%Mm%Ss"]
         #self._addWidget('Download', LABEL_DOWNLOAD_FILENAME, ComboBoxField, (fileNamePatterns, ), 'DOWNLOAD_FILENAME')
         downloadWhen = [ TEXT_AFTER_EACH_SHOT, TEXT_AFTER_BRACKETING ]
-        self._addWidget('Download', LABEL_DOWNLOAD_WHEN, ComboBoxField, (downloadWhen, ), 'DOWNLOAD_WHEN')
+        self._addWidget('Download', LABEL_DOWNLOAD_AFTER, ComboBoxField, (downloadWhen, ), 'DOWNLOAD_AFTER')
         self._addWidget('Download', LABEL_DOWNLOAD_THEN_DELETE, CheckBoxField, (), 'DOWNLOAD_THEN_DELETE')
 
     def refreshView(self):
@@ -607,10 +655,10 @@ class GphotoBracketShutterController(ShutterPluginController):
             self._getWidget('Main', LABEL_EV_BIAS).setPrefix(' ')  # Does not seem to work...
             self._getWidget('Advanced', LABEL_EV_BIAS).setPrefix(' ')
 
-        downloadEnabled = self._getWidget('Download', LABEL_DOWNLOAD_ENABLED).value()
-        self._getWidget('Download', LABEL_DOWNLOAD_DIR).setDisabled(not downloadEnabled)
-        self._getWidget('Download', LABEL_DOWNLOAD_WHEN).setDisabled(not downloadEnabled)
-        self._getWidget('Download', LABEL_DOWNLOAD_THEN_DELETE).setDisabled(not downloadEnabled)
+        downloadEnable = self._getWidget('Download', LABEL_DOWNLOAD_ENABLE).value()
+        self._getWidget('Download', LABEL_DOWNLOAD_DIR).setDisabled(not downloadEnable)
+        self._getWidget('Download', LABEL_DOWNLOAD_AFTER).setDisabled(not downloadEnable)
+        self._getWidget('Download', LABEL_DOWNLOAD_THEN_DELETE).setDisabled(not downloadEnable)
 
 
 def register():
