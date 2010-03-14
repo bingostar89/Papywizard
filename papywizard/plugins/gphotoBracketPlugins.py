@@ -526,9 +526,8 @@ class GphotoBracketShutter(AbstractShutterPlugin):
             #raise Problem...
         Logger().debug("GphotoBracketShutter.shoot(): captured image file='%s'" % imagePath)
 
-        # Change shutter speed back to base speed
-        #self.__gphoto2.setConfig(self.__speedConfig, self.__baseSpeed)
-        # Why commented?
+        # Restore camera settings
+        self.__gphoto2.setConfig(self.__speedConfig, self.__baseSpeed)
 
         # Download files
         if downloadEnable:
