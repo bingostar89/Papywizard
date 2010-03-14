@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="fr">
+<!DOCTYPE TS>
+<TS version="2.0" language="fr">
 <context>
     <name>AbortMessageDialog</name>
     <message>
@@ -445,7 +446,7 @@
         <source>Plugins...</source>
         <translation>Plugins...</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="615"/>
         <source>Total fov (°)</source>
         <translation>Adc total (°)</translation>
@@ -455,12 +456,12 @@
         <source>Nb picts</source>
         <translation>Nb photos</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="487"/>
         <source>Corner 0 (°)</source>
         <translation>Coin 0 (°)</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="554"/>
         <source>Corner 1 (°)</source>
         <translation>Coin 1 (°)</translation>
@@ -573,12 +574,12 @@
 <context>
     <name>TimelordShutterController</name>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="199"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="85"/>
         <source>Choose program path...</source>
         <translation>Choisir programme...</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="199"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="86"/>
         <source>EXE files (*.exe);;All files (*)</source>
         <translation>Fichiers EXE (*.exe);;Tous les fichiers (*)</translation>
     </message>
@@ -602,7 +603,7 @@
 <context>
     <name>abstractPluginController</name>
     <message>
-        <location filename="papywizard/plugins/abstractPluginController.py" line="74"/>
+        <location filename="papywizard/plugins/abstractPluginController.py" line="61"/>
         <source>Main</source>
         <translation>Principal</translation>
     </message>
@@ -610,12 +611,12 @@
 <context>
     <name>axisPluginController</name>
     <message>
-        <location filename="papywizard/plugins/axisPluginController.py" line="67"/>
+        <location filename="papywizard/plugins/axisPluginController.py" line="60"/>
         <source>Low limit</source>
         <translation>Limite basse</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/axisPluginController.py" line="69"/>
+        <location filename="papywizard/plugins/axisPluginController.py" line="61"/>
         <source>High limit</source>
         <translation>Limite haute</translation>
     </message>
@@ -628,7 +629,7 @@
         <translation>Choix Bluetooth</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>configDialog</name>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="17"/>
@@ -910,7 +911,7 @@
         <source>Reverse direction before repeat</source>
         <translation>Inverse direction avant répétition</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/configDialog.ui" line="123"/>
         <source> °</source>
         <translation> °</translation>
@@ -919,61 +920,61 @@
 <context>
     <name>dslrRemoteProPlugins</name>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="206"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="87"/>
         <source>Mirror lockup</source>
         <translation>Verrouillage miroir</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="208"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="88"/>
         <source>User exposure
 compensation list</source>
         <translation>Liste compensation
 exposition utilisateur</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="210"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="89"/>
         <source>Dry run</source>
         <translation>Mode test</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="212"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="91"/>
         <source>Camera</source>
         <translation>Appareil</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="213"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="92"/>
         <source>Output directory</source>
         <translation>Répertoire de sortie</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="213"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="93"/>
         <source>Choose output directory...</source>
         <translation>Choisir répertoire de sortie...</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="217"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="94"/>
         <source>File name prefix</source>
         <translation>Préfixe fichiers</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="219"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="95"/>
         <source>Camera exposure
 compensation list</source>
         <translation>Liste compensation
 exposition appareil</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="202"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="84"/>
         <source>Program path</source>
         <translation>Programme</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="202"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="85"/>
         <source>Choose program path...</source>
         <translation>Choisir programme...</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="202"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="86"/>
         <source>EXE files (*.exe);;All files (*)</source>
         <translation>Fichiers EXE (*.exe);;Tous les fichiers (*)</translation>
     </message>
@@ -981,132 +982,235 @@ exposition appareil</translation>
 <context>
     <name>eosUtilityPlugins</name>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="89"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="110"/>
         <source>new</source>
         <translation>nouveau</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="92"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="113"/>
         <source>far</source>
         <translation>loin</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="98"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="119"/>
         <source>medium</source>
         <translation>moyen</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="88"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="109"/>
         <source>old</source>
         <translation>ancien</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="93"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="114"/>
         <source>near</source>
         <translation>proche</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="97"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="118"/>
         <source>small</source>
         <translation>petit</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="99"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="120"/>
         <source>large</source>
         <translation>grand</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="199"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="84"/>
         <source>Program path</source>
         <translation>Programme</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="204"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="87"/>
         <source>EOS Utility version</source>
         <translation>Version EOS Utility</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="206"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="88"/>
         <source>Bracketing nb picts</source>
         <translation>Nb photos multi-exposition</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="210"/>
-        <source>Bracketing stops</source>
-        <translation>Incrément d&apos;exposition</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="212"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="90"/>
         <source>Bracketing type</source>
         <translation>Type multi-exposition</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="214"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="91"/>
         <source>Dry run</source>
         <translation>Mode test</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="216"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="93"/>
         <source>Bulb</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="222"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="98"/>
         <source>Enable</source>
         <translation>Actif</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="219"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="95"/>
         <source>Base exposure</source>
         <translation>Base d&apos;exposition</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="221"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="97"/>
         <source>Focus</source>
         <translation>MaP</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="225"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="99"/>
         <source>Direction</source>
         <translation>Direction</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="228"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="100"/>
         <source>Step</source>
         <translation>Pas</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="230"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="101"/>
         <source>Step count</source>
         <translation>Nb pas</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="232"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="102"/>
         <source>Nb picts</source>
         <translation>Nb photos</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="89"/>
+        <source>Bracketing step</source>
+        <translation>Incrément d&apos;exposition</translation>
     </message>
 </context>
 <context>
     <name>genericTetheredPlugins</name>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="126"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="76"/>
         <source>Mirror lockup</source>
         <translation>Verrouillage miroir</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="128"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="77"/>
         <source>Mirror lockup command</source>
         <translation>Commande verrouillage miroir</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="135"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="80"/>
         <source>Shoot command</source>
         <translation>Commande déclenchement</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="142"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="83"/>
         <source>Bracketing nb picts</source>
         <translation>Nb photos multi-exposition</translation>
+    </message>
+</context>
+<context>
+    <name>gphotoBracketPlugins</name>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="91"/>
+        <source>Program path</source>
+        <translation>Programme</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="92"/>
+        <source>Choose program path...</source>
+        <translation>Choisir programme...</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="93"/>
+        <source>gphoto2 (gphoto2);;All files (*)</source>
+        <translation>gphoto2 (gphoto2);;Tous les fichiers (*)</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="94"/>
+        <source>Bracketing nb picts</source>
+        <translation>Nb photos multi-exposition</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="95"/>
+        <source>Bracketing step</source>
+        <translation>Incrément d&apos;exposition</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="96"/>
+        <source>Exposure bias</source>
+        <translation>Décalage d&apos;exposition</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="97"/>
+        <source>Resulting Ev list</source>
+        <translation>Liste d&apos;expositions</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="100"/>
+        <source>Advanced</source>
+        <translation>Avancé</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="101"/>
+        <source>Bracketing nb picts (+)</source>
+        <translation>Nb photos multi-exposition (+)</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="102"/>
+        <source>Bracketing step (+)</source>
+        <translation>Incrément d&apos;exposition (+)</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="103"/>
+        <source>Bracketing nb picts (-)</source>
+        <translation>Nb photos multi-exposition (-)</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="104"/>
+        <source>Bracketing step (-)</source>
+        <translation>Incrément d&apos;exposition (-)</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="106"/>
+        <source>Download</source>
+        <translation>Télécharger</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="107"/>
+        <source>Enable</source>
+        <translation>Actif</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="108"/>
+        <source>Download directory</source>
+        <translation>Répertoire téléchargement</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="109"/>
+        <source>Choose download directory...</source>
+        <translation>Choisir répertoire téléchargement...</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="111"/>
+        <source>Download after</source>
+        <translation>Télécharge après</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="112"/>
+        <source>Each shot</source>
+        <translation>Chaque déclenchement</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="113"/>
+        <source>Bracketing sequence</source>
+        <translation>Séquence</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="114"/>
+        <source>Delete camera picts</source>
+        <translation>Efface images de l&apos;appareil</translation>
     </message>
 </context>
 <context>
@@ -1127,7 +1231,7 @@ exposition appareil</translation>
         <translation>Incrément d&apos;exposition</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>helpAboutDialog</name>
     <message>
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="14"/>
@@ -1171,7 +1275,7 @@ A cet égard  l&apos;attention de l&apos;utilisateur est attirée sur les risque
 
 Le fait que vous puissiez accéder à cet en-tête signifie que vous avez pris connaissance de la licence CeCILL, et que vous en avez accepté les termes.</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="155"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1250,12 +1354,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>main</name>
     <message>
-        <location filename="papywizard/scripts/main.py" line="224"/>
+        <location filename="papywizard/scripts/main.py" line="228"/>
         <source>Plugins selection</source>
         <translation>Sélection des plugins</translation>
     </message>
     <message>
-        <location filename="papywizard/scripts/main.py" line="224"/>
+        <location filename="papywizard/scripts/main.py" line="228"/>
         <source>Before you can use Papywizard, you must choose what plugins to use to control your hardware.
 
 After closing this dialog, you will be prompt to select these plugins. Once it is done, you can configure them in the global Configuration dialog</source>
@@ -1267,17 +1371,17 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
 <context>
     <name>merlinOrionPlugins</name>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="278"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="82"/>
         <source>Hard</source>
         <translation>Matos</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="279"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="83"/>
         <source>Alternate drive</source>
         <translation>Positionnement alternatif</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="281"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="84"/>
         <source>Inertia angle</source>
         <translation>Angle d&apos;inertie</translation>
     </message>
@@ -1306,24 +1410,129 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
     </message>
 </context>
 <context>
+    <name>nkRemotePlugins</name>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="84"/>
+        <source>Program path</source>
+        <translation>Programme</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="85"/>
+        <source>Choose program path...</source>
+        <translation>Choisir programme...</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="86"/>
+        <source>EXE files (*.exe);;All files (*)</source>
+        <translation>Fichiers EXE (*.exe);;Tous les fichiers (*)</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="87"/>
+        <source>Mirror lockup</source>
+        <translation>Verrouillage miroir</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="88"/>
+        <source>User exposure
+compensation list</source>
+        <translation>Liste compensation
+exposition utilisateur</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="89"/>
+        <source>Dry run</source>
+        <translation>Mode test</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="91"/>
+        <source>Camera</source>
+        <translation>Appareil</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="92"/>
+        <source>Choose output directory...</source>
+        <translation>Choisir répertoire de sortie...</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="93"/>
+        <source>File name prefix</source>
+        <translation>Préfixe fichiers</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="94"/>
+        <source>Camera exposure
+compensation list</source>
+        <translation>Liste compensation
+exposition appareil</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="233"/>
+        <source>Output directory</source>
+        <translation>Répertoire de sortie</translation>
+    </message>
+</context>
+<context>
+    <name>panoduinoPlugins</name>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="99"/>
+        <source>forward</source>
+        <translation>avant</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="82"/>
+        <source>Speed</source>
+        <translation>Vitesse</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="84"/>
+        <source>Servo</source>
+        <translation>Servo</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="85"/>
+        <source>Direction</source>
+        <translation>Direction</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="86"/>
+        <source>Neutral position</source>
+        <translation>Position du neutre</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="87"/>
+        <source>Value off</source>
+        <translation>Valeur repos</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="88"/>
+        <source>Value on</source>
+        <translation>Valeur actif</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="100"/>
+        <source>reverse</source>
+        <translation>arrière</translation>
+    </message>
+</context>
+<context>
     <name>pixOrbPlugins</name>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="239"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="82"/>
         <source>Speed index</source>
         <translation>Index vitesse</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="241"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="84"/>
         <source>Hard</source>
         <translation>Matos</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="242"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="85"/>
         <source>Axis with break</source>
         <translation>Axe avec frein</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="244"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="86"/>
         <source>Axis accuracy</source>
         <translation>Précision de l&apos;axe</translation>
     </message>
@@ -1465,37 +1674,37 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
         <translation>arrière</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="236"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="240"/>
         <source>Speed</source>
         <translation>Vitesse</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="301"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="305"/>
         <source>Servo</source>
         <translation>Servo</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="240"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="244"/>
         <source>Direction</source>
         <translation>Direction</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="242"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="246"/>
         <source>Angle for 1ms</source>
         <translation>Angle pour 1ms</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="244"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="248"/>
         <source>Neutral position</source>
         <translation>Position du neutre</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="302"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="306"/>
         <source>Value off</source>
         <translation>Valeur repos</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="304"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="308"/>
         <source>Value on</source>
         <translation>Valeur actif</translation>
     </message>
@@ -1576,22 +1785,22 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
 <context>
     <name>simulationPlugins</name>
     <message>
-        <location filename="papywizard/plugins/simulationPlugins.py" line="217"/>
+        <location filename="papywizard/plugins/simulationPlugins.py" line="78"/>
         <source>Speed</source>
         <translation>Vitesse</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/simulationPlugins.py" line="262"/>
+        <location filename="papywizard/plugins/simulationPlugins.py" line="80"/>
         <source>Time value</source>
         <translation>Durée d&apos;exposition</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/simulationPlugins.py" line="264"/>
+        <location filename="papywizard/plugins/simulationPlugins.py" line="81"/>
         <source>Mirror lockup</source>
         <translation>Verrouillage miroir</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/simulationPlugins.py" line="266"/>
+        <location filename="papywizard/plugins/simulationPlugins.py" line="82"/>
         <source>Bracketing nb picts</source>
         <translation>Nb photos multi-exposition</translation>
     </message>
@@ -1599,32 +1808,32 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
 <context>
     <name>standardShutterPluginController</name>
     <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="64"/>
+        <location filename="papywizard/plugins/standardShutterPluginController.py" line="60"/>
         <source>Time value</source>
         <translation>Durée d&apos;exposition</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="66"/>
+        <location filename="papywizard/plugins/standardShutterPluginController.py" line="61"/>
         <source>Mirror lockup</source>
         <translation>Verrouillage miroir</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="68"/>
+        <location filename="papywizard/plugins/standardShutterPluginController.py" line="62"/>
         <source>Bracketing nb picts</source>
         <translation>Nb photos multi-exposition</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="70"/>
+        <location filename="papywizard/plugins/standardShutterPluginController.py" line="64"/>
         <source>Hard</source>
         <translation>Matos</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="71"/>
+        <location filename="papywizard/plugins/standardShutterPluginController.py" line="65"/>
         <source>Pulse width high</source>
         <translation>Largeur impulsion haute</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="73"/>
+        <location filename="papywizard/plugins/standardShutterPluginController.py" line="66"/>
         <source>Pulse width low</source>
         <translation>Largeur impulsion basse</translation>
     </message>
@@ -1632,37 +1841,37 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
 <context>
     <name>timelordPlugins</name>
     <message>
-        <location filename="papywizard/plugins/timelordPlugins.py" line="127"/>
+        <location filename="papywizard/plugins/timelordPlugins.py" line="73"/>
         <source>Program path</source>
         <translation>Programme</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/timelordPlugins.py" line="127"/>
+        <location filename="papywizard/plugins/timelordPlugins.py" line="74"/>
         <source>Choose program path...</source>
         <translation>Choisir programme...</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/timelordPlugins.py" line="127"/>
+        <location filename="papywizard/plugins/timelordPlugins.py" line="75"/>
         <source>EXE files (*.exe);;All files (*)</source>
         <translation>Fichiers EXE (*.exe);;Tous les fichiers (*)</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/timelordPlugins.py" line="131"/>
+        <location filename="papywizard/plugins/timelordPlugins.py" line="76"/>
         <source>LRD file</source>
         <translation>Fichier LRD</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/timelordPlugins.py" line="131"/>
+        <location filename="papywizard/plugins/timelordPlugins.py" line="77"/>
         <source>Choose LRD file...</source>
         <translation>Choisir fichier LRD...</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/timelordPlugins.py" line="131"/>
+        <location filename="papywizard/plugins/timelordPlugins.py" line="78"/>
         <source>LRD files (*.lrd);;All files (*)</source>
         <translation>Fichiers LRD (*.lrd);;Tous les fichiers (*)</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>totalFovDialog</name>
     <message>
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="14"/>
@@ -1684,7 +1893,7 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
         <source>Total fov</source>
         <translation></translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="69"/>
         <source> °</source>
         <translation> °</translation>
@@ -1693,22 +1902,22 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
 <context>
     <name>ursaMinorBt2Plugins</name>
     <message>
-        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="154"/>
+        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="74"/>
         <source>Focus</source>
         <translation>MaP</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="155"/>
+        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="75"/>
         <source>Enable</source>
         <translation>Actif</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="157"/>
+        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="76"/>
         <source>Pulse width</source>
         <translation>Largeur impulsion</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="159"/>
+        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="77"/>
         <source>Maintain focus</source>
         <translation>Maintenir</translation>
     </message>
@@ -1716,12 +1925,12 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
 <context>
     <name>ursaMinorUsbPlugins</name>
     <message>
-        <location filename="papywizard/plugins/ursaMinorUsbPlugins.py" line="117"/>
+        <location filename="papywizard/plugins/ursaMinorUsbPlugins.py" line="74"/>
         <source>Trigger line</source>
         <translation>Ligne déclenchement</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/ursaMinorUsbPlugins.py" line="119"/>
+        <location filename="papywizard/plugins/ursaMinorUsbPlugins.py" line="75"/>
         <source>Line inverted</source>
         <translation>Ligne inversée</translation>
     </message>

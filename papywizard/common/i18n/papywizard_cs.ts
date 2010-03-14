@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="cs_CZ">
+<!DOCTYPE TS>
+<TS version="2.0" language="cs_CZ">
 <context>
     <name>AbortMessageDialog</name>
     <message>
@@ -320,17 +321,17 @@
         <source>Mosaic</source>
         <translation>Mosaika</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="487"/>
         <source>Corner 0 (°)</source>
         <translation>Roh 0 (°)</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="554"/>
         <source>Corner 1 (°)</source>
         <translation>Roh 1 (°)</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/mainWindow.ui" line="615"/>
         <source>Total fov (°)</source>
         <translation>Zorný úhel (°)</translation>
@@ -574,12 +575,12 @@
 <context>
     <name>TimelordShutterController</name>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="199"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="85"/>
         <source>Choose program path...</source>
         <translation>Vyberte cestu k programu...</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="199"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="86"/>
         <source>EXE files (*.exe);;All files (*)</source>
         <translation>EXE soubory (*.exe);;Všechny soubory (*)</translation>
     </message>
@@ -603,7 +604,7 @@
 <context>
     <name>abstractPluginController</name>
     <message>
-        <location filename="papywizard/plugins/abstractPluginController.py" line="74"/>
+        <location filename="papywizard/plugins/abstractPluginController.py" line="61"/>
         <source>Main</source>
         <translation>Hlavní</translation>
     </message>
@@ -611,12 +612,12 @@
 <context>
     <name>axisPluginController</name>
     <message>
-        <location filename="papywizard/plugins/axisPluginController.py" line="67"/>
+        <location filename="papywizard/plugins/axisPluginController.py" line="60"/>
         <source>Low limit</source>
         <translation>Nejnižší hodnota</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/axisPluginController.py" line="69"/>
+        <location filename="papywizard/plugins/axisPluginController.py" line="61"/>
         <source>High limit</source>
         <translation>Nejvyšší hodnota</translation>
     </message>
@@ -629,7 +630,7 @@
         <translation>Výběr Bluetooth</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>configDialog</name>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="17"/>
@@ -911,7 +912,7 @@
         <source>critical</source>
         <translation>kritické chyby</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/configDialog.ui" line="123"/>
         <source> °</source>
         <translation> °</translation>
@@ -920,60 +921,60 @@
 <context>
     <name>dslrRemoteProPlugins</name>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="206"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="87"/>
         <source>Mirror lockup</source>
         <translation>Předsklopení zrcátka</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="208"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="88"/>
         <source>User exposure
 compensation list</source>
         <translation>Používat seznam
 kompenzace expozice</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="210"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="89"/>
         <source>Dry run</source>
         <translation>Ukázkový běh</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="212"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="91"/>
         <source>Camera</source>
         <translation>Fotoaparát</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="213"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="92"/>
         <source>Output directory</source>
         <translation>Výstupní adresář</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="213"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="93"/>
         <source>Choose output directory...</source>
         <translation>Vyberte výstupní adresář...</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="217"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="94"/>
         <source>File name prefix</source>
         <translation>Předřazená část názvu souborů</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="219"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="95"/>
         <source>Camera exposure
 compensation list</source>
         <translation>Seznam korekcí expozice</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="202"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="84"/>
         <source>Program path</source>
         <translation>Cesta k programu</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="202"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="85"/>
         <source>Choose program path...</source>
         <translation>Vyberte cestu k programu...</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="202"/>
+        <location filename="papywizard/plugins/dslrRemoteProPlugins.py" line="86"/>
         <source>EXE files (*.exe);;All files (*)</source>
         <translation>EXE soubory (*.exe);;Všechny soubory (*)</translation>
     </message>
@@ -981,132 +982,235 @@ compensation list</source>
 <context>
     <name>eosUtilityPlugins</name>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="89"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="110"/>
         <source>new</source>
         <translation>nový</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="92"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="113"/>
         <source>far</source>
         <translation>vzdálený</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="98"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="119"/>
         <source>medium</source>
         <translation>střední</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="88"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="109"/>
         <source>old</source>
         <translation>starý</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="93"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="114"/>
         <source>near</source>
         <translation>blízký</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="97"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="118"/>
         <source>small</source>
         <translation>malý</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="99"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="120"/>
         <source>large</source>
         <translation>velký</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="199"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="84"/>
         <source>Program path</source>
         <translation>Cesta k programu</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="204"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="87"/>
         <source>EOS Utility version</source>
         <translation>Verze EOS Utility</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="206"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="88"/>
         <source>Bracketing nb picts</source>
         <translation>Počet obrázků při braketingu</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="210"/>
-        <source>Bracketing stops</source>
-        <translation>Krok při braketingu</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="212"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="90"/>
         <source>Bracketing type</source>
         <translation>Typ braketingu</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="214"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="91"/>
         <source>Dry run</source>
         <translation>Ukázkový běh</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="216"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="93"/>
         <source>Bulb</source>
         <translation>Dlouhý čas(drženo)</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="222"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="98"/>
         <source>Enable</source>
         <translation>Povoleno</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="219"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="95"/>
         <source>Base exposure</source>
         <translation>Základní expozice</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="221"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="97"/>
         <source>Focus</source>
         <translation>Ostření</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="225"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="99"/>
         <source>Direction</source>
         <translation>Směr</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="228"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="100"/>
         <source>Step</source>
         <translation>Krok</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="230"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="101"/>
         <source>Step count</source>
         <translation>Počet kroků</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="232"/>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="102"/>
         <source>Nb picts</source>
         <translation>Počet obrázků</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/eosUtilityPlugins.py" line="89"/>
+        <source>Bracketing step</source>
+        <translation>Krok při braketingu</translation>
     </message>
 </context>
 <context>
     <name>genericTetheredPlugins</name>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="126"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="76"/>
         <source>Mirror lockup</source>
         <translation>Předsklopení zrcátka</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="128"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="77"/>
         <source>Mirror lockup command</source>
         <translation>Příkaz předsklopení zrcátka</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="135"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="80"/>
         <source>Shoot command</source>
         <translation>Příkaz fotografování</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="142"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="83"/>
         <source>Bracketing nb picts</source>
         <translation>Počet obrázků při braketingu</translation>
+    </message>
+</context>
+<context>
+    <name>gphotoBracketPlugins</name>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="91"/>
+        <source>Program path</source>
+        <translation>Cesta k programu</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="92"/>
+        <source>Choose program path...</source>
+        <translation>Vyberte cestu k programu...</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="93"/>
+        <source>gphoto2 (gphoto2);;All files (*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="94"/>
+        <source>Bracketing nb picts</source>
+        <translation>Počet obrázků při braketingu</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="95"/>
+        <source>Bracketing step</source>
+        <translation>Krok při braketingu</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="96"/>
+        <source>Exposure bias</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="97"/>
+        <source>Resulting Ev list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="100"/>
+        <source>Advanced</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="101"/>
+        <source>Bracketing nb picts (+)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="102"/>
+        <source>Bracketing step (+)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="103"/>
+        <source>Bracketing nb picts (-)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="104"/>
+        <source>Bracketing step (-)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="106"/>
+        <source>Download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="107"/>
+        <source>Enable</source>
+        <translation>Povoleno</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="108"/>
+        <source>Download directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="109"/>
+        <source>Choose download directory...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="111"/>
+        <source>Download after</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="112"/>
+        <source>Each shot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="113"/>
+        <source>Bracketing sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/gphotoBracketPlugins.py" line="114"/>
+        <source>Delete camera picts</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1127,7 +1231,7 @@ compensation list</source>
         <translation>Krok při braketingu</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>helpAboutDialog</name>
     <message>
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="14"/>
@@ -1171,7 +1275,7 @@ In this respect, the user&apos;s attention is drawn to the risks associated with
 
 The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="155"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1250,12 +1354,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>main</name>
     <message>
-        <location filename="papywizard/scripts/main.py" line="224"/>
+        <location filename="papywizard/scripts/main.py" line="228"/>
         <source>Plugins selection</source>
         <translation>Výběr rozšíření</translation>
     </message>
     <message>
-        <location filename="papywizard/scripts/main.py" line="224"/>
+        <location filename="papywizard/scripts/main.py" line="228"/>
         <source>Before you can use Papywizard, you must choose what plugins to use to control your hardware.
 
 After closing this dialog, you will be prompt to select these plugins. Once it is done, you can configure them in the global Configuration dialog</source>
@@ -1267,17 +1371,17 @@ Po zavření tohoto dialogu budete vyzváni k výběru těchto rozšíření. Ja
 <context>
     <name>merlinOrionPlugins</name>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="278"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="82"/>
         <source>Hard</source>
         <translation>Pevný</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="279"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="83"/>
         <source>Alternate drive</source>
         <translation>Alternativní pohon</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="281"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="84"/>
         <source>Inertia angle</source>
         <translation>Neutrální úhel</translation>
     </message>
@@ -1306,24 +1410,128 @@ Po zavření tohoto dialogu budete vyzváni k výběru těchto rozšíření. Ja
     </message>
 </context>
 <context>
+    <name>nkRemotePlugins</name>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="84"/>
+        <source>Program path</source>
+        <translation>Cesta k programu</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="85"/>
+        <source>Choose program path...</source>
+        <translation>Vyberte cestu k programu...</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="86"/>
+        <source>EXE files (*.exe);;All files (*)</source>
+        <translation>EXE soubory (*.exe);;Všechny soubory (*)</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="87"/>
+        <source>Mirror lockup</source>
+        <translation>Předsklopení zrcátka</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="88"/>
+        <source>User exposure
+compensation list</source>
+        <translation>Používat seznam
+kompenzace expozice</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="89"/>
+        <source>Dry run</source>
+        <translation>Ukázkový běh</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="91"/>
+        <source>Camera</source>
+        <translation>Fotoaparát</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="92"/>
+        <source>Choose output directory...</source>
+        <translation>Vyberte výstupní adresář...</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="93"/>
+        <source>File name prefix</source>
+        <translation>Předřazená část názvu souborů</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="94"/>
+        <source>Camera exposure
+compensation list</source>
+        <translation>Seznam korekcí expozice</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/nkRemotePlugins.py" line="233"/>
+        <source>Output directory</source>
+        <translation>Výstupní adresář</translation>
+    </message>
+</context>
+<context>
+    <name>panoduinoPlugins</name>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="99"/>
+        <source>forward</source>
+        <translation>vpřed</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="82"/>
+        <source>Speed</source>
+        <translation>Rychlost</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="84"/>
+        <source>Servo</source>
+        <translation>Servo</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="85"/>
+        <source>Direction</source>
+        <translation>Směr</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="86"/>
+        <source>Neutral position</source>
+        <translation>Neutrální pozice</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="87"/>
+        <source>Value off</source>
+        <translation>Hodnota vypnuta</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="88"/>
+        <source>Value on</source>
+        <translation>Hodnota zapnuta</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="100"/>
+        <source>reverse</source>
+        <translation>zpět</translation>
+    </message>
+</context>
+<context>
     <name>pixOrbPlugins</name>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="239"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="82"/>
         <source>Speed index</source>
         <translation>Stupeň rychlosti</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="241"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="84"/>
         <source>Hard</source>
         <translation>Pevný</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="242"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="85"/>
         <source>Axis with break</source>
         <translation>Osa s brzdou</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pixOrbPlugins.py" line="244"/>
+        <location filename="papywizard/plugins/pixOrbPlugins.py" line="86"/>
         <source>Axis accuracy</source>
         <translation>Přesnost osy</translation>
     </message>
@@ -1465,37 +1673,37 @@ Po zavření tohoto dialogu budete vyzváni k výběru těchto rozšíření. Ja
         <translation>zpět</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="236"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="240"/>
         <source>Speed</source>
         <translation>Rychlost</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="301"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="305"/>
         <source>Servo</source>
         <translation>Servo</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="240"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="244"/>
         <source>Direction</source>
         <translation>Směr</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="242"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="246"/>
         <source>Angle for 1ms</source>
         <translation>Úhel za 1 ms</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="244"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="248"/>
         <source>Neutral position</source>
         <translation>Neutrální pozice</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="302"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="306"/>
         <source>Value off</source>
         <translation>Hodnota vypnuta</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/pololuServoPlugins.py" line="304"/>
+        <location filename="papywizard/plugins/pololuServoPlugins.py" line="308"/>
         <source>Value on</source>
         <translation>Hodnota zapnuta</translation>
     </message>
@@ -1576,22 +1784,22 @@ Po zavření tohoto dialogu budete vyzváni k výběru těchto rozšíření. Ja
 <context>
     <name>simulationPlugins</name>
     <message>
-        <location filename="papywizard/plugins/simulationPlugins.py" line="217"/>
+        <location filename="papywizard/plugins/simulationPlugins.py" line="78"/>
         <source>Speed</source>
         <translation>Rychlost</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/simulationPlugins.py" line="262"/>
+        <location filename="papywizard/plugins/simulationPlugins.py" line="80"/>
         <source>Time value</source>
         <translation>Čas</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/simulationPlugins.py" line="264"/>
+        <location filename="papywizard/plugins/simulationPlugins.py" line="81"/>
         <source>Mirror lockup</source>
         <translation>Předsklopení zrcátka</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/simulationPlugins.py" line="266"/>
+        <location filename="papywizard/plugins/simulationPlugins.py" line="82"/>
         <source>Bracketing nb picts</source>
         <translation>Počet obrázků při braketingu</translation>
     </message>
@@ -1599,32 +1807,32 @@ Po zavření tohoto dialogu budete vyzváni k výběru těchto rozšíření. Ja
 <context>
     <name>standardShutterPluginController</name>
     <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="64"/>
+        <location filename="papywizard/plugins/standardShutterPluginController.py" line="60"/>
         <source>Time value</source>
         <translation>Čas</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="66"/>
+        <location filename="papywizard/plugins/standardShutterPluginController.py" line="61"/>
         <source>Mirror lockup</source>
         <translation>Předsklopení zrcátka</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="68"/>
+        <location filename="papywizard/plugins/standardShutterPluginController.py" line="62"/>
         <source>Bracketing nb picts</source>
         <translation>Počet obrázků při braketingu</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="70"/>
+        <location filename="papywizard/plugins/standardShutterPluginController.py" line="64"/>
         <source>Hard</source>
         <translation>Pevný</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="71"/>
+        <location filename="papywizard/plugins/standardShutterPluginController.py" line="65"/>
         <source>Pulse width high</source>
         <translation>Délka pulsu - horní</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="73"/>
+        <location filename="papywizard/plugins/standardShutterPluginController.py" line="66"/>
         <source>Pulse width low</source>
         <translation>Délka pulzu - spodní</translation>
     </message>
@@ -1632,37 +1840,37 @@ Po zavření tohoto dialogu budete vyzváni k výběru těchto rozšíření. Ja
 <context>
     <name>timelordPlugins</name>
     <message>
-        <location filename="papywizard/plugins/timelordPlugins.py" line="127"/>
+        <location filename="papywizard/plugins/timelordPlugins.py" line="73"/>
         <source>Program path</source>
         <translation>Cesta k programu</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/timelordPlugins.py" line="127"/>
+        <location filename="papywizard/plugins/timelordPlugins.py" line="74"/>
         <source>Choose program path...</source>
         <translation>Vyberte cestu k programu...</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/timelordPlugins.py" line="127"/>
+        <location filename="papywizard/plugins/timelordPlugins.py" line="75"/>
         <source>EXE files (*.exe);;All files (*)</source>
         <translation>EXE soubory (*.exe);;Všechny soubory (*)</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/timelordPlugins.py" line="131"/>
+        <location filename="papywizard/plugins/timelordPlugins.py" line="76"/>
         <source>LRD file</source>
         <translation>LRD soubor</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/timelordPlugins.py" line="131"/>
+        <location filename="papywizard/plugins/timelordPlugins.py" line="77"/>
         <source>Choose LRD file...</source>
         <translation>Vyberte LRD soubor...</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/timelordPlugins.py" line="131"/>
+        <location filename="papywizard/plugins/timelordPlugins.py" line="78"/>
         <source>LRD files (*.lrd);;All files (*)</source>
         <translation>LRD soubory (*.lrd);;Všechny soubory (*)</translation>
     </message>
 </context>
-<context encoding="UTF-8">
+<context>
     <name>totalFovDialog</name>
     <message>
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="14"/>
@@ -1684,7 +1892,7 @@ Po zavření tohoto dialogu budete vyzváni k výběru těchto rozšíření. Ja
         <source>Total fov</source>
         <translation>Zorný úhel</translation>
     </message>
-    <message encoding="UTF-8">
+    <message utf8="true">
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="69"/>
         <source> °</source>
         <translation> °</translation>
@@ -1693,22 +1901,22 @@ Po zavření tohoto dialogu budete vyzváni k výběru těchto rozšíření. Ja
 <context>
     <name>ursaMinorBt2Plugins</name>
     <message>
-        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="154"/>
+        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="74"/>
         <source>Focus</source>
         <translation>Ostření</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="155"/>
+        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="75"/>
         <source>Enable</source>
         <translation>Povoleno</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="157"/>
+        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="76"/>
         <source>Pulse width</source>
         <translation>Délka pulsu</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="159"/>
+        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="77"/>
         <source>Maintain focus</source>
         <translation>Zachová zaostření</translation>
     </message>
@@ -1716,12 +1924,12 @@ Po zavření tohoto dialogu budete vyzváni k výběru těchto rozšíření. Ja
 <context>
     <name>ursaMinorUsbPlugins</name>
     <message>
-        <location filename="papywizard/plugins/ursaMinorUsbPlugins.py" line="117"/>
+        <location filename="papywizard/plugins/ursaMinorUsbPlugins.py" line="74"/>
         <source>Trigger line</source>
         <translation>Spouštěná linka</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/ursaMinorUsbPlugins.py" line="119"/>
+        <location filename="papywizard/plugins/ursaMinorUsbPlugins.py" line="75"/>
         <source>Line inverted</source>
         <translation>Linka invertovaná</translation>
     </message>
