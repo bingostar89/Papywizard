@@ -73,9 +73,9 @@ from papywizard.view.pluginFields import ComboBoxField, SpinBoxField, DoubleSpin
 
 NAME = "Panoduino"
 
-DEFAULT_SPEED = 64
+DEFAULT_SPEED = 3
 DEFAULT_DIRECTION = unicode(QtGui.QApplication.translate("panoduinoPlugins", 'forward'))
-DEFAULT_NEUTRAL_POSITION = 3000 # controller value for neutral position
+DEFAULT_NEUTRAL_POSITION = 3000  # controller value for neutral position
 DEFAULT_VALUE_OFF = 0
 DEFAULT_VALUE_ON = 127
 
@@ -161,7 +161,6 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         speed = self.__computeServoSpeed(self._config['SPEED'])
         direction = DIRECTION_TABLE[self._config['DIRECTION']]
         self._hardware.configure(speed, direction)
-        #self._hardware.setNeutral(self._config['NEUTRAL_POSITION'])
 
     def read(self):
         return self.__position - self._offset
