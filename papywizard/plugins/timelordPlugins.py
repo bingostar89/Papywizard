@@ -70,6 +70,13 @@ NAME = "Timelord"
 DEFAULT_PROGRAM_PATH = "C:\\Program Files\\OxfordEye\\Timelord\\Timelord.exe"
 DEFAULT_LRD_FILE = "C:\\Documents and Settings\\win2k\\My Documents\\timelord.lrd"
 
+LABEL_PROGRAM_PATH = unicode(QtGui.QApplication.translate("timelordPlugins", "Program path"))
+TEXT_CHOOSE_PROGRAM_PATH = unicode(QtGui.QApplication.translate("timelordPlugins", "Choose program path..."))
+TEXT_CHOOSE_PROGRAM_PATH_FILTER = unicode(QtGui.QApplication.translate("timelordPlugins", "EXE files (*.exe);;All files (*)"))
+LABEL_LRD_FILE = unicode(QtGui.QApplication.translate("timelordPlugins", "LRD file"))
+TEXT_CHOOSE_LRD_FILE = unicode(QtGui.QApplication.translate("timelordPlugins", "Choose LRD file..."))
+TEXT_CHOOSE_LRD_FILE_FILTER = unicode(QtGui.QApplication.translate("timelordPlugins", "LRD files (*.lrd);;All files (*)"))
+
 
 class TimelordShutter(AbstractShutterPlugin):
     """
@@ -124,13 +131,11 @@ class TimelordShutterController(ShutterPluginController):
     def _defineGui(self):
         Logger().trace("TimelordShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("timelordPlugins", "Program path"),
-                        FileSelectorField, (QtGui.QApplication.translate("timelordPlugins", "Choose program path..."),
-                                            QtGui.QApplication.translate("timelordPlugins", "EXE files (*.exe);;All files (*)")),
+        self._addWidget('Main', LABEL_PROGRAM_PATH,
+                        FileSelectorField, (TEXT_CHOOSE_PROGRAM_PATH, TEXT_CHOOSE_PROGRAM_PATH_FILTER),
                         'PROGRAM_PATH')
-        self._addWidget('Main', QtGui.QApplication.translate("timelordPlugins", "LRD file"),
-                        FileSelectorField, (QtGui.QApplication.translate("timelordPlugins", "Choose LRD file..."),
-                                            QtGui.QApplication.translate("timelordPlugins", "LRD files (*.lrd);;All files (*)")),
+        self._addWidget('Main', LABEL_LRD_FILE,
+                        FileSelectorField, (TEXT_CHOOSE_LRD_FILE, TEXT_CHOOSE_LRD_FILE_FILTER),
                         'LRD_FILE')
 
 

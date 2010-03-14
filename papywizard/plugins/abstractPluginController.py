@@ -58,6 +58,9 @@ from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 from papywizard.controller.abstractController import AbstractModalDialogController
 
+TAB_MAIN = unicode(QtGui.QApplication.translate("abstractPluginController", 'Main'))
+
+
 class AbstractPluginController(AbstractModalDialogController):
     """ Plugin controller.
 
@@ -71,7 +74,7 @@ class AbstractPluginController(AbstractModalDialogController):
         self._fields = {}
 
         # Add a general tab
-        self._addTab('Main', QtGui.QApplication.translate("abstractPluginController", 'Main'))
+        self._addTab('Main', TAB_MAIN)
 
     def _addTab(self, tabName, tabLabel):
         """ Add a new tab to the tab widget.

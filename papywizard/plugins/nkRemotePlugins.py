@@ -81,6 +81,18 @@ DEFAULT_OUTPUT_DIR = config.HOME_DIR
 DEFAULT_FILENAME_PREFIX = ""
 DEFAULT_CAMERA_EXPOSURE_COMPENSATION_LIST = u"±5@1/2"
 
+LABEL_PROGRAM_PATH = unicode(QtGui.QApplication.translate("nkRemotePlugins", "Program path"))
+TEXT_CHOOSE_PROGRAM_PATH = unicode(QtGui.QApplication.translate("nkRemotePlugins", "Choose program path..."))
+TEXT_CHOOSE_PROGRAM_PATH_FILTER = unicode(QtGui.QApplication.translate("nkRemotePlugins", "EXE files (*.exe);;All files (*)"))
+LABEL_MIRROR_LOCKUP = unicode(QtGui.QApplication.translate("nkRemotePlugins", "Mirror lockup"))
+LABEL_USER_EXPOSURE_COMPENSATION_LIST = unicode(QtGui.QApplication.translate("nkRemotePlugins", "User exposure\ncompensation list"))
+LABEL_DRY_RUN = unicode(QtGui.QApplication.translate("nkRemotePlugins", "Dry run"))
+
+TAB_CAMERA = unicode(QtGui.QApplication.translate("nkRemotePlugins", 'Camera'))
+TEXT_CHOOSE_OUTPUT_DIR = unicode(QtGui.QApplication.translate("nkRemotePlugins", "Choose output directory..."))
+LABEL_FILENAME_PREFIX = unicode(QtGui.QApplication.translate("nkRemotePlugins", "File name prefix"))
+LABEL_CAMERA_EXPOSURE_COMPENSATION_LIST = unicode(QtGui.QApplication.translate("nkRemotePlugins", "Camera exposure\ncompensation list"))
+
 MIRROR_LOCKUP_PARAMS = ""
 OUTPUT_DIR_PARAM = "-o"
 FILENAME_PREFIX_PARAM = "-p"
@@ -211,25 +223,18 @@ class NkRemoteShutter(AbstractShutterPlugin):
 class NkRemoteShutterController(ShutterPluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("nkRemotePlugins", "Program path"),
-                        FileSelectorField, (QtGui.QApplication.translate("nkRemotePlugins", "Choose program path..."),
-                                            QtGui.QApplication.translate("nkRemotePlugins", "EXE files (*.exe);;All files (*)")),
+        self._addWidget('Main', LABEL_PROGRAM_PATH,
+                        FileSelectorField, (TEXT_CHOOSE_PROGRAM_PATH, TEXT_CHOOSE_PROGRAM_PATH_FILTER),
                         'PROGRAM_PATH')
-        self._addWidget('Main', QtGui.QApplication.translate("nkRemotePlugins", "Mirror lockup"),
-                        CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', QtGui.QApplication.translate("nkRemotePlugins", "User exposure\ncompensation list"),
-                        LineEditField, (), 'USER_EXPOSURE_COMPENSATION_LIST')
-        self._addWidget('Main', QtGui.QApplication.translate("nkRemotePlugins", "Dry run"),
-                        CheckBoxField, (), 'DRY_RUN')
-        self._addTab('Camera', QtGui.QApplication.translate("nkRemotePlugins", 'Camera'))
+        self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
+        self._addWidget('Main', LABEL_USER_EXPOSURE_COMPENSATION_LIST, LineEditField, (), 'USER_EXPOSURE_COMPENSATION_LIST')
+        self._addWidget('Main', LABEL_DRY_RUN, CheckBoxField, (), 'DRY_RUN')
+        self._addTab('Camera', TAB_CAMERA)
         self._addWidget('Camera', QtGui.QApplication.translate("nkRemotePlugins", "Output directory"),
-                        DirSelectorField,
-                        (QtGui.QApplication.translate("nkRemotePlugins", "Choose output directory..."),),
+                        DirSelectorField, (TEXT_CHOOSE_OUTPUT_DIR,),
                         'OUTPUT_DIR')
-        self._addWidget('Camera', QtGui.QApplication.translate("nkRemotePlugins", "File name prefix"),
-                        LineEditField, (), 'FILENAME_PREFIX')
-        self._addWidget('Camera', QtGui.QApplication.translate("nkRemotePlugins", "Camera exposure\ncompensation list"),
-                        ComboBoxField, ((u"±5@1/3", u"±5@1/2"),),
+        self._addWidget('Camera', LABEL_FILENAME_PREFIX, LineEditField, (), 'FILENAME_PREFIX')
+        self._addWidget('Camera', LABEL_CAMERA_EXPOSURE_COMPENSATION_LIST, ComboBoxField, ((u"±5@1/3", u"±5@1/2"),),
                         'CAMERA_EXPOSURE_COMPENSATION_LIST')
 
 

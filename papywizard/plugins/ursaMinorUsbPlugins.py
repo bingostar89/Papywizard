@@ -37,7 +37,7 @@ knowledge of the CeCILL license and that you accept its terms.
 Module purpose
 ==============
 
-Hardware
+Plugins
 
 Implements
 ==========
@@ -58,6 +58,7 @@ from PyQt4 import QtCore, QtGui
 
 from papywizard.common import config
 from papywizard.common.loggingServices import Logger
+from papywizard.hardware.ursaMinorUsbHardware import UrsaMinorUsbHardware
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractHardwarePlugin import AbstractHardwarePlugin
 from papywizard.plugins.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
@@ -70,8 +71,8 @@ NAME = "Ursa Minor USB"
 DEFAULT_TRIGGER_LINE = 'RTS'
 DEFAULT_TRIGGER_LINE_INVERTED = False
 
-TRIGGER_LINE_LEVELS = {False: {'on': 1, 'off': 0},
-                       True: {'on': 0, 'off': 1}}
+LABEL_TRIGGER_LINE = unicode(QtGui.QApplication.translate("ursaMinorUsbPlugins", "Trigger line"))
+LABEL_LINE_INVERTED = unicode(QtGui.QApplication.translate("ursaMinorUsbPlugins", "Line inverted"))
 
 
 class UrsaMinorUsbShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
@@ -81,6 +82,7 @@ class UrsaMinorUsbShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin)
         Logger().trace("UrsaMinorUsbShutter._init()")
         AbstractHardwarePlugin._init(self)
         AbstractStandardShutterPlugin._init(self)
+        self._hardware = UrsaMinorUsbHardware()
 
     def _defineConfig(self):
         Logger().trace("UrsaMinorUsbShutter._defineConfig()")
@@ -89,24 +91,23 @@ class UrsaMinorUsbShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin)
         self._addConfigKey('_triggerLine', 'TRIGGER_LINE', default=DEFAULT_TRIGGER_LINE)
         self._addConfigKey('_triggerLineInverted', 'TRIGGER_LINE_INVERTED', default=DEFAULT_TRIGGER_LINE_INVERTED)
 
+    def configure(self):
+        self._hardware.setTriggerLine(self._config['TRIGGER_LINE'])
+        self._hardware.setTriggerLineInverted(self._config['TRIGGER_LINE_INVERTED'])
+
     def _triggerOnShutter(self):
         """ Set the shutter on.
         """
-        method = getattr(self._driver, "set%s" % self._config['TRIGGER_LINE'])
-        method(TRIGGER_LINE_LEVELS[self._config['TRIGGER_LINE_INVERTED']]['on'])
+        self._hardware.setOutput(True)
 
     def _triggerOffShutter(self):
         """ Set the shutter off.
         """
-        method = getattr(self._driver, "set%s" % self._config['TRIGGER_LINE'])
-        method(TRIGGER_LINE_LEVELS[self._config['TRIGGER_LINE_INVERTED']]['off'])
+        self._hardware.setOutput(False)
 
-    def shutdown(self):
-        Logger().trace("UrsaMinorUsbShutter.shutdown()")
-        try:
-            self._triggerOffShutter()
-        except AttributeError:
-            Logger().exception("UrsaMinorUsbShutter.shutdown", debug=True)
+    def init(self):
+        AbstractHardwarePlugin.init(self)
+        self.configure()
 
 
 class UrsaMinorUsbShutterController(StandardShutterPluginController, HardwarePluginController):
@@ -114,10 +115,8 @@ class UrsaMinorUsbShutterController(StandardShutterPluginController, HardwarePlu
         Logger().trace("UrsaMinorUsbShutterController._defineGui()")
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Hard', QtGui.QApplication.translate("ursaMinorUsbPlugins", "Trigger line"),
-                        ComboBoxField, (['RTS', 'DTR'],), 'TRIGGER_LINE')
-        self._addWidget('Hard', QtGui.QApplication.translate("ursaMinorUsbPlugins", "Line inverted"),
-                        CheckBoxField, (), 'TRIGGER_LINE_INVERTED')
+        self._addWidget('Hard', LABEL_TRIGGER_LINE, ComboBoxField, (['RTS', 'DTR'],), 'TRIGGER_LINE')
+        self._addWidget('Hard', LABEL_LINE_INVERTED, CheckBoxField, (), 'TRIGGER_LINE_INVERTED')
 
 
 def register():

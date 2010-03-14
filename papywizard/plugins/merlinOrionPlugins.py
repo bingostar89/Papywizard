@@ -79,6 +79,10 @@ NAME = "Merlin-Orion"
 DEFAULT_ALTERNATE_DRIVE = True
 DEFAULT_INERTIA_ANGLE = 1. # °
 
+TAB_HARD = unicode(QtGui.QApplication.translate("merlinOrionPlugins", 'Hard'))
+LABEL_ALTERNATE_DRIVE = unicode(QtGui.QApplication.translate("merlinOrionPlugins", "Alternate drive"))
+LABEL_INERTIA_ANGLE = unicode(QtGui.QApplication.translate("merlinOrionPlugins", "Inertia angle"))
+
 ALTERNATE_DRIVE_ANGLE = 7. # °
 AXIS_ACCURACY = 0.1 # °
 AXIS_TABLE = {'yawAxis': 1,
@@ -276,11 +280,9 @@ class MerlinOrionAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addTab('Hard', QtGui.QApplication.translate("merlinOrionPlugins", 'Hard'))
-        self._addWidget('Hard', QtGui.QApplication.translate("merlinOrionPlugins", "Alternate drive"),
-                        CheckBoxField, (), 'ALTERNATE_DRIVE')
-        self._addWidget('Hard', QtGui.QApplication.translate("merlinOrionPlugins", "Inertia angle"),
-                        DoubleSpinBoxField, (0.1, 9.9, 1, .1, "", u" °"), 'INERTIA_ANGLE')
+        self._addTab('Hard', TAB_HARD)
+        self._addWidget('Hard', LABEL_ALTERNATE_DRIVE, CheckBoxField, (), 'ALTERNATE_DRIVE')
+        self._addWidget('Hard', LABEL_INERTIA_ANGLE, DoubleSpinBoxField, (0.1, 9.9, 1, .1, "", u" °"), 'INERTIA_ANGLE')
 
 
 class MerlinOrionShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):

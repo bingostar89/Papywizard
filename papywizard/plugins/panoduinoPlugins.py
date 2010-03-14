@@ -78,6 +78,15 @@ DEFAULT_DIRECTION = unicode(QtGui.QApplication.translate("panoduinoPlugins", 'fo
 DEFAULT_NEUTRAL_POSITION = 3000 # controller value for neutral position
 DEFAULT_VALUE_OFF = 0
 DEFAULT_VALUE_ON = 127
+
+LABEL_SPEED = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Speed"))
+
+TAB_SERVO = unicode(QtGui.QApplication.translate("panoduinoPlugins", 'Servo'))
+LABEL_DIRECTION = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Direction"))
+LABEL_NEUTRAL_POSITION = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Neutral position"))
+LABEL_VALUE_OFF = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Value off"))
+LABEL_VALUE_ON = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Value on"))
+
 AXIS_TABLE = {'yawAxis': 1,
               'pitchAxis': 2,
               'shutter': 0
@@ -246,14 +255,11 @@ class PanoduinoAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("panoduinoPlugins", "Speed"),
-                        SpinBoxField, (0, 127), 'SPEED')
-        self._addTab('Servo', QtGui.QApplication.translate("panoduinoPlugins", 'Servo'))
+        self._addWidget('Main', LABEL_SPEED, SpinBoxField, (0, 127), 'SPEED')
+        self._addTab('Servo', TAB_SERVO)
         directions = [DIRECTION_TABLE['forward'], DIRECTION_TABLE['reverse']]
-        self._addWidget('Servo', QtGui.QApplication.translate("panoduinoPlugins", "Direction"),
-                        ComboBoxField, (directions,), 'DIRECTION')
-        self._addWidget('Servo', QtGui.QApplication.translate("panoduinoPlugins", "Neutral position"),
-                        SpinBoxField, (500, 5500), 'NEUTRAL_POSITION')
+        self._addWidget('Servo', LABEL_DIRECTION, ComboBoxField, (directions,), 'DIRECTION')
+        self._addWidget('Servo', LABEL_NEUTRAL_POSITION, SpinBoxField, (500, 5500), 'NEUTRAL_POSITION')
 
 
 class PanoduinoShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
@@ -309,11 +315,9 @@ class PanoduinoShutterController(StandardShutterPluginController, HardwarePlugin
         Logger().trace("PanoduinoShutterController._defineGui()")
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addTab('Servo', QtGui.QApplication.translate("panoduinoPlugins", 'Servo'))
-        self._addWidget('Servo', QtGui.QApplication.translate("panoduinoPlugins", "Value off"),
-                        SpinBoxField, (0, 127), 'VALUE_OFF')
-        self._addWidget('Servo', QtGui.QApplication.translate("panoduinoPlugins", "Value on"),
-                        SpinBoxField, (0, 127), 'VALUE_ON')
+        self._addTab('Servo', TAB_SERVO)
+        self._addWidget('Servo', LABEL_VALUE_OFF, SpinBoxField, (0, 127), 'VALUE_OFF')
+        self._addWidget('Servo', LABEL_VALUE_ON, SpinBoxField, (0, 127), 'VALUE_ON')
 
 
 def register():

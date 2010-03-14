@@ -61,6 +61,7 @@ import subprocess
 
 from PyQt4 import QtCore, QtGui
 
+from papywizard.common import config
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
@@ -79,10 +80,14 @@ DEFAULT_BRACKETING_STEP = 1
 DEFAULT_BRACKETING_EV_BIAS = 0
 DEFAULT_BRACKETING_ADVANCED = False
 DEFAULT_DOWNLOAD_ENABLE = False
-DEFAULT_DOWNLOAD_DIR = ""
+DEFAULT_DOWNLOAD_DIR = config.HOME_DIR
 DEFAULT_DOWNLOAD_THEN_DELETE = False
 #DEFAULT_DOWNLOAD_FILENAME = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Use camera default"))
 
+#LABEL_MIRROR_LOCKUP = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Mirror lockup"))
+#LABEL_MIRROR_LOCKUP_COMMAND = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Mirror lockup command"))
+#TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Choose mirror lockup command..."))
+#TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND_FILTER = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "All files (*)"))
 LABEL_PROGRAM_PATH = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Program path"))
 TEXT_CHOOSE_PROGRAM_PATH = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Choose program path..."))
 TEXT_CHOOSE_PROGRAM_PATH_FILTER = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "gphoto2 (gphoto2);;All files (*)"))
@@ -92,7 +97,7 @@ LABEL_EV_BIAS = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Ex
 LABEL_EV_LIST = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Resulting Ev list"))
 LABEL_ADVANCED = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Advanced"))
 
-LABEL_ADVANCED_TAB = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", 'Advanced'))
+TAB_CAMERA = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", 'Advanced'))
 LABEL_PLUS_NB_PICTS = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing nb picts (+)"))
 LABEL_PLUS_STEP = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing step (+)"))
 LABEL_MINUS_NB_PICTS = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing nb picts (-)"))
@@ -591,12 +596,9 @@ class GphotoBracketShutterController(ShutterPluginController):
         self._view.tabWidget.setUsesScrollButtons(False)
 
         # Main tab
-        #self._addWidget('Main', QtGui.QApplication.translate("gphotoBracketPlugins", "Mirror lockup"),
-                        #CheckBoxField, (), 'MIRROR_LOCKUP')
-        #self._addWidget('Main', QtGui.QApplication.translate("gphotoBracketPlugins", "Mirror lockup command"),
-                        #FileSelectorField,
-                        #(QtGui.QApplication.translate("gphotoBracketPlugins", "Choose mirror lockup command..."),
-                         #QtGui.QApplication.translate("gphotoBracketPlugins", "All files (*)")),
+        #self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
+        #self._addWidget('Main', LABEL_MIRROR_LOCKUP_COMMAND,
+                        #FileSelectorField, (TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND, TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND_FILTER),
                         #'MIRROR_LOCKUP_COMMAND')
         self._addWidget('Main', LABEL_PROGRAM_PATH,
                         FileSelectorField, (TEXT_CHOOSE_PROGRAM_PATH, TEXT_CHOOSE_PROGRAM_PATH_FILTER),
@@ -610,7 +612,7 @@ class GphotoBracketShutterController(ShutterPluginController):
         self._addWidget('Main', LABEL_ADVANCED, CheckBoxField, (), 'BRACKETING_ADVANCED')
 
         # Advanced tab
-        self._addTab('Advanced', LABEL_ADVANCED_TAB)
+        self._addTab('Advanced', TAB_CAMERA)
         self._addWidget('Advanced', LABEL_PLUS_NB_PICTS, SpinBoxField, (0, 11), 'BRACKETING_PLUS_NB_PICTS')
         self._addWidget('Advanced', LABEL_PLUS_STEP, SpinBoxField, (0, 5, "", " ev"), 'BRACKETING_PLUS_STEP')
         self._addWidget('Advanced', LABEL_MINUS_NB_PICTS, SpinBoxField, (0, 11), 'BRACKETING_MINUS_NB_PICTS')

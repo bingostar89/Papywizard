@@ -80,6 +80,27 @@ DEFAULT_FOCUS_DIRECTION = unicode(QtGui.QApplication.translate("eosUtilityPlugin
 DEFAULT_FOCUS_STEP = unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'medium'))
 DEFAULT_FOCUS_STEP_COUNT = 1
 DEFAULT_FOCUS_NB_PICTS = 1
+
+LABEL_PROGRAM_PATH = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "Program path"))
+TEXT_CHOOSE_PROGRAM_PATH = unicode(QtGui.QApplication.translate("TimelordShutterController", "Choose program path..."))
+TEXT_CHOOSE_PROGRAM_PATH_FILTER = unicode(QtGui.QApplication.translate("TimelordShutterController", "EXE files (*.exe);;All files (*)"))
+LABEL_EOS_UTILITY_VERSION = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "EOS Utility version"))
+LABEL_BRACKETING_NB_PICTS = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "Bracketing nb picts"))
+LABEL_BRACKETING_STEP = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "Bracketing step"))
+LABEL_BRACKETING_TYPE = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "Bracketing type"))
+LABEL_DRY_RUN = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "Dry run"))
+
+TAB_BULB = unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'Bulb'))
+LABEL_BULB_ENABLE = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "Enable"))
+LABEL_BULB_BASE_EXPOSURE = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "Base exposure"))
+
+TAB_FOCUS = unicode(QtGui.QApplication.translate("eosUtilityPlugins", 'Focus'))
+LABEL_FOCUS_ENABLE = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "Enable"))
+LABEL_FOCUS_DIRECTION = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "Direction"))
+LABEL_FOCUS_STEP = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "Step"))
+LABEL_FOCUS_STEP_COUNT = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "Step count"))
+LABEL_FOCUS_NB_PICTS = unicode(QtGui.QApplication.translate("eosUtilityPlugins", "Nb picts"))
+
 BRACKETING_TYPE_INDEX = {'0--': '1',
                          '0++': '2',
                          '0-+': '3'}
@@ -196,41 +217,28 @@ class EOSUtilityShutterController(ShutterPluginController):
     def _defineGui(self):
         Logger().trace("EOSUtilityShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Program path"),
-                        FileSelectorField, (QtGui.QApplication.translate("TimelordShutterController", "Choose program path..."),
-                                            QtGui.QApplication.translate("TimelordShutterController", "EXE files (*.exe);;All files (*)")),
+        self._addWidget('Main', LABEL_PROGRAM_PATH,
+                        FileSelectorField, (TEXT_CHOOSE_PROGRAM_PATH, TEXT_CHOOSE_PROGRAM_PATH_FILTER),
                         'PROGRAM_PATH')
         types = [EOS_UTILITY_VERSION_TABLE['old'], EOS_UTILITY_VERSION_TABLE['new']]
-        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "EOS Utility version"),
-                        ComboBoxField, (types,), 'EOS_UTILITY_VERSION')
-        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Bracketing nb picts"),
-                        SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
+        self._addWidget('Main', LABEL_EOS_UTILITY_VERSION, ComboBoxField, (types,), 'EOS_UTILITY_VERSION')
+        self._addWidget('Main', LABEL_BRACKETING_NB_PICTS, SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
         steps = ['1/3', '2/3', '1', '1 1/3', '1 2/3', '2', '2 1/3', '2 2/3','3',
                  '3 1/3', '3 2/3', '4', '4 1/3', '4 2/3', '5', '5 1/3', '5 2/3', '6']
-        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Bracketing step"),
-                        ComboBoxField, (steps,), 'BRACKETING_STEP')
-        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Bracketing type"),
-                        ComboBoxField, (BRACKETING_TYPE_INDEX.keys(),), 'BRACKETING_TYPE')
-        self._addWidget('Main', QtGui.QApplication.translate("eosUtilityPlugins", "Dry run"),
-                        CheckBoxField, (), 'DRY_RUN')
-        self._addTab('Bulb', QtGui.QApplication.translate("eosUtilityPlugins", 'Bulb'))
-        self._addWidget('Bulb', QtGui.QApplication.translate("eosUtilityPlugins", "Enable"),
-                        CheckBoxField, (), 'BULB_ENABLE')
-        self._addWidget('Bulb', QtGui.QApplication.translate("eosUtilityPlugins", "Base exposure"),
-                        SpinBoxField, (1, 99, "", " s"), 'BULB_BASE_EXPOSURE')
-        self._addTab('Focus', QtGui.QApplication.translate("eosUtilityPlugins", 'Focus'))
-        self._addWidget('Focus',  QtGui.QApplication.translate("eosUtilityPlugins", "Enable"),
-                        CheckBoxField, (), 'FOCUS_ENABLE')
+        self._addWidget('Main', LABEL_BRACKETING_STEP, ComboBoxField, (steps,), 'BRACKETING_STEP')
+        self._addWidget('Main', LABEL_BRACKETING_TYPE, ComboBoxField, (BRACKETING_TYPE_INDEX.keys(),), 'BRACKETING_TYPE')
+        self._addWidget('Main', LABEL_DRY_RUN, CheckBoxField, (), 'DRY_RUN')
+        self._addTab('Bulb', TAB_BULB)
+        self._addWidget('Bulb', LABEL_BULB_ENABLE, CheckBoxField, (), 'BULB_ENABLE')
+        self._addWidget('Bulb', LABEL_BULB_BASE_EXPOSURE, SpinBoxField, (1, 99, "", " s"), 'BULB_BASE_EXPOSURE')
+        self._addTab('Focus', TAB_FOCUS)
+        self._addWidget('Focus',  LABEL_FOCUS_ENABLE, CheckBoxField, (), 'FOCUS_ENABLE')
         focusDir = [FOCUS_DIRECTION_TABLE['far'], FOCUS_DIRECTION_TABLE['near']]
-        self._addWidget('Focus', QtGui.QApplication.translate("eosUtilityPlugins", "Direction"),
-                        ComboBoxField, (focusDir,), 'FOCUS_DIRECTION')
+        self._addWidget('Focus', LABEL_FOCUS_DIRECTION, ComboBoxField, (focusDir,), 'FOCUS_DIRECTION')
         stepMode = [FOCUS_STEP_MODE_TABLE['small'], FOCUS_STEP_MODE_TABLE['medium'], FOCUS_STEP_MODE_TABLE['large']]
-        self._addWidget('Focus',  QtGui.QApplication.translate("eosUtilityPlugins", "Step"),
-                        ComboBoxField, (stepMode,), 'FOCUS_STEP')
-        self._addWidget('Focus', QtGui.QApplication.translate("eosUtilityPlugins", "Step count"),
-                        SpinBoxField, (1, 99), 'FOCUS_STEP_COUNT')
-        self._addWidget('Focus', QtGui.QApplication.translate("eosUtilityPlugins", "Nb picts"),
-                        SpinBoxField, (1, 99), 'FOCUS_NB_PICTS')
+        self._addWidget('Focus',  LABEL_FOCUS_STEP, ComboBoxField, (stepMode,), 'FOCUS_STEP')
+        self._addWidget('Focus', LABEL_FOCUS_STEP_COUNT, SpinBoxField, (1, 99), 'FOCUS_STEP_COUNT')
+        self._addWidget('Focus', LABEL_FOCUS_NB_PICTS, SpinBoxField, (1, 99), 'FOCUS_NB_PICTS')
 
 def register():
     """ Register plugins.

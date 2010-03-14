@@ -74,6 +74,13 @@ DEFAULT_SPEED = 30 # deg/s
 DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
+
+LABEL_SPEED = unicode(QtGui.QApplication.translate("simulationPlugins", "Speed"))
+
+LABEL_TIME_VALUE = unicode(QtGui.QApplication.translate("simulationPlugins", "Time value"))
+LABEL_MIRROR_LOCKUP = unicode(QtGui.QApplication.translate("simulationPlugins", "Mirror lockup"))
+LABEL_BRACKETING_NB_PICTS = unicode(QtGui.QApplication.translate("simulationPlugins", "Bracketing nb picts"))
+
 MANUAL_MANUAL_SPEED_INDEX = {'slow': .2,
                              'normal': 1.,
                              'fast': 2.
@@ -214,8 +221,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
 class SimulationAxisController(AxisPluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("simulationPlugins", "Speed"),
-                        SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
+        self._addWidget('Main', LABEL_SPEED, SpinBoxField, (1, 99, "", " deg/s"), 'SPEED')
 
 
 class SimulationShutter(AbstractShutterPlugin):
@@ -259,12 +265,9 @@ class SimulationShutterController(ShutterPluginController):
     def _defineGui(self):
         Logger().trace("SimulationShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("simulationPlugins", "Time value"),
-                        DoubleSpinBoxField, (0.1, 3600, 1, 0.1, "", " s"), 'TIME_VALUE')
-        self._addWidget('Main', QtGui.QApplication.translate("simulationPlugins", "Mirror lockup"),
-                        CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', QtGui.QApplication.translate("simulationPlugins", "Bracketing nb picts"),
-                        SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
+        self._addWidget('Main', LABEL_TIME_VALUE, DoubleSpinBoxField, (0.1, 3600, 1, 0.1, "", " s"), 'TIME_VALUE')
+        self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
+        self._addWidget('Main', LABEL_BRACKETING_NB_PICTS, SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
 
 
 def register():

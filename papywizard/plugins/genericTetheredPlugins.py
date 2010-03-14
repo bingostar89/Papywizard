@@ -73,6 +73,15 @@ DEFAULT_MIRROR_LOCKUP_COMMAND = "gphoto2 --capture-image"
 DEFAULT_SHOOT_COMMAND = "gphoto2 --capture-image"
 DEFAULT_BRACKETING_NBPICTS = 1
 
+LABEL_MIRROR_LOCKUP = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Mirror lockup"))
+LABEL_MIRROR_LOCKUP_COMMAND = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Mirror lockup command"))
+#TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Choose mirror lockup command..."))
+#TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND_FILTER = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "All files (*)"))
+LABEL_SHOOT_COMMAND = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Shoot command"))
+#TEXT_CHOOSE_SHOOT_COMMAND = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Choose shoot command..."))
+#TEXT_CHOOSE_SHOOT_COMMAND_FILTER = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "All files (*)"))
+LABEL_BRACKETING_NB_PICTS = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Bracketing nb picts"))
+
 
 class GenericTetheredShutter(AbstractShutterPlugin):
     """
@@ -125,24 +134,16 @@ class GenericTetheredShutterController(ShutterPluginController):
     def _defineGui(self):
         Logger().trace("GenericTetheredShutterController._defineGui()")
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("genericTetheredPlugins", "Mirror lockup"),
-                        CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', QtGui.QApplication.translate("genericTetheredPlugins", "Mirror lockup command"),
-                        LineEditField, (), 'MIRROR_LOCKUP_COMMAND')
-        #self._addWidget('Main', QtGui.QApplication.translate("genericTetheredPlugins", "Mirror lockup command"),
-                        #FileSelectorField,
-                        #(QtGui.QApplication.translate("genericTetheredPlugins", "Choose mirror lockup command..."),
-                         #QtGui.QApplication.translate("genericTetheredPlugins", "All files (*)")),
+        self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
+        self._addWidget('Main', LABEL_MIRROR_LOCKUP_COMMAND, LineEditField, (), 'MIRROR_LOCKUP_COMMAND')
+        #self._addWidget('Main', TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND,
+                        #FileSelectorField, (TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND, TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND_FILTER),
                         #'MIRROR_LOCKUP_COMMAND')
-        self._addWidget('Main', QtGui.QApplication.translate("genericTetheredPlugins", "Shoot command"),
-                        LineEditField, (), 'SHOOT_COMMAND')
-        #self._addWidget('Main', QtGui.QApplication.translate("genericTetheredPlugins", "Shoot command"),
-                        #FileSelectorField,
-                        #(QtGui.QApplication.translate("genericTetheredPlugins", "Choose shoot command..."),
-                         #QtGui.QApplication.translate("genericTetheredPlugins", "All files (*)")),
+        self._addWidget('Main', LABEL_SHOOT_COMMAND, LineEditField, (), 'SHOOT_COMMAND')
+        #self._addWidget('Main', TEXT_CHOOSE_SHOOT_COMMAND,
+                        #FileSelectorField, (TEXT_CHOOSE_SHOOT_COMMAND, TEXT_CHOOSE_SHOOT_COMMAND_FILTER),
                         #'SHOOT_COMMAND')
-        self._addWidget('Main', QtGui.QApplication.translate("genericTetheredPlugins", "Bracketing nb picts"),
-                        SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
+        self._addWidget('Main', LABEL_BRACKETING_NB_PICTS, SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
 
 
 def register():

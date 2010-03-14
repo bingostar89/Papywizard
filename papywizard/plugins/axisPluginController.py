@@ -57,6 +57,9 @@ from papywizard.plugins.abstractPluginController import AbstractPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, DoubleSpinBoxField, \
                                          SpinBoxField, CheckBoxField, SliderField
 
+LABEL_LOW_LIMIT = unicode(QtGui.QApplication.translate("axisPluginController", "Low limit"))
+LABEL_HIGH_LIMIT = unicode(QtGui.QApplication.translate("axisPluginController", "High limit"))
+
 
 class AxisPluginController(AbstractPluginController):
     """ Plugin controller for 'yawAxis' and 'pitchAxis' capacities.
@@ -64,7 +67,5 @@ class AxisPluginController(AbstractPluginController):
     def _defineGui(self):
         """ Add high/low limits
         """
-        self._addWidget('Main',QtGui.QApplication.translate("axisPluginController", "Low limit"),
-                        DoubleSpinBoxField, (-9999.9, 9999.9, 1, .1, "", u" °"), 'LOW_LIMIT')
-        self._addWidget('Main', QtGui.QApplication.translate("axisPluginController", "High limit"),
-                        DoubleSpinBoxField, (-9999.9, 9999.9, 1, .1, "", u" °"), 'HIGH_LIMIT')
+        self._addWidget('Main', LABEL_LOW_LIMIT, DoubleSpinBoxField, (-9999.9, 9999.9, 1, .1, "", u" °"), 'LOW_LIMIT')
+        self._addWidget('Main', LABEL_HIGH_LIMIT, DoubleSpinBoxField, (-9999.9, 9999.9, 1, .1, "", u" °"), 'HIGH_LIMIT')

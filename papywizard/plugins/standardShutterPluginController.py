@@ -57,18 +57,21 @@ from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, \
                                          DoubleSpinBoxField, CheckBoxField, SliderField
 
+LABEL_TIME_VALUE = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Time value"))
+LABEL_MIRROR_LOCKUP = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Mirror lockup"))
+LABEL_BRACKETING_NB_PICTS = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Bracketing nb picts"))
+
+TAB_HARD = unicode(QtGui.QApplication.translate("standardShutterPluginController", 'Hard'))
+LABEL_PULSE_WIDTH_HIGH = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Pulse width high"))
+LABEL_PULSE_WIDTH_LOW = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Pulse width low"))
+
 
 class StandardShutterPluginController(ShutterPluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("standardShutterPluginController", "Time value"),
-                        DoubleSpinBoxField, (0.1, 3600., 1, 0.1, "", " s"), 'TIME_VALUE')
-        self._addWidget('Main', QtGui.QApplication.translate("standardShutterPluginController", "Mirror lockup"),
-                        CheckBoxField, (), 'MIRROR_LOCKUP')
-        self._addWidget('Main', QtGui.QApplication.translate("standardShutterPluginController", "Bracketing nb picts"),
-                        SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
-        self._addTab('Hard', QtGui.QApplication.translate("standardShutterPluginController", 'Hard'))
-        self._addWidget('Hard', QtGui.QApplication.translate("standardShutterPluginController", "Pulse width high"),
-                        SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_HIGH')
-        self._addWidget('Hard', QtGui.QApplication.translate("standardShutterPluginController", "Pulse width low"),
-                        SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_LOW')
+        self._addWidget('Main', LABEL_TIME_VALUE, DoubleSpinBoxField, (0.1, 3600., 1, 0.1, "", " s"), 'TIME_VALUE')
+        self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
+        self._addWidget('Main', LABEL_BRACKETING_NB_PICTS, SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
+        self._addTab('Hard', TAB_HARD)
+        self._addWidget('Hard', LABEL_PULSE_WIDTH_HIGH, SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_HIGH')
+        self._addWidget('Hard', LABEL_PULSE_WIDTH_LOW, SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_LOW')

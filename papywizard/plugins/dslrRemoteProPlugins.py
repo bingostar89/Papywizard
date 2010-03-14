@@ -81,18 +81,18 @@ DEFAULT_OUTPUT_DIR = config.HOME_DIR
 DEFAULT_FILENAME_PREFIX = ""
 DEFAULT_CAMERA_EXPOSURE_COMPENSATION_LIST = u"±2@1/2"
 
-LABEL_PROGRAM_PATH = QtGui.QApplication.translate("dslrRemoteProPlugins", "Program path")
-TEXT_CHOOSE_PROGRAM_PATH = QtGui.QApplication.translate("dslrRemoteProPlugins", "Choose program path...")
-TEXT_CHOOSE_PROGRAM_PATH_FILTER = QtGui.QApplication.translate("dslrRemoteProPlugins", "EXE files (*.exe);;All files (*)")
-LABEL_MIRROR_LOCKUP = QtGui.QApplication.translate("dslrRemoteProPlugins", "Mirror lockup")
-LABEL_USER_EXPOSURE_COMPENSATION_LIST = QtGui.QApplication.translate("dslrRemoteProPlugins", "User exposure\ncompensation list")
-LABEL_DRY_RUN = QtGui.QApplication.translate("dslrRemoteProPlugins", "Dry run")
+LABEL_PROGRAM_PATH = unicode(QtGui.QApplication.translate("dslrRemoteProPlugins", "Program path"))
+TEXT_CHOOSE_PROGRAM_PATH = unicode(QtGui.QApplication.translate("dslrRemoteProPlugins", "Choose program path..."))
+TEXT_CHOOSE_PROGRAM_PATH_FILTER = unicode(QtGui.QApplication.translate("dslrRemoteProPlugins", "EXE files (*.exe);;All files (*)"))
+LABEL_MIRROR_LOCKUP = unicode(QtGui.QApplication.translate("dslrRemoteProPlugins", "Mirror lockup"))
+LABEL_USER_EXPOSURE_COMPENSATION_LIST = unicode(QtGui.QApplication.translate("dslrRemoteProPlugins", "User exposure\ncompensation list"))
+LABEL_DRY_RUN = unicode(QtGui.QApplication.translate("dslrRemoteProPlugins", "Dry run"))
 
-TAB_CAMERA = QtGui.QApplication.translate("dslrRemoteProPlugins", 'Camera')
-LABEL_OUTPUT_DIR = QtGui.QApplication.translate("dslrRemoteProPlugins", "Output directory")
-TEXT_CHOOSE_OUTPUT_DIR = QtGui.QApplication.translate("dslrRemoteProPlugins", "Choose output directory...")
-LABEL_FILENAME_PREFIX = QtGui.QApplication.translate("dslrRemoteProPlugins", "File name prefix")
-LABEL_CAMERA_EXPOSURE_COMPENSATION_LIST = QtGui.QApplication.translate("dslrRemoteProPlugins", "Camera exposure\ncompensation list")
+TAB_CAMERA = unicode(QtGui.QApplication.translate("dslrRemoteProPlugins", 'Camera'))
+LABEL_OUTPUT_DIR = unicode(QtGui.QApplication.translate("dslrRemoteProPlugins", "Output directory"))
+TEXT_CHOOSE_OUTPUT_DIR = unicode(QtGui.QApplication.translate("dslrRemoteProPlugins", "Choose output directory..."))
+LABEL_FILENAME_PREFIX = unicode(QtGui.QApplication.translate("dslrRemoteProPlugins", "File name prefix"))
+LABEL_CAMERA_EXPOSURE_COMPENSATION_LIST = unicode(QtGui.QApplication.translate("dslrRemoteProPlugins", "Camera exposure\ncompensation list"))
 
 MIRROR_LOCKUP_PARAMS = ""
 OUTPUT_DIR_PARAM = "-o"

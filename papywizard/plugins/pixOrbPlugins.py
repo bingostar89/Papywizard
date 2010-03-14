@@ -79,6 +79,12 @@ DEFAULT_SPEED_INDEX = 9
 DEFAULT_AXIS_WITH_BREAK = False
 DEFAULT_AXIS_ACCURACY = 0.1  # °
 
+LABEL_SPEED_INDEX = unicode(QtGui.QApplication.translate("pixOrbPlugins", "Speed index"))
+
+TAB_HARD = unicode(QtGui.QApplication.translate("pixOrbPlugins", 'Hard'))
+LABEL_AXIS_WITH_BREAK = unicode(QtGui.QApplication.translate("pixOrbPlugins", "Axis with break"))
+LABEL_AXIS_ACCURACY = unicode(QtGui.QApplication.translate("pixOrbPlugins", "Axis accuracy"))
+
 SIN11_INIT_TIMEOUT = 10.
 AXIS_TABLE = {'yawAxis': 'B',
               'pitchAxis': 'C',
@@ -237,13 +243,10 @@ class PixOrbAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Main', QtGui.QApplication.translate("pixOrbPlugins", "Speed index"),
-                        SpinBoxField, (1, 10, "", ""), 'SPEED_INDEX')
-        self._addTab('Hard', QtGui.QApplication.translate("pixOrbPlugins", 'Hard'))
-        self._addWidget('Hard', QtGui.QApplication.translate("pixOrbPlugins", "Axis with break"),
-                        CheckBoxField, (), 'AXIS_WITH_BREAK')
-        self._addWidget('Hard', QtGui.QApplication.translate("pixOrbPlugins", "Axis accuracy"),
-                        DoubleSpinBoxField, (0.01, 0.50, 2, 0.01, "", u" °"), 'AXIS_ACCURACY')
+        self._addWidget('Main', LABEL_SPEED_INDEX, SpinBoxField, (1, 10, "", ""), 'SPEED_INDEX')
+        self._addTab('Hard', TAB_HARD)
+        self._addWidget('Hard', LABEL_AXIS_WITH_BREAK, CheckBoxField, (), 'AXIS_WITH_BREAK')
+        self._addWidget('Hard', LABEL_AXIS_ACCURACY, DoubleSpinBoxField, (0.01, 0.50, 2, 0.01, "", u" °"), 'AXIS_ACCURACY')
 
 
 class PixOrbShutter(AbstractPixOrbHardware, AbstractStandardShutterPlugin):
