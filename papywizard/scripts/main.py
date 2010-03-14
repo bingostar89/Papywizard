@@ -167,8 +167,6 @@ def main():
         register()
         from papywizard.plugins.gphotoBracketPlugins import register
         register()
-        #from papywizard.plugins.gphotoPlugins import register
-        #register()
         from papywizard.plugins.merlinOrionPlugins import register
         register()
         from papywizard.plugins.nkRemotePlugins import register
@@ -177,14 +175,12 @@ def main():
         register()
         from papywizard.plugins.pixOrbPlugins import register
         register()
-        #from papywizard.plugins.pololuServoPlugins import register
-        #register()
         from papywizard.plugins.simulationPlugins import register
         register()
         from papywizard.plugins.timelordPlugins import register
         register()
-        #from papywizard.plugins.ursaMinorBt2Plugins import register
-        #register()
+        from papywizard.plugins.ursaMinorBt2Plugins import register
+        register()
         from papywizard.plugins.ursaMinorUsbPlugins import register
         register()
         PluginsManager ().load()
