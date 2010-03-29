@@ -58,6 +58,8 @@ import time
 import os.path
 import os
 import subprocess
+import signal
+import re
 
 from PyQt4 import QtCore, QtGui
 
@@ -125,8 +127,55 @@ class GphotoShell(QtCore.QObject):
         """
         QtCore.QObject.__init__(self)
 
-        args = [programPath, "--shell", "--quiet"]
+        self.__programPath = programPath
+        self.__start()
+
+        # init state
+        self.__stateLocalDir = None
+        self.__stateRemoteDir = None
+
+    def __start(self):
+        args = [self.__programPath, "--shell", "--quiet"]
         self.__popen = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env={'LANG': "C"})
+
+    def __restart(self):
+        Logger().warning("Restarting %s" % os.path.basename(self.__programPath))
+        self.__quit()
+        self.__start()
+
+        # recover state
+        for retry in range(3):
+            dirs, files = self.ls()
+            if dirs is not None:
+                break
+            Logger().warning("Unable to access camera file system; retrying in 1 second...")
+            time.sleep(1)
+
+        if self.__stateRemoteDir is not None:
+            self.cd(self.__stateRemoteDir)
+
+        if self.__stateLocalDir is not None:
+            self.lcd(self.__stateLocalDir)
+
+    def __scanErrorCode(self, errorLine):
+        errorCode = None
+        errorMessage = None
+        # *** Error (errorCode: errorMessage) ***
+        match = re.search('\*\*\* Error \((.*):(.*)\) \*\*\*', errorLine)
+        if match is not None:
+            errorCode = match.group(1)
+            errorMessage = match.group(2)
+        return errorCode, errorMessage
+
+    def __handleError(self, errorLine):
+        errorCode, errorMessage = self.__scanErrorCode(errorLine)
+        #QtGui.QMessageBox.warning(None, NAME, errorMessage)
+        if errorCode == '-7': # 'I/O problem'
+            self.__restart()
+        elif errorCode == '-114': # 'OS error in camera communication'
+            self.__restart()
+        else:
+            pass
 
     def __sendCmd(self, cmd):
         """ Send a command to gphoto2 shell.
@@ -135,10 +184,12 @@ class GphotoShell(QtCore.QObject):
         @type command: str
         """
         Logger().debug("GphotoShell.__sendCmd(): command='%s'" % cmd.strip())
-        self.__popen.stdin.write("%s\n" % cmd)
-        prompt = self.__popen.stdout.readline()  # Consume echo
+        self.__popen.poll()
+        if self.__popen.returncode is None:
+            self.__popen.stdin.write("%s\n" % cmd)
+            prompt = self.__popen.stdout.readline()  # Consume echo
 
-    def quit(self):
+    def __quit(self):
         """ Quit gphoto2 shell.
         """
         self.__sendCmd("quit")
@@ -146,6 +197,15 @@ class GphotoShell(QtCore.QObject):
         #stdout, stderr = self.__popen.communicate()
         #if stderr:
             #Logger().warning("GphotoShell.quit(): gphoto2.stderr=\"%s\"" % (stderr))
+        self.__popen.poll()
+        if self.__popen.returncode is None:
+            #self.__popen.terminate()
+            os.kill(self.__popen.pid, signal.SIGTERM)
+
+    def quit(self):
+        self.__quit()
+        self.__stateLocalDir = None
+        self.__stateRemoteDir = None
 
     def listConfig(self):
         """ List all camera configs.
@@ -158,6 +218,7 @@ class GphotoShell(QtCore.QObject):
                 break
             elif line.startswith(PREFIX_ERROR):
                 Logger().error("GphotoShell.listConfig(): gphoto2=\"%s\"" % (line))
+                self.__handleError(line)
                 break
             elif line[0] == '/':
                 configs.append(line)
@@ -180,6 +241,7 @@ class GphotoShell(QtCore.QObject):
                 break
             elif line.startswith(PREFIX_ERROR):
                 Logger().error("GphotoShell.getConfig(): config=%s gphoto2=\"%s\"" % (config, line))
+                self.__handleError(line)
                 return None, None
             else:
                 key, sep, value = line.partition(': ')  # 'Key: Value' form
@@ -221,6 +283,7 @@ class GphotoShell(QtCore.QObject):
         line = self.__popen.stdout.readline().rstrip()
         if line.startswith(PREFIX_ERROR):
             Logger().error("GphotoShell.ls(): %s recurse=%s gphoto2=\"%s\"" % (dir_, recurse, line))
+            self.__handleError(line)
             return None, None
         childDirs = []
         numDirs = int(line)
@@ -245,7 +308,7 @@ class GphotoShell(QtCore.QObject):
             files = childFiles[:]
             for childDir in childDirs:
                 dirs.append(childDir)
-                grandChildDirs, grandChildFiles = ls(self.__popen, (childDir), recurse)  # ???
+                grandChildDirs, grandChildFiles = self.ls(childDir, recurse)  # ???
                 if grandChildDirs is not None and len(grandChildDirs) > 0:
                     dirs.extend([d for d in grandChildDirs])  # or just dirs.extend(grandChildDirs)
                 if grandChildFiles is not None and len(grandChildFiles) > 0:
@@ -265,11 +328,13 @@ class GphotoShell(QtCore.QObject):
         cwd = None
         if msg.startswith(PREFIX_ERROR):  # Error
             Logger().error("GphotoShell.cd(): %s gphoto2=\"%s\"" % (dir_, msg))
+            self.__handleError(msg)
         elif msg.endswith("'."):
             fIndex = msg.find("'")
             rIndex = msg.rfind("'")
             if fIndex != -1 and rIndex != -1:
                 cwd = msg[fIndex + 1:rIndex]
+        self.__stateRemoteDir = cwd
         return cwd
 
     def lcd(self, dir_):
@@ -287,6 +352,7 @@ class GphotoShell(QtCore.QObject):
             if fIndex != -1 and rIndex != -1:
                 cwd = msg[fIndex + 1:rIndex]
             prompt = self.__popen.stdout.readline()
+        self.__stateLocalDir = cwd
         return cwd
 
     def get(self, file_):
@@ -300,6 +366,7 @@ class GphotoShell(QtCore.QObject):
         if msg.startswith(PREFIX_ERROR):  # Error
             prompt = self.__popen.stdout.readline()
             Logger().error("GphotoShell.get(): %s gphoto2=\"%s\"" % (file_, msg))
+            self.__handleError(msg)
             return False
         else:
             # Downloading 'IMAGE1234.JPG' from folder '/SOME/WHERE'...
@@ -318,6 +385,7 @@ class GphotoShell(QtCore.QObject):
         if msg.startswith(PREFIX_ERROR):  # Error
             prompt = self.__popen.stdout.readline()
             Logger().error("GphotoShell.delete(): %s gphoto2=\"%s\"" % (file_, msg))
+            self.__handleError(msg)
             return False
         else:
             # Deleting 'IMAGE1234.JPG' from folder '/SOME/WHERE'...
@@ -332,6 +400,7 @@ class GphotoShell(QtCore.QObject):
         line = self.__popen.stdout.readline().rstrip()
         if line.startswith(PREFIX_ERROR):  # Error
             Logger().error("GphotoShell.captureImage(): gphoto2=\"%s\"" % line)
+            self.__handleError(line)
             return None
         else:
             return line # full path
@@ -445,6 +514,13 @@ class GphotoBracketShutter(AbstractShutterPlugin):
             self.__gphotoShell.quit()
             self.__gphotoShell = None
 
+    def stopConnection(self):
+        Logger().trace("GphotoBracketShutter.stopConnection()")
+        AbstractShutterPlugin.stopConnection(self)
+        if self.__gphotoShell is not None:
+            self.__gphotoShell.quit()
+            self.__gphotoShell = None
+
     def __downloadFiles(self, paths):
         downloadThenDelete = self._config['DOWNLOAD_THEN_DELETE']
 
@@ -458,6 +534,9 @@ class GphotoBracketShutter(AbstractShutterPlugin):
             Logger().error("GphotoBracketShutter.downloadFiles(): failed to change local directory to '%s'" % downloadDir)
 
         for imagePath in paths:
+            if imagePath is None:
+                continue
+
             # Image path in the camera
             imageDir = None
             imageFile = imagePath
@@ -515,7 +594,7 @@ class GphotoBracketShutter(AbstractShutterPlugin):
 
         # Capture image
         Logger().debug("GphotoBracketShutter.shoot(): capturing image")
-        for retry in range(5):
+        for retry in range(3):
             imagePath = self.__gphotoShell.captureImage()
             if imagePath is not None:
                 break
@@ -527,7 +606,7 @@ class GphotoBracketShutter(AbstractShutterPlugin):
         Logger().debug("GphotoBracketShutter.shoot(): captured image file='%s'" % imagePath)
 
         # Restore camera settings
-        self.__gphoto2.setConfig(self.__speedConfig, self.__baseSpeed)
+        self.__gphotoShell.setConfig(self.__speedConfig, self.__baseSpeed)
 
         # Download files
         if downloadEnable:
