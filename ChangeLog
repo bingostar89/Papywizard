@@ -8,10 +8,12 @@ x bug fix
 
 0000-00-00 Version SVN
     + 'Gphoto Bracket' plugin (jeongyun patch)
-    + 'Panoduino' plugin (replace 'Pololu Servo' plugin?)
+    + 'Panoduino' plugin (replace 'Pololu Servo' plugin)
     + value changed callback mecanism in plugins
     - don't register 2 plugins under the same name
+    - plugins labels revisited
     x goto initial position now works even from reference position
+    x reload correct combobox config in plugins (unicode issue)
 
 2010-02-14 Version 2.1.16 (dev)
     + Renamed 'Panoguy' plugin to 'GigaPanBot'
@@ -34,7 +36,7 @@ x bug fix
     x check limits before applying offset
 
 2009-10-20 Version 2.1.12 (dev)
-    + color support on windows console for log
+    + color support on Windows console for log
     + 'PixOrb' plugin
     + 'DSLR Remote Pro' plugin
     + czech translation
