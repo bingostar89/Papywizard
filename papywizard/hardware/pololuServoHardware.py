@@ -42,7 +42,7 @@ Hardware
 Implements
 ==========
 
-- PololuServoHardware
+ - PololuServoHardware
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2010 Frédéric Mantegazza
@@ -56,6 +56,23 @@ import struct
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.hardware.abstractHardware import AbstractHardware
+
+
+#class AbstractPololuProtocol(object):
+    #""" Base class handling the different Pololu protocols.
+    #"""
+    #def __init__(self):
+        #""" Init the abstract Pololu protocol object.
+        #"""
+        #super(AbstractPololuProtocol, self).__init__()
+
+    #def buildFrame(self, cmd, *args):
+        #""" Build the frame to send.
+
+        #@param cmd: command to use
+        #@type cmd: str
+        #"""
+        #raise NotImplementedError("AbstractPololuProtocol.buildFrame() need to be overloaded")
 
 
 class PololuServoHardware(AbstractHardware):
