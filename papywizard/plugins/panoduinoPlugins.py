@@ -99,9 +99,9 @@ DIRECTION_TABLE = {'forward': unicode(QtGui.QApplication.translate("panoduinoPlu
                    unicode(QtGui.QApplication.translate("panoduinoPlugins", 'forward')): 'forward',
                    unicode(QtGui.QApplication.translate("panoduinoPlugins", 'reverse')): 'reverse'
                    }
-SPEED_TABLE = {'yawAxis': 64,
-               'pitchAxis': 64
-               }
+#SPEED_TABLE = {'yawAxis': 3,
+               #'pitchAxis': 3
+               #}
 ANGLE_1MS_TABLE = {'yawAxis': 525.,  # angle (in °) for a 1ms pulse change
                    'pitchAxis': 315.
                    }
