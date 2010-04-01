@@ -72,6 +72,64 @@
         </shoot>
     </preset>
 
+    <preset name="6@30 + 6@-30">
+        <tooltip>
+            Tokina 10-17 @ 10 mm on APS-C (x1.6)
+            6 picts @ +30°
+            6 picts @ -30°
+        </tooltip>
+        <shoot>
+            <pict yaw="0." pitch="30." />
+            <pict yaw="30." pitch="-30." />
+            <pict yaw="60." pitch="30." />
+            <pict yaw="90." pitch="-30." />
+            <pict yaw="120." pitch="30." />
+            <pict yaw="150." pitch="-30." />
+            <pict yaw="180." pitch="30." />
+            <pict yaw="210." pitch="-30." />
+            <pict yaw="240." pitch="30." />
+            <pict yaw="270." pitch="-30." />
+            <pict yaw="300." pitch="30." />
+            <pict yaw="330." pitch="-30." />
+        </shoot>
+    </preset>
+
+    <preset name="6@0 + Z + N">
+        <tooltip>
+            Tokina 10-17 @ 10 mm on APS-C (x1.6)
+            6 picts @ 0°
+            zenith
+            nadir
+        </tooltip>
+        <shoot>
+            <pict yaw="0." pitch="0." />
+            <pict yaw="60." pitch="0." />
+            <pict yaw="120." pitch="0." />
+            <pict yaw="180." pitch="0." />
+            <pict yaw="240." pitch="0." />
+            <pict yaw="300." pitch="0." />
+            <pict yaw="None" pitch="+90." />
+            <pict yaw="None" pitch="-90." />
+        </shoot>
+    </preset>
+
+    <preset name="6@-10 + 1@+60">
+        <tooltip>
+            Tokina 10-17 @ 10 mm on APS-C (x1.6)
+            6 picts @ -10°
+            1 pict @ +60°
+        </tooltip>
+        <shoot>
+            <pict yaw="0." pitch="-10." />
+            <pict yaw="60." pitch="-10." />
+            <pict yaw="120." pitch="-10." />
+            <pict yaw="180." pitch="-10." />
+            <pict yaw="240." pitch="-10." />
+            <pict yaw="300." pitch="-10." />
+            <pict yaw="None" pitch="+60." />
+        </shoot>
+    </preset>
+
     <preset name="3 + 6 + 12 + 6 + 3 (28mm)">
         <tooltip>
             17 mm on APS-C (x1.6)
