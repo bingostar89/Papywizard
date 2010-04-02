@@ -56,7 +56,7 @@ SOURCES += papywizard/hardware/abstractHardware.py \
            papywizard/hardware/gigaPanBotHardware.py \
            papywizard/hardware/merlinOrionHardware.py \
            papywizard/hardware/pixOrbHardware.py \
-           papywizard/hardware/pololuServoHardware.py \
+           papywizard/hardware/pololuServoHardware.py
 
 # model
 SOURCES += papywizard/model/camera.py \
@@ -79,7 +79,6 @@ SOURCES += papywizard/plugins/abstractAxisPlugin.py \
            papywizard/plugins/genericTetheredPlugins.py \
            papywizard/plugins/gigaPanBotPlugins.py \
            papywizard/plugins/gphotoBracketPlugins.py \
-           papywizard/plugins/gphotoPlugins.py \
            papywizard/plugins/hardwarePluginController.py \
            papywizard/plugins/merlinOrionPlugins.py \
            papywizard/plugins/nkRemotePlugins.py \
@@ -87,7 +86,6 @@ SOURCES += papywizard/plugins/abstractAxisPlugin.py \
            papywizard/plugins/pixOrbPlugins.py \
            papywizard/plugins/pluginsConnector.py \
            papywizard/plugins/pluginsManager.py \
-           papywizard/plugins/pololuServoPlugins.py \
            papywizard/plugins/shutterPluginController.py \
            papywizard/plugins/simulationPlugins.py \
            papywizard/plugins/standardShutterPluginController.py \
