@@ -64,12 +64,6 @@ class TotalFovController(AbstractModalDialogController):
         self._uiFile = "totalFovDialog.ui"
 
     def _initWidgets(self):
-
-        # Set limits
-        cameraYawFov = self._model.camera.getYawFov(self._model.cameraOrientation)
-        cameraPitchFov = self._model.camera.getPitchFov(self._model.cameraOrientation)
-        self._view.yawFovDoubleSpinBox.setRange(cameraYawFov, 720.)
-        self._view.pitchFovDoubleSpinBox.setRange(cameraPitchFov, 360.)
         currentYawFov = self._model.mosaic.yawFov
         currentPitchFov = self._model.mosaic.pitchFov
         self._view.yawFovDoubleSpinBox.setValue(currentYawFov)
