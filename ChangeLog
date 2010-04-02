@@ -7,10 +7,11 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + Bulb mode in shutter plugins
     + 'Gphoto Bracket' plugin (jeongyun patch)
     + 'Panoduino' plugin (replace 'Pololu Servo' plugin)
     + value changed callback mecanism in plugins
-    - don't register 2 plugins under the same name
+    - don't register anymore 2 plugins under the same name
     - plugins labels revisited
     x goto initial position now works even from reference position
     x reload correct combobox config in plugins (unicode issue)
