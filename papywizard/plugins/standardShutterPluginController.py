@@ -42,7 +42,7 @@ Controller
 Implements
 ==========
 
-- StandardShutterPluginController
+ - StandardShutterPluginController
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2010 Frédéric Mantegazza
@@ -59,6 +59,7 @@ from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxFi
 
 LABEL_TIME_VALUE = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Time value"))
 LABEL_MIRROR_LOCKUP = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Mirror lockup"))
+LABEL_BULB_ENABLE = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Bulb"))
 LABEL_BRACKETING_NB_PICTS = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Bracketing nb picts"))
 
 TAB_HARD = unicode(QtGui.QApplication.translate("standardShutterPluginController", 'Hard'))
@@ -70,6 +71,7 @@ class StandardShutterPluginController(ShutterPluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
         self._addWidget('Main', LABEL_TIME_VALUE, DoubleSpinBoxField, (0.1, 3600., 1, 0.1, "", " s"), 'TIME_VALUE')
+        self._addWidget('Main', LABEL_BULB_ENABLE, CheckBoxField, (), 'BULB_ENABLE')
         self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', LABEL_BRACKETING_NB_PICTS, SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
         self._addTab('Hard', TAB_HARD)

@@ -42,11 +42,13 @@ Plugin
 Implements
 ==========
 
--  AbstractStandardShutterPlugin
+ -  AbstractStandardShutterPlugin
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2010 Frédéric Mantegazza
 @license: CeCILL
+
+@todo: find a better name
 """
 
 __revision__ = "$Id$"
@@ -57,6 +59,7 @@ from papywizard.common.loggingServices import Logger
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 
 DEFAULT_TIME_VALUE = 0.5 # s
+DEFAULT_BULB_ENABLE = False
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
 DEFAULT_PULSE_WIDTH_HIGH = 200 # ms
@@ -81,6 +84,7 @@ class  AbstractStandardShutterPlugin(AbstractShutterPlugin):
     def _defineConfig(self):
         Logger().trace("AbstractStandardShutterPlugin._defineConfig()")
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
+        self._addConfigKey('_bulbEnable', 'BULB_ENABLE', default=DEFAULT_BULB_ENABLE)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
         self._addConfigKey('_pulseWidthHigh', 'PULSE_WIDTH_HIGH', default=DEFAULT_PULSE_WIDTH_HIGH)
@@ -101,7 +105,10 @@ class  AbstractStandardShutterPlugin(AbstractShutterPlugin):
         """
         Logger().trace("AbstractStandardShutterPlugin._triggerShutter()")
         self._triggerOnShutter()
-        time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
+        if self._config['BULB_ENABLE']:
+            time.sleep(self._config['TIME_VALUE'])
+        else:
+            time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
         self._triggerOffShutter()
         self._LastShootTime = time.time()
 
@@ -128,10 +135,11 @@ class  AbstractStandardShutterPlugin(AbstractShutterPlugin):
         self._ensurePulseWidthLowDelay()
         self._driver.acquireBus()
         try:
+            t = time.time()
             self._triggerShutter()
 
             # Wait for the end of shutter cycle
-            delay = self._config['TIME_VALUE'] - self._config['PULSE_WIDTH_HIGH'] / 1000.
+            delay = self._config['TIME_VALUE'] - (time.time() - t)
             if delay > 0:
                 time.sleep(delay)
             return 0
