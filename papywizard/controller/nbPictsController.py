@@ -64,12 +64,7 @@ class NbPictsController(AbstractModalDialogController):
         self._uiFile = "nbPictsDialog.ui"
 
     def _initWidgets(self):
-
-        # Set limits
-        maxYawNbPicts = 200 # Compute the maximum number of pictures
-        maxPitchNbPicts = 200
-        self._view.yawNbPictsSpinBox.setRange(1, maxYawNbPicts)
-        self._view.pitchNbPictsSpinBox.setRange(1, maxPitchNbPicts)
+        pass
 
     # Callbacks
     def _onAccepted(self):
