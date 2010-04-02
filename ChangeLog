@@ -7,6 +7,7 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + Pitch arm side param
     + Bulb mode in shutter plugins
     + 'Gphoto Bracket' plugin (jeongyun patch)
     + 'Panoduino' plugin (replace 'Pololu Servo' plugin)
