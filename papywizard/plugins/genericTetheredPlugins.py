@@ -136,11 +136,11 @@ class GenericTetheredShutterController(ShutterPluginController):
         ShutterPluginController._defineGui(self)
         self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', LABEL_MIRROR_LOCKUP_COMMAND, LineEditField, (), 'MIRROR_LOCKUP_COMMAND')
-        #self._addWidget('Main', TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND,
+        #self._addWidget('Main', LABEL_MIRROR_LOCKUP_COMMAND,
                         #FileSelectorField, (TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND, TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND_FILTER),
                         #'MIRROR_LOCKUP_COMMAND')
         self._addWidget('Main', LABEL_SHOOT_COMMAND, LineEditField, (), 'SHOOT_COMMAND')
-        #self._addWidget('Main', TEXT_CHOOSE_SHOOT_COMMAND,
+        #self._addWidget('Main', LABEL_SHOOT_COMMAND,
                         #FileSelectorField, (TEXT_CHOOSE_SHOOT_COMMAND, TEXT_CHOOSE_SHOOT_COMMAND_FILTER),
                         #'SHOOT_COMMAND')
         self._addWidget('Main', LABEL_BRACKETING_NB_PICTS, SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
