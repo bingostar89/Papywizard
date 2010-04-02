@@ -12,8 +12,10 @@ x bug fix
     + 'Gphoto Bracket' plugin (jeongyun patch)
     + 'Panoduino' plugin (replace 'Pololu Servo' plugin)
     + value changed callback mecanism in plugins
+    - mosaic nb picts limits are now yaw=500, pitch=250
     - don't register anymore 2 plugins under the same name
     - plugins labels revisited
+    x unicode fix in Help About dialog
     x goto initial position now works even from reference position
     x reload correct combobox config in plugins (unicode issue)
 
