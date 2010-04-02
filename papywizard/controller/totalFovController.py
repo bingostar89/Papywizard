@@ -64,10 +64,7 @@ class TotalFovController(AbstractModalDialogController):
         self._uiFile = "totalFovDialog.ui"
 
     def _initWidgets(self):
-        currentYawFov = self._model.mosaic.yawFov
-        currentPitchFov = self._model.mosaic.pitchFov
-        self._view.yawFovDoubleSpinBox.setValue(currentYawFov)
-        self._view.pitchFovDoubleSpinBox.setValue(currentPitchFov)
+        pass
 
     # Callbacks
     def _onAccepted(self):
@@ -81,4 +78,7 @@ class TotalFovController(AbstractModalDialogController):
 
     # Interface
     def refreshView(self):
-        pass
+        currentYawFov = self._model.mosaic.yawFov
+        currentPitchFov = self._model.mosaic.pitchFov
+        self._view.yawFovDoubleSpinBox.setValue(currentYawFov)
+        self._view.pitchFovDoubleSpinBox.setValue(currentPitchFov)
