@@ -119,6 +119,7 @@ class ConfigController(AbstractModalDialogController):
 
         # Shooting tab
         self._model.headOrientation = config.HEAD_ORIENTATION_INDEX[self._view.headOrientationComboBox.currentIndex()]
+        self._model.head.pitchArmSide = config.PITCH_ARM_SIDE_INDEX[self._view.pitchArmSideComboBox.currentIndex()]
         self._model.cameraOrientation = config.CAMERA_ORIENTATION_INDEX[self._view.cameraOrientationComboBox.currentIndex()]
         if self._model.cameraOrientation == 'custom':
             self._model.cameraRoll = self._view.cameraRollDoubleSpinBox.value()
@@ -293,6 +294,7 @@ class ConfigController(AbstractModalDialogController):
 
         # Shooting tab
         self._view.headOrientationComboBox.setCurrentIndex(config.HEAD_ORIENTATION_INDEX[self._model.headOrientation])
+        self._view.pitchArmSideComboBox.setCurrentIndex(config.PITCH_ARM_SIDE_INDEX[self._model.head.pitchArmSide])
         self._view.cameraOrientationComboBox.setCurrentIndex(config.CAMERA_ORIENTATION_INDEX[self._model.cameraOrientation])
         self._view.stabilizationDelayDoubleSpinBox.setValue(self._model.stabilizationDelay)
 

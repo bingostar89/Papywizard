@@ -134,6 +134,8 @@ SHOOTING_COLOR_SCHEME = {'default': {'background': (224, 224, 224, 255),
 # GUI index for controller
 HEAD_ORIENTATION_INDEX = {'up': 0, 'left': 1, 'right': 2, 'down': 3,
                           0: 'up', 1: 'left', 2: 'right', 3: 'down'}
+PITCH_ARM_SIDE_INDEX = {'right': 0, 'left': 1,
+                        0: 'right', 1: 'left'}
 CAMERA_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1, 'custom': 2,
                             0: 'portrait', 1: 'landscape', 2: 'custom'}
 MOSAIC_START_FROM_INDEX = {'top-left': 0, 'top-right': 1, 'bottom-left': 2, 'bottom-right': 3,

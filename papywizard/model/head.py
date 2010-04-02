@@ -87,6 +87,18 @@ class Head(QtCore.QObject):
 
     pitchAxis = property(__getPitchAxis)
 
+    def __getPitchArmSide(self):
+        """
+        """
+        return ConfigManager().get('Configuration/SHOOTING_PITCH_ARM_SIDE')
+
+    def __setPitchArmSide(self, pitchArmSide):
+        """
+        """
+        ConfigManager().set('Configuration/SHOOTING_PITCH_ARM_SIDE', pitchArmSide)
+
+    pitchArmSide = property(__getPitchArmSide, __setPitchArmSide)
+
     def isPositionValid(self, yaw, pitch):
         """ Check if position is in axis limits.
 
@@ -141,12 +153,20 @@ class Head(QtCore.QObject):
         """
         yaw = self.yawAxis.read()
         pitch = self.pitchAxis.read()
+
+        # Revert pitch direction if the arm is on the left
+        if self.pitchArmSide == 'left':
+            pitch *= -1
         return yaw, pitch
 
     def gotoPosition(self, yaw, pitch, useOffset=True, wait=True):
         """ Goto given position.
         """
         self.yawAxis.drive(yaw, useOffset, wait=False)
+
+        # Revert pitch direction if the arm is on the left
+        if self.pitchArmSide == 'left':
+            pitch *= -1
         self.pitchAxis.drive(pitch, useOffset, wait=False)
         if wait:
             self.waitEndOfDrive()
@@ -169,6 +189,13 @@ class Head(QtCore.QObject):
         if axis == 'yaw':
             self.yawAxis.startJog(dir_)
         elif axis == 'pitch':
+
+            # Revert pitch direction if the arm is on the left
+            if self.pitchArmSide == 'left':
+                if dir_ == '+':
+                    dir_ = '-'
+                else:
+                    dir_ = '+'
             self.pitchAxis.startJog(dir_)
         else:
             raise ValueError("axis must be in ('yaw', 'pitch')")

@@ -84,9 +84,9 @@ class Shooting(QtCore.QObject):
         self.__startTime = None
         self.__pauseTime = None
         self.__totalPausedTime = 0.
-        self.head = Head()
 
         # Sub-models
+        self.head = Head()
         self.camera = Camera()
         self.mosaic = MosaicScan(self)
         self.preset = PresetScan(self)
