@@ -7,6 +7,8 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+
+2010-04-03 Version 2.1.17 (dev)
     + Pitch arm side param
     + Bulb mode in shutter plugins
     + 'Gphoto Bracket' plugin (jeongyun patch)
