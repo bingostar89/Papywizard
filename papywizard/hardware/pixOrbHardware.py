@@ -102,8 +102,8 @@ class PixOrbHardware(AbstractHardware):
         @param cmd: command to send
         @type cmd: str
 
-        @param table: controller name table to use for this command
-        @type table: dict
+        @param axis: name of the axis
+        @type axis: str
 
         @return: answer
         @rtype: str
@@ -221,8 +221,8 @@ class PixOrbHardware(AbstractHardware):
         @param dir_: direction ('+', '-')
         @type dir_: str
 
-        @param speed: speed
-        @type speed: int
+        @param speedIndex: index of the speed in the table
+        @type speedIndex: int
         """
         Logger().debug("PixOrbHardware.startJog(): dir_=%s, speed=%d" % (dir_, speedIndex))
         if dir_ not in ('+', '-'):

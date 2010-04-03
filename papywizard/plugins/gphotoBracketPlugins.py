@@ -180,10 +180,10 @@ class GphotoShell(QtCore.QObject):
     def __sendCmd(self, cmd):
         """ Send a command to gphoto2 shell.
 
-        @param command: command to send
-        @type command: str
+        @param cmd: command to send
+        @type cmd: str
         """
-        Logger().debug("GphotoShell.__sendCmd(): command='%s'" % cmd.strip())
+        Logger().debug("GphotoShell.__sendCmd(): cmd='%s'" % cmd.strip())
         self.__popen.poll()
         if self.__popen.returncode is None:
             self.__popen.stdin.write("%s\n" % cmd)
