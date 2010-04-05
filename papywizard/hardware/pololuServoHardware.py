@@ -57,26 +57,271 @@ from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.hardware.abstractHardware import AbstractHardware
 
-
-#class AbstractPololuProtocol(object):
-    #""" Base class handling the different Pololu protocols.
-    #"""
-    #def __init__(self):
-        #""" Init the abstract Pololu protocol object.
-        #"""
-        #super(AbstractPololuProtocol, self).__init__()
-
-    #def buildFrame(self, cmd, *args):
-        #""" Build the frame to send.
-
-        #@param cmd: command to use
-        #@type cmd: str
-        #"""
-        #raise NotImplementedError("AbstractPololuProtocol.buildFrame() need to be overloaded")
+SPEED_TABLE = { 1: {'speed': 5, 'accel':  1,},
+                2: {'speed': 10, 'accel':  5},
+                3: {'speed': 20, 'accel':  10}
+               }
 
 
 class PololuServoHardware(AbstractHardware):
-    """ Pololu servo low-level hardware.
+    pass
+
+
+class PololuMicroMaestroHardware(PololuServoHardware):
+    """ Micro Maestro low-level hardware
+    """
+    SERVO_MIN = 64
+    SERVO_MAX = 83280
+
+    def __splitLowHigh(self, value):
+        """ Split value in low/high bytes.
+
+        Also set the MSB to 0, as controller expects.
+
+        @param value: value to split
+        @type value: int
+
+        @return: (low, high) value
+        @rtype: tuple of int
+        """
+        low = value & 0x7f
+        high = (value >> 7) & 0x7f
+
+        return low, high
+
+    def __sendCmd(self, command, *args):
+        """ Send a command to Pololu controller.
+
+        @param command: command to send
+        @type command: int
+
+        @todo: add retry
+        """
+        #Logger().debug("PololuMicroMaestroHardware.__sendCmd: command=0x%x, args=%s" % (command, args))
+
+        # Send command to controller
+        size = len(args) + 1
+        self._driver.write(struct.pack(size * 'B', 0x80 + command, *args))
+
+    def init(self):
+        """ Turn on servo power.
+        """
+        self._driver.acquireBus()
+        try:
+            self.reset()
+
+            # Stop internal script
+            self.stopScript()
+        finally:
+            self._driver.releaseBus()
+
+    def shutdown(self):
+        """ Turn off servo power.
+        """
+        self._driver.acquireBus()
+        try:
+
+            # Restart internal script
+            #self.restartScriptAt(0)
+            pass
+        finally:
+            self._driver.releaseBus()
+
+    def configure(self, speedIndex):
+        """ Turn on servo power.
+
+        @param speed: rotation speed
+        @type speed: int
+
+        @param accel: acceleration
+        @type direction: int
+        """
+        self._driver.acquireBus()
+        try:
+            self.setSpeed(SPEED_TABLE[speedIndex]['speed'])
+            self.setAcceleration(SPEED_TABLE[speedIndex]['accel'])
+        finally:
+            self._driver.releaseBus()
+
+    def reset(self):
+        """ Reset the controller.
+
+        How to do this with all drivers?
+        """
+        self._driver.acquireBus()
+        try:
+            self._driver.setRTS(1)
+            self._driver.setDTR(1)
+            self._driver.setRTS(0)
+            self._driver.setDTR(0)
+        except AttributeError:
+            Logger().exception("PololuMicroMaestroHardware.reset()", debug=True)
+        finally:
+            self._driver.releaseBus()
+
+    def setTarget(self, target):
+        """ Set servo target.
+
+        @param target: servo target, in µs
+        @type position: float
+        """
+        if not PololuMicroMaestroHardware.SERVO_MIN <= target <= PololuMicroMaestroHardware.SERVO_MAX:
+            raise ValueError("position must be in [%d-%d] (%.2f)" %
+                             (PololuMicroMaestroHardware.SERVO_MIN, PololuMicroMaestroHardware.SERVO_MAX, position))
+        Logger().debug("PololuMicroMaestroHardware.setTarget(): target=%.2fµs (%d)" % (target, int(target * 4)))
+        low, high = self.__splitLowHigh(int(target * 4))
+        self._driver.acquireBus()
+        try:
+            self.__sendCmd(0x04, self._axis, low, high)
+        finally:
+            self._driver.releaseBus()
+
+    def setSpeed(self, speed):
+        """ Set servo speed.
+
+        @param speed: servo speed, in [0-255]
+        @type speed: int
+        """
+        if not 0 <= speed <= 255:
+            raise ValueError("speed must be in [0-255] (%d)" % speed)
+        low, high = self.__splitLowHigh(speed)
+        self._driver.acquireBus()
+        try:
+            self.__sendCmd(0x07, self._axis, low, high)
+        finally:
+            self._driver.releaseBus()
+
+    def setAcceleration(self, accel):
+        """ Set servo speed.
+
+        @param accel: servo acceleration, in [0-255]
+        @type accel: int
+        """
+        if not 0 <= accel <= 255:
+            raise ValueError("accel must be in [0-255] (%d)" % accel)
+        low, high = self.__splitLowHigh(accel)
+        self._driver.acquireBus()
+        try:
+            self.__sendCmd(0x09, self._axis, low, high)
+        finally:
+            self._driver.releaseBus()
+
+    def getPosition(self):
+        """ Get servo position.
+
+        @return: servo position, in µs
+        @ttype: float
+        """
+        self._driver.acquireBus()
+        try:
+            self.__sendCmd(0x10, self._axis)
+            ans = self._driver.read(2)
+        finally:
+            self._driver.releaseBus()
+        #Logger().debug("PololuMicroMaestroHardware.getPosition: Pololu returned %s" % repr(ans))
+        low, high = struct.unpack("BB", ans)
+        position = (low + 255 * high) / 4.
+
+        return position
+
+    def getMovingState(self):
+        """ Get servos moving state.
+
+        @return: 0: servos are not moving
+                 1: at least one servo is moving
+        @rtype: int
+        """
+        self._driver.acquireBus()
+        try:
+            self.__sendCmd(0x13)
+            ans = self._driver.read(1)
+        finally:
+            self._driver.releaseBus()
+        #Logger().debug("PololuMicroMaestroHardware.getMovingState: Pololu returned %s" % repr(ans))
+        movingState = struct.unpack('B', ans)[0]
+
+        return movingState
+
+    def getErrors(self):
+        """ Get controller errors.
+
+        @return: error code
+        @rtype: int
+
+        @todo: add a method to retreive error message(s)
+        """
+        self._driver.acquireBus()
+        try:
+            self.__sendCmd(0x21)
+            ans = self._driver.read(2)
+        finally:
+            self._driver.releaseBus()
+        Logger().debug("PololuMicroMaestroHardware.getError: Pololu returned %s" % repr(ans))
+        low, high = struct.unpack("BB", ans)
+        errorCode = low + 255 * high
+
+        return errorCode
+
+    def goHome(self):
+        """ Set servos to their home position.
+
+        Note: the controller must be configured with Pololu interface.
+        """
+        self._driver.acquireBus()
+        try:
+            self.__sendCmd(0x22)
+        finally:
+            self._driver.releaseBus()
+
+    def stopScript(self):
+        """ Stop internal script.
+        """
+        self._driver.acquireBus()
+        try:
+            self.__sendCmd(0x24)
+        finally:
+            self._driver.releaseBus()
+
+    def restartScriptAt(self, subroutine):
+        """ Restart internal script at subroutine.
+        """
+        self._driver.acquireBus()
+        try:
+            self.__sendCmd(0x27, subroutine)
+        finally:
+            self._driver.releaseBus()
+
+    def restartScriptAtWithParam(self, subroutine, param):
+        """ Stop internal script.
+        """
+        self._driver.acquireBus()
+        try:
+            low, high = self.__splitLowHigh(param)
+            self.__sendCmd(0x28, subroutine, low, high)
+        finally:
+            self._driver.releaseBus()
+
+    def getScriptStatus(self):
+        """ Get script status.
+
+        @return: 0: script is running
+                 1: script is stopped
+        @rtype: int
+        """
+        self._driver.acquireBus()
+        try:
+            self.__sendCmd(0x2e)
+            ans = self._driver.read(1)
+        finally:
+            self._driver.releaseBus()
+        Logger().debug("PololuMicroMaestroHardware.getScriptStatus: Pololu returned %s" % repr(ans))
+        status = struct.unpack('B', ans)[0]
+
+        return status
+
+
+class PololuSerialHardware(PololuServoHardware):
+    """ Pololu serial low-level hardware.
     """
     def __sendCmd(self, command, data1, data2=None):
         """ Send a command to Pololu controller.
@@ -96,7 +341,7 @@ class PololuServoHardware(AbstractHardware):
            data2Str = hex(data2)
         else:
            data2Str = 'None'
-        #Logger().debug("PololuServoHardware.__sendCmd: command=%d, servo=%d, data1=%s, data2=%s" % (command, self._axis, hex(data1), data2Str))
+        #Logger().debug("PololuServoHardware.__sendCmd: command=%d, servo=%d, data1=0x%x, data2=%s" % (command, self._axis, data1, data2Str))
         if command in (0, 1, 2):
             if data2 is not None:
                 raise ValueError("Command %d takes only 1 data parameter" % command)
@@ -114,7 +359,7 @@ class PololuServoHardware(AbstractHardware):
 
         # Check controller answer
         data = self._driver.read(size)
-        #Logger().debug("PololuServoHardware.__sendCmd: pololu returned: %s" % repr(data))
+        #Logger().debug("PololuServoHardware.__sendCmd: Pololu returned: %s" % repr(data))
 
     def init(self):
         """ Turn on servo power.
