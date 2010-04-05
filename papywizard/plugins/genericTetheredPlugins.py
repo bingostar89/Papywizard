@@ -63,24 +63,33 @@ from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.shutterPluginController import ShutterPluginController
-from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, \
-                                         CheckBoxField, SliderField, FileSelectorField
+from papywizard.view.pluginFields import LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField
 
 NAME = "Generic Tethered"
 
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_MIRROR_LOCKUP_COMMAND = "gphoto2 --capture-image"
-DEFAULT_SHOOT_COMMAND = "gphoto2 --capture-image"
+DEFAULT_SHOOT_COMMAND = "gphoto2 --capture-image %(p0)s %(p1)s %(p2)s %(p3)s %(p4)s"  # Add param in shoot()?
+DEFAULT_TIME_VALUE = 0.
 DEFAULT_BRACKETING_NBPICTS = 1
+DEFAULT_PARAM_0 = ""
+DEFAULT_PARAM_1 = ""
+DEFAULT_PARAM_2 = ""
+DEFAULT_PARAM_3 = ""
+DEFAULT_PARAM_4 = ""
 
 LABEL_MIRROR_LOCKUP = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Mirror lockup"))
 LABEL_MIRROR_LOCKUP_COMMAND = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Mirror lockup command"))
-#TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Choose mirror lockup command..."))
-#TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND_FILTER = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "All files (*)"))
 LABEL_SHOOT_COMMAND = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Shoot command"))
-#TEXT_CHOOSE_SHOOT_COMMAND = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Choose shoot command..."))
-#TEXT_CHOOSE_SHOOT_COMMAND_FILTER = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "All files (*)"))
+LABEL_TIME_VALUE = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Time value"))
 LABEL_BRACKETING_NB_PICTS = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Bracketing nb picts"))
+
+TAB_PARAMS = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Params"))
+LABEL_PARAM_0 = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Parameter 'p0'"))
+LABEL_PARAM_1 = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Parameter 'p1"))
+LABEL_PARAM_2 = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Parameter 'p2'"))
+LABEL_PARAM_3 = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Parameter 'p3'"))
+LABEL_PARAM_4 = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Parameter 'p4'"))
 
 
 class GenericTetheredShutter(AbstractShutterPlugin):
@@ -104,21 +113,47 @@ class GenericTetheredShutter(AbstractShutterPlugin):
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_mirrorLockupCommand', 'MIRROR_LOCKUP_COMMAND', default=DEFAULT_MIRROR_LOCKUP_COMMAND)
         self._addConfigKey('_shootCommand', 'SHOOT_COMMAND', default=DEFAULT_SHOOT_COMMAND)
+        self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
+        self._addConfigKey('_parameter0', 'PARAM_0', default=DEFAULT_PARAM_0)
+        self._addConfigKey('_parameter1', 'PARAM_1', default=DEFAULT_PARAM_1)
+        self._addConfigKey('_parameter2', 'PARAM_2', default=DEFAULT_PARAM_2)
+        self._addConfigKey('_parameter3', 'PARAM_3', default=DEFAULT_PARAM_3)
+        self._addConfigKey('_parameter4', 'PARAM_4', default=DEFAULT_PARAM_4)
 
     def lockupMirror(self):
-        # @todo: implement mirror lockup command
         Logger().debug("GenericTetheredShutter.lockupMirror(): execute command '%s'..." % self._config['MIRROR_LOCKUP_COMMAND'])
-        time.sleep(1)
-        Logger().debug("GenericTetheredShutter.lockupMirror(): command over")
-        return 0
+
+        # Launch external command
+        startShootingTime = time.time()
+        args = self._config['MIRROR_LOCKUP_COMMAND'].split()
+        p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Wait end of execution
+        stdout, stderr = p.communicate()
+        if stderr:
+            Logger().error("GenericTetheredShutter.lockupMirror(): stderr:\n%s" % stderr.strip())
+        Logger().debug("GenericTetheredShutter.lockupMirror(): stdout:\n%s" % stdout.strip())
+
+        return p.returncode
 
     def shoot(self, bracketNumber):
         Logger().debug("GenericTetheredShutter.shoot(): bracketNumber=%d" % bracketNumber)
-        Logger().debug("GenericTetheredShutter.shoot(): execute command '%s'..." % self._config['SHOOT_COMMAND'])
+
+        # Get custom params
+        parameters = {'bracketNumber': bracketNumber,
+                      'timeValue': self._config['TIME_VALUE'],
+                      'p0': self._config['PARAM_0'],
+                      'p1': self._config['PARAM_1'],
+                      'p2': self._config['PARAM_2'],
+                      'p3': self._config['PARAM_3'],
+                      'p4': self._config['PARAM_4']}
 
         # Launch external command
-        args = self._config['SHOOT_COMMAND'].split()
+        startShootingTime = time.time()
+        cmd = self._config['SHOOT_COMMAND'] % parameters
+        Logger().debug("GenericTetheredShutter.shoot(): execute command '%s'..." % cmd)
+        args = cmd.split()
         p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         # Wait end of execution
@@ -126,6 +161,13 @@ class GenericTetheredShutter(AbstractShutterPlugin):
         if stderr:
             Logger().error("GenericTetheredShutter.shoot(): stderr:\n%s" % stderr.strip())
         Logger().debug("GenericTetheredShutter.shoot(): stdout:\n%s" % stdout.strip())
+
+        # Ensure time value delay elapsed
+        if p.returncode == 0:
+            delay = time.time() - startShootingTime
+            if delay > 0:
+                Logger().debug("GenericTetheredPlugin.shoot(): wait %.1fs additionnal delay" % delay)
+                time.sleep(delay)
 
         return p.returncode
 
@@ -136,14 +178,15 @@ class GenericTetheredShutterController(ShutterPluginController):
         ShutterPluginController._defineGui(self)
         self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', LABEL_MIRROR_LOCKUP_COMMAND, LineEditField, (), 'MIRROR_LOCKUP_COMMAND')
-        #self._addWidget('Main', LABEL_MIRROR_LOCKUP_COMMAND,
-                        #FileSelectorField, (TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND, TEXT_CHOOSE_MIRROR_LOCKUP_COMMAND_FILTER),
-                        #'MIRROR_LOCKUP_COMMAND')
         self._addWidget('Main', LABEL_SHOOT_COMMAND, LineEditField, (), 'SHOOT_COMMAND')
-        #self._addWidget('Main', LABEL_SHOOT_COMMAND,
-                        #FileSelectorField, (TEXT_CHOOSE_SHOOT_COMMAND, TEXT_CHOOSE_SHOOT_COMMAND_FILTER),
-                        #'SHOOT_COMMAND')
+        self._addWidget('Main', LABEL_TIME_VALUE, DoubleSpinBoxField, (0.1, 99.9, 1, .1, "", u" s"), 'TIME_VALUE')
         self._addWidget('Main', LABEL_BRACKETING_NB_PICTS, SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
+        self._addTab('Params', TAB_PARAMS)
+        self._addWidget('Params', LABEL_PARAM_0, LineEditField, (), 'PARAM_0')
+        self._addWidget('Params', LABEL_PARAM_1, LineEditField, (), 'PARAM_1')
+        self._addWidget('Params', LABEL_PARAM_2, LineEditField, (), 'PARAM_2')
+        self._addWidget('Params', LABEL_PARAM_3, LineEditField, (), 'PARAM_3')
+        self._addWidget('Params', LABEL_PARAM_4, LineEditField, (), 'PARAM_4')
 
 
 def register():
