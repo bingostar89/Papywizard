@@ -99,13 +99,13 @@ LABEL_EV_BIAS = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Ex
 LABEL_EV_LIST = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Resulting Ev list"))
 LABEL_ADVANCED = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Advanced"))
 
-TAB_CAMERA = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", 'Advanced'))
+TAB_ADVANCED = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", 'Advanced'))
 LABEL_PLUS_NB_PICTS = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing nb picts (+)"))
 LABEL_PLUS_STEP = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing step (+)"))
 LABEL_MINUS_NB_PICTS = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing nb picts (-)"))
 LABEL_MINUS_STEP = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Bracketing step (-)"))
 
-LABEL_DOWNLOAD_TAB = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Download"))
+TAB_DOWNLOAD = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Download"))
 LABEL_DOWNLOAD_ENABLE = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Enable"))
 LABEL_DOWNLOAD_DIR = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Download directory"))
 TEXT_CHOOSE_DOWNLOAD_DIR = unicode(QtGui.QApplication.translate("gphotoBracketPlugins", "Choose download directory..."))
@@ -690,7 +690,7 @@ class GphotoBracketShutterController(ShutterPluginController):
         self._addWidget('Main', LABEL_ADVANCED, CheckBoxField, (), 'BRACKETING_ADVANCED')
 
         # Advanced tab
-        self._addTab('Advanced', TAB_CAMERA)
+        self._addTab('Advanced', TAB_ADVANCED)
         self._addWidget('Advanced', LABEL_PLUS_NB_PICTS, SpinBoxField, (0, 11), 'BRACKETING_PLUS_NB_PICTS')
         self._addWidget('Advanced', LABEL_PLUS_STEP, SpinBoxField, (0, 5, "", " ev"), 'BRACKETING_PLUS_STEP')
         self._addWidget('Advanced', LABEL_MINUS_NB_PICTS, SpinBoxField, (0, 11), 'BRACKETING_MINUS_NB_PICTS')
@@ -700,7 +700,7 @@ class GphotoBracketShutterController(ShutterPluginController):
         self._getWidget('Advanced', LABEL_EV_LIST).setReadOnly(True)
 
         # Download tab
-        self._addTab('Download', LABEL_DOWNLOAD_TAB)
+        self._addTab('Download', TAB_DOWNLOAD)
         self._addWidget('Download', LABEL_DOWNLOAD_ENABLE, CheckBoxField, (), 'DOWNLOAD_ENABLE')
         self._addWidget('Download', LABEL_DOWNLOAD_DIR,
                         DirSelectorField, (TEXT_CHOOSE_DOWNLOAD_DIR,),
