@@ -7,6 +7,8 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + Added custom params to 'Generic Tethered' plugin
+    + 'Panoduino' plugin uses Pololu Micro Maestro controller
 
 2010-04-03 Version 2.1.17 (dev)
     + Pitch arm side param
