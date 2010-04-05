@@ -61,7 +61,7 @@ from PyQt4 import QtCore, QtGui
 from papywizard.common import config
 from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
-from papywizard.hardware.pololuServoHardware import PololuServoHardware
+from papywizard.hardware.pololuServoHardware import PololuMicroMaestroHardware
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractAxisPlugin import AbstractAxisPlugin
 from papywizard.plugins.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
@@ -73,23 +73,22 @@ from papywizard.view.pluginFields import ComboBoxField, SpinBoxField, DoubleSpin
 
 NAME = "Panoduino"
 
-DEFAULT_SPEED = 3
+DEFAULT_SPEED_INDEX = 2
 DEFAULT_DIRECTION = unicode(QtGui.QApplication.translate("panoduinoPlugins", 'forward'))
-DEFAULT_NEUTRAL_POSITION = 3000  # controller value for neutral position
-DEFAULT_VALUE_OFF = 0
-DEFAULT_VALUE_ON = 127
+DEFAULT_NEUTRAL_POSITION = 1500  # µs
 
-LABEL_SPEED = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Speed"))
+VALUE_MIN = PololuMicroMaestroHardware.SERVO_MIN
+VALUE_MAX = PololuMicroMaestroHardware.SERVO_MAX
+
+LABEL_SPEED = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Speed index"))
 
 TAB_SERVO = unicode(QtGui.QApplication.translate("panoduinoPlugins", 'Servo'))
 LABEL_DIRECTION = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Direction"))
 LABEL_NEUTRAL_POSITION = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Neutral position"))
-LABEL_VALUE_OFF = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Value off"))
-LABEL_VALUE_ON = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Value on"))
 
 AXIS_TABLE = {'yawAxis': 1,
               'pitchAxis': 2,
-              'shutter': 0
+              'shutter': 5
               }
 DIRECTION_INDEX = {'forward': 1,
                    'reverse': -1
@@ -99,7 +98,7 @@ DIRECTION_TABLE = {'forward': unicode(QtGui.QApplication.translate("panoduinoPlu
                    unicode(QtGui.QApplication.translate("panoduinoPlugins", 'forward')): 'forward',
                    unicode(QtGui.QApplication.translate("panoduinoPlugins", 'reverse')): 'reverse'
                    }
-ANGLE_1MS_TABLE = {'yawAxis': 525.,  # angle (in °) for a 1ms pulse change
+ANGLE_1MS_TABLE = {'yawAxis': 315.,  # angle (in °) for a 1ms pulse change
                    'pitchAxis': 315.
                    }
 MANUAL_SPEED_TABLE = {'slow': .5,  # angle (in °) for each key press
@@ -113,14 +112,12 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         Logger().trace("PanoduinoAxis._init()")
         AbstractHardwarePlugin._init(self)
         AbstractAxisPlugin._init(self)
-        self._hardware = PololuServoHardware()
-        self.__position = None
-        self.__endDrive = None
+        self._hardware = PololuMicroMaestroHardware()
 
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
         AbstractHardwarePlugin._defineConfig(self)
-        self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
+        self._addConfigKey('_speedIndex', 'SPEED_INDEX', default=DEFAULT_SPEED_INDEX)
         self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION)
         self._addConfigKey('_neutralPos', 'NEUTRAL_POSITION', default=DEFAULT_NEUTRAL_POSITION)
 
@@ -132,18 +129,16 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         reach the position.
         """
         AbstractAxisPlugin._checkLimits(self, position)
-        value = self.__computeServoPosition(position)
-        if not 500 <= value <= 5500:
-            raise HardwareError("Servo limit reached: %d not in [500-5500]" % value)
+        value = self.__angleToServo(position)
+        if not VALUE_MIN <= value <= VALUE_MAX:
+            raise HardwareError("Servo limit reached: %.2f not in [%d-%d]" % (value, VALUE_MIN, VALUE_MAX))
 
     def init(self):
         Logger().trace("PanoduinoAxis.init()")
         self._hardware.setAxis(AXIS_TABLE[self.capacity]),
         AbstractHardwarePlugin.init(self)
         self.configure()
-        self._hardware.setPositionAbsolute(self._config['NEUTRAL_POSITION'])
-        self.__position = 0.
-        self.__endDrive = 0
+        self._hardware.setTarget(self._config['NEUTRAL_POSITION'])
 
     def shutdown(self):
         Logger().trace("PanoduinoAxis.shutdown()")
@@ -155,32 +150,10 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def configure(self):
         Logger().trace("PanoduinoAxis.configure()")
         AbstractAxisPlugin.configure(self)
-        speed = self.__computeServoSpeed(self._config['SPEED'])
-        direction = DIRECTION_TABLE[self._config['DIRECTION']]
-        self._hardware.configure(speed, direction)
+        print self._config
+        self._hardware.configure(self._config['SPEED_INDEX'])
 
-    def read(self):
-        return self.__position - self._offset
-
-    def __computeServoSpeed(self, speed):
-        """ Compute controller servo value from position.
-
-        @param speed: speed, in °/s
-        @type speed: float
-
-        @return: value to send to servo controller
-        @rtype: int
-        """
-        return speed
-
-        servoSpeed = int(speed * 1000 / ANGLE_1MS_TABLE[self.capacity] / 50)
-        if servoSpeed < 1:
-            servoSpeed = 1
-        elif servoSpeed > 127:
-            servoSpeed = 127
-        return servoSpeed
-
-    def __computeServoPosition(self, position):
+    def __angleToServo(self, position):
         """ Compute controller servo value from position.
 
         @param position: position, in °
@@ -191,48 +164,57 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         """
         direction = DIRECTION_TABLE[self._config['DIRECTION']]
         dir_ = DIRECTION_INDEX[direction]
-        servoPosition = int(self._config['NEUTRAL_POSITION'] + dir_ * position / ANGLE_1MS_TABLE[self.capacity] * 2000)
-        return servoPosition
+        servoValue = int(self._config['NEUTRAL_POSITION'] + dir_ * position * 1000. / ANGLE_1MS_TABLE[self.capacity])
+
+        return servoValue
+
+    def __servoToAngle(self, value):
+        """ Compute position from controller servo value.
+
+        @param position: servo value
+        @type position: int
+
+        @return: position, in °
+        @rtype: float
+        """
+        direction = DIRECTION_TABLE[self._config['DIRECTION']]
+        dir_ = DIRECTION_INDEX[direction]
+        position = (value - self._config['NEUTRAL_POSITION']) * ANGLE_1MS_TABLE[self.capacity] / dir_ / 1000.
+
+        return position
+
+    def read(self):
+        position = self.__servoToAngle(self._hardware.getPosition())
+        return position - self._offset
 
     def drive(self, position, useOffset=True, wait=True):
         Logger().debug("PanoduinoAxis.drive(): '%s' drive to %.1f" % (self.capacity, position))
 
-        currentPos = self.read()
         self._checkLimits(position)
         if useOffset:
             position += self._offset
-        value = self.__computeServoPosition(position)
-        self._hardware.setPositionAbsolute(value)
-        self._endDrive = time.time() + abs(position - self.__position) / self._config['SPEED']
+        value = self.__angleToServo(position)
+        self._hardware.setTarget(value)
         if wait:
             self.waitEndOfDrive()
-        self.__position = position
-
-        # TODO: use a setpoint, and compute position in read according to timing/speed/...
-        # This avoid using a thread
 
     def waitEndOfDrive(self):
-        remaingTimeToWait = self._endDrive - time.time()
-        Logger().debug("PanoduinoAxis.waitEndOfDrive(): remaing time to wait %.1f" % remaingTimeToWait)
-        if remaingTimeToWait > 0:
-            time.sleep(remaingTimeToWait)
+        while self.isMoving():
+            time.sleep(0.2)
+        time.sleep(1)  # internal servo decelaration
         self.waitStop()
 
     def startJog(self, dir_):
-        """ Need to be run in a thread.
-        """
-        position = self.__position + self._offset
+        currentPos = self.read()
+        position = currentPos #+ self._offset
         if dir_ == '+':
             position += MANUAL_SPEED_TABLE[self._manualSpeed]
         else:
             position -= MANUAL_SPEED_TABLE[self._manualSpeed]
 
-        # Call self.drive() ???
-
         self._checkLimits(position)
-        value = self.__computeServoPosition(position)
-        self._hardware.setPositionAbsolute(value)
-        self.__position = position
+        value = self.__angleToServo(position)
+        self._hardware.setTarget(value)
 
     def stop(self):
         self.waitStop()
@@ -241,21 +223,18 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         pass
 
     def isMoving(self):
-        if self._endDrive < time.time():
-            return False
-        else:
-            return True
+        return self._hardware.getMovingState()
 
 
 class PanoduinoAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Main', LABEL_SPEED, SpinBoxField, (0, 127), 'SPEED')
+        self._addWidget('Main', LABEL_SPEED, SpinBoxField, (1, 3), 'SPEED_INDEX')
         self._addTab('Servo', TAB_SERVO)
         directions = [DIRECTION_TABLE['forward'], DIRECTION_TABLE['reverse']]
         self._addWidget('Servo', LABEL_DIRECTION, ComboBoxField, (directions,), 'DIRECTION')
-        self._addWidget('Servo', LABEL_NEUTRAL_POSITION, SpinBoxField, (500, 5500), 'NEUTRAL_POSITION')
+        self._addWidget('Servo', LABEL_NEUTRAL_POSITION, SpinBoxField, (VALUE_MIN, VALUE_MAX, "", u" µs"), 'NEUTRAL_POSITION')
 
 
 class PanoduinoShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
@@ -263,20 +242,18 @@ class PanoduinoShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
         Logger().trace("PanoduinoShutter._init()")
         AbstractHardwarePlugin._init(self)
         AbstractStandardShutterPlugin._init(self)
-        self._hardware = PololuServoHardware()
+        self._hardware = PololuMicroMaestroHardware()
 
     def _defineConfig(self):
         AbstractHardwarePlugin._defineConfig(self)
         AbstractStandardShutterPlugin._defineConfig(self)
-        self._addConfigKey('_valueOff', 'VALUE_OFF', default=DEFAULT_VALUE_OFF)
-        self._addConfigKey('_valueOn', 'VALUE_ON', default=DEFAULT_VALUE_ON)
 
     def _triggerOnShutter(self):
         """ Set the shutter on.
         """
         self._driver.acquireBus()
         try:
-            self._hardware.setPosition7bits(self._config['VALUE_ON'])
+            self._hardware.setTarget(VALUE_MAX)
         finally:
             self._driver.releaseBus()
 
@@ -285,13 +262,12 @@ class PanoduinoShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
         """
         self._driver.acquireBus()
         try:
-            self._hardware.setPosition7bits(self._config['VALUE_OFF'])
+            self._hardware.setTarget(VALUE_MIN)
         finally:
             self._driver.releaseBus()
 
-    def activate(self):
-        Logger().trace("PanoduinoShutter.activate()")
-        self._initialPosition = self._config['VALUE_OFF']
+    #def activate(self):
+        #Logger().trace("PanoduinoShutter.activate()")
 
     def init(self):
         Logger().trace("PanoduinoShutter.init()")
@@ -311,9 +287,6 @@ class PanoduinoShutterController(StandardShutterPluginController, HardwarePlugin
         Logger().trace("PanoduinoShutterController._defineGui()")
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addTab('Servo', TAB_SERVO)
-        self._addWidget('Servo', LABEL_VALUE_OFF, SpinBoxField, (0, 127), 'VALUE_OFF')
-        self._addWidget('Servo', LABEL_VALUE_ON, SpinBoxField, (0, 127), 'VALUE_ON')
 
 
 def register():
