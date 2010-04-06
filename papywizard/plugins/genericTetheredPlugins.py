@@ -69,9 +69,8 @@ NAME = "Generic Tethered"
 
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_MIRROR_LOCKUP_COMMAND = "gphoto2 --capture-image"
-DEFAULT_SHOOT_COMMAND = "gphoto2 --capture-image %(p0)s %(p1)s %(p2)s %(p3)s %(p4)s"  # Add param in shoot()?
+DEFAULT_SHOOT_COMMAND = "gphoto2 --capture-image"
 DEFAULT_TIME_VALUE = 0.
-DEFAULT_BRACKETING_NBPICTS = 1
 DEFAULT_PARAM_0 = ""
 DEFAULT_PARAM_1 = ""
 DEFAULT_PARAM_2 = ""
@@ -82,7 +81,6 @@ LABEL_MIRROR_LOCKUP = unicode(QtGui.QApplication.translate("genericTetheredPlugi
 LABEL_MIRROR_LOCKUP_COMMAND = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Mirror lockup command"))
 LABEL_SHOOT_COMMAND = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Shoot command"))
 LABEL_TIME_VALUE = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Time value"))
-LABEL_BRACKETING_NB_PICTS = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Bracketing nb picts"))
 
 TAB_PARAMS = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Params"))
 LABEL_PARAM_0 = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Parameter 'p0'"))
@@ -105,7 +103,7 @@ class GenericTetheredShutter(AbstractShutterPlugin):
         return self._config['MIRROR_LOCKUP']
 
     def _getBracketingNbPicts(self):
-        return self._config['BRACKETING_NB_PICTS']
+        return 1
 
     def _defineConfig(self):
         Logger().trace("GenericTetheredShutter._defineConfig()")
@@ -114,7 +112,6 @@ class GenericTetheredShutter(AbstractShutterPlugin):
         self._addConfigKey('_mirrorLockupCommand', 'MIRROR_LOCKUP_COMMAND', default=DEFAULT_MIRROR_LOCKUP_COMMAND)
         self._addConfigKey('_shootCommand', 'SHOOT_COMMAND', default=DEFAULT_SHOOT_COMMAND)
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
-        self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
         self._addConfigKey('_parameter0', 'PARAM_0', default=DEFAULT_PARAM_0)
         self._addConfigKey('_parameter1', 'PARAM_1', default=DEFAULT_PARAM_1)
         self._addConfigKey('_parameter2', 'PARAM_2', default=DEFAULT_PARAM_2)
@@ -125,7 +122,6 @@ class GenericTetheredShutter(AbstractShutterPlugin):
         Logger().debug("GenericTetheredShutter.lockupMirror(): execute command '%s'..." % self._config['MIRROR_LOCKUP_COMMAND'])
 
         # Launch external command
-        startShootingTime = time.time()
         args = self._config['MIRROR_LOCKUP_COMMAND'].split()
         p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
@@ -141,9 +137,7 @@ class GenericTetheredShutter(AbstractShutterPlugin):
         Logger().debug("GenericTetheredShutter.shoot(): bracketNumber=%d" % bracketNumber)
 
         # Get custom params
-        parameters = {'bracketNumber': bracketNumber,
-                      'timeValue': self._config['TIME_VALUE'],
-                      'p0': self._config['PARAM_0'],
+        parameters = {'p0': self._config['PARAM_0'],
                       'p1': self._config['PARAM_1'],
                       'p2': self._config['PARAM_2'],
                       'p3': self._config['PARAM_3'],
@@ -151,7 +145,9 @@ class GenericTetheredShutter(AbstractShutterPlugin):
 
         # Launch external command
         startShootingTime = time.time()
-        cmd = self._config['SHOOT_COMMAND'] % parameters
+        cmd = self._config['MIRROR_LOCKUP_COMMAND'] + " %(p0)s %(p1)s %(p2)s %(p3)s %(p4)s"
+        cmd = cmd % parameters
+        args = cmd.split()
         Logger().debug("GenericTetheredShutter.shoot(): execute command '%s'..." % cmd)
         args = cmd.split()
         p = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -180,7 +176,6 @@ class GenericTetheredShutterController(ShutterPluginController):
         self._addWidget('Main', LABEL_MIRROR_LOCKUP_COMMAND, LineEditField, (), 'MIRROR_LOCKUP_COMMAND')
         self._addWidget('Main', LABEL_SHOOT_COMMAND, LineEditField, (), 'SHOOT_COMMAND')
         self._addWidget('Main', LABEL_TIME_VALUE, DoubleSpinBoxField, (0.1, 99.9, 1, .1, "", u" s"), 'TIME_VALUE')
-        self._addWidget('Main', LABEL_BRACKETING_NB_PICTS, SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
         self._addTab('Params', TAB_PARAMS)
         self._addWidget('Params', LABEL_PARAM_0, LineEditField, (), 'PARAM_0')
         self._addWidget('Params', LABEL_PARAM_1, LineEditField, (), 'PARAM_1')
