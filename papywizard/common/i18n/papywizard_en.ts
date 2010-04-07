@@ -1095,24 +1095,54 @@ compensation list</translation>
 <context>
     <name>genericTetheredPlugins</name>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="76"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="80"/>
         <source>Mirror lockup</source>
         <translation>Mirror lockup</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="77"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="81"/>
         <source>Mirror lockup command</source>
         <translation>Mirror lockup command</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="80"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="82"/>
         <source>Shoot command</source>
         <translation>Shoot command</translation>
     </message>
     <message>
         <location filename="papywizard/plugins/genericTetheredPlugins.py" line="83"/>
-        <source>Bracketing nb picts</source>
-        <translation>Bracketing nb picts</translation>
+        <source>Time value</source>
+        <translation>Time value</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="85"/>
+        <source>Params</source>
+        <translation>Params</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="86"/>
+        <source>Parameter &apos;p0&apos;</source>
+        <translation>Parameter &apos;p0&apos;</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="88"/>
+        <source>Parameter &apos;p2&apos;</source>
+        <translation>Parameter &apos;p2&apos;</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="89"/>
+        <source>Parameter &apos;p3&apos;</source>
+        <translation>Parameter &apos;p3&apos;</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="90"/>
+        <source>Parameter &apos;p4&apos;</source>
+        <translation>Parameter &apos;p4&apos;</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="87"/>
+        <source>Parameter &apos;p1&apos;</source>
+        <translation>Parameter &apos;p1&apos;</translation>
     </message>
 </context>
 <context>
@@ -1365,19 +1395,24 @@ After closing this dialog, you will be prompt to select these plugins. Once it i
 <context>
     <name>merlinOrionPlugins</name>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="82"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="83"/>
         <source>Hard</source>
         <translation>Hard</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="83"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="84"/>
         <source>Alternate drive</source>
         <translation>Alternate drive</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="84"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="86"/>
         <source>Inertia angle</source>
         <translation>Inertia angle</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="85"/>
+        <source>Alternate drive angle</source>
+        <translation>Alternate drive angle</translation>
     </message>
 </context>
 <context>
@@ -1468,44 +1503,34 @@ compensation list</translation>
 <context>
     <name>panoduinoPlugins</name>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="99"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="98"/>
         <source>forward</source>
         <translation>forward</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="82"/>
-        <source>Speed</source>
-        <translation>Speed</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="84"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="85"/>
         <source>Servo</source>
         <translation>Servo</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="85"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="86"/>
         <source>Direction</source>
         <translation>Direction</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="86"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="87"/>
         <source>Neutral position</source>
         <translation>Neutral position</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="87"/>
-        <source>Value off</source>
-        <translation>Value off</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="88"/>
-        <source>Value on</source>
-        <translation>Value on</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="100"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="99"/>
         <source>reverse</source>
         <translation>reverse</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="83"/>
+        <source>Speed index</source>
+        <translation>Speed index</translation>
     </message>
 </context>
 <context>

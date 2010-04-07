@@ -1095,24 +1095,54 @@ exposition appareil</translation>
 <context>
     <name>genericTetheredPlugins</name>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="76"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="80"/>
         <source>Mirror lockup</source>
         <translation>Verrouillage miroir</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="77"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="81"/>
         <source>Mirror lockup command</source>
         <translation>Commande verrouillage miroir</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="80"/>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="82"/>
         <source>Shoot command</source>
         <translation>Commande déclenchement</translation>
     </message>
     <message>
         <location filename="papywizard/plugins/genericTetheredPlugins.py" line="83"/>
-        <source>Bracketing nb picts</source>
-        <translation>Nb photos multi-exposition</translation>
+        <source>Time value</source>
+        <translation>Durée d&apos;exposition</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="85"/>
+        <source>Params</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="86"/>
+        <source>Parameter &apos;p0&apos;</source>
+        <translation>Paramètre &apos;p0&apos;</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="88"/>
+        <source>Parameter &apos;p2&apos;</source>
+        <translation>Paramètre &apos;p2&apos;</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="89"/>
+        <source>Parameter &apos;p3&apos;</source>
+        <translation>Paramètre &apos;p3&apos;</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="90"/>
+        <source>Parameter &apos;p4&apos;</source>
+        <translation>Paramètre &apos;p4&apos;</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/genericTetheredPlugins.py" line="87"/>
+        <source>Parameter &apos;p1&apos;</source>
+        <translation>Paramètre &apos;p1&apos;</translation>
     </message>
 </context>
 <context>
@@ -1365,19 +1395,24 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
 <context>
     <name>merlinOrionPlugins</name>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="82"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="83"/>
         <source>Hard</source>
         <translation>Matos</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="83"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="84"/>
         <source>Alternate drive</source>
         <translation>Positionnement alternatif</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="84"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="86"/>
         <source>Inertia angle</source>
         <translation>Angle d&apos;inertie</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="85"/>
+        <source>Alternate drive angle</source>
+        <translation>Angle alternatif</translation>
     </message>
 </context>
 <context>
@@ -1468,44 +1503,34 @@ exposition appareil</translation>
 <context>
     <name>panoduinoPlugins</name>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="99"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="98"/>
         <source>forward</source>
         <translation>avant</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="82"/>
-        <source>Speed</source>
-        <translation>Vitesse</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="84"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="85"/>
         <source>Servo</source>
         <translation>Servo</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="85"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="86"/>
         <source>Direction</source>
         <translation>Direction</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="86"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="87"/>
         <source>Neutral position</source>
         <translation>Position du neutre</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="87"/>
-        <source>Value off</source>
-        <translation>Valeur repos</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="88"/>
-        <source>Value on</source>
-        <translation>Valeur actif</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="100"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="99"/>
         <source>reverse</source>
         <translation>arrière</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="83"/>
+        <source>Speed index</source>
+        <translation>Index vitesse</translation>
     </message>
 </context>
 <context>
