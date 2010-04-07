@@ -554,6 +554,12 @@ class ShootController(AbstractModalDialogController):
         if self.__thread is not None:
             self.__thread.wait()
 
+        if self._model.showShootingCounter:
+            message = QtGui.QMessageBox()
+            message.setText("%03d" % self._model.shootingCounter)
+            message.setStyleSheet("QLabel {font: 280px;}")
+            message.exec_()
+
         # Start new shooting thread
         self.__thread = ShootingThread(self._model)
         self.__thread.start()

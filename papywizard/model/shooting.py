@@ -160,6 +160,7 @@ class Shooting(QtCore.QObject):
 
     stabilizationDelay = property(__getStabilizationDelay, __setStabilizationDelay)
 
+    # Remove from model?
     def __getTimerAfter(self):
         """
         """
@@ -231,6 +232,30 @@ class Shooting(QtCore.QObject):
         ConfigManager().setBoolean('Configuration/TIMER_REVERSE_DIRECTION', timerReverseDirection)
 
     timerReverseDirection = property(__getTimerReverseDirection, __setTimerReverseDirection)
+
+    def __getShootingCounter(self):
+        """
+        """
+        return ConfigManager().getInt('Configuration/SHOOTING_COUNTER')
+
+    def __setShootingCounter(self, counter):
+        """
+        """
+        ConfigManager().setInt('Configuration/SHOOTING_COUNTER', counter)
+
+    shootingCounter = property(__getShootingCounter, __setShootingCounter)
+
+    def __getShowShootingCounter(self):
+        """
+        """
+        return ConfigManager().getBoolean('Configuration/SHOW_SHOOTING_COUNTER')
+
+    def __setShowShootingCounter(self, flag):
+        """
+        """
+        ConfigManager().setInt('Configuration/SHOW_SHOOTING_COUNTER', flag)
+
+    showShootingCounter = property(__getShowShootingCounter, __setShowShootingCounter)
 
     def __getScan(self):
         """
@@ -453,6 +478,7 @@ class Shooting(QtCore.QObject):
                   'cameraOrientation': "%s" % self.cameraOrientation,
                   'roll': "%.1f" % roll,
                   'stabilizationDelay': "%.1f" % self.stabilizationDelay,
+                  'counter': "%03d" % self.shootingCounter,
                   'timeValue': "%.1f" % self.shutter.timeValue,
                   'bracketingNbPicts': "%d" % self.shutter.bracketingNbPicts,
                   'sensorCoef': "%.1f" % self.camera.sensorCoef,
@@ -499,6 +525,8 @@ class Shooting(QtCore.QObject):
                     data = PresetData()
                     values.update({'name': "%s" % self.preset.name})
                 data.createHeader(values)
+                self.shootingCounter += 1
+                ConfigManager().save()  # Move elsewhere?
 
                 startTime = time.time()
                 Logger().debug("Shooting.start(): repeat %d/%d" % (repeat, numRepeat))

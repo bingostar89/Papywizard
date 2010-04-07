@@ -92,6 +92,8 @@ class ConfigController(AbstractModalDialogController):
         self.connect(self._view.timerAfterEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onTimerAfterEnableCheckBoxToggled)
         self.connect(self._view.timerRepeatEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onTimerRepeatEnableCheckBoxToggled)
 
+        self.connect(self._view.showShootingCounterCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onShowShootingCounterCheckBoxToggled)
+
 
     def _disconnectSignals(self):
         AbstractModalDialogController._disconnectSignals(self)
@@ -108,6 +110,8 @@ class ConfigController(AbstractModalDialogController):
 
         self.disconnect(self._view.timerAfterEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onTimerAfterEnableCheckBoxToggled)
         self.disconnect(self._view.timerRepeatEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onTimerRepeatEnableCheckBoxToggled)
+
+        self.disconnect(self._view.showShootingCounterCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onShowShootingCounterCheckBoxToggled)
 
     # Callbacks
     def _onAccepted(self):
@@ -159,6 +163,8 @@ class ConfigController(AbstractModalDialogController):
 
         # Misc tab
         ConfigManager().set('Configuration/LOGGER_LEVEL', config.LOGGER_INDEX[self._view.loggerLevelComboBox.currentIndex()])
+        self._model.shootingCounter = self._view.shootingCounterSpinBox.value()
+        self._model.showShootingCounter = bool(self._view.showShootingCounterCheckBox.isChecked())
 
         ConfigManager().save()
 
@@ -276,6 +282,14 @@ class ConfigController(AbstractModalDialogController):
         self._view.timerEveryTimeEdit.setEnabled(checked)
         self._view.timerReverseDirectionCheckBox.setEnabled(checked)
 
+    def __onShowShootingCounterCheckBoxToggled(self, checked):
+        """ Shooting counter enable check box toggled.
+
+        Show/hide related widgets.
+        """
+        Logger().debug("ConfigController.__onShowShootingCounterCheckBoxToggled(): checked=%s" % checked)
+        self._view.shootingCounterSpinBox.setEnabled(checked)
+
     # Interface
     def selectTab(self, tabIndex, disable=False):
         """ Select the specified tab.
@@ -353,6 +367,8 @@ class ConfigController(AbstractModalDialogController):
         # Misc tab
         loggerIndex = config.LOGGER_INDEX[ConfigManager().get('Configuration/LOGGER_LEVEL')]
         self._view.loggerLevelComboBox.setCurrentIndex(loggerIndex)
+        self._view.shootingCounterSpinBox.setValue(self._model.shootingCounter)
+        self._view.showShootingCounterCheckBox.setChecked(self._model.showShootingCounter)
 
     def getSelectedTab(self):
         """ Return the selected tab.
