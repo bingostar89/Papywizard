@@ -72,18 +72,19 @@ from papywizard.plugins.abstractHardwarePlugin import AbstractHardwarePlugin
 from papywizard.plugins.axisPluginController import AxisPluginController
 from papywizard.plugins.hardwarePluginController import HardwarePluginController
 from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
-from papywizard.view.pluginFields import DoubleSpinBoxField, CheckBoxField
+from papywizard.view.pluginFields import SpinBoxField, DoubleSpinBoxField, CheckBoxField
 
 NAME = "Merlin-Orion"
 
 DEFAULT_ALTERNATE_DRIVE = True
+DEFAULT_ALTERNATE_DRIVE_ANGLE = 7. # °
 DEFAULT_INERTIA_ANGLE = 1. # °
 
 TAB_HARD = unicode(QtGui.QApplication.translate("merlinOrionPlugins", 'Hard'))
 LABEL_ALTERNATE_DRIVE = unicode(QtGui.QApplication.translate("merlinOrionPlugins", "Alternate drive"))
+LABEL_ALTERNATE_DRIVE_ANGLE = unicode(QtGui.QApplication.translate("merlinOrionPlugins", "Alternate drive angle"))
 LABEL_INERTIA_ANGLE = unicode(QtGui.QApplication.translate("merlinOrionPlugins", "Inertia angle"))
 
-ALTERNATE_DRIVE_ANGLE = 7. # °
 AXIS_ACCURACY = 0.1 # °
 AXIS_TABLE = {'yawAxis': 1,
               'pitchAxis': 2,
@@ -117,6 +118,7 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         AbstractAxisPlugin._defineConfig(self)
         AbstractHardwarePlugin._defineConfig(self)
         self._addConfigKey('_alternateDrive', 'ALTERNATE_DRIVE', default=DEFAULT_ALTERNATE_DRIVE)
+        self._addConfigKey('_alternateDrive', 'ALTERNATE_DRIVE_ANGLE', default=DEFAULT_ALTERNATE_DRIVE_ANGLE)
         self._addConfigKey('_inertiaAngle', 'INERTIA_ANGLE', default=DEFAULT_INERTIA_ANGLE)
 
     def activate(self):
@@ -158,7 +160,7 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
                 # Choose alternate drive if needed
                 currentPos = self.read()
                 if self._config['ALTERNATE_DRIVE'] and \
-                   1.1 * self._config['INERTIA_ANGLE'] < abs(self.__setPoint - currentPos) < ALTERNATE_DRIVE_ANGLE:
+                   1.1 * self._config['INERTIA_ANGLE'] < abs(self.__setPoint - currentPos) < self._config['ALTERNATE_DRIVE_ANGLE']:
                     self._alternateDrive(self.__setPoint)
                 else:
                     self._directDrive(self.__setPoint)
@@ -232,7 +234,7 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         self._hardware.startJog(dir_, MANUAL_SPEED_TABLE['alternate'])
 
         # Check when stop
-        while abs(pos - self.read()) > self._config['INERTIA_ANGLE']: # adjust inertia while moving?
+        while abs(pos - self.read()) > self._config['INERTIA_ANGLE']:
 
             # Test if a stop request has been sent
             if not self.isMoving():
@@ -282,6 +284,7 @@ class MerlinOrionAxisController(AxisPluginController, HardwarePluginController):
         HardwarePluginController._defineGui(self)
         self._addTab('Hard', TAB_HARD)
         self._addWidget('Hard', LABEL_ALTERNATE_DRIVE, CheckBoxField, (), 'ALTERNATE_DRIVE')
+        self._addWidget('Hard', LABEL_ALTERNATE_DRIVE_ANGLE, SpinBoxField, (3, 15, "", u" °"), 'ALTERNATE_DRIVE_ANGLE')
         self._addWidget('Hard', LABEL_INERTIA_ANGLE, DoubleSpinBoxField, (0.1, 9.9, 1, .1, "", u" °"), 'INERTIA_ANGLE')
 
 
