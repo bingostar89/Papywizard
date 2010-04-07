@@ -74,7 +74,7 @@ class TotalFovController(AbstractModalDialogController):
         yawFov = self._view.yawFovDoubleSpinBox.value()
         pitchFov = self._view.pitchFovDoubleSpinBox.value()
         self._model.setCornersFromFov(yawFov, pitchFov)
-        Logger().debug("MainController._onAccepted(): total fov set to yaw=%.1f, pitch=%.1f" % (yawFov, pitchFov))
+        Logger().debug("TotalFovController._onAccepted(): total fov set to yaw=%.1f, pitch=%.1f" % (yawFov, pitchFov))
 
     # Interface
     def refreshView(self):
