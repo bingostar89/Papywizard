@@ -63,6 +63,7 @@ from papywizard.common.helpers import sToHmsAsStr
 from papywizard.common.configManager import ConfigManager
 from papywizard.controller.abstractController import AbstractModalDialogController
 from papywizard.controller.configController import ConfigController
+from papywizard.controller.counterController import CounterController
 from papywizard.controller.spy import Spy
 from papywizard.view.shootingScene import ShootingView, MosaicShootingScene, PresetShootingScene
 
@@ -228,20 +229,6 @@ class ShootController(AbstractModalDialogController):
     def __onKeyReleased(self, event):
         Logger().debug("MainController.__onKeyReleased(): key='%s" % event.key())
         event.accept()
-
-    #def __onMotionNotify(self, widget, event):
-        #Logger().trace("ShootController.__onMotionNotify()")
-        #if self._model.isPaused():
-            #if event.is_hint:
-                #Logger().trace("ShootController.__onMotionNotify(): is_hint")
-                #x, y, state = event.window.get_pointer()
-            #else:
-                #x = event.x
-                #y = event.y
-                #state = event.state
-
-            #if state & gtk.gdk.BUTTON1_MASK:
-                #Logger().debug("ShootController.__onMotionNotify(): drag x=%d, y=%d" % (x, y))
 
     def __onShootingStackPushButtonToggled(self, checked):
         Logger().debug("ShootController.__onShootingStackPushButtonToggled(): checked=%s" % checked)
@@ -555,10 +542,14 @@ class ShootController(AbstractModalDialogController):
             self.__thread.wait()
 
         if self._model.showShootingCounter:
-            message = QtGui.QMessageBox()
-            message.setText("%03d" % self._model.shootingCounter)
-            message.setStyleSheet("QLabel {font: 280px;}")
-            message.exec_()
+            controller = CounterController(self, self._model)
+            response = controller.exec_()
+            controller.shutdown()
+            #message = QtGui.QMessageBox()
+            #message.setText("%03d" % self._model.shootingCounter)
+            #message.setWindowsTitle
+            #message.setStyleSheet("QLabel {font: 280px;}")
+            #message.exec_()
 
         # Start new shooting thread
         self.__thread = ShootingThread(self._model)
