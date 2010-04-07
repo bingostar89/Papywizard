@@ -91,7 +91,7 @@ setup(name="papywizard",
 
       # Debian package for maemo
       section="user/graphics",
-      depends="python2.5, python2.5-qt4-core, python2.5-qt4-gui",
+      depends="python2.5, python2.5-runtime, python2.5-bluez python2.5-qt4-core, python2.5-qt4-gui, python2.5-qt4-network",
       icon="maemo/icons/26x26/papywizard.png",
       cmdclass={'bdist_debian': bdist_debian},
   )
