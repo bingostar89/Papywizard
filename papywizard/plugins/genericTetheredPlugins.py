@@ -84,7 +84,7 @@ LABEL_TIME_VALUE = unicode(QtGui.QApplication.translate("genericTetheredPlugins"
 
 TAB_PARAMS = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Params"))
 LABEL_PARAM_0 = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Parameter 'p0'"))
-LABEL_PARAM_1 = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Parameter 'p1"))
+LABEL_PARAM_1 = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Parameter 'p1'"))
 LABEL_PARAM_2 = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Parameter 'p2'"))
 LABEL_PARAM_3 = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Parameter 'p3'"))
 LABEL_PARAM_4 = unicode(QtGui.QApplication.translate("genericTetheredPlugins", "Parameter 'p4'"))
