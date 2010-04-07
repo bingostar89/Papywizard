@@ -537,23 +537,23 @@ class ShootController(AbstractModalDialogController):
 
     def __startShooting(self):
 
-        # Join previous thread, if any
-        if self.__thread is not None:
-            self.__thread.wait()
-
+        # Show current shooting counter if needed
         if self._model.showShootingCounter:
             controller = CounterController(self, self._model)
+            if self._view.windowState() & QtCore.Qt.WindowFullScreen:
+                controller._view.showFullScreen()
             response = controller.exec_()
             controller.shutdown()
-            #message = QtGui.QMessageBox()
-            #message.setText("%03d" % self._model.shootingCounter)
-            #message.setWindowsTitle
-            #message.setStyleSheet("QLabel {font: 280px;}")
-            #message.exec_()
 
-        # Start new shooting thread
-        self.__thread = ShootingThread(self._model)
-        self.__thread.start()
+        if response:
+
+            # Join previous thread, if any
+            if self.__thread is not None:
+                self.__thread.wait()
+    
+            # Start new shooting thread
+            self.__thread = ShootingThread(self._model)
+            self.__thread.start()
 
     def __pauseShooting(self):
         self._model.pause()

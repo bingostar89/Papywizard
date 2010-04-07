@@ -524,9 +524,15 @@ class Shooting(QtCore.QObject):
                     Logger().debug("Shooting.start(): create preset data object")
                     data = PresetData()
                     values.update({'name': "%s" % self.preset.name})
+
+                # Create header
                 data.createHeader(values)
+
+                # Increase shooting counter
                 self.shootingCounter += 1
-                ConfigManager().save()  # Move elsewhere?
+                if self.shootingCounter > 999:  # Put max value in config?
+                    self.shootingCounter = 1
+                ConfigManager().save()
 
                 startTime = time.time()
                 Logger().debug("Shooting.start(): repeat %d/%d" % (repeat, numRepeat))
