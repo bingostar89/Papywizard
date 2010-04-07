@@ -7,12 +7,15 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
-    + Added custom params to 'Generic Tethered' plugin
-    + 'Panoduino' plugin uses Pololu Micro Maestro controller
+    + shooting counter support (in data file and display dialog)
+    + added custom params to 'Generic Tethered' plugin
+    + added alternate drive angle param to 'Merlin-Orion' plugin
+    - new xml data file format (version 'c')
+    - 'Panoduino' plugin now uses Pololu Micro Maestro controller
 
 2010-04-03 Version 2.1.17 (dev)
-    + Pitch arm side param
-    + Bulb mode in shutter plugins
+    + pitch arm side param
+    + bulb mode in shutter plugins
     + 'Gphoto Bracket' plugin (jeongyun patch)
     + 'Panoduino' plugin (replace 'Pololu Servo' plugin)
     + value changed callback mecanism in plugins
@@ -24,8 +27,8 @@ x bug fix
     x reload correct combobox config in plugins (unicode issue)
 
 2010-02-14 Version 2.1.16 (dev)
-    + Renamed 'Panoguy' plugin to 'GigaPanBot'
-    + Add path param to 'NK Remote' plugin
+    + renamed 'Panoguy' plugin to 'GigaPanBot'
+    + add path param to 'NK Remote' plugin
     - read real position for xml data file (jeongyun patch)
     - new plugins hardware architecture
     x bug fixed in 'GigaPanBot' plugin
