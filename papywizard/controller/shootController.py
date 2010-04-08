@@ -539,6 +539,8 @@ class ShootController(AbstractModalDialogController):
 
         # Show current shooting counter if needed
         if self._model.showShootingCounter:
+            Logger().info("Show shooting counter")
+
             controller = CounterController(self, self._model)
             if self._view.windowState() & QtCore.Qt.WindowFullScreen:
                 controller._view.showFullScreen()
