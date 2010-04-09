@@ -57,11 +57,6 @@ from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.hardware.abstractHardware import AbstractHardware
 
-SPEED_TABLE = { 1: {'speed': 5, 'accel':  1,},
-                2: {'speed': 10, 'accel':  5},
-                3: {'speed': 20, 'accel':  10}
-               }
-
 
 class PololuServoHardware(AbstractHardware):
     pass
@@ -127,7 +122,7 @@ class PololuMicroMaestroHardware(PololuServoHardware):
         finally:
             self._driver.releaseBus()
 
-    def configure(self, speedIndex):
+    def configure(self, speed, accel):
         """ Turn on servo power.
 
         @param speed: rotation speed
@@ -138,8 +133,8 @@ class PololuMicroMaestroHardware(PololuServoHardware):
         """
         self._driver.acquireBus()
         try:
-            self.setSpeed(SPEED_TABLE[speedIndex]['speed'])
-            self.setAcceleration(SPEED_TABLE[speedIndex]['accel'])
+            self.setSpeed(speed)
+            self.setAcceleration(accel)
         finally:
             self._driver.releaseBus()
 
