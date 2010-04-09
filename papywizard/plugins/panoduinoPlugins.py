@@ -73,18 +73,34 @@ from papywizard.view.pluginFields import ComboBoxField, SpinBoxField, DoubleSpin
 
 NAME = "Panoduino"
 
-DEFAULT_SPEED_INDEX = 2
-DEFAULT_DIRECTION = unicode(QtGui.QApplication.translate("panoduinoPlugins", 'forward'))
+DEFAULT_SPEED = 10
+DEFAULT_ACCEL = 5
+DEFAULT_CHANNEL = {'yawAxis': 1,
+                    'pitchAxis': 2,
+                    'shutter': 5
+                    }
+DEFAULT_DIRECTION = {'yawAxis': unicode(QtGui.QApplication.translate("panoduinoPlugins", 'forward')),
+                     'pitchAxis': unicode(QtGui.QApplication.translate("panoduinoPlugins", 'reverse'))
+                     }
+DEFAULT_ANGLE_1MS = 315.  # °
 DEFAULT_NEUTRAL_POSITION = 1500  # µs
+DEFAULT_SHUTTER_ON = 2000  # µs
+DEFAULT_SHUTTER_OFF = 1000  # µs
 
 VALUE_MIN = PololuMicroMaestroHardware.SERVO_MIN
 VALUE_MAX = PololuMicroMaestroHardware.SERVO_MAX
 
-LABEL_SPEED = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Speed index"))
+LABEL_SPEED = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Speed"))
+LABEL_ACCEL = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Acceleration"))
 
 TAB_SERVO = unicode(QtGui.QApplication.translate("panoduinoPlugins", 'Servo'))
+LABEL_CHANNEL = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Channel"))
 LABEL_DIRECTION = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Direction"))
+LABEL_ANGLE_1MS = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Angle for 1ms"))
 LABEL_NEUTRAL_POSITION = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Neutral position"))
+
+LABEL_SHUTTER_ON = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Shutter on"))
+LABEL_SHUTTER_OFF = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Shutter off"))
 
 AXIS_TABLE = {'yawAxis': 1,
               'pitchAxis': 2,
@@ -97,9 +113,6 @@ DIRECTION_TABLE = {'forward': unicode(QtGui.QApplication.translate("panoduinoPlu
                    'reverse': unicode(QtGui.QApplication.translate("panoduinoPlugins", 'reverse')),
                    unicode(QtGui.QApplication.translate("panoduinoPlugins", 'forward')): 'forward',
                    unicode(QtGui.QApplication.translate("panoduinoPlugins", 'reverse')): 'reverse'
-                   }
-ANGLE_1MS_TABLE = {'yawAxis': 315.,  # angle (in °) for a 1ms pulse change
-                   'pitchAxis': 315.
                    }
 MANUAL_SPEED_TABLE = {'slow': .5,  # angle (in °) for each key press
                       'normal': 2.,
@@ -117,8 +130,11 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
         AbstractHardwarePlugin._defineConfig(self)
-        self._addConfigKey('_speedIndex', 'SPEED_INDEX', default=DEFAULT_SPEED_INDEX)
-        self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION)
+        self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
+        self._addConfigKey('_acceleration', 'ACCEL', default=DEFAULT_ACCEL)
+        self._addConfigKey('_channel', 'CHANNEL', default=DEFAULT_CHANNEL[self.capacity])
+        self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION[self.capacity])
+        self._addConfigKey('_angle1ms', 'ANGLE_1MS', default=DEFAULT_ANGLE_1MS)
         self._addConfigKey('_neutralPos', 'NEUTRAL_POSITION', default=DEFAULT_NEUTRAL_POSITION)
 
     def _checkLimits(self, position):
@@ -135,7 +151,7 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
 
     def init(self):
         Logger().trace("PanoduinoAxis.init()")
-        self._hardware.setAxis(AXIS_TABLE[self.capacity]),
+        self._hardware.setAxis(self._config['CHANNEL']),
         AbstractHardwarePlugin.init(self)
         self.configure()
         self._hardware.setTarget(self._config['NEUTRAL_POSITION'])
@@ -150,8 +166,7 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def configure(self):
         Logger().trace("PanoduinoAxis.configure()")
         AbstractAxisPlugin.configure(self)
-        print self._config
-        self._hardware.configure(self._config['SPEED_INDEX'])
+        self._hardware.configure(self._config['SPEED'], self._config['ACCEL'])
 
     def __angleToServo(self, position):
         """ Compute controller servo value from position.
@@ -164,7 +179,7 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         """
         direction = DIRECTION_TABLE[self._config['DIRECTION']]
         dir_ = DIRECTION_INDEX[direction]
-        servoValue = int(self._config['NEUTRAL_POSITION'] + dir_ * position * 1000. / ANGLE_1MS_TABLE[self.capacity])
+        servoValue = int(self._config['NEUTRAL_POSITION'] + dir_ * position * 1000. / self._config['ANGLE_1MS_TABLE'])
 
         return servoValue
 
@@ -179,7 +194,7 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         """
         direction = DIRECTION_TABLE[self._config['DIRECTION']]
         dir_ = DIRECTION_INDEX[direction]
-        position = (value - self._config['NEUTRAL_POSITION']) * ANGLE_1MS_TABLE[self.capacity] / dir_ / 1000.
+        position = (value - self._config['NEUTRAL_POSITION']) * self._config['ANGLE_1MS_TABLE'] / dir_ / 1000.
 
         return position
 
@@ -230,10 +245,13 @@ class PanoduinoAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        self._addWidget('Main', LABEL_SPEED, SpinBoxField, (1, 3), 'SPEED_INDEX')
+        self._addWidget('Main', LABEL_SPEED, SpinBoxField, (0, 255, "", u" µs/period"), 'SPEED')  # Check unit
+        self._addWidget('Main', LABEL_ACCEL, SpinBoxField, (0, 255, "", u" µs/period²"), 'ACCEL')
         self._addTab('Servo', TAB_SERVO)
+        self._addWidget('Servo', "Channel", SpinBoxField, (0, 5), 'CHANNEL')
         directions = [DIRECTION_TABLE['forward'], DIRECTION_TABLE['reverse']]
         self._addWidget('Servo', LABEL_DIRECTION, ComboBoxField, (directions,), 'DIRECTION')
+        self._addWidget('Servo', LABEL_ANGLE_1MS, DoubleSpinBoxField, (0.1, 999.9, 1, 1., "", u" °"), 'ANGLE_1MS')
         self._addWidget('Servo', LABEL_NEUTRAL_POSITION, SpinBoxField, (VALUE_MIN, VALUE_MAX, "", u" µs"), 'NEUTRAL_POSITION')
 
 
@@ -247,13 +265,16 @@ class PanoduinoShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
     def _defineConfig(self):
         AbstractHardwarePlugin._defineConfig(self)
         AbstractStandardShutterPlugin._defineConfig(self)
+        self._addConfigKey('_channel', 'CHANNEL', default=DEFAULT_CHANNEL[self.capacity])
+        self._addConfigKey('_shutterOn', 'SHUTTER_ON', default=DEFAULT_SHUTTER_ON)
+        self._addConfigKey('_shutterOff', 'SHUTTER_OFF', default=DEFAULT_SHUTTER_OFF)
 
     def _triggerOnShutter(self):
         """ Set the shutter on.
         """
         self._driver.acquireBus()
         try:
-            self._hardware.setTarget(VALUE_MAX)
+            self._hardware.setTarget(self._config['SHUTTER_ON'])
         finally:
             self._driver.releaseBus()
 
@@ -262,7 +283,7 @@ class PanoduinoShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
         """
         self._driver.acquireBus()
         try:
-            self._hardware.setTarget(VALUE_MIN)
+            self._hardware.setTarget(self._config['SHUTTER_OFF'])
         finally:
             self._driver.releaseBus()
 
@@ -287,6 +308,10 @@ class PanoduinoShutterController(StandardShutterPluginController, HardwarePlugin
         Logger().trace("PanoduinoShutterController._defineGui()")
         StandardShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
+        self._addTab('Servo', TAB_SERVO)
+        self._addWidget('Servo', LABEL_CHANNEL, SpinBoxField, (0, 5, "", ""), 'CHANNEL')
+        self._addWidget('Servo', LABEL_SHUTTER_ON, SpinBoxField, (VALUE_MIN, VALUE_MAX, "", u" µs"), 'SHUTTER_ON')
+        self._addWidget('Servo', LABEL_SHUTTER_OFF, SpinBoxField, (VALUE_MIN, VALUE_MAX, "", u" µs"), 'SHUTTER_OFF')
 
 
 def register():
