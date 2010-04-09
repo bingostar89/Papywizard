@@ -292,7 +292,7 @@ class PanoduinoShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
 
     def init(self):
         Logger().trace("PanoduinoShutter.init()")
-        self._hardware.setAxis(AXIS_TABLE[self.capacity]),
+        self._hardware.setAxis(self._config['CHANNEL']),
         AbstractHardwarePlugin.init(self)
 
     def shutdown(self):
