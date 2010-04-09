@@ -7,6 +7,7 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + added more settings to 'Panoduino' plugin
     + shooting counter support (in data file and display dialog)
     + added custom params to 'Generic Tethered' plugin
     + added alternate drive angle param to 'Merlin-Orion' plugin
