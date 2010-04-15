@@ -175,8 +175,10 @@ class MainController(AbstractController):
         self.connect(self._view.actionHardwareSetLimitPitchPlus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchPlusActivated)
         self.connect(self._view.actionHardwareSetLimitPitchMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchMinusActivated)
         self.connect(self._view.actionHardwareClearLimits, QtCore.SIGNAL("activated()"), self.__onActionHardwareClearLimitsActivated)
+        self.connect(self._view.actionHardwareSetReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetReferenceActivated)
         self.connect(self._view.actionHardwareGotoReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoReferenceActivated)
         self.connect(self._view.actionHardwareGotoInitial, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoInitialActivated)
+        self.connect(self._view.actionHardwareTriggerShutter, QtCore.SIGNAL("activated()"), self.__onActionHardwareTriggerShutterActivated)
         self.connect(self._view.actionHardwarePlugins, QtCore.SIGNAL("activated()"), self.__onActionHardwarePluginsActivated)
 
         self.connect(self._view.actionHelpManual, QtCore.SIGNAL("activated()"), self.__onActionHelpManualActivated)
@@ -198,7 +200,6 @@ class MainController(AbstractController):
 
         self.connect(self._view.presetComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onPresetComboBoxCurrentIndexChanged)
 
-        self.connect(self._view.setReferenceToolButton, QtCore.SIGNAL("clicked()"), self.__onSetReferenceToolButtonClicked)
         self.connect(self._view.yawMovePlusToolButton, QtCore.SIGNAL("pressed()"), self.__onYawMovePlusToolButtonPressed)
         self.connect(self._view.yawMovePlusToolButton, QtCore.SIGNAL("released()"), self.__onYawMovePlusToolButtonReleased)
         self.connect(self._view.pitchMovePlusToolButton, QtCore.SIGNAL("pressed()"), self.__onPitchMovePlusToolButtonPressed)
@@ -231,8 +232,10 @@ class MainController(AbstractController):
         self.disconnect(self._view.actionHardwareSetLimitPitchPlus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchPlusActivated)
         self.disconnect(self._view.actionHardwareSetLimitPitchMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchMinusActivated)
         self.disconnect(self._view.actionHardwareClearLimits, QtCore.SIGNAL("activated()"), self.__onActionHardwareClearLimitsActivated)
+        self.disconnect(self._view.actionHardwareSetReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetReferenceActivated)
         self.disconnect(self._view.actionHardwareGotoReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoReferenceActivated)
         self.disconnect(self._view.actionHardwareGotoInitial, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoInitialActivated)
+        self.disconnect(self._view.actionHardwareTriggerShutter, QtCore.SIGNAL("activated()"), self.__onActionHardwareTriggerShutterActivated)
         self.disconnect(self._view.actionHardwarePlugins, QtCore.SIGNAL("activated()"), self.__onActionHardwarePluginsActivated)
 
         self.disconnect(self._view.actionHelpManual, QtCore.SIGNAL("activated()"), self.__onActionHelpManualActivated)
@@ -254,7 +257,6 @@ class MainController(AbstractController):
 
         self.disconnect(self._view.presetComboBox, QtCore.SIGNAL("currentIndexChanged(int)"), self.__onPresetComboBoxCurrentIndexChanged)
 
-        self.disconnect(self._view.setReferenceToolButton, QtCore.SIGNAL("clicked()"), self.__onSetReferenceToolButtonClicked)
         self.disconnect(self._view.yawMovePlusToolButton, QtCore.SIGNAL("pressed()"), self.__onYawMovePlusToolButtonPressed)
         self.disconnect(self._view.yawMovePlusToolButton, QtCore.SIGNAL("released()"), self.__onYawMovePlusToolButtonReleased)
         self.disconnect(self._view.pitchMovePlusToolButton, QtCore.SIGNAL("pressed()"), self.__onPitchMovePlusToolButtonPressed)
@@ -446,6 +448,12 @@ class MainController(AbstractController):
             self.setStatusbarMessage(self.tr("Initial position reached"), 10)
         dialog.hide()
 
+    def __onActionHardwareTriggerShutterActivated(self):
+        Logger().trace("MainController.__onActionHardwareTriggerShutterActivated()")
+        Logger().info("Trigger shutter (manual)")
+        retCode = self._model.shutter.shoot(-1)
+        # @todo: check retcode
+
     def __onActionHardwarePluginsActivated(self):
         Logger().trace("MainController.__onActionHardwarePluginsActivated()")
         self.__openPluginsDialog()
@@ -552,8 +560,8 @@ class MainController(AbstractController):
             Logger().exception("MainController.__onPresetComboBoxCurrentIndexChanged()", debug=True)
             pass
 
-    def __onSetReferenceToolButtonClicked(self):
-        Logger().trace("MainController.__onSetReferenceToolButtonClicked()")
+    def __onActionHardwareSetReferenceActivated(self):
+        Logger().trace("MainController.__onActionHardwareSetReferenceActivated()")
         Logger().info("Set hardware reference")
         self._model.head.setReference()
         self.setStatusbarMessage(self.tr("Reference set at current position"), 10)
@@ -749,8 +757,10 @@ class MainController(AbstractController):
         self._view.actionHardwareSuspendSpy.setEnabled(True)
         self._view.menuSetLimit.setEnabled(True)
         self._view.actionHardwareClearLimits.setEnabled(True)
+        self._view.actionHardwareSetReference.setEnabled(True)
         self._view.actionHardwareGotoReference.setEnabled(True)
         self._view.actionHardwareGotoInitial.setEnabled(True)
+        self._view.actionHardwareTriggerShutter.setEnabled(True)
         self._view.actionHardwarePlugins.setEnabled(False)
 
         self._view.setCorner0PushButton.setEnabled(True)
@@ -762,7 +772,6 @@ class MainController(AbstractController):
         self._view.totalFovPushButton.setEnabled(True)
         self._view.nbPictsPushButton.setEnabled(True)
 
-        self._view.setReferenceToolButton.setEnabled(True)
         self._view.yawMovePlusToolButton.setEnabled(True)
         self._view.pitchMovePlusToolButton.setEnabled(True)
         self._view.yawMoveMinusToolButton.setEnabled(True)
@@ -776,8 +785,10 @@ class MainController(AbstractController):
         self._view.actionHardwareSuspendSpy.setEnabled(False)
         self._view.menuSetLimit.setEnabled(False)
         self._view.actionHardwareClearLimits.setEnabled(False)
+        self._view.actionHardwareSetReference.setEnabled(False)
         self._view.actionHardwareGotoReference.setEnabled(False)
         self._view.actionHardwareGotoInitial.setEnabled(False)
+        self._view.actionHardwareTriggerShutter.setEnabled(False)
         self._view.actionHardwarePlugins.setEnabled(True)
 
         self._view.setCorner0PushButton.setEnabled(False)
@@ -789,7 +800,6 @@ class MainController(AbstractController):
         self._view.totalFovPushButton.setEnabled(False)
         self._view.nbPictsPushButton.setEnabled(False)
 
-        self._view.setReferenceToolButton.setEnabled(False)
         self._view.yawMovePlusToolButton.setEnabled(False)
         self._view.pitchMovePlusToolButton.setEnabled(False)
         self._view.yawMoveMinusToolButton.setEnabled(False)

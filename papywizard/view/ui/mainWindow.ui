@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>565</width>
-    <height>365</height>
+    <width>580</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>0</width>
-    <height>0</height>
+    <width>580</width>
+    <height>400</height>
    </size>
   </property>
   <property name="focusPolicy">
@@ -154,6 +154,9 @@
          </item>
          <item>
           <layout class="QGridLayout" name="moveArrowsGridLayout">
+           <property name="spacing">
+            <number>0</number>
+           </property>
            <item row="0" column="1">
             <widget class="QToolButton" name="pitchMovePlusToolButton">
              <property name="sizePolicy">
@@ -177,8 +180,8 @@
              </property>
              <property name="iconSize">
               <size>
-               <width>32</width>
-               <height>32</height>
+               <width>48</width>
+               <height>48</height>
               </size>
              </property>
              <property name="checkable">
@@ -192,7 +195,7 @@
            <item row="1" column="0">
             <widget class="QToolButton" name="yawMoveMinusToolButton">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+              <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -212,8 +215,8 @@
              </property>
              <property name="iconSize">
               <size>
-               <width>32</width>
-               <height>32</height>
+               <width>48</width>
+               <height>48</height>
               </size>
              </property>
              <property name="checkable">
@@ -221,41 +224,6 @@
              </property>
              <property name="arrowType">
               <enum>Qt::NoArrow</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QToolButton" name="setReferenceToolButton">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="text">
-              <string notr="true"/>
-             </property>
-             <property name="icon">
-              <iconset resource="../icons.qrc">
-               <normaloff>:/icons/gohome.png</normaloff>:/icons/gohome.png</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>false</bool>
              </property>
             </widget>
            </item>
@@ -282,8 +250,8 @@
              </property>
              <property name="iconSize">
               <size>
-               <width>32</width>
-               <height>32</height>
+               <width>48</width>
+               <height>48</height>
               </size>
              </property>
              <property name="checkable">
@@ -317,8 +285,8 @@
              </property>
              <property name="iconSize">
               <size>
-               <width>32</width>
-               <height>32</height>
+               <width>48</width>
+               <height>48</height>
               </size>
              </property>
              <property name="checkable">
@@ -331,10 +299,23 @@
            </item>
           </layout>
          </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="1" column="1">
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
          <widget class="QPushButton" name="configPushButton">
@@ -384,20 +365,7 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="1">
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="0" rowspan="3">
+      <item row="0" column="0" rowspan="2">
        <widget class="QTabWidget" name="tabWidget">
         <property name="enabled">
          <bool>true</bool>
@@ -955,7 +923,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>565</width>
+     <width>580</width>
      <height>24</height>
     </rect>
    </property>
@@ -991,8 +959,12 @@
     <addaction name="menuSetLimit"/>
     <addaction name="actionHardwareClearLimits"/>
     <addaction name="separator"/>
+    <addaction name="actionHardwareSetReference"/>
+    <addaction name="separator"/>
     <addaction name="actionHardwareGotoReference"/>
     <addaction name="actionHardwareGotoInitial"/>
+    <addaction name="separator"/>
+    <addaction name="actionHardwareTriggerShutter"/>
     <addaction name="separator"/>
     <addaction name="actionHardwarePlugins"/>
    </widget>
@@ -1167,6 +1139,24 @@
   <action name="actionHardwareClearLimits">
    <property name="text">
     <string>Clear Limits</string>
+   </property>
+  </action>
+  <action name="actionHardwareSetReference">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icons/gohome.png</normaloff>:/icons/gohome.png</iconset>
+   </property>
+   <property name="text">
+    <string>Set Reference</string>
+   </property>
+  </action>
+  <action name="actionHardwareTriggerShutter">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icons/bookmark.png</normaloff>:/icons/bookmark.png</iconset>
+   </property>
+   <property name="text">
+    <string>Trigger Shutter</string>
    </property>
   </action>
  </widget>
