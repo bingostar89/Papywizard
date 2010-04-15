@@ -474,7 +474,7 @@
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1150"/>
         <source>Set Reference</source>
-        <translation>Donne Référence</translation>
+        <translation>Fixe Référence</translation>
     </message>
     <message>
         <location filename="papywizard/view/ui/mainWindow.ui" line="1159"/>
