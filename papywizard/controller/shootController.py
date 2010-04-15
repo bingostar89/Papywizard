@@ -547,12 +547,12 @@ class ShootController(AbstractModalDialogController):
             response = controller.exec_()
             controller.shutdown()
 
-        if response:
+        if not self._model.showShootingCounter or response:
 
             # Join previous thread, if any
             if self.__thread is not None:
                 self.__thread.wait()
-    
+
             # Start new shooting thread
             self.__thread = ShootingThread(self._model)
             self.__thread.start()

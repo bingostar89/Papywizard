@@ -83,7 +83,7 @@ class CounterController(AbstractModalDialogController):
         self.connect(self._view.increaseCounterToolButton, QtCore.SIGNAL("clicked()"), self.__onIncreaseCounterToolButtonClicked)
         self.connect(self._view.resetCounterToolButton, QtCore.SIGNAL("clicked()"), self.__onResetCounterToolButtonClicked)
         self.connect(self._view.decreaseCounterToolButton, QtCore.SIGNAL("clicked()"), self.__onDecreaseCounterToolButtonClicked)
-        self.connect(self._view.snapshotToolButton, QtCore.SIGNAL("clicked()"), self.__onSnapshotToolButtonClicked)
+        self.connect(self._view.triggerShutterToolButton, QtCore.SIGNAL("clicked()"), self.__onTriggerShutterToolButtonClicked)
 
         self._view._originalKeyPressEvent = self._view.keyPressEvent
         self._view.keyPressEvent = self.__onKeyPressed
@@ -99,7 +99,7 @@ class CounterController(AbstractModalDialogController):
         self.disconnect(self._view.increaseCounterToolButton, QtCore.SIGNAL("clicked()"), self.__onIncreaseCounterToolButtonClicked)
         self.disconnect(self._view.resetCounterToolButton, QtCore.SIGNAL("clicked()"), self.__onResetCounterToolButtonClicked)
         self.disconnect(self._view.decreaseCounterToolButton, QtCore.SIGNAL("clicked()"), self.__onDecreaseCounterToolButtonClicked)
-        self.disconnect(self._view.snapshotToolButton, QtCore.SIGNAL("clicked()"), self.__onSnapshotToolButtonClicked)
+        self.disconnect(self._view.triggerShutterToolButton, QtCore.SIGNAL("clicked()"), self.__onTriggerShutterToolButtonClicked)
 
     def __onKeyPressed(self, event):
         Logger().debug("CounterController.__onKeyPressed(): key='%s" % event.key())
@@ -146,11 +146,12 @@ class CounterController(AbstractModalDialogController):
             self.__counter = 1
         self.refreshView()
 
-    def __onSnapshotToolButtonClicked(self):
-        Logger().trace("CounterController.__onSnapshotCounterToolButtonClicked():")
+    def __onTriggerShutterToolButtonClicked(self):
+        Logger().trace("CounterController.__onTriggerShutterToolButtonClicked():")
+        Logger().info("Trigger shutter (manual)")
         time.sleep(5)
         retCode = self._model.shutter.shoot(-1)
-        # @todo: check retcode
+        # @todo: check retcode?
 
     # Interface
     def refreshView(self):

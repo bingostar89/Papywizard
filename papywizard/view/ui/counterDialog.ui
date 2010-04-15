@@ -118,13 +118,13 @@
         </spacer>
        </item>
        <item>
-        <widget class="QToolButton" name="snapshotToolButton">
+        <widget class="QToolButton" name="triggerShutterToolButton">
          <property name="text">
           <string>...</string>
          </property>
          <property name="icon">
           <iconset resource="../icons.qrc">
-           <normaloff>:/icons/misc.png</normaloff>:/icons/misc.png</iconset>
+           <normaloff>:/icons/bookmark.png</normaloff>:/icons/bookmark.png</iconset>
          </property>
          <property name="iconSize">
           <size>
