@@ -7,10 +7,14 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+
+2010-04-15 Version 2.1.18 (dev)
+    + new menu to trigger the shutter manually
     + added more settings to 'Panoduino' plugin
     + shooting counter support (in data file and display dialog)
     + added custom params to 'Generic Tethered' plugin
     + added alternate drive angle param to 'Merlin-Orion' plugin
+    - Set Reference feature moved from button to menu
     - new xml data file format (version 'c')
     - 'Panoduino' plugin now uses Pololu Micro Maestro controller
 
