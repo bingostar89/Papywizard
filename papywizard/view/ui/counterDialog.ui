@@ -56,7 +56,7 @@
        <item>
         <widget class="QToolButton" name="increaseCounterToolButton">
          <property name="text">
-          <string>...</string>
+          <string notr="true">...</string>
          </property>
          <property name="icon">
           <iconset resource="../icons.qrc">
@@ -73,7 +73,7 @@
        <item>
         <widget class="QToolButton" name="resetCounterToolButton">
          <property name="text">
-          <string>...</string>
+          <string notr="true">...</string>
          </property>
          <property name="icon">
           <iconset resource="../icons.qrc">
@@ -90,7 +90,7 @@
        <item>
         <widget class="QToolButton" name="decreaseCounterToolButton">
          <property name="text">
-          <string>...</string>
+          <string notr="true">...</string>
          </property>
          <property name="icon">
           <iconset resource="../icons.qrc">
@@ -120,7 +120,7 @@
        <item>
         <widget class="QToolButton" name="triggerShutterToolButton">
          <property name="text">
-          <string>...</string>
+          <string notr="true">...</string>
          </property>
          <property name="icon">
           <iconset resource="../icons.qrc">
