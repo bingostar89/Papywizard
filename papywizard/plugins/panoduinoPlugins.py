@@ -186,8 +186,8 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def __servoToAngle(self, value):
         """ Compute position from controller servo value.
 
-        @param position: servo value
-        @type position: int
+        @param value: servo value
+        @type value: int
 
         @return: position, in °
         @rtype: float

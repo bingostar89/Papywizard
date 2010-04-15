@@ -129,7 +129,7 @@ class PololuMicroMaestroHardware(PololuServoHardware):
         @type speed: int
 
         @param accel: acceleration
-        @type direction: int
+        @type accel: int
         """
         self._driver.acquireBus()
         try:
@@ -158,7 +158,7 @@ class PololuMicroMaestroHardware(PololuServoHardware):
         """ Set servo target.
 
         @param target: servo target, in µs
-        @type position: float
+        @type target: float
         """
         if not PololuMicroMaestroHardware.SERVO_MIN <= target <= PololuMicroMaestroHardware.SERVO_MAX:
             raise ValueError("position must be in [%d-%d] (%.2f)" %
@@ -205,7 +205,7 @@ class PololuMicroMaestroHardware(PololuServoHardware):
         """ Get servo position.
 
         @return: servo position, in µs
-        @ttype: float
+        @rtype: float
         """
         self._driver.acquireBus()
         try:
