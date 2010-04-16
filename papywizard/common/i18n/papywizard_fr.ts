@@ -1531,27 +1531,27 @@ exposition appareil</translation>
 <context>
     <name>panoduinoPlugins</name>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="114"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="112"/>
         <source>forward</source>
         <translation>avant</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="96"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="97"/>
         <source>Servo</source>
         <translation>Servo</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="98"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="99"/>
         <source>Direction</source>
         <translation>Direction</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="100"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="101"/>
         <source>Neutral position</source>
         <translation>Position du neutre</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="115"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="113"/>
         <source>reverse</source>
         <translation>arrière</translation>
     </message>
@@ -1561,34 +1561,39 @@ exposition appareil</translation>
         <translation type="obsolete">Index vitesse</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="93"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="94"/>
         <source>Speed</source>
         <translation>Vitesse</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="94"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="95"/>
         <source>Acceleration</source>
         <translation>Accélération</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="97"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="98"/>
         <source>Channel</source>
         <translation>Canal</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="99"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="100"/>
         <source>Angle for 1ms</source>
         <translation>Angle pour 1ms</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="102"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="104"/>
         <source>Shutter on</source>
         <translation>Obturateur activé</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="103"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="105"/>
         <source>Shutter off</source>
         <translation>Obturateur désactivé</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="102"/>
+        <source>Additional delay</source>
+        <translation>Délai additionel</translation>
     </message>
 </context>
 <context>
