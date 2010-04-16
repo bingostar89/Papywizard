@@ -8,6 +8,10 @@ x bug fix
 
 0000-00-00 Version SVN
 
+2010-04-16 Version 2.1.19 (dev)
+    + new 'additional delay' param for 'Panoduino' plugin
+    - bug correction in 'Panoduino' plugin
+
 2010-04-15 Version 2.1.18 (dev)
     + new menu to trigger the shutter manually
     + added more settings to 'Panoduino' plugin
