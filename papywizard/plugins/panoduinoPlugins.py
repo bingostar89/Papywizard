@@ -86,6 +86,7 @@ DEFAULT_ANGLE_1MS = 315.  # °
 DEFAULT_NEUTRAL_POSITION = 1500  # µs
 DEFAULT_SHUTTER_ON = 2000  # µs
 DEFAULT_SHUTTER_OFF = 1000  # µs
+DEFAULT_ADDITIONAL_DELAY = 1.5  # s
 
 VALUE_MIN = PololuMicroMaestroHardware.SERVO_MIN
 VALUE_MAX = PololuMicroMaestroHardware.SERVO_MAX
@@ -98,14 +99,11 @@ LABEL_CHANNEL = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Channe
 LABEL_DIRECTION = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Direction"))
 LABEL_ANGLE_1MS = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Angle for 1ms"))
 LABEL_NEUTRAL_POSITION = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Neutral position"))
+LABEL_ADDITIONAL_DELAY = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Additional delay"))
 
 LABEL_SHUTTER_ON = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Shutter on"))
 LABEL_SHUTTER_OFF = unicode(QtGui.QApplication.translate("panoduinoPlugins", "Shutter off"))
 
-AXIS_TABLE = {'yawAxis': 1,
-              'pitchAxis': 2,
-              'shutter': 5
-              }
 DIRECTION_INDEX = {'forward': 1,
                    'reverse': -1
                    }
@@ -136,6 +134,7 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION[self.capacity])
         self._addConfigKey('_angle1ms', 'ANGLE_1MS', default=DEFAULT_ANGLE_1MS)
         self._addConfigKey('_neutralPos', 'NEUTRAL_POSITION', default=DEFAULT_NEUTRAL_POSITION)
+        self._addConfigKey('_additionalDelay', 'ADDITIONAL_DELAY', default=DEFAULT_ADDITIONAL_DELAY)
 
     def _checkLimits(self, position):
         """ Check if the position can be reached.
@@ -179,7 +178,7 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         """
         direction = DIRECTION_TABLE[self._config['DIRECTION']]
         dir_ = DIRECTION_INDEX[direction]
-        servoValue = int(self._config['NEUTRAL_POSITION'] + dir_ * position * 1000. / self._config['ANGLE_1MS_TABLE'])
+        servoValue = int(self._config['NEUTRAL_POSITION'] + dir_ * position * 1000. / self._config['ANGLE_1MS'])
 
         return servoValue
 
@@ -194,7 +193,7 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         """
         direction = DIRECTION_TABLE[self._config['DIRECTION']]
         dir_ = DIRECTION_INDEX[direction]
-        position = (value - self._config['NEUTRAL_POSITION']) * self._config['ANGLE_1MS_TABLE'] / dir_ / 1000.
+        position = (value - self._config['NEUTRAL_POSITION']) * self._config['ANGLE_1MS'] / dir_ / 1000.
 
         return position
 
@@ -216,7 +215,7 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def waitEndOfDrive(self):
         while self.isMoving():
             time.sleep(0.2)
-        time.sleep(1)  # internal servo decelaration
+        time.sleep(self._config['ADDITIONAL_DELAY'])  # internal servo decelaration
         self.waitStop()
 
     def startJog(self, dir_):
@@ -253,6 +252,7 @@ class PanoduinoAxisController(AxisPluginController, HardwarePluginController):
         self._addWidget('Servo', LABEL_DIRECTION, ComboBoxField, (directions,), 'DIRECTION')
         self._addWidget('Servo', LABEL_ANGLE_1MS, DoubleSpinBoxField, (0.1, 999.9, 1, 1., "", u" °"), 'ANGLE_1MS')
         self._addWidget('Servo', LABEL_NEUTRAL_POSITION, SpinBoxField, (VALUE_MIN, VALUE_MAX, "", u" µs"), 'NEUTRAL_POSITION')
+        self._addWidget('Servo', LABEL_ADDITIONAL_DELAY, DoubleSpinBoxField, (0.1, 9.9, 1, 0.1, "", u" s"), 'ADDITIONAL_DELAY')
 
 
 class PanoduinoShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
