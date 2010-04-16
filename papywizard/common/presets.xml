@@ -62,13 +62,13 @@
         </tooltip>
         <shoot>
             <pict yaw="0." pitch="30." />
-            <pict yaw="45." pitch="-30." />
             <pict yaw="90." pitch="30." />
-            <pict yaw="135." pitch="-30." />
             <pict yaw="180." pitch="30." />
-            <pict yaw="225." pitch="-30." />
             <pict yaw="270." pitch="30." />
             <pict yaw="315." pitch="-30." />
+            <pict yaw="225." pitch="-30." />
+            <pict yaw="135." pitch="-30." />
+            <pict yaw="45." pitch="-30." />
         </shoot>
     </preset>
 
@@ -80,17 +80,17 @@
         </tooltip>
         <shoot>
             <pict yaw="0." pitch="30." />
-            <pict yaw="30." pitch="-30." />
             <pict yaw="60." pitch="30." />
-            <pict yaw="90." pitch="-30." />
             <pict yaw="120." pitch="30." />
-            <pict yaw="150." pitch="-30." />
             <pict yaw="180." pitch="30." />
-            <pict yaw="210." pitch="-30." />
             <pict yaw="240." pitch="30." />
-            <pict yaw="270." pitch="-30." />
             <pict yaw="300." pitch="30." />
             <pict yaw="330." pitch="-30." />
+            <pict yaw="270." pitch="-30." />
+            <pict yaw="210." pitch="-30." />
+            <pict yaw="150." pitch="-30." />
+            <pict yaw="90." pitch="-30." />
+            <pict yaw="30." pitch="-30." />
         </shoot>
     </preset>
 
