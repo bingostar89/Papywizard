@@ -215,7 +215,8 @@ class PololuMicroMaestroHardware(PololuServoHardware):
             self._driver.releaseBus()
         #Logger().debug("PololuMicroMaestroHardware.getPosition: Pololu returned %s" % repr(ans))
         low, high = struct.unpack("BB", ans)
-        position = (low + 255 * high) / 4.
+        position = (low + 256 * high) / 4.
+        #Logger().debug("PololuMicroMaestroHardware.getPosition(): position=%d" % position)
 
         return position
 
