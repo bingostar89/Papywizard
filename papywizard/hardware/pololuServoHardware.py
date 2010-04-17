@@ -65,8 +65,8 @@ class PololuServoHardware(AbstractHardware):
 class PololuMicroMaestroHardware(PololuServoHardware):
     """ Micro Maestro low-level hardware
     """
-    SERVO_MIN = 64
-    SERVO_MAX = 83280
+    SERVO_MIN = 64  # µs
+    SERVO_MAX = 3280  # µs
 
     def __splitLowHigh(self, value):
         """ Split value in low/high bytes.
