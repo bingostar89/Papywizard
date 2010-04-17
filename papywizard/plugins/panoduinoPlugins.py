@@ -178,7 +178,7 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         """
         direction = DIRECTION_TABLE[self._config['DIRECTION']]
         dir_ = DIRECTION_INDEX[direction]
-        servoValue = int(self._config['NEUTRAL_POSITION'] + dir_ * position * 1000. / self._config['ANGLE_1MS'])
+        servoValue = int(round(self._config['NEUTRAL_POSITION'] + dir_ * position * 1000. / self._config['ANGLE_1MS']))
 
         return servoValue
 
@@ -219,8 +219,9 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         self.waitStop()
 
     def startJog(self, dir_):
+        Logger().debug("PanoduinoAxis.startJog(): dir_=%s" % repr(dir_))
         currentPos = self.read()
-        position = currentPos #+ self._offset
+        position = currentPos #+ self._offset ???
         if dir_ == '+':
             position += MANUAL_SPEED_TABLE[self._manualSpeed]
         else:
