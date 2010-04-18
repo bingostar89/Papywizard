@@ -73,17 +73,25 @@ from papywizard.view.pluginFields import ComboBoxField, SpinBoxField, DoubleSpin
 
 NAME = "Panoduino"
 
-DEFAULT_SPEED = 10
-DEFAULT_ACCEL = 5
+DEFAULT_SPEED = {'yawAxis': 5,   # µs/period
+                 'pitchAxis': 5  # µs/period
+             }
+DEFAULT_ACCEL = {'yawAxis': 1,   # µs/period²
+                 'pitchAxis': 1  # µs/period²
+             }
 DEFAULT_CHANNEL = {'yawAxis': 1,
-                    'pitchAxis': 2,
-                    'shutter': 5
-                    }
+                   'pitchAxis': 2,
+                   'shutter': 5
+                }
 DEFAULT_DIRECTION = {'yawAxis': unicode(QtGui.QApplication.translate("panoduinoPlugins", 'forward')),
                      'pitchAxis': unicode(QtGui.QApplication.translate("panoduinoPlugins", 'reverse'))
-                     }
-DEFAULT_ANGLE_1MS = 315.  # °
-DEFAULT_NEUTRAL_POSITION = 1500  # µs
+                 }
+DEFAULT_ANGLE_1MS = {'yawAxis': 315.,  # °
+                     'pitchAxis': 330.  # °
+                 }
+DEFAULT_NEUTRAL_POSITION = {'yawAxis': 1000,  # µs
+                            'pitchAxis': 1500  # µs
+                        }
 DEFAULT_SHUTTER_ON = 2000  # µs
 DEFAULT_SHUTTER_OFF = 1000  # µs
 DEFAULT_ADDITIONAL_DELAY = 1.5  # s
@@ -112,9 +120,9 @@ DIRECTION_TABLE = {'forward': unicode(QtGui.QApplication.translate("panoduinoPlu
                    unicode(QtGui.QApplication.translate("panoduinoPlugins", 'forward')): 'forward',
                    unicode(QtGui.QApplication.translate("panoduinoPlugins", 'reverse')): 'reverse'
                    }
-MANUAL_SPEED_TABLE = {'slow': .5,  # angle (in °) for each key press
-                      'normal': 2.,
-                      'fast': 5.
+MANUAL_SPEED_TABLE = {'slow': 1,  # angle (in °) for each key press
+                      'normal': 4.,
+                      'fast': 10.
                       }
 
 
@@ -128,12 +136,12 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
         AbstractHardwarePlugin._defineConfig(self)
-        self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED)
-        self._addConfigKey('_acceleration', 'ACCEL', default=DEFAULT_ACCEL)
+        self._addConfigKey('_speed', 'SPEED', default=DEFAULT_SPEED[self.capacity])
+        self._addConfigKey('_acceleration', 'ACCEL', default=DEFAULT_ACCEL[self.capacity])
         self._addConfigKey('_channel', 'CHANNEL', default=DEFAULT_CHANNEL[self.capacity])
         self._addConfigKey('_direction', 'DIRECTION', default=DEFAULT_DIRECTION[self.capacity])
-        self._addConfigKey('_angle1ms', 'ANGLE_1MS', default=DEFAULT_ANGLE_1MS)
-        self._addConfigKey('_neutralPos', 'NEUTRAL_POSITION', default=DEFAULT_NEUTRAL_POSITION)
+        self._addConfigKey('_angle1ms', 'ANGLE_1MS', default=DEFAULT_ANGLE_1MS[self.capacity])
+        self._addConfigKey('_neutralPos', 'NEUTRAL_POSITION', default=DEFAULT_NEUTRAL_POSITION[self.capacity])
         self._addConfigKey('_additionalDelay', 'ADDITIONAL_DELAY', default=DEFAULT_ADDITIONAL_DELAY)
 
     def _checkLimits(self, position):
@@ -228,6 +236,7 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
             position -= MANUAL_SPEED_TABLE[self._manualSpeed]
 
         self._checkLimits(position)
+        position += self._offset
         value = self.__angleToServo(position)
         self._hardware.setTarget(value)
 
