@@ -100,15 +100,15 @@ class  AbstractStandardShutterPlugin(AbstractShutterPlugin):
         """
         raise NotImplementedError("AbstractStandardShutterPlugin._triggerOffShutter() must be overloaded")
 
-    def _triggerShutter(self):
+    def _triggerShutter(self, delay):
         """ Trigger the shutter contact.
+
+        @param: delay to wait between on/off, in s
+        @type delay: float
         """
         Logger().trace("AbstractStandardShutterPlugin._triggerShutter()")
         self._triggerOnShutter()
-        if self._config['BULB_ENABLE']:
-            time.sleep(self._config['TIME_VALUE'])
-        else:
-            time.sleep(self._config['PULSE_WIDTH_HIGH'] / 1000.)
+        time.sleep(delay)
         self._triggerOffShutter()
         self._LastShootTime = time.time()
 
@@ -125,10 +125,11 @@ class  AbstractStandardShutterPlugin(AbstractShutterPlugin):
         self._ensurePulseWidthLowDelay()
         self._driver.acquireBus()
         try:
-            self._triggerShutter()
-            return 0
+            self._triggerShutter(self._config['PULSE_WIDTH_HIGH'] / 1000.)
         finally:
             self._driver.releaseBus()
+
+        return 0
 
     def shoot(self, bracketNumber):
         Logger().trace("AbstractStandardShutterPlugin.shoot()")
@@ -136,12 +137,17 @@ class  AbstractStandardShutterPlugin(AbstractShutterPlugin):
         self._driver.acquireBus()
         try:
             t = time.time()
-            self._triggerShutter()
+            if self._config['BULB_ENABLE']:
+                delay = self._config['TIME_VALUE']
+            else:
+                delay = self._config['PULSE_WIDTH_HIGH'] / 1000.
+            self._triggerShutter(delay)
 
             # Wait for the end of shutter cycle
             delay = self._config['TIME_VALUE'] - (time.time() - t)
             if delay > 0:
                 time.sleep(delay)
-            return 0
         finally:
             self._driver.releaseBus()
+
+        return 0
