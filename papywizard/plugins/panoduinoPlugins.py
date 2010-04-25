@@ -79,9 +79,9 @@ DEFAULT_SPEED = {'yawAxis': 5,   # µs/period
 DEFAULT_ACCEL = {'yawAxis': 1,   # µs/period²
                  'pitchAxis': 1  # µs/period²
              }
-DEFAULT_CHANNEL = {'yawAxis': 1,
-                   'pitchAxis': 2,
-                   'shutter': 5
+DEFAULT_CHANNEL = {'yawAxis': 0,
+                   'pitchAxis': 1,
+                   'shutter': 2
                 }
 DEFAULT_DIRECTION = {'yawAxis': unicode(QtGui.QApplication.translate("panoduinoPlugins", 'forward')),
                      'pitchAxis': unicode(QtGui.QApplication.translate("panoduinoPlugins", 'reverse'))
@@ -158,7 +158,6 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
 
     def init(self):
         Logger().trace("PanoduinoAxis.init()")
-        self._hardware.setAxis(self._config['CHANNEL']),
         AbstractHardwarePlugin.init(self)
         self.configure()
         self._hardware.setTarget(self._config['NEUTRAL_POSITION'])
@@ -173,6 +172,7 @@ class PanoduinoAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def configure(self):
         Logger().trace("PanoduinoAxis.configure()")
         AbstractAxisPlugin.configure(self)
+        self._hardware.setAxis(self._config['CHANNEL'])
         self._hardware.configure(self._config['SPEED'], self._config['ACCEL'])
 
     def __angleToServo(self, position):
