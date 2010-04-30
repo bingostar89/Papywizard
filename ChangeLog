@@ -7,6 +7,9 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    - 'Panoduino' default channels changed
+    x 'Panoduino' channels init revisited
+    x remove unavailable drivers from list
 
 2010-04-19 Version 2.1.19 (dev)
     + new 'additional delay' param for 'Panoduino' plugin
