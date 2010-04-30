@@ -77,7 +77,20 @@ class PluginsController(AbstractModalDialogController):
         AbstractModalDialogController._retreiveWidgets(self)
 
     def _initWidgets(self):
-        pass
+
+        # Check if all drivers are available
+        try:
+            import papywizard.driver.serialDriver
+        except ImportError:
+            self._view.yawAxisDriverComboBox.removeItem(config.DRIVER_INDEX['serial'])
+        try:
+            import papywizard.driver.bluetoothDriver
+        except ImportError:
+            self._view.yawAxisDriverComboBox.removeItem(config.DRIVER_INDEX['bluetooth'])
+        try:
+            import papywizard.driver.ethernetDriver
+        except ImportError:
+            self._view.yawAxisDriverComboBox.removeItem(config.DRIVER_INDEX['ethernet'])
 
     def _connectSignals(self):
         AbstractModalDialogController._connectSignals(self)
@@ -105,7 +118,7 @@ class PluginsController(AbstractModalDialogController):
         previousPluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
         ConfigManager().set('Plugins/PLUGIN_YAW_AXIS', unicode(self._view.yawAxisComboBox.currentText()))
         newPluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
-        newPlugin = PluginsManager ().get('yawAxis', newPluginName)[0]
+        newPlugin = PluginsManager().get('yawAxis', newPluginName)[0]
         if previousPluginName != newPluginName:
             previousPlugin = PluginsManager ().get('yawAxis', previousPluginName)[0]
             previousPlugin.deactivate()
@@ -118,7 +131,7 @@ class PluginsController(AbstractModalDialogController):
         previousPluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
         ConfigManager().set('Plugins/PLUGIN_PITCH_AXIS', unicode(self._view.pitchAxisComboBox.currentText()))
         newPluginName = ConfigManager().get('Plugins/PLUGIN_PITCH_AXIS')
-        newPlugin = PluginsManager ().get('pitchAxis', newPluginName)[0]
+        newPlugin = PluginsManager().get('pitchAxis', newPluginName)[0]
         if previousPluginName != newPluginName:
             previousPlugin = PluginsManager ().get('pitchAxis', previousPluginName)[0]
             previousPlugin.deactivate()
@@ -131,7 +144,7 @@ class PluginsController(AbstractModalDialogController):
         previousPluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
         ConfigManager().set('Plugins/PLUGIN_SHUTTER', unicode(self._view.shutterComboBox.currentText()))
         newPluginName = ConfigManager().get('Plugins/PLUGIN_SHUTTER')
-        newPlugin = PluginsManager ().get('shutter', newPluginName)[0]
+        newPlugin = PluginsManager().get('shutter', newPluginName)[0]
         if previousPluginName != newPluginName:
             previousPlugin = PluginsManager ().get('shutter', previousPluginName)[0]
             previousPlugin.deactivate()
@@ -241,7 +254,7 @@ class PluginsController(AbstractModalDialogController):
                 self._view.yawAxisComboBox.addItem(model.name)
             selectedPluginName = ConfigManager().get('Plugins/PLUGIN_YAW_AXIS')
             self._view.yawAxisComboBox.setCurrentIndex(self._view.yawAxisComboBox.findText(selectedPluginName))
-            selectedPlugin = PluginsManager ().get('yawAxis', selectedPluginName)[0]
+            selectedPlugin = PluginsManager().get('yawAxis', selectedPluginName)[0]
             if hasattr(selectedPlugin, '_driver'):
                 self._view.yawAxisDriverComboBox.setEnabled(True)
                 driverType = selectedPlugin._config['DRIVER_TYPE']
