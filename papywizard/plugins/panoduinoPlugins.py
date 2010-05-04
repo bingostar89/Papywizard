@@ -260,7 +260,7 @@ class PanoduinoAxisController(AxisPluginController, HardwarePluginController):
         self._addWidget('Servo', "Channel", SpinBoxField, (0, 5), 'CHANNEL')
         directions = [DIRECTION_TABLE['forward'], DIRECTION_TABLE['reverse']]
         self._addWidget('Servo', LABEL_DIRECTION, ComboBoxField, (directions,), 'DIRECTION')
-        self._addWidget('Servo', LABEL_ANGLE_1MS, DoubleSpinBoxField, (0.1, 999.9, 1, 1., "", u" °"), 'ANGLE_1MS')
+        self._addWidget('Servo', LABEL_ANGLE_1MS, DoubleSpinBoxField, (0.1, 9999.9, 1, 1., "", u" °"), 'ANGLE_1MS')
         self._addWidget('Servo', LABEL_NEUTRAL_POSITION, SpinBoxField, (VALUE_MIN, VALUE_MAX, "", u" µs"), 'NEUTRAL_POSITION')
         self._addWidget('Servo', LABEL_ADDITIONAL_DELAY, DoubleSpinBoxField, (0.1, 9.9, 1, 0.1, "", u" s"), 'ADDITIONAL_DELAY')
 
