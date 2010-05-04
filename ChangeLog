@@ -8,6 +8,7 @@ x bug fix
 
 0000-00-00 Version SVN
     - 'Panoduino' default channels changed
+    - 'Panoduino' 'Angle for 1ms' param extended to 9999.9°
     x 'Panoduino' channels init revisited
     x remove unavailable drivers from list
 
