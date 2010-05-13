@@ -42,7 +42,7 @@ Plugin
 Implements
 ==========
 
- - StandardShutterPlugin
+ - ShutterPlugin
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2010 Frédéric Mantegazza
@@ -66,9 +66,9 @@ DEFAULT_PULSE_WIDTH_HIGH = 200 # ms
 DEFAULT_PULSE_WIDTH_LOW = 200 # ms
 
 
-class  StandardShutterPlugin(AbstractShutterPlugin):
+class ShutterPlugin(AbstractShutterPlugin):
     def _init(self):
-        Logger().trace("StandardShutterPlugin._init()")
+        Logger().trace("ShutterPlugin._init()")
         AbstractShutterPlugin._init(self)
         self._LastShootTime = time.time()
 
@@ -82,7 +82,7 @@ class  StandardShutterPlugin(AbstractShutterPlugin):
         return self._config["BRACKETING_NB_PICTS"]
 
     def _defineConfig(self):
-        Logger().trace("StandardShutterPlugin._defineConfig()")
+        Logger().trace("ShutterPlugin._defineConfig()")
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
         self._addConfigKey('_bulbEnable', 'BULB_ENABLE', default=DEFAULT_BULB_ENABLE)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
@@ -93,12 +93,12 @@ class  StandardShutterPlugin(AbstractShutterPlugin):
     def _triggerOnShutter(self):
         """ Set the shutter on.
         """
-        raise NotImplementedError("StandardShutterPlugin._triggerOnShutter() must be overloaded")
+        raise NotImplementedError("ShutterPlugin._triggerOnShutter() must be overloaded")
 
     def _triggerOffShutter(self):
         """ Set the shutter off.
         """
-        raise NotImplementedError("StandardShutterPlugin._triggerOffShutter() must be overloaded")
+        raise NotImplementedError("ShutterPlugin._triggerOffShutter() must be overloaded")
 
     def _triggerShutter(self, delay):
         """ Trigger the shutter contact.
@@ -106,7 +106,7 @@ class  StandardShutterPlugin(AbstractShutterPlugin):
         @param: delay to wait between on/off, in s
         @type delay: float
         """
-        Logger().trace("StandardShutterPlugin._triggerShutter()")
+        Logger().trace("ShutterPlugin._triggerShutter()")
         self._triggerOnShutter()
         time.sleep(delay)
         self._triggerOffShutter()
@@ -115,13 +115,13 @@ class  StandardShutterPlugin(AbstractShutterPlugin):
     def _ensurePulseWidthLowDelay(self):
         """ Ensure that PULSE_WIDTH_LOW delay has elapsed before last trigger.
         """
-        Logger().trace("StandardShutterPlugin._ensurePulseWidthLowDelay()")
+        Logger().trace("ShutterPlugin._ensurePulseWidthLowDelay()")
         delay = self._config['PULSE_WIDTH_LOW'] / 1000. - (time.time() - self._LastShootTime)
         if delay > 0:
             time.sleep(delay)
 
     def lockupMirror(self):
-        Logger().trace("StandardShutterPlugin.lockupMirror()")
+        Logger().trace("ShutterPlugin.lockupMirror()")
         self._ensurePulseWidthLowDelay()
         self._driver.acquireBus()
         try:
@@ -132,7 +132,7 @@ class  StandardShutterPlugin(AbstractShutterPlugin):
         return 0
 
     def shoot(self, bracketNumber):
-        Logger().trace("StandardShutterPlugin.shoot()")
+        Logger().trace("ShutterPlugin.shoot()")
         self._ensurePulseWidthLowDelay()
         self._driver.acquireBus()
         try:
