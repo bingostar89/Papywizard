@@ -42,7 +42,7 @@ Controller
 Implements
 ==========
 
- - StandardShutterPluginController
+ - ShutterPluginController
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2010 Frédéric Mantegazza
@@ -57,17 +57,17 @@ from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, \
                                          DoubleSpinBoxField, CheckBoxField, SliderField
 
-LABEL_TIME_VALUE = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Time value"))
-LABEL_MIRROR_LOCKUP = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Mirror lockup"))
-LABEL_BULB_ENABLE = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Bulb"))
-LABEL_BRACKETING_NB_PICTS = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Bracketing nb picts"))
+LABEL_TIME_VALUE = unicode(QtGui.QApplication.translate("shutterPluginController", "Time value"))
+LABEL_MIRROR_LOCKUP = unicode(QtGui.QApplication.translate("shutterPluginController", "Mirror lockup"))
+LABEL_BULB_ENABLE = unicode(QtGui.QApplication.translate("shutterPluginController", "Bulb"))
+LABEL_BRACKETING_NB_PICTS = unicode(QtGui.QApplication.translate("shutterPluginController", "Bracketing nb picts"))
 
-TAB_HARD = unicode(QtGui.QApplication.translate("standardShutterPluginController", 'Hard'))
-LABEL_PULSE_WIDTH_HIGH = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Pulse width high"))
-LABEL_PULSE_WIDTH_LOW = unicode(QtGui.QApplication.translate("standardShutterPluginController", "Pulse width low"))
+TAB_HARD = unicode(QtGui.QApplication.translate("shutterPluginController", 'Hard'))
+LABEL_PULSE_WIDTH_HIGH = unicode(QtGui.QApplication.translate("shutterPluginController", "Pulse width high"))
+LABEL_PULSE_WIDTH_LOW = unicode(QtGui.QApplication.translate("shutterPluginController", "Pulse width low"))
 
 
-class StandardShutterPluginController(ShutterPluginController):
+class ShutterPluginController(ShutterPluginController):
     def _defineGui(self):
         ShutterPluginController._defineGui(self)
         self._addWidget('Main', LABEL_TIME_VALUE, DoubleSpinBoxField, (0.1, 3600., 1, 0.1, "", " s"), 'TIME_VALUE')
