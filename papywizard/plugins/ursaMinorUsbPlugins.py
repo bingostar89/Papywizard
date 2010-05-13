@@ -61,9 +61,9 @@ from papywizard.common.loggingServices import Logger
 from papywizard.hardware.ursaMinorUsbHardware import UrsaMinorUsbHardware
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractHardwarePlugin import AbstractHardwarePlugin
-from papywizard.plugins.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
+from papywizard.plugins.shutterPlugin import ShutterPlugin
 from papywizard.plugins.hardwarePluginController import HardwarePluginController
-from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
+from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField, SliderField
 
 NAME = "Ursa Minor USB"
@@ -75,19 +75,19 @@ LABEL_TRIGGER_LINE = unicode(QtGui.QApplication.translate("ursaMinorUsbPlugins",
 LABEL_LINE_INVERTED = unicode(QtGui.QApplication.translate("ursaMinorUsbPlugins", "Line inverted"))
 
 
-class UrsaMinorUsbShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
+class UrsaMinorUsbShutter(AbstractHardwarePlugin, ShutterPlugin):
     """
     """
     def _init(self):
         Logger().trace("UrsaMinorUsbShutter._init()")
         AbstractHardwarePlugin._init(self)
-        AbstractStandardShutterPlugin._init(self)
+        ShutterPlugin._init(self)
         self._hardware = UrsaMinorUsbHardware()
 
     def _defineConfig(self):
         Logger().trace("UrsaMinorUsbShutter._defineConfig()")
         AbstractHardwarePlugin._defineConfig(self)
-        AbstractStandardShutterPlugin._defineConfig(self)
+        ShutterPlugin._defineConfig(self)
         self._addConfigKey('_triggerLine', 'TRIGGER_LINE', default=DEFAULT_TRIGGER_LINE)
         self._addConfigKey('_triggerLineInverted', 'TRIGGER_LINE_INVERTED', default=DEFAULT_TRIGGER_LINE_INVERTED)
 
@@ -110,10 +110,10 @@ class UrsaMinorUsbShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin)
         self.configure()
 
 
-class UrsaMinorUsbShutterController(StandardShutterPluginController, HardwarePluginController):
+class UrsaMinorUsbShutterController(ShutterPluginController, HardwarePluginController):
     def _defineGui(self):
         Logger().trace("UrsaMinorUsbShutterController._defineGui()")
-        StandardShutterPluginController._defineGui(self)
+        ShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
         self._addWidget('Hard', LABEL_TRIGGER_LINE, ComboBoxField, (['RTS', 'DTR'],), 'TRIGGER_LINE')
         self._addWidget('Hard', LABEL_LINE_INVERTED, CheckBoxField, (), 'TRIGGER_LINE_INVERTED')

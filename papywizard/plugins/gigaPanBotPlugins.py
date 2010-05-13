@@ -62,11 +62,11 @@ from papywizard.common.loggingServices import Logger
 from papywizard.hardware.gigaPanBotHardware import GigaPanBotHardware
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractAxisPlugin import AbstractAxisPlugin
-from papywizard.plugins.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
+from papywizard.plugins.shutterPlugin import ShutterPlugin
 from papywizard.plugins.abstractHardwarePlugin import AbstractHardwarePlugin
 from papywizard.plugins.axisPluginController import AxisPluginController
 from papywizard.plugins.hardwarePluginController import HardwarePluginController
-from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
+from papywizard.plugins.shutterPluginController import ShutterPluginController
 
 NAME = "GigaPanBot"
 
@@ -154,16 +154,16 @@ class GigaPanBotAxisController(AxisPluginController, HardwarePluginController):
         HardwarePluginController._defineGui(self)
 
 
-class GigaPanBotShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
+class GigaPanBotShutter(AbstractHardwarePlugin, ShutterPlugin):
     def _init(self):
         Logger().trace("GigaPanBotShutter._init()")
         AbstractHardwarePlugin._init(self)
-        AbstractStandardShutterPlugin._init(self)
+        ShutterPlugin._init(self)
         self._hardware = GigaPanBotHardware()
 
     def _defineConfig(self):
         AbstractHardwarePlugin._defineConfig(self)
-        AbstractStandardShutterPlugin._defineConfig(self)
+        ShutterPlugin._defineConfig(self)
 
     def _triggerOnShutter(self):
         """ Set the shutter on.
@@ -184,12 +184,12 @@ class GigaPanBotShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
         Logger().trace("GigaPanBotShutter.shutdown()")
         self._triggerOffShutter()
         AbstractHardwarePlugin.shutdown(self)
-        AbstractStandardShutterPlugin.shutdown(self)
+        ShutterPlugin.shutdown(self)
 
 
-class GigaPanBotShutterController(StandardShutterPluginController, HardwarePluginController):
+class GigaPanBotShutterController(ShutterPluginController, HardwarePluginController):
     def _defineGui(self):
-        StandardShutterPluginController._defineGui(self)
+        ShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
 
 

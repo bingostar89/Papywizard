@@ -64,11 +64,11 @@ from papywizard.common.loggingServices import Logger
 from papywizard.hardware.pololuServoHardware import PololuMicroMaestroHardware
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractAxisPlugin import AbstractAxisPlugin
-from papywizard.plugins.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
+from papywizard.plugins.shutterPlugin import ShutterPlugin
 from papywizard.plugins.abstractHardwarePlugin import AbstractHardwarePlugin
 from papywizard.plugins.axisPluginController import AxisPluginController
 from papywizard.plugins.hardwarePluginController import HardwarePluginController
-from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
+from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import ComboBoxField, SpinBoxField, DoubleSpinBoxField
 
 NAME = "Panoduino"
@@ -265,16 +265,16 @@ class PanoduinoAxisController(AxisPluginController, HardwarePluginController):
         self._addWidget('Servo', LABEL_ADDITIONAL_DELAY, DoubleSpinBoxField, (0.1, 9.9, 1, 0.1, "", u" s"), 'ADDITIONAL_DELAY')
 
 
-class PanoduinoShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
+class PanoduinoShutter(AbstractHardwarePlugin, ShutterPlugin):
     def _init(self):
         Logger().trace("PanoduinoShutter._init()")
         AbstractHardwarePlugin._init(self)
-        AbstractStandardShutterPlugin._init(self)
+        ShutterPlugin._init(self)
         self._hardware = PololuMicroMaestroHardware()
 
     def _defineConfig(self):
         AbstractHardwarePlugin._defineConfig(self)
-        AbstractStandardShutterPlugin._defineConfig(self)
+        ShutterPlugin._defineConfig(self)
         self._addConfigKey('_channel', 'CHANNEL', default=DEFAULT_CHANNEL[self.capacity])
         self._addConfigKey('_shutterOn', 'SHUTTER_ON', default=DEFAULT_SHUTTER_ON)
         self._addConfigKey('_shutterOff', 'SHUTTER_OFF', default=DEFAULT_SHUTTER_OFF)
@@ -310,13 +310,13 @@ class PanoduinoShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
         self._triggerOffShutter()
         self._hardware.shutdown()
         AbstractHardwarePlugin.shutdown(self)
-        AbstractStandardShutterPlugin.shutdown(self)
+        ShutterPlugin.shutdown(self)
 
 
-class PanoduinoShutterController(StandardShutterPluginController, HardwarePluginController):
+class PanoduinoShutterController(ShutterPluginController, HardwarePluginController):
     def _defineGui(self):
         Logger().trace("PanoduinoShutterController._defineGui()")
-        StandardShutterPluginController._defineGui(self)
+        ShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
         self._addTab('Servo', TAB_SERVO)
         self._addWidget('Servo', LABEL_CHANNEL, SpinBoxField, (0, 5, "", ""), 'CHANNEL')

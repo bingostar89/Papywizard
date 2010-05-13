@@ -66,11 +66,11 @@ from papywizard.common.loggingServices import Logger
 from papywizard.hardware.pixOrbHardware import PixOrbHardware
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractAxisPlugin import AbstractAxisPlugin
-from papywizard.plugins.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
+from papywizard.plugins.shutterPlugin import ShutterPlugin
 from papywizard.plugins.abstractHardwarePlugin import AbstractHardwarePlugin
 from papywizard.plugins.axisPluginController import AxisPluginController
 from papywizard.plugins.hardwarePluginController import HardwarePluginController
-from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
+from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import SpinBoxField, DoubleSpinBoxField, CheckBoxField
 
 NAME = "PixOrb"
@@ -249,16 +249,16 @@ class PixOrbAxisController(AxisPluginController, HardwarePluginController):
         self._addWidget('Hard', LABEL_AXIS_ACCURACY, DoubleSpinBoxField, (0.01, 0.50, 2, 0.01, "", u" °"), 'AXIS_ACCURACY')
 
 
-class PixOrbShutter(AbstractPixOrbHardware, AbstractStandardShutterPlugin):
+class PixOrbShutter(AbstractPixOrbHardware, ShutterPlugin):
     def _init(self):
         Logger().trace("PixOrbShutter._init()")
         AbstractPixOrbHardware._init(self)
-        AbstractStandardShutterPlugin._init(self)
+        ShutterPlugin._init(self)
         self._hardware = PixOrbHardware()
 
     def _defineConfig(self):
         AbstractPixOrbHardware._defineConfig(self)
-        AbstractStandardShutterPlugin._defineConfig(self)
+        ShutterPlugin._defineConfig(self)
 
     def init(self):
         Logger().trace("PixOrbAxis.init()")
@@ -280,12 +280,12 @@ class PixOrbShutter(AbstractPixOrbHardware, AbstractStandardShutterPlugin):
     def shutdown(self):
         Logger().trace("PixOrbShutter.shutdown()")
         self._triggerOffShutter()
-        AbstractStandardShutterPlugin.shutdown(self)
+        ShutterPlugin.shutdown(self)
 
 
-class PixOrbShutterController(StandardShutterPluginController, HardwarePluginController):
+class PixOrbShutterController(ShutterPluginController, HardwarePluginController):
     def _defineGui(self):
-        StandardShutterPluginController._defineGui(self)
+        ShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
 
 

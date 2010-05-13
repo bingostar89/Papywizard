@@ -67,11 +67,11 @@ from papywizard.common.loggingServices import Logger
 from papywizard.hardware.merlinOrionHardware import MerlinOrionHardware
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractAxisPlugin import AbstractAxisPlugin
-from papywizard.plugins.abstractStandardShutterPlugin import AbstractStandardShutterPlugin
+from papywizard.plugins.shutterPlugin import ShutterPlugin
 from papywizard.plugins.abstractHardwarePlugin import AbstractHardwarePlugin
 from papywizard.plugins.axisPluginController import AxisPluginController
 from papywizard.plugins.hardwarePluginController import HardwarePluginController
-from papywizard.plugins.standardShutterPluginController import StandardShutterPluginController
+from papywizard.plugins.shutterPluginController import ShutterPluginController
 from papywizard.view.pluginFields import SpinBoxField, DoubleSpinBoxField, CheckBoxField
 
 NAME = "Merlin-Orion"
@@ -188,9 +188,9 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
 
         # Only move if needed
         if abs(pos - currentPos) > AXIS_ACCURACY or not useOffset:
-            if useOffset:
+            if useOffset:  # if not useoffset: pos -= self._offset
                 Logger().debug("MerlinOrionAxis.drive(): offset=%.1f" % self._offset)
-                pos += self._offset
+                pos += self._offset  # Move to _xxxDrive()?
 
             self.__setPoint = pos
             self.__driveFlag = True # Start thread action
@@ -206,7 +206,7 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         @type pos: float
         """
         Logger().trace("MerlinOrionAxis._directDrive()")
-        self._hardware.drive(pos)
+        self._hardware.drive(pos)  # Use offset here?
 
     def _alternateDrive(self, pos):
         """ Alternate drive.
@@ -288,22 +288,22 @@ class MerlinOrionAxisController(AxisPluginController, HardwarePluginController):
         self._addWidget('Hard', LABEL_INERTIA_ANGLE, DoubleSpinBoxField, (0.1, 9.9, 1, .1, "", u" °"), 'INERTIA_ANGLE')
 
 
-class MerlinOrionShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
+class MerlinOrionShutter(AbstractHardwarePlugin, ShutterPlugin):
     def __init__(self, *args, **kwargs):
         """
         """
         AbstractHardwarePlugin.__init__(self, *args, **kwargs)
-        AbstractStandardShutterPlugin.__init__(self, *args, **kwargs)
+        ShutterPlugin.__init__(self, *args, **kwargs)
 
     def _init(self):
         Logger().trace("MerlinOrionShutter._init()")
         AbstractHardwarePlugin._init(self)
-        AbstractStandardShutterPlugin._init(self)
+        ShutterPlugin._init(self)
         self._hardware = MerlinOrionHardware()
 
     def _defineConfig(self):
         AbstractHardwarePlugin._defineConfig(self)
-        AbstractStandardShutterPlugin._defineConfig(self)
+        ShutterPlugin._defineConfig(self)
 
     def _triggerOnShutter(self):
         """ Set the shutter on.
@@ -324,12 +324,12 @@ class MerlinOrionShutter(AbstractHardwarePlugin, AbstractStandardShutterPlugin):
         Logger().trace("MerlinOrionShutter.shutdown()")
         self._triggerOffShutter()
         AbstractHardwarePlugin.shutdown(self)
-        AbstractStandardShutterPlugin.shutdown(self)
+        ShutterPlugin.shutdown(self)
 
 
-class MerlinOrionShutterController(StandardShutterPluginController, HardwarePluginController):
+class MerlinOrionShutterController(ShutterPluginController, HardwarePluginController):
     def _defineGui(self):
-        StandardShutterPluginController._defineGui(self)
+        ShutterPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
 
 
