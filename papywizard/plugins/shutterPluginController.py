@@ -53,7 +53,7 @@ __revision__ = "$Id$"
 
 from PyQt4 import QtCore, QtGui
 
-from papywizard.plugins.shutterPluginController import ShutterPluginController
+from papywizard.plugins.abstractPluginController import AbstractPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, \
                                          DoubleSpinBoxField, CheckBoxField, SliderField
 
@@ -67,9 +67,8 @@ LABEL_PULSE_WIDTH_HIGH = unicode(QtGui.QApplication.translate("shutterPluginCont
 LABEL_PULSE_WIDTH_LOW = unicode(QtGui.QApplication.translate("shutterPluginController", "Pulse width low"))
 
 
-class ShutterPluginController(ShutterPluginController):
+class ShutterPluginController(AbstractPluginController):
     def _defineGui(self):
-        ShutterPluginController._defineGui(self)
         self._addWidget('Main', LABEL_TIME_VALUE, DoubleSpinBoxField, (0.1, 3600., 1, 0.1, "", " s"), 'TIME_VALUE')
         self._addWidget('Main', LABEL_BULB_ENABLE, CheckBoxField, (), 'BULB_ENABLE')
         self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
