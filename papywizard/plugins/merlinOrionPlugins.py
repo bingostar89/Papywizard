@@ -165,7 +165,7 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
                 else:
                     self._directDrive(self.__setPoint)
                 self.__driveFlag = False
-                self.waitEndOfDrive()  # ???
+                self.waitEndOfDrive()
 
             self.msleep(config.SPY_REFRESH_DELAY)
 
@@ -188,9 +188,8 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
 
         # Only move if needed
         if abs(pos - currentPos) > AXIS_ACCURACY or not useOffset:
-            if useOffset:  # if not useoffset: pos -= self._offset
-                Logger().debug("MerlinOrionAxis.drive(): offset=%.1f" % self._offset)
-                pos += self._offset  # Move to _xxxDrive()?
+            if not useOffset:
+                pos -= self._offset
 
             self.__setPoint = pos
             self.__driveFlag = True # Start thread action
@@ -206,7 +205,8 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         @type pos: float
         """
         Logger().trace("MerlinOrionAxis._directDrive()")
-        self._hardware.drive(pos)  # Use offset here?
+        pos += self._offset
+        self._hardware.drive(pos)
 
     def _alternateDrive(self, pos):
         """ Alternate drive.
@@ -234,7 +234,8 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         self._hardware.startJog(dir_, MANUAL_SPEED_TABLE['alternate'])
 
         # Check when stop
-        while abs(pos - self.read()) > self._config['INERTIA_ANGLE']:
+        while (dir_ == '+' and self.read() - pos > self._config['INERTIA_ANGLE']) or \
+              (dir_ == '-' and pos - self.read() > self._config['INERTIA_ANGLE']):
 
             # Test if a stop request has been sent
             if not self.isMoving():
@@ -246,6 +247,7 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         # Final move
         if abs(pos - self.read()) > AXIS_ACCURACY and not stopRequest:
             Logger().debug("MerlinOrionAxis._alternateDrive(): final move")
+            pos += self._offset
             self._hardware.drive(pos)
 
     def waitEndOfDrive(self):
