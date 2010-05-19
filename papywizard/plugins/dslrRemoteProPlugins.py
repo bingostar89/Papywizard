@@ -67,7 +67,7 @@ from papywizard.common import config
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
-from papywizard.plugins.shutterPluginController import ShutterPluginController
+from papywizard.plugins.abstractPluginController import AbstractPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, \
                                          CheckBoxField, SliderField, DirSelectorField, FileSelectorField
 
@@ -79,7 +79,7 @@ DEFAULT_USER_EXPOSURE_COMPENSATION_LIST = "-2, 0, +2"
 DEFAULT_DRY_RUN = False
 DEFAULT_OUTPUT_DIR = config.HOME_DIR
 DEFAULT_FILENAME_PREFIX = ""
-DEFAULT_CAMERA_EXPOSURE_COMPENSATION_LIST = u"±2@1/2"
+DEFAULT_CAMERA_EXPOSURE_COMPENSATION_LIST = u"±2@1/3"
 
 LABEL_PROGRAM_PATH = unicode(QtGui.QApplication.translate("dslrRemoteProPlugins", "Program path"))
 TEXT_CHOOSE_PROGRAM_PATH = unicode(QtGui.QApplication.translate("dslrRemoteProPlugins", "Choose program path..."))
@@ -209,9 +209,9 @@ class DslrRemoteProShutter(AbstractShutterPlugin):
         return p.returncode
 
 
-class DslrRemoteProShutterController(ShutterPluginController):
+class DslrRemoteProShutterController(AbstractPluginController):
     def _defineGui(self):
-        ShutterPluginController._defineGui(self)
+        #AbstractPluginController._defineGui(self)
         self._addWidget('Main', LABEL_PROGRAM_PATH,
                         FileSelectorField, (TEXT_CHOOSE_PROGRAM_PATH, TEXT_CHOOSE_PROGRAM_PATH_FILTER),
                         'PROGRAM_PATH')

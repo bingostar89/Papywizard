@@ -62,7 +62,7 @@ from PyQt4 import QtCore, QtGui
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager import PluginsManager
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
-from papywizard.plugins.shutterPluginController import ShutterPluginController
+from papywizard.plugins.abstractPluginController import AbstractPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, CheckBoxField, FileSelectorField
 
 NAME = "EOS Utility"
@@ -213,10 +213,10 @@ class EOSUtilityShutter(AbstractShutterPlugin):
         return p.returncode
 
 
-class EOSUtilityShutterController(ShutterPluginController):
+class EOSUtilityShutterController(AbstractPluginController):
     def _defineGui(self):
         Logger().trace("EOSUtilityShutterController._defineGui()")
-        ShutterPluginController._defineGui(self)
+        #AbstractPluginController._defineGui(self)
         self._addWidget('Main', LABEL_PROGRAM_PATH,
                         FileSelectorField, (TEXT_CHOOSE_PROGRAM_PATH, TEXT_CHOOSE_PROGRAM_PATH_FILTER),
                         'PROGRAM_PATH')

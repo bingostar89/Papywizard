@@ -68,7 +68,7 @@ from papywizard.common.exception import HardwareError
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
-from papywizard.plugins.shutterPluginController import ShutterPluginController
+from papywizard.plugins.abstractPluginController import AbstractPluginController
 from papywizard.view.pluginFields import LineEditField, SpinBoxField, DirSelectorField, \
                                          CheckBoxField, FileSelectorField, ComboBoxField
 
@@ -624,7 +624,7 @@ class GphotoBracketShutter(AbstractShutterPlugin):
         return 0
 
 
-class GphotoBracketShutterController(ShutterPluginController):
+class GphotoBracketShutterController(AbstractPluginController):
     def __formatEv(self, ev):
         """ Format the exposure value.
         """
@@ -635,7 +635,7 @@ class GphotoBracketShutterController(ShutterPluginController):
             return "%+g" % ev
 
     def _valueChanged(self, value=None):
-        ShutterPluginController._valueChanged(self, value)
+        #AbstractPluginController._valueChanged(self, value)
 
         advanced = self._getWidget('Main', LABEL_ADVANCED).value()
         if not advanced:
@@ -669,7 +669,7 @@ class GphotoBracketShutterController(ShutterPluginController):
 
     def _defineGui(self):
         Logger().trace("GphotoBracketShutterController._defineGui()")
-        ShutterPluginController._defineGui(self)
+        #AbstractPluginController._defineGui(self)
 
         self._view.tabWidget.setUsesScrollButtons(False)
 

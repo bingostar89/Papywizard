@@ -65,7 +65,7 @@ from papywizard.plugins.pluginsManager import PluginsManager
 from papywizard.plugins.abstractAxisPlugin import AbstractAxisPlugin
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
 from papywizard.plugins.axisPluginController import AxisPluginController
-from papywizard.plugins.shutterPluginController import ShutterPluginController
+from papywizard.plugins.abstractPluginController import AbstractPluginController
 from papywizard.view.pluginFields import ComboBoxField, LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField
 
 NAME = "Simulation"
@@ -261,10 +261,10 @@ class SimulationShutter(AbstractShutterPlugin):
         return 0
 
 
-class SimulationShutterController(ShutterPluginController):
+class SimulationShutterController(AbstractPluginController):
     def _defineGui(self):
         Logger().trace("SimulationShutterController._defineGui()")
-        ShutterPluginController._defineGui(self)
+        #AbstractPluginController._defineGui(self)
         self._addWidget('Main', LABEL_TIME_VALUE, DoubleSpinBoxField, (0.1, 3600, 1, 0.1, "", " s"), 'TIME_VALUE')
         self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', LABEL_BRACKETING_NB_PICTS, SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')

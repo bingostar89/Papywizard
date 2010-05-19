@@ -62,7 +62,7 @@ from PyQt4 import QtCore, QtGui
 from papywizard.common.loggingServices import Logger
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractShutterPlugin import AbstractShutterPlugin
-from papywizard.plugins.shutterPluginController import ShutterPluginController
+from papywizard.plugins.shutterPluginController import AbstractPluginController
 from papywizard.view.pluginFields import LineEditField, SpinBoxField, DoubleSpinBoxField, CheckBoxField
 
 NAME = "Generic Tethered"
@@ -168,10 +168,10 @@ class GenericTetheredShutter(AbstractShutterPlugin):
         return p.returncode
 
 
-class GenericTetheredShutterController(ShutterPluginController):
+class GenericTetheredShutterController(AbstractPluginController):
     def _defineGui(self):
         Logger().trace("GenericTetheredShutterController._defineGui()")
-        ShutterPluginController._defineGui(self)
+        #AbstractPluginController._defineGui(self)
         self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', LABEL_MIRROR_LOCKUP_COMMAND, LineEditField, (), 'MIRROR_LOCKUP_COMMAND')
         self._addWidget('Main', LABEL_SHOOT_COMMAND, LineEditField, (), 'SHOOT_COMMAND')
