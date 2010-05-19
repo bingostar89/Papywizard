@@ -485,7 +485,7 @@
 <context>
     <name>PluginsController</name>
     <message>
-        <location filename="papywizard/controller/pluginsController.py" line="209"/>
+        <location filename="papywizard/controller/pluginsController.py" line="222"/>
         <source>Can&apos;t scan bluetooth</source>
         <translation>Can&apos;t scan bluetooth</translation>
     </message>
@@ -1531,67 +1531,62 @@ compensation list</translation>
 <context>
     <name>panoduinoPlugins</name>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="112"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="120"/>
         <source>forward</source>
         <translation>forward</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="97"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="105"/>
         <source>Servo</source>
         <translation>Servo</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="99"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="107"/>
         <source>Direction</source>
         <translation>Direction</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="101"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="109"/>
         <source>Neutral position</source>
         <translation>Neutral position</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="113"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="121"/>
         <source>reverse</source>
         <translation>reverse</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="83"/>
-        <source>Speed index</source>
-        <translation type="obsolete">Speed index</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="94"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="102"/>
         <source>Speed</source>
         <translation>Speed</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="95"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="103"/>
         <source>Acceleration</source>
         <translation>Acceleration</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="98"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="106"/>
         <source>Channel</source>
         <translation>Channel</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="100"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="108"/>
         <source>Angle for 1ms</source>
         <translation>Angle for 1ms</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="104"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="112"/>
         <source>Shutter on</source>
         <translation>Shutter on</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="105"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="113"/>
         <source>Shutter off</source>
         <translation>Shutter off</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/panoduinoPlugins.py" line="102"/>
+        <location filename="papywizard/plugins/panoduinoPlugins.py" line="110"/>
         <source>Additional delay</source>
         <translation>Additional delay</translation>
     </message>
@@ -1817,6 +1812,44 @@ compensation list</translation>
     </message>
 </context>
 <context>
+    <name>shutterPluginController</name>
+    <message>
+        <location filename="papywizard/plugins/shutterPluginController.py" line="60"/>
+        <source>Time value</source>
+        <translation>Time value</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/shutterPluginController.py" line="61"/>
+        <source>Mirror lockup</source>
+        <translation>Mirror lockup</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/shutterPluginController.py" line="62"/>
+        <source>Bulb</source>
+        <translation>Bulb</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/shutterPluginController.py" line="63"/>
+        <source>Bracketing nb picts</source>
+        <translation>Bracketing nb picts</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/shutterPluginController.py" line="65"/>
+        <source>Hard</source>
+        <translation>Hard</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/shutterPluginController.py" line="66"/>
+        <source>Pulse width high</source>
+        <translation>Pulse width high</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/shutterPluginController.py" line="67"/>
+        <source>Pulse width low</source>
+        <translation>Pulse width low</translation>
+    </message>
+</context>
+<context>
     <name>simulationPlugins</name>
     <message>
         <location filename="papywizard/plugins/simulationPlugins.py" line="78"/>
@@ -1837,44 +1870,6 @@ compensation list</translation>
         <location filename="papywizard/plugins/simulationPlugins.py" line="82"/>
         <source>Bracketing nb picts</source>
         <translation>Bracketing nb picts</translation>
-    </message>
-</context>
-<context>
-    <name>standardShutterPluginController</name>
-    <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="60"/>
-        <source>Time value</source>
-        <translation>Time value</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="61"/>
-        <source>Mirror lockup</source>
-        <translation>Mirror lockup</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="63"/>
-        <source>Bracketing nb picts</source>
-        <translation>Bracketing nb picts</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="65"/>
-        <source>Hard</source>
-        <translation>Hard</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="66"/>
-        <source>Pulse width high</source>
-        <translation>Pulse width high</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="67"/>
-        <source>Pulse width low</source>
-        <translation>Pulse width low</translation>
-    </message>
-    <message>
-        <location filename="papywizard/plugins/standardShutterPluginController.py" line="62"/>
-        <source>Bulb</source>
-        <translation>Bulb</translation>
     </message>
 </context>
 <context>
@@ -1941,24 +1936,24 @@ compensation list</translation>
 <context>
     <name>ursaMinorBt2Plugins</name>
     <message>
-        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="74"/>
+        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="102"/>
         <source>Focus</source>
         <translation>Focus</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="75"/>
+        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="103"/>
         <source>Enable</source>
         <translation>Enable</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="76"/>
+        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="104"/>
         <source>Pulse width</source>
         <translation>Pulse width</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="77"/>
-        <source>Maintain focus</source>
-        <translation>Maintain focus</translation>
+        <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="105"/>
+        <source>Maintain with shutter</source>
+        <translation>Maintain with shutter</translation>
     </message>
 </context>
 <context>
