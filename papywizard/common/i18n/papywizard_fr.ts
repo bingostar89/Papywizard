@@ -1953,7 +1953,7 @@ exposition appareil</translation>
     <message>
         <location filename="papywizard/plugins/ursaMinorBt2Plugins.py" line="105"/>
         <source>Maintain with shutter</source>
-        <translation>Maintient avec obturateur</translation>
+        <translation>Maintenir avec obturateur</translation>
     </message>
 </context>
 <context>
