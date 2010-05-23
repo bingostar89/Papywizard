@@ -42,11 +42,10 @@ Hardware
 Implements
 ==========
 
-- MerlinOrionHardware
-- MerlinOrionAxis
-- MerlinOrionAxisController
-- MerlinOrionShutter
-- MerlinOrionShutterController
+ - MerlinOrionAxis
+ - MerlinOrionAxisController
+ - MerlinOrionShutter
+ - MerlinOrionShutterController
 
 @author: Frédéric Mantegazza
 @copyright: (C) 2007-2010 Frédéric Mantegazza
