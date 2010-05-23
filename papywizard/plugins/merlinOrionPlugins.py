@@ -234,8 +234,8 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         self._hardware.startJog(dir_, MANUAL_SPEED_TABLE['alternate'])
 
         # Check when stop
-        while (dir_ == '+' and self.read() - pos > self._config['INERTIA_ANGLE']) or \
-              (dir_ == '-' and pos - self.read() > self._config['INERTIA_ANGLE']):
+        while (dir_ == '-' and self.read() - pos > self._config['INERTIA_ANGLE']) or \
+              (dir_ == '+' and pos - self.read() > self._config['INERTIA_ANGLE']):
 
             # Test if a stop request has been sent
             if not self.isMoving():
