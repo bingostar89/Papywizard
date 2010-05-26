@@ -52,7 +52,6 @@ Implements
 __revision__ = "$Id$"
 
 import time
-import imp
 
 from PyQt4 import QtCore
 
