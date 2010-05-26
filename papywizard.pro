@@ -72,10 +72,9 @@ SOURCES += papywizard/model/camera.py \
 SOURCES += papywizard/plugins/abstractAxisPlugin.py \
            papywizard/plugins/abstractHardwarePlugin.py \
            papywizard/plugins/abstractPluginController.py \
-           papywizard/plugins/axisPluginController.py \
            papywizard/plugins/abstractPlugin.py \
            papywizard/plugins/abstractShutterPlugin.py \
-           papywizard/plugins/abstractStandardShutterPlugin.py \
+           papywizard/plugins/axisPluginController.py \
            papywizard/plugins/dslrRemoteProPlugins.py \
            papywizard/plugins/eosUtilityPlugins.py \
            papywizard/plugins/genericTetheredPlugins.py \
@@ -89,8 +88,8 @@ SOURCES += papywizard/plugins/abstractAxisPlugin.py \
            papywizard/plugins/pluginsConnector.py \
            papywizard/plugins/pluginsManager.py \
            papywizard/plugins/shutterPluginController.py \
+           papywizard/plugins/shutterPlugin.py \
            papywizard/plugins/simulationPlugins.py \
-           papywizard/plugins/standardShutterPluginController.py \
            papywizard/plugins/timelordPlugins.py \
            papywizard/plugins/ursaMinorBt2Plugins.py \
            papywizard/plugins/ursaMinorUsbPlugins.py
