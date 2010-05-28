@@ -244,7 +244,7 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         self._hardware.stop()
 
         # Final move
-        if abs(pos - self.read()) > AXIS_ACCURACY and not stopRequest:
+        if not stopRequest:
             Logger().debug("MerlinOrionAxis._alternateDrive(): final move")
             pos += self._offset
             self._hardware.drive(pos)
