@@ -11,6 +11,7 @@ x bug fix
     - 'Panoduino' 'Angle for 1ms' param extended to 9999.9°
     x 'Panoduino' channels init revisited
     x remove unavailable drivers from list
+    x 'Merlin-Orion' plugin alternate drive with offset (set reference)
 
 2010-04-19 Version 2.1.19 (dev)
     + new 'additional delay' param for 'Panoduino' plugin
