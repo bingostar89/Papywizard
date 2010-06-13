@@ -571,12 +571,12 @@
 <context>
     <name>Shooting</name>
     <message>
-        <location filename="papywizard/model/shooting.py" line="583"/>
+        <location filename="papywizard/model/shooting.py" line="582"/>
         <source>Shutter failed while mirror locking up</source>
         <translation>L&apos;obturateur n&apos;a pas pur relever le mirroir</translation>
     </message>
     <message>
-        <location filename="papywizard/model/shooting.py" line="598"/>
+        <location filename="papywizard/model/shooting.py" line="597"/>
         <source>Shutter failed while shooting</source>
         <translation>L&apos;obturateur n&apos;a pas pu prendre la vue</translation>
     </message>
@@ -717,182 +717,182 @@
         <translation>Commence depuis</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="290"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="295"/>
         <source>Initial direction</source>
         <translation>Direction initiale</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="307"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="312"/>
         <source>yaw</source>
         <translation>lacet</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="312"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="317"/>
         <source>pitch</source>
         <translation>tangage</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="320"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="325"/>
         <source>CR</source>
         <translation>RC</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="355"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="360"/>
         <source>rectilinear</source>
         <translation>rectilinéaire</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="360"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="365"/>
         <source>fisheye</source>
         <translation>fisheye</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="680"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="685"/>
         <source>Data</source>
         <translation>Données</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="688"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="693"/>
         <source>Data directory</source>
         <translation>Répertoire de données</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="704"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="709"/>
         <source>Data file</source>
         <translation>Fichier de données</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="904"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="909"/>
         <source>Enable</source>
         <translation>Actif</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="743"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="748"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="772"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="777"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="801"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="806"/>
         <source>Comment</source>
         <translation>Commentaire</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="844"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="849"/>
         <source>Timer</source>
         <translation>Timer</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="855"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="860"/>
         <source>Start after</source>
         <translation>Commence après</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="878"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="883"/>
         <source>Repeat</source>
         <translation>Répétition</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="914"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="919"/>
         <source>Repeat every</source>
         <translation>Répète chaque</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="982"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="987"/>
         <source>Misc</source>
         <translation>Divers</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="990"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="995"/>
         <source>Logger level</source>
         <translation>Niveau de log</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="1007"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="1012"/>
         <source>trace</source>
         <translation>trace</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="1012"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="1017"/>
         <source>debug</source>
         <translation>debug</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="1017"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="1022"/>
         <source>info</source>
         <translation>info</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="1022"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="1027"/>
         <source>warning</source>
         <translation>warning</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="1027"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="1032"/>
         <source>error</source>
         <translation>error</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="1032"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="1037"/>
         <source>exception</source>
         <translation>exception</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="1037"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="1042"/>
         <source>critical</source>
         <translation>critical</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="416"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="421"/>
         <source>Sensor (coef, ratio)</source>
         <translation>Capteur (coef, ratio)</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="381"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="386"/>
         <source>Sensor resolution</source>
         <translation>Résolution capteur</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="368"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="373"/>
         <source>Optical multiplier</source>
         <translation>Multiplicateur optique</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="330"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="335"/>
         <source>Camera/lens</source>
         <translation>Appareil/objectif</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="338"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="343"/>
         <source>Lens (type, focal)</source>
         <translation>Objectif (type, focale)</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="528"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="533"/>
         <source>Plugins</source>
         <translation>Plugins</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="536"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="541"/>
         <source>Yaw</source>
         <translation>Lacet</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="549"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="554"/>
         <source>Pitch</source>
         <translation>Tangage</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="600"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="605"/>
         <source>Configure...</source>
         <translation>Configurer...</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="576"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="581"/>
         <source>Shutter</source>
         <translation>Obturateur</translation>
     </message>
@@ -917,7 +917,7 @@
         <translation>bas-droit</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="972"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="977"/>
         <source>Reverse direction before repeat</source>
         <translation>Inverse direction avant répétition</translation>
     </message>
@@ -932,14 +932,19 @@
         <translation>Côté bras tangage</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="1045"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="1050"/>
         <source>Shooting counter</source>
         <translation>Compteur prise de vue</translation>
     </message>
     <message>
-        <location filename="papywizard/view/ui/configDialog.ui" line="1077"/>
+        <location filename="papywizard/view/ui/configDialog.ui" line="1082"/>
         <source>Show</source>
         <translation>Affiche</translation>
+    </message>
+    <message>
+        <location filename="papywizard/view/ui/configDialog.ui" line="287"/>
+        <source>nearest-corner</source>
+        <translation>plus-proche</translation>
     </message>
 </context>
 <context>
@@ -1423,22 +1428,22 @@ Après fermeture de cette fenêtre, il vous sera demandé de sélectionner ces p
 <context>
     <name>merlinOrionPlugins</name>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="83"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="82"/>
         <source>Hard</source>
         <translation>Matos</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="84"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="83"/>
         <source>Alternate drive</source>
         <translation>Positionnement alternatif</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="86"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="85"/>
         <source>Inertia angle</source>
         <translation>Angle d&apos;inertie</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="85"/>
+        <location filename="papywizard/plugins/merlinOrionPlugins.py" line="84"/>
         <source>Alternate drive angle</source>
         <translation>Angle alternatif</translation>
     </message>
