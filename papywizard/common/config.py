@@ -138,8 +138,8 @@ PITCH_ARM_SIDE_INDEX = {'right': 0, 'left': 1,
                         0: 'right', 1: 'left'}
 CAMERA_ORIENTATION_INDEX = {'portrait': 0, 'landscape': 1, 'custom': 2,
                             0: 'portrait', 1: 'landscape', 2: 'custom'}
-MOSAIC_START_FROM_INDEX = {'top-left': 0, 'top-right': 1, 'bottom-left': 2, 'bottom-right': 3,
-                           0: 'top-left', 1 : 'top-right', 2: 'bottom-left', 3: 'bottom-right'}
+MOSAIC_START_FROM_INDEX = {'top-left': 0, 'top-right': 1, 'bottom-left': 2, 'bottom-right': 3, 'nearest-corner': 4,
+                           0: 'top-left', 1 : 'top-right', 2: 'bottom-left', 3: 'bottom-right', 4: 'nearest-corner'}
 MOSAIC_INITIAL_DIR_INDEX = {'yaw': 0, 'pitch': 1,
                             0: 'yaw', 1: 'pitch'}
 SENSOR_RATIO_INDEX = {'3:2': 0, '4:3': 1, '5:4': 2, '16:9': 3,
