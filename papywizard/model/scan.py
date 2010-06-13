@@ -53,6 +53,8 @@ Implements
 
 __revision__ = "$Id$"
 
+import math
+
 from papywizard.common.loggingServices import Logger
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.presetManager import PresetManager
@@ -114,14 +116,15 @@ class AbstractScan(object):
         """
         raise NotImplementedError
 
-    def reverseDirection(self, reverse):
+    def reverseDirection(self, reverse=None):
         """ Reverse the direction according to flag.
 
         @param reverse: if True, reverse direction
                         if False, use default direction
+                        if None, toggle direction
         @type reverse: bool
         """
-        if reverse and not self._reversed or not reverse and self._reversed:
+        if reverse is None or reverse and not self._reversed or not reverse and self._reversed:
             self._positions.reverse()
             self._reversed = not self._reversed
 
@@ -151,15 +154,19 @@ class MosaicScan(AbstractScan):
         """
         super(MosaicScan, self).__init__(*args, **kwargs)
         self.corners = [{'yaw': 0., 'pitch': 0.},
-                        {'yaw': 0., 'pitch': 0.}]
+                        {'yaw': 0., 'pitch': 0.}]  # Use properties and compute yaw/pitc start/end when modified
 
     # Properties
     def __getYawStart(self):
         """
         """
-        if self.startFrom in ('top-left', 'bottom-left'):
+        if self.startFrom == 'nearest-corner':
+            startFrom = self.__getNearestCorner()
+        else:
+            startFrom = self.startFrom
+        if startFrom in ('top-left', 'bottom-left'):
             return min(self.corners[0]['yaw'], self.corners[1]['yaw'])
-        elif self.startFrom in ('top-right', 'bottom-right'):
+        elif startFrom in ('top-right', 'bottom-right'):
             return max(self.corners[0]['yaw'], self.corners[1]['yaw'])
 
     yawStart = property(__getYawStart)
@@ -167,9 +174,13 @@ class MosaicScan(AbstractScan):
     def __getYawEnd(self):
         """
         """
-        if self.startFrom in ('top-left', 'bottom-left'):
+        if self.startFrom == 'nearest-corner':
+            startFrom = self.__getNearestCorner()
+        else:
+            startFrom = self.startFrom
+        if startFrom in ('top-left', 'bottom-left'):
             return max(self.corners[0]['yaw'], self.corners[1]['yaw'])
-        elif self.startFrom in ('top-right', 'bottom-right'):
+        elif startFrom in ('top-right', 'bottom-right'):
             return min(self.corners[0]['yaw'], self.corners[1]['yaw'])
 
     yawEnd = property(__getYawEnd)
@@ -177,9 +188,13 @@ class MosaicScan(AbstractScan):
     def __getPitchStart(self):
         """
         """
-        if self.startFrom in ('top-left', 'top-right'):
+        if self.startFrom == 'nearest-corner':
+            startFrom = self.__getNearestCorner()
+        else:
+            startFrom = self.startFrom
+        if startFrom in ('top-left', 'top-right'):
             return max(self.corners[0]['pitch'], self.corners[1]['pitch'])
-        elif self.startFrom in ('bottom-left', 'bottom-right'):
+        elif startFrom in ('bottom-left', 'bottom-right'):
             return min(self.corners[0]['pitch'], self.corners[1]['pitch'])
 
     pitchStart = property(__getPitchStart)
@@ -187,9 +202,13 @@ class MosaicScan(AbstractScan):
     def __getPitchEnd(self):
         """
         """
-        if self.startFrom in ('top-left', 'top-right'):
+        if self.startFrom == 'nearest-corner':
+            startFrom = self.__getNearestCorner()
+        else:
+            startFrom = self.startFrom
+        if startFrom in ('top-left', 'top-right'):
             return min(self.corners[0]['pitch'], self.corners[1]['pitch'])
-        elif self.startFrom in ('bottom-left', 'bottom-right'):
+        elif startFrom in ('bottom-left', 'bottom-right'):
             return max(self.corners[0]['pitch'], self.corners[1]['pitch'])
 
     pitchEnd = property(__getPitchEnd)
@@ -311,6 +330,41 @@ class MosaicScan(AbstractScan):
         return pitchOverlap
 
     pitchRealOverlap = property(__getPitchRealOverlap, "Pitch real overlap")
+
+    # Helpers
+    def __getNearestCorner(self):
+        """ Return the nearest corner from the current position.
+
+        @return: nearest corner, in ('top-left', 'top-right', 'bottom-left', 'bottom-right')
+        @rtype: str
+        """
+        Logger().trace("Mosaic.__getNearestCorner()")
+
+        # Get current position
+        yaw, pitch = self._model.head.readPosition()
+
+        # Get corners
+        left = min(self.corners[0]['yaw'], self.corners[1]['yaw'])
+        right = max(self.corners[0]['yaw'], self.corners[1]['yaw'])
+        top = max(self.corners[0]['pitch'], self.corners[1]['pitch'])
+        bottom = min(self.corners[0]['pitch'], self.corners[1]['pitch'])
+
+        # Compute distance
+        toTopLeft = math.sqrt((yaw - left) ** 2 + (pitch - top) ** 2)
+        toTopRight = math.sqrt((yaw - right) ** 2 + (pitch - top) ** 2)
+        toBottomLeft = math.sqrt((yaw - left) ** 2 + (pitch - bottom) ** 2)
+        toBottomRight = math.sqrt((yaw - right) ** 2 + (pitch - bottom) ** 2)
+
+        # Search nearest
+        nearest = min(toTopLeft, toTopRight, toBottomLeft, toBottomRight)
+        if nearest == toTopLeft:
+            return 'top-left'
+        elif nearest == toTopRight:
+            return 'top-right'
+        elif nearest == toBottomLeft:
+            return 'bottom-left'
+        elif nearest == toBottomRight:
+            return 'bottom-right'
 
     # Interface
     def generatePositions(self):
