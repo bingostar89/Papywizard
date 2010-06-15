@@ -7,8 +7,13 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+
+2010-06-15 Version 2.1.20 (dev)
+    + new 'nearest-corner' entry from 'Start from' param
+    + 'Ursa Minor Bt2' plugin improved
     - 'Panoduino' default channels changed
     - 'Panoduino' 'Angle for 1ms' param extended to 9999.9°
+    - removed "reverse direction' feature (use new 'nearest-corner')
     x 'Panoduino' channels init revisited
     x remove unavailable drivers from list
     x 'Merlin-Orion' plugin alternate drive with offset (set reference)
