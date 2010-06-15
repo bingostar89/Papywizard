@@ -570,8 +570,14 @@ class ShootController(AbstractModalDialogController):
         if self._model.isShooting():
             self._model.stop()
         else:
-            self.__shootingScene.resetState()
             self.__initWidgetsState()
+            if self._model.mode == 'mosaic' and self._model.mosaic.startFrom == 'nearest-corner':
+                self._model.scan.generatePositions()
+                self.__shootingScene.clear()
+                self.__generatePreviews()
+            else:
+                self.__shootingScene.resetState()
+
             self._view.dataPushButton.setEnabled(True)
             self._view.timerPushButton.setEnabled(True)
             self._view.startPushButton.setEnabled(True)
