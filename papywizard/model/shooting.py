@@ -684,7 +684,7 @@ class Shooting(QtCore.QObject):
         except:
             Logger().exception("Shooting.start()")
             status = 'fail'
-            Logger().error("Shoot process failed")
+            Logger().error("Unhandled exception in shoot process")
         else:
             status = 'ok'
             Logger().info("Shoot process finished")
