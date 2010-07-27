@@ -145,7 +145,7 @@ class GenericTetheredShutter(AbstractShutterPlugin):
 
         # Launch external command
         startShootingTime = time.time()
-        cmd = self._config['MIRROR_LOCKUP_COMMAND'] + " %(p0)s %(p1)s %(p2)s %(p3)s %(p4)s"
+        cmd = self._config['SHOOT_COMMAND'] + " %(p0)s %(p1)s %(p2)s %(p3)s %(p4)s"
         cmd = cmd % parameters
         args = cmd.split()
         Logger().debug("GenericTetheredShutter.shoot(): execute command '%s'..." % cmd)
