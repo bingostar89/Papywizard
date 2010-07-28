@@ -70,7 +70,7 @@ NAME = "Generic Tethered"
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_MIRROR_LOCKUP_COMMAND = "gphoto2 --capture-image"
 DEFAULT_SHOOT_COMMAND = "gphoto2 --capture-image"
-DEFAULT_TIME_VALUE = 0.
+DEFAULT_TIME_VALUE = 0.1
 DEFAULT_PARAM_0 = ""
 DEFAULT_PARAM_1 = ""
 DEFAULT_PARAM_2 = ""
@@ -160,7 +160,7 @@ class GenericTetheredShutter(AbstractShutterPlugin):
 
         # Ensure time value delay elapsed
         if p.returncode == 0:
-            delay = time.time() - startShootingTime
+            delay = self._config['TIME_VALUE'] - (time.time() - startShootingTime)
             if delay > 0:
                 Logger().debug("GenericTetheredPlugin.shoot(): wait %.1fs additionnal delay" % delay)
                 time.sleep(delay)
