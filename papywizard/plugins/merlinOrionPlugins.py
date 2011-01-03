@@ -63,6 +63,7 @@ from PyQt4 import QtCore, QtGui
 from papywizard.common import config
 from papywizard.common.configManager import ConfigManager
 from papywizard.common.loggingServices import Logger
+from papywizard.controller.spy import Spy
 from papywizard.hardware.merlinOrionHardware import MerlinOrionHardware
 from papywizard.plugins.pluginsManager  import PluginsManager
 from papywizard.plugins.abstractAxisPlugin import AbstractAxisPlugin
@@ -104,14 +105,29 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         AbstractAxisPlugin.__init__(self, *args, **kwargs)
         QtCore.QThread.__init__(self)
 
+    def __onPositionUpdate(self, yaw, pitch):
+        """ Refresh position according to new pos.
+
+        @param yaw: yaw axis value
+        @type yaw: float
+
+        @param pitch: pitch axix value
+        @type pitch: float
+        """
+        if self.capacity == 'yawAxis':
+            self.__currentPos = yaw
+        else:
+            self.__currentPos = pitch
+
     def _init(self):
         Logger().trace("MerlinOrionAxis._init()")
         AbstractHardwarePlugin._init(self)
         AbstractAxisPlugin._init(self)
         self._hardware = MerlinOrionHardware()
         self.__run = False
-        self.__driveFlag = False
+        self.__driveEvent = threading.Event()
         self.__setPoint = None
+        self.__currentPos = None
 
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
@@ -140,11 +156,17 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         self._hardware.setAxis(AXIS_TABLE[self.capacity]),
         AbstractHardwarePlugin.init(self)
 
+        # Connect Spy update signal
+        self.connect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate, QtCore.Qt.BlockingQueuedConnection)
+
     def shutdown(self):
         Logger().trace("MerlinOrionAxis.shutdown()")
         self.stop()
         AbstractHardwarePlugin.shutdown(self)
         AbstractAxisPlugin.shutdown(self)
+
+        # Disconnect Spy update signal
+        self.disconnect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate)
 
     def run(self):
         """ Main entry of the thread.
@@ -154,19 +176,17 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         Logger().debug("MerlinOrionAxis.run(): start thread")
         self.__run = True
         while self.__run:
-            if self.__driveFlag:
+            self.__driveEvent.wait()
 
-                # Choose alternate drive if needed
-                currentPos = self.read()
-                if self._config['ALTERNATE_DRIVE'] and \
-                   1.1 * self._config['INERTIA_ANGLE'] < abs(self.__setPoint - currentPos) < self._config['ALTERNATE_DRIVE_ANGLE']:
-                    self._alternateDrive(self.__setPoint)
-                else:
-                    self._directDrive(self.__setPoint)
-                self.__driveFlag = False
-                self.waitEndOfDrive()
+            # Choose alternate drive if needed
+            currentPos = self.read()
+            if self._config['ALTERNATE_DRIVE'] and \
+               1.1 * self._config['INERTIA_ANGLE'] < abs(self.__setPoint - currentPos) < self._config['ALTERNATE_DRIVE_ANGLE']:
+                self._alternateDrive(self.__setPoint)
 
-            self.msleep(config.SPY_REFRESH_DELAY)
+            # Use standard drive to reach the position
+            if self.__driveEvent.isSet():
+                self._directDrive(self.__setPoint)
 
         Logger().debug("MerlinOrionAxis.run(): thread terminated")
 
@@ -191,14 +211,16 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
                 pos -= self._offset
 
             self.__setPoint = pos
-            self.__driveFlag = True # Start thread action
+            self.__driveEvent.set() # Start thread action
 
             # Wait end of movement
             if wait:
                 self.waitEndOfDrive()
 
     def _directDrive(self, pos):
-        """ Default (hardware) drive.
+        """ Direct drive.
+
+        This method uses the Merlin/Orion internal closed loop regulation.
 
         @param pos: position to reach, in °
         @type pos: float
@@ -206,6 +228,7 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         Logger().trace("MerlinOrionAxis._directDrive()")
         pos += self._offset
         self._hardware.drive(pos)
+        self.__driveEvent.clear()
 
     def _alternateDrive(self, pos):
         """ Alternate drive.
@@ -221,33 +244,19 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         Logger().trace("MerlinOrionAxis._alternateDrive()")
 
         # Compute initial direction
-        currentPos = self.read()
-        if pos > currentPos:
+        if pos > self.__currentPos:
             dir_ = '+'
         else:
             dir_ = '-'
-        stopRequest = False
-
-        # Alternate speed move
-        Logger().debug("MerlinOrionAxis._alternateDrive(): alternate speed move")
         self._hardware.startJog(dir_, MANUAL_SPEED_TABLE['alternate'])
 
         # Check when stop
-        while (dir_ == '-' and self.read() - pos > self._config['INERTIA_ANGLE']) or \
-              (dir_ == '+' and pos - self.read() > self._config['INERTIA_ANGLE']):
-
-            # Test if a stop request has been sent
-            if not self.isMoving():
-                stopRequest = True
-                break
+        while ((dir_ == '-' and self.__currentPos - pos > self._config['INERTIA_ANGLE']) or \
+               (dir_ == '+' and pos - self.__currentPos > self._config['INERTIA_ANGLE'])) and \
+              self.__driveEvent.isSet():
             time.sleep(config.SPY_REFRESH_DELAY / 1000.)
-        self._hardware.stop()
 
-        # Final move
-        if not stopRequest:
-            Logger().debug("MerlinOrionAxis._alternateDrive(): final move")
-            pos += self._offset
-            self._hardware.drive(pos)
+        self._hardware.stop()
 
     def waitEndOfDrive(self):
         while self.isMoving():
@@ -258,22 +267,19 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         self._hardware.startJog(dir_, MANUAL_SPEED_TABLE[self._manualSpeed])
 
     def stop(self):
-        self.__driveFlag = False
+        self.__driveEvent.clear()
         self._hardware.stop()
-        self.waitStop()
 
     def waitStop(self):
-        pos = self.read()
+        previousPos = self.__currentPos
         time.sleep(config.SPY_REFRESH_DELAY / 1000.)
-        while True:
-            if abs(pos - self.read()) <= AXIS_ACCURACY:
-                break
-            pos = self.read()
+        while abs(previousPos - self.__currentPos) > AXIS_ACCURACY:
+            previousPos = self.__currentPos
             time.sleep(config.SPY_REFRESH_DELAY / 1000.)
 
     def isMoving(self):
         status = self._hardware.getStatus()
-        if status[1] != '0' or self.__driveFlag:
+        if status[1] != '0' or self.__driveEvent.isSet():
             return True
         else:
             return False
@@ -316,10 +322,11 @@ class MerlinOrionShutter(AbstractHardwarePlugin, ShutterPlugin):
         """
         self._hardware.setOutput(False)
 
-    def init(self):  # Move to AbstractHardwarePlugin?
+    def init(self):
         Logger().trace("MerlinOrionShutter.init()")
         self._hardware.setAxis(AXIS_TABLE[self.capacity]),
         AbstractHardwarePlugin.init(self)
+        ShutterPlugin.init(self)
 
     def shutdown(self):
         Logger().trace("MerlinOrionShutter.shutdown()")
