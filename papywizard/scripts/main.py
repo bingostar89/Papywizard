@@ -88,6 +88,9 @@ def main():
 
         Logger().info("Starting Papywizard...")
 
+        # Misc infos
+        Logger().debug("main(): platform=%s" % config.platform)
+
         # Init global Qt application
         qtApp = QtGui.QApplication(sys.argv)
         qtApp.setApplicationName("Papywizard")
@@ -118,7 +121,7 @@ def main():
         splash.showMessage("Loading i18n files...")
         qtApp.processEvents()
         locale = QtCore.QLocale.system().name()
-        Logger().debug("Papywizard.i18n(): locale=%s" % locale)
+        Logger().debug("main(): locale=%s" % locale)
         qtTranslator = QtCore.QTranslator()
         if qtTranslator.load("qt_%s" % locale,
                              QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.TranslationsPath)):
