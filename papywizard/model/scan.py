@@ -161,7 +161,11 @@ class MosaicScan(AbstractScan):
         """
         """
         if self.startFrom == 'nearest-corner':
-            startFrom = self.__getNearestCorner()
+            try:
+                startFrom = self.__getNearestCorner()
+            except:  # Occurs when not connected
+                Logger().exception("MosaicScan.__getYawStart():", debug=True)
+                startFrom = 'top-left'
         else:
             startFrom = self.startFrom
         if startFrom in ('top-left', 'bottom-left'):
@@ -175,7 +179,11 @@ class MosaicScan(AbstractScan):
         """
         """
         if self.startFrom == 'nearest-corner':
-            startFrom = self.__getNearestCorner()
+            try:
+                startFrom = self.__getNearestCorner()
+            except:  # Occurs when not connected
+                Logger().exception("MosaicScan.__getYawStart():", debug=True)
+                startFrom = 'top-left'
         else:
             startFrom = self.startFrom
         if startFrom in ('top-left', 'bottom-left'):
@@ -189,7 +197,11 @@ class MosaicScan(AbstractScan):
         """
         """
         if self.startFrom == 'nearest-corner':
-            startFrom = self.__getNearestCorner()
+            try:
+                startFrom = self.__getNearestCorner()
+            except:  # Occurs when not connected
+                Logger().exception("MosaicScan.__getYawStart():", debug=True)
+                startFrom = 'top-left'
         else:
             startFrom = self.startFrom
         if startFrom in ('top-left', 'top-right'):
@@ -203,7 +215,11 @@ class MosaicScan(AbstractScan):
         """
         """
         if self.startFrom == 'nearest-corner':
-            startFrom = self.__getNearestCorner()
+            try:
+                startFrom = self.__getNearestCorner()
+            except:  # Occurs when not connected
+                Logger().exception("MosaicScan.__getYawStart():", debug=True)
+                startFrom = 'top-left'
         else:
             startFrom = self.startFrom
         if startFrom in ('top-left', 'top-right'):
@@ -337,8 +353,10 @@ class MosaicScan(AbstractScan):
 
         @return: nearest corner, in ('top-left', 'top-right', 'bottom-left', 'bottom-right')
         @rtype: str
+
+        @todo: use a cache system
         """
-        Logger().trace("Mosaic.__getNearestCorner()")
+        Logger().trace("MosaicScan.__getNearestCorner()")
 
         # Get current position
         yaw, pitch = self._model.head.readPosition()
