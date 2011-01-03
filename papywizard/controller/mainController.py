@@ -111,13 +111,10 @@ class MainController(AbstractController):
                       }
 
         # Nokia plateform stuff
-        try:
-            import hildon
+        if config.platform == "maemo":
             self.__key['FullScreen'] = QtCore.Qt.Key_F6
             self.__key['Home'] = QtCore.Qt.Key_F8
             self.__key['End'] =  QtCore.Qt.Key_F7
-        except ImportError:
-            pass
 
         self.__yawPos = 0
         self.__pitchPos = 0
