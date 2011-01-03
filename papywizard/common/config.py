@@ -56,6 +56,21 @@ VERSION_UPDATE = 20
 VERSION = "%d.%d.%d" % (VERSION_MAJOR, VERSION_MINOR, VERSION_UPDATE)
 VERSION_XML = "c"
 
+# Find exact platform
+platform = sys.platform
+if platform == 'linux2':
+    try:
+        import PyQt4.QtMaemo5  # maemo 5?
+    except ImportError:
+        try:
+            import hildon  # maemo 4?
+        except ImportError:
+            pass
+        else:
+            platform = "maemo"
+    else:
+        platform = "maemo"
+
 # Paths
 HOME_DIR = os.path.expanduser("~")
 if sys.platform == 'win32':
@@ -64,10 +79,9 @@ if sys.platform == 'win32':
     TMP_DIR = os.path.expandvars("$TEMP")
 else:
     USER_CONFIG_DIR = os.path.join(HOME_DIR, ".config", "papywizard2")  # OpenDesktop standard
-    try:
-        import hildon
+    if platform == "maemo":
         DATA_STORAGE_DIR = os.path.join(HOME_DIR, "MyDocs")
-    except ImportError:
+    else:
         DATA_STORAGE_DIR = HOME_DIR
     TMP_DIR = "/tmp"
 USER_PLUGINS_DIR = os.path.join(USER_CONFIG_DIR, "plugins")
@@ -75,7 +89,7 @@ try:
     #os.makedirs(USER_CONFIG_DIR)
     os.makedirs(USER_PLUGINS_DIR)
 except OSError, (errno, errmsg):
-    if errno in (17, 183): # dir already exists
+    if errno in (17, 183):  # dir already exists
         pass
     else:
         raise
@@ -163,7 +177,7 @@ BLUETOOTH_DRIVER_CONNECT_DELAY = 8.
 SERIAL_BAUDRATE = 9600
 
 # Spy
-SPY_REFRESH_DELAY = 200 # ms
+SPY_REFRESH_DELAY = 200  # ms
 
 # Low-level simulator
 SIMUL_DEFAULT_CONNEXION = 'ethernet'
