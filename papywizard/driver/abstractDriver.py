@@ -52,6 +52,7 @@ Implements
 __revision__ = "$Id$"
 
 import sets
+import re
 
 from PyQt4 import QtCore
 
@@ -151,3 +152,20 @@ class AbstractDriver(QtCore.QObject):
         @rtype: str
         """
         raise NotImplementedError("AbstractDriver.read() must be overloaded")
+
+    def readMatch(self, pattern):
+        """ Read data
+
+        Wait for a given pattern (regexp) to match.
+
+        @param pattern: pattern to wait for
+        @type pattern: str
+
+        @return: read data
+        @rtype: str
+        """
+        regexp = re.compile(pattern)
+        data = ""
+        while regexp.match(data) is None:
+            data += self.read(1)
+        return regexp.match(data)
