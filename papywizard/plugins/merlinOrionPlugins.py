@@ -137,18 +137,18 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         self._addConfigKey('_inertiaAngle', 'INERTIA_ANGLE', default=DEFAULT_INERTIA_ANGLE)
 
     def activate(self):
-        Logger().trace("MerlinOrionHardware.activate()")
+        Logger().trace("MerlinOrionPlugin.activate()")
         AbstractAxisPlugin.activate(self)
 
         # Start the thread
         self.start()
 
     def deactivate(self):
-        Logger().trace("MerlinOrionHardware.deactivate()")
+        Logger().trace("MerlinOrionPlugin.deactivate()")
 
         # Stop the thread
         self._stopThread()
-        self.wait()
+
         AbstractAxisPlugin.deactivate(self)
 
     def init(self):
@@ -178,15 +178,18 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         while self.__run:
             self.__driveEvent.wait()
 
-            # Choose alternate drive if needed
-            currentPos = self.read()
-            if self._config['ALTERNATE_DRIVE'] and \
-               1.1 * self._config['INERTIA_ANGLE'] < abs(self.__setPoint - currentPos) < self._config['ALTERNATE_DRIVE_ANGLE']:
-                self._alternateDrive(self.__setPoint)
+            # Check again __run flag to see if _stopThread has been called
+            if self.__run:
 
-            # Use standard drive to reach the position
-            if self.__driveEvent.isSet():
-                self._directDrive(self.__setPoint)
+                # Choose alternate drive if needed
+                currentPos = self.read()
+                if self._config['ALTERNATE_DRIVE'] and \
+                   1.1 * self._config['INERTIA_ANGLE'] < abs(self.__setPoint - currentPos) < self._config['ALTERNATE_DRIVE_ANGLE']:
+                    self._alternateDrive(self.__setPoint)
+    
+                # Use standard drive to reach the position
+                if self.__driveEvent.isSet():
+                    self._directDrive(self.__setPoint)
 
         Logger().debug("MerlinOrionAxis.run(): thread terminated")
 
@@ -194,6 +197,8 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         """ Stop the thread.
         """
         self.__run = False
+        self.__driveEvent.set()
+        self.wait()
 
     def read(self):
         pos = self._hardware.read() - self._offset
