@@ -119,7 +119,6 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
 
         # Stop the thread
         self._stopThread()
-        self.wait()
 
     def run(self):
         """ Main entry of the thread.
@@ -129,6 +128,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
         Logger().debug("SimulationAxis.run(): start thread")
         self.__run = True
         while self.__run:
+            # TODO: use Events
 
             # Jog command
             if self.__jog:
@@ -170,6 +170,7 @@ class SimulationAxis(AbstractAxisPlugin, QtCore.QThread):
         """ Stop the thread.
         """
         self.__run = False
+        self.wait()
 
     def read(self):
         return self.__pos - self._offset
