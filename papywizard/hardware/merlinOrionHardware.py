@@ -133,13 +133,13 @@ class MerlinOrionHardware(AbstractHardware):
         @return: answer
         @rtype: str
         """
-        cmd = "%s%d%s" % (cmd, self._axis, param)
+        cmd = "%s%d%s\r" % (cmd, self._axis, param)
         #Logger().debug("MerlinOrionHardware.__sendCmd(): axis %d cmd=%s" % (self._axis, repr(cmd)))
         for nbTry in xrange(self._nbRetry):
             try:
                 answer = ""
                 self._driver.empty()
-                self._driver.write(":%s\r" % cmd)
+                self._driver.write(cmd)
                 c = ''
                 while c not in ('=', '!'):
                     c = self._driver.read(1)
