@@ -159,7 +159,7 @@ class ConfigController(AbstractModalDialogController):
         self._model.timerRepeatEnable = self._view.timerRepeatEnableCheckBox.isChecked()
         time_ = self._view.timerEveryTimeEdit.time()
         self._model.timerEvery = hmsAsStrToS(time_.toString("hh:mm:ss"))
-        self._model.timerReverseDirection = self._view.timerReverseDirectionCheckBox.isChecked()
+        #self._model.timerReverseDirection = self._view.timerReverseDirectionCheckBox.isChecked()
 
         # Misc tab
         ConfigManager().set('Configuration/LOGGER_LEVEL', config.LOGGER_INDEX[self._view.loggerLevelComboBox.currentIndex()])
@@ -280,7 +280,7 @@ class ConfigController(AbstractModalDialogController):
         self._view.timerRepeatSpinBox.setEnabled(checked)
         self._view.timerEveryLabel.setEnabled(checked)
         self._view.timerEveryTimeEdit.setEnabled(checked)
-        self._view.timerReverseDirectionCheckBox.setEnabled(checked)
+        #self._view.timerReverseDirectionCheckBox.setEnabled(checked)
 
     def __onShowShootingCounterCheckBoxToggled(self, checked):
         """ Shooting counter enable check box toggled.
@@ -362,7 +362,7 @@ class ConfigController(AbstractModalDialogController):
         self._view.timerRepeatEnableCheckBox.setChecked(self._model.timerRepeatEnable)
         time_ = QtCore.QTime.fromString(QtCore.QString(sToHmsAsStr(self._model.timerEvery)), "hh:mm:ss")
         self._view.timerEveryTimeEdit.setTime(time_)
-        self._view.timerReverseDirectionCheckBox.setChecked(self._model.timerReverseDirection)
+        #self._view.timerReverseDirectionCheckBox.setChecked(self._model.timerReverseDirection)
 
         # Misc tab
         loggerIndex = config.LOGGER_INDEX[ConfigManager().get('Configuration/LOGGER_LEVEL')]

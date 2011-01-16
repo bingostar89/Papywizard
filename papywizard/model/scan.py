@@ -356,7 +356,7 @@ class MosaicScan(AbstractScan):
 
         @todo: use a cache system
         """
-        Logger().trace("MosaicScan.__getNearestCorner()")
+        #Logger().trace("MosaicScan.__getNearestCorner()")
 
         # Get current position
         yaw, pitch = self._model.head.readPosition()

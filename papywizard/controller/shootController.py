@@ -136,7 +136,7 @@ class ShootController(AbstractModalDialogController):
         AbstractModalDialogController._connectSignals(self)
 
         self.connect(self._view.shootingStackPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onShootingStackPushButtonToggled)
-        self.connect(self._view.reverseDirectionPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onReverseDirectionPushButtonToggled)
+        #self.connect(self._view.reverseDirectionPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onReverseDirectionPushButtonToggled)
         self.connect(self._view.rewindPushButton, QtCore.SIGNAL("clicked()"), self.__onRewindPushButtonClicked)
         self.connect(self._view.forwardPushButton, QtCore.SIGNAL("clicked()"), self.__onForwardPushButtonClicked)
 
@@ -169,7 +169,7 @@ class ShootController(AbstractModalDialogController):
         AbstractModalDialogController._disconnectSignals(self)
 
         self.disconnect(self._view.shootingStackPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onShootingStackPushButtonToggled)
-        self.disconnect(self._view.reverseDirectionPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onReverseDirectionPushButtonToggled)
+        #self.disconnect(self._view.reverseDirectionPushButton, QtCore.SIGNAL("toggled(bool)"), self.__onReverseDirectionPushButtonToggled)
         self.disconnect(self._view.rewindPushButton, QtCore.SIGNAL("clicked()"), self.__onRewindPushButtonClicked)
         self.disconnect(self._view.forwardPushButton, QtCore.SIGNAL("clicked()"), self.__onForwardPushButtonClicked)
 
@@ -237,11 +237,11 @@ class ShootController(AbstractModalDialogController):
         else:
             self._view.shootingStackedWidget.setCurrentIndex(0)
 
-    def __onReverseDirectionPushButtonToggled(self, checked):
-        Logger().debug("ShootController.__onShootingStackPushButtonToggled(): checked=%s" % checked)
-        self._model.scan.reverseDirection(checked)
-        self.__shootingScene.clear()
-        self.__generatePreviews()  # Can be long!
+    #def __onReverseDirectionPushButtonToggled(self, checked):
+        #Logger().debug("ShootController.__onShootingStackPushButtonToggled(): checked=%s" % checked)
+        #self._model.scan.reverseDirection(checked)
+        #self.__shootingScene.clear()
+        #self.__generatePreviews()  # Can be long!
 
     def __onRewindPushButtonClicked(self):
         Logger().trace("ShootController.__onRewindPushButtonClicked()")
@@ -438,10 +438,10 @@ class ShootController(AbstractModalDialogController):
 
     def __onShootingBeforeRepeat(self):
         Logger().trace("ShootController.__onShootingBeforeRepeat()")
-        if self._model.timerReverseDirection:
-            self._model.scan.reverseDirection()
-            self.__shootingScene.clear()
-            self.__generatePreviews()  # Can be long!
+        #if self._model.timerReverseDirection:
+            #self._model.scan.reverseDirection()
+            #self.__shootingScene.clear()
+            #self.__generatePreviews()  # Can be long!
 
     def __onPositionUpdate(self, yaw, pitch):
         """ Refresh position according to new pos.

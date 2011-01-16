@@ -41,6 +41,12 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="minimumSize">
+            <size>
+             <width>52</width>
+             <height>52</height>
+            </size>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -274,13 +280,19 @@
          <item>
           <widget class="QPushButton" name="reverseDirectionPushButton">
            <property name="enabled">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>52</width>
+             <height>52</height>
+            </size>
            </property>
            <property name="text">
             <string/>
