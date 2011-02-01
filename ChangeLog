@@ -7,13 +7,16 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    - removed "reverse direction' feature (use new 'nearest-corner')
+    - increased timer 'repeat' param max value up to 99999
+    x fixed 'Generic Tethered' plugin params usage
+    x fixed 'nearest-corner' bug when not connected
 
 2010-06-15 Version 2.1.20 (dev)
     + new 'nearest-corner' entry from 'Start from' param
     + 'Ursa Minor Bt2' plugin improved
     - 'Panoduino' default channels changed
     - 'Panoduino' 'Angle for 1ms' param extended to 9999.9°
-    - removed "reverse direction' feature (use new 'nearest-corner')
     x 'Panoduino' channels init revisited
     x remove unavailable drivers from list
     x 'Merlin-Orion' plugin alternate drive with offset (set reference)

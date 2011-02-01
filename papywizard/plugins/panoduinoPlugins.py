@@ -94,7 +94,7 @@ DEFAULT_NEUTRAL_POSITION = {'yawAxis': 1000,  # µs
                         }
 DEFAULT_SHUTTER_ON = 2000  # µs
 DEFAULT_SHUTTER_OFF = 1000  # µs
-DEFAULT_ADDITIONAL_DELAY = 1.5  # s
+DEFAULT_ADDITIONAL_DELAY = 0.5  # s
 
 VALUE_MIN = PololuMicroMaestroHardware.SERVO_MIN
 VALUE_MAX = PololuMicroMaestroHardware.SERVO_MAX
