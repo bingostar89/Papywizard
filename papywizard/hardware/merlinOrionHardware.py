@@ -133,7 +133,7 @@ class MerlinOrionHardware(AbstractHardware):
         @return: answer
         @rtype: str
         """
-        cmd = "%s%d%s\r" % (cmd, self._axis, param)
+        cmd = ":%s%d%s\r" % (cmd, self._axis, param)
         #Logger().debug("MerlinOrionHardware.__sendCmd(): axis %d cmd=%s" % (self._axis, repr(cmd)))
         for nbTry in xrange(self._nbRetry):
             try:
