@@ -7,8 +7,10 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    - removed some calls to event loop in main controller (freeze on MacOS)
     - removed "reverse direction' feature (use new 'nearest-corner')
     - increased timer 'repeat' param max value up to 99999
+    x fixed missing ':' in 'Merlin/Orion' plugin
     x fixed 'Generic Tethered' plugin params usage
     x fixed 'nearest-corner' bug when not connected
 
