@@ -44,14 +44,19 @@ Implements
 
 - setup
 
+@author: Mickaël Cornet
 @author: Jeremy Pronk
 @author: Frédéric Mantegazza
+@copyright: (C) 2011 Mickaël Cornet
 @copyright: (C) 2009 Jeremy Pronk
-@copyright: (C) 2009 Frédéric Mantegazza
+@copyright: (C) 2009-2011 Frédéric Mantegazza
 @license: CeCILL
 """
 
 __revision__ = "$Id$"
+
+#import sys
+#import pprint
 
 from setuptools import setup
 
@@ -59,24 +64,46 @@ from papywizard.common import config
 
 VERSION_PACKAGE = 1
 
+#sys.path += ['/Library/Python/2.6/site-packages',
+#             '/System/Library/Frameworks/Python.framework/Versions/2.6/Extras/lib/python/PyObjC',
+#             ]
+#
+#pprint.pprint(sys.path)
+
 setup(name="papywizard",
       version="%s-%d" % (config.VERSION, VERSION_PACKAGE),
       author="Frederic Mantegazza",
       author_email="frederic.mantegazza@gbiloba.org",
-      maintainer="Frederic Mantegazza",
-      maintainer_email="frederic.mantegazza@gbiloba.org",
+      maintainer="Mickael Cornet",
+      maintainer_email="mickael.cornet@kolor.com",
       url="http://trac.gbiloba.org/papywizard",
       description="Merlin/Orion panohead control software",
       #long_description="",
-      download_url="http://trac.gbiloba.org/papywizard/wiki/WikiStart#Download",
+      download_url="http://trac.gbiloba.org/papywizard/wiki/Download",
       app=['Papywizard.py'],
-      #data_files=[("share/applications", ["debian/papywizard.desktop"]),
-                  #('share/pixmaps', ["debian/papywizard.png"]),
-                  #("share/icons/hicolor/48x48/apps", ["debian/papywizard.png"])
-                  #],
-      options={'py2app': {'argv_emulation': True,
-                          #'iconfile': "macosx/papywizard.icns"
-                          }
+      options={'py2app': {'argv_emulation': False,
+                          'includes': ["sip", "PyQt4.QtCore", "PyQt4.QtGui", "lightblue", "LightAquaBlue",
+                                       "PyQt4.QtNetwork", "PyQt4.QtXml", "PyQt4.QtSvg"],
+                          'excludes': ["PyQt4.QtDesigner", "PyQt4.QtOpenGL", "PyQt4.QtScript", "PyQt4.QtSql",
+                                       "PyQt4.QtTest", "PyQt4.QtWebKit", "PyQt4.phonon"],
+                          'frameworks': ["LightAquaBlue.framework"],
+                          #'site_packages': True,
+                          #'packages': ["Foundation", "LightAquaBlue"],
+                          'iconfile': "macosx/papywizard.icns"
                },
       setup_requires=['py2app'],
+      data_files=[("papywizard/common", ["./papywizard/common/papywizard.conf",
+                                         "./papywizard/common/presets.xml"]),
+                  ("papywizard/view/ui", ["./papywizard/view/ui/bluetoothChooserDialog.ui",
+                                          "./papywizard/view/ui/configDialog.ui",
+                                          "./papywizard/view/ui/helpAboutDialog.ui",
+                                          "./papywizard/view/ui/loggerDialog.ui",
+                                          "./papywizard/view/ui/mainWindow.ui",
+                                          "./papywizard/view/ui/nbPictsDialog.ui",
+                                          "./papywizard/view/ui/pluginsConfigDialog.ui",
+                                          "./papywizard/view/ui/pluginsDialog.ui",
+                                          "./papywizard/view/ui/pluginsStatusDialog.ui",
+                                          "./papywizard/view/ui/shootDialog.ui",
+                                          "./papywizard/view/ui/totalFovDialog.ui"
+                                          ])]
 ),
