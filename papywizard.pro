@@ -21,9 +21,11 @@ SOURCES += papywizard/common/configManager.py \
            papywizard/common/config.py \
            papywizard/common/exception.py \
            papywizard/common/helpers.py \
+;            papywizard/common/i18n.py \
            papywizard/common/loggingFormatter.py \
            papywizard/common/loggingServices.py \
            papywizard/common/orderedDict.py \
+;            papywizard/common/pixmaps.py \
            papywizard/common/presetManager.py \
            papywizard/common/publisher.py \
            papywizard/common/qLoggingFormatter.py \
@@ -58,7 +60,8 @@ SOURCES += papywizard/hardware/abstractHardware.py \
            papywizard/hardware/gigaPanBotHardware.py \
            papywizard/hardware/merlinOrionHardware.py \
            papywizard/hardware/pixOrbHardware.py \
-           papywizard/hardware/pololuServoHardware.py
+           papywizard/hardware/pololuServoHardware.py \
+           papywizard/hardware/ursaMinorUsbHardware.py
 
 # model
 SOURCES += papywizard/model/camera.py \
@@ -99,7 +102,9 @@ SOURCES += papywizard/scripts/main.py \
            papywizard/scripts/simulator.py
 
 # simulator
-SOURCES += papywizard/simulator/merlinOrionCommandDispatcher.py \
+SOURCES += papywizard/simulator/gigaPanBotCommandDispatcher.py \
+           papywizard/simulator/gigaPanBotSimulator.py \
+           papywizard/simulator/merlinOrionCommandDispatcher.py \
            papywizard/simulator/merlinOrionSimulator.py \
            papywizard/simulator/pixOrbCommandDispatcher.py \
            papywizard/simulator/pixOrbSimulator.py
