@@ -77,20 +77,7 @@ class PluginsController(AbstractModalDialogController):
         AbstractModalDialogController._retreiveWidgets(self)
 
     def _initWidgets(self):
-
-        # Check if all drivers are available
-        try:
-            import papywizard.driver.serialDriver
-        except ImportError:
-            self._view.yawAxisDriverComboBox.removeItem(config.DRIVER_INDEX['serial'])
-        try:
-            import papywizard.driver.bluetoothDriver
-        except ImportError:
-            self._view.yawAxisDriverComboBox.removeItem(config.DRIVER_INDEX['bluetooth'])
-        try:
-            import papywizard.driver.ethernetDriver
-        except ImportError:
-            self._view.yawAxisDriverComboBox.removeItem(config.DRIVER_INDEX['ethernet'])
+        pass
 
     def _connectSignals(self):
         AbstractModalDialogController._connectSignals(self)
