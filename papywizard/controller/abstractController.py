@@ -63,7 +63,7 @@ from papywizard.common.loggingServices import Logger
 if hasattr(sys, "frozen"):
     path = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "papywizard", "view")
 else:
-    path = os.path.dirname(__file__)
+    path = os.path.join(os.path.dirname(__file__), os.path.pardir, "view")
 
 
 class AbstractController(QtCore.QObject):
