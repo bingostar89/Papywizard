@@ -74,12 +74,14 @@ DEFAULT_SPEED = 30 # deg/s
 DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
+DEFAULT_TRIGGER_ONLY_ONCE = False
 
 LABEL_SPEED = unicode(QtGui.QApplication.translate("simulationPlugins", "Speed"))
 
 LABEL_TIME_VALUE = unicode(QtGui.QApplication.translate("simulationPlugins", "Time value"))
 LABEL_MIRROR_LOCKUP = unicode(QtGui.QApplication.translate("simulationPlugins", "Mirror lockup"))
 LABEL_BRACKETING_NB_PICTS = unicode(QtGui.QApplication.translate("simulationPlugins", "Bracketing nb picts"))
+LABEL_TRIGGER_ONLY_ONCE = unicode(QtGui.QApplication.translate("shutterPluginController", "Trigger only once"))
 
 MANUAL_MANUAL_SPEED_INDEX = {'slow': .2,
                              'normal': 1.,
@@ -246,6 +248,7 @@ class SimulationShutter(AbstractShutterPlugin):
         self._addConfigKey('_timeValue', 'TIME_VALUE', default=DEFAULT_TIME_VALUE)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
+        self._addConfigKey('_triggerOnlyOnce', 'TRIGGER_ONLY_ONCE', default=DEFAULT_TRIGGER_ONLY_ONCE)
 
     def lockupMirror(self):
         """ Lockup the mirror.
@@ -258,7 +261,9 @@ class SimulationShutter(AbstractShutterPlugin):
         """ Shoot.
         """
         Logger().debug("SimulationShutter.shoot(): bracketNumber=%d" % bracketNumber)
-        time.sleep(self.timeValue)
+        if self._config['TRIGGER_ONLY_ONCE'] and bracketNumber == 1 or not self._config['TRIGGER_ONLY_ONCE']:
+            print "TRIGGERING SHUTTER !!!!"
+            time.sleep(self.timeValue)
         return 0
 
 
@@ -269,6 +274,7 @@ class SimulationShutterController(AbstractPluginController):
         self._addWidget('Main', LABEL_TIME_VALUE, DoubleSpinBoxField, (0.1, 3600, 1, 0.1, "", " s"), 'TIME_VALUE')
         self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', LABEL_BRACKETING_NB_PICTS, SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
+        self._addWidget('Main', LABEL_TRIGGER_ONLY_ONCE, CheckBoxField, (), 'TRIGGER_ONLY_ONCE')
 
 
 def register():

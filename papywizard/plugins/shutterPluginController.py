@@ -61,6 +61,7 @@ LABEL_TIME_VALUE = unicode(QtGui.QApplication.translate("shutterPluginController
 LABEL_MIRROR_LOCKUP = unicode(QtGui.QApplication.translate("shutterPluginController", "Mirror lockup"))
 LABEL_BULB_ENABLE = unicode(QtGui.QApplication.translate("shutterPluginController", "Bulb"))
 LABEL_BRACKETING_NB_PICTS = unicode(QtGui.QApplication.translate("shutterPluginController", "Bracketing nb picts"))
+LABEL_TRIGGER_ONLY_ONCE = unicode(QtGui.QApplication.translate("shutterPluginController", "Trigger only once"))
 
 TAB_HARD = unicode(QtGui.QApplication.translate("shutterPluginController", 'Hard'))
 LABEL_PULSE_WIDTH_HIGH = unicode(QtGui.QApplication.translate("shutterPluginController", "Pulse width high"))
@@ -73,6 +74,7 @@ class ShutterPluginController(AbstractPluginController):
         self._addWidget('Main', LABEL_BULB_ENABLE, CheckBoxField, (), 'BULB_ENABLE')
         self._addWidget('Main', LABEL_MIRROR_LOCKUP, CheckBoxField, (), 'MIRROR_LOCKUP')
         self._addWidget('Main', LABEL_BRACKETING_NB_PICTS, SpinBoxField, (1, 99), 'BRACKETING_NB_PICTS')
+        self._addWidget('Main', LABEL_TRIGGER_ONLY_ONCE, CheckBoxField, (), 'TRIGGER_ONLY_ONCE')
         self._addTab('Hard', TAB_HARD)
         self._addWidget('Hard', LABEL_PULSE_WIDTH_HIGH, SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_HIGH')
         self._addWidget('Hard', LABEL_PULSE_WIDTH_LOW, SpinBoxField, (10, 1000, "", " ms"), 'PULSE_WIDTH_LOW')

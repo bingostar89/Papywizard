@@ -62,6 +62,7 @@ DEFAULT_TIME_VALUE = 0.5 # s
 DEFAULT_BULB_ENABLE = False
 DEFAULT_MIRROR_LOCKUP = False
 DEFAULT_BRACKETING_NBPICTS = 1
+DEFAULT_TRIGGER_ONLY_ONCE = False
 DEFAULT_PULSE_WIDTH_HIGH = 500 # ms
 DEFAULT_PULSE_WIDTH_LOW = 200 # ms
 
@@ -87,6 +88,7 @@ class ShutterPlugin(AbstractShutterPlugin):
         self._addConfigKey('_bulbEnable', 'BULB_ENABLE', default=DEFAULT_BULB_ENABLE)
         self._addConfigKey('_mirrorLockup', 'MIRROR_LOCKUP', default=DEFAULT_MIRROR_LOCKUP)
         self._addConfigKey('_bracketingNbPicts', 'BRACKETING_NB_PICTS', default=DEFAULT_BRACKETING_NBPICTS)
+        self._addConfigKey('_triggerOnlyOnce', 'TRIGGER_ONLY_ONCE', default=DEFAULT_TRIGGER_ONLY_ONCE)
         self._addConfigKey('_pulseWidthHigh', 'PULSE_WIDTH_HIGH', default=DEFAULT_PULSE_WIDTH_HIGH)
         self._addConfigKey('_pulseWidthLow', 'PULSE_WIDTH_LOW', default=DEFAULT_PULSE_WIDTH_LOW)
 
@@ -133,21 +135,23 @@ class ShutterPlugin(AbstractShutterPlugin):
 
     def shoot(self, bracketNumber):
         Logger().trace("ShutterPlugin.shoot()")
-        self._ensurePulseWidthLowDelay()
-        self._driver.acquireBus()
-        try:
-            t = time.time()
-            if self._config['BULB_ENABLE']:
-                delay = self._config['TIME_VALUE']
-            else:
-                delay = self._config['PULSE_WIDTH_HIGH'] / 1000.
-            self._triggerShutter(delay)
-
-            # Wait for the end of shutter cycle
-            delay = self._config['TIME_VALUE'] - (time.time() - t)
-            if delay > 0:
-                time.sleep(delay)
-        finally:
-            self._driver.releaseBus()
+        if self._config['TRIGGER_ONLY_ONCE'] and bracketNumber == 1 or not self._config['TRIGGER_ONLY_ONCE']:
+            print "TRIGGERING SHUTTER !!!!"
+            self._ensurePulseWidthLowDelay()
+            self._driver.acquireBus()
+            try:
+                t = time.time()
+                if self._config['BULB_ENABLE']:
+                    delay = self._config['TIME_VALUE']
+                else:
+                    delay = self._config['PULSE_WIDTH_HIGH'] / 1000.
+                self._triggerShutter(delay)
+    
+                # Wait for the end of shutter cycle
+                delay = self._config['TIME_VALUE'] - (time.time() - t)
+                if delay > 0:
+                    time.sleep(delay)
+            finally:
+                self._driver.releaseBus()
 
         return 0
