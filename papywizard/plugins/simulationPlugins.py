@@ -262,7 +262,6 @@ class SimulationShutter(AbstractShutterPlugin):
         """
         Logger().debug("SimulationShutter.shoot(): bracketNumber=%d" % bracketNumber)
         if self._config['TRIGGER_ONLY_ONCE'] and bracketNumber == 1 or not self._config['TRIGGER_ONLY_ONCE']:
-            print "TRIGGERING SHUTTER !!!!"
             time.sleep(self.timeValue)
         return 0
 

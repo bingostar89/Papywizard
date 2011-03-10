@@ -136,7 +136,6 @@ class ShutterPlugin(AbstractShutterPlugin):
     def shoot(self, bracketNumber):
         Logger().trace("ShutterPlugin.shoot()")
         if self._config['TRIGGER_ONLY_ONCE'] and bracketNumber == 1 or not self._config['TRIGGER_ONLY_ONCE']:
-            print "TRIGGERING SHUTTER !!!!"
             self._ensurePulseWidthLowDelay()
             self._driver.acquireBus()
             try:
