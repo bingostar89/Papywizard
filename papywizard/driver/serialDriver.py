@@ -70,7 +70,7 @@ class SerialDriver(AbstractDriver):
             except ValueError:
                 port = ConfigManager().get('Plugins/HARDWARE_SERIAL_PORT')
             self._serial = serial.Serial(port=port)
-            self._serial.baudrate = config.SERIAL_BAUDRATE
+            self._serial.baudrate = ConfigManager().getInt('Plugins/HARDWARE_SERIAL_BAUDRATE')
             self._serial.timeout = ConfigManager().getFloat('Plugins/HARDWARE_COM_TIMEOUT')
             self.empty()
         except:
