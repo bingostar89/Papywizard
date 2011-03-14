@@ -162,6 +162,9 @@ LENS_TYPE_INDEX = {'rectilinear': 0, 'fisheye': 1,
                    0: 'rectilinear', 1: 'fisheye'}
 DRIVER_INDEX = {'bluetooth': 0, 'serial': 1, 'ethernet': 2,
                 0: 'bluetooth', 1: 'serial', 2: 'ethernet'}
+SERIAL_BAUDRATE_INDEX = {0: 1200, 1: 2400, 2: 4800, 3: 9600, 4: 19200, 5: 38400, 6: 57600, 7: 115200,
+                         1200: 0, 2400: 1, 4800: 2, 9600: 3, 19200: 4, 38400: 5, 57600: 6, 115200: 7}
+    
 LOGGER_INDEX = {'trace': 0, 'debug': 1, 'info': 2, 'warning' :3, 'error': 4, 'exception': 5, 'critical': 6,
                 0: 'trace', 1: 'debug', 2: 'info', 3: 'warning', 4: 'error', 5: 'exception', 6: 'critical'}
 

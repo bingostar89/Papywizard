@@ -144,6 +144,7 @@ class PluginsController(AbstractModalDialogController):
         # Drivers tab
         ConfigManager().set('Plugins/HARDWARE_BLUETOOTH_DEVICE_ADDRESS', unicode(self._view.bluetoothDeviceAddressLineEdit.text()))
         ConfigManager().set('Plugins/HARDWARE_SERIAL_PORT', unicode(self._view.serialPortLineEdit.text()))
+        ConfigManager().setInt('Plugins/HARDWARE_SERIAL_BAUDRATE', config.SERIAL_BAUDRATE_INDEX[self._view.serialBaudrateComboBox.currentIndex()])
         ConfigManager().set('Plugins/HARDWARE_ETHERNET_HOST', unicode(self._view.ethernetHostLineEdit.text()))
         ConfigManager().setInt('Plugins/HARDWARE_ETHERNET_PORT', self._view.ethernetPortSpinBox.value())
 
@@ -283,6 +284,7 @@ class PluginsController(AbstractModalDialogController):
         # Drivers tab
         self._view.bluetoothDeviceAddressLineEdit.setText(ConfigManager().get('Plugins/HARDWARE_BLUETOOTH_DEVICE_ADDRESS'))
         self._view.serialPortLineEdit.setText(ConfigManager().get('Plugins/HARDWARE_SERIAL_PORT'))
+        self._view.serialBaudrateComboBox.setCurrentIndex(config.SERIAL_BAUDRATE_INDEX[ConfigManager().getInt('Plugins/HARDWARE_SERIAL_BAUDRATE')])
         self._view.ethernetHostLineEdit.setText(ConfigManager().get('Plugins/HARDWARE_ETHERNET_HOST'))
         self._view.ethernetPortSpinBox.setValue(ConfigManager().getInt('Plugins/HARDWARE_ETHERNET_PORT'))
 
