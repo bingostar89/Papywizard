@@ -289,7 +289,7 @@ class DirSelectorField(QtGui.QWidget):
         @param slot: slot to connect
         @type slot: python callable
         """
-        self.connect(self._lineEdit, QtCore.SIGNAL("textChanged (str)"), slot)
+        self.connect(self._lineEdit, QtCore.SIGNAL("textChanged(const QString &)"), slot)
 
 
 class FileSelectorField(DirSelectorField):
