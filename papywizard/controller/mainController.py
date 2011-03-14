@@ -430,8 +430,9 @@ class MainController(AbstractController):
     def __onActionHardwareGotoInitialActivated(self):
         Logger().trace("MainController.__onActionHardwareGotoInitialActivated()")
         self.setStatusbarMessage(self.tr("Goto initial position..."))
-        #while QtGui.QApplication.hasPendingEvents():
-            #QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
+        if config.platform != 'darwin':
+            while QtGui.QApplication.hasPendingEvents():
+                QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
         self._model.head.gotoPosition(0., 0., useOffset=False, wait=False)
         dialog = AbortMessageDialog(self.tr("Goto initial position"), self.tr("Please wait..."))
         dialog.show()
@@ -488,8 +489,6 @@ class MainController(AbstractController):
             self._refreshMosaicPage()
         elif index == 1:
             self._model.mode = 'preset'
-        #elif index == 2
-            #selF._model.mode = 'timelapse'
         Logger().debug("MainController.__onTabWidgetCurrentChanged(): shooting mode set to '%s'" % self._model.mode)
 
     def __onSetCorner0PushButtonClicked(self):
@@ -635,8 +634,9 @@ class MainController(AbstractController):
         """ Open the plugins dialog.
         """
         self.setStatusbarMessage(self.tr("Opening plugins dialog. Please wait..."))
-        #while QtGui.QApplication.hasPendingEvents():
-            #QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
+        if config.platform != 'darwin':
+            while QtGui.QApplication.hasPendingEvents():
+                QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
         QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         try:
             controller = PluginsController(self, self._model)
@@ -652,8 +652,9 @@ class MainController(AbstractController):
         """ Open the configuration dialog.
         """
         self.setStatusbarMessage(self.tr("Opening configuration dialog. Please wait..."))
-        #while QtGui.QApplication.hasPendingEvents():
-            #QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
+        if config.platform != 'darwin':
+            while QtGui.QApplication.hasPendingEvents():
+                QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
         QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
         try:
             #self._view.configPushButton.setEnabled(False)
@@ -687,8 +688,9 @@ class MainController(AbstractController):
         self.setStatusbarMessage(self.tr("Opening shoot dialog. Please wait..."))
         self._model.setStepByStep(False)
         QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        #while QtGui.QApplication.hasPendingEvents():
-            #QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
+        if config.platform != 'darwin':
+            while QtGui.QApplication.hasPendingEvents():
+                QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
         try:
             #self._view.shootPushButton.setEnabled(False)
             controller = ShootController(self, self._model)
@@ -812,8 +814,9 @@ class MainController(AbstractController):
         self.setStatusbarMessage(self.tr("Starting connection. Please wait..."))
         self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_creating.png").scaled(22, 22))
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
-        #while QtGui.QApplication.hasPendingEvents():
-            #QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
+        if config.platform != 'darwin':
+            while QtGui.QApplication.hasPendingEvents():
+                QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
 
         pluginsConnector = PluginsConnector()
         try:
@@ -851,8 +854,9 @@ class MainController(AbstractController):
             Logger().info("Stopping connection. Please wait...")
             self.setStatusbarMessage(self.tr("Stopping connection. Please wait..."))
             self._view.connectLabel.setPixmap(QtGui.QPixmap(":/icons/connect_creating.png").scaled(22, 22))
-            #while QtGui.QApplication.hasPendingEvents():
-                #QtGui.QApplication.processEvents()
+            if config.platform != 'darwin':
+                while QtGui.QApplication.hasPendingEvents():
+                    QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
             Spy().suspend()
         self._view.setCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
 
