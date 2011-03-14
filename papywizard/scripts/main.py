@@ -186,6 +186,8 @@ def main():
         register()
         from papywizard.plugins.ursaMinorUsbPlugins import register
         register()
+        from papywizard.plugins.claussPlugins import register
+        register()
         PluginsManager ().load()
 
         # Activate selected plugins (move to PluginsManager ?)
