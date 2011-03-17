@@ -83,14 +83,12 @@ DEFAULT_FOCUS_ENABLE = False
 DEFAULT_FOCUS_TIME = 1.5  # (s)
 DEFAULT_DUAL_ENABLE = False
 DEFAULT_DUAL_TIME = 2 # (s)
-DEFAULT_PARK_HEAD = True
 
 TAB_SPECIAL = unicode(QtGui.QApplication.translate("claussPlugins", 'Special'))
 LABEL_SPECIAL_FOCUS = unicode(QtGui.QApplication.translate("claussPlugins", "Auto Focus"))
 LABEL_SPECIAL_FOCUS_TIME = unicode(QtGui.QApplication.translate("claussPlugins", "Focus time"))
 LABEL_SPECIAL_DUAL = unicode(QtGui.QApplication.translate("claussPlugins", "Dual cameras"))
 LABEL_SPECIAL_DUAL_TIME = unicode(QtGui.QApplication.translate("claussPlugins", "Time between shots"))
-LABEL_SPECIAL_PARK_HEAD = unicode(QtGui.QApplication.translate("claussPlugins", "Park head at -90 degree"))
 
 class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
 
@@ -103,8 +101,6 @@ class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
         AbstractHardwarePlugin._defineConfig(self)
-        #if self.capacity == 'yawAxis':
-        self._addConfigKey('_park_head', 'PARK_HEAD_ENABLE', default=DEFAULT_PARK_HEAD)
 
     def init(self):
         Logger().trace("ClaussAxis.init()")
@@ -114,21 +110,16 @@ class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def shutdown(self):
         Logger().trace("ClaussAxis.shutdown()")
         self.stop()
-        #AbstractHardwarePlugin.shutdown(self, self._config['PARK_HEAD_ENABLE'])
         AbstractHardwarePlugin.shutdown(self)
         AbstractAxisPlugin.shutdown(self)
 
     def read(self):
         pos = self._hardware.read() - self._offset
-
-        #if pos == -0.:
-        #    pos = 0.
         return pos
 
     def drive(self, pos, useOffset=True, wait=True):
         Logger().debug("ClaussAxis.drive(): '%s' drive to %.1f" % (self.capacity, pos))
         currentPos = self.read()
-
         #Logger().debug("ClaussAxis.drive(): currentPos=%.1f" % currentPos)
 
         # checkLimits defined in Papywizard user conf (usually +360 - 360°)
@@ -136,19 +127,18 @@ class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
 
         if useOffset:
             pos += self._offset
-            #Logger().debug("ClaussAxis.drive(): useOffset, pos=%.1f, offset=%.1f" % (pos, self._offset))
+            #Logger().debug("ClaussAxis.drive(): useOffset=True, pos=%.1f, offset=%.1f" % (pos, self._offset))
 
         # Only move if needed
         if abs(pos - currentPos) > 0. or not useOffset:
-            #Logger().debug("ClaussAxis.drive(): Yes move pos=%.1f, currentPos=%.1f, useOffset=%s" % (pos, currentPos, useOffset))
-            #self.drivepos = pos
+            #Logger().debug("ClaussAxis.drive(): Do move, pos=%.1f, currentPos=%.1f, useOffset=%s" % (pos, currentPos, useOffset))
             self._hardware.drive(pos, self._hardware.indexToSpeed(self._manualSpeed))
 
             # Wait end of movement
             if wait:
                 self.waitEndOfDrive()
         #else:
-            #Logger().debug("ClaussAxis.drive(): No move needed pos=%.1f, currentPos=%.1f, useOffset=%s" % (pos, currentPos, useOffset))
+            #Logger().debug("ClaussAxis.drive(): No move needed, pos=%.1f, currentPos=%.1f, useOffset=%s" % (pos, currentPos, useOffset))
 
     def waitEndOfDrive(self):
         while self.isMoving():
@@ -156,14 +146,15 @@ class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         #self.waitStop()
 
     def startJog(self, dir_):
+
         # Restrict manual moving to high or low limit (user defined)
         if dir_ == '+':
-            maxpos = -float(self._config['HIGH_LIMIT'])
+            maxPos = -float(self._config['HIGH_LIMIT'])
         elif dir_ == '-':
-            maxpos = float(self._config['LOW_LIMIT'])
-        #Logger().debug("ClaussAxis.startJog():maxpos=%s" % maxpos)
+            maxPos = float(self._config['LOW_LIMIT'])
+        #Logger().debug("ClaussAxis.startJog(): maxPos=%s" % maxPos)
 
-        self._hardware.startJog(dir_, self._hardware.indexToSpeed(self._manualSpeed), maxpos)
+        self._hardware.startJog(dir_, self._hardware.indexToSpeed(self._manualSpeed), maxPos)
 
     def stop(self):
         self.__driveFlag = False
@@ -181,14 +172,6 @@ class ClaussAxisController(AxisPluginController, HardwarePluginController):
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
-        #if self._plugin.capacity == 2:
-       	self._addTab('Special', TAB_SPECIAL)
-        self._addWidget('Special', LABEL_SPECIAL_PARK_HEAD, CheckBoxField, (), 'PARK_HEAD_ENABLE')
-
-    def refreshView(self):
-        #if self.capacity == 'yawAxis':
-        park_head = self._getWidget('Special', LABEL_SPECIAL_PARK_HEAD).value()
-
 
 class ClaussShutter(AbstractHardwarePlugin, ShutterPlugin):
     def _init(self):

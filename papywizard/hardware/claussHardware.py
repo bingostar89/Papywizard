@@ -71,15 +71,12 @@ class ClaussHardware(AbstractHardware):
     def _init(self):
         AbstractHardware._init(self)
 
-        # Used to initialize separatly the transceiver
-        #self.__firstInit = 0
-
         # Speed table with default walues.
         # On init, genuine values will be computed with max speed info.
-        self.speedTable = {'slow': 250,
-                           'normal': 1125,
-                           'fast': 2250
-                           }
+        self.__speedTable = {'slow': 250,
+                             'normal': 1125,
+                             'fast': 2250
+                         }
 
         # Number of steps for a full turn
         self.__encoderFullCircle = None
@@ -102,7 +99,8 @@ class ClaussHardware(AbstractHardware):
         @return: position, in °
         @rtype: float
         """
-        return codPos * 360. / self.__encoderFullCircle
+        #Logger().debug("ClaussHardware.encoderToAngle(): pos=%s, encoderFullCircle=%s" % (codPos, self.__encoderFullCircle))
+        return -codPos * 360. / self.__encoderFullCircle
 
     def __angleToEncoder(self, pos):
         """ Convert degres to encoder value.
@@ -113,7 +111,8 @@ class ClaussHardware(AbstractHardware):
         @return: encoder position
         @rtype: long
         """
-        return int(pos * self.__encoderFullCircle / 360.)
+        #Logger().debug("ClaussHardware.angleToEncoder(): pos=%s, encoderFullCircle=%s" % (pos, self.__encoderFullCircle))
+        return int(-pos * self.__encoderFullCircle / 360.)
 
     def __toHex(self, cmd):
         """ Convert command to human readable hexa string for debugging.
@@ -124,10 +123,10 @@ class ClaussHardware(AbstractHardware):
         @return: hardware command, shown in hexa
         @rtype: string
         """
-        hexstr = ""
+        hexStr = ""
         for i in range(len(cmd)):
-            hexstr += "%02x " % ord(cmd[i])
-        return hexstr
+            hexStr += "%02x " % ord(cmd[i])
+        return hexStr
 
     def __sendCmd(self, cmd, element=0, cr=1, param=""):
         """ Send a command to the axis.
@@ -159,11 +158,12 @@ class ClaussHardware(AbstractHardware):
             try:
                 self._driver.empty()
                 self._driver.write(hexcmd)
-                answer = ""
 
+                answer = ""
                 crCount = 1
                 begin = False
                 magic = False
+
                 while True:
                     c = self._driver.read(1)
 
@@ -199,19 +199,19 @@ class ClaussHardware(AbstractHardware):
                     elif c == '\r':
                         crCount += 1
 
-                    # usefull char for answer
+                    # Usefull char for answer
                     elif crCount == cr:
                         answer += c
 
             except (IOError, HardwareError):
-                Logger().exception("ClaussHardware.__sendCmd")
-                Logger().warning("ClaussHardware.__sendCmd(): can't sent command %s to element %d. Retrying..." % (repr(cmd), element))
+                Logger().exception("ClaussHardware.__sendCmd()")
+                Logger().warning("ClaussHardware.__sendCmd(): Can't sent command %s to element %d. Retrying..." % (repr(cmd), element))
             else:
                 break
         else:
-            raise HardwareError("ClaussHardware.__sendCmd(): can't send command %s to element %d" % (repr(cmd), element))
+            raise HardwareError("Can't send command %s to element %d" % (repr(cmd), element))
 
-        #Logger().debug("ClaussHardware.__sendCmd(): element %d ans=%s" % (element, repr(answer)))
+        #Logger().debug("ClaussHardware.__sendCmd(): element=%d, ans=%s" % (element, repr(answer)))
 
         # empty ignored part of actual answer
         #self._driver.empty()
@@ -232,31 +232,34 @@ class ClaussHardware(AbstractHardware):
                     # Reset transceiver twice
                     value = self.__sendCmd("R", 0)
 
-                    # Is transceiver answering to reset order ?
+                    # Is transceiver answering to reset order?
                     if len(value) == 0:
-                        raise HardwareError("ClaussHardware.init(): No answer at all. Stopping...")
+                        raise HardwareError("No answer at all. Check baudrate (must be 19200, not 9600). Stopping...")
+
                     elif value == 'R':
 
                         # Good answer
-                        Logger().debug("ClaussHardware.init(): Transceiver answer succesfully to reset order")
+                        Logger().debug("ClaussHardware.init(): Transceiver answer successfully to reset order")
+
                     else:
 
                         # No, probably bad serial or hardware
-                        raise HardwareError("ClaussHardware.init(): is it a Clauss hardware? I can't talk with it. Stopping...")
+                        raise HardwareError("Is it a Clauss hardware? I can't talk with it. Stopping...")
+
                     # Get brand
                     value = self.__sendCmd("m", 0, 2, "")
                     if value != "CLAUSS":
 
                         # Retry...
-                        Logger().debug("ClaussHardware.init(): BRAND ERROR, retrying")
+                        Logger().debug("ClaussHardware.init(): BRAND ERROR. Retrying...")
                         value = self.__sendCmd("m", 0, 2, "")
                         if value != "CLAUSS":
-                            raise HardwareError("ClaussHardware.init(): '%s' is not a Clauss head, stopping..." % value)
-                    Logger().info("ClaussHardware.init(): Transceiver brand=%s" % value)
+                            raise HardwareError("'%s' is not a Clauss head. Stopping..." % value)
+                    Logger().debug("ClaussHardware.init(): Transceiver brand=%s" % value)
                     value = self.__sendCmd("w", 0, 2, "")
                     Logger().debug("ClaussHardware.init(): Transceiver reference number=%s" % value)
                     value = self.__sendCmd("v", 0, 2, "")
-                    Logger().info("ClaussHardware.init(): Transceiver firmware version=%s" % value)
+                    Logger().debug("ClaussHardware.init(): Transceiver firmware version=%s" % value)
 
                 # Reset motor
                 self.__sendCmd("R", self._axis)
@@ -276,22 +279,22 @@ class ClaussHardware(AbstractHardware):
 
                 # Get firmware version
                 value = self.__sendCmd("v", self._axis, 2, "")
-                Logger().info("ClaussHardware.init(): axis=%d, motor firmware version=%s" % (self._axis, value))
+                Logger().debug("ClaussHardware.init(): axis=%d, motor firmware version=%s" % (self._axis, value))
 
                 # Get number of steps
                 value = self.__sendCmd("u", self._axis, 2, "")
-                self.axisAccuracy = 360. / int(value)
-                Logger().info("ClaussHardware.init(): axis=%d, motor numbers of steps=%s, axis accuracy=%s°" % (self._axis, value, self.axisAccuracy))
+                self.__encoderFullCircle = int(value)
+                Logger().debug("ClaussHardware.init(): axis=%d, encoderFullCircle=%s" % (self._axis, value))
 
                 # Get max speed
                 value = int(self.__sendCmd("f", self._axis, 2))
                 Logger().debug("ClaussHardware.init(): axis=%d, motor max speed=%s" % (self._axis, value))
 
                 # Formatting speed to Clauss as needed
-                self.speedTable['slow'] = int(value / 12.)
-                self.speedTable['normal'] = int(value / 2.66)
-                self.speedTable['fast'] = int(value / 1.33)
-                Logger().debug("ClaussHardware.init(): axis=%d, speed : slow=%s, normal=%s, fast=%s (max_speed is %d)" % (self._axis, self.speedTable['slow'], self.speedTable['normal'], self.speedTable['fast'], value))
+                self.__speedTable['slow'] = int(value / 12.)
+                self.__speedTable['normal'] = int(value / 2.66)
+                self.__speedTable['fast'] = int(value / 1.33)
+                Logger().debug("ClaussHardware.init(): axis=%d, speed : slow=%s, normal=%s, fast=%s (max speed is %d)" % (self._axis, self.__speedTable['slow'], self.__speedTable['normal'], self.__speedTable['fast'], value))
 
                 # Unknow command
                 self.__sendCmd("a", self._axis, 2, "")
@@ -299,7 +302,7 @@ class ClaussHardware(AbstractHardware):
                 # Wait motor to reach 0° position (issued by command Y)
                 while self.isMoving():
                     time.sleep(1)
-                    Logger().info("ClaussHardware.init(): axis=%d, motor is still moving, waiting" % self._axis)
+                    Logger().debug("ClaussHardware.init(): axis=%d, motor is still moving. Waiting..." % self._axis)
 
                 # Reset position to 0°
                 self.__sendCmd("N", self._axis)
@@ -321,23 +324,19 @@ class ClaussHardware(AbstractHardware):
                     Logger().debug("ClaussHardware.init(): axis=%d, init done" % self._axis)
 
                     if self.isOnBattery():
-                        Logger().info("ClaussHardware.init(): Clauss head is on battery (%d)" % self.checkBattery())
+                        Logger().debug("ClaussHardware.init(): Clauss head is on battery (%d)" % self.checkBattery())
                     else:
-                        Logger().info("ClaussHardware.init(): Clauss head is on AC power")
+                        Logger().debug("ClaussHardware.init(): Clauss head is on AC power")
             finally:
                 self._driver.releaseBus()
 
-    def shutdown(self, parkhead = True):
+    def shutdown(self, parkHead=True):
         self._driver.acquireBus()
         try:
-
-            if self._axis == 2 and parkhead == True:
-                 # Go to axis 0° H
-                 self.drive(90., self.speedTable['fast'])
+            if self._axis == 2 and parkHead:
+                 self.drive(-90., self.__speedTable['fast'])
             else:
-                 # Go to axis 0° H
-                 self.drive(0., self.speedTable['fast'])
-
+                 self.drive(0., self.__speedTable['fast'])
         finally:
             self._driver.releaseBus()
 
@@ -350,7 +349,7 @@ class ClaussHardware(AbstractHardware):
         @return: speed
         @rtype: float
         """
-        return self.__speedIndex[index]
+        return self.__speedTable[index]
 
     def read(self):
         """ Read the axis position.
@@ -361,13 +360,13 @@ class ClaussHardware(AbstractHardware):
         self._driver.acquireBus()
         try:
             value = self.__sendCmd("p", self._axis, 2, "")
-            #Logger().debug("ClaussHardware.drive(): axis=%d value(%d)=%s" % (self._axis, len(value), value))
+            #Logger().debug("ClaussHardware.drive(): axis=%d, value(%d)=%s" % (self._axis, len(value), value))
 
         finally:
             self._driver.releaseBus()
 
         #Sometimes, Rodeon head answer a break value (b0) instead of head position. Catch it.
-	try:
+        try:
             pos = self.__encoderToAngle(long(value))
         except ValueError:
             return self.__drivePos
@@ -379,11 +378,13 @@ class ClaussHardware(AbstractHardware):
 
         @param pos: position to reach, in °
         @type pos: float
-        """
 
+        @param speed: drive speed
+        @type: int
+        """
         strPos = "%+08d" % self.__angleToEncoder(pos)
         strSpeed = "%05d" % speed
-        Logger().debug("ClaussHardware.drive(): axis=%d pos=%d, encoded=%s speed=%s" % (self._axis, pos, strPos, strSpeed))
+        Logger().debug("ClaussHardware.drive(): axis=%d, pos=%d, encoded=%s, speed=%s" % (self._axis, pos, strPos, strSpeed))
         self._driver.acquireBus()
         try:
 
@@ -393,7 +394,7 @@ class ClaussHardware(AbstractHardware):
             # Define motor speed
             self.__sendCmd("F", self._axis, 1, strSpeed)
 
-            # Go to position
+            # Goto position
             self.__sendCmd("G", self._axis, 1, "0")
         finally:
             self._driver.releaseBus()
@@ -411,19 +412,21 @@ class ClaussHardware(AbstractHardware):
         acPos = 0.
         if not self.__firstMove:
             self.__drivePos = self.read()
-            #Logger().debug("ClaussHardware.isMoving(): firstmove(%d) %d" % (self._axis, self.__drivePos))
+            #Logger().debug("ClaussHardware.isMoving(): firstMove(%d) %d" % (self._axis, self.__drivePos))
             self.__firstMove = True
             return True
+
         else:
             acPos = self.read()
             if acPos != self.__drivePos:
                 self.__drivePos = acPos
-                #Logger().debug("ClaussHardware.isMoving(): still moving(%d) acPos=%s, prevpos=%s" % (self._axis, acPos, self.__drivePos))
+                #Logger().debug("ClaussHardware.isMoving(): Still moving(%d), acPos=%s, drivePos=%s" % (self._axis, acPos, self.__drivePos))
                 return True
+
             else:
                 self.__drivePos = acPos
                 self.__firstMove = False
-                #Logger().debug("ClaussHardware.isMoving(): not moving(%d) acPos=%s, prevpos=%s" % (self._axis, acPos, self.__drivePos))
+                #Logger().debug("ClaussHardware.isMoving(): not moving(%d), acPos=%s, drivePos=%s" % (self._axis, acPos, self.__drivePos))
                 return False
 
     def startJog(self, dir_, speed, maxPos):
@@ -438,12 +441,15 @@ class ClaussHardware(AbstractHardware):
         @param maxPos: maximal position to reach, defined by high/low limit
         @type maxPos: float
         """
-        Logger().debug("ClaussHardware.startJog(): axis=%d dir=%c, speed=%s maxPos=%s" % (self._axis, dir_, speed, maxPos))
+        Logger().debug("ClaussHardware.startJog(): axis=%d, dir=%c, speed=%s, maxPos=%s" % (self._axis, dir_, speed, maxPos))
 
         self._driver.acquireBus()
         try:
+            if dir_ == '-':
+                dir_ = '+'
+            else: dir_ = '-'
             strPos = "%c%07d" % (dir_, self.__angleToEncoder(maxPos))
-            Logger().debug("ClaussHardware.startJog(): encoded request=%s" % strPos)
+            Logger().debug("ClaussHardware.startJog(): Encoded request=%s" % strPos)
 
             # Jog to given position
             self.__sendCmd("S", self._axis, 1, strPos)
