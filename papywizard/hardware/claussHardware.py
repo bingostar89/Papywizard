@@ -76,14 +76,14 @@ class ClaussHardware(AbstractHardware):
 
         # Speed table with default walues.
         # On init, genuine values will be computed with max speed info.
-        self.__speedTable = {'slow': 250,
+        self.speedTable = {'slow': 250,
                             'normal': 1125,
                             'fast': 2250
                         }
 
         # Axis accuracy default value.
         # Will be computed later with number of steps info
-        self.__axisAccuracy = 0.015  # °
+        self.axisAccuracy = 0.015  # °
 
         # Used to memorize previous position while driving to position
         self.__drivePos = 0
@@ -103,7 +103,7 @@ class ClaussHardware(AbstractHardware):
         @return: position, in °
         @rtype: float
         """
-        return codPos * self.__axisAccuracy
+        return codPos * self.axisAccuracy
 
     def __angleToEncoder(self, pos):
         """ Convert degres to encoder value.
@@ -114,21 +114,21 @@ class ClaussHardware(AbstractHardware):
         @return: encoder position
         @rtype: long
         """
-        return long(pos / self.__axisAccuracy)
+        return long(pos / self.axisAccuracy)
 
-    #def __toHex(self, cmd):
-        #""" Convert command to human readable hexa string for debugging.
+    def __toHex(self, cmd):
+        """ Convert command to human readable hexa string for debugging.
 
-        #@param cmd: hardware command
-        #@type pos: string
+        @param cmd: hardware command
+        @type pos: string
 
-        #@return: hardware command, shown in hexa
-        #@rtype: string
-        #"""
-        #hexstr = ""
-        #for i in range(len(cmd)):
-            #hexstr += "%02x " % ord(cmd[i])
-        #return hexstr
+        @return: hardware command, shown in hexa
+        @rtype: string
+        """
+        hexstr = ""
+        for i in range(len(cmd)):
+            hexstr += "%02x " % ord(cmd[i])
+        return hexstr
 
     def __sendCmd(self, cmd, element=0, cr=1, param=""):
         """ Send a command to the axis.
@@ -155,6 +155,7 @@ class ClaussHardware(AbstractHardware):
 
         # Create command, ended by CR.
         hexcmd = "%c%c%s%c" % (int(hexQuery, 16), cmd, param, '\r')
+
         for nbTry in xrange(self._nbRetry):
             try:
                 self._driver.empty()
@@ -279,18 +280,18 @@ class ClaussHardware(AbstractHardware):
 
                 # Get number of steps
                 value = self.__sendCmd("u", self._axis, 2, "")
-                self.__axisAccuracy = 360. / int(value)
-                Logger().info("ClaussHardware.init(): axis=%d, motor numbers of steps=%s, axis accuracy=%s°" % (self._axis, value, self.__axisAccuracy))
+                self.axisAccuracy = 360. / int(value)
+                Logger().info("ClaussHardware.init(): axis=%d, motor numbers of steps=%s, axis accuracy=%s°" % (self._axis, value, self.axisAccuracy))
 
                 # Get max speed
                 value = int(self.__sendCmd("f", self._axis, 2))
                 Logger().debug("ClaussHardware.init(): axis=%d, motor max speed=%s" % (self._axis, value))
                 
                 # Formatting speed to Clauss as needed
-                self.__speedTable['slow'] = int(value / 12.)
-                self.__speedTable['normal'] = int(value / 2.66)
-                self.__speedTable['fast'] = int(value / 1.33)
-                Logger().debug("ClaussHardware.init(): axis=%d, speed : slow=%s, normal=%s, fast=%s (max_speed is %d)" % (self._axis, self.__speedTable['slow'], self.__speedTable['normal'], self.__speedTable['fast'], value))
+                self.speedTable['slow'] = int(value / 12.)
+                self.speedTable['normal'] = int(value / 2.66)
+                self.speedTable['fast'] = int(value / 1.33)
+                Logger().debug("ClaussHardware.init(): axis=%d, speed : slow=%s, normal=%s, fast=%s (max_speed is %d)" % (self._axis, self.speedTable['slow'], self.speedTable['normal'], self.speedTable['fast'], value))
 
                 # Unknow command
                 self.__sendCmd("a", self._axis, 2, "")
@@ -326,12 +327,16 @@ class ClaussHardware(AbstractHardware):
             finally:
                 self._driver.releaseBus()
 
-    def shutdown(self, parkhead = False):
+    def shutdown(self, parkhead = True):
         self._driver.acquireBus()
         try:
 
-            # Go to axis 0° H
-            self.drive(0., self.__speedTable['fast'])
+            if self._axis == 2 and parkhead == True:
+                 # Go to axis 0° H
+                 self.drive(90., self.speedTable['fast'])
+            else:
+                 # Go to axis 0° H
+                 self.drive(0., self.speedTable['fast'])
 
         finally:
             self._driver.releaseBus()
@@ -347,13 +352,14 @@ class ClaussHardware(AbstractHardware):
             value = self.__sendCmd("p", self._axis, 2, "")
             #Logger().debug("ClaussHardware.drive(): axis=%d value(%d)=%s" % (self._axis, len(value), value)) 
 
-            # When arrived, answer is null:
-            if len(value) == 0:
-                return self.__drivePos
         finally:
             self._driver.releaseBus()
 
-        pos = self.__encoderToAngle(long(value))
+        #Sometimes, Rodeon head answer a break value (b0) instead of head position. Catch it.
+	try:
+            pos = self.__encoderToAngle(long(value))
+        except ValueError:
+            return self.__drivePos
 
         return pos
 
@@ -492,6 +498,7 @@ class ClaussHardware(AbstractHardware):
         """
         self._driver.acquireBus()
         try:
+            Logger().debug("ClaussHardware.setShutter(): %s" % state)
             if state == "OFF":
                 self.__sendCmd("L", 0, 1, "00")
                 self.__sendCmd("L", 0, 1, "10") 
