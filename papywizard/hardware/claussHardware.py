@@ -77,13 +77,12 @@ class ClaussHardware(AbstractHardware):
         # Speed table with default walues.
         # On init, genuine values will be computed with max speed info.
         self.speedTable = {'slow': 250,
-                            'normal': 1125,
-                            'fast': 2250
-                        }
+                           'normal': 1125,
+                           'fast': 2250
+                           }
 
-        # Axis accuracy default value.
-        # Will be computed later with number of steps info
-        self.axisAccuracy = 0.015  # °
+        # Number of steps for a full turn
+        self.__encoderFullCircle = None
 
         # Used to memorize previous position while driving to position
         self.__drivePos = 0
@@ -103,7 +102,7 @@ class ClaussHardware(AbstractHardware):
         @return: position, in °
         @rtype: float
         """
-        return codPos * self.axisAccuracy
+        return codPos * 360. / self.__encoderFullCircle
 
     def __angleToEncoder(self, pos):
         """ Convert degres to encoder value.
@@ -114,7 +113,7 @@ class ClaussHardware(AbstractHardware):
         @return: encoder position
         @rtype: long
         """
-        return long(pos / self.axisAccuracy)
+        return int(pos * self.__encoderFullCircle / 360.)
 
     def __toHex(self, cmd):
         """ Convert command to human readable hexa string for debugging.
@@ -192,7 +191,7 @@ class ClaussHardware(AbstractHardware):
                             answer += c
                         continue
 
-                    # good number of CR : end of processing
+                    # Correct number of CR : end of processing
                     elif c == '\r' and crCount == cr:
                         break
 
@@ -213,6 +212,7 @@ class ClaussHardware(AbstractHardware):
             raise HardwareError("ClaussHardware.__sendCmd(): can't send command %s to element %d" % (repr(cmd), element))
 
         #Logger().debug("ClaussHardware.__sendCmd(): element %d ans=%s" % (element, repr(answer)))
+
         # empty ignored part of actual answer
         #self._driver.empty()
         return answer
@@ -286,7 +286,7 @@ class ClaussHardware(AbstractHardware):
                 # Get max speed
                 value = int(self.__sendCmd("f", self._axis, 2))
                 Logger().debug("ClaussHardware.init(): axis=%d, motor max speed=%s" % (self._axis, value))
-                
+
                 # Formatting speed to Clauss as needed
                 self.speedTable['slow'] = int(value / 12.)
                 self.speedTable['normal'] = int(value / 2.66)
@@ -341,6 +341,17 @@ class ClaussHardware(AbstractHardware):
         finally:
             self._driver.releaseBus()
 
+    def indexToSpeed(self, index):
+        """ Return the speed at given index.
+
+        @param index: index of the speed, in ('slow', 'normal', 'fast')
+        @type: str
+
+        @return: speed
+        @rtype: float
+        """
+        return self.__speedIndex[index]
+
     def read(self):
         """ Read the axis position.
 
@@ -350,7 +361,7 @@ class ClaussHardware(AbstractHardware):
         self._driver.acquireBus()
         try:
             value = self.__sendCmd("p", self._axis, 2, "")
-            #Logger().debug("ClaussHardware.drive(): axis=%d value(%d)=%s" % (self._axis, len(value), value)) 
+            #Logger().debug("ClaussHardware.drive(): axis=%d value(%d)=%s" % (self._axis, len(value), value))
 
         finally:
             self._driver.releaseBus()
@@ -369,7 +380,7 @@ class ClaussHardware(AbstractHardware):
         @param pos: position to reach, in °
         @type pos: float
         """
-        
+
         strPos = "%+08d" % self.__angleToEncoder(pos)
         strSpeed = "%05d" % speed
         Logger().debug("ClaussHardware.drive(): axis=%d pos=%d, encoded=%s speed=%s" % (self._axis, pos, strPos, strSpeed))
@@ -501,7 +512,7 @@ class ClaussHardware(AbstractHardware):
             Logger().debug("ClaussHardware.setShutter(): %s" % state)
             if state == "OFF":
                 self.__sendCmd("L", 0, 1, "00")
-                self.__sendCmd("L", 0, 1, "10") 
+                self.__sendCmd("L", 0, 1, "10")
                 self.__sendCmd("L", 0, 1, "00")
                 self.__sendCmd("L", 0, 1, "10")
             elif state == "AF":

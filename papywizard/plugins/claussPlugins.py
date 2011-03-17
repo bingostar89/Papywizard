@@ -139,16 +139,16 @@ class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
             #Logger().debug("ClaussAxis.drive(): useOffset, pos=%.1f, offset=%.1f" % (pos, self._offset))
 
         # Only move if needed
-        if abs(pos - currentPos) > self._hardware.axisAccuracy or not useOffset:
-            #Logger().debug("ClaussAxis.drive(): Yes move pos=%.1f, currentPos=%.1f, axisacc=%.1f, useOffset=%s" % (pos, currentPos, self._hardware.axisAccuracy, useOffset))
+        if abs(pos - currentPos) > 0. or not useOffset:
+            #Logger().debug("ClaussAxis.drive(): Yes move pos=%.1f, currentPos=%.1f, useOffset=%s" % (pos, currentPos, useOffset))
             #self.drivepos = pos
-            self._hardware.drive(pos, self._hardware.speedTable[self._manualSpeed])
+            self._hardware.drive(pos, self._hardware.indexToSpeed(self._manualSpeed))
 
             # Wait end of movement
             if wait:
                 self.waitEndOfDrive()
         #else:
-            #Logger().debug("ClaussAxis.drive(): No move needed pos=%.1f, currentPos=%.1f, axisacc=%.1f, useOffset=%s" % (pos, currentPos, self._hardware.axisAccuracy, useOffset))
+            #Logger().debug("ClaussAxis.drive(): No move needed pos=%.1f, currentPos=%.1f, useOffset=%s" % (pos, currentPos, useOffset))
 
     def waitEndOfDrive(self):
         while self.isMoving():
@@ -163,7 +163,7 @@ class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
             maxpos = float(self._config['LOW_LIMIT'])
         #Logger().debug("ClaussAxis.startJog():maxpos=%s" % maxpos)
 
-        self._hardware.startJog(dir_, self._hardware.speedTable[self._manualSpeed], maxpos)
+        self._hardware.startJog(dir_, self._hardware.indexToSpeed(self._manualSpeed), maxpos)
 
     def stop(self):
         self.__driveFlag = False
