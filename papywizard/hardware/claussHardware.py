@@ -447,7 +447,8 @@ class ClaussHardware(AbstractHardware):
         try:
             if dir_ == '-':
                 dir_ = '+'
-            else: dir_ = '-'
+            else:
+                dir_ = '-'
             strPos = "%c%07d" % (dir_, self.__angleToEncoder(maxPos))
             Logger().debug("ClaussHardware.startJog(): Encoded request=%s" % strPos)
 
