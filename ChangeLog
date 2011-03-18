@@ -8,6 +8,7 @@ x bug fix
 
 0000-00-00 Version SVN
     + Added 'Clauss' plugin
+    + New serial baudrate param
     + Added 'Trigger only once" param in shutter plugins
     - removed some calls to event loop in main controller on MacOS
     - removed "reverse direction' feature (use new 'nearest-corner')
