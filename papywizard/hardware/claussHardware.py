@@ -76,7 +76,7 @@ class ClaussHardware(AbstractHardware):
         self.__speedTable = {'slow': 250,
                              'normal': 1125,
                              'fast': 2250
-                         }
+                           }
 
         # Number of steps for a full turn
         self.__encoderFullCircle = None
@@ -99,7 +99,6 @@ class ClaussHardware(AbstractHardware):
         @return: position, in °
         @rtype: float
         """
-        #Logger().debug("ClaussHardware.encoderToAngle(): pos=%s, encoderFullCircle=%s" % (codPos, self.__encoderFullCircle))
         return -codPos * 360. / self.__encoderFullCircle
 
     def __angleToEncoder(self, pos):
@@ -111,22 +110,7 @@ class ClaussHardware(AbstractHardware):
         @return: encoder position
         @rtype: long
         """
-        #Logger().debug("ClaussHardware.angleToEncoder(): pos=%s, encoderFullCircle=%s" % (pos, self.__encoderFullCircle))
         return int(-pos * self.__encoderFullCircle / 360.)
-
-    def __toHex(self, cmd):
-        """ Convert command to human readable hexa string for debugging.
-
-        @param cmd: hardware command
-        @type pos: string
-
-        @return: hardware command, shown in hexa
-        @rtype: string
-        """
-        hexStr = ""
-        for i in range(len(cmd)):
-            hexStr += "%02x " % ord(cmd[i])
-        return hexStr
 
     def __sendCmd(self, cmd, element=0, cr=1, param=""):
         """ Send a command to the axis.
@@ -282,9 +266,8 @@ class ClaussHardware(AbstractHardware):
                 Logger().debug("ClaussHardware.init(): axis=%d, motor firmware version=%s" % (self._axis, value))
 
                 # Get number of steps
-                value = self.__sendCmd("u", self._axis, 2, "")
-                self.__encoderFullCircle = int(value)
-                Logger().debug("ClaussHardware.init(): axis=%d, encoderFullCircle=%s" % (self._axis, value))
+                self.__encoderFullCircle = int(self.__sendCmd("u", self._axis, 2, ""))
+                Logger().debug("ClaussHardware.init(): axis=%d, number of steps=%d accuracy=%s°" % (self._axis, self.__encoderFullCircle, 360./self.__encoderFullCircle))
 
                 # Get max speed
                 value = int(self.__sendCmd("f", self._axis, 2))
@@ -330,16 +313,6 @@ class ClaussHardware(AbstractHardware):
             finally:
                 self._driver.releaseBus()
 
-    def shutdown(self, parkHead=True):
-        self._driver.acquireBus()
-        try:
-            if self._axis == 2 and parkHead:
-                 self.drive(-90., self.__speedTable['fast'])
-            else:
-                 self.drive(0., self.__speedTable['fast'])
-        finally:
-            self._driver.releaseBus()
-
     def indexToSpeed(self, index):
         """ Return the speed at given index.
 
@@ -365,7 +338,7 @@ class ClaussHardware(AbstractHardware):
         finally:
             self._driver.releaseBus()
 
-        #Sometimes, Rodeon head answer a break value (b0) instead of head position. Catch it.
+        # Sometimes, Rodeon head answer a break value (b0) instead of head position. Catch it.
         try:
             pos = self.__encoderToAngle(long(value))
         except ValueError:
@@ -450,7 +423,7 @@ class ClaussHardware(AbstractHardware):
             else:
                 dir_ = '-'
             strPos = "%c%07d" % (dir_, self.__angleToEncoder(maxPos))
-            Logger().debug("ClaussHardware.startJog(): Encoded request=%s" % strPos)
+            #Logger().debug("ClaussHardware.startJog(): Encoded request=%s" % strPos)
 
             # Jog to given position
             self.__sendCmd("S", self._axis, 1, strPos)
