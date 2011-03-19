@@ -107,6 +107,7 @@ SPLASHCREEN_FILE = "splashscreen.png"
 
 # Model
 SENSOR_RATIOS = {'3:2': 3./2., '4:3': 4./3., '5:4': 5./4., '16:9': 16./9.}
+SHOOTING_COUNTER_MAX = 999  # Put max value in config. dialog?
 
 # View
 COLOR_SCHEME = 'default'
