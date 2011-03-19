@@ -510,7 +510,7 @@ class Shooting(QtCore.QObject):
                 numRepeat = 1
             for repeat in xrange(1, numRepeat + 1):
 
-                # Create data object
+                # Create data object (use a factory)
                 if self.mode == 'mosaic':
                     Logger().debug("Shooting.start(): create mosaic data object")
                     data = MosaicData()
@@ -529,7 +529,7 @@ class Shooting(QtCore.QObject):
 
                 # Increase shooting counter
                 self.shootingCounter += 1
-                if self.shootingCounter > 999:  # Put max value in config?
+                if self.shootingCounter > config.SHOOTING_COUNTER_MAX:
                     self.shootingCounter = 1
                 ConfigManager().save()
 
