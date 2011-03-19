@@ -72,6 +72,7 @@ from papywizard.controller.helpAboutController import HelpAboutController
 from papywizard.controller.totalFovController import TotalFovController
 from papywizard.controller.nbPictsController import NbPictsController
 from papywizard.controller.pluginsController import PluginsController
+from papywizard.controller.gotoController import GotoController
 from papywizard.controller.configController import ConfigController
 from papywizard.controller.shootController import ShootController
 from papywizard.controller.pluginsStatusController import PluginsStatusController
@@ -174,8 +175,7 @@ class MainController(AbstractController):
         self.connect(self._view.actionHardwareSetLimitPitchMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchMinusActivated)
         self.connect(self._view.actionHardwareClearLimits, QtCore.SIGNAL("activated()"), self.__onActionHardwareClearLimitsActivated)
         self.connect(self._view.actionHardwareSetReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetReferenceActivated)
-        self.connect(self._view.actionHardwareGotoReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoReferenceActivated)
-        self.connect(self._view.actionHardwareGotoInitial, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoInitialActivated)
+        self.connect(self._view.actionHardwareGoto, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoActivated)
         self.connect(self._view.actionHardwareTriggerShutter, QtCore.SIGNAL("activated()"), self.__onActionHardwareTriggerShutterActivated)
         self.connect(self._view.actionHardwarePlugins, QtCore.SIGNAL("activated()"), self.__onActionHardwarePluginsActivated)
 
@@ -231,8 +231,7 @@ class MainController(AbstractController):
         self.disconnect(self._view.actionHardwareSetLimitPitchMinus, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetLimitPitchMinusActivated)
         self.disconnect(self._view.actionHardwareClearLimits, QtCore.SIGNAL("activated()"), self.__onActionHardwareClearLimitsActivated)
         self.disconnect(self._view.actionHardwareSetReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareSetReferenceActivated)
-        self.disconnect(self._view.actionHardwareGotoReference, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoReferenceActivated)
-        self.disconnect(self._view.actionHardwareGotoInitial, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoInitialActivated)
+        self.disconnect(self._view.actionHardwareGoto, QtCore.SIGNAL("activated()"), self.__onActionHardwareGotoActivated)
         self.disconnect(self._view.actionHardwareTriggerShutter, QtCore.SIGNAL("activated()"), self.__onActionHardwareTriggerShutterActivated)
         self.disconnect(self._view.actionHardwarePlugins, QtCore.SIGNAL("activated()"), self.__onActionHardwarePluginsActivated)
 
@@ -410,42 +409,9 @@ class MainController(AbstractController):
         self._model.head.clearLimits()
         self.setStatusbarMessage(self.tr("Limits cleared"), 10)
 
-    def __onActionHardwareGotoReferenceActivated(self):
-        Logger().trace("MainController.__onActionHardwareGotoReferenceActivated()")
-        self.setStatusbarMessage(self.tr("Goto reference position..."))
-        self._model.head.gotoPosition(0., 0., wait=False)
-        dialog = AbortMessageDialog(self.tr("Goto reference position"), self.tr("Please wait..."))
-        dialog.show()
-        while self._model.head.isAxisMoving():
-            QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
-            if dialog.result() == QtGui.QMessageBox.Abort:
-                self._model.head.stopAxis()
-                self.setStatusbarMessage(self.tr("Operation aborted"), 10)
-                break
-            time.sleep(0.01)
-        else:
-            self.setStatusbarMessage(self.tr("Reference position reached"), 10)
-        dialog.hide()
-
-    def __onActionHardwareGotoInitialActivated(self):
-        Logger().trace("MainController.__onActionHardwareGotoInitialActivated()")
-        self.setStatusbarMessage(self.tr("Goto initial position..."))
-        if config.platform != 'darwin':
-            while QtGui.QApplication.hasPendingEvents():
-                QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
-        self._model.head.gotoPosition(0., 0., useOffset=False, wait=False)
-        dialog = AbortMessageDialog(self.tr("Goto initial position"), self.tr("Please wait..."))
-        dialog.show()
-        while self._model.head.isAxisMoving():
-            QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
-            if dialog.result() == QtGui.QMessageBox.Abort:
-                self._model.head.stopAxis()
-                self.setStatusbarMessage(self.tr("Operation aborted"), 10)
-                break
-            time.sleep(0.01)
-        else:
-            self.setStatusbarMessage(self.tr("Initial position reached"), 10)
-        dialog.hide()
+    def __onActionHardwareGotoActivated(self):
+        Logger().trace("MainController.__onActionHardwareGotoActivated()")
+        self.__openGotoDialog()
 
     def __onActionHardwareTriggerShutterActivated(self):
         Logger().trace("MainController.__onActionHardwareTriggerShutterActivated()")
@@ -630,6 +596,22 @@ class MainController(AbstractController):
             self.refreshView()
             self.setStatusbarMessage(self.tr("Number of pictures set to user value"), 10)
 
+    def __openGotoDialog(self):
+        """ Open the Goto dialog.
+        """
+        self.setStatusbarMessage(self.tr("Opening goto dialog. Please wait..."))
+        if config.platform != 'darwin':
+            while QtGui.QApplication.hasPendingEvents():
+                QtGui.QApplication.processEvents()  #QtCore.QEventLoop.ExcludeUserInputEvents)
+        QtGui.qApp.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))
+        try:
+            controller = GotoController(self, self._model)
+        finally:
+            QtGui.qApp.restoreOverrideCursor()
+            self.clearStatusBar()
+        response = controller.exec_()
+        controller.shutdown()
+
     def __openPluginsDialog(self):
         """ Open the plugins dialog.
         """
@@ -758,8 +740,7 @@ class MainController(AbstractController):
         self._view.menuSetLimit.setEnabled(True)
         self._view.actionHardwareClearLimits.setEnabled(True)
         self._view.actionHardwareSetReference.setEnabled(True)
-        self._view.actionHardwareGotoReference.setEnabled(True)
-        self._view.actionHardwareGotoInitial.setEnabled(True)
+        self._view.actionHardwareGoto.setEnabled(True)
         self._view.actionHardwareTriggerShutter.setEnabled(True)
         self._view.actionHardwarePlugins.setEnabled(False)
 
@@ -786,8 +767,7 @@ class MainController(AbstractController):
         self._view.menuSetLimit.setEnabled(False)
         self._view.actionHardwareClearLimits.setEnabled(False)
         self._view.actionHardwareSetReference.setEnabled(False)
-        self._view.actionHardwareGotoReference.setEnabled(False)
-        self._view.actionHardwareGotoInitial.setEnabled(False)
+        self._view.actionHardwareGoto.setEnabled(False)
         self._view.actionHardwareTriggerShutter.setEnabled(False)
         self._view.actionHardwarePlugins.setEnabled(True)
 
