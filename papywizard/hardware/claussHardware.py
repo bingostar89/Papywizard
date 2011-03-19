@@ -153,9 +153,9 @@ class ClaussHardware(AbstractHardware):
 
                     # Valid answer, processing
                     if ord(c) == int(hexPredictedAnswer, 16) and not begin:
-                         magic = True
-                         begin = True
-                         continue
+                        magic = True
+                        begin = True
+                        continue
 
                     # Valid answer, processing
                     elif ord(c) == int(hexPredictedAnswer, 16) and begin:
@@ -164,6 +164,11 @@ class ClaussHardware(AbstractHardware):
 
                     # Invalid value, waiting answer pattern
                     elif ord(c) != int(hexPredictedAnswer, 16) and not begin:
+                        continue
+ 
+                    # Ignore some Bluetooth answers (b0/b9)
+                    elif cmd != 'R' and c == 'b' and magic:
+                        crCount -= 1
                         continue
 
                     # Verifying validity of answer
@@ -175,7 +180,7 @@ class ClaussHardware(AbstractHardware):
                             answer += c
                         continue
 
-                    # Correct number of CR : end of processing
+                    # Correct number of CR: end of processing
                     elif c == '\r' and crCount == cr:
                         break
 
