@@ -308,7 +308,7 @@ class ShootController(AbstractModalDialogController):
         self.__stopFinishShooting()
 
     def __onPictureClicked(self, index):
-        Logger().trace("ShootController.__onPictureClicked(): index=%d" % index)
+        Logger().debug("ShootController.__onPictureClicked(): index=%d" % index)
         if self._model.isPaused():
             self._model.scan.index = index
             self.__refreshNextPosition()
