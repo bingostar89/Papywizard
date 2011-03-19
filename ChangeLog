@@ -10,6 +10,7 @@ x bug fix
     + Added 'Clauss' plugin
     + New serial baudrate param
     + Added 'Trigger only once" param in shutter plugins
+    + New dialog for Goto feature
     - removed some calls to event loop in main controller on MacOS
     - removed "reverse direction' feature (use new 'nearest-corner')
     - increased timer 'repeat' param max value up to 99999
