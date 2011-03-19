@@ -36,8 +36,8 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_4">
-    <item row="0" column="0">
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="1">
        <widget class="QGroupBox" name="groupBox">
@@ -924,7 +924,7 @@
      <x>0</x>
      <y>0</y>
      <width>580</width>
-     <height>24</height>
+     <height>22</height>
     </rect>
    </property>
    <property name="font">
@@ -940,6 +940,17 @@
     <addaction name="actionFileLoadStyleSheet"/>
     <addaction name="separator"/>
     <addaction name="actionFileQuit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelpManual"/>
+    <addaction name="separator"/>
+    <addaction name="actionHelpViewLog"/>
+    <addaction name="separator"/>
+    <addaction name="actionHelpAboutPapywizard"/>
+    <addaction name="actionHelpAboutQt"/>
    </widget>
    <widget class="QMenu" name="menuHardware">
     <property name="title">
@@ -960,24 +971,11 @@
     <addaction name="actionHardwareClearLimits"/>
     <addaction name="separator"/>
     <addaction name="actionHardwareSetReference"/>
-    <addaction name="separator"/>
-    <addaction name="actionHardwareGotoReference"/>
-    <addaction name="actionHardwareGotoInitial"/>
+    <addaction name="actionHardwareGoto"/>
     <addaction name="separator"/>
     <addaction name="actionHardwareTriggerShutter"/>
     <addaction name="separator"/>
     <addaction name="actionHardwarePlugins"/>
-   </widget>
-   <widget class="QMenu" name="menuHelp">
-    <property name="title">
-     <string>Help</string>
-    </property>
-    <addaction name="actionHelpManual"/>
-    <addaction name="separator"/>
-    <addaction name="actionHelpViewLog"/>
-    <addaction name="separator"/>
-    <addaction name="actionHelpAboutPapywizard"/>
-    <addaction name="actionHelpAboutQt"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHardware"/>
@@ -1114,6 +1112,15 @@
    </property>
    <property name="text">
     <string>Goto Initial...</string>
+   </property>
+  </action>
+  <action name="actionHardwareGoto">
+   <property name="icon">
+    <iconset resource="../icons.qrc">
+     <normaloff>:/icons/goto.png</normaloff>:/icons/goto.png</iconset>
+   </property>
+   <property name="text">
+    <string>Goto...</string>
    </property>
   </action>
   <action name="actionHardwarePlugins">
