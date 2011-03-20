@@ -322,7 +322,7 @@ class ClaussHardware(AbstractHardware):
         """ Return the speed at given index.
 
         @param index: index of the speed, in ('slow', 'normal', 'fast')
-        @type: str
+        @type index: str
 
         @return: speed
         @rtype: float
@@ -358,7 +358,7 @@ class ClaussHardware(AbstractHardware):
         @type pos: float
 
         @param speed: drive speed
-        @type: int
+        @type speed: int
         """
         strPos = "%+08d" % self.__angleToEncoder(pos)
         strSpeed = "%05d" % speed

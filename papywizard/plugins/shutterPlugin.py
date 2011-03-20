@@ -105,7 +105,7 @@ class ShutterPlugin(AbstractShutterPlugin):
     def _triggerShutter(self, delay):
         """ Trigger the shutter contact.
 
-        @param: delay to wait between on/off, in s
+        @param delay: delay to wait between on/off, in s
         @type delay: float
         """
         Logger().trace("ShutterPlugin._triggerShutter()")
