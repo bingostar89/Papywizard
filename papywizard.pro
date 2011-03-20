@@ -79,7 +79,7 @@ SOURCES += papywizard/plugins/abstractAxisPlugin.py \
            papywizard/plugins/abstractPlugin.py \
            papywizard/plugins/abstractShutterPlugin.py \
            papywizard/plugins/axisPluginController.py \
-           papywizard/hardware/claussPlugins.py \
+           papywizard/plugins/claussPlugins.py \
            papywizard/plugins/dslrRemoteProPlugins.py \
            papywizard/plugins/eosUtilityPlugins.py \
            papywizard/plugins/genericTetheredPlugins.py \
