@@ -612,35 +612,49 @@
 <context>
     <name>claussPlugins</name>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="88"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="91"/>
         <source>Special</source>
-        <translation>Spécial
-</translation>
+        <translation>Spécial</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="89"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="92"/>
         <source>Auto Focus</source>
         <translation>Mise au point</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="90"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="93"/>
         <source>Focus time</source>
         <translation>Temps de mise au point</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="91"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="94"/>
         <source>Dual cameras</source>
         <translation>Double appereils</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="92"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="95"/>
         <source>Time between shots</source>
         <translation>Temps entre prises de vues</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="93"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="96"/>
         <source>Park position</source>
         <translation>Position de rangement</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/claussPlugins.py" line="97"/>
+        <source>Slow speed</source>
+        <translation>Vitesse lente</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/claussPlugins.py" line="98"/>
+        <source>Normal speed</source>
+        <translation>Vitesse normale</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/claussPlugins.py" line="99"/>
+        <source>Fast speed</source>
+        <translation>Vitesse rapide</translation>
     </message>
 </context>
 <context>
