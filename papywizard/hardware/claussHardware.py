@@ -71,15 +71,11 @@ class ClaussHardware(AbstractHardware):
     def _init(self):
         AbstractHardware._init(self)
 
-        # Speed table with default walues.
-        # On init, genuine values will be computed with max speed info.
-        self.__speedTable = {'slow': 250,
-                             'normal': 1125,
-                             'fast': 2250
-                           }
-
         # Number of steps for a full turn
         self.__encoderFullCircle = None
+
+        # Moto max speed
+        self.__maxSpeed = None
 
         # Used to memorize previous position while driving to position
         self.__drivePos = 0
@@ -165,9 +161,9 @@ class ClaussHardware(AbstractHardware):
                     # Invalid value, waiting answer pattern
                     elif ord(c) != int(hexPredictedAnswer, 16) and not begin:
                         continue
- 
+
                     # Ignore some Bluetooth answers (b0/b9)
-                    elif cmd != 'R' and c == 'b' and magic:
+                    elif c == 'b' and cmd != 'R' and magic:
                         crCount -= 1
                         continue
 
@@ -275,14 +271,8 @@ class ClaussHardware(AbstractHardware):
                 Logger().debug("ClaussHardware.init(): axis=%d, number of steps=%d accuracy=%s°" % (self._axis, self.__encoderFullCircle, 360./self.__encoderFullCircle))
 
                 # Get max speed
-                value = int(self.__sendCmd("f", self._axis, 2))
-                Logger().debug("ClaussHardware.init(): axis=%d, motor max speed=%s" % (self._axis, value))
-
-                # Formatting speed to Clauss as needed
-                self.__speedTable['slow'] = int(value / 12.)
-                self.__speedTable['normal'] = int(value / 2.66)
-                self.__speedTable['fast'] = int(value / 1.33)
-                Logger().debug("ClaussHardware.init(): axis=%d, speed : slow=%s, normal=%s, fast=%s (max speed is %d)" % (self._axis, self.__speedTable['slow'], self.__speedTable['normal'], self.__speedTable['fast'], value))
+                self.__maxSpeed = int(self.__sendCmd("f", self._axis, 2))
+                Logger().debug("ClaussHardware.init(): axis=%d, motor max speed=%s" % (self._axis, self.__maxSpeed))
 
                 # Unknow command
                 self.__sendCmd("a", self._axis, 2, "")
@@ -318,17 +308,6 @@ class ClaussHardware(AbstractHardware):
             finally:
                 self._driver.releaseBus()
 
-    def indexToSpeed(self, index):
-        """ Return the speed at given index.
-
-        @param index: index of the speed, in ('slow', 'normal', 'fast')
-        @type index: str
-
-        @return: speed
-        @rtype: float
-        """
-        return self.__speedTable[index]
-
     def read(self):
         """ Read the axis position.
 
@@ -357,11 +336,13 @@ class ClaussHardware(AbstractHardware):
         @param pos: position to reach, in °
         @type pos: float
 
-        @param speed: drive speed
-        @type speed: int
+        @param speed: drive speed in %
+        @type: int
         """
         strPos = "%+08d" % self.__angleToEncoder(pos)
-        strSpeed = "%05d" % speed
+
+        # Compute speed
+        strSpeed = "%05d" % int(self.__maxSpeed * speed / 100.)
         Logger().debug("ClaussHardware.drive(): axis=%d, pos=%d, encoded=%s, speed=%s" % (self._axis, pos, strPos, strSpeed))
         self._driver.acquireBus()
         try:
@@ -413,7 +394,7 @@ class ClaussHardware(AbstractHardware):
         @param dir_: direction ('+', '-')
         @type dir_: str
 
-        @param speed: speed
+        @param speed: speed in %
         @type speed: int
 
         @param maxPos: maximal position to reach, defined by high/low limit
@@ -434,7 +415,7 @@ class ClaussHardware(AbstractHardware):
             self.__sendCmd("S", self._axis, 1, strPos)
 
             # Define motor speed
-            strSpeed = "%05d" % speed
+            strSpeed = "%05d" % int(self.__maxSpeed * speed / 100.)
             self.__sendCmd("F", self._axis, 1, strSpeed)
 
             # Unknow commands

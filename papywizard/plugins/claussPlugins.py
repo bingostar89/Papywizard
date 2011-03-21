@@ -82,8 +82,11 @@ AXIS_TABLE = {'yawAxis': 1,
 DEFAULT_FOCUS_ENABLE = False
 DEFAULT_FOCUS_TIME = 1.5  # (s)
 DEFAULT_DUAL_ENABLE = False
-DEFAULT_DUAL_TIME = 2  # (s)
+DEFAULT_DUAL_TIME = 2.  # (s)
 DEFAULT_PARK_POSITION = "0."  # (°)
+DEFAULT_SPEED_SLOW = 10  # (%)
+DEFAULT_SPEED_NORMAL = 50  # (%)
+DEFAULT_SPEED_FAST = 100  # (%)
 
 TAB_SPECIAL = unicode(QtGui.QApplication.translate("claussPlugins", 'Special'))
 LABEL_SPECIAL_FOCUS = unicode(QtGui.QApplication.translate("claussPlugins", "Auto Focus"))
@@ -91,9 +94,12 @@ LABEL_SPECIAL_FOCUS_TIME = unicode(QtGui.QApplication.translate("claussPlugins",
 LABEL_SPECIAL_DUAL = unicode(QtGui.QApplication.translate("claussPlugins", "Dual cameras"))
 LABEL_SPECIAL_DUAL_TIME = unicode(QtGui.QApplication.translate("claussPlugins", "Time between shots"))
 LABEL_SPECIAL_PARK_POSITION = unicode(QtGui.QApplication.translate("claussPlugins", "Park position"))
+LABEL_SPECIAL_SPEED_SLOW = unicode(QtGui.QApplication.translate("claussPlugins", "Slow speed"))
+LABEL_SPECIAL_SPEED_NORMAL = unicode(QtGui.QApplication.translate("claussPlugins", "Normal speed"))
+LABEL_SPECIAL_SPEED_FAST = unicode(QtGui.QApplication.translate("claussPlugins", "Fast speed"))
+
 
 class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
-
     def _init(self):
         Logger().trace("ClaussAxis._init()")
         AbstractHardwarePlugin._init(self)
@@ -103,7 +109,25 @@ class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def _defineConfig(self):
         AbstractAxisPlugin._defineConfig(self)
         AbstractHardwarePlugin._defineConfig(self)
+        self._addConfigKey('_speedSlow', 'SPEED_SLOW', default=DEFAULT_SPEED_SLOW)
+        self._addConfigKey('_speedNormal', 'SPEED_NORMAL', default=DEFAULT_SPEED_NORMAL)
+        self._addConfigKey('_speedFast', 'SPEED_FAST', default=DEFAULT_SPEED_FAST)
         self._addConfigKey('_parkPosition', 'PARK_POSITION', default=DEFAULT_PARK_POSITION)
+
+    def __getSpeed(self):
+        """ Return the speed value according to manual speed setting.
+
+        @return: speed
+        @rtype float
+        """
+        if self._manualSpeed == 'slow':
+            speed = self._config['SPEED_SLOW']
+        elif self._manualSpeed == 'normal':
+            speed = self._config['SPEED_NORMAL']
+        elif self._manualSpeed == 'fast':
+            speed = self._config['SPEED_FAST']
+
+        return speed
 
     def init(self):
         Logger().trace("ClaussAxis.init()")
@@ -113,7 +137,7 @@ class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def shutdown(self):
         Logger().trace("ClaussAxis.shutdown()")
         self.stop()
-        self._hardware.drive(float(self._config['PARK_POSITION']), self._hardware.indexToSpeed(self._manualSpeed))
+        self._hardware.drive(float(self._config['PARK_POSITION']), self.__getSpeed())
         AbstractHardwarePlugin.shutdown(self)
         AbstractAxisPlugin.shutdown(self)
 
@@ -136,13 +160,11 @@ class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         # Only move if needed
         if abs(pos - currentPos) > 0. or not useOffset:
             #Logger().debug("ClaussAxis.drive(): Do move, pos=%.1f, currentPos=%.1f, useOffset=%s" % (pos, currentPos, useOffset))
-            self._hardware.drive(pos, self._hardware.indexToSpeed(self._manualSpeed))
+            self._hardware.drive(pos, self.__getSpeed())
 
             # Wait end of movement
             if wait:
                 self.waitEndOfDrive()
-        #else:
-            #Logger().debug("ClaussAxis.drive(): No move needed, pos=%.1f, currentPos=%.1f, useOffset=%s" % (pos, currentPos, useOffset))
 
     def waitEndOfDrive(self):
         while self.isMoving():
@@ -157,8 +179,7 @@ class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         elif dir_ == '-':
             maxPos = float(self._config['LOW_LIMIT'])
         #Logger().debug("ClaussAxis.startJog(): maxPos=%s" % maxPos)
-
-        self._hardware.startJog(dir_, self._hardware.indexToSpeed(self._manualSpeed), maxPos)
+        self._hardware.startJog(dir_, self.__getSpeed(), maxPos)
 
     def stop(self):
         self.__driveFlag = False
@@ -177,7 +198,11 @@ class ClaussAxisController(AxisPluginController, HardwarePluginController):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
         self._addTab('Special', TAB_SPECIAL)
+        self._addWidget('Special', LABEL_SPECIAL_SPEED_SLOW, SpinBoxField, (1, 100, "", " %"), 'SPEED_SLOW')
+        self._addWidget('Special', LABEL_SPECIAL_SPEED_NORMAL, SpinBoxField, (1, 100, "", " %"), 'SPEED_NORMAL')
+        self._addWidget('Special', LABEL_SPECIAL_SPEED_FAST, SpinBoxField, (1, 100, "", " %"), 'SPEED_FAST')
         self._addWidget('Special', LABEL_SPECIAL_PARK_POSITION, ComboBoxField, (["-180.", "-90.", "0.", "90.", "180."],), 'PARK_POSITION')
+
 
 class ClaussShutter(AbstractHardwarePlugin, ShutterPlugin):
     def _init(self):
@@ -199,7 +224,7 @@ class ClaussShutter(AbstractHardwarePlugin, ShutterPlugin):
 
         Note that FOCUS_ENABLE and DUAL_ENABLE options are exclusive (done via UI)
 
-        @param delay: delay to wait between on/off, in s
+        @param: delay to wait between on/off, in s
         @type delay: float
         """
         Logger().trace("ClaussShutter._triggerShutter()")
