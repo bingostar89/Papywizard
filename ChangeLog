@@ -7,6 +7,8 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+
+2011-04-16 Version 2.1.21 (dev)
     + Added 'Clauss' plugin
     + New serial baudrate param
     + Added 'Trigger only once" param in shutter plugins
