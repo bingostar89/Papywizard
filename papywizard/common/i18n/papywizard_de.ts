@@ -1376,8 +1376,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message encoding="UTF-8">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="108"/>
-        <source>© 2007-2010 Frédéric Mantegazza</source>
-        <translation>© 2007-2010 Frédéric Mantegazza</translation>
+        <source>© 2007-2011 Frédéric Mantegazza</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

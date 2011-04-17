@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="en">
+<!DOCTYPE TS><TS version="1.1" language="en">
 <context>
     <name>AbortMessageDialog</name>
     <message>
@@ -411,7 +410,7 @@
         <source>Plugins...</source>
         <translation></translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/mainWindow.ui" line="583"/>
         <source>Total fov (°)</source>
         <translation>Total fov (°)</translation>
@@ -421,12 +420,12 @@
         <source>Nb picts</source>
         <translation>Nb picts</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/mainWindow.ui" line="455"/>
         <source>Corner 0 (°)</source>
         <translation>Corner 0 (°)</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/mainWindow.ui" line="522"/>
         <source>Corner 1 (°)</source>
         <translation>Corner 1 (°)</translation>
@@ -657,7 +656,7 @@
         <translation>Fast speed</translation>
     </message>
 </context>
-<context>
+<context encoding="UTF-8">
     <name>configDialog</name>
     <message>
         <location filename="papywizard/view/ui/configDialog.ui" line="17"/>
@@ -939,7 +938,7 @@
         <source>Reverse direction before repeat</source>
         <translation>Reverse direction before repeat</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/configDialog.ui" line="123"/>
         <source> °</source>
         <translation> °</translation>
@@ -1299,7 +1298,7 @@ compensation list</translation>
         <translation>Delete camera picts</translation>
     </message>
 </context>
-<context>
+<context encoding="UTF-8">
     <name>helpAboutDialog</name>
     <message>
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="14"/>
@@ -1343,7 +1342,7 @@ The fact that you are presently reading this means that you have had knowledge o
 
 ￼The fact that you are presently reading this means that you have had knowledge of the CeCILL license and that you accept its terms.</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="155"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -1402,10 +1401,10 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Frédéric Mantegazza (gnu/linux, windows, maemo)&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jeremy Pronk (MacOS)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/helpAboutDialog.ui" line="108"/>
-        <source>© 2007-2010 Frédéric Mantegazza</source>
-        <translation>© 2007-2010 Frédéric Mantegazza</translation>
+        <source>© 2007-2011 Frédéric Mantegazza</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1933,7 +1932,7 @@ compensation list</translation>
         <translation>LRD files (*.lrd);;All files (*)</translation>
     </message>
 </context>
-<context>
+<context encoding="UTF-8">
     <name>totalFovDialog</name>
     <message>
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="14"/>
@@ -1955,7 +1954,7 @@ compensation list</translation>
         <source>Total fov</source>
         <translation>Total fov</translation>
     </message>
-    <message utf8="true">
+    <message encoding="UTF-8">
         <location filename="papywizard/view/ui/totalFovDialog.ui" line="69"/>
         <source> °</source>
         <translation> °</translation>
