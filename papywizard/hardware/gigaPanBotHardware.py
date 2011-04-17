@@ -6,7 +6,7 @@ License
 =======
 
  - B{Papywizard} (U{http://www.papywizard.org}) is Copyright:
-  - (C) 2007-2010 Frédéric Mantegazza
+  - (C) 2007-2011 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use,
@@ -79,7 +79,7 @@ I<axis(1d)><speed(1d)>     Set manual speed (4=slow, 2=normal, 0=fast)     None
 (also see U{http://www.autopano.net/forum/p58659-yesterday-23-48-24#p58659}).
 
 @author: Frédéric Mantegazza
-@copyright: (C) 2007-2010 Frédéric Mantegazza
+@copyright: (C) 2007-2011 Frédéric Mantegazza
 @license: CeCILL
 """
 

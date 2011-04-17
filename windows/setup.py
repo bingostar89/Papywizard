@@ -6,7 +6,7 @@ License
 =======
 
  - B{Papywizard} (U{http://www.papywizard.org}) is Copyright:
-  - (C) 2007-2010 Frédéric Mantegazza
+  - (C) 2007-2011 Frédéric Mantegazza
 
 This software is governed by the B{CeCILL} license under French law and
 abiding by the rules of distribution of free software.  You can  use,
@@ -50,7 +50,7 @@ Implements
 
 @author: Mario Beauchamp
 @author: Frédéric Mantegazza
-@copyright: (C) 2007-2010 Frédéric Mantegazza
+@copyright: (C) 2007-2011 Frédéric Mantegazza
 @license: CeCILL
 
 @todo: l10n and i18n
@@ -77,7 +77,7 @@ class Target:
         self.__dict__.update(kw)
         self.version = "%s" % config.VERSION
         self.company_name = ""
-        self.copyright = "(c) 2007-2010 Frédéric Mantegazza"
+        self.copyright = "(C) 2007-2011 Frédéric Mantegazza"
         self.name = ""
 
 
