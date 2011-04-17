@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "Papywizard"
-!define PRODUCT_VERSION "2.1.20-1"
+!define PRODUCT_VERSION "2.1.21"
 !define PRODUCT_WEB_SITE "http://trac.gbiloba.org/papywizard"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\Papywizard.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -32,8 +32,8 @@
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
-!define MUI_FINISHPAGE_RUN "$INSTDIR\Papywizard.exe"
-!insertmacro MUI_PAGE_FINISH
+;!define MUI_FINISHPAGE_RUN "$INSTDIR\Papywizard.exe"
+;!insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
 !insertmacro MUI_UNPAGE_INSTFILES
