@@ -52,7 +52,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: claussPlugins.py 2421 2011-01-02 22:18:23Z martinlbb $"
+__revision__ = "$Id$"
 
 import time
 
@@ -224,7 +224,7 @@ class ClaussShutter(AbstractHardwarePlugin, ShutterPlugin):
 
         Note that FOCUS_ENABLE and DUAL_ENABLE options are exclusive (done via UI)
 
-        @param: delay to wait between on/off, in s
+        @param delay: delay to wait between on/off, in s
         @type delay: float
         """
         Logger().trace("ClaussShutter._triggerShutter()")

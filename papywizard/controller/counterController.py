@@ -49,7 +49,7 @@ Implements
 @license: CeCILL
 """
 
-__revision__ = "$Id: totalFovController.py 2344 2010-04-02 06:05:35Z fma $"
+__revision__ = "$Id$"
 
 import time
 

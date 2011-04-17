@@ -54,7 +54,7 @@ The Clauss protocol is available on Kolor wiki : http://www.autopano.net/wiki-fr
 @license: CeCILL
 """
 
-__revision__ = "$Id: claussHardware.py 2300 2011-01-02 22:18:09Z martinlbb $"
+__revision__ = "$Id$"
 
 import time
 
@@ -337,7 +337,7 @@ class ClaussHardware(AbstractHardware):
         @type pos: float
 
         @param speed: drive speed in %
-        @type: int
+        @type speed: int
         """
         strPos = "%+08d" % self.__angleToEncoder(pos)
 
