@@ -637,24 +637,29 @@
         <translation>Temps entre prises de vues</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="96"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="97"/>
         <source>Park position</source>
         <translation>Position de rangement</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="97"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="98"/>
         <source>Slow speed</source>
         <translation>Vitesse lente</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="98"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="99"/>
         <source>Normal speed</source>
         <translation>Vitesse normale</translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="99"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="100"/>
         <source>Fast speed</source>
         <translation>Vitesse rapide</translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/claussPlugins.py" line="96"/>
+        <source>Park head</source>
+        <translation>Ranger la tête</translation>
     </message>
 </context>
 <context>

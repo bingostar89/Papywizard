@@ -637,23 +637,28 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="96"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="97"/>
         <source>Park position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="97"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="98"/>
         <source>Slow speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="98"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="99"/>
         <source>Normal speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="papywizard/plugins/claussPlugins.py" line="99"/>
+        <location filename="papywizard/plugins/claussPlugins.py" line="100"/>
         <source>Fast speed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="papywizard/plugins/claussPlugins.py" line="96"/>
+        <source>Park head</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
