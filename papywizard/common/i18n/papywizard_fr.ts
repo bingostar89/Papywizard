@@ -1105,7 +1105,7 @@ exposition appareil</translation>
     <message>
         <location filename="papywizard/plugins/eosUtilityPlugins.py" line="93"/>
         <source>Bulb</source>
-        <translation>Pause</translation>
+        <translation>Pause B</translation>
     </message>
     <message>
         <location filename="papywizard/plugins/eosUtilityPlugins.py" line="98"/>
@@ -1854,7 +1854,7 @@ exposition appareil</translation>
     <message>
         <location filename="papywizard/plugins/shutterPluginController.py" line="62"/>
         <source>Bulb</source>
-        <translation>Pause</translation>
+        <translation>Pause B</translation>
     </message>
     <message>
         <location filename="papywizard/plugins/shutterPluginController.py" line="63"/>
