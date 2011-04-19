@@ -93,6 +93,7 @@ LABEL_SPECIAL_FOCUS = unicode(QtGui.QApplication.translate("claussPlugins", "Aut
 LABEL_SPECIAL_FOCUS_TIME = unicode(QtGui.QApplication.translate("claussPlugins", "Focus time"))
 LABEL_SPECIAL_DUAL = unicode(QtGui.QApplication.translate("claussPlugins", "Dual cameras"))
 LABEL_SPECIAL_DUAL_TIME = unicode(QtGui.QApplication.translate("claussPlugins", "Time between shots"))
+LABEL_SPECIAL_PARK_ENABLE = unicode(QtGui.QApplication.translate("claussPlugins", "Park head"))
 LABEL_SPECIAL_PARK_POSITION = unicode(QtGui.QApplication.translate("claussPlugins", "Park position"))
 LABEL_SPECIAL_SPEED_SLOW = unicode(QtGui.QApplication.translate("claussPlugins", "Slow speed"))
 LABEL_SPECIAL_SPEED_NORMAL = unicode(QtGui.QApplication.translate("claussPlugins", "Normal speed"))
@@ -113,6 +114,10 @@ class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
         self._addConfigKey('_speedNormal', 'SPEED_NORMAL', default=DEFAULT_SPEED_NORMAL)
         self._addConfigKey('_speedFast', 'SPEED_FAST', default=DEFAULT_SPEED_FAST)
         self._addConfigKey('_parkPosition', 'PARK_POSITION', default=DEFAULT_PARK_POSITION)
+        if self.capacity == 'yawAxis':
+            self._addConfigKey('_parkEnable', 'PARK_ENABLE', default=False)
+        else:
+            self._addConfigKey('_parkEnable', 'PARK_ENABLE', default=True)
 
     def __getSpeed(self):
         """ Return the speed value according to manual speed setting.
@@ -137,7 +142,8 @@ class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
     def shutdown(self):
         Logger().trace("ClaussAxis.shutdown()")
         self.stop()
-        self._hardware.drive(float(self._config['PARK_POSITION']), self.__getSpeed())
+        if self._config['PARK_ENABLE']:
+            self._hardware.drive(float(self._config['PARK_POSITION']), self.__getSpeed())
         AbstractHardwarePlugin.shutdown(self)
         AbstractAxisPlugin.shutdown(self)
 
@@ -194,6 +200,10 @@ class ClaussAxis(AbstractHardwarePlugin, AbstractAxisPlugin):
 
 
 class ClaussAxisController(AxisPluginController, HardwarePluginController):
+    def _valueChanged(self, value=None):
+        self.refreshView()
+
+
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
@@ -201,7 +211,12 @@ class ClaussAxisController(AxisPluginController, HardwarePluginController):
         self._addWidget('Special', LABEL_SPECIAL_SPEED_SLOW, SpinBoxField, (1, 100, "", " %"), 'SPEED_SLOW')
         self._addWidget('Special', LABEL_SPECIAL_SPEED_NORMAL, SpinBoxField, (1, 100, "", " %"), 'SPEED_NORMAL')
         self._addWidget('Special', LABEL_SPECIAL_SPEED_FAST, SpinBoxField, (1, 100, "", " %"), 'SPEED_FAST')
+        self._addWidget('Special', LABEL_SPECIAL_PARK_ENABLE, CheckBoxField, (), 'PARK_ENABLE')
         self._addWidget('Special', LABEL_SPECIAL_PARK_POSITION, ComboBoxField, (["-180.", "-90.", "0.", "90.", "180."],), 'PARK_POSITION')
+
+    def refreshView(self):
+        enable = self._getWidget('Special', LABEL_SPECIAL_PARK_ENABLE).value()
+        self._getWidget('Special', LABEL_SPECIAL_PARK_POSITION).setDisabled(not enable)
 
 
 class ClaussShutter(AbstractHardwarePlugin, ShutterPlugin):
