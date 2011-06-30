@@ -79,11 +79,15 @@ NAME = "Merlin-Orion"
 DEFAULT_ALTERNATE_DRIVE = True
 DEFAULT_ALTERNATE_DRIVE_ANGLE = 7. # °
 DEFAULT_INERTIA_ANGLE = 1. # °
+DEFAULT_OVERWRITE_ENCODER_FULL_CIRCLE = False
+DEFAULT_ENCODER_FULL_CIRCLE = 0xaaaaaa
 
 TAB_HARD = unicode(QtGui.QApplication.translate("merlinOrionPlugins", 'Hard'))
 LABEL_ALTERNATE_DRIVE = unicode(QtGui.QApplication.translate("merlinOrionPlugins", "Alternate drive"))
 LABEL_ALTERNATE_DRIVE_ANGLE = unicode(QtGui.QApplication.translate("merlinOrionPlugins", "Alternate drive angle"))
 LABEL_INERTIA_ANGLE = unicode(QtGui.QApplication.translate("merlinOrionPlugins", "Inertia angle"))
+LABEL_OVERWRITE_ENCODER_FULL_CIRCLE = unicode(QtGui.QApplication.translate("merlinOrionPlugins", "Overwrite encoder full circle"))
+LABEL_ENCODER_FULL_CIRCLE = unicode(QtGui.QApplication.translate("merlinOrionPlugins", "Encoder full circle"))
 
 AXIS_ACCURACY = 0.1 # °
 AXIS_TABLE = {'yawAxis': 1,
@@ -135,6 +139,8 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         self._addConfigKey('_alternateDrive', 'ALTERNATE_DRIVE', default=DEFAULT_ALTERNATE_DRIVE)
         self._addConfigKey('_alternateDrive', 'ALTERNATE_DRIVE_ANGLE', default=DEFAULT_ALTERNATE_DRIVE_ANGLE)
         self._addConfigKey('_inertiaAngle', 'INERTIA_ANGLE', default=DEFAULT_INERTIA_ANGLE)
+        self._addConfigKey('_overwriteEncoderFullCircle', 'OVERWRITE_ENCODER_FULL_CIRCLE', default=DEFAULT_OVERWRITE_ENCODER_FULL_CIRCLE)
+        self._addConfigKey('_encoderFullCircle', 'ENCODER_FULL_CIRCLE', default=DEFAULT_ENCODER_FULL_CIRCLE)
 
     def activate(self):
         Logger().trace("MerlinOrionPlugin.activate()")
@@ -155,6 +161,8 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         Logger().trace("MerlinOrionAxis.init()")
         self._hardware.setAxis(AXIS_TABLE[self.capacity]),
         AbstractHardwarePlugin.init(self)
+        if self._config['OVERWRITE_ENCODER_FULL_CIRCLE']:
+            self._hardware.overwriteEncoderFullCicle(self._config['ENCODER_FULL_CIRCLE'])
 
         # Connect Spy update signal
         self.connect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate, QtCore.Qt.BlockingQueuedConnection)
@@ -186,7 +194,7 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
                 if self._config['ALTERNATE_DRIVE'] and \
                    1.1 * self._config['INERTIA_ANGLE'] < abs(self.__setPoint - currentPos) < self._config['ALTERNATE_DRIVE_ANGLE']:
                     self._alternateDrive(self.__setPoint)
-    
+
                 # Use standard drive to reach the position
                 if self.__driveEvent.isSet():
                     self._directDrive(self.__setPoint)
@@ -291,6 +299,9 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
 
 
 class MerlinOrionAxisController(AxisPluginController, HardwarePluginController):
+    def _valueChanged(self, value=None):
+        self.refreshView()
+
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
@@ -298,7 +309,15 @@ class MerlinOrionAxisController(AxisPluginController, HardwarePluginController):
         self._addWidget('Hard', LABEL_ALTERNATE_DRIVE, CheckBoxField, (), 'ALTERNATE_DRIVE')
         self._addWidget('Hard', LABEL_ALTERNATE_DRIVE_ANGLE, SpinBoxField, (3, 15, "", u" °"), 'ALTERNATE_DRIVE_ANGLE')
         self._addWidget('Hard', LABEL_INERTIA_ANGLE, DoubleSpinBoxField, (0.1, 9.9, 1, .1, "", u" °"), 'INERTIA_ANGLE')
+        self._addWidget('Hard', LABEL_OVERWRITE_ENCODER_FULL_CIRCLE, CheckBoxField, (), 'OVERWRITE_ENCODER_FULL_CIRCLE')
+        self._addWidget('Hard', LABEL_ENCODER_FULL_CIRCLE, SpinBoxField, (0, 16777216, "", ""), 'ENCODER_FULL_CIRCLE')
 
+    def refreshView(self):
+        enable = self._getWidget('Hard', LABEL_ALTERNATE_DRIVE).value()
+        self._getWidget('Hard', LABEL_ALTERNATE_DRIVE_ANGLE).setDisabled(not enable)
+        self._getWidget('Hard', LABEL_INERTIA_ANGLE).setDisabled(not enable)
+        enable = self._getWidget('Hard', LABEL_OVERWRITE_ENCODER_FULL_CIRCLE).value()
+        self._getWidget('Hard', LABEL_ENCODER_FULL_CIRCLE).setDisabled(not enable)
 
 class MerlinOrionShutter(AbstractHardwarePlugin, ShutterPlugin):
     def __init__(self, *args, **kwargs):

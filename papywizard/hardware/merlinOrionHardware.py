@@ -196,6 +196,11 @@ class MerlinOrionHardware(AbstractHardware):
         finally:
             self._driver.releaseBus()
 
+    def setEncoderFullCircle(self, encoderFullCircle):
+        """ Overwrite firmware value.
+        """
+        self.__encoderFullCircle = encoderFullCircle
+
     def read(self):
         """ Read the axis position.
 
