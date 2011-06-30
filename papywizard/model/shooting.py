@@ -252,9 +252,33 @@ class Shooting(QtCore.QObject):
     def __setShowShootingCounter(self, flag):
         """
         """
-        ConfigManager().setInt('Configuration/SHOW_SHOOTING_COUNTER', flag)
+        ConfigManager().setBoolean('Configuration/SHOW_SHOOTING_COUNTER', flag)
 
     showShootingCounter = property(__getShowShootingCounter, __setShowShootingCounter)
+
+    def __getPauseEvery(self):
+        """
+        """
+        return ConfigManager().getInt('Configuration/PAUSE_EVERY')
+
+    def __setPauseEvery(self, flag):
+        """
+        """
+        ConfigManager().setInt('Configuration/PAUSE_EVERY', flag)
+
+    pauseEvery = property(__getPauseEvery, __setPauseEvery)
+
+    def __getPauseEveryEnable(self):
+        """
+        """
+        return ConfigManager().getBoolean('Configuration/PAUSE_EVERY_ENABLE')
+
+    def __setPauseEveryEnable(self, flag):
+        """
+        """
+        ConfigManager().setBoolean('Configuration/PAUSE_EVERY_ENABLE', flag)
+
+    pauseEveryEnable = property(__getPauseEveryEnable, __setPauseEveryEnable)
 
     def __getScan(self):
         """
@@ -561,6 +585,11 @@ class Shooting(QtCore.QObject):
                             self.__pause = True
                             Logger().info("Wait for manual shooting trigger...")
 
+                        # 'Pause every' feature
+                        if self.pauseEveryEnable and self.scan.index > 1 and not self.scan.index % self.pauseEvery - 1:
+                            self.__pause = True
+                            Logger().info("Automatic pausing...")
+
                         checkPause()
                         checkStop()
 
@@ -622,6 +651,11 @@ class Shooting(QtCore.QObject):
                     totalProgress /= float(numRepeat * self.scan.totalNbPicts)
                     self.progress(shootingProgress, totalProgress)
                     self.update(index, yaw, pitch, state=state)
+
+                    ## 'Pause every' feature
+                    #if self.pauseEveryEnable and not self.scan.index % self.pauseEvery:
+                        #self.__pause = True
+                        #Logger().info("Automatic pausing...")
 
                     # Next position
                     end = False

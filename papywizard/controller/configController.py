@@ -93,6 +93,7 @@ class ConfigController(AbstractModalDialogController):
         self.connect(self._view.timerRepeatEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onTimerRepeatEnableCheckBoxToggled)
 
         self.connect(self._view.showShootingCounterCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onShowShootingCounterCheckBoxToggled)
+        self.connect(self._view.pauseEveryEnableCheckBox, QtCore.SIGNAL("toggled(bool)"), self.__onPauseEveryEnableCheckBoxToggled)
 
 
     def _disconnectSignals(self):
@@ -165,6 +166,8 @@ class ConfigController(AbstractModalDialogController):
         ConfigManager().set('Configuration/LOGGER_LEVEL', config.LOGGER_INDEX[self._view.loggerLevelComboBox.currentIndex()])
         self._model.shootingCounter = self._view.shootingCounterSpinBox.value()
         self._model.showShootingCounter = bool(self._view.showShootingCounterCheckBox.isChecked())
+        self._model.pauseEvery = self._view.pauseEverySpinBox.value()
+        self._model.pauseEveryEnable = bool(self._view.pauseEveryEnableCheckBox.isChecked())
 
         ConfigManager().save()
 
@@ -290,6 +293,14 @@ class ConfigController(AbstractModalDialogController):
         Logger().debug("ConfigController.__onShowShootingCounterCheckBoxToggled(): checked=%s" % checked)
         self._view.shootingCounterSpinBox.setEnabled(checked)
 
+    def __onPauseEveryEnableCheckBoxToggled(self, checked):
+        """ Pause every enable check box toggled.
+
+        Show/hide related widgets.
+        """
+        Logger().debug("ConfigController.__onPauseEveryEnableCheckBoxToggled(): checked=%s" % checked)
+        self._view.pauseEverySpinBox.setEnabled(checked)
+
     # Interface
     def selectTab(self, tabIndex, disable=False):
         """ Select the specified tab.
@@ -369,6 +380,8 @@ class ConfigController(AbstractModalDialogController):
         self._view.loggerLevelComboBox.setCurrentIndex(loggerIndex)
         self._view.shootingCounterSpinBox.setValue(self._model.shootingCounter)
         self._view.showShootingCounterCheckBox.setChecked(self._model.showShootingCounter)
+        self._view.pauseEverySpinBox.setValue(self._model.pauseEvery)
+        self._view.pauseEveryEnableCheckBox.setChecked(self._model.pauseEveryEnable)
 
     def getSelectedTab(self):
         """ Return the selected tab.
