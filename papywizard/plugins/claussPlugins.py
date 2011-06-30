@@ -203,7 +203,6 @@ class ClaussAxisController(AxisPluginController, HardwarePluginController):
     def _valueChanged(self, value=None):
         self.refreshView()
 
-
     def _defineGui(self):
         AxisPluginController._defineGui(self)
         HardwarePluginController._defineGui(self)
