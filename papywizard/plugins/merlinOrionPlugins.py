@@ -162,7 +162,7 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         self._hardware.setAxis(AXIS_TABLE[self.capacity]),
         AbstractHardwarePlugin.init(self)
         if self._config['OVERWRITE_ENCODER_FULL_CIRCLE']:
-            self._hardware.overwriteEncoderFullCicle(self._config['ENCODER_FULL_CIRCLE'])
+            self._hardware.overwriteEncoderFullCircle(self._config['ENCODER_FULL_CIRCLE'])
 
         # Connect Spy update signal
         self.connect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate, QtCore.Qt.BlockingQueuedConnection)
