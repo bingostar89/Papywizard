@@ -188,6 +188,8 @@ def main():
         register()
         from papywizard.plugins.claussPlugins import register
         register()
+        from papywizard.plugins.owlPlugins import register
+        register()
         PluginsManager ().load()
 
         # Activate selected plugins (move to PluginsManager ?)
