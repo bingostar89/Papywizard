@@ -196,7 +196,7 @@ class MerlinOrionHardware(AbstractHardware):
         finally:
             self._driver.releaseBus()
 
-    def setEncoderFullCircle(self, encoderFullCircle):
+    def overwriteEncoderFullCircle(self, encoderFullCircle):
         """ Overwrite firmware value.
         """
         self.__encoderFullCircle = encoderFullCircle
