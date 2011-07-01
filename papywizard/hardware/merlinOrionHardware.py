@@ -186,7 +186,7 @@ class MerlinOrionHardware(AbstractHardware):
 
             # Get encoder full circle
             value = self.__sendCmd("a")
-            self.__encoderFullCircle = self.__decodeAxisValue(value)
+            self.__encoderFullCircle = self.__encoderFullCircle_ = self.__decodeAxisValue(value)
             Logger().debug("MerlinOrionHardware.init(): encoder full circle=%s" % hex(self.__encoderFullCircle))
 
             # Get sidereal rate
@@ -199,7 +199,14 @@ class MerlinOrionHardware(AbstractHardware):
     def overwriteEncoderFullCircle(self, encoderFullCircle):
         """ Overwrite firmware value.
         """
+        Logger().debug("MerlinOrionHardware.overwriteEncoderFullCircle(): encoderFullCircle=%x" % encoderFullCircle)
         self.__encoderFullCircle = encoderFullCircle
+
+    def useFirmwareEncoderFullCircle(self):
+        """ Use value from firmware.
+        """
+        self.__encoderFullCircle = self.__encoderFullCircle_
+        Logger().debug("MerlinOrionHardware.useFirmwareEncoderFullCircle(): encoderFullCircle=%x" % self.__encoderFullCircle)
 
     def read(self):
         """ Read the axis position.
