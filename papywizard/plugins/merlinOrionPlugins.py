@@ -80,7 +80,7 @@ DEFAULT_ALTERNATE_DRIVE = True
 DEFAULT_ALTERNATE_DRIVE_ANGLE = 7. # °
 DEFAULT_INERTIA_ANGLE = 1. # °
 DEFAULT_OVERWRITE_ENCODER_FULL_CIRCLE = False
-DEFAULT_ENCODER_FULL_CIRCLE = 0xaaaaaa
+DEFAULT_ENCODER_FULL_CIRCLE = 0xe62d3
 
 TAB_HARD = unicode(QtGui.QApplication.translate("merlinOrionPlugins", 'Hard'))
 LABEL_ALTERNATE_DRIVE = unicode(QtGui.QApplication.translate("merlinOrionPlugins", "Alternate drive"))
