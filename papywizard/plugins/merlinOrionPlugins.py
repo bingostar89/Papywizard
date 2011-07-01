@@ -176,6 +176,14 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         # Disconnect Spy update signal
         self.disconnect(Spy(), QtCore.SIGNAL("update"), self.__onPositionUpdate)
 
+    def configure(self):
+        AbstractAxisPlugin.configure(self)
+        AbstractHardwarePlugin.configure(self)
+        if self._config['OVERWRITE_ENCODER_FULL_CIRCLE']:
+            self._hardware.overwriteEncoderFullCircle(self._config['ENCODER_FULL_CIRCLE'])
+        else:
+            self._hardware.useFirmwareEncoderFullCircle()
+
     def run(self):
         """ Main entry of the thread.
         """
