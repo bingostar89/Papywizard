@@ -195,7 +195,7 @@
            <item row="1" column="0">
             <widget class="QToolButton" name="yawMoveMinusToolButton">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -573,6 +573,9 @@
             </item>
             <item row="3" column="0">
              <widget class="QPushButton" name="totalFovPushButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
                 <horstretch>0</horstretch>
@@ -634,6 +637,9 @@
             </item>
             <item row="4" column="0">
              <widget class="QPushButton" name="nbPictsPushButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
                 <horstretch>0</horstretch>
@@ -924,7 +930,7 @@
      <x>0</x>
      <y>0</y>
      <width>580</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="font">
