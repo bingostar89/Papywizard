@@ -7,6 +7,9 @@ revision $Id$
 x bug fix
 
 0000-00-00 Version SVN
+    + Added 'Owl' plugin
+    + Added 'Pause every' param
+    + Added 'Overwrite encoder full circle' param for 'Merlin-Orion' plugin
 
 2011-04-16 Version 2.1.21 (dev)
     + Added 'Clauss' plugin
