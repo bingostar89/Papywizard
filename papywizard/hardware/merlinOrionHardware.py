@@ -177,7 +177,7 @@ class MerlinOrionHardware(AbstractHardware):
             # Stop motor
             self.__sendCmd("L")
 
-            # Check motor?
+            # Init motor
             self.__sendCmd("F")
 
             # Get firmeware version
