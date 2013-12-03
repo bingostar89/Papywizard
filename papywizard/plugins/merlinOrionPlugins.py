@@ -228,7 +228,7 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
 
         # Only move if needed
         if abs(pos - currentPos) > AXIS_ACCURACY or not useOffset:
-            if not useOffset:
+            if not useOffset:  # Move before if?
                 pos -= self._offset
 
             self.__setPoint = pos
@@ -265,16 +265,18 @@ class MerlinOrionAxis(AbstractHardwarePlugin, AbstractAxisPlugin, QtCore.QThread
         Logger().trace("MerlinOrionAxis._alternateDrive()")
 
         # Compute initial direction
+        # BUG!!! Arm side is not taken in account!!!
         if pos > self.__currentPos:
             dir_ = '+'
         else:
             dir_ = '-'
         self._hardware.startJog(dir_, MANUAL_SPEED_TABLE['alternate'])
 
-        # Check when stop
-        while ((dir_ == '-' and self.__currentPos - pos > self._config['INERTIA_ANGLE']) or \
-               (dir_ == '+' and pos - self.__currentPos > self._config['INERTIA_ANGLE'])) and \
-              self.__driveEvent.isSet():
+        # Check when to stop
+        #while ((dir_ == '-' and self.__currentPos - pos > self._config['INERTIA_ANGLE']) or \
+               #(dir_ == '+' and pos - self.__currentPos > self._config['INERTIA_ANGLE'])) and \
+              #self.__driveEvent.isSet():
+        while abs(self.__currentPos - pos) > self._config['INERTIA_ANGLE'] and self.__driveEvent.isSet():
             time.sleep(config.SPY_REFRESH_DELAY / 1000.)
 
         self._hardware.stop()
